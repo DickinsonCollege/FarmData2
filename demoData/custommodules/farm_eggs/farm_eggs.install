@@ -1,0 +1,30 @@
+<?php
+/**
+ * @file
+ * Farm eggs install.
+ */
+
+/**
+ * Install the Farm Quick Forms module.
+ */
+function farm_eggs_update_7000(&$sandbox) {
+  $module = 'farm_quick';
+  if (!module_exists($module)) {
+    module_enable(array($module));
+  }
+}
+
+/**
+ * Ensure that the Eggs quick form is enabled.
+ */
+function farm_eggs_update_7001(&$sandbox) {
+
+  // Load enabled quick forms.
+  $enabled_quick_forms = variable_get('farm_quick_forms_enabled', array());
+
+  // If the eggs form is not already in there, add it.
+  if (empty($enabled_quick_forms['eggs'])) {
+    $enabled_quick_forms['eggs'] = 'eggs';
+    variable_set('farm_quick_forms_enabled', $enabled_quick_forms);
+  }
+}

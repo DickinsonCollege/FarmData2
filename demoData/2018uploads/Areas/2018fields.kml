@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+<Document id="DKNFarm_PlantingFields">
+  <name>DKNFarm_PlantingFields</name>
+  <Snippet></Snippet>
+  <Style id="PolyStyle00">
+    <LabelStyle>
+      <color>00000000</color>
+      <scale>0.000000</scale>
+    </LabelStyle>
+    <LineStyle>
+      <color>ff6e6e6e</color>
+      <width>0.400000</width>
+    </LineStyle>
+    <PolyStyle>
+      <color>ff9ec2d7</color>
+      <outline>1</outline>
+    </PolyStyle>
+  </Style>
+  <Folder id="FeatureLayer0">
+    <name>DKNFarm_PlantingFields</name>
+    <Snippet></Snippet>
+    <Placemark id="ID_00000">
+      <name>Q</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14249648805271,40.14397628644436,0 -77.14265399373936,40.14370557956231,0 -77.14273487663321,40.14354729554602,0 -77.14279751916949,40.14339667306631,0 -77.14283364243971,40.14326596023933,0 -77.14286162190766,40.14311964859702,0 -77.14287567757553,40.1430111358687,0 -77.14271534366443,40.14302667633857,0 -77.1426823418067,40.14322600589435,0 -77.14264116166707,40.14337386989175,0 -77.14259126903293,40.14349801360085,0 -77.14247371953941,40.14371246140716,0 -77.14234453509413,40.14393676084041,0 -77.14249648805271,40.14397628644436,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00001">
+      <name>U</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14277187431222,40.14397178234253,0 -77.14282401091783,40.14395095700207,0 -77.14293349808403,40.14388039872091,0 -77.1430969980583,40.14375973042312,0 -77.14326504096991,40.14362086617736,0 -77.1434143250443,40.14348770462357,0 -77.14356595017166,40.14334483159683,0 -77.14370533728999,40.14320374349899,0 -77.14361226929398,40.1431452903139,0 -77.14353507775694,40.14313470610872,0 -77.1433277903795,40.1433352381847,0 -77.14319606901822,40.14345827048056,0 -77.14303662480555,40.14359194777834,0 -77.14292087903452,40.1436840442512,0 -77.14280001161673,40.14377547240468,0 -77.14265718863749,40.14387624600508,0 -77.14277187431222,40.14397178234253,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00002">
+      <name>R</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14303641560851,40.14348988799198,0 -77.14307156517694,40.14339471726291,0 -77.14310768044662,40.14324838285326,0 -77.1431222317636,40.1431221925409,0 -77.14312582203547,40.14296273857536,0 -77.14311242574188,40.14280540712623,0 -77.14307802107324,40.14265171581346,0 -77.14292433619426,40.14269962083643,0 -77.14295712576308,40.14286770165683,0 -77.14296690287036,40.14298384657952,0 -77.14296244400109,40.14310511245199,0 -77.14294785162008,40.14322369492326,0 -77.14292288204075,40.14333561494043,0 -77.14286807277236,40.14349587029928,0 -77.14299440124877,40.14350798291883,0 -77.14303641560851,40.14348988799198,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00003">
+      <name>S</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.1433890633635,40.14321230046564,0 -77.14339241222848,40.14305948753486,0 -77.14338715244229,40.1428784175835,0 -77.14334422817203,40.14259743177796,0 -77.14316119251532,40.14265751779583,0 -77.14318599296794,40.14284880284215,0 -77.14319819685466,40.14301655217456,0 -77.14319230583722,40.14325874051348,0 -77.1433890633635,40.14321230046564,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    
+    <Placemark id="ID_00005">
+      <name>V</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14372694215372,40.14293932300099,0 -77.14378682652962,40.14305498212977,0 -77.14385609991972,40.14309996135958,0 -77.14394874232006,40.14301748687669,0 -77.14404567416244,40.14290852893753,0 -77.1441248305815,40.14278516678254,0 -77.14419328041429,40.14266072550359,0 -77.14424004462317,40.14255710008649,0 -77.14429138698205,40.14240538261215,0 -77.14408209206428,40.14240493022333,0 -77.14403022971294,40.14242177378881,0 -77.14402567647673,40.14243644199895,0 -77.14400424315869,40.14248789291358,0 -77.14393508379874,40.14263262807545,0 -77.14390237363445,40.14269121358359,0 -77.14388122579165,40.14272644027424,0 -77.14381510258363,40.14281988595668,0 -77.14372694215372,40.14293932300099,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00006">
+      <name>M</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14280636679973,40.14261326471906,0 -77.1427415272321,40.14242312887529,0 -77.1426708675945,40.14228738688997,0 -77.14261395420058,40.14220354245185,0 -77.14246695776238,40.14226252153068,0 -77.14253571661061,40.1424170149029,0 -77.14257812383072,40.14252613731298,0 -77.14261710962053,40.14265457241597,0 -77.14280636679973,40.14261326471906,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00007">
+      <name>N</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14287980424865,40.14259496017269,0 -77.14307753975945,40.14253775090532,0 -77.14299490491869,40.14235595594939,0 -77.1429138194418,40.14221518490908,0 -77.14284084890397,40.14209652359692,0 -77.14265449341688,40.14218249225513,0 -77.14275285666481,40.14233446101088,0 -77.14281976313464,40.14246136751623,0 -77.14287980424865,40.14259496017269,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00008">
+      <name>O</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14310632439843,40.14253522076843,0 -77.1432903170963,40.14248329503904,0 -77.1432205088869,40.14230544808981,0 -77.14312571840858,40.14212418909076,0 -77.14304502266995,40.14199043845783,0 -77.14286567091384,40.14207757230417,0 -77.14295256883483,40.14222588669734,0 -77.14303720802958,40.14238030286089,0 -77.14310632439843,40.14253522076843,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00009">
+      <name>P</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14358880931952,40.1424303224261,0 -77.14353201959219,40.1422862011469,0 -77.1434657156568,40.14214754491646,0 -77.14340386522005,40.14202844561986,0 -77.14330963037371,40.14186781226288,0 -77.14307781277935,40.14194562210696,0 -77.14319468468477,40.14214450822758,0 -77.14325159768708,40.14225326090344,0 -77.14329950374407,40.14235632389915,0 -77.14334720533392,40.14248465141068,0 -77.14358880931952,40.1424303224261,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00024">
+      <name>Jasmine Greenhouse</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14010699662107,40.14174330716781,0 -77.14012732277338,40.14157569285842,0 -77.13997471389733,40.14156684837962,0 -77.13978282873991,40.1415633970922,0 -77.1397857467848,40.14164937622881,0 -77.13979349473016,40.14172917452135,0 -77.13993169351704,40.14173556237418,0 -77.14010699662107,40.14174330716781,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00030">
+      <name>SQ 3</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14192061614169,40.14427650756329,0 -77.14131940182132,40.14446967275879,0 -77.14064497822893,40.14468815864993,0 -77.14073274130773,40.14481415991085,0 -77.14150297054873,40.1445701365496,0 -77.14191458963317,40.14443184913997,0 -77.14192061614169,40.14427650756329,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00031">
+      <name>SQ 5</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14189842457928,40.14450264703343,0 -77.14151803501254,40.14463344796889,0 -77.14078222336835,40.14488037251124,0 -77.14083793452646,40.14502348719179,0 -77.14157604897829,40.1447650401451,0 -77.14190837288329,40.14466030095172,0 -77.14189842457928,40.14450264703343,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00033">
+      <name>SQ 6</name>
+      <Snippet></Snippet>
+      
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14058028995106,40.14510450296517,0 -77.14054555486162,40.14495144131713,0 -77.14005172725568,40.14508847736565,0 -77.13937125988095,40.14527614592947,0 -77.1394505390508,40.1454232416438,0 -77.14005165973948,40.14525556027267,0 -77.14058028995106,40.14510450296517,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>   
+    <Placemark id="ID_00009">
+      <name>Ghana Greenhouse</name>
+      <Snippet></Snippet>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14006853990968,40.14138576684284,0 -77.1398939351204,40.14138285114822,0 -77.1398926049625,40.14142977675043,0 -77.14006658037422,40.14143268156133,0 -77.14006853990968,40.14138576684284,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00002">
+      <name>Chuau Greenhouse</name>
+      <Snippet></Snippet>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.13973169735449,40.14144530655309,0 -77.13973434570566,40.14135970646726,0 -77.13938778915437,40.14135339145832,0 -77.13938517815401,40.14143780172572,0 -77.13973169735449,40.14144530655309,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+  </Folder>
+</Document>
+</kml>

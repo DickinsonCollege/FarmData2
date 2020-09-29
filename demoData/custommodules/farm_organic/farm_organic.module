@@ -1,0 +1,26 @@
+<?php
+/**
+ * @file
+ * Farm organic module.
+ */
+
+/**
+ * Implements hook_farm_flags().
+ */
+function farm_organic_farm_flags() {
+  return array(
+    'organic' => t('Organic'),
+    'notorganic' => t('Not Organic'),
+  );
+}
+
+/**
+ * Implements hook_farm_flags_classes_alter().
+ */
+function farm_organic_farm_flags_classes_alter($flag, &$classes) {
+
+  // If the flag is 'organic', add the Bootstrap 'success' button class.
+  if ($flag == 'organic') {
+    $classes[] = 'btn-success';
+  }
+}

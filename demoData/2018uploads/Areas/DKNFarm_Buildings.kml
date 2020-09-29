@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+<Document id="DKNFarm_Buildings">
+  <name>DKNFarm_Buildings</name>
+  <Snippet></Snippet>
+  <Style id="PolyStyle00">
+    <LabelStyle>
+      <color>00000000</color>
+      <scale>0.000000</scale>
+    </LabelStyle>
+    <LineStyle>
+      <color>ff6e6e6e</color>
+      <width>0.400000</width>
+    </LineStyle>
+    <PolyStyle>
+      <color>ffafebff</color>
+      <outline>1</outline>
+    </PolyStyle>
+  </Style>
+  <Folder id="FeatureLayer0">
+    <name>DKNFarm_Buildings</name>
+    <Snippet></Snippet>
+    <description><![CDATA[The permanent and temporary buildings at the farm. ]]></description>
+    <Placemark id="ID_00000">
+      <name>Equipment Shed</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Equipment Shed</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>0</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Equipment Shed</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>2296.796361</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.052727</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14232826055444,40.14243754124794,0 -77.14233494149414,40.14237040330793,0 -77.14216053782104,40.1423609327443,0 -77.14215894460995,40.14237224088131,0 -77.14196694261437,40.1423605499126,0 -77.14196205884947,40.14241694165961,0 -77.14232826055444,40.14243754124794,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00001">
+      <name>Jasmine Greenhouse</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Jasmine Greenhouse</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>1</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Jasmine Greenhouse</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>2929.44225</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.067251</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.13972092553294,40.14167532090377,0 -77.13972365043182,40.14159182289322,0 -77.13937832202423,40.14158424739227,0 -77.13937505391144,40.14166705637766,0 -77.13972092553294,40.14167532090377,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00002">
+      <name>Chvao Greenhouse</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Chvao Greenhouse</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>2</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Chvao Greenhouse</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>3002.185428</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.068921</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.13973169735449,40.14144530655309,0 -77.13973434570566,40.14135970646726,0 -77.13938778915437,40.14135339145832,0 -77.13938517815401,40.14143780172572,0 -77.13973169735449,40.14144530655309,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00003">
+      <name>Yurt</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Yurt</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>3</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Yurt</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>312.981701</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.007185</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14163391122732,40.14135183983647,0 -77.1416401109245,40.1413513071323,0 -77.14164609595672,40.14134995682359,0 -77.14165168567874,40.14134783008846,0 -77.14165670833593,40.14134498956113,0 -77.14166101176383,40.14134152363783,0 -77.14166446659631,40.14133753650852,0 -77.14166696512072,40.14133314907851,0 -77.14166843409745,40.14132849602895,0 -77.14166882863961,40.14132371782228,0 -77.14166813450272,40.14131895885824,0 -77.1416663750669,40.14131436554294,0 -77.14166360395865,40.14131007561509,0 -77.14165990278941,40.14130622089056,0 -77.14165538673844,40.14130291815044,0 -77.14165019156356,40.14130026667901,0 -77.14164447480262,40.14129834914213,0 -77.14163841194302,40.14129722174892,0 -77.1416321860052,40.14129691894883,0 -77.14162598513977,40.14129745167413,0 -77.14162000011166,40.14129880198173,0 -77.14161441039252,40.14130092871525,0 -77.14160938773665,40.14130376924074,0 -77.14160508430834,40.1413072351621,0 -77.14160162947377,40.14131122228974,0 -77.14159913094581,40.14131560971845,0 -77.14159766196455,40.14132026276727,0 -77.1415972674457,40.14132504187413,0 -77.14159796154946,40.14132979993838,0 -77.14159972098115,40.14133439325484,0 -77.14160249208652,40.14133868318429,0 -77.14160619325442,40.14134253791069,0 -77.14161070930579,40.14134584065266,0 -77.14161590448278,40.14134849212579,0 -77.14162162124725,40.14135040966399,0 -77.14162768411138,40.14135153705794,0 -77.14163391122732,40.14135183983647,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00004">
+      <name>Yurt</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Yurt</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>4</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Yurt</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>312.981701</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.007185</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14158594155417,40.1412376040333,0 -77.14159214241459,40.14123707131024,0 -77.14159812743796,40.14123572100421,0 -77.14160371715238,40.14123359427158,0 -77.14160873980344,40.14123075374641,0 -77.14161304322693,40.141227287825,0 -77.14161649805676,40.14122330069711,0 -77.14161899658045,40.14121891326809,0 -77.14162046555836,40.14121426021904,0 -77.14162086010359,40.14120948201237,0 -77.14162016597155,40.14120472304786,0 -77.14161840654222,40.14120012973157,0 -77.14161563544187,40.14119583980227,0 -77.1416119342818,40.14119198507591,0 -77.14160741824088,40.14118868233363,0 -77.14160222307667,40.14118603085969,0 -77.14159650632669,40.14118411332012,0 -77.14159044347804,40.14118298592412,0 -77.14158421637764,40.14118268314284,0 -77.14157801669516,40.14118321584364,0 -77.14157203167596,40.14118456614851,0 -77.14156644196444,40.14118669287956,0 -77.14156141931467,40.14118953340285,0 -77.14155711589079,40.14119299932239,0 -77.14155366105885,40.14119698644857,0 -77.14155116253163,40.1412013738763,0 -77.14154969354919,40.1412060269246,0 -77.14154929902728,40.14121080603147,0 -77.14154999312619,40.14121556409621,0 -77.14155175255136,40.14122015741365,0 -77.14155452364881,40.14122444734453,0 -77.14155822480758,40.14122830207271,0 -77.14156274084891,40.14123160481691,0 -77.14156793601521,40.14123425629254,0 -77.14157365276871,40.14123617383343,0 -77.14157971562192,40.14123730123018,0 -77.14158594155417,40.1412376040333,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00005">
+      <name>Yurt</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Yurt</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>5</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Yurt</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>453.329383</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.010407</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14174368259874,40.14123377284594,0 -77.14175114541487,40.14123313208401,0 -77.14175834841851,40.1412315069947,0 -77.14176507482449,40.14122894663189,0 -77.14177111931076,40.14122552866457,0 -77.14177629969311,40.1412213573593,0 -77.14178045675538,40.14121655817798,0 -77.14178346483588,40.14121127848289,0 -77.14178523271742,40.14120567851178,0 -77.14178570703372,40.14119992771128,0 -77.14178487215618,40.14119420113564,0 -77.14178275465987,40.1411886721574,0 -77.14177941854632,40.141183509853,0 -77.1417749649889,40.14117887090003,0 -77.14176952867196,40.14117489514071,0 -77.14176327658956,40.14117170470318,0 -77.14175639723275,40.14116939609407,0 -77.14174910056146,40.14116803929804,0 -77.14174160621668,40.14116767619438,0 -77.1417341445524,40.14116831603349,0 -77.14172694155475,40.14116994112116,0 -77.14172021515296,40.14117250148166,0 -77.14171417066859,40.14117591944628,0 -77.14170899031394,40.14118009164912,0 -77.14170483322033,40.14118488992766,0 -77.14170182513475,40.14119016962086,0 -77.1417000572749,40.14119577049122,0 -77.14169958295139,40.14120152129158,0 -77.14170041782188,40.14120724786797,0 -77.14170253528395,40.14121277594754,0 -77.14170587139331,40.14121793825426,0 -77.14171032497713,40.14122257811022,0 -77.14171576126635,40.14122655297197,0 -77.14172201335181,40.14122974341196,0 -77.14172889271372,40.14123205202297,0 -77.14173618939158,40.14123340882008,0 -77.14174368259874,40.14123377284594,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00006">
+      <name>Intern Kitchen</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Intern Kitchen</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>6</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Intern Kitchen</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>679.5322</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.0156</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14156372225914,40.1410668525459,0 -77.14156505739334,40.14098380001125,0 -77.14147875102944,40.1409829825169,0 -77.14147768538565,40.14104928144382,0 -77.14150732603204,40.1410500302839,0 -77.14150696551012,40.14106601895142,0 -77.14156372225914,40.1410668525459,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00007">
+      <name>Pump House</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Pump House</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>7</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Pump House</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>140.113283</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.003217</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14116873588131,40.14158231093348,0 -77.14116977134842,40.14160732012102,0 -77.14122472188245,40.14160598020571,0 -77.14122368759668,40.1415809718978,0 -77.14116873588131,40.14158231093348,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00008">
+      <name>Geology Pump House</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Geology Pump House</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>8</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Geology Pump House</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>66.191047</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.00152</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14202214496203,40.14098429935044,0 -77.14204964408907,40.14098039965362,0 -77.14204434725301,40.14095758813591,0 -77.14201681691027,40.14096135328146,0 -77.14202214496203,40.14098429935044,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00009">
+      <name>Ghana Greenhouse</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Ghana Greenhouse</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>9</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Ghana Greenhouse</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>833.412583</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.019133</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14006853990968,40.14138576684284,0 -77.1398939351204,40.14138285114822,0 -77.1398926049625,40.14142977675043,0 -77.14006658037422,40.14143268156133,0 -77.14006853990968,40.14138576684284,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00010">
+      <name>Corn Crib Storage</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Corn Crib Storage</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>10</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Corn Crib Storage</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>753.788716</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.017305</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14093417482987,40.14084641950637,0 -77.14093340162761,40.14075600907857,0 -77.14085134457591,40.14075642235461,0 -77.14085211412005,40.14084638332675,0 -77.14093417482987,40.14084641950637,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00011">
+      <name>Barn</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Barn</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>11</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Barn</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>3336.25155</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.07659</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14074765273102,40.14071180397924,0 -77.14049341022699,40.14071489600479,0 -77.14049618493451,40.14084929852639,0 -77.14055231171,40.14084861642514,0 -77.14055002373613,40.14083234522369,0 -77.14066755225069,40.14083075636702,0 -77.14066782583224,40.14085019888105,0 -77.1407529923067,40.14085079303256,0 -77.14074765273102,40.14071180397924,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00012">
+      <name>Workshop</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Workshop</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>12</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Workshop</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>586.975495</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.013475</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.1407529923067,40.14085079303256,0 -77.14066782583224,40.14085019888105,0 -77.14067035569867,40.14091955726575,0 -77.14075233270208,40.14091935459462,0 -77.1407529923067,40.14085079303256,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00013">
+      <name>Farm House</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Farm House</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>13</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Farm House</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>1067.012117</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.024495</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14159649515933,40.14084685113218,0 -77.14145722180804,40.14084734331522,0 -77.14145812647791,40.14089341051294,0 -77.14147957697746,40.14089388027795,0 -77.14147953121891,40.14092796212007,0 -77.14159638496886,40.14092805588054,0 -77.14159649515933,40.14084685113218,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00014">
+      <name>Shed</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Shed</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>14</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Shed</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>68.673001</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.001576</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.1393237425192,40.14135052588595,0 -77.13932326713768,40.1413729703705,0 -77.13935329880663,40.14137334588843,0 -77.13935377417825,40.14135090140402,0 -77.1393237425192,40.14135052588595,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00015">
+      <name>Biogas Shed</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Biogas Shed</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>15</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Biogas Shed</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>786.137452</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.018047</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.13927502213282,40.14142756268311,0 -77.13927753673741,40.1413616603843,0 -77.13916068573697,40.14136003278792,0 -77.13915916285261,40.14142675725122,0 -77.13927502213282,40.14142756268311,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00016">
+      <name>Shed</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Shed</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>16</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Shed</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>225.033849</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.005166</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.13984819612652,40.14139097921188,0 -77.13978568564875,40.14138963766346,0 -77.1397843995627,40.14142495498361,0 -77.13984691004464,40.14142629563155,0 -77.13984819612652,40.14139097921188,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00017">
+      <name>Cattle Shed</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Cattle Shed</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>17</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Cattle Shed</td>
+</tr>
+<tr>
+<td>SqFt</td>
+<td>2488.32447</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Acres</td>
+<td>0.057124</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14243450662208,40.14435837635459,0 -77.14229798966436,40.14438379286216,0 -77.14235166861485,40.14455269702736,0 -77.14248841960472,40.14452694821313,0 -77.14243450662208,40.14435837635459,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+  </Folder>
+</Document>
+</kml>

@@ -1,0 +1,72 @@
+<?php
+/**
+ * @file
+ * Farm eggs.
+ */
+
+/**
+ * Implements hook_farm_asset_property().
+ */
+function farm_eggs_farm_asset_property() {
+  return array('farm_eggs');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function farm_eggs_form_farm_asset_form_alter(&$form, $form_state, $form_id) {
+
+  // Get the farm asset entity from the form.
+  $asset = $form['farm_asset']['#value'];
+
+  // If the asset is not an animal or group, bail.
+  if (empty($asset->type) || !in_array($asset->type, array('animal', 'group'))) {
+    return;
+  }
+
+  // Checkbox to specify that this asset produces eggs.
+  $current_value = farm_asset_property_get($asset->id, 'farm_eggs');
+  $form['farm_eggs'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('This @asset_type produces eggs', array('@asset_type' => $asset->type)),
+    '#description' => t('Checking this box will make this asset available in the <a href="!egg_form_path">egg harvest form</a>.', array('!egg_form_path' => url('/farm/eggs'))),
+    '#default_value' => !empty($current_value) ? TRUE : FALSE,
+    '#weight' => 200,
+  );
+
+  // Add a submit handler.
+  $form['actions']['submit']['#submit'][] = 'farm_eggs_asset_form_submit';
+
+  // Add to the "General" group.
+  $form['#group_children']['farm_eggs'] = 'group_farm_general';
+}
+
+/**
+ * Submit handler for saving egg properties of an asset.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ */
+function farm_eggs_asset_form_submit(array $form, array &$form_state) {
+
+  // If an asset doesn't exist, bail.
+  if (empty($form_state['values']['farm_asset'])) {
+    return;
+  }
+
+  // Grab the asset.
+  $asset = $form_state['values']['farm_asset'];
+
+  // Get the farm_eggs property value.
+  $eggs = !empty($form_state['values']['farm_eggs']) ? TRUE : FALSE;
+
+  // Delete any existing property.
+  farm_asset_property_delete($asset->id, 'farm_eggs');
+
+  // If eggs are enabled for this asset, save the property.
+  if ($eggs) {
+    farm_asset_property_set($asset->id, 'farm_eggs',TRUE);
+  }
+}

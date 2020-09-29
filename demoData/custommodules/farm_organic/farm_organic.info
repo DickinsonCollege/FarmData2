@@ -1,0 +1,5 @@
+name = Farm Organic
+description = Provides flags for marking records as "Organic" and "Not Organic" in farmOS.
+core = 7.x
+package = farmOS Contrib
+dependencies[] = farm_flags

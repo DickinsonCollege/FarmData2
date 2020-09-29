@@ -1,0 +1,31 @@
+<?php
+/**
+ * @file
+ * Code for the Farm Material feature.
+ */
+
+include_once 'farm_material.features.inc';
+
+/**
+ * Implements hook_farm_ui_entities().
+ */
+function farm_material_farm_ui_entities() {
+  return array(
+    'farm_asset' => array(
+      'material' => array(
+        'label' => t('Material'),
+        'label_plural' => t('Material'),
+        'view' => 'farm_material',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_farm_log_categories().
+ */
+function farm_material_farm_log_categories() {
+
+  // Provide an "Material" log category.
+  return array('Material');
+}

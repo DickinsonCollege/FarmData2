@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.opengis.net/kml/2.2 http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd http://www.google.com/kml/ext/2.2 http://code.google.com/apis/kml/schema/kml22gx.xsd">
+<Document id="DKNFarm_Ponds">
+  <name>DKNFarm_Ponds</name>
+  <Snippet></Snippet>
+  <Style id="PolyStyle00">
+    <LabelStyle>
+      <color>00000000</color>
+      <scale>0.000000</scale>
+    </LabelStyle>
+    <LineStyle>
+      <color>ffeb6540</color>
+      <width>0.400000</width>
+    </LineStyle>
+    <PolyStyle>
+      <color>fff2db97</color>
+      <outline>1</outline>
+    </PolyStyle>
+  </Style>
+  <Folder id="FeatureLayer0">
+    <name>DKNFarm_Ponds</name>
+    <Snippet></Snippet>
+    <description><![CDATA[The ponds on the farm.]]></description>
+    <Placemark id="ID_00000">
+      <name>HUB Pond 1</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>HUB Pond 1</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>0</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>HUB Pond 1</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>78.300279</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14278558828904,40.14367634768193,0 -77.14279715590554,40.14367491108061,0 -77.14280415185915,40.14367173308834,0 -77.14280863420541,40.14366275330804,0 -77.14280515787728,40.14365324883037,0 -77.14279537711907,40.14364883105694,0 -77.14278318614534,40.14365007920917,0 -77.142774734882,40.14365811990717,0 -77.14277449349289,40.14366683469949,0 -77.14277816645364,40.14367183421854,0 -77.1427844407999,40.14367587886223,0 -77.14278558828904,40.14367634768193,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00001">
+      <name>HUB Pond 3</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>HUB Pond 3</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>1</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>HUB Pond 3</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>84.563196</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.1427562024374,40.14292674621458,0 -77.14276528018316,40.1429241125365,0 -77.14277060061524,40.1429191665656,0 -77.14277265981214,40.14291301437182,0 -77.14277305340894,40.14291048650536,0 -77.14276843404781,40.14290218420066,0 -77.14275934971698,40.14289837151382,0 -77.14274876976643,40.14289952047235,0 -77.14274233098719,40.14290350521809,0 -77.14273714884206,40.14290926569926,0 -77.14273619762717,40.142915900056,0 -77.14273949193581,40.14292185585273,0 -77.14274615683584,40.14292599889968,0 -77.1427562024374,40.14292674621458,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00002">
+      <name>HUB Pond 2</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>HUB Pond 2</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>2</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>HUB Pond 2</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>72.179634</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.1437883051919,40.14264481101335,0 -77.14377954494721,40.14264499668498,0 -77.14377148511815,40.14264953850869,0 -77.14376717105506,40.14265665945729,0 -77.14377037253168,40.14266372949405,0 -77.1437764018399,40.14266792839493,0 -77.1437858878692,40.14266932198495,0 -77.14379539233907,40.14266768116801,0 -77.14380189669606,40.14266156643969,0 -77.14380331511505,40.14265389104677,0 -77.14379837511414,40.14264793783465,0 -77.1437883051919,40.14264481101335,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00003">
+      <name>HUB Pond 4</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>HUB Pond 4</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>3</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>HUB Pond 4</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>66.499922</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14309051959691,40.14130362796836,0 -77.14309086051271,40.14130876010928,0 -77.14309329815256,40.14131352912308,0 -77.14309880209983,40.14131860801029,0 -77.1431070083201,40.14132051901979,0 -77.1431155469824,40.14131896550726,0 -77.14312162053163,40.1413143082619,0 -77.14312360790889,40.14130886095525,0 -77.14312123419754,40.14130265300058,0 -77.14311614567646,40.14129764569756,0 -77.14310713313962,40.14129513974178,0 -77.14309760169029,40.14129718638353,0 -77.14309051959691,40.14130362796836,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00004">
+      <name>HUB Pond 5</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>HUB Pond 5</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>4</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>HUB Pond 5</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>78.314105</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.14028841928082,40.14216078430255,0 -77.1402985329468,40.14216209630796,0 -77.14030926113328,40.14215983858811,0 -77.14031422642324,40.14215284895892,0 -77.14031344892616,40.1421467780874,0 -77.1403093957874,40.14213892734734,0 -77.14029946584996,40.14213464364156,0 -77.14029204959282,40.14213407901191,0 -77.14028353279336,40.14213872723665,0 -77.14028072956313,40.14214646152762,0 -77.14028267285383,40.14215586651279,0 -77.14028841928082,40.14216078430255,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00005">
+      <name>HUB Pond 6</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>HUB Pond 6</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>5</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>HUB Pond 6</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>67.648246</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.13909264861803,40.14218122955212,0 -77.13909252758469,40.14217535193388,0 -77.13908654185114,40.14216841609584,0 -77.139079462737,40.14216524079732,0 -77.13907232463089,40.14216587178352,0 -77.13906617206213,40.14216742324312,0 -77.13906252769924,40.14217050123618,0 -77.13906124644448,40.14217497061419,0 -77.13906087186832,40.14218057812763,0 -77.13906243254887,40.14218553819921,0 -77.13906740054921,40.14218944256469,0 -77.13907060761522,40.14219042197848,0 -77.13907825018829,40.14219094196582,0 -77.13908480506949,40.14218885697362,0 -77.1390895493513,40.14218566856772,0 -77.13909264861803,40.14218122955212,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00006">
+      <name>Irrigation Pond</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Irrigation Pond</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>6</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Irrigation Pond</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>10891.49702</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.1413788485518,40.14125261863745,0 -77.14136505013118,40.14124584198096,0 -77.14134811187149,40.14124021553148,0 -77.14130342704465,40.14123201243962,0 -77.14126615310084,40.14123028700936,0 -77.14122270594667,40.14123357057363,0 -77.14118974479217,40.14123881755899,0 -77.14116358395786,40.14124574651419,0 -77.14113389814922,40.14125800269748,0 -77.14110932062312,40.14127277136237,0 -77.14108671250825,40.14129272252665,0 -77.14107140896168,40.14131364879297,0 -77.14106202424229,40.14134010471447,0 -77.14105853474304,40.14137528263132,0 -77.14106298183296,40.14141268297961,0 -77.14106736192245,40.14144854771504,0 -77.1410756276893,40.14147127604316,0 -77.14108644041755,40.14148856374314,0 -77.14109834551442,40.14150019332901,0 -77.141119366599,40.14151580809217,0 -77.14114377622445,40.14153229826641,0 -77.14116427664709,40.14154321811642,0 -77.14119727079274,40.14155463355652,0 -77.14123801188985,40.14156278358332,0 -77.14128438928381,40.14156736206283,0 -77.14130300506316,40.14156708011198,0 -77.14131947597619,40.14156509886253,0 -77.14135186942343,40.14155622214162,0 -77.14137834318541,40.14154319656257,0 -77.14139783869713,40.14152559557598,0 -77.1414174062414,40.1414974970971,0 -77.14142788916109,40.14147626525958,0 -77.14143764221689,40.14144722368459,0 -77.14144419639436,40.14142188055214,0 -77.14144706802078,40.14140137705805,0 -77.14144670308062,40.14137644690079,0 -77.14144255039157,40.1413507508365,0 -77.14143127617346,40.1413154392225,0 -77.14141549163797,40.1412879936852,0 -77.14139703716644,40.14126682959969,0 -77.1413788485518,40.14125261863745,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="ID_00007">
+      <name>Children's Pond</name>
+      <Snippet></Snippet>
+      <description><![CDATA[<html xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body style="margin:0px 0px 0px 0px;overflow:auto;background:#FFFFFF;">
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-collapse:collapse;padding:3px 3px 3px 3px">
+<tr style="text-align:center;font-weight:bold;background:#9CBCE2">
+<td>Children's Pond</td>
+</tr>
+<tr>
+<td>
+<table style="font-family:Arial,Verdana,Times;font-size:12px;text-align:left;width:100%;border-spacing:0px; padding:3px 3px 3px 3px">
+<tr>
+<td>FID</td>
+<td>7</td>
+</tr>
+<tr bgcolor="#D4E4F3">
+<td>Name</td>
+<td>Children's Pond</td>
+</tr>
+<tr>
+<td>Area_ft</td>
+<td>142.345889</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+]]></description>
+      <styleUrl>#PolyStyle00</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <extrude>0</extrude><altitudeMode>clampToGround</altitudeMode>
+          <outerBoundaryIs><LinearRing><coordinates> -77.1410424685339,40.1411120962067,0 -77.14105007254645,40.14110787830144,0 -77.14105569341584,40.14109908111791,0 -77.14105548234861,40.14109008011518,0 -77.14105274708822,40.14108158523733,0 -77.14104598135296,40.14107455852878,0 -77.14103829886561,40.14107217389724,0 -77.1410293944608,40.14107216548923,0 -77.14102059476042,40.14107527494181,0 -77.14101552279531,40.14108024596559,0 -77.14101260512044,40.14108836885655,0 -77.14101405803007,40.14109564968569,0 -77.14101975299367,40.14110453664089,0 -77.14102668610462,40.14110967927799,0 -77.14103386633798,40.14111338408962,0 -77.1410424685339,40.1411120962067,0</coordinates></LinearRing></outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+  </Folder>
+</Document>
+</kml>
