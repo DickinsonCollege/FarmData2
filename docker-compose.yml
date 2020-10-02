@@ -18,6 +18,7 @@ services:
     image: farmos/farmos:dev
     volumes:
       - './www:/var/www/html:delegated'
+      - './demoData:/demoData:delegated'
     ports:
       - '80:80'
     environment:
