@@ -15,3 +15,6 @@ cp -R demoData/custommodules/* www/sites/all/modules/
 
 #Enable egg module
 sudo docker exec -it ${name}_www_1 drush --yes en farm_eggs
+
+#import fruit plantings
+sudo docker exec -it ${name}_www_1 drush feeds-import farm_asset_planting --file=/demoData/2018uploads/Assets/Planting/farm_asset_plantingFRUIT2018.csv --yes
