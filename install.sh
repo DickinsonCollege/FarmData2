@@ -22,6 +22,8 @@ sudo docker exec -it ${name}_www_1 drush feeds-import farm_asset_group --file=/d
 #import fruit plantings
 sudo docker exec -it ${name}_www_1 drush feeds-import farm_asset_planting --file=/demoData/2018uploads/Assets/Planting/farm_asset_plantingFRUIT2018.csv --yes
 
+#group the fruits into the Fruit group
+sudo docker exec -it ${name}_www_1 drush php-script assignfruitgroup.php --script-path=/demoData/
 
 #add user admin
 sudo docker exec -it ${name}_www_1 drush user-create admin --password="farmdata2"
