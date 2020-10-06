@@ -1686,3 +1686,8 @@ db/farmdata2db/actions.frm
 db/farm/db.opt
 db/aria_log_control
 db/aria_log.00000001
+demoData/2018uploads/Logs/.DS_Store
+demoData/2018uploads/Assets/.DS_Store
+demoData/2018uploads/.DS_Store
+demoData/.DS_Store
+.DS_Store
