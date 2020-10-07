@@ -37,7 +37,9 @@ sudo docker exec -it ${name}_www_1 drush user-create worker1 --password="farmdat
 #give worker1 role "Farm Worker"
 sudo docker exec -it ${name}_www_1 drush urol "Farm Worker" --name=worker1
 
-#upload logs for worker1
+#upload harvest logs for worker1
 sudo docker exec -it ${name}_www_1 drush feeds-import log_farm_harvest --yes --file=/demoData/2018uploads/Logs/Harvests/log_farm_harvestworker12018.csv
 
+#assign those logs to worker1
+sudo docker exec -it farmdata2_www_1 drush scr loadts.php --script-path=/demoData/
 
