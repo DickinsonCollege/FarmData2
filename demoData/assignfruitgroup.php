@@ -1,15 +1,15 @@
-
+<?php 
 
 
 // Load plantings.
-$planting_ids = array(1, 2, 3,4);
+$planting_ids = array(17, 18, 19,20);
 $assets = array();
 foreach ($planting_ids as $id) {
   $assets[] = farm_asset_load($id);
 }
 
 // Load group.
-$group_id = 13;
+$group_id = 9;
 $group = farm_asset_load($group_id);
 $groups = array($group);
 

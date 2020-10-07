@@ -1691,3 +1691,6 @@ demoData/2018uploads/Assets/.DS_Store
 demoData/2018uploads/.DS_Store
 demoData/.DS_Store
 .DS_Store
+db/ib_logfile101
+www/sites/default/files/.htaccess
+*.php

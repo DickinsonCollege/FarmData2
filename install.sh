@@ -38,6 +38,6 @@ sudo docker exec -it ${name}_www_1 drush user-create worker1 --password="farmdat
 sudo docker exec -it ${name}_www_1 drush urol "Farm Worker" --name=worker1
 
 #upload logs for worker1
-sudo docker exec -it ${name}_www_1 drush feeds-import log_farm_harvest --file=/demoData/2018uploads/Logs/Harvests/log_farm_harvestworker12018.csv
+sudo docker exec -it ${name}_www_1 drush feeds-import log_farm_harvest --yes --file=/demoData/2018uploads/Logs/Harvests/log_farm_harvestworker12018.csv
 
 
