@@ -63,9 +63,12 @@ The basic steps for working with GitHub Flow is as follows:
   * Create a _feature branch_ from the _main_ branch your local machine.
   * Make the edits to the documentation or the code in your _feature branch_.
   * Commit your edits.
+    * If the contribution reflects the work of multiple people, ensure that
+    everyone receives attribution by [Creating a commit with multiple authors].
   * Pull the most recent _upstream_ version of the _main branch_.
   * Merge the update _main branch_ into your _feature branch_.
   * Push your _feature branch_ to the _origin_.
   * Make a Pull Request for your _feature branch_ to the _upstream_.  
 
 [FarmData2 Repository]: https://github.com/DickinsonCollege/FarmData2
+[Creating a commit with multiple authors]: https://docs.github.com/en/free-pro-team@latest/github/committing-changes-to-your-project/creating-a-commit-with-multiple-authors
