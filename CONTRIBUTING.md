@@ -6,6 +6,10 @@ FarmData2 welcomes participation and contributions. There are many ways to contr
 
 To promote an open, welcoming, inclusive and harassment free experience all engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenent](CODE_OF_CONDUCT.md).
 
+## Licensing ##
+
+Content in the FarmData2 project is released under several different licenses as described in the [LICENSE file](LICENSE.md). In addition, that file describes the rights and responsibilities of contributors with regard to the their contributed content. The licensing structure of FarmData2 is designed to ensure that FarmData2 remains free and open source while protecting both the project and it community of contributors. Please review it carefully before contributing content to FarmData2.
+
 ## Particpation ##
 
 Having a running version of FarmData2 is a prerequisite for many of the forms of participation.  The [Install Directions] give step by step instructions for getting FarmData2 up and running.
@@ -59,6 +63,8 @@ The basic steps for working with GitHub Flow is as follows:
   * Create a _feature branch_ from the _main_ branch your local machine.
   * Make the edits to the documentation or the code in your _feature branch_.
   * Commit your edits.
+  * Pull the most recent _upstream_ version of the _main branch_.
+  * Merge the update _main branch_ into your _feature branch_.
   * Push your _feature branch_ to the _origin_.
   * Make a Pull Request for your _feature branch_ to the _upstream_.  
 
