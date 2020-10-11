@@ -60,10 +60,12 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at:
+reported to any of the community leaders responsible for enforcement at:
 
 * Grant Braught (braught@dickinson.edu)
+* Farhan Siddiqui (siddiquf@dickinson.edu)
 * Matt Steinman (steimanm@dickinson.edu)
+* Allen Tucker (allen@npfi.org)
 
 All complaints will be reviewed and investigated promptly and fairly.
 
