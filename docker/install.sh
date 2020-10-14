@@ -41,5 +41,5 @@ sudo docker exec -it ${name}_www_1 drush urol "Farm Worker" --name=worker1
 sudo docker exec -it ${name}_www_1 drush feeds-import log_farm_harvest --yes --file=/farmdata2files/2018uploads/Logs/Harvests/log_farm_harvestworker12018.csv
 
 #assign those logs to worker1
-sudo docker exec -it ${name}_www_1 drush scr loadharvests.php --script-path=/farmdata2files/
+sudo docker exec -it farmdata2_www_1 drush scr loadharvests.php --script-path=/farmdata2files/
 
