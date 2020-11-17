@@ -2,6 +2,7 @@ version: '2'
 services:
   db:
     image: mariadb:latest
+    container_name: mariadb
     volumes:
       - './db:/var/lib/mysql:delegated'
     ports:
@@ -16,6 +17,7 @@ services:
     depends_on:
       - db
     image: farmos/farmos:dev
+    container_name: farmdata2
     volumes:
       - './www:/var/www/html:delegated'
       - './farmdata2files:/farmdata2files:delegated'
