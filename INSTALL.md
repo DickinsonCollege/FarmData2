@@ -68,24 +68,27 @@ FarmData2 is a set of features and customizations that are built on top of the [
   ```
   http://localhost:8181
   ```
-  If everything has worked you will see a phpMyAdmin login screen.
-
-  phpMyAdmin is a graphical tool fpr interacting with the database that is used by FarmOS. We will use it to import the FarmData2 configuration and data into FarmOS.
+  If everything has worked you will see a phpMyAdmin login screen. phpMyAdmin is a graphical tool fpr interacting with the database that is used by FarmOS. We will use it to import the FarmData2 configuration and data into FarmOS.
 
   1. Log into phpMyAdmin using the credentials:
     * Username: `root`
     * Password: `farm`
 
   1. Use phpMyAdmin to add a new database user:
+  
     1. Click the "User accounts" tab.
+    
     1. Click "Add user account" in the "New" block.
+    
     1. Fill in the fields:
       * Username: `farmdata2db`
       * Host: `%`
       * Password: `farmdata2db`
+      
     1. In the "Database for user account" block check the boxes to:
       * "Create database with..."
       * "Grant all privileges..."
+      
     1. Scroll to the bottom and click "Go".
 
   1. Open a browser (or another tab) and go to:
@@ -93,7 +96,9 @@ FarmData2 is a set of features and customizations that are built on top of the [
   http://localhost
   ```
   If everything has worked you will see a Drupal configuration screen. The FarmOS system runs on top of Drupal and some configuration must be done to connect the two.
+  
     1. Choose language: Click "Save and continue" to install in English.
+    
     1. Set up database: Fill in the fields:
       * Database name: `farmdata2db`
       * Database username: `farmdata2db`
@@ -101,6 +106,7 @@ FarmData2 is a set of features and customizations that are built on top of the [
       * Under "ADVANCED OPTIONS:
           * Database host: `mariadb`
       * Click "Save and continue"
+      
     1. Configure Site: Fill in the fields:
       * Site name: `Dickinson College Farm`
       * Site e-mail address: `<your e-mail>`
@@ -111,10 +117,12 @@ FarmData2 is a set of features and customizations that are built on top of the [
       * Default country: `United States`
       * Default time zone: `America/New York`
       * Click "Save and continue"
+      
     1. Configure FarmOS:
       * Check all modules.
       * Choose "US/Imperial" System of measurement.
       * Click "Continue"
+      
     1. Click "Visit your new site."
 
 #### Adding FarmData2 Customizations ####
