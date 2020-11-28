@@ -20,13 +20,13 @@ FarmData2 is both a _second_ edition of it predecessor, FarmData, and the integr
 
 ### Acknowledgements ###
 
-FarmData2 is powered by the farmOS open source project.
+FarmData2 is powered by the [farmOS open source project](https://farmos.org/). ![farmOS](https://farmos.org/img/farmOS.png "FarmOS")
 
-Significant support and assistance with FarmData2 has been received from [The Non-Profit FOSS Institute](https://npfi.org/).
+Significant support and assistance with FarmData2 has been received from [The Non-Profit FOSS Institute](https://npfi.org/).![The Non-Profit FOSS Institute](https://npfi.org/wp-content/uploads/2016/07/cropped-cropped-headerimagge-1.png "NPFI")
 
 The development of FarmData2 has received partial support from:
-* The GNOME Community Engagement Challenge (Phase 1 Winner).
-* The National Science Foundation (DUE-2013069) - Collaborative Research: Broadening Participation in Computing through Authentic, Collaborative Engagement with Computing for the Greater Good.
+* ![GNOME Community Engagement Challenge](https://www.gnome.org/wp-content/themes/gnome-grass/images/gnome-logo.svg "GNOME") The GNOME Community Engagement Challenge (Phase 1 Winner).
+* ![The National Science Foundation](https://pbs.twimg.com/profile_images/83610990/nsf1_normal.jpg "The National Science Foundation") The National Science Foundation (DUE-2013069) - Collaborative Research: Broadening Participation in Computing through Authentic, Collaborative Engagement with Computing for the Greater Good.
 
 ---
 
