@@ -31,7 +31,7 @@ FarmData2 is powered by the [farmOS open source project](https://farmos.org/).
 Significant support and assistance with FarmData2 has been received from [The Non-Profit FOSS Institute](https://npfi.org/).
 
 The development of FarmData2 has received partial support from:
-* ![GNOME Community Engagement Challenge](https://seeklogo.com/images/G/GNOME-logo-4377D59EDE-seeklogo.com.png "GNOME") The GNOME Community Engagement Challenge (Phase 1 Winner).
+* ![GNOME Community Engagement Challenge](https://lh3.googleusercontent.com/aqKjEerEXbnLawtKPPhaYAg89LXiXsjLKC3co4qfQeQ4ykM6fm-9HhdaRp16sowmCJM32fE=s170 "GNOME") The GNOME Community Engagement Challenge (Phase 1 Winner).
 * ![The National Science Foundation](https://pbs.twimg.com/profile_images/83610990/nsf1_normal.jpg "The National Science Foundation") The National Science Foundation (DUE-2013069) - Collaborative Research: Broadening Participation in Computing through Authentic, Collaborative Engagement with Computing for the Greater Good.
 
 ---
