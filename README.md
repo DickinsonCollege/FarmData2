@@ -16,17 +16,17 @@ If you are interesting in contributing to the development of FarmData2 see the [
 
 ### History ###
 
-FarmData2 is both a _second_ edition of it predecessor, FarmData, and the integration of _two_ related projects FarmData and AnimalData. These projects were conceived and built by Tim Wahls, Matt Steiman and many students to support operation of the Dickinson College Farm.  The FarmData2 project was initiated as a part of curricular redesign in the Computer Science Department at Dickinson College.  It is now an active part of several courses in the curriculum.  It provides students in these courses with early and sustained opportunities to learn and practice modern software development within the context of an open source software community.
+FarmData2 is both a _second_ edition of it predecessor, FarmData, and the integration of _two_ related projects FarmData and AnimalData. These projects were conceived and built by Tim Wahls, Matt Steiman and many students to support operation of the Dickinson College Farm.  The FarmData2 project was initiated as a part of curricular redesign in the ![Computer Science Department](https://www.dickinson.edu/homepage/57/computer_science) at Dickinson College.  It is now an active part of several courses in the curriculum.  It provides students in these courses with early and sustained opportunities to learn and practice modern software development within the context of an open source software community.
 
 ### Acknowledgements ###
 
-FarmData2 is powered by the farmOS open source project.
+FarmData2 is powered by the ![farmOS](https://farmos.org)  open source project.
 
 Significant support and assistance with FarmData2 has been received from [The Non-Profit FOSS Institute](https://npfi.org/).
 
 The development of FarmData2 has received partial support from:
-* The GNOME Community Engagement Challenge (Phase 1 Winner).
-* The National Science Foundation (DUE-2013069) - Collaborative Research: Broadening Participation in Computing through Authentic, Collaborative Engagement with Computing for the Greater Good.
+* ![The GNOME Community Engagement Challenge](https://www.gnome.org/challenge/) (Phase 1 Winner).
+* ![The National Science Foundation](https://www.nsf.gov) (DUE-2013069) - Collaborative Research: Broadening Participation in Computing through Authentic, Collaborative Engagement with Computing for the Greater Good.
 
 ---
 
