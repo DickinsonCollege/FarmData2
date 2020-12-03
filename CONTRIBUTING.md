@@ -4,13 +4,13 @@ FarmData2 welcomes participation and contributions. There are many ways to contr
 
 ## Code of Conduct ##
 
-To promote an open, welcoming, inclusive and harassment free experience all engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenent](CODE_OF_CONDUCT.md).
+FarmData2 community promotes an open, welcoming, inclusive and harassment-free experience. All engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenent](CODE_OF_CONDUCT.md).
 
 ## Licensing ##
 
 Content in the FarmData2 project is released under several different licenses as described in the [LICENSE file](LICENSE.md). In addition, that file describes the rights and responsibilities of contributors with regard to the their contributed content. The licensing structure of FarmData2 is designed to ensure that FarmData2 remains free and open source while protecting both the project and it community of contributors. Please review it carefully before contributing content to FarmData2.
 
-## Particpation ##
+## Participation ##
 
 Having a running version of FarmData2 is a prerequisite for many of the forms of participation.  The [Install Directions] give step by step instructions for getting FarmData2 up and running.
 
@@ -32,13 +32,13 @@ To participate by Gardening follow the [Install Directions] to get FarmData2 up 
 
 #### Bug Reports ###
 
-If you are are user of FarmData2 and discover something that doesn't seem to be working correctly:
+If you are a user of FarmData2 and discover something that doesn't seem to be working correctly:
 
 * Search the [Issue Tracker] to see if it has been reported already.
 
   * If it has, add a confirmed sighting or any additional information you have commenting on the ticket.
 
-  * If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to observe the bug.
+  * If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to replicate the bug and observe the issue.
 
 #### Feature Requests ####
 
@@ -70,5 +70,8 @@ The basic steps for working with GitHub Flow is as follows:
   * Push your _feature branch_ to the _origin_.
   * Make a Pull Request for your _feature branch_ to the _upstream_.  
 
+For more information about the Github flow, please refer to Github's [official guide](https://guides.github.com/introduction/flow/) 
+
+Thank you for your interest to contribute and we hope you will find a welcome community that we hoped to create! 
 [FarmData2 Repository]: https://github.com/DickinsonCollege/FarmData2
 [Creating a commit with multiple authors]: https://docs.github.com/en/free-pro-team@latest/github/committing-changes-to-your-project/creating-a-commit-with-multiple-authors
