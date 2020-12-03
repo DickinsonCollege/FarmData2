@@ -1,3 +1,5 @@
+![Students harvest crops at the Dickinson College Farm.] (https://www.dickinson.edu/images/Sust_Farm_Harvest_700x335)
+
 ## FarmData2 ##
 
 FarmData2 is an application that supports the operation and certification requirements for small organic farming operations.
