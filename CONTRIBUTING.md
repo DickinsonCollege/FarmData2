@@ -4,13 +4,13 @@ FarmData2 welcomes participation and contributions. There are many ways to contr
 
 ## Code of Conduct ##
 
-To promote an open, welcoming, inclusive and harassment free experience all engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenent](CODE_OF_CONDUCT.md).
+To promote an open, welcoming, inclusive and harassment-free experience, all engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenent](CODE_OF_CONDUCT.md).
 
 ## Licensing ##
 
 Content in the FarmData2 project is released under several different licenses as described in the [LICENSE file](LICENSE.md). In addition, that file describes the rights and responsibilities of contributors with regard to the their contributed content. The licensing structure of FarmData2 is designed to ensure that FarmData2 remains free and open source while protecting both the project and it community of contributors. Please review it carefully before contributing content to FarmData2.
 
-## Particpation ##
+## Participation ##
 
 Having a running version of FarmData2 is a prerequisite for many of the forms of participation.  The [Install Directions] give step by step instructions for getting FarmData2 up and running.
 
@@ -18,9 +18,9 @@ Having a running version of FarmData2 is a prerequisite for many of the forms of
 
 #### Gardening ####
 
-The project [Issue Tracker] contains tickets describing known issues with the project.  The tickets for known issues are tagged with the label "bug".  Each reported bug is to have a detailed description of how the bug can be observed. Gardening includes activities such as:
+The project [Issue Tracker] contains tickets describing known issues with the project.  The tickets for known issues are tagged with the label "bug".  Each reported bug will have a detailed description of how the bug can be observed. Gardening includes activities such as:
 
-  * Verifying or clarifying that these descriptions.
+  * Verifying or clarifying these descriptions.
 
   * Enhance the report by providing additional information about the bug (e.g. platforms on which is is or is not seen).
 
@@ -28,23 +28,23 @@ The project [Issue Tracker] contains tickets describing known issues with the pr
 
 To participate by Gardening follow the [Install Directions] to get FarmData2 up and running. Then visit the [Issue Tracker] and find something of interest to verify, enhance or clarify.  Add a comment to the ticket with what you find.
 
-[Issue Tracker]: https://www.contributor-covenant.org
+[Issue Tracker]: https://github.com/DickinsonCollege/FarmData2/issues
 
 #### Bug Reports ###
 
-If you are are user of FarmData2 and discover something that doesn't seem to be working correctly:
+If you are are a user of FarmData2 and discover something that doesn't seem to be working correctly:
 
 * Search the [Issue Tracker] to see if it has been reported already.
 
-  * If it has, add a confirmed sighting or any additional information you have commenting on the ticket.
+  * If it has, add a confirmed sighting or any additional information you have by commenting on the ticket.
 
   * If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to observe the bug.
 
 #### Feature Requests ####
 
-If you are are user of FarmData2 and have a new feature you would like to see:
+If you are are a user of FarmData2 and have a new feature you would like to see:
 
-  * Search the [Issue Tracker] to see if it, or something close, has already been suggested by someone.
+  * Search the [Issue Tracker] to see if the feature, or something close, has already been suggested by someone.
 
     * If it has, add a comment lending support and possibly refining or giving your perspective on the idea.
 
@@ -72,3 +72,5 @@ The basic steps for working with GitHub Flow is as follows:
 
 [FarmData2 Repository]: https://github.com/DickinsonCollege/FarmData2
 [Creating a commit with multiple authors]: https://docs.github.com/en/free-pro-team@latest/github/committing-changes-to-your-project/creating-a-commit-with-multiple-authors
+
+For detailed information on installing FarmData2 as a user and as a developer, please visit [Install Directions].
