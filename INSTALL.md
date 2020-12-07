@@ -12,7 +12,7 @@ Before beginning this install please review the [CONTRIBUTING.md](CONTRIBUTING.m
 
 #### Development Platform ####
 
-We recommend [Ubuntu Linux](https://ubuntu.com/) as the development platform for FarmData2.  It is the development platform used by the core team and thus is the most well understood and most fully tested. Users of Windows and MacOS should consider using Ubuntu Linux within [Virtual Box](https://www.virtualbox.org/) as their development platform. The It's FOSS guide to [Install Linux Inside Windows Using VirtualBox](https://itsfoss.com/install-linux-in-virtualbox/) is a good place to start if you are unfamiliar with this process.  This is a guide for Windows, but works equally well for MacOS with a little adaptation.
+We recommend [Ubuntu Linux](https://ubuntu.com/) as the development platform for FarmData2.  It is the development platform used by the core team and thus is the most well understood and most fully tested. Users of Windows and MacOS should consider using Ubuntu Linux within [Virtual Box](https://www.virtualbox.org/) as their development platform. The FOSS guide to [Install Linux Inside Windows Using VirtualBox](https://itsfoss.com/install-linux-in-virtualbox/) is a good place to start if you are unfamiliar with this process.  This is a guide for Windows, but works equally well for MacOS with a little adaptation.
 
 That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development on Windows, MacOS or other Linux flavors.
 
@@ -68,7 +68,7 @@ FarmData2 is a set of features and customizations that are built on top of the [
   ```
   http://localhost:8181
   ```
-  If everything has worked you will see a phpMyAdmin login screen. phpMyAdmin is a graphical tool fpr interacting with the database that is used by FarmOS. We will use it to import the FarmData2 configuration and data into FarmOS.
+  If everything has worked you will see a phpMyAdmin login screen. phpMyAdmin is a graphical tool for interacting with the database that is used by FarmOS. We will use it to import the FarmData2 configuration and data into FarmOS.
 
   1. Log into phpMyAdmin using the credentials:
     * Username: `root`
