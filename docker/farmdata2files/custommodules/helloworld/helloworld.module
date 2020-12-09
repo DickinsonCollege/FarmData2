@@ -1,0 +1,86 @@
+
+<?php
+/**
+ * @file
+ * Hello World demonstrates the use of SimpleTest for Drupal 7.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function helloworld_menu() {
+  $items = array();
+
+  $items['helloworld'] = array(
+    'title' => 'Hello World',
+    'access callback' => TRUE,
+    'page callback' => 'helloworld_hello_page',
+    'type' => MENU_NORMAL_ITEM,
+    'menu' => 'navigation',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function helloworld_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
+}
+
+/**
+ * Page callback for /helloworld.
+ */
+function helloworld_hello_page() {
+  echo "4";
+
+  $query = db_query( "SELECT name FROM farm_asset");
+  dpm($query);
+  $records = $query->fetchAll();
+  foreach( $records as $record){
+    dpm($record);
+  }
+
+  return t('Hello');
+}
+
+function helloworld_form_alter(&$form, &$form_state, $form_id) {
+
+
+
+  $form['#validate'][] = 'testing_validation';
+  dpm($form);
+}
+
+function testing_validation( $form, &$form_state) {
+  echo "\ntesting";
+  echo $form["#form_id"];
+ # form_set_error('test', 'hold up!');
+#  dpm($form_state); 
+
+  #echo '<pre>'; print_r($form_state["values"]); echo '</pre>'; 
+  
+  if( $form["#form_id"] == 'log_form')
+  {
+    echo $form_state['values']['name'];
+    $query = db_query( "SELECT name FROM farm_asset");
+    $namesObj = $query->fetchAll();
+ 
+    dpm($namesObj);
+    dpm($form_state);
+
+    # form_set_error('test', 'hold up!');
+    foreach( $namesObj as $nameObj){
+
+     # echo $nameObj->name;
+      if($form_state['values']['name'] == $nameObj->name){
+        form_set_error('name', 'cant name a log the same as an asset!');
+      }
+    }
+  }
+    
+}
+
+
+
