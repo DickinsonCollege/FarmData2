@@ -78,18 +78,18 @@ FarmData2 is a set of features and customizations that are built on top of the [
   
     1. Click the "User accounts" tab.
     
-    1. Click "Add user account" in the "New" block.
+    2. Click "Add user account" in the "New" block.
     
-    1. Fill in the fields:
+    3. Fill in the fields:
       * Username: `farmdata2db`
       * Host: `%`
       * Password: `farmdata2db`
       
-    1. In the "Database for user account" block check the boxes to:
+    4. In the "Database for user account" block check the boxes to:
       * "Create database with..."
       * "Grant all privileges..."
       
-    1. Scroll to the bottom and click "Go".
+    5. Scroll to the bottom and click "Go".
 
   1. Open a browser (or another tab) and go to:
   ```
