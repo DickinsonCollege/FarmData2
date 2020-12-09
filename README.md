@@ -1,4 +1,4 @@
-![Farm Image](./blob/addImage/FarmData2.jpg)
+![Farm Image](https://github.com/egorovak/FarmData2/blob/addImage/FarmData2.jpg)
 
 ## FarmData2 ##
 
