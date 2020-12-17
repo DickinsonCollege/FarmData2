@@ -28,7 +28,7 @@ The project [Issue Tracker] contains tickets describing known issues with the pr
 
 To participate by Gardening follow the [Install Directions] to get FarmData2 up and running. Then visit the [Issue Tracker] and find something of interest to verify, enhance or clarify.  Add a comment to the ticket with what you find.
 
-[Issue Tracker]: https://www.contributor-covenant.org
+[Issue Tracker]: https://www.github.com/DickinsonCollege/FarmData2/issues
 
 #### Bug Reports ###
 
