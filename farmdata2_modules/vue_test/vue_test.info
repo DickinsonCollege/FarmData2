@@ -1,0 +1,4 @@
+name = Vue Test
+description = A test module for trying out using Vue.js
+core = 7.x
+package = spikes

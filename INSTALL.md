@@ -132,18 +132,7 @@ At this point we have a generic FarmOS installation running with an empty databa
     sudo chown -R www-data:www-data www/sites/default/files/farmdata2logo.png
     ```
 
-  1. Copy the FarmData2 custom modules into the directory mounted in the container:
-    1. Change into the `FarmData2/docker` directory in a terminal on your development machine (if not already there).
-    1. Copy the folders from the `farmdata2files/custommodules` directory into the `www/sites/all/modules` directory.
-    ```
-    sudo cp -r farmdata2files/custommodules/* www/sites/all/modules/
-    ```
-    1. Set the owner and group of the copied modules:
-    ```
-    sudo chown -R www-data:www-data www/sites/all/modules/farm_*
-    ```
-
-  1. Install the modules into FarmOS:
+  1. Install farmdata2 modules into FarmOS:
     1. Open a browser (or another tab) and go to the FarmData2 site (if not open already):
     ```
     http://localhost
