@@ -1,0 +1,4 @@
+name = Tab Test
+description = A test of making a tab.
+core = 7.x
+package = spikes

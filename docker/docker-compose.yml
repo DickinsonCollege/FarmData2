@@ -19,8 +19,10 @@ services:
     image: farmos/farmos:dev
     container_name: farmdata2
     volumes:
-      - './www:/var/www/html:delegated'
-      - './farmdata2files:/farmdata2files:delegated'
+      - './www:/var/www/html'
+      - './farmdata2files:/farmdata2files'
+      - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules'
+      - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules'
     ports:
       - '80:80'
     environment:
