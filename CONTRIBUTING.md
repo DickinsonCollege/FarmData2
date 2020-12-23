@@ -58,7 +58,7 @@ The basic steps for working with GitHub Flow is as follows:
 
   * Go to the [FarmData2 Repository] (the _upstream_)
   * Fork the _upstream_ repository to your GitHub (the _origin_).
-  * Clone the _origin_ repository to your local machine.
+  * [Clone] the _origin_ repository to your local machine.
   * Set the  _upstream_ remote for your local repository to point to the _upstream_ repository.
   * Create a _feature branch_ from the _main_ branch your local machine.
   * Make the edits to the documentation or the code in your _feature branch_.
@@ -70,5 +70,6 @@ The basic steps for working with GitHub Flow is as follows:
   * Push your _feature branch_ to the _origin_.
   * Make a Pull Request for your _feature branch_ to the _upstream_.  
 
+[Clone]: https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 [FarmData2 Repository]: https://github.com/DickinsonCollege/FarmData2
 [Creating a commit with multiple authors]: https://docs.github.com/en/free-pro-team@latest/github/committing-changes-to-your-project/creating-a-commit-with-multiple-authors
