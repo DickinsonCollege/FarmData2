@@ -1,0 +1,79 @@
+<?php
+/**
+ * @file
+ * FarmData2 Field Kit module.
+ * See the README.md file in the directory for more information.
+ */
+
+ function fd2_field_kit_permission() {
+   return array(
+     'View FD2 Field Kit' => array(
+       'title' => t('View FD2 Field Kit'),
+     ),
+     'Configure FD2 Field Kit' => array(
+       'title' => t('Configure FD2 Field Kit'),
+     ),
+   );
+ }
+
+ function fd2_field_kit_farm_access_perms($role) {
+   $perms = array();
+
+   // Load the list of farm roles.
+   $roles = farm_access_roles();
+
+   // If this role has 'edit' access, allow them to use the field kit.
+   if (!empty($roles[$role]['access']['edit'])) {
+     $perms[] = 'View FD2 Field Kit';
+   }
+
+   // If this role has 'config' access, it to configure the field kit.
+   if (!empty($roles[$role]['access']['config'])) {
+     $perms[] = 'Configure FD2 Field Kit';
+   }
+
+   return $perms;
+ }
+
+ /**
+ * Implements hook_menu().
+ */
+function fd2_field_kit_menu() {
+  $items = array();
+
+  $items['farm/fd2-field-kit'] = array(
+    'title' => 'FD2 FieldKit',
+    'page callback' => 'fd2_field_kit_view',
+    'page arguments' => array('info.html'),
+    'access arguments' => array('View FD2 Field Kit'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['farm/fd2-field-kit/info'] = array(
+    'title' => 'Info',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -100,
+  );
+
+  // Use this block as a model for each new form that is added.
+  // Adding a new item requires that the drupal cache be flushed.
+  $items['farm/fd2-field-kit/examples'] = array(
+    'title' => 'Example',  // Name that appears on the tab.
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_field_kit_view',
+    'page arguments' => array('example.html'),  // name of the html file
+    'access arguments' => array('View FD2 Field Kit'),
+    'weight' => 100,
+  );
+
+  return $items;
+};
+
+// Loads the content for the tab from the html
+// file specified in the arguemnt.
+function fd2_field_kit_view($form_content) {
+  $dir=dirname(__FILE__);
+  $html=$dir."/".$form_content;
+  $code=file_get_contents($html);
+  return $code;
+};

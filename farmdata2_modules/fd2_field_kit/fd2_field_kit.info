@@ -1,0 +1,4 @@
+name = FarmData2 Field Kit
+description = A collection of forms for easy data entry in the field.
+core = 7.x
+package = FarmData2
