@@ -1,11 +1,11 @@
-describe('Tests for the Example Field Kit Form', () => {
+describe('Tests for the example Field Kit form', () => {
 
   it('Text field content is linked to header', () => {
     cy.login('worker1', 'farmdata2')
     cy.visit('/farm/fd2-field-kit/example')
 
     cy.get('[data-cy=header-field]').clear().type('Hello Farm!')
-    
+
     cy.get('[data-cy=header]').should('have.text','Hello Farm!')
   })
 
