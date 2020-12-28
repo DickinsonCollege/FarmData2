@@ -32,30 +32,30 @@ The essential elements of the FarmData2 Field Kit module include:
 To add a new form to the FieldKit tab:
 1. Ensure that a development instance of FarmData2 is up and running. See [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) for full instructions.
 1. Edit the `fd2-field-kit.module` file to add a new `array` to the `$items` array for the new sub-tab.  The `array` for the _Example_ tabs (shown below) is a good example to work:
-```php
-<?php
-//...
-function fd2_field_kit_menu() {
-    $items['farm/fd2-field-kit/examples'] = array(
-      'title' => 'Example',
-      'type' => MENU_LOCAL_TASK,
-      'page callback' => 'fd2_field_kit_view',
-      'page arguments' => array('example.html'),
-      'access arguments' => array('View FD2 Field Kit'),
-      'weight' => 100,
-    );
-};
-```
+   ```php
+   <?php
+   //...
+   function fd2_field_kit_menu() {
+       $items['farm/fd2-field-kit/examples'] = array(
+         'title' => 'Example',
+         'type' => MENU_LOCAL_TASK,
+         'page callback' => 'fd2_field_kit_view',
+         'page arguments' => array('example.html'),
+         'access arguments' => array('View FD2 Field Kit'),
+         'weight' => 100,
+       );
+   };
+   ```
    - Three elements of the `array` must be customized for your form:
      - `farm/fd2-field-kit/example`: This is the URL of the example sub-form. Replace `example` with the end of the URL you want for your form.
      - `title`: This is the name of the sub-tab that appears in the FieldKit tab.  Replace `Example` with the name of your form.
      - `example.html`: This is the html file that provides the form content. Replace this with the name of the html file for your new form.
 1. Create the html file you named above. Insert some _dummy code_ for now just to get the sub-tab up and visible. For example:
-```html
-<body>
-  <p>This is my sub-tab</p>
-</body>
-```
+   ```html
+   <body>
+      <p>This is my sub-tab</p>
+   </body>
+   ```
    - Note that it is not necessary to include all of the html elements (e.g. `<html>`, `<head>`, etc).
 1. Clear the Drupal cache:
    - `docker exec -it farmdata2 drush cc all`
