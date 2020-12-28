@@ -65,5 +65,5 @@ To add a new form to the FieldKit tab:
 1. Replace the _dummy code_ in your html file with the code for your form.
    - You will define the content and behavior of your form in the 'html' file you named earlier. This file can contain any valid html code including CSS and JavaScript. Sub-forms typically (e.g. `example.html') use [Vue.js](https://vuejs.org/), [Axios](https://github.com/axios/axios) and the [FarmOS API](https://farmos.org/development/api/) to interact with the FarmData2 database.
    - More information on these tools and resources for getting started with them are available in the [CONTRIBUTING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/CONTRIBUTING.md) file.
-1. Test your form using by creating a `spec.js` file in `cypress.Cypress tests in the `the [Cypress testing framework](https://www.cypress.io/).
+1. Test your form using the [Cypress testing framework](https://www.cypress.io/) by creating a new `spec.js` file in `cypress\integration` directory.
    - More information about Cypress and resources for getting started with it are available in the [CONTRIBUTING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/CONTRIBUTING.md) file.
