@@ -7,10 +7,10 @@
 
  function fd2_field_kit_permission() {
    return array(
-     'View FD2 Field Kit' => array(
+     'view fd2 field kit' => array(
        'title' => t('View FD2 Field Kit'),
      ),
-     'Configure FD2 Field Kit' => array(
+     'configure fd2 field kit' => array(
        'title' => t('Configure FD2 Field Kit'),
      ),
    );
@@ -24,12 +24,12 @@
 
    // If this role has 'edit' access, allow them to use the field kit.
    if (!empty($roles[$role]['access']['edit'])) {
-     $perms[] = 'View FD2 Field Kit';
+     $perms[] = 'view fd2 field kit';
    }
 
    // If this role has 'config' access, it to configure the field kit.
    if (!empty($roles[$role]['access']['config'])) {
-     $perms[] = 'Configure FD2 Field Kit';
+     $perms[] = 'configure fd2 field kit';
    }
 
    return $perms;
@@ -45,7 +45,7 @@ function fd2_field_kit_menu() {
     'title' => 'FD2 FieldKit',
     'page callback' => 'fd2_field_kit_view',
     'page arguments' => array('info.html'),
-    'access arguments' => array('View FD2 Field Kit'),
+    'access arguments' => array('view fd2 field kit'),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -62,7 +62,7 @@ function fd2_field_kit_menu() {
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_field_kit_view',
     'page arguments' => array('example.html'),  // name of the html file
-    'access arguments' => array('View FD2 Field Kit'),
+    'access arguments' => array('view fd2 field kit'),
     'weight' => 100,
   );
 
