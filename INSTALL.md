@@ -73,35 +73,13 @@ docker-compose up -d
 
 The first command ensures that there are no old FarmData2 docker containers hanging around.  It will remove them if there are and will report that `docker rm requires at least 1 argument` if there are not.
 
-The second command starts up the docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pull, downloads and extracts the docker images to your machine. When this process has completed you will see a line beginning with `fd2_phpmyadmin` followed by the current date and time.
-
-#### Configuring Drupal ####
-
-In order to start FarmData2 the Drupal on which it runs must be configured.
-
-Open a browser and go to:
-```
-http://localhost
-```
-If everything has worked you will see a Drupal configuration screen with the heading "Choose language".
-
-FarmData2 runs on the FarmOS system which in turn runs on top of Drupal. Some configuration is necessary to setup Drupal and connect it to the database that we expanded above.
-
-  1. Choose language: Click "Save and continue" to install in English.
-
-  1. Set up database: Fill in the fields:
-     * Database name: `farmdata2db`
-     * Database username: `farmdata2db`
-     * Database password: `farmdata2db`
-     * Under "ADVANCED OPTIONS:
-       * Database host: `fd2_mariadb`
-     * Click "Save and continue"
+The second command starts up the docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pull, downloads and extracts the docker images to your machine.
 
 That's it! You now have a running version of FarmData2 that is loaded with the sample data set and is suitable for development work.
 
 #### Logging Into FarmData2 ####
 
-Open a browser (or a new tab) and go to:
+Open a browser and go to:
 ```
 http://localhost
 ```
@@ -148,5 +126,5 @@ The FarmData2 database, that we expanded earlier, is mounted into the container 
 The FarmData2 code is mounted into the container from the directories:
   * `contrib_modules`
   * `farmdata2_modules`
-  
+
 Changes to the code in these directories on the development machine will be reflected by the instance of FarmData2 running in the container.

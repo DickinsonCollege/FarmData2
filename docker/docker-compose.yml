@@ -19,6 +19,7 @@ services:
     image: farmos/farmos:dev
     container_name: fd2_farmdata2
     volumes:
+      - './settings.php:/var/www/html/sites/default/settings.php:delegated'
       - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:cached'
       - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:cached'
     ports:
