@@ -127,17 +127,22 @@ The above process of configuring FarmData2 only needs to be completed once.  Now
 
 From the `docker` directory in the repository you can:
 
-* Stop FarmData2:
-```
-docker-compose down
-```
+  * Stop FarmData2:
+  ```
+  docker-compose down
+  ```
 
-* Start FarmData2:
-```
-docker-compose up -d
-```
+  * Start FarmData2:
+  ```
+  docker-compose up -d
+  ```
 
-Note: Docker compose will remove the containers each time the down command is used and recreate them each time the up command is used. However, all of the persistent data is mounted from the development machine in the directories:
-* `FarmData2/docker/farmdata2files/db`
-* `FarmData2/docker/farmdata2files/www`
-Thus, the newly created containers will have all FarmData2 settings, configuration and data.
+Note: `docker-compose` will remove the containers each time the `down` command is used and recreate them each time the `up` command is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses.
+
+The FarmData2 database, that we expanded earlier, is mounted into the container from the directory:
+  * `docker/db`
+
+The FarmData2 code is mounted into the container from the directories:
+  * `contrib_modules`
+  * `farmdata2_modules`
+Changes to the code in these directories on the development machine will be reflected by the instance of FarmData2 running in the container.
