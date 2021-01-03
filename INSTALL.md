@@ -18,7 +18,7 @@ That said, developers experienced with tools like git, docker and docker-compose
 
 #### Prerequisites ####
 
-FarmData2 relies on a few prerequisite programs that will need to be installed on your development platform. You will need to install:
+FarmData2 relies on a few prerequisite programs that will need to be installed on your development platform. You will need to install
   * git
   * docker
   * docker-compose
@@ -54,165 +54,77 @@ To get started:
   1. [Clone your fork](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) of FarmData2 to your development machine.
   1. [Set your upstream remote](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork) to point to the main [FarmData2 repository](https://github.com/DickinsonCollege/FarmData2) at https://github.com/DickinsonCollege/FarmData2.
 
-#### Bringing Up FarmOS ####
+#### Expand Sample Database Image ####
 
-FarmData2 is a set of features and customizations that are built on top of the [FarmOS](https://github.com/farmOS) platform. The following steps will start the FarmOS system using docker-compose and will guide you through the process of configuring FarmOS.  Subsequent sections wiill then add the FarmData2 customizations.
+The FarmData2 repository contains a sample database with anonymized data from several years of operation of the [Dickinson College Farm](https://www.dickinson.edu/farm). This database is in the compressed file `docker/db.tar.bz2` and needs to be expanded before it can be used.  Change into the `docker` directory in the repository and use the command below:
+```
+sudo tar --same-owner -xjf db.tar.bz2
+```
 
-  1. Change into the `FarmData2/docker` directory in a terminal on your development machine and use the following command:
-  ```
-  sudo docker-compose up -d
-  ```
-  Executing this command takes a few minutes, but will establish a running version of FarmOS. The command has completed when your command prompt returns.
+When this command completes there should be a `db` directory in the `docker` directory.  The files in this `db` directory are a mySQL database that contain the sample data.
 
-  1. Open a browser and go to:
-  ```
-  http://localhost:8181
-  ```
-  If everything has worked you will see a phpMyAdmin login screen. phpMyAdmin is a graphical tool for interacting with the database that is used by FarmOS. We will use it to import the FarmData2 configuration and data into FarmOS.
+#### Starting FarmData2 ####
 
-  1. Log into phpMyAdmin using the credentials:
-    * Username: `root`
-    * Password: `farm`
+To start FarmData2 ensure that you are in the `docker` directory in the repository and use the commands below:
+```
+docker rm $(docker ps -a -q -f name=fd2_)
+docker-compose up -d
+```
 
-  1. Use phpMyAdmin to add a new database user:
-  
-    1. Click the "User accounts" tab.
-    
-    1. Click "Add user account" in the "New" block.
-    
-    1. Fill in the fields:
-      * Username: `farmdata2db`
-      * Host: `%`
-      * Password: `farmdata2db`
-      
-    1. In the "Database for user account" block check the boxes to:
-      * "Create database with..."
-      * "Grant all privileges..."
-      
-    1. Scroll to the bottom and click "Go".
+The first command ensures that there are no old FarmData2 docker containers hanging around.  It will remove them if there are and will report that `docker rm requires at least 1 argument` if there are not.
 
-  1. Open a browser (or another tab) and go to:
-  ```
-  http://localhost
-  ```
-  If everything has worked you will see a Drupal configuration screen. The FarmOS system runs on top of Drupal and some configuration must be done to connect the two.
-  
-    1. Choose language: Click "Save and continue" to install in English.
-    
-    1. Set up database: Fill in the fields:
-      * Database name: `farmdata2db`
-      * Database username: `farmdata2db`
-      * Database password: `farmdata2db`
-      * Under "ADVANCED OPTIONS:
-          * Database host: `mariadb`
-      * Click "Save and continue"
-      
-    1. Configure Site: Fill in the fields:
-      * Site name: `Dickinson College Farm`
-      * Site e-mail address: `<your e-mail>`
-      * Username: `admin`
-      * E-mail address: `<your e-mail>`
-      * Password: `farmdata2`
-      * Confirm Password: `farmdata2`
-      * Default country: `United States`
-      * Default time zone: `America/New York`
-      * Click "Save and continue"
-      
-    1. Configure FarmOS:
-      * Check all modules.
-      * Choose "US/Imperial" System of measurement.
-      * Click "Continue"
-      
-    1. Click "Visit your new site."
+The second command starts up the docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pull, downloads and extracts the docker images to your machine.
 
-#### Adding FarmData2 Customizations ####
+That's it! You now have a running version of FarmData2 that is loaded with the sample data set and is suitable for development work.
 
-At this point we have a generic FarmOS installation running with an empty database crated for FarmData2.  This section customizes FarmOS into an instance of FarmData2.
+#### Logging Into FarmData2 ####
 
-  1. Copy the FarmData2 logo into the volume mounted into the container:
-    1. Change into the `FarmData2/docker` directory in a terminal on your development machine (if not already there).
-    1. Copy the file `farmdata2files/farmdata2logo.png` into the `www/sites/default/files` directory.
-    ```
-    sudo cp farmdata2files/farmdata2logo.png www/sites/default/files
-    ```
-    1. Set the owner and group of the copied logo file to the www-data user as required by FarmOS:
-    ```
-    sudo chown -R www-data:www-data www/sites/default/files/farmdata2logo.png
-    ```
+Open a browser and go to:
+```
+http://localhost
+```
+If everything has worked you will see the FarmData2 login screen.
 
-  1. Install farmdata2 modules into FarmOS:
-    1. Open a browser (or another tab) and go to the FarmData2 site (if not open already):
-    ```
-    http://localhost
-    ```
-    1. Log into FarmOS (if you were not automatically logged in) using:
-      * Username: `admin`
-      * Password: `farmdata2`
-    1. Click "Manage" at the top left so that you see tabs for "Content", "Structure", "Appearance", etc...
-    1. Open the "Modules" tab.
-    1. Click "All" to display all available modules.
-    1. Turn on the modules:
-      * Farm Asset Property
-      * Farm Eggs
-      * Farm Material
-      * Farm Organic
-    1. Click "Save configuration"
+![FarmData2 Login Screen](media/FarmData2Login.png)
 
-#### Importing Sample Data ####
-
-FarmOS has now been customized into a FarmData2 instance.  The next step is to import sample data from the Dickinson College farm so that new FarmData2 features can be added and tested.
-
-  1. Change into the `FarmData2/docker` directory in a terminal on your development machine (if not already there).
-
-  1. Copy the `php.ini` file into the `phpMyAdmin` container:
-  ```
-  docker cp php.ini phpmyadmin:/usr/local/etc/php
-  docker exec phpmyadmin service apache2 restart
-  ```
-  Adding this file to the `phpMyAdmin` container configures phpMyAdmin to allow large imports as will be needed to import the FarmData2 database. Restarting apache2 ensures that phpMyAdmin uses the updated configuration.
-
-  1. Open a browser (or a new tab) and go to the phpMyAdmin server:
-  ```
-  http://localhost:8181
-  ```
-    1. Log into phpMyAdmin (if not already logged in) using the credentials:
-      * Username: `root`
-      * Password: `farm`
-    1. Click on the "Databases" tab.
-    1. Click on "farmdata2db" (Note: Click the name, not the check box.)
-    1. Scroll down and check the "Check all" box.
-    1. From the "With selected" dropdown choose "Drop"
-    1. Scroll down and click "Yes"
-    1. Click the "Import" tab.
-    1. Click "Browse" and choose the `FarmData2/docker/farmdata2files/farmdata2dbpartII.sql` file.
-    1. Click "Go"
-
-  1. Log into FarmData2:
-    1. Open the FarmData site or reload it if is is already open:
-    ```
-    http://localhost
-    ```
-    1. Log in using:
-      * Username: `admin`
-      * Password: `farmdata2`
-
-That's it! You now have a running version of FarmData2 that is suitable for development work.
+  1. Click on "Login to farmOS"
+  1. Log in using one of the following credentials:
+     * Administrator:
+       * Username: `admin`
+       * Password: `farmdata2`
+     * Farm Managers:
+       * Username: `manager1` (or `2`)
+       * Password: `farmdata2`
+     * Farm Workers:
+       * Username: `worker1` (or `2`, `3`, `4`)
+       * Password: `farmdata2`
+     * Guest:
+       * Username: `guest`
+       * Password: `farmdata2`
 
 #### Stopping and Starting FarmData2 ####
 
-Now that you have installed and configured FarmDat2 you can stop and start it with the following commands:
+The above process of configuring FarmData2 only needs to be completed once.  Now you will need only to start and stop the docker containers before and after each work session.
 
-  * To stop a running instance:
+From the `docker` directory in the repository you can:
+
+  * Stop FarmData2:
   ```
   docker-compose down
   ```
 
-  * To re-start a stopped instance:
+  * Start FarmData2:
   ```
   docker-compose up -d
   ```
 
-Note: Docker compose will remove the containers each time the down command is used and recreate them each time the up command is used. However, all of the persistent data is mounted from the development machine in the directories:
-  * `FarmData2/docker/farmdata2files/db`
-  * `FarmData2/docker/farmdata2files/www`
-Thus, the newly created containers will have all FarmData2 settings, configuration and data.
+Note: `docker-compose` will remove the containers each time the `down` command is used and recreate them each time the `up` command is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses.
+
+The FarmData2 database, that we expanded earlier, is mounted into the container from the directory:
+  * `docker/db`
+
+The FarmData2 code is mounted into the container from the directories:
+  * `contrib_modules`
+  * `farmdata2_modules`
+
+Changes to the code in these directories on the development machine will be reflected by the instance of FarmData2 running in the container.
