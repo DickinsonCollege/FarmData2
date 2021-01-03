@@ -106,6 +106,9 @@ Open a browser (or a new tab) and go to:
 http://localhost
 ```
 If everything has worked you will see the FarmData2 login screen.
+
+![FarmData2 Login Screen](media/FarmData2Login.png)
+
   1. Click on "Login to farmOS"
   1. Log in using one of the following credentials:
      * Administrator:
