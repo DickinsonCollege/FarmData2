@@ -148,4 +148,5 @@ The FarmData2 database, that we expanded earlier, is mounted into the container 
 The FarmData2 code is mounted into the container from the directories:
   * `contrib_modules`
   * `farmdata2_modules`
+  
 Changes to the code in these directories on the development machine will be reflected by the instance of FarmData2 running in the container.
