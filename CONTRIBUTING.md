@@ -52,8 +52,7 @@ If you are are a user of FarmData2 and have a new feature you would like to see:
 
 #### Documentation or Code Contributions ####
 
-If you are interested in contributing documentation or code changes, the project generally uses the branching workflow and accepts contributions via Pull Requests. If you are new to GitHub flow and want to have better understanding of it with image visualization, use link: https://guides.github.com/introduction/flow/
-For more details on GitHub flow use link: [GitHub Flow](https://githubflow.github.io/)
+If you are interested in contributing documentation or code changes, the project generally uses the branching workflow and accepts contributions via Pull Requests. If you are new to GitHub flow and want to have better understanding of it with image visualization please check https://guides.github.com/introduction/flow/. For more details on GitHub flow please check [GitHub Flow](https://githubflow.github.io/).
 
 The basic steps for working with GitHub Flow is as follows:
 
