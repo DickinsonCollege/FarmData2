@@ -12,9 +12,16 @@ Before beginning this install please review the [CONTRIBUTING.md](CONTRIBUTING.m
 
 #### Development Platform ####
 
-We recommend [Ubuntu Linux](https://ubuntu.com/) as the development platform for FarmData2.  It is the development platform used by the core team and thus is the most well understood and most fully tested. Users of Windows and MacOS should consider using Ubuntu Linux within [Virtual Box](https://www.virtualbox.org/) as their development platform. The FOSS guide to [Install Linux Inside Windows Using VirtualBox](https://itsfoss.com/install-linux-in-virtualbox/) is a good place to start if you are unfamiliar with this process.  This is a guide for Windows, but works equally well for MacOS with a little adaptation.
+We recommend Ubuntu Linux as the development platform for FarmData2.  It is the development platform used by the core team and thus is the most well understood and most fully tested. Users of Windows and MacOS should consider using Ubuntu Linux within [Virtual Box](https://www.virtualbox.org/) as their development platform.  That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors.
 
-That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development on Windows, MacOS or other Linux flavors.
+The following are some recommendations for setting up a development platform using Linux in VirtualBox:
+
+  - The FOSS guide to [Install Linux Inside Windows Using VirtualBox](https://itsfoss.com/install-linux-in-virtualbox/) is a good place to start if you are unfamiliar with this process. This is a guide for Windows, but works equally well for MacOS with a little adaptation.
+  - If your machine has 8GB or more of RAM [Ubuntu Desktop](https://ubuntu.com/download/desktop) is recommended with an allocation of at least 4GB of RAM to the virtual machine.
+  - If your machine has less than 8GB of RAM Ubuntu based [Linux Lite](https://www.linuxliteos.com/) is recommended with an allocation of half of the machine's RAM to the virtual machine.
+  - When creating your virtual machine:
+    - Allocate a virtual disk of at least 20GB.
+    - Set the Video Memory to 128 MB.
 
 #### Prerequisites ####
 
