@@ -14,6 +14,10 @@ If you are interesting in trying or using FarmData2 see the [INSTALL Document](I
 
 If you are interesting in contributing to the development of FarmData2 see the [CONTRIBUTING Document](CONTRIBUTING.md) for information about how to get started.
 
+### Contact ###
+
+Connect with the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/#narrow/stream/270883-general).
+
 ### History ###
 
 FarmData2 is both a _second_ edition of it predecessor, FarmData, and the integration of _two_ related projects FarmData and AnimalData. These projects were conceived and built by Tim Wahls, Matt Steiman and many students to support operation of the Dickinson College Farm.  The FarmData2 project was initiated as a part of curricular redesign in the Computer Science Department at Dickinson College.  It is now an active part of several courses in the curriculum.  It provides students in these courses with early and sustained opportunities to learn and practice modern software development within the context of an open source software community.
@@ -22,12 +26,13 @@ FarmData2 is both a _second_ edition of it predecessor, FarmData, and the integr
 
 FarmData2 is powered by the farmOS open source project.
 
-Significant support and assistance with FarmData2 has been received from [The Non-Profit FOSS Institute](https://npfi.org/).
+Support and assistance with FarmData2 development has been received from [The Non-Profit FOSS Institute](https://npfi.org/).
 
 The development of FarmData2 has received partial support from:
 * The GNOME Community Engagement Challenge:
   * [![Phase 1 Badge](media/GNOME-CEC-p1-small.png)](media/GNOME-CEC-p1.png)[![Phase 2 Badge](media/GNOME-CEC-p2-small.png)](media/GNOME-CEC-p2.png)    
 * The National Science Foundation (DUE-2013069) - Collaborative Research: Broadening Participation in Computing through Authentic, Collaborative Engagement with Computing for the Greater Good.
+* [Zulip](https://zulip.com) provides sponsored hosting for [FarmData2 community discussions](https://farmdata2.zulipchat.com/#narrow/stream/270883-general).
 
 ---
 
