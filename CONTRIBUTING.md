@@ -10,7 +10,13 @@ To promote an open, welcoming, inclusive and harassment-free experience, all eng
 
 Content in the FarmData2 project is released under several different licenses as described in the [LICENSE file](LICENSE.md). In addition, that file describes the rights and responsibilities of contributors with regard to the their contributed content. The licensing structure of FarmData2 is designed to ensure that FarmData2 remains free and open source while protecting both the project and it community of contributors. Please review it carefully before contributing content to FarmData2.
 
-## Particpation ##
+## Connecting ##
+
+Connect with the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/#narrow/stream/270883-general).
+
+If you are unfamiliar with [Zulip](https://zulip.com/) it is a group chat application that blends the benefits of threaded discussions with live chat. Zulip is relatively easy to use once you understand the key ideas of [streams and topics](https://zulip.com/help/about-streams-and-topics).
+
+## Participation ##
 
 There are many ways to participate in FarmData2. Some of them are listed below.  
 
