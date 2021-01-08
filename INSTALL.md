@@ -22,6 +22,7 @@ The following are some recommendations for setting up a development platform usi
   - When creating your virtual machine:
     - Allocate a virtual disk of at least 20GB.
     - Set the Video Memory to 128 MB.
+   - __MacOS:__ If you are running VirtualBox on MacOS using a machine with a retina display the performance can be quite sluggish. [Launching VirtualBox in Low Resolution Mode](https://forums.virtualbox.org/viewtopic.php?f=8&t=90446&start=75#p470879) will resolve this issue.
 
 #### Prerequisites ####
 
