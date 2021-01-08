@@ -58,7 +58,7 @@ To add a new form to the FieldKit tab:
    ```
    - Note that it is not necessary to include all of the html elements (e.g. `<html>`, `<head>`, etc).
 1. Clear the Drupal cache:
-   - `docker exec -it farmdata2 drush cc all`
+   - `docker exec -it fd2_farmdata2 drush cc all`
 1. Visit the FarmData2 home page when logged in as a _Farm Worker_, a _Farm Manager_ or as `admin`.  Your new sub-tab should now be visible under the FD2 Field Kit tab.
    - If it is there are likely syntax errors in the `fd2_field_kit.module` file or in your `html` file.  You can check the Drupal error logs for helpful information:
      - http://localhost/admin/reports
