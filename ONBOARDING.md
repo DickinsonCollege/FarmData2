@@ -28,7 +28,11 @@ Be sure to connect with the [FarmData2 community](https://farmdata2.zulipchat.co
 
 #### Editors ####
 
+FarmData2
 
+To edit the documentation and code in FarmData2 you'll want to use a good editor.
+
+Of course, if you have a favorite editor, you can use that as well.
 
 ## Front-End Technologies ##
 
