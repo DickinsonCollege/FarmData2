@@ -73,15 +73,12 @@ When this command completes there should be a `db` directory in the `docker` dir
 
 #### Starting FarmData2 ####
 
-To start FarmData2 ensure that you are in the `docker` directory in the repository and use the commands below:
+To start FarmData2 ensure that you are in the `docker` directory in the repository and use the command below:
 ```
-docker rm $(docker ps -a -q -f name=fd2_)
-docker-compose up -d
+./fd2-up.bash
 ```
 
-The first command ensures that there are no old FarmData2 docker containers hanging around.  It will remove them if there are and will report that `docker rm requires at least 1 argument` if there are not.
-
-The second command starts up the docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pull, downloads and extracts the docker images to your machine.
+This command will starts up the docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pull, downloads and extracts the docker images to your machine.
 
 That's it! You now have a running version of FarmData2 that is loaded with the sample data set and is suitable for development work.
 
@@ -118,15 +115,17 @@ From the `docker` directory in the repository you can:
 
   * Stop FarmData2:
   ```
-  docker-compose down
+  ./fd2-down.bash
   ```
 
   * Start FarmData2:
   ```
-  docker-compose up -d
+  ./fd2-up.bash
   ```
 
-Note: `docker-compose` will remove the containers each time the `down` command is used and recreate them each time the `up` command is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses.
+#### A Note on Persistence ####
+
+The `fd2-up.bash` and `fd2-down.bash` scripts use `docker-compose` to start all of the FarmDart2 containers.  When `./fd2-down.bash` is run `docker-compose` removes all of the containers, including their writeable layers.  The containers are all recreate, including blank writeable layers, each time the `fd2-up.bash` is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses. You can find all of the details of the mounted volumes in the `docker-compose.yml` file.
 
 The FarmData2 database, that we expanded earlier, is mounted into the container from the directory:
   * `docker/db`
