@@ -1,0 +1,10 @@
+{
+    "eslint.alwaysShowStatus": true,
+    "html.format.indentInnerHtml": false,
+    "html.format.enable": true,
+    "prettier.singleQuote": true,
+    "prettier.tabWidth": 4,
+    "prettier.vueIndentScriptAndStyle": true,
+    "prettier.withNodeModules": true,
+    "editor.wordWrap": "on"
+}
