@@ -28,11 +28,20 @@ Be sure to connect with the [FarmData2 community](https://farmdata2.zulipchat.co
 
 #### Editors ####
 
-FarmData2
+The code and documentation can be edited with any editor.  For convenience, the FarmData2 installation includes a browser-based integrated development environment (IDE) based on [Eclipse Theia](https://theia-ide.org/).
 
-To edit the documentation and code in FarmData2 you'll want to use a good editor.
+To access the Theia IDE once the [FarmData2 development environment is running](INSTALL#developer-install), just open a browser tab and go to:
+```
+http://localhost:3000
+```
+When the IDE opens:
+  1. Click "Open Workspace"
+  1. Select the `FarmDat2` directory
+  1. Click "Open"
 
-Of course, if you have a favorite editor, you can use that as well.
+The explorer on the left will show the contents and structure of the FarmData2 repository. If you are familiar with other IDEs using Theia should be relatively straight forward. You can consult the [How to use Eclipse Theia as an IDE](https://eclipsesource.com/blogs/2019/10/04/how-to-use-eclipse-theia-as-an-ide/) article for more information on using Theia.
+
+If you have a favorite editor, you can of course use that as well. Note that as FarmDat2 matures utilities (e.g. linters and formatters) will be pre-configured in the provided Theia IDE. When such utilities are added they will be described here so that you can install the appropriate plugins into your editor.
 
 ## Front-End Technologies ##
 
