@@ -28,6 +28,7 @@ services:
     environment:
       XDEBUG_CONFIG: remote_host=172.17.0.1
 
+
   phpmyadmin:
     depends_on:
       - db
@@ -41,4 +42,23 @@ services:
     volumes:
       - /sessions
     links:
-      - 'db'
+     - 'db'
+
+  theiaide:
+    image: theiaide
+    container_name: fd2_theia
+    init: true
+    build:
+     context: ./theia
+     dockerfile: Dockerfile
+     args:
+      HOST_UID: ${HOST_UID}
+      HOST_GID: ${HOST_GID}
+      HOST_USER: ${HOST_USER}
+      HOST_GROUP: ${HOST_GROUP}
+    container_name: theiaide
+    user: ${HOST_USER}
+    volumes: 
+     - ..:/home/${HOST_USER}/FarmData2
+    ports:
+     - 3000:3000
