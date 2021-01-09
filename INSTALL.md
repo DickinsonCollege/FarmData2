@@ -107,9 +107,22 @@ If everything has worked you will see the FarmData2 login screen.
        * Username: `guest`
        * Password: `farmdata2`
 
+#### Editing Code & Documentation ####
+
+The code and documentation can be edited with any editor.  For convenience, the FarmData2 installation includes a browser-based integrated development environment (IDE). To use this IDE open a browser tab and go to:
+```
+http://localhost:3000
+```
+When the IDE opens:
+  1. Click "Open Workspace"
+  1. Select the `FarmDat2` directory
+  1. Click "Open"
+
+The explorer on the left will show the contents and structure of the FarmData2 repository. More information about getting started working on the FarmData2 code and documentation can be found in the [CONTRIBUTING](CONTRIBUTING.md) document.
+
 #### Stopping and Starting FarmData2 ####
 
-The above process of configuring FarmData2 only needs to be completed once.  Now you will need only to start and stop the docker containers before and after each work session.
+The above process of installing FarmData2 only needs to be completed once.  Now you will need only to start and stop the docker containers before and after each work session.
 
 From the `docker` directory in the repository you can:
 
