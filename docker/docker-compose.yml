@@ -1,4 +1,4 @@
-version: '2'
+version: '2.2'
 services:
   db:
     image: mariadb:latest
@@ -58,7 +58,7 @@ services:
       HOST_GROUP: ${HOST_GROUP}
     container_name: theiaide
     user: ${HOST_USER}
-    volumes: 
+    volumes:
      - ..:/home/${HOST_USER}/FarmData2
     ports:
      - 3000:3000
