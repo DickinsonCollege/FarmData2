@@ -10,7 +10,7 @@ Before continuing, If you haven't already, please review the [README](README.md)
 
 The following sections describe the key tools that are central to working with the FarmData2 project.
 
-#### GitHub ####
+### GitHub ###
 
 The [FarmData2 project repository](https://github.com/DickinsonCollege/FarmData2) is stored on [GitHub](https://github.com/), and is likely where you found the code, and this file :smile:.  To work on FarmData2 you'll need to be comfotable interacting with GitHub.
 
@@ -20,7 +20,7 @@ The [FarmData2 project repository](https://github.com/DickinsonCollege/FarmData2
     - [GitFlow Details](https://githubflow.github.io/): A more detailed explanation of the GitFlow workflow.
     - [FarmData2 Workflow](CONTRIBUTING.md#workflow): An outline of the GitFlow steps as they are used for work on FarmData2.
 
-#### git ####
+### git ###
 
 FarmData2 uses [git](https://git-scm.com/) for version control and for implementing the parts of GitFlow that you do on your development machine (e.g. `branch`, `add`, `commit`, `push`, `pull`, `merge`).
 
@@ -30,7 +30,7 @@ FarmData2 uses [git](https://git-scm.com/) for version control and for implement
     - [Pro Git Book](http://git-scm.com/book/en/v2) | [Learn Git Tutorial](https://www.tutorialspoint.com/git/index.htm): More detailed and comprehensive coverage of git's features and use.
     - [FarmData2 Workflow](CONTRIBUTING.md#workflow): An outline of the GitFlow steps as they are used for work on FarmData2.
 
-#### Zulip ####
+### Zulip ###
 
 The FarmData2 community uses [Zulip](https://zulip.com/) as it communication platform. It is a group chat application that blends the benefits of asynchronous threaded discussions (e.g. a forum) with live chat.
 
@@ -41,7 +41,7 @@ You can connect with the [FarmData2 community](https://farmdata2.zulipchat.com/)
     - [Zulip Home Page](https://zulip.com/): This page has a quick tour of Zulip's features that you can click through.
     - [User Documentation](https://zulip.com/help/): A comprehensive set of documentation on Zulip's use and features.
 
-#### Editors ####
+### Editors ###
 
 The code and documentation can be edited with any editor.  For convenience, the FarmData2 installation includes a browser-based integrated development environment (IDE) based on [Eclipse Theia](https://theia-ide.org/).
 
@@ -65,7 +65,7 @@ If you have a favorite editor, you can of course use that as well. Note that as 
 
 The majority of development for FarmDat2 is front-end (i.e. browser-based).  This section outlines the key technologies that are used for this development.
 
-#### HTML ####
+### HTML ###
 
 Hypertext Markup Language (HTML) is the base language that is used to create web pages. It defines the structure of a page and allows page _elements_ (e.g. headings, paragraphs, lists, images, etc.) to be _tagged_ and labeled with _attributes_. The way that an element is tagged and labeled allows the browser (with [CSS](#css)) to determine how the content of the element should be displayed. Elements and attributes also allow [JavaScript](#javascript), [Vue.js](#vue.js) and [Cypress](#cypress) to interact with the page style, structure and content.
 
@@ -75,7 +75,7 @@ Hypertext Markup Language (HTML) is the base language that is used to create web
     - [Introduction to HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML): A collection of guides and assessments that give a comprehensive introduction to HTML.
     - [HTML Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference): A comprehensive reference to all of the HTML _elements_ and _attributes_.
 
-#### CSS ####
+### CSS ###
 
 Cascading Style Sheets (CSS) is a language for specifying how an HTML document should be presented (i.e. how it is displayed by the browser).  CSS uses _rules_ to apply styles to HTML _elements_. Each CSS rule _selects_ HTML elements to which it applies, specifies the _properties_ of the element that are to be styled (e.g. color, font-family, etc.) and gives a _value_ that indicates how they are to be styled (e.g. blue, cursive). [JavaScript](#javascript) can interact with CSS rules, properties and values to dynamically change how (and if) HTML elements are displayed.
 
@@ -85,31 +85,57 @@ Cascading Style Sheets (CSS) is a language for specifying how an HTML document s
     - [Learn to style HTML using CSS](https://developer.mozilla.org/en-US/docs/Learn/CSS): A collection of modules that give a comprehensive introduction to CSS.
     - [CSS reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference): A comprehensive reference to all of the CSS _properties_ and _values_.
 
-#### JavaScript ####
+### JavaScript ###
 
-#### Vue.js ####
+JavaScript is a programming language that can be used to add interactivity to HTML pages.  JavaScript can add or remove HTML elements, change CSS styles and respond to events (e.g. button clicks, text entry). It can also, produce dynamic content by exchanging information with web services through Application Programming Interfaces (APIs). For example, when a user of FarmData2 saves or retrieves information about plantings or harvests it is done by JavaScript code using an API (see [FarmOS API](#farmos-api)).
+
+  - Resources:
+    - [JavaScript Basics](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics): A great place to start if you have not worked with JavaScript before or want a refresher.
+    - [Strings](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Strings): An introduction to the way that strings are created and used in JavaScript.
+    - [Arrays](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Arrays): An introduction to the way that strings are created and used in JavaScript.  
+    - [JavaScript - Dynamic client-side scripting](https://developer.mozilla.org/en-US/docs/Learn/JavaScript): A collection of modules that give a comprehensive introduction to JavaScript.
+    - [JavaScript Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference): A comprehensive reference to all of the JavaScript language features.
+
+### Vue.js ###
+
+
+### FarmOS API ###
+
 
 #### Postman ####
 
-#### FarmOS api ####
+#### JSON Data ####
 
 #### Axios ####
 
-#### Cypress ####
+
+### Cypress ###
  - principles?
 
 ## Automation ##
 
-#### docker ####
+### docker ###
 
-#### docker-compose ####
+ - Coming soon!
 
-#### bash scripting ####
+### docker-compose ###
+
+ - Coming soon!
+
+### bash scripting ###
+
+ - Coming soon!
 
 ## Back-End Technologies ##
 
-#### Drupal ####
+### Drupal ###
 
-#### drush ####
+ - Coming soon!
 
-#### farmOS ####
+### drush ###
+
+ - Coming soon!
+
+### farmOS ###
+
+ - Coming soon!
