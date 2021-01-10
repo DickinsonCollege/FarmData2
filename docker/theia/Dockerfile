@@ -9,9 +9,9 @@ ARG HOST_GROUP=theia
 USER root
 
 # Create the user and group from the host and
-# reassign ownership of the relvant directories.
+# reassign ownership of the relevant directories.
 RUN apk add shadow && \
-    userdel -r node && \
+    userdel -r node 2>&1 && \
     groupadd -o -g $HOST_GID $HOST_GROUP && \
     useradd -o -m -u $HOST_UID -g $HOST_GID -s /bin/bash $HOST_USER && \
     mkdir /home/$HOST_USER/FarmData2 && \
