@@ -26,24 +26,22 @@ Having a running version of FarmData2 is a prerequisite for many of the forms of
 
 #### Bug Reports ####
 
-If you are are a user of FarmData2 and discover something that doesn't seem to be working correctly:
+If you are are a user of FarmData2 and discover something that doesn't seem to be working correctly you can:
 
-  * Search the [Issue Tracker] to see if it has been reported already.
-
+  * Reach out to the community on the [Zulip Developer Stream](https://farmdata2.zulipchat.com/#narrow/stream/271292-developers) to discuss what you have found and how to proceed.
+  * Search the [Issue Tracker] to see if the bug has been reported already.
     * If it has, add a confirmed sighting or any additional information you have by commenting on the ticket.
-
     * If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to observe the bug.
 
 [Issue Tracker]: https://github.com/DickinsonCollege/FarmData2/issues
 
 #### Feature Requests ####
 
-If you are are a user of FarmData2 and have a new feature you would like to see:
+If you are are a user of FarmData2 and have a new feature you would like to see you can:
 
+  * Reach out to the community on the [Zulip Developer Stream](https://farmdata2.zulipchat.com/#narrow/stream/271292-developers) to discuss the feature you'd like to see and how to proceed.
   * Search the [Issue Tracker] to see if the feature, or something close, has already been suggested by someone.
-
     * If it has, add a comment lending support and possibly refining or giving your perspective on the idea.
-
     * If it has not, open a new ticket and give a description of the new feature you would like to see.
 
 #### Issue Gardening ####
@@ -51,9 +49,7 @@ If you are are a user of FarmData2 and have a new feature you would like to see:
 The project [Issue Tracker] contains tickets describing known issues with the project.  The tickets for known issues are tagged with the label "bug".  Each reported bug will have a detailed description of how the bug can be observed. Gardening includes activities such as:
 
   * Verifying or clarifying these descriptions.
-
   * Enhance the report by providing additional information about the bug (e.g. platforms on which is is or is not seen).
-
   * Confirming that bug does (or does not) exist in the current version.
 
 To participate by Gardening visit the [Issue Tracker] and find something of interest to verify, enhance or clarify.  Try it out in your running version of FarmData2 and add a comment to the ticket with what you find.
