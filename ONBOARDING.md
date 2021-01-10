@@ -70,11 +70,10 @@ The majority of development for FarmDat2 is front-end (i.e. browser-based).  Thi
 Hypertext Markup Language (HTML) is the base language that is used to create web pages. It defines the structure of a page and allows page _elements_ (e.g. headings, paragraphs, lists, images, etc.) to be _tagged_. The way that an element is tagged allows the browser (with [CSS](#css)) to determine how the content of the element should be displayed. Tags also allow [JavaScript](#javascript), [Vue.js](#vue.js) and [Cypress](#cypress) to interact with the page style, structure and content.
 
   - Resources:
-    - [Getting started with HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
-
-If you have not worked with HTML before or want a refresher the [Getting started with HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) is a great place to start. Much of FarmData2 relie on _forms_ that collect input from the user (e.g. plantings, harvests, search critera, etc.). The [Your first form](https://developer.mozilla.org/en-US/docs/Learn/Forms/Your_first_form) article is a good place to start if you are not familiar with HTML forms.
-
-
+    - [Getting started with HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started): A great place to start if you have not worked with HTML before or want a refresher.
+    - [Your first form](https://developer.mozilla.org/en-US/docs/Learn/Forms/Your_first_form): An introduction to HTML forms, which FarmData2 uses to collect input from the user (e.g. plantings, harvests, search critera, etc.)
+    - [Introduction to HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML): A collection of guides and assessments that give a comprehensive introduction to HTML. Note: The two resources above are the key sub-sets of this resource for getting ready to work on FarmData2.
+    - [HTML Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference): A comprehensive reference to all of the HTML _elements_ and _attributes_.
 
 #### CSS ####
 
