@@ -1,6 +1,6 @@
 # On-Boarding to FarmData2 #
 
-This document provides an overview of the technologies used in FarmData2.  It discusses the role that each technology plays in the project. Links are provided to further resources for learning about each technologies. For some technologies, learning activities are provided that are specific to FarmData2 and focus on the essentials necessary to get started.
+This document provides an overview of the technologies used in FarmData2.  It discusses the role that each technology plays in the project. Links are provided to further resources for learning about each technologies. These resource typically range from a quick introduction to definitive references. For some technologies, learning activities are provided that are specific to FarmData2 and focus on the essentials that are necessary to get started.
 
 ## Preliminaries ##
 
@@ -8,23 +8,38 @@ Before continuing, If you haven't already, please review the [README](README.md)
 
 ## Tools ##
 
-There are a few key tools that are central to working with the FarmData2 project
+The following sections describe the key tools that are central to working with the FarmData2 project.
 
 #### GitHub ####
 
-The [FarmData2 project repository](https://github.com/DickinsonCollege/FarmData2) is stored on [GitHub](https://github.com/), and is likely where you found the code, and this file :smile:.
+The [FarmData2 project repository](https://github.com/DickinsonCollege/FarmData2) is stored on [GitHub](https://github.com/), and is likely where you found the code, and this file :smile:.  To work on FarmData2 you'll need to be comfotable interacting with GitHub.
 
-If you are not familiar with GitHub they have a [Hello World](https://guides.github.com/activities/hello-world/) introduction that will get you started.  After that you'll want to be sure you are familiar with the _GitFlow branching workflow_ [[Intro](https://guides.github.com/introduction/flow/) | [Details](https://githubflow.github.io/)]. An outline of GitFlow steps as it is used in FarmData2 can be found in the [CONTRIBUTING](CONTRIBUTING.md#workflow) document.
+  - Resources:
+    - [Hello World](https://guides.github.com/activities/hello-world/): A first introduction to GitHub that will get you started if you haven't used it before.
+    - [GitFlow Intro](https://guides.github.com/introduction/flow/): An introduction to an effective way of using GitHub (i.e. a _workflow_).
+    - [GitFlow Details](https://githubflow.github.io/): A more detailed explanation of the GitFlow workflow.
+    - [FarmData2 Workflow](CONTRIBUTING.md#workflow): An outline of the GitFlow steps as they are used for work on FarmData2.
 
 #### git ####
 
-FarmData2 uses [git](https://git-scm.com/) for version control and for implementing the parts of GitFlow that you do on your development machine (e.g. `branch`, `add`, `commit`, `push`, `pull`, `merge`). If you are not yet familiar with git, the [7 Steps to Get Started with Git](https://www.fosslife.org/7-steps-get-started-git) covers the essentials you need to know work with an existing open source project.  The [Git Immersion](https://gitimmersion.com/) tutorial walks through a series of short hands-on exercises that will give you practice with the key features of git. The [Pro Git Book](http://git-scm.com/book/en/v2) or the [Learn Git Tutorial](https://www.tutorialspoint.com/git/index.htm) provided more detailed and comprehensive coverage. An outline of the use of git (within GitFlow) as it is used in FarmData2 can be found in the [CONTRIBUTING](CONTRIBUTING.md#workflow) document.
+FarmData2 uses [git](https://git-scm.com/) for version control and for implementing the parts of GitFlow that you do on your development machine (e.g. `branch`, `add`, `commit`, `push`, `pull`, `merge`).
+
+  - Resources:
+    - [7 Steps to Get Started with Git](https://www.fosslife.org/7-steps-get-started-git): An introduction to the essentials you need to know to work with an existing open source project.
+    - [Git Immersion](https://gitimmersion.com/): A tutorial walks through a series of short hands-on exercises that provide practice with the key features of git.
+    - [Pro Git Book](http://git-scm.com/book/en/v2) | [Learn Git Tutorial](https://www.tutorialspoint.com/git/index.htm): More detailed and comprehensive coverage of git's features and use.
+    - [FarmData2 Workflow](CONTRIBUTING.md#workflow): An outline of the GitFlow steps as they are used for work on FarmData2.
 
 #### Zulip ####
 
-The FarmData2 community uses [Zulip](https://zulip.com/) as it communication platform. It is a group chat application that blends the benefits of asynchronous threaded discussions (e.g. a forum) with live chat. Zulip is relatively easy to use once you understand the key ideas of [streams and topics](https://zulip.com/help/about-streams-and-topics).  The [Zulip Home Page](https://zulip.com/) has a quick tour of the features that you can click through and there is also a full set of [User Documentation](https://zulip.com/help/).
+The FarmData2 community uses [Zulip](https://zulip.com/) as it communication platform. It is a group chat application that blends the benefits of asynchronous threaded discussions (e.g. a forum) with live chat.
 
-Be sure to connect with the [FarmData2 community](https://farmdata2.zulipchat.com/) on its Zulip site.
+You can connect with the [FarmData2 community](https://farmdata2.zulipchat.com/) on its Zulip site.
+
+  - Resources:
+    - [Streams and Topics](https://zulip.com/help/about-streams-and-topics): An introduction to the two key features of Zulip. Once you understand streams and topics Zulip is relatively easy to use.
+    - [Zulip Home Page](https://zulip.com/): This page has a quick tour of Zulip's features that you can click through.
+    - [User Documentation](https://zulip.com/help/): A comprehensive set of documentation on Zulip's use and features.
 
 #### Editors ####
 
@@ -39,13 +54,27 @@ When the IDE opens:
   1. Select the `FarmDat2` directory
   1. Click "Open"
 
-The explorer on the left will show the contents and structure of the FarmData2 repository. If you are familiar with other IDEs using Theia should be relatively straight forward. You can consult the [How to use Eclipse Theia as an IDE](https://eclipsesource.com/blogs/2019/10/04/how-to-use-eclipse-theia-as-an-ide/) article for more information on using Theia.
+The explorer on the left will show the contents and structure of the FarmData2 repository. If you are familiar with other IDEs then using Theia should be relatively straight forward.
 
-If you have a favorite editor, you can of course use that as well. Note that as FarmDat2 matures utilities (e.g. linters and formatters) will be pre-configured in the provided Theia IDE. When such utilities are added they will be described here so that you can install the appropriate plugins into your editor.
+  - Resources:
+    - [How to use Eclipse Theia as an IDE](https://eclipsesource.com/blogs/2019/10/04/how-to-use-eclipse-theia-as-an-ide/): An overview of Theia and its use ad an Integrated Development Enviornment.
+
+If you have a favorite editor, you can of course use that as well. Note that as FarmDat2 matures utilities (e.g. linters and formatters) will be added to the provided Theia IDE. When such utilities are added to Theia they will be documented here so that you can install the appropriate plugins into your editor.
 
 ## Front-End Technologies ##
 
+The majority of development for FarmDat2 is front-end (i.e. browser-based).  This section outlines the key technologies that are used for this development.
+
 #### HTML ####
+
+Hypertext Markup Language (HTML) is the base language that is used to create web pages. It defines the structure of a page and allows page _elements_ (e.g. headings, paragraphs, lists, images, etc.) to be _tagged_. The way that an element is tagged allows the browser (with [CSS](#css)) to determine how the content of the element should be displayed. Tags also allow [JavaScript](#javascript), [Vue.js](#vue.js) and [Cypress](#cypress) to interact with the page style, structure and content.
+
+  - Resources:
+    - [Getting started with HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+
+If you have not worked with HTML before or want a refresher the [Getting started with HTML](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started) is a great place to start. Much of FarmData2 relie on _forms_ that collect input from the user (e.g. plantings, harvests, search critera, etc.). The [Your first form](https://developer.mozilla.org/en-US/docs/Learn/Forms/Your_first_form) article is a good place to start if you are not familiar with HTML forms.
+
+
 
 #### CSS ####
 
