@@ -66,7 +66,7 @@ To get started:
 
 The FarmData2 repository contains a sample database with anonymized data from several years of operation of the [Dickinson College Farm](https://www.dickinson.edu/farm). This database is in the compressed file `docker/db.tar.bz2` and needs to be expanded before it can be used.  Change into the `docker` directory in the repository and use the command below:
 ```
-sudo tar --same-owner -xjf db.tar.bz2
+tar -xjf db.tar.bz2
 ```
 
 When this command completes there should be a `db` directory in the `docker` directory.  The files in this `db` directory are a mySQL database that contain the sample data.
