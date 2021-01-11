@@ -72,7 +72,7 @@ The majority of FarmData2's development is front-end development in the _FieldKi
 
 If you are unfamiliar with one or more of these technologies the [ONBOARDING](ONBOARDING.md) document will provide additional information about each, as well as resources and activities for learning about them. If you are familiar with these technologies the next step is to jump to the [README.md for the field kit](farmdata2_modules/fd2_field_kit/README.md), and then return to the [ONBOARDING](ONBOARDING.md) document on an as-needed basis.
 
-The automation, configuration and back-end development of FarmData2 use an number of other technologies including Drupal, drush, FarmOS, Docker, docker-compose and bash scripting. The [ONBOARDING](ONBOARDING.md) document outines how these technologies are used and also contains pointers to resources for learning more about them.
+The automation, configuration and back-end development of FarmData2 use an number of other technologies including Drupal, drush, FarmOS, Docker, docker-compose and bash scripting. The [ONBOARDING](ONBOARDING.md) document outlines how these technologies are used and also contains pointers to resources for learning more about them.
 
 ## Workflow ##
 
