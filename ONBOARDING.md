@@ -98,7 +98,11 @@ JavaScript is a programming language that can be used to add interactivity to HT
 
 ### Vue.js ###
 
+Vue.js is a JavaScript framework for simplifying the creation of interactive web applications. Creating highly interactive applications using HTML, CSS and JavaScript is possible, but some of the details become repetitive and tedious. Vue.js simplifies many of the common operations by allowing parts of the displayed page to be _bound_ to a data object.  In that way, when JavaScript code changes the data object the _view_ of that data displayed in the browser is automatically updated.
 
+  - Resources:
+    - [Vue.js Fundamentals](https://vueschool.io/courses/vuejs-fundamentals): A great place to start if you have not worked with Vue.js before or want a refresher. Click the "Start Course" button.
+    - [Learn Vue.js](https://vuejs.org/v2/guide/index.html):
 
 ### FarmOS API ###
 
