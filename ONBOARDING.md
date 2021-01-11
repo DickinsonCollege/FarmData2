@@ -102,18 +102,24 @@ JavaScript is a programming language that can be used to add interactivity to HT
 Vue.js is a JavaScript framework for simplifying the creation of interactive web applications. Creating highly interactive applications using HTML, CSS and JavaScript is possible, but some of the details become repetitive and tedious. Vue.js simplifies many of the common operations by allowing parts of the displayed page to be _bound_ to a data object.  In that way, when JavaScript code changes the data object the _view_ of that data displayed in the browser is automatically updated.
 
   - Resources:
-    - [Vue.js Fundamentals](https://vueschool.io/courses/vuejs-fundamentals): A great place to start if you have not worked with Vue.js before or want a refresher. Click the "Start Course" button.
-    - [Learn Vue.js](https://vuejs.org/v2/guide/index.html):
+    - [Vue.js Fundamentals](https://vueschool.io/courses/vuejs-fundamentals): A video based course and a great place to start if you have not worked with Vue.js before or want a refresher. Click the "Start Course" button.
+    - [Vue.js Guide](https://vuejs.org/v2/guide): A textual introduction to using Vue.js.
 
 ### FarmOS API ###
 
+FarmData2 modules exchange data with the server using the [FarmOS API](https://farmos.org/development/api/). 
 
-#### Postman ####
+  - Resources:
+    - 
 
-#### JSON Data ####
+    
+    - [FarmOS API](https://farmos.org/development/api/)
+    - [Postman](https://learning.postman.com/docs/getting-started/installation-and-updates/):
+    - [JSON Data]():
+    - [Axios]():
 
-#### Axios ####
 
+    The FarmOS API is a [REST API](https://www.restapitutorial.com/) that is used by FarmData2
 
 ### Cypress ###
  - principles?
