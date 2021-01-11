@@ -107,19 +107,14 @@ Vue.js is a JavaScript framework for simplifying the creation of interactive web
 
 ### FarmOS API ###
 
-FarmData2 modules exchange data with the server using the [FarmOS API](https://farmos.org/development/api/). 
+FarmData2 modules exchange data with the server using the [FarmOS API](https://farmos.org/development/api/). JavaScript code is used to request data from FarmOS (e.g. a list of fields) or to send new data to FarmOS (e.g. a new planting). When data is received from FarmOS, the Vue.js object is updated, which in turn updates what is displayed in the browser. Conversely, when the user enters data in the browser, that data updates the Vue.js object and when the form is submitted it is transmitted to the server.
 
   - Resources:
-    - 
-
-    
-    - [FarmOS API](https://farmos.org/development/api/)
-    - [Postman](https://learning.postman.com/docs/getting-started/installation-and-updates/):
-    - [JSON Data]():
-    - [Axios]():
-
-
-    The FarmOS API is a [REST API](https://www.restapitutorial.com/) that is used by FarmData2
+    - [What is an API and how does it work?](https://www.youtube.com/watch?v=Yzx7ihtCGBs): A video introduction to APIs with a few examples.This is a good place to start if you are new to APIs.
+    - [Using Axios to Consume APIs](https://vuejs.org/v2/cookbook/using-axios-to-consume-apis.html): A short example of a `GET` request using Axios and Vue.js.
+    - [Axios](https://github.com/axios/axios): Full documentation for the axios library. This show how to do both `GET` and `POST` requests.
+    - [FarmOS API](https://farmos.org/development/api/): Documentation for the FarmOS API.
+    - [Postman](https://learning.postman.com/docs/getting-started/installation-and-updates/): A tool for experimenting with API calls. This can be useful in figuring out how to request what you want from the FarmData2 API and how its responses are formatted.
 
 ### Cypress ###
  - principles?
