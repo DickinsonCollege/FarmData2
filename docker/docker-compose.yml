@@ -28,7 +28,6 @@ services:
     environment:
       XDEBUG_CONFIG: remote_host=172.17.0.1
 
-
   phpmyadmin:
     depends_on:
       - db
@@ -56,7 +55,7 @@ services:
       HOST_GID: ${HOST_GID}
       HOST_USER: ${HOST_USER}
       HOST_GROUP: ${HOST_GROUP}
-    container_name: theiaide
+    container_name: fd2_theiaide
     user: ${HOST_USER}
     volumes:
      - ..:/home/${HOST_USER}/FarmData2
