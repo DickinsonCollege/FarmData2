@@ -1,4 +1,10 @@
-docker/www/*
 docker/db/*
+
+.theia/logs/*
+.theia/workspace-storage/*
+.theia/globalStorage/*
+
+farmdata2_modules/fd2_field_kit/cypress/screenshotsFolder/*
+farmdata2_modules/fd2_field_kit/cypress/videosFolder/*
 
 .DS_Store
