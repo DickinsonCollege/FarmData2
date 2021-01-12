@@ -45,7 +45,7 @@ services:
 
   theiaide:
     image: theiaide
-    container_name: fd2_theia
+    container_name: fd2_theiaide
     init: true
     build:
      context: ./theia
@@ -55,7 +55,6 @@ services:
       HOST_GID: ${HOST_GID}
       HOST_USER: ${HOST_USER}
       HOST_GROUP: ${HOST_GROUP}
-    container_name: fd2_theiaide
     user: ${HOST_USER}
     volumes:
      - ..:/home/${HOST_USER}/FarmData2
