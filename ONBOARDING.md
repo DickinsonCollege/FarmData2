@@ -117,7 +117,25 @@ FarmData2 modules exchange data with the server using the [FarmOS API](https://f
     - [Postman](https://learning.postman.com/docs/getting-started/installation-and-updates/): A tool for experimenting with API calls. This can be useful in figuring out how to request what you want from the FarmData2 API and how its responses are formatted.
 
 ### Cypress ###
- - principles?
+
+The functionality of FarmData2 modules is tested using the [cypress framework](https://www.cypress.io/). Cypress is an end-to-end test framework that works by controlling the web browser. A test typically consists of a series of steps that are automated by the cypress tests, called _spec_s. A typical spec consist of the steps:
+  1. Setup the test (e.g. login, prime the database)
+  1. Visit a specific page
+  1. Query the page for an _html element_ of interest (e.g. button, ext field)
+  1. Interact with that element (e.g. click the button, enter some text)
+  1. Make an assertion about the result (e.g. new information appears on the page)
+
+
+  - Resources
+    - [Introduction to Cypress](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html): As the docs say... "the single most important guide for understanding how to test with Cypress. Read it. Understand it."
+    - [Writing Your First Test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Add-a-test-file): A good overview of how a typical cypres test work, what the code looks like and how to use the cypress test runner.
+    - [Selecting Elements](https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements): Best practices for selecting elements that are manipulated and checked by your tests. Following these will make you tests less brittle.
+    - [Selector Playground](https://docs.cypress.io/guides/core-concepts/test-runner.html#Selector-Playground): A tool within the cypress test runner that will help you find good selectors to use for the elements used in your tests.
+    - [should](https://docs.cypress.io/api/commands/should.html#Syntax): Documentation for the `should` statement that is used to make assertions in cypress tests.
+    
+---
+
+Content below here is coming soon.
 
 ## Automation ##
 
