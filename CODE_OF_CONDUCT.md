@@ -64,7 +64,7 @@ reported to any of the community leaders responsible for enforcement at:
 
 * Grant Braught (braught@dickinson.edu)
 * Farhan Siddiqui (siddiquf@dickinson.edu)
-* Matt Steinman (steimanm@dickinson.edu)
+* Matt Steiman (steimanm@dickinson.edu)
 * Allen Tucker (allen@npfi.org)
 
 All complaints will be reviewed and investigated promptly and fairly.
