@@ -60,11 +60,19 @@ Update to any of the FarmData2 documentation are welcome.  If you find typos, un
 
 #### Bug Fix / Feature Implementation ####
 
-Tickets in the [Issue Tracker] that are tagged _bug_ or _enhancement_ describe issues be fixed or new features to be added to FarmData2. The tag _good first issue_ appears on the most approachable tickets.  If you find an issue to work on use the [workflow](#workflow) described below to create a pull request for your suggested bug fix or feature implementation.
+Tickets in the [Issue Tracker] that are tagged _bug_ or _enhancement_ describe issues be fixed or new features to be added to FarmData2. The tag _good first issue_ appears on the most approachable tickets.  If you find an issue to work on use the [workflow](#workflow) described below to create a pull request for your suggested bug fix or feature implementation. Information about the languages and technologies that are used in FarmdData2 and pointers to resources for learning more about them can be found in the [Technology On-boarding](#technology-on-boarding) section below.
 
 #### Other Thoughts ####
 
-The above is not an exhaustive list of ways to participate in FarmData2. For some other ideas check out [50 Ways to be a FOSSer](http://foss2serve.org/index.php/50_Ways_to_be_a_FOSSer). If anything there seems interesting or if you have other ideas of your own please get in touch and we will be happy to have a discussion about how you might contribute.
+The above is not an exhaustive list of ways to participate in FarmData2. For some other ideas check out [50 Ways to be a FOSSer](http://foss2serve.org/index.php/50_Ways_to_be_a_FOSSer). If anything there seems interesting or if you have other ideas of your own please get in touch and we will be happy to have a discussion about how you might get involved.
+
+## Technology On-boarding ##
+
+The majority of FarmData2's development is front-end development in the _FieldKit_ and _BarnKit_. The _FieldKit_ and _BarnKit_ contain _forms_ and _reports_ that facilitate farm specific tasks. These _forms_ and _reports_ are created using a standard web technology stack including HTML, CSS, JavaScript, Vue.js. The front-end accesses FarmData2 data through the [FarmOS API](https://farmos.org/development/api/) using the [Axios](https://github.com/axios/axios) library. End-to-end testing of _forms_ and _reports_ is done using the [Cypress framework](https://www.cypress.io/). In addition, a basic familiarity with git and GitHub are necessary for interacting with the project.
+
+If you are unfamiliar with one or more of these technologies the [ONBOARDING](ONBOARDING.md) document will provide additional information about each, as well as resources and activities for learning about them. If you are familiar with these technologies the next step is to jump to the [README.md for the field kit](farmdata2_modules/fd2_field_kit/README.md), and then return to the [ONBOARDING](ONBOARDING.md) document on an as-needed basis.
+
+The automation, configuration and back-end development of FarmData2 use an number of other technologies including Drupal, drush, FarmOS, Docker, docker-compose and bash scripting. The [ONBOARDING](ONBOARDING.md) document outlines how these technologies are used and also contains pointers to resources for learning more about them.
 
 ## Workflow ##
 
@@ -79,8 +87,7 @@ As a reference, the basic steps for working with GitHub Flow are as follows:
   * Create a _feature branch_ from the _main_ branch your local machine.
   * Make the edits to the documentation or the code in your _feature branch_.
   * Commit your edits.
-    * If the contribution reflects the work of multiple people, ensure that
-    everyone receives attribution by [Creating a commit with multiple authors].
+    * If the contribution reflects the work of multiple people, ensure that everyone receives attribution by [Creating a commit with multiple authors].
   * Pull the most recent _upstream_ version of the _main branch_.
   * Merge the updated _main branch_ into your _feature branch_.
   * Push your _feature branch_ to the _origin_.
@@ -89,5 +96,3 @@ As a reference, the basic steps for working with GitHub Flow are as follows:
 [Clone]: https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 [FarmData2 Repository]: https://github.com/DickinsonCollege/FarmData2
 [Creating a commit with multiple authors]: https://docs.github.com/en/free-pro-team@latest/github/committing-changes-to-your-project/creating-a-commit-with-multiple-authors
-
-For detailed information on installing FarmData2 as a user and as a developer, please visit [Install Directions].
