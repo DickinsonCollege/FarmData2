@@ -41,15 +41,13 @@ var app2 = new Vue({
   methods: {
     getFarmName() {
       axios
-        .get('http://localhost/farm.json')
+        .get('/farm.json')  // http://hostname/ is not needed for same host.
         .then(response => (this.farm = response.data.name))
         .catch(error => console.log(error))
-
-      someJSStuff();
     },
     getFieldList() {
       axios
-        .get('http://localhost/taxonomy_term.json?bundle=farm_areas&area_type=field')
+        .get('/taxonomy_term.json?bundle=farm_areas&area_type=field')
         .then(response => (this.fields = response.data.list))
         .catch(error => console.log(error))
     }
