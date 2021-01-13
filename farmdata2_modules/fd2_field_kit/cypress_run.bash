@@ -1,5 +1,7 @@
 #!/bin/bash
 
+xhost +
+
 docker run -it \
   -v $PWD:/e2e \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
