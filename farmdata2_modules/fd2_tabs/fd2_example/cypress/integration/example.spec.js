@@ -1,4 +1,4 @@
-describe('Tests for the example Field Kit form', () => {
+describe('Tests for the example sub-tab', () => {
 
   it('Text field content is linked to header', () => {
     cy.login('worker1', 'farmdata2')
