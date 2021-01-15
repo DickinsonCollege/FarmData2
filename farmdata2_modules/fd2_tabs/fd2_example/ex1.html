@@ -1,47 +1,52 @@
 <!doctype html>
 <head>
-
-<!-- Hides Vue.js content until rendered. -->
 <style>
+/* This style will hide Vue.js content until rendered. */
 [v-cloak] {
  display:none;
 }
 </style>
-
 </head>
 
 <body>
-<div id="app2" v-cloak>
-  <h2 data-cy="header">{{ field }}</h2>
-  <input data-cy="header-field" type='text' v-model='field'>
+<!-- define a div to wrqp around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="ex1" v-cloak>
 
+  <!-- Example of a v-model binding -->
+  <p>Type comment: <input data-cy="header-field" type='text' v-model='comment'>
+  <p>Comment: <span data-cy="comment">{{ comment }}</span></p>
+
+  <!-- Example of event handling and api call -->
   <p><button data-cy="get-name-button" @click='getFarmName'>Get Farm Name</button></p>
-  <p>Response:</p>
-  <UL><p data-cy="farm-name">{{ farm }}</p></UL>
+  <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
+  <!-- Example of event hadling, api call and v-for -->
   <p><button data-cy="get-fields-button" @click='getFieldList'>Get Fields</button>
   <p>Response:</p>
   <UL data-cy="field-list">
     <li v-for='field in fields'>{{ field.name }}</li>
   </UL>
+
 </div>
-</body>
 
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
-var app2 = new Vue({
-  el: '#app2',
+// Define the Vue instance for the app.
+// e1: must match the id of the <div> for the app above.
+new Vue({
+  el: '#ex1',
   data: {
-	field: 'Q',
-	farm: null,
-	fields: null
+	  comment: null,
+	  farm: null,
+	  fields: null
   },
   methods: {
     getFarmName() {
       axios
-        .get('/farm.json')  // http://hostname/ is not needed for same host.
+        .get('/farm.json')
         .then(response => (this.farm = response.data.name))
         .catch(error => console.log(error))
     },
@@ -54,3 +59,5 @@ var app2 = new Vue({
   }
 });
 </script>
+
+<body>
