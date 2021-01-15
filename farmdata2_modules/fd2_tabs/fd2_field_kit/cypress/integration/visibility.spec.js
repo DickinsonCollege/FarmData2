@@ -14,24 +14,24 @@ describe('Check visibility of FD2 Field Kit tab', () => {
     })
 
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('FD2 FieldKit').should('exist')
+    cy.get('.nav-tabs').contains('FieldKit').should('exist')
   })
 
   it('Visible to manager', () => {
     cy.login('manager1', 'farmdata2')
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('FD2 FieldKit').should('exist')
+    cy.get('.nav-tabs').contains('FieldKit').should('exist')
   })
 
   it('Visible to worker', () => {
     cy.login('worker1', 'farmdata2')
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('FD2 FieldKit').should('exist')
+    cy.get('.nav-tabs').contains('FieldKit').should('exist')
   })
 
   it('Not visible to guest user', () => {
     cy.login('guest', 'farmdata2')
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('FD2 FieldKit').should('not.exist')
+    cy.get('.nav-tabs').contains('FieldKit').should('not.exist')
   })
 })

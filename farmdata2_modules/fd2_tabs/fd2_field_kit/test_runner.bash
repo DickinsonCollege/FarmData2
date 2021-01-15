@@ -1,6 +1,6 @@
 #!/bin/bash
 
-xhost +
+xhost + > /dev/null
 
 docker run -it \
   -v $PWD:/e2e \

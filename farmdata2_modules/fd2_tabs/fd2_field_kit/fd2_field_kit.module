@@ -42,7 +42,7 @@ function fd2_field_kit_menu() {
   $items = array();
 
   $items['farm/fd2-field-kit'] = array(
-    'title' => 'FD2 FieldKit',
+    'title' => 'FieldKit',
     'page callback' => 'fd2_field_kit_view',
     'page arguments' => array('info.html'),
     'access arguments' => array('view fd2 field kit'),
@@ -53,17 +53,6 @@ function fd2_field_kit_menu() {
     'title' => 'Info',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -100,
-  );
-
-  // Use this block as a model for each new form that is added.
-  // Adding a new item requires that the drupal cache be flushed.
-  $items['farm/fd2-field-kit/examples'] = array(
-    'title' => 'Example',  // Name that appears on the tab.
-    'type' => MENU_LOCAL_TASK,
-    'page callback' => 'fd2_field_kit_view',
-    'page arguments' => array('example.html'),  // name of the html file
-    'access arguments' => array('view fd2 field kit'),
-    'weight' => 100,
   );
 
   return $items;
