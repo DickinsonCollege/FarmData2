@@ -2,16 +2,16 @@ describe('Tests for the example Field Kit form', () => {
 
   it('Text field content is linked to header', () => {
     cy.login('worker1', 'farmdata2')
-    cy.visit('/farm/fd2-field-kit/example')
+    cy.visit('/farm/fd2-example/ex1')
 
-    cy.get('[data-cy=header-field]').clear().type('Hello Farm!')
+    cy.get('[data-cy=comment-field]').clear().type('Hello Farm!')
 
-    cy.get('[data-cy=header]').should('have.text','Hello Farm!')
+    cy.get('[data-cy=comment]').should('have.text','Hello Farm!')
   })
 
   it('API call for farm name works', () => {
     cy.login('worker1', 'farmdata2')
-    cy.visit('/farm/fd2-field-kit/example')
+    cy.visit('/farm/fd2-example/ex1')
 
     cy.get('[data-cy=get-name-button]').click()
 
@@ -20,7 +20,7 @@ describe('Tests for the example Field Kit form', () => {
 
   it('API call for fields works', () => {
     cy.login('worker1', 'farmdata2')
-    cy.visit('/farm/fd2-field-kit/example')
+    cy.visit('/farm/fd2-example/ex1')
 
     cy.get('[data-cy=get-fields-button]').click()
 
