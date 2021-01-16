@@ -3,9 +3,9 @@
 xhost + > /dev/null
 
 docker run -it \
-  -v $PWD:/e2e \
+  -v $PWD:/$(basename $PWD) \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -w /e2e \
+  -w /$(basename $PWD) \
   --rm \
   -e DISPLAY=$DISPLAY \
   --entrypoint cypress \
