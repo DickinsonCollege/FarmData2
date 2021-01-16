@@ -47,6 +47,7 @@ function fd2_field_kit_menu() {
     'page arguments' => array('info.html'),
     'access arguments' => array('view fd2 field kit'),
     'type' => MENU_LOCAL_TASK,
+    'weight' => -20,
   );
 
   $items['farm/fd2-field-kit/info'] = array(

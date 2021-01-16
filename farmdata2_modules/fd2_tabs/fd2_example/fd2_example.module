@@ -49,6 +49,7 @@ function fd2_example_menu() {
     'page arguments' => array('info.html'),           // The html file with the default content for the tab
     'access arguments' => array('view fd2 example'),  // permissions required to view the tab
     'type' => MENU_LOCAL_TASK,                        // Put it on the menu
+    'weight' => -30,                                  // larger weights appear further right.
   );
 
   // Define the name and URL for the default sub-tab that appears when the tab is opened.
@@ -68,7 +69,7 @@ function fd2_example_menu() {
     'page callback' => 'fd2_example_view',
     'page arguments' => array('ex1.html'),
     'access arguments' => array('view fd2 example'),
-    'weight' => 100,   // heavier weights are further right.
+    'weight' => 100,
   );
 
   return $items;
