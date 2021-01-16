@@ -4,7 +4,7 @@ docker/db/*
 .theia/workspace-storage/*
 .theia/globalStorage/*
 
-farmdata2_modules/fd2_field_kit/cypress/screenshots/*
-farmdata2_modules/fd2_field_kit/cypress/videos/*
+farmdata2_modules/**/cypress/screenshots/*
+farmdata2_modules/**/cypress/videos/*
 
 .DS_Store
