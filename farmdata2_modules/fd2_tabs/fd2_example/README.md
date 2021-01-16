@@ -1,25 +1,10 @@
 ## FarmData2 Example Module ##
 
-FarmData2 is built using Drupal modules that run within FarmOS. This `fd2_example` module provides a sample module as an example and an area to experiment and learn about how to create new modules with sub-tabs (e.g. like the _FieldKit_ and _BarnKit_ tabs).
+FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. This `fd2_example` module provides a sample module as a sandbox in which to learn about and experiment FarmData2 modules like those that produce the _FieldKit_ and _BarnKit_ tabs.
 
-### Enabling the `fd2_example` Module ###
+### FarmData2 Module Structure ###
 
-The FarmData2 `fd2_field_kit` module (_FieldKit_ tab) and the `fd2_barn_kit` module (_BarnKit_ tab) are enabled by default by the [developer install](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md#developer_install).  Anyone developing new tabs will likely also want to enable the `fd2_example` module to provide a space to experiment with creating and testing sub-tabs.
-
-The `fd2_example` module (_Example_ tab) can be enabled by the `admin` user as follows:
-1. Log into FarmData2 as `admin`
-1. Click `Manage`
-1. CLick `Modules`
-1. Click `FarmData2` in the left column.
-1. Click to turn the `FarmData2 Example` module on.
-1. Click `Save configuration`
-
-When returning to the home screen the _Example_ tab should be visible when logged in as _Admin_, a _Farm Worker_ or a _Farm Manager_.
-
-### Module Structure ###
-
-The essential elements of a FarmData2 module named `xyz` would include:
-
+The essential elements of a FarmData2 module named `xyz` would include a folder within `farmdata2_modules/fd2_tabs` named `xyz` containing the following files and directories:
 - `fd2_xyz.info`: Defines the module `xyz` so that it is recognized by Drupal.
 - `fd2_xyz.module`: Contains the PHP implementation of the `xyz` module. This code determines where and when the tab is visible based on the user's role. It also defines the sub-tabs and their content.
 - `abc.html`: The content for a sub-tab `abc` within the `xyz` module (e.g. `info.html`, `ex1.html`).
@@ -27,7 +12,7 @@ The essential elements of a FarmData2 module named `xyz` would include:
   - `cypress.json`: The configuration file for the Cypress tests.
   - `cypress\integration\abc.spec.js`: The test code for the `abc` sub-tab. There will be at least one `spec` file for each sub-tab (e.g. `info.spec.js`, `ex1.spec.js`) that fully tests its functionality.
 
-### Adding a New Sub-Tab to a Module ###
+### Adding a New Sub-Tab to a FarmData2 Module ###
 
 To add a new sub-tab to the `xyz` module:
 1. Ensure that a development instance of FarmData2 is up and running. See [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) for full instructions.
@@ -69,3 +54,16 @@ To add a new sub-tab to the `xyz` module:
 1. Test your sub-tab using the [Cypress testing framework](https://www.cypress.io/) by creating a new `spec.js` file in the `cypress\integration` directory.
    - More information about Cypress and resources for getting started with it are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md#cypress) file.
 1. Launch the Cypress test runner using `./test_runner.bash`  Note: it may take a few moments for the runner to start, particularly the first time.
+
+### Disabling the `fd2_example` Module ###
+
+The `fd2_example` module is enabled by default by the [developer install](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md#developer_install) to provide a sandbox for learning and experimentation with FarmData2 modules. However, the associated _FD2 Example_ tab does not appear in production installs. Developers wanting to mimic a production environment for demonstrations can disable the `fd2_example` module as follows:
+
+1. Log into FarmData2 as `admin`
+1. Click `Manage`
+1. CLick `Modules`
+1. Click `FarmData2` in the left column.
+1. Click to turn the `FarmData2 Example` module off.
+1. Click `Save configuration`
+
+When returning to the home screen the _Example_ tab should no longer be visible.
