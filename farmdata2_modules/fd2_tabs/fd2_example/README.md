@@ -53,7 +53,7 @@ To add a new sub-tab to the `xyz` module:
    - Sub-tabs typically (e.g. `ex1.html') use [Vue.js](https://vuejs.org/), [Axios](https://github.com/axios/axios) and the [FarmOS API](https://farmos.org/development/api/) to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
 1. Test your sub-tab using the [Cypress testing framework](https://www.cypress.io/) by creating a new `spec.js` file in the `cypress\integration` directory.
    - More information about Cypress and resources for getting started with it are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md#cypress) file.
-1. Launch the Cypress test runner using `./test_runner.bash`  Note: it may take a few moments for the runner to start, particularly the first time.
+1. Launch the Cypress test runner using `./test_runner.bash`  Note: The Cypress test runner executes in a Docker container.  Thus, it may take a few moments for the runner to start, particularly the first time when the image must be fetched.
 
 ### Disabling the `fd2_example` Module ###
 
