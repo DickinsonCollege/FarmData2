@@ -24,15 +24,16 @@
 
 <script>
 // Define the Vue instance for the app.
-// e1: must match the id of the <div> for the app above.
+// el: must match the id of the <div> for the app above.
+// Note: The JS variables tags.fd2UserID and tags.d2UserName are defined by the module
 new Vue({
   el: '#ex1',
   data: {
 	  comment: null,
 	  farm: null,
       fields: null,
-      userID:fd2UserID,
-      userName:fd2UserName,
+      userID:tags.fd2UserID,
+      userName:tags.fd2UserName,
   },
   methods: {
     getFarmName() {
