@@ -2,6 +2,9 @@
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="ex1" v-cloak>
 
+  <p>UserID: <span data-cy="user-id">{{ userID }}</span></p>
+  <p>UserName: <span data-cy="user-name">{{ userName }}</span></p>
+
   <!-- Example of a v-model binding -->
   <p>Type comment: <input data-cy="comment-field" type='text' v-model='comment'>
   <p>Comment: <span data-cy="comment">{{ comment }}</span></p>
@@ -27,7 +30,9 @@ new Vue({
   data: {
 	  comment: null,
 	  farm: null,
-	  fields: null
+      fields: null,
+      userID:fd2UserID,
+      userName:fd2UserName,
   },
   methods: {
     getFarmName() {
