@@ -83,3 +83,9 @@ function fd2_example_view($subtab_content) {
   $code=file_get_contents($html);
   return $code;
 };
+
+function fd2_example_preprocess_page() {
+  // Include the external JS libraries that are used here so they are cached by drupal.
+  drupal_add_js('https://unpkg.com/vue/dist/vue.min.js','external');
+  drupal_add_js('https://unpkg.com/axios/dist/axios.min.js','external');
+};
