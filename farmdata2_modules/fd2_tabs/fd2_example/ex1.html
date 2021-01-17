@@ -1,17 +1,9 @@
-<!doctype html>
-<head>
-<style>
-/* This style will hide Vue.js content until rendered. */
-[v-cloak] {
- display:none;
-}
-</style>
-</head>
-
-<body>
 <!-- define a div to wrqp around the app. -->
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="ex1" v-cloak>
+
+  <p>UserID: <span data-cy="user-id">{{ userID }}</span></p>
+  <p>UserName: <span data-cy="user-name">{{ userName }}</span></p>
 
   <!-- Example of a v-model binding -->
   <p>Type comment: <input data-cy="comment-field" type='text' v-model='comment'>
@@ -30,18 +22,18 @@
 
 </div>
 
-<script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
 <script>
 // Define the Vue instance for the app.
-// e1: must match the id of the <div> for the app above.
+// el: must match the id of the <div> for the app above.
+// Note: The JS variables tags.fd2UserID and tags.d2UserName are defined by the module
 new Vue({
   el: '#ex1',
   data: {
 	  comment: null,
 	  farm: null,
-	  fields: null
+      fields: null,
+      userID:tags.fd2UserID,
+      userName:tags.fd2UserName,
   },
   methods: {
     getFarmName() {
@@ -59,5 +51,3 @@ new Vue({
   }
 });
 </script>
-
-<body>
