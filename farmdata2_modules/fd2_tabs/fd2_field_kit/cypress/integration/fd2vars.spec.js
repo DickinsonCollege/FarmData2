@@ -14,23 +14,23 @@ describe('Check the JS vars defined by module', () => {
     })
 
     cy.visit('/farm/fd2-field-kit')
-    cy.window().its('tags.fd2UserID').should('equal',1);
-    cy.window().its('tags.fd2UserName').should('equal','admin');
+    cy.window().its('fd2UserID').should('equal',1);
+    cy.window().its('fd2UserName').should('equal','admin');
   })
 
   it('Works for manager', () => {
     cy.login('manager1', 'farmdata2')
 
     cy.visit('/farm/fd2-field-kit')
-    cy.window().its('tags.fd2UserID').should('equal',3);
-    cy.window().its('tags.fd2UserName').should('equal','manager1');
+    cy.window().its('fd2UserID').should('equal',3);
+    cy.window().its('fd2UserName').should('equal','manager1');
   })
 
   it('Works for worker', () => {
     cy.login('worker1', 'farmdata2')
 
     cy.visit('/farm/fd2-field-kit')
-    cy.window().its('tags.fd2UserID').should('equal',5);
-    cy.window().its('tags.fd2UserName').should('equal','worker1');
+    cy.window().its('fd2UserID').should('equal',5);
+    cy.window().its('fd2UserName').should('equal','worker1');
   })
 })
