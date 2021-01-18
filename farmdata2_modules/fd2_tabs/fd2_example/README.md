@@ -55,6 +55,14 @@ To add a new sub-tab to the `xyz` module:
    - More information about Cypress and resources for getting started with it are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md#cypress) file.
 1. Launch the Cypress test runner using `./test_runner.bash`  Note: The Cypress test runner executes in a Docker container.  Thus, it may take a few moments for the runner to start, particularly the first time when the image must be fetched.
 
+### Pre-defined Variables ###
+
+Modules can pass variables from the FarmOS/Drupal system through to the sub-tab.  All of the current modules define two variables:
+  - `fd2UserID`: The id of the currently logged in user.
+  - `fd2UserName`: The user name of the currently logged in user.
+
+These variables are global and can be used in scripts and in the Vue object.  Additional variables can be added to a module by adding their definitions to the `&lt;module&gt;_preprocess_page()` method in the `.module` file.
+
 ### Disabling the `fd2_example` Module ###
 
 The `fd2_example` module is enabled by default by the [developer install](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md#developer_install) to provide a sandbox for learning and experimentation with FarmData2 modules. However, the associated _FD2 Example_ tab does not appear in production installs. Developers wanting to mimic a production environment for demonstrations can disable the `fd2_example` module as follows:
