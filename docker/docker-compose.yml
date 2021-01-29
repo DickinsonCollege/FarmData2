@@ -31,7 +31,7 @@ services:
   phpmyadmin:
     depends_on:
       - db
-    image: phpmyadmin:5.0.4-fpm-alpine
+    image: phpmyadmin:5.0.4-apache
     container_name: fd2_phpmyadmin
     environment:
       PMA_HOST: "db"
