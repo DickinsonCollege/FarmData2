@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <head>
     <title>A02 Sub-Tab</title>
+    <style>
+        table, th, tr{
+            border: 1px solid black;
+            table-layout: fixed;
+        }
+        td {
+            border: 1px solid black;  
+            width: 25%;
+        }
+    </style>
 </head>
 <body>
     <h1>Harvest Report</h1>
@@ -43,5 +53,24 @@
         <li><strong>End:</strong></li>
         <li><strong>Crop:</strong></li>
     </ul>
-    <input type="date">
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Field</th>
+            <th>Crop</th>
+            <th>Yield</th>
+        </tr>
+        <tr>
+            <td>05/02/2018</td>
+            <td>Chuau-1</td>
+            <td>Kale</td>
+            <td>10 Bunches</td>
+        </tr>
+        <tr>
+            <td>05/05/2018</td>
+            <td>SQ7</td>
+            <td>Kale</td>
+            <td>7 Bunches</td>
+        </tr>
+    </table>
 </body>
