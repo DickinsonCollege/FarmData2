@@ -60,6 +60,7 @@ function fd2_example_menu() {
     'weight' => -100,
   );
 
+  //my sub-tab
   $items['farm/fd2-example/a02'] = array(
     'title' => 'A02',
     'type' => MENU_LOCAL_TASK,
