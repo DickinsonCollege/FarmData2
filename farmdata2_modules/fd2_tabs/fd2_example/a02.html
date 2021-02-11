@@ -3,7 +3,28 @@
   <body>
     <h1>Harvest Report</h1>
     <p>This page is a <i>mockup</i> of a form for generating a harvest report.</p>
-    <label>Title: <input type="text" id="title" name="title" value="My Mock Report"></label>
+    <label>Title: <input type="text" id="title" name="title" value="My Mock Report"></label> <br>
+
+    <label for="start">Start:</label>
+    <input type="date" id="start" name="Start" value="2018-05-01" min="2014-01-01" max="2022-01-01">
+    <label for="end">End:</label>
+    <input type="date" id="end" name="End" value="2018-05-15" min="2018-05-01" max="2022-01-01">
+    <br>
+    <label>Crop:
+      <select id="crop" name="crop">
+        <option>Brocoli</option>
+        <option selected>Kale</option>
+        <option>Peas</option>
+      </select>
+    </label>
+    <label>Field:
+      <select id="field" name="field">
+        <option selected>All</option>
+        <option>Chuau-1</option>
+        <option>SQ7</option>
+      </select>
+    </label>
+    <br> 
     <button type="button">Generate Report</button>
     <hr>
 
@@ -14,7 +35,6 @@
       <li><strong>Start:</strong>05/01/2018</li>
       <li><strong>End:</strong>05/15/2018</li>
       <li><strong>Crop:</strong>Kale</li>
-    <p>My name is Bruno Kaboyi</p>
   </body>
 </html>
 
