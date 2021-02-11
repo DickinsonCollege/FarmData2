@@ -42,7 +42,7 @@
 function fd2_example_menu() {
   $items = array();
 
-  // Define the tab for the module.
+  // Define the tab for the module
   $items['farm/fd2-example'] = array(                 // Put the example in the farm menu
     'title' => 'FD2 Example',                         // Put FD2 Example on the tab
     'page callback' => 'fd2_example_view',            // The function that will provide the content
@@ -68,6 +68,19 @@ function fd2_example_menu() {
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_example_view',
     'page arguments' => array('ex1.html'),
+    'access arguments' => array('view fd2 example'),
+    'weight' => 100,
+  );
+
+
+  // Add a sub-tab to the FD2 Example tab.
+  // Use this block as a model for each new sub-tab that is added.
+  // Note: The drupal cache must be flushed before a newly added sub-tab will appear.
+  $items['farm/fd2-example/A02'] = array(
+    'title' => 'A02',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('a02.html'),
     'access arguments' => array('view fd2 example'),
     'weight' => 100,
   );
