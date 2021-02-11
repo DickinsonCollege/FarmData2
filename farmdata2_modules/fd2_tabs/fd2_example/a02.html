@@ -6,8 +6,36 @@
         <p> This page is a <i>mockup</i> of a form for generating a harvest report.</p>
         <br><label for="Title">Title:</label>
         <input type="text" id="Title" name="Title" required minlength="1" maxlength="20" size="10">
-        <br><br><button type="button">Generate Report</button><br>
+        <br><br>
+
+        <label for="start">Start:</label>
+        <input type="date" id="start" name="trip-start"
+            value="2018-05-01"
+            min="2014-01-01" max="2022-01-01">
+
+        <label for="start">End:</label>
+        <input type="date" id="start" name="trip-start"
+            value="2018-05-15"
+            min="2015-05-01" max="2022-01-01">
+        <br><br>
+        
+        <label for="crop">Crop</label>
+        <select id="crop" name="crop">
+            <option selected>Kale</option>
+            <option>Broccoli</option>
+            <option>Peas</option>
+        </select>
+
+        <label for="field">Field</label>
+        <select id="field" name="field">
+            <option selected>All</option>
+            <option>Chuau-1</option>
+            <option>SQ-7</option>
+        </select><br> <br>
+
+        <button type="button">Generate Report</button><br>
     </head>
+
 <body>
     <hr>
     <h2><strong>My Mock Report</strong></h2> 
@@ -20,4 +48,5 @@
         </ul>
     </p>
 </body>
+
 </html>
