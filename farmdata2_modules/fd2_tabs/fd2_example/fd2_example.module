@@ -80,6 +80,16 @@ function fd2_example_menu() {
       'access arguments' => array('view fd2 example'),
       'weight' => 100,
   );
+  //return $items;
+  // Add subtag for the second experiment
+  $items['farm/fd2-example/A03'] = array(
+      'title' => 'A03',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'fd2_example_view',
+      'page arguments' => array('A03.html'),
+      'access arguments' => array('view fd2 example'),
+      'weight' => 100,
+  );
   return $items;
 };
 
