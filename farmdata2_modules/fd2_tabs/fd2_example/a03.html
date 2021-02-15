@@ -3,84 +3,83 @@
     <br>
         <p>This page is a mock-up of a form for generating a harvest report</p>
 
-        <div id="report_header" v-cloak>
+        <div id="mock_report" v-cloak>
             
+            <label for="title">Title:</label>
+            <input type="text" v-model="header">
+
+            <br>
+
+            <label for="start">Start:</label>
+            <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" max="2018-05-01">
+
+            <label for="end">End:</label>
+            <input type="date" id="end" name="end" v-model="reportEnd" min="2018-05-01" max="2022-01-01">
             
-        
-        
+            <br>
 
+            <label for="crop">Crop:</label>
+            <select id="crop" name="crop" v-model="reportCrop">
+                <option>Broccoli</option>
+                <option>Kale</option>
+                <option>Peas</option>
+            </select>
 
-        <label for="title">Title:</label>
-        <input type="text" v-model="header">
+            <label for="field">Field:</label>
+            <select id="field" name="field">
+                <option>All</option>
+                <option>Chuau</option>
+                <option>SQ7</option>
+            </select>
 
-        <br>
+            <br>
 
-        <label for="start">Start:</label>
-        <input type="date" id="start" name="start" value="2018-05-01" min="2014-01-01" max="2018-05-01">
+            <input type="button" value="Generate Report">
 
-        <label for="end">End:</label>
-        <input type="date" id="end" name="end" value="2018-05-15" min="2018-05-01" max="2022-01-01">
-        
-        <br>
+            <hr>
 
-        <label for="crop">Crop:</label>
-        <select id="crop" name="crop">
-            <option>Broccoli</option>
-            <option>Kale</option>
-            <option>Peas</option>
-        </select>
+            <h2>{{ header }}</h2>
+                <br>
+                <ul>
+                <li><strong>Start:</strong> {{reportStart}}</li>
+                <li><strong>End:</strong> {{reportEnd}}</li>
+                <li><strong>Crop:</strong> {{reportCrop}}</li>
+                </ul>
 
-        <label for="field">Field:</label>
-        <select id="field" name="field">
-            <option>All</option>
-            <option>Chuau</option>
-            <option>SQ7</option>
-        </select>
+            <br>
 
-        <br>
-
-        <input type="button" value="Generate Report">
-
-    <hr>
-
-    <h2>{{ header }}</h2>
-        <br>
-        <ul>
-          <li><strong>Start:</strong> 5/1/2018</li>
-          <li><strong>End:</strong> 5/15/2018</li>
-          <li><strong>Crop:</strong> Kale</li>
-        </ul>
-
-        <br>
-
-        <table border=1>
-            <tr>
-                <th>Date</th>
-                <th>Field</th>
-                <th>Crop</th>
-                <th>Yield</th>
-            </tr>
-            <tr>
-                <td>05/02/2018</td>
-                <td>Chuau-1</td>
-                <td>Kale</td>
-                <td>10 Bunches</td>
-            </tr>
-            <tr>
-                <td>05/05/2018</td>
-                <td>SQ7</td>
-                <td>Kale</td>
-                <td>7 Bunches</td>
-            </tr>
-        </table>
+            <table border=1>
+                <tr>
+                    <th>Date</th>
+                    <th>Field</th>
+                    <th>Crop</th>
+                    <th>Yield</th>
+                </tr>
+                <tr>
+                    <td>05/02/2018</td>
+                    <td>Chuau-1</td>
+                    <td>Kale</td>
+                    <td>10 Bunches</td>
+                </tr>
+                <tr>
+                    <td>05/05/2018</td>
+                    <td>SQ7</td>
+                    <td>Kale</td>
+                    <td>7 Bunches</td>
+                </tr>
+            </table>
         
         </div>
 
         <script>
             var reportHeader = new Vue({
-                el: '#report_header',
+                el: '#mock_report',
                 data: {
-                    header: 'My Mock Report'
+                    header: 'My Mock Report',
+                    reportStart: '2018-05-01',
+                    reportEnd: '2018-05-15',
+                    reportCrop: 'Broccoli'
+
                 }
             });
         </script>
