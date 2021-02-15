@@ -1,0 +1,69 @@
+<body>
+    <h1>Harvest Report</h1>
+    <br>
+        <p>This page is a mock-up of a form for generating a harvest report</p>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="My Mock Report">
+
+        <br>
+
+        <label for="start">Start:</label>
+        <input type="date" id="start" name="start" value="2018-05-01" min="2014-01-01" max="2018-05-01">
+
+        <label for="end">End:</label>
+        <input type="date" id="end" name="end" value="2018-05-15" min="2018-05-01" max="2022-01-01">
+        
+        <br>
+
+        <label for="crop">Crop:</label>
+        <select id="crop" name="crop">
+            <option>Broccoli</option>
+            <option>Kale</option>
+            <option>Peas</option>
+        </select>
+
+        <label for="field">Field:</label>
+        <select id="field" name="field">
+            <option>All</option>
+            <option>Chuau</option>
+            <option>SQ7</option>
+        </select>
+
+        <br>
+
+        <input type="button" value="Generate Report">
+
+    <hr>
+
+    <h2>My <i>Mock</i> Report</h2>
+        <br>
+        <ul>
+          <li><strong>Start:</strong> 5/1/2018</li>
+          <li><strong>End:</strong> 5/15/2018</li>
+          <li><strong>Crop:</strong> Kale</li>
+        </ul>
+
+        <br>
+
+        <table border=1>
+            <tr>
+                <th>Date</th>
+                <th>Field</th>
+                <th>Crop</th>
+                <th>Yield</th>
+            </tr>
+            <tr>
+                <td>05/02/2018</td>
+                <td>Chuau-1</td>
+                <td>Kale</td>
+                <td>10 Bunches</td>
+            </tr>
+            <tr>
+                <td>05/05/2018</td>
+                <td>SQ7</td>
+                <td>Kale</td>
+                <td>7 Bunches</td>
+            </tr>
+        </table>
+</body>
