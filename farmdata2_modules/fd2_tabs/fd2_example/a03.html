@@ -20,16 +20,12 @@
 
             <label for="crop">Crop:</label>
             <select id="crop" name="crop" v-model="reportCrop">
-                <option>Broccoli</option>
-                <option>Kale</option>
-                <option>Peas</option>
+                <option v-for="selectedCrop in cropList">{{selectedCrop}}</option>
             </select>
 
             <label for="field">Field:</label>
-            <select id="field" name="field">
-                <option>All</option>
-                <option>Chuau</option>
-                <option>SQ7</option>
+            <select id="field" name="field" >
+                <option v-for="selectedField in fieldList">{{ selectedField }}</option>
             </select>
 
             <br>
@@ -72,13 +68,23 @@
         </div>
 
         <script>
-            var reportHeader = new Vue({
+            var mockReport = new Vue({
                 el: '#mock_report',
                 data: {
                     header: 'My Mock Report',
                     reportStart: '2018-05-01',
                     reportEnd: '2018-05-15',
-                    reportCrop: 'Broccoli'
+                    reportCrop: 'Broccoli',
+                    cropList: [
+                        'Broccoli',
+                        'Kale',
+                        'Peas'
+                    ],
+                    fieldList: [
+                        'All',
+                        'Chuau',
+                        'SQ7",'
+                    ]
 
                 }
             });
