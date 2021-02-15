@@ -60,12 +60,22 @@ function fd2_example_menu() {
     'weight' => -100,
   );
 
-  //my sub-tab
+  //my sub-tab for A02
   $items['farm/fd2-example/a02'] = array(
     'title' => 'A02',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_example_view',
     'page arguments' => array('a02.html'),
+    'access arguments' => array('view fd2 example'),
+    'weight' => 100,
+  );
+
+  //my sub-tab for A03
+  $items['farm/fd2-example/a03'] = array(
+    'title' => 'A03',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('a03.html'),
     'access arguments' => array('view fd2 example'),
     'weight' => 100,
   );

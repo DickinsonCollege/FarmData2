@@ -3,8 +3,15 @@
     <br>
         <p>This page is a mock-up of a form for generating a harvest report</p>
 
+        <div id="report_header" v-cloak>
+            
+            
+        
+        
+
+
         <label for="title">Title:</label>
-        <input type="text" id="title" name="title" value="My Mock Report">
+        <input type="text" v-model="header">
 
         <br>
 
@@ -36,7 +43,7 @@
 
     <hr>
 
-    <h2>My <i>Mock</i> Report</h2>
+    <h2>{{ header }}</h2>
         <br>
         <ul>
           <li><strong>Start:</strong> 5/1/2018</li>
@@ -66,4 +73,15 @@
                 <td>7 Bunches</td>
             </tr>
         </table>
+        
+        </div>
+
+        <script>
+            var reportHeader = new Vue({
+                el: '#report_header',
+                data: {
+                    header: 'My Mock Report'
+                }
+            });
+        </script>
 </body>
