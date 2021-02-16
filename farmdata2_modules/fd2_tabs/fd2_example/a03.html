@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <div id="reportTitle">
+    <div id="report">
     <h1>Harvest Report</h1>
     <p>This page is a <i>mockup</i> of a form for generating a harvest report.</p>
     <div>
@@ -22,7 +22,7 @@
     </div>
     <div>
         <label for="crop">Crop: </label>
-        <select>
+        <select v-model="reportCrop"> 
             <option>Broccoli</option>
             <option>Kale</option>
             <option>Peas</option>
@@ -37,10 +37,10 @@
     </div>
     <div>
         <label for="start">Start:</label>
-        <input type="date" id="start" min="2014-01-01" max="2022-01-01" value="2018-05-01">
+        <input type="date" id="start" min="2014-01-01" max="2022-01-01" value="2018-05-01" v-model="reportStartDate">
 
         <label for="end">End:</label>
-        <input type="date" id="end" min="2018-05-01" max="2022-01-01" value="2018-05-15">
+        <input type="date" id="end" min="2018-05-01" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
     <button type="button">Generate Report</button>
@@ -53,9 +53,9 @@
     <p>Details:</p>
     <br>
     <ul>
-        <li><strong>Start:</strong></li>
-        <li><strong>End:</strong></li>
-        <li><strong>Crop:</strong></li>
+        <li><strong>Start: {{reportStartDate}}</strong></li>
+        <li><strong>End: {{reportEndDate}}</strong></li>
+        <li><strong>Crop: {{reportCrop}}</strong></li>
     </ul>
     <table>
         <tr>
@@ -80,9 +80,12 @@
     </div>
     <script>
         var reportTitle = new Vue({
-          el: '#reportTitle',
+          el: '#report',
           data:{
-            reportTitle: 'My Mock Report'
+            reportTitle: 'My Mock Report',
+            reportStartDate: '2018-05-01',
+            reportEndDate: '2018-05-15',
+            reportCrop: 'Broccoli'
           }
         });
     </script>
