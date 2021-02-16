@@ -4,8 +4,9 @@
     <h1>Harvest Report</h1>
     <br>
     <p>This page is a <i>mockup</i> of a form for generating a harvest report</p>
+    <div id="report-title" v-cloak>
     <label for="title">Title:</label>
-    <input type="text" id="title">
+    <input type="text" id="title" v-model="rptTitle">
     <br><br>
     <label for="start">Start:</label>
     <input type="date" id="start" value="2018-05-01" min="2014-01-01" max="2022-01-01">
@@ -27,7 +28,9 @@
     <br><br>
     <button type="button" id="generate-report">Generate Report</button>
     <hr>
-    <h1>My Mock Report</h1>
+    
+    <h1>{{rptTitle}}</h1>
+    </div>
     <p>Details:</p>
     <ul>
         <li><b>Start:</b></li>
@@ -54,5 +57,13 @@
     <td>7 Bunches</td>
   </tr>
 </table> 
+<script>
+    var reportVue = new Vue({
+        el: '#report-title',
+        data: {
+        rptTitle: 'My Mock Report'
+        }
+    });
+</script>
 </body>
 </html>
