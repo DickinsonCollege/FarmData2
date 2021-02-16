@@ -9,14 +9,14 @@
     <br>
 
     <lable for="start">Start:</lable>
-    <input type="date" id="start" name="start date" value="2018-05-01" min="2014-01-01" max="2022-01-01">
+    <input type="date" id="start" name="start date" v-model="reportStartDate" min="2014-01-01" max="2022-01-01">
     <label for="end">End:</label>
-    <input type="date" id="end" name="end date" value="2018-05-15" min="2018-05-01" max="2022-01-01">
+    <input type="date" id="end" name="end date" v-model="reportEndDate" min="2018-05-01" max="2022-01-01">
     
     <br>
 
     <label for="crop">Crop:</label>
-    <select id="crop" name="crop">
+    <select id="crop" name="crop" v-model="reportCrop">
         <option>Broccoli</option>
         <option selected>Kale</option>
         <option>Peas</option>
@@ -40,9 +40,9 @@
     
     <p>Details:</p>
     <ul>
-        <li><Strong>Start:05/01/2018</Strong></li>
-        <li><Strong>End:05/15/2018</Strong></li>
-        <li><Strong>Crop:Kale</Strong></li>
+        <li><Strong>Start:{{reportStartDate}}</Strong></li>
+        <li><Strong>End:{{reportEndDate}}</Strong></li>
+        <li><Strong>Crop:{{reportCrop}}</Strong></li>
     </ul>
     <br>
     <table border=1>
@@ -70,7 +70,10 @@
         var report = new Vue({
             el: '#fullReport',
             data:{
-                reportTitle: 'My Mock Report'
+                reportTitle: 'My Mock Report',
+                reportStartDate:'2018-05-01',
+                reportEndDate: '2018-05-15',
+                reportCrop: 'Kale'
             }
         });
     </script>
