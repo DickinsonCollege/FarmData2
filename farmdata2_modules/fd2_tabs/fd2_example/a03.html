@@ -2,10 +2,15 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <h1><strong>Harvest Report </strong></h1>
+    </head>
+
+    <body>
+         <h1><strong>Harvest Report </strong></h1>
         <p> This page is a <i>mockup</i> of a form for generating a harvest report.</p>
         <br><label for="Title">Title:</label>
-        <input type="text" id="Title" name="Title" required minlength="1" maxlength="20" size="10">
+
+        <input type="text" v-model="header">
+    
         <br><br>
 
         <label for="start">Start:</label>
@@ -34,11 +39,12 @@
         </select><br> <br>
 
         <button type="button">Generate Report</button><br>
-    </head>
-
-<body>
     <hr>
-    <h2><strong>My Mock Report</strong></h2> 
+    <div id="farm">
+        <input type="text" v-model="header">
+        <h2>{{ header }}</h2>
+    </div>
+    
     <br>
     <p>Details:
         <ul>
@@ -69,6 +75,22 @@
   </tr>
 </table>
 <br>
-</body>
 
+    <div id="farm">
+        <style>
+        [v-cloak] {
+            display:none;
+        }
+        </style>
+
+        <script>
+        var fd2 = new Vue({
+            el: '#farm',
+            data: {
+              header: 'My Mock Report'
+            }
+        });
+        </script>
+    </div>
+  </body>
 </html>
