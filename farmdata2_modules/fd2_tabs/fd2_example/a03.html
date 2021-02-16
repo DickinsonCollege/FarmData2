@@ -42,7 +42,7 @@
 </button>
 
 <hr>
-    <h1>{{ header }}</h1>
+    <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
 <br>
     <p>Details:
         <ul>
@@ -79,7 +79,7 @@
 	var databinding = new Vue({
 		el: "#harvest-report",
 		data: {
-                header: "My Mock Report",
+                header: "Mock Harvest Report",
                 StartDate: "2018-05-01",
                 EndDate: "2018-05-15",
                 rptCrop: "Kale"
