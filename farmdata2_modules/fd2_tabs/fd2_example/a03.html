@@ -12,19 +12,19 @@
     <label for="start">Start date:</label>
 
     <input type="date" id="start" name="start"
-       value="2018-05-01"
-       min="2014-01-01" max="2022-01-01">
+       v-model="StartDate"
+       min="2014-01-01" max="2022-01-01">       
     <label for="end">End date:</label>
 
     <input type="date" id="end" name="end"
-       value="2018-05-15"
+       v-model="EndDate"
        min="2018-05-01" max="2022-01-01">
 <br>
 <br>
     <label for = "simple">Crop:</label>
-<select id="simple" name="simple">
+<select id="simple" name="simple" v-model= "rptCrop">
   <option>Broccoli<option>
-  <option selected>Kale</option>
+  <option>Kale</option>
   <option>Peas</option>
 </select>
     <label for = "simple">Field:</label>
@@ -46,9 +46,9 @@
 <br>
     <p>Details:
         <ul>
-            <li><strong>Start:</strong>05/01/2018</li>
-            <li><strong>End:</strong>05/15/2018</li>
-            <li><strong>Crop:</strong>Kale</li>
+            <li><strong>Start:</strong>{{ StartDate }}</li>
+            <li><strong>End:</strong>{{ EndDate }}</li>
+            <li><strong>Crop:</strong>{{ rptCrop }}</li>
     </ul>
 </p>
 <br>
@@ -79,7 +79,10 @@
 	var databinding = new Vue({
 		el: "#harvest-report",
 		data: {
-				header: "My Mock Report"
+                header: "My Mock Report",
+                StartDate: "2018-05-01",
+                EndDate: "2018-05-15",
+                rptCrop: "Kale"
 		}
 	});
 </script>
