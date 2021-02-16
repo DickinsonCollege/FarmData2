@@ -23,16 +23,12 @@
     <div>
         <label for="crop">Crop: </label>
         <select v-model="reportCrop"> 
-            <option>Broccoli</option>
-            <option>Kale</option>
-            <option>Peas</option>
+            <option v-for="crop in crops">{{crop}}</option>
         </select>
 
         <label for="field">Field: </label>
-        <select>
-            <option>All</option>
-            <option>Chuau-1</option>
-            <option>SQ7</option>
+        <select v-model="reportField">
+            <option v-for="field in fields">{{field}}</option>
         </select>
     </div>
     <div>
@@ -79,13 +75,16 @@
     </table>
     </div>
     <script>
-        var reportTitle = new Vue({
+        var report = new Vue({
           el: '#report',
           data:{
             reportTitle: '',
             reportStartDate: '2018-05-01',
             reportEndDate: '2018-05-15',
-            reportCrop: 'Broccoli'
+            reportCrop: 'Broccoli',
+            reportField: 'All',
+            crops: ['Broccoli', 'Kale', 'Peas'], 
+            fields: ['All', 'Chuau-7', 'SQ7']
           }
         });
     </script>
