@@ -60,17 +60,11 @@
             <th>Crop</th>
             <th>Yield</th>
         </tr>
-        <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10 Bunches</td>
-        </tr>
-        <tr>
-            <td>05/05/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7 Bunches</td>
+        <tr v-for="data in reportTableData">
+            <td>{{data.date}}</td>
+            <td>{{data.field}}</td>
+            <td>{{data.crop}}</td>
+            <td>{{data.yield}}</td>
         </tr>
     </table>
     </div>
@@ -84,7 +78,11 @@
             reportCrop: 'Broccoli',
             reportField: 'All',
             crops: ['Broccoli', 'Kale', 'Peas'], 
-            fields: ['All', 'Chuau-7', 'SQ7']
+            fields: ['All', 'Chuau-7', 'SQ7'],
+            reportTableData: [
+                {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
+                {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}
+            ]
           }
         });
     </script>
