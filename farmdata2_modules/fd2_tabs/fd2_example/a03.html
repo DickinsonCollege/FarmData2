@@ -29,7 +29,7 @@
     <button type="button" id="generate-report">Generate Report</button>
     <hr>
     
-    <h1>{{rptTitle}}</h1>
+    <h1>{{rptTitle ? rptTitle: 'Mock Harvest Report'}}</h1>
     <p>Details:</p>
     <ul>
         <li><b>Start: {{rptStart}}</b></li>
@@ -61,7 +61,7 @@
     var reportVue = new Vue({
         el: '#report-bind',
         data: {
-        rptTitle: 'My Mock Report',
+        rptTitle: '',
         rptStart:'',
         rptEnd:'',
         rptCrop:''
