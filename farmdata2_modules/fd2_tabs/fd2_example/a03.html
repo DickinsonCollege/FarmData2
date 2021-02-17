@@ -15,15 +15,11 @@
     <br><br>
     <label for="crop-search">Crop:</label>
     <select id="crop-search" v-model="rptCrop"> 
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
+        <option v-for="crop in crops" >{{crop}}</option>
     </select>
     <label for="field-search">Field:</label>
      <select id="field-search">
-        <option selected>All</option>
-        <option >Chau-1</option>
-        <option>SQ7</option>
+        <option v-for="field in fields" >{{field}}</option>
     </select>
     <br><br>
     <button type="button" id="generate-report">Generate Report</button>
@@ -64,7 +60,9 @@
         rptTitle: '',
         rptStart:'',
         rptEnd:'',
-        rptCrop:''
+        rptCrop:'',
+        crops: ['Broccoli', 'Kale', 'Peas'],
+        fields: ['All', 'Chuau1', 'SQ7'],
         }
     });
 </script>
