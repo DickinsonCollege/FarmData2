@@ -32,7 +32,7 @@
         <li><b>End: {{rptEnd}}</b></li>
         <li><b>Crop: {{rptCrop}}</b></li>
     </ul>
-     <table>
+     <table border=1>
   <tr>
     <th>Date</th>
     <th>Field</th>
@@ -40,16 +40,16 @@
     <th>Yield</th>
   </tr>
   <tr>
-    <td>05/02/2018</td>
-    <td>Chuau-1</td>
-    <td>Kale</td>
-    <td>10 Bunches</td>
+    <td>{{harvestLog[0].Date}}</td>
+    <td>{{harvestLog[0].Field}}</td>
+    <td>{{harvestLog[0].Crop}}</td>
+    <td>{{harvestLog[0].Yield}}</td>
   </tr>
   <tr>
-    <td>05/05/2018</td>
-    <td>SQ7</td>
-    <td>Kale</td>
-    <td>7 Bunches</td>
+     <td>{{harvestLog[1].Date}}</td>
+    <td>{{harvestLog[1].Field}}</td>
+    <td>{{harvestLog[1].Crop}}</td>
+    <td>{{harvestLog[1].Yield}}</td>
   </tr>
 </table> 
 </div>
@@ -63,6 +63,9 @@
         rptCrop:'',
         crops: ['Broccoli', 'Kale', 'Peas'],
         fields: ['All', 'Chuau1', 'SQ7'],
+        harvestLog:[
+                {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10 Bunches'},
+                {Date: '05/05/2018', Field: 'All', Crop:'Peas', Yield: '7 Bunches'} ]
         }
     });
 </script>
