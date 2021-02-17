@@ -37,7 +37,7 @@
     </button>
 
      <div v-cloak>
-        <h1>{{reportTitle}}</h1>
+        <h1>{{reportTitle ? reportTitle : 'Mock Harvest Report'}}</h1>
     </div>
     
     <br>
@@ -75,7 +75,7 @@
           var report = new Vue({
             el: '#report',
             data:{
-              reportTitle: 'My Mock Report',
+              reportTitle: '',
               reportStartDate: '',
               reportEndDate: '',
               reportCrop: ''
