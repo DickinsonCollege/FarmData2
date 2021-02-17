@@ -30,8 +30,7 @@
 
             <br>
 
-            <input type="button" value="Generate Report">
-
+            <button class="btn btn-primary" @click="harvestLogs.push(newHarvestLog)">Generate Report</button>
             <hr>
 
             <h2>{{ header ? header:"Mock Harvest Report" }}</h2>
@@ -79,9 +78,9 @@
                         'Chuau',
                         'SQ7",'
                     ],
+                    newHarvestLog: '',
                     harvestLogs: [
-                        {date: '05/02/2018', field: 'SQ7', crop: 'Kale', yield: '10 bunches'},
-                        {date: '05/05/2018', field: 'Chuau', crop: 'Kale', yield: '7 bunches'}
+                        
                     ]
                 }
             });
