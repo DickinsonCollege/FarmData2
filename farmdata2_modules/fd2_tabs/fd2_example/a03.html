@@ -1,0 +1,76 @@
+<body>
+    <h1>Harvest Report</h1><br>
+    <p>This page is a <i>mockup</i> of a form for generating a harvest report</p><br>
+    
+    <div id="rptTitle" v-cloak>
+        <label for=”title”>Title:</label>
+        <input type="text" v-model="rptValue" id=”title”> 
+        
+    <br><br>
+    <label for="start">Start:</label>
+    <input type="date" id="start"
+       value="2018-05-01"
+       min="2014-01-01" max="2022-01-01">
+    <label for="end">End:</label>
+    <input type="date" id="end"
+       value="2018-05-01"
+       min="2018-05-01" max="2022-01-01">
+    <br><br>
+    <label for=”crop”>Crop:</label>
+    <select id="crop">
+        <option>Broccoli</option>
+        <option selected>Kale</option>
+        <option>Peas</option>
+    </select>
+    <label for=”field”>Field:</label>
+    <select id="field">
+        <option selected>All</option>
+        <option>Chuau-1</option>
+        <option>SQ7</option>
+    </select>
+    <br><br>
+    <button type="button">Generate Report</button>
+    <hr>
+
+ 
+    <h1>{{ rptValue }}</h1>
+    <br>
+    </div>
+    <script>
+    var rptTitle = new Vue({
+        el: '#rptTitle',
+        data: {
+            rptValue: 'My Mock Report'
+        }	
+    });
+    </script>
+
+    <p>Details:</p><br>
+    <ul>
+        <li><strong>Start:</strong>05/01/2018</li>
+        <li><strong>End:</strong>05/15/2018</li>
+        <li><strong>Crop:</strong>Kale</li>
+    </ul><br>
+    <table border=1>
+        <tr>
+            <th>Date</th>
+            <th>Field</th>
+            <th>Crop</th>
+            <th>Yield</th>
+        </tr>
+        <tr>
+            <td>05/02/2018</td>
+            <td>Chuau-1</td>
+            <td>Kale</td>
+            <td>10 Bunches</td>
+        </tr>
+        <tr>
+            <td>05/05/2018</td>
+            <td>SQ7</td>
+            <td>Kale</td>
+            <td>7 Bunches</td>
+        </tr>
+    </table>
+
+
+</body>
