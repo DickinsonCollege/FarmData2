@@ -60,17 +60,17 @@
     <th>Crop</th>
     <th>Yield</th>
 </tr>
-<tr>
-    <td>05/02/2018</td>
-    <td>Chuau-1</td>
-    <td>Kale</td>
-    <td>10 Bunches</td>
+<tr v-for="hlog in hlogs" >
+    <td >{{hlog.date1}}</td>
+    <td >{{ hlog.field1 }}</td>
+    <td >{{ hlog.crop1 }}</td>
+    <td >{{ hlog.yeild1 }}</td>
 </tr>
-<tr>
-    <td>05/05/2018</td>
-    <td>SQ7</td>
-    <td>Kale</td>
-    <td>7 Bunches</td>
+<tr v-for="hlog in hlogs">
+    <td >{{ hlog.date2 }}</td>
+    <td >{{ hlog.feild2 }}</td>
+    <td >{{ hlog.crop2 }}</td>
+    <td >{{ hlog.yeild2 }}</td>
 </tr>
 </table>
 </div>
@@ -88,10 +88,14 @@
                     "Kale",
                     "Peas",
                  ],
-                 fields: [
+                 fields: [ 
                      "Chuau-1",
                      "All",
                      "SQ7",
+                 ],
+                 hlogs : [
+                     {date1: "05/02/2018", field1: "Chuau-1", crop1: "Kale", yeild1: "10 Bunches" },
+                     {date2:"05/05/2018", feild2: "SQ7", crop2: "Kale", yeild2: "7 Bunches"}
                  ]
         }
 	});
