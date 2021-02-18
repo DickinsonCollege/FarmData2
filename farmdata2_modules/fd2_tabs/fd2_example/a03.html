@@ -1,85 +1,102 @@
 <body>
-    <h1>Harvest Report</h1><br>
-    <p>This page is a <i>mockup</i> of a form for generating a harvest report</p><br>
-    
+    <h1>Harvest Report</h1>
+    <br />
+    <p>
+        This page is a <i>mockup</i> of a form for generating a harvest report
+    </p>
+    <br />
+
     <div id="rptVue" v-cloak>
-        
-        <label for=”title”>Title:</label>
-        <input type="text" v-model="rptTitle" id=”title”> 
+        <label for="”title”">Title:</label>
+        <input type="text" v-model="rptTitle" id="”title”" />
 
-    <br><br>
-    <label for="start">Start:</label>
-    <input type="date" id="start"
-       v-model="rptStart"
-       min="2014-01-01" max="2022-01-01">
-    <label for="end">End:</label>
-    <input type="date" id="end"
-       v-model="rptEnd"
-       min="2018-05-01" max="2022-01-01">
+        <br /><br />
 
-    <br><br>
+        <label for="start">Start:</label>
+        <input
+            type="date"
+            id="start"
+            v-model="rptStart"
+            min="2014-01-01"
+            max="2022-01-01"
+        />
 
-    <label for=”crop”>Crop:</label>
-    <select id="crop" v-model="rptCrop">
-        <option v-for="crop in crops">{{ crop }}</option>
-    </select>
+        <label for="end">End:</label>
+        <input
+            type="date"
+            id="end"
+            v-model="rptEnd"
+            min="2018-05-01"
+            max="2022-01-01"
+        />
 
-    <label for=”field”>Field:</label>
-    <select id="field">
-        <option v-for="field in fields">{{ field }}</option>
-    </select>
-    
-    <br><br>
-    <button type="button">Generate Report</button>
-    <hr>
+        <br /><br />
 
- 
-    <h1>{{ rptTitle == '' ?  'My Mock Harvest Report' : rptTitle }}</h1>
-    <br>
-   
+        <label for="”crop”">Crop:</label>
+        <select id="crop" v-model="rptCrop">
+            <option v-for="crop in crops">{{ crop }}</option>
+        </select>
 
-    <p>Details:</p><br>
-    <ul>
-        <li><strong>Start:</strong>{{ rptStart }}</li>
-        <li><strong>End:</strong> {{ rptEnd }}</li>
-        <li><strong>Crop:</strong>{{ rptCrop }}</li>
-    </ul><br>
-     </div>
+        <label for="”field”">Field:</label>
+        <select id="field">
+            <option v-for="field in fields">{{ field }}</option>
+        </select>
+
+        <br /><br />
+        <button type="button">Generate Report</button>
+        <hr />
+
+        <h1>{{ rptTitle == '' ? 'My Mock Harvest Report' : rptTitle }}</h1>
+        <br />
+
+        <p>Details:</p>
+        <br />
+        <ul>
+            <li><strong>Start:</strong>{{ rptStart }}</li>
+            <li><strong>End:</strong> {{ rptEnd }}</li>
+            <li><strong>Crop:</strong>{{ rptCrop }}</li>
+        </ul>
+        <br />
+
+        <table border="1">
+            <tr>
+                <th v-for="header in headers">{{ header }}</th>
+            </tr>
+            <tr v-for="tble in table">
+                <td>{{ tble.date }}</td>
+                <td>{{ tble.field }}</td>
+                <td>{{ tble.crop }}</td>
+                <td>{{ tble.yield }}</td>
+            </tr>
+        </table>
+    </div>
 
     <script>
-    var rptVue = new Vue({
-        el: '#rptVue',
-        data: {
-            rptTitle: '',
-            rptStart: '05/01/2018',
-            rptEnd: '05/15/2018',
-            rptCrop: 'Kale',
-            crops: ['Broccoli', 'Kale', 'Peas'],
-            fields: ['All', 'Chuau-1', 'SQ7']
-        }	
-    });
+        var rptVue = new Vue({
+            el: '#rptVue',
+            data: {
+                rptTitle: '',
+                rptStart: '05/01/2018',
+                rptEnd: '05/15/2018',
+                rptCrop: 'Kale',
+                crops: ['Broccoli', 'Kale', 'Peas'],
+                fields: ['All', 'Chuau-1', 'SQ7'],
+                headers: ['Date', 'Field', 'Crop', 'Yield'],
+                table: [
+                    {
+                        date: '05/02/2018',
+                        field: 'Chuau-1',
+                        crop: 'Kale',
+                        yield: '10 Bunches',
+                    },
+                    {
+                        date: '05/05/2018',
+                        field: 'SQ7',
+                        crop: 'Kale',
+                        yield: '7 Bunches',
+                    },
+                ],
+            },
+        });
     </script>
-
-    <table border=1>
-        <tr>
-            <th>Date</th>
-            <th>Field</th>
-            <th>Crop</th>
-            <th>Yield</th>
-        </tr>
-        <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10 Bunches</td>
-        </tr>
-        <tr>
-            <td>05/05/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7 Bunches</td>
-        </tr>
-    </table>
-
-
 </body>
