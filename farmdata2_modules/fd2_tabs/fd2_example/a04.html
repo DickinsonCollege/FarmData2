@@ -49,12 +49,16 @@
                     <th>Field</th>
                     <th>Crop</th>
                     <th>Yield</th>
+                    <th>Delete</th>
                 </tr>
                 <tr v-for="log in harvestLogs">
                     <td>{{log.date}}</td>
                     <td>{{log.field}}</td>
                     <td>{{log.crop}}</td>
                     <td>{{log.yield}}</td>
+                    <td>
+                        <button type="button" @click="deleteReport">Delete</button>
+                    </td>
                 </tr>
             </table>
         
@@ -86,14 +90,17 @@
                 methods: {
                     generateReport: function() {
                         if(this.harvestLogs.length == 0) {
-                            this.harvestLogs.push({date: '05/02/2018', field: 'SQ7', crop: 'Kale', yield: '7 bunches'});
+                            this.harvestLogs.push({date: '05/02/2018', field: 'SQ7', crop: 'Kale', yield: '7 bunches', index: 0});
                         }
                         else if(this.harvestLogs.length == 1) {
-                            this.harvestLogs.push({date: '05/03/2018', field: 'Chuau', crop: 'Kale', yield: '10 bunches'});
+                            this.harvestLogs.push({date: '05/03/2018', field: 'Chuau', crop: 'Kale', yield: '10 bunches', index: 1});
                         }
                         else {
                             //do nothing
                         }
+                    },
+                    deleteReport: function(logIndex) {
+                        this.harvestLogs.splice(logIndex,1);
                     }
                 }
             });
