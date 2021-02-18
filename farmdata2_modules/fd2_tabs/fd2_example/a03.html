@@ -5,92 +5,96 @@
     </head>
 
     <body>
-         <h1><strong>Harvest Report </strong></h1>
-        <p> This page is a <i>mockup</i> of a form for generating a harvest report.</p>
-        <br><label for="Title">Title:</label>
+      <div id="farm">
 
-        <input type="text" v-model="header">
-    
-        <br><br>
+            <h1><strong>Harvest Report </strong></h1>
+            <p> This page is a <i>mockup</i> of a form for generating a harvest report.</p>
+            <br>
 
-        <label for="start">Start:</label>
-        <input type="date" id="start" name="trip-start"
-            value="2018-05-01"
-            min="2014-01-01" max="2022-01-01">
-
-        <label for="start">End:</label>
-        <input type="date" id="start" name="trip-start"
-            value="2018-05-15"
-            min="2015-05-01" max="2022-01-01">
-        <br><br>
+            <label for="title">Title:</label>
+            <input type="text" v-model="header">
+            
         
-        <label for="crop">Crop</label>
-        <select id="crop" name="crop">
-            <option selected>Kale</option>
-            <option>Broccoli</option>
-            <option>Peas</option>
-        </select>
+            <br><br>
 
-        <label for="field">Field</label>
-        <select id="field" name="field">
-            <option selected>All</option>
-            <option>Chuau-1</option>
-            <option>SQ-7</option>
-        </select><br> <br>
+            <label for="start">Start:</label>
+            <input type="date" id="start" name="trip-start"
+                v-model="startDay"
+                min="2014-01-01" max="2022-01-01">
 
-        <button type="button">Generate Report</button><br>
-    <hr>
-    <div id="farm">
-        <input type="text" v-model="header">
-        <h2>{{ header }}</h2>
-    </div>
-    
-    <br>
-    <p>Details:
-        <ul>
-        <li><strong>Start:</strong> 05/01/2018</li>  
-        <li><strong>End:</strong> 05/15/2018</li>  
-        <li><strong>Crop:</strong> Kale</li>
-        </ul>
-    </p>
+            <label for="end">End:</label>
+            <input type="date" id="start" name="trip-start"
+                v-model="endDay"
+                min="2015-05-01" max="2022-01-01">
+            <br><br>
+            
+            <label for="crop">Crop</label>
+            <select id="crop" name="crop" v-model="crop">
+                <option selected>Kale</option>
+                <option>Broccoli</option>
+                <option>Peas</option>
+            </select>
 
-    <table border="1'">
-  <tr>
-    <th><strong>Date </strong></th>
-    <th><strong>Field </strong></th>
-    <th><strong>Crop </strong></th>
-    <th><strong>Yield </strong></th>
-  </tr>
-  <tr>
-    <td>05/02/2018  </td>
-    <td>Chuau-1  </td>
-    <td>Kale  </td>
-    <td>10 Bunches  </td>
-  </tr>
-  <tr>
-    <td>05/05/2018  </td>
-    <td>SQ7  </td>
-    <td>Kale  </td>
-    <td>7 Bunches  </td>
-  </tr>
-</table>
-<br>
+            <label for="field">Field</label>
+            <select id="field" name="field">
+                <option selected>All</option>
+                <option>Chuau-1</option>
+                <option>SQ-7</option>
+            </select><br> <br>
 
-    <div id="farm">
+            <button type="button">Generate Report</button><br>
+        <hr>
+
+            <h2>{{ header }}</h2>
+        
+         <br>
+         <p>Details:
+            <ul>
+            <li><strong>Start:</strong> {{ startDay }}</li>  
+            <li><strong>End:</strong>{{ endDay }}</li>  
+            <li><strong>Crop:</strong>{{ crop }}</li>
+            </ul>
+         </p>
+
+            <table border="1'">
+         <tr>
+            <th><strong>Date </strong></th>
+            <th><strong>Field </strong></th>
+            <th><strong>Crop </strong></th>
+            <th><strong>Yield </strong></th>
+         </tr>
+         <tr>
+            <td>05/02/2018  </td>
+            <td>Chuau-1  </td>
+            <td>Kale  </td>
+            <td>10 Bunches  </td>
+        </tr>
+        <tr>
+                <td>05/05/2018  </td>
+                <td>SQ7  </td>
+                <td>Kale  </td>
+                <td>7 Bunches  </td>
+            </tr>
+            </table>
+            <br>
+     </div>
+        <!--<div id="farm">
         <style>
         [v-cloak] {
             display:none;
         }
-        </style>
+        </style> -->
 
         <script>
         var fd2 = new Vue({
             el: '#farm',
             data: {
-              header: 'My Mock Report'
+              header: 'My Mock Report',
+              startDay: "2018-05-15",
+              endDay: "2018-05-15",
+              crop: "Kale",
             }
         });
         </script>
-    </div>
-  </body>
+   </body>
 </html>
