@@ -64,6 +64,7 @@
                         </td>
                     </tr>
                 </table>
+                <p>Total Yield: {{ getTotalYield }}</p>
             </div>
         
         </div>
@@ -91,6 +92,16 @@
                     harvestLogs: [
                         
                     ]
+                },
+                computed: {
+                    getTotalYield() {
+                        let totalYield = 0;
+                        for(let i = 0; i < this.harvestLogs.length; i++) {
+                            let log = this.harvestLogs[i];
+                            totalYield = totalYield + parseInt(log.yield.split(" ")[0]);
+                        }
+                        return totalYield;
+                    }
                 },
                 methods: {
                     generateReport: function() {
