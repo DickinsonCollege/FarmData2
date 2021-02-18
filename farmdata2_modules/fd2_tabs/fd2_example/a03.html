@@ -36,7 +36,7 @@
     <hr>
 
  
-    <h1>{{ rptTitle }}</h1>
+    <h1>{{ rptTitle == '' ?  'My Mock Harvest Report' : rptTitle }}</h1>
     <br>
    
 
@@ -52,7 +52,7 @@
     var rptVue = new Vue({
         el: '#rptVue',
         data: {
-            rptTitle: 'My Mock Report',
+            rptTitle: '',
             rptStart: '05/01/2018',
             rptEnd: '05/15/2018',
             rptCrop: 'Kale'
