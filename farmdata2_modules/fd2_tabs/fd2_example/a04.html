@@ -30,38 +30,41 @@
 
             <br>
 
-            <button class="btn btn-primary" @click="generateReport">Generate Report</button>
+            <button class="btn btn-primary" @click="generateReport(); changeReportVisibility('visible');">Generate Report</button>
+
             <hr>
 
-            <h2>{{ header ? header:"Mock Harvest Report" }}</h2>
+            <div v-if="reportVisibility === 'visible'" class="reportSection">
+                <h2>{{ header ? header:"Mock Harvest Report" }}</h2>
+                    <br>
+                    <ul>
+                    <li><strong>Start:</strong> {{reportStart}}</li>
+                    <li><strong>End:</strong> {{reportEnd}}</li>
+                    <li><strong>Crop:</strong> {{reportCrop}}</li>
+                    </ul>
+
                 <br>
-                <ul>
-                <li><strong>Start:</strong> {{reportStart}}</li>
-                <li><strong>End:</strong> {{reportEnd}}</li>
-                <li><strong>Crop:</strong> {{reportCrop}}</li>
-                </ul>
 
-            <br>
-
-            <p v-if="harvestLogs.length === 0">There are no matching harvest logs.</p>
-            <table v-if="harvestLogs.length !== 0" border=1>
-                <tr>
-                    <th>Date</th>
-                    <th>Field</th>
-                    <th>Crop</th>
-                    <th>Yield</th>
-                    <th>Delete</th>
-                </tr>
-                <tr v-for="log in harvestLogs">
-                    <td>{{log.date}}</td>
-                    <td>{{log.field}}</td>
-                    <td>{{log.crop}}</td>
-                    <td>{{log.yield}}</td>
-                    <td>
-                        <button type="button" @click="deleteReport">Delete</button>
-                    </td>
-                </tr>
-            </table>
+                <p v-if="harvestLogs.length === 0">There are no matching harvest logs.</p>
+                <table v-if="harvestLogs.length !== 0" border=1>
+                    <tr>
+                        <th>Date</th>
+                        <th>Field</th>
+                        <th>Crop</th>
+                        <th>Yield</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr v-for="log in harvestLogs">
+                        <td>{{log.date}}</td>
+                        <td>{{log.field}}</td>
+                        <td>{{log.crop}}</td>
+                        <td>{{log.yield}}</td>
+                        <td>
+                            <button type="button" @click="deleteReport">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         
         </div>
 
@@ -69,6 +72,7 @@
             var mockReport = new Vue({
                 el: '#mock_report',
                 data: {
+                    reportVisibility: "hidden",
                     header: 'My Mock Report',
                     reportStart: '2018-05-01',
                     reportEnd: '2018-05-15',
@@ -90,6 +94,7 @@
                 },
                 methods: {
                     generateReport: function() {
+                        
                         if(this.harvestLogs.length == 0) {
                             this.harvestLogs.push({date: '05/02/2018', field: 'SQ7', crop: 'Kale', yield: '7 bunches', index: 0});
                         }
@@ -102,6 +107,9 @@
                     },
                     deleteReport: function(logIndex) {
                         this.harvestLogs.splice(logIndex,1);
+                    },
+                    changeReportVisibility: function(newVisibility) {
+                        this.reportVisibility = newVisibility;
                     }
                 }
             });
