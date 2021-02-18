@@ -30,7 +30,7 @@
 
             <br>
 
-            <button class="btn btn-primary" @click="harvestLogs.push(newHarvestLog)">Generate Report</button>
+            <button class="btn btn-primary" @click="generateReport">Generate Report</button>
             <hr>
 
             <h2>{{ header ? header:"Mock Harvest Report" }}</h2>
@@ -82,6 +82,19 @@
                     harvestLogs: [
                         
                     ]
+                },
+                methods: {
+                    generateReport: function() {
+                        if(this.harvestLogs.length == 0) {
+                            this.harvestLogs.push({date: '05/02/2018', field: 'SQ7', crop: 'Kale', yield: '7 bunches'});
+                        }
+                        else if(this.harvestLogs.length == 1) {
+                            this.harvestLogs.push({date: '05/03/2018', field: 'Chuau', crop: 'Kale', yield: '10 bunches'});
+                        }
+                        else {
+                            //do nothing
+                        }
+                    }
                 }
             });
             Vue.config.devtools = true;
