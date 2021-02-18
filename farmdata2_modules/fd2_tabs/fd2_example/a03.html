@@ -1,8 +1,9 @@
 <body>
+    <div id="vue" v-cloak>
     <h1>Harvest Report</h1>
     <p>This page is a <i>mockup</i> of a form for generating a harvest report</p>
     <label for="title">Title:</label>
-    <input type="text" id="title">
+    <input type="text" id="title" v-model="header">
 
     <br>
 
@@ -30,38 +31,51 @@
 
     <button type="button">Generate Report</button>
     <hr>
-    <h2>My Mock Report</h2>
-    <p>Details:</p>
-    <ul>
-        <li><strong>Start:</strong></li>
+
+    
+        <h2>{{ header }}</h2>
+        <p>Details:</p>
+        <ul>
+            <li><strong>Start:</strong></li>
+            <br>
+            <li><strong>End:</strong></li>
+            <br>
+            <li><strong>Crop:</strong></li>
+        </ul>
         <br>
-        <li><strong>End:</strong></li>
-        <br>
-        <li><strong>Crop:</strong></li>
-    </ul>
-    <br>
 
-    <table border=1>
-        <tr>
-            <th>Date</th>
-            <th>Field</th>
-            <th>Crop</th>
-            <th>Yield</th>
-        </tr>
-        <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10 Bunches</td>
-        </tr>
-        <tr>
-            <td>05/05/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7 Bunches</td>
-        </tr>
+        <table border=1>
+            <tr>
+                <th>Date</th>
+                <th>Field</th>
+                <th>Crop</th>
+                <th>Yield</th>
+            </tr>
+            <tr>
+                <td>05/02/2018</td>
+                <td>Chuau-1</td>
+                <td>Kale</td>
+                <td>10 Bunches</td>
+            </tr>
+            <tr>
+                <td>05/05/2018</td>
+                <td>SQ7</td>
+                <td>Kale</td>
+                <td>7 Bunches</td>
+            </tr>
 
-    </table>
+        </table>
 
-    <p>Boo Sung Kim</p>
+        <p>Boo Sung Kim</p>
+    </div>
+
+    <script>
+        var vueObject = new Vue({
+            el: '#vue',
+            data:{
+                header: 'My Mock Report'
+            }
+        })
+    </script>
+
 </body>
