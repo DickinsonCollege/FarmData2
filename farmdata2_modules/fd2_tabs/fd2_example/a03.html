@@ -4,7 +4,7 @@
     <div id="fullReport" v-cloak>
      
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" value="My Mock Report" v-model="reportTitle">
+    <input type="text" id="title" name="title" v-model="reportTitle">
     
     <br>
 
@@ -36,7 +36,7 @@
 
     <hr>
 
-   <h1>{{reportTitle}}</h1><br>
+   <h1>{{reportTitle=="" ? "Mock Harvest Report" : reportTitle}}</h1><br>
     
     <p>Details:</p>
     <ul>
@@ -70,7 +70,7 @@
         var report = new Vue({
             el: '#fullReport',
             data:{
-                reportTitle: 'My Mock Report',
+                reportTitle: '',
                 reportStartDate:'2018-05-01',
                 reportEndDate: '2018-05-15',
                 reportCrop: 'Kale'
