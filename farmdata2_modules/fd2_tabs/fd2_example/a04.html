@@ -33,10 +33,10 @@
     </div>
     <div>
         <label for="start">Start:</label>
-        <input type="date" id="start" min="2014-01-01" max="2022-01-01" value="2018-05-01" v-model="reportStartDate">
+        <input type="date" id="start" min="2014-01-01" :max="reportEndDate" value="2018-05-01" v-model="reportStartDate">
 
         <label for="end">End:</label>
-        <input type="date" id="end" min="2018-05-01" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
+        <input type="date" id="end" :min="reportStartDate" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
     <button type="button" v-model="logIndex" @click="addHarvestLogs({logIndex}, [{date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'}, {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}]), setTableState('show')">Generate Report</button>
