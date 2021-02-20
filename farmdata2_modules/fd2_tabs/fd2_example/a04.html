@@ -59,12 +59,14 @@
             <th>Field</th>
             <th>Crop</th>
             <th>Yield</th>
+            <th>Delete</th>
         </tr>
-        <tr v-for="data in reportHarvestLogs">
+        <tr v-for="(data, dataIndex) in reportHarvestLogs">
             <td>{{data.date}}</td>
             <td>{{data.field}}</td>
             <td>{{data.crop}}</td>
             <td>{{data.yield}}</td>
+            <td><button @click="deleteHarvestLog(dataIndex)">Delete</button></td>
         </tr>
     </table>
     </div>
@@ -90,10 +92,14 @@
               addHarvestLogs: function(index, log){
                   if (this.logIndex < log.length){
                     this.reportHarvestLogs.push(log[this.logIndex]);
+                    console.log(this.reportHarvestLogs);
                     this.logIndex+=1;
                   } else {
                       console.log('Out of record');
                   }
+              },
+              deleteHarvestLog: function(dataIndex){
+                this.reportHarvestLogs.splice(dataIndex, 1);
               }
           }
         });
