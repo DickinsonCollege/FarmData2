@@ -39,37 +39,39 @@
         <input type="date" id="end" min="2018-05-01" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
-    <button type="button" v-model="logIndex" @click="addHarvestLogs({logIndex}, [{date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'}, {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}])">Generate Report</button>
+    <button type="button" v-model="logIndex" @click="addHarvestLogs({logIndex}, [{date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'}, {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}]), setTableState('show')">Generate Report</button>
     <hr>
     <!-- <h1>My Mock Report</h1> -->
-    <div v-cloak>
-        <h1>{{reportTitle ? reportTitle : 'Mock Harvest Report'}}</h1>
-    </div>
-    <br>
-    <p>Details:</p>
-    <br>
-    <ul>
-        <li><strong>Start: {{reportStartDate}}</strong></li>
-        <li><strong>End: {{reportEndDate}}</strong></li>
-        <li><strong>Crop: {{reportCrop}}</strong></li>
-    </ul>
-    <table>
-        <p v-if="reportHarvestLogs.length === 0">No matching records currently.</p>
-        <tr v-if="reportHarvestLogs.length !== 0">
-            <th>Date</th>
-            <th>Field</th>
-            <th>Crop</th>
-            <th>Yield</th>
-            <th>Delete</th>
-        </tr>
-        <tr v-for="(data, dataIndex) in reportHarvestLogs">
-            <td>{{data.date}}</td>
-            <td>{{data.field}}</td>
-            <td>{{data.crop}}</td>
-            <td>{{data.yield}}</td>
-            <td><button @click="deleteHarvestLog(dataIndex)">Delete</button></td>
-        </tr>
-    </table>
+    <div id="reportTableSection" v-if="tableState === 'show'">
+        <div v-cloak>
+            <h1>{{reportTitle ? reportTitle : 'Mock Harvest Report'}}</h1>
+        </div>
+        <br>
+        <p>Details:</p>
+        <br>
+        <ul>
+            <li><strong>Start: {{reportStartDate}}</strong></li>
+            <li><strong>End: {{reportEndDate}}</strong></li>
+            <li><strong>Crop: {{reportCrop}}</strong></li>
+        </ul>
+        <table>
+            <p v-if="reportHarvestLogs.length === 0">No matching records currently.</p>
+            <tr v-if="reportHarvestLogs.length !== 0">
+                <th>Date</th>
+                <th>Field</th>
+                <th>Crop</th>
+                <th>Yield</th>
+                <th>Delete</th>
+            </tr>
+            <tr v-for="(data, dataIndex) in reportHarvestLogs">
+                    <td>{{data.date}}</td>
+                    <td>{{data.field}}</td>
+                    <td>{{data.crop}}</td>
+                    <td>{{data.yield}}</td>
+                    <td><button @click="deleteHarvestLog(dataIndex)">Delete</button></td>
+                </tr>
+            </table>
+        </div>
     </div>
     <script>
         var report = new Vue({
@@ -87,7 +89,8 @@
             //     {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}
             // ]
             reportHarvestLogs: [],
-            logIndex: 0
+            logIndex: 0,
+            tableState: 'hide'
           },
           methods: {
               addHarvestLogs: function(index, log){
@@ -101,6 +104,9 @@
               },
               deleteHarvestLog: function(dataIndex){
                 this.reportHarvestLogs.splice(dataIndex, 1);
+              },
+              setTableState: function(state){
+                  this.tableState = state;
               }
           }
         });
