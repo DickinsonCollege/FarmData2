@@ -17,4 +17,4 @@ WORKDIR /var/www/html/profiles/farm/modules/contrib/restws
 RUN patch < ability_to_filter_with-1910294.patch && \
     drush cc all
 
-WORKDIR /var/www/
+WORKDIR /var/www/html/
