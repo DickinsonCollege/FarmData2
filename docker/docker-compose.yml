@@ -16,7 +16,12 @@ services:
   www:
     depends_on:
       - db
-    image: farmos/farmos:dev
+    # If there are changes to the Dockerfile update the tag
+    # here to force a new build when main is updated.
+    image: farmos:fd2.1
+    build:
+     context: ./farmOS
+     dockerfile: Dockerfile
     container_name: fd2_farmdata2
     volumes:
       - './settings.php:/var/www/html/sites/default/settings.php:delegated'
@@ -44,7 +49,9 @@ services:
      - 'db'
 
   theiaide:
-    image: theiaide:1.7.0
+    # If there are changes to the Dockerfile update the tag
+    # here to force a new build when main is updated.
+    image: theiaide:fd2.1
     container_name: fd2_theiaide
     init: true
     build:
