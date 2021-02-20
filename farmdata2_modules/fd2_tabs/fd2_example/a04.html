@@ -71,6 +71,7 @@
                     <td><button @click="deleteHarvestLog(dataIndex)">Delete</button></td>
                 </tr>
             </table>
+            <p>Total yielf: {{computeTotalYield}}</p>
         </div>
     </div>
     <script>
@@ -96,7 +97,6 @@
               addHarvestLogs: function(index, log){
                   if (this.logIndex < log.length){
                     this.reportHarvestLogs.push(log[this.logIndex]);
-                    console.log(this.reportHarvestLogs);
                     this.logIndex+=1;
                   } else {
                       console.log('Out of record');
@@ -107,6 +107,16 @@
               },
               setTableState: function(state){
                   this.tableState = state;
+              }
+          },
+          computed: {
+              computeTotalYield: function(){
+                  let totalYield = 0
+                  for (let i = 0; i < this.reportHarvestLogs.length; i++){
+                    let yield = parseInt(this.reportHarvestLogs[i].yield.split(" ")[0])
+                    totalYield += yield
+                  }
+                  return totalYield;
               }
           }
         });
