@@ -1,4 +1,4 @@
-FROM theiaide/theia
+FROM theiaide/theia:1.7.0
 
 # Args will be overwritten from docker-compose file.
 ARG HOST_UID=1000

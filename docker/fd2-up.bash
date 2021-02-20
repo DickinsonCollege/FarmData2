@@ -6,4 +6,5 @@ export HOST_USER=$(id -nu)
 export HOST_GROUP=$(id -ng)
 
 docker rm $(docker ps -a -q -f name=fd2_) > /dev/null 2>&1
+docker-compose build > /dev/null
 docker-compose up -d
