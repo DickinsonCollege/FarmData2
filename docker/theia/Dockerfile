@@ -1,5 +1,9 @@
 FROM theiaide/theia:1.7.0
 
+# NOTE: If changes are made here that require a new image
+# update the tag in docker-compose.yml for force the rebuild
+# when main is updated.
+
 # Args will be overwritten from docker-compose file.
 ARG HOST_UID=1000
 ARG HOST_GID=1000
