@@ -39,7 +39,7 @@
         <input type="date" id="end" min="2018-05-01" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
-    <button type="button" @click="reportHarvestLogs.push('')">Generate Report</button>
+    <button type="button" v-model="logIndex" @click="addHarvestLogs({logIndex}, [{date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'}, {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}])">Generate Report</button>
     <hr>
     <!-- <h1>My Mock Report</h1> -->
     <div v-cloak>
@@ -83,7 +83,18 @@
             //     {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
             //     {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}
             // ]
-            reportHarvestLogs: []
+            reportHarvestLogs: [],
+            logIndex: 0
+          },
+          methods: {
+              addHarvestLogs: function(index, log){
+                  if (this.logIndex < log.length){
+                    this.reportHarvestLogs.push(log[this.logIndex]);
+                    this.logIndex+=1;
+                  } else {
+                      console.log('Out of record');
+                  }
+              }
           }
         });
         Vue.config.devtools = true;
