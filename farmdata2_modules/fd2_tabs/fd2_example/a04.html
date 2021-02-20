@@ -39,7 +39,7 @@
         <input type="date" id="end" min="2018-05-01" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
-    <button type="button">Generate Report</button>
+    <button type="button" @click="reportHarvestLogs.push('')">Generate Report</button>
     <hr>
     <!-- <h1>My Mock Report</h1> -->
     <div v-cloak>
@@ -60,7 +60,7 @@
             <th>Crop</th>
             <th>Yield</th>
         </tr>
-        <tr v-for="data in reportTableData">
+        <tr v-for="data in reportHarvestLogs">
             <td>{{data.date}}</td>
             <td>{{data.field}}</td>
             <td>{{data.crop}}</td>
@@ -79,10 +79,11 @@
             reportField: 'All',
             crops: ['Broccoli', 'Kale', 'Peas'], 
             fields: ['All', 'Chuau-7', 'SQ7'],
-            reportTableData: [
-                {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
-                {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}
-            ]
+            // reportTableData: [
+            //     {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
+            //     {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}
+            // ]
+            reportHarvestLogs: []
           }
         });
         Vue.config.devtools = true;
