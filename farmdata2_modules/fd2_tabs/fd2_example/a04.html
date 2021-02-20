@@ -54,7 +54,8 @@
         <li><strong>Crop: {{reportCrop}}</strong></li>
     </ul>
     <table>
-        <tr>
+        <p v-if="reportHarvestLogs.length === 0">No matching records currently.</p>
+        <tr v-if="reportHarvestLogs.length !== 0">
             <th>Date</th>
             <th>Field</th>
             <th>Crop</th>
