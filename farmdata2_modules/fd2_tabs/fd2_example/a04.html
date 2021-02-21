@@ -43,37 +43,42 @@
         </select>
 
         <br /><br />
-        <button class="btn btn-primary" v-on:click="genRpt">
+        <button class="btn btn-primary" @click="genRpt">
             Generate Report
         </button>
-        <hr />
 
-        <h1>{{ rptTitle == '' ? 'My Mock Harvest Report' : rptTitle }}</h1>
-        <br />
+        <div v-if="visible">
+            <hr />
 
-        <p>Details:</p>
-        <br />
-        <ul>
-            <li><strong>Start:</strong>{{ rptStart }}</li>
-            <li><strong>End:</strong> {{ rptEnd }}</li>
-            <li><strong>Crop:</strong>{{ rptCrop }}</li>
-        </ul>
-        <br />
-        <p v-if="table.length == 0">There are no matching records.</p>
-        <table border="1" v-else>
-            <tr>
-                <th v-for="header in headers">{{ header }}</th>
-            </tr>
-            <tr v-for="(tble, index) in table">
-                <td>{{ tble.date }}</td>
-                <td>{{ tble.field }}</td>
-                <td>{{ tble.crop }}</td>
-                <td>{{ tble.yield }}</td>
-                <td>
-                    <button type="button" @click="deleteLog(index)">Delete</button>
-                </td>
-            </tr>
-        </table>
+            <h1>{{ rptTitle == '' ? 'My Mock Harvest Report' : rptTitle }}</h1>
+            <br />
+
+            <p>Details:</p>
+            <br />
+            <ul>
+                <li><strong>Start:</strong>{{ rptStart }}</li>
+                <li><strong>End:</strong> {{ rptEnd }}</li>
+                <li><strong>Crop:</strong>{{ rptCrop }}</li>
+            </ul>
+            <br />
+            <p v-if="table.length == 0">There are no matching records.</p>
+            <table border="1" v-else>
+                <tr>
+                    <th v-for="header in headers">{{ header }}</th>
+                </tr>
+                <tr v-for="(tble, index) in table">
+                    <td>{{ tble.date }}</td>
+                    <td>{{ tble.field }}</td>
+                    <td>{{ tble.crop }}</td>
+                    <td>{{ tble.yield }}</td>
+                    <td>
+                        <button type="button" @click="deleteLog(index)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -86,7 +91,7 @@
                 rptCrop: 'Kale',
                 crops: ['Broccoli', 'Kale', 'Peas'],
                 fields: ['All', 'Chuau-1', 'SQ7'],
-                isEmpty: 'true',
+                visible: false,
                 headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 log: [
                     {
@@ -112,14 +117,15 @@
             },
             methods: {
                 genRpt: function () {
-                    if (this.table.length < 3) {
+                    if (this.table.length < 3 && this.visible) {
                         this.table.push(this.log[this.table.length]);
                     }
+                    this.visible = true;
                 },
                 deleteLog: function (nameIndex) {
                     this.table.splice(nameIndex, 1);
-                }
-            }
+                },
+            },
         });
         Vue.config.devtools = true;
     </script>
