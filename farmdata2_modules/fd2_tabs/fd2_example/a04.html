@@ -18,7 +18,7 @@
             id="start"
             v-model="rptStart"
             min="2014-01-01"
-            max="2022-01-01"
+            :max="rptEnd"
         />
 
         <label for="end">End:</label>
@@ -26,7 +26,7 @@
             type="date"
             id="end"
             v-model="rptEnd"
-            min="2018-05-01"
+            :min="rptStart"
             max="2022-01-01"
         />
 
