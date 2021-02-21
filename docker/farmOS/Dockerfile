@@ -13,8 +13,6 @@ FROM farmos/farmos:dev
 COPY ability_to_filter_with-1910294.patch /var/www/html/profiles/farm/modules/contrib/restws/ability_to_filter_with-1910294.patch
 
 WORKDIR /var/www/html/profiles/farm/modules/contrib/restws
-
-RUN patch < ability_to_filter_with-1910294.patch && \
-    drush cc all
+RUN patch < ability_to_filter_with-1910294.patch
 
 WORKDIR /var/www/html/
