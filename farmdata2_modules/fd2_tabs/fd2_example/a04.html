@@ -43,7 +43,9 @@
         </select>
 
         <br /><br />
-        <button class="btn btn-primary" v-on:click="table.push(log)">Generate Report</button>
+        <button class="btn btn-primary" v-on:click="genRpt">
+            Generate Report
+        </button>
         <hr />
 
         <h1>{{ rptTitle == '' ? 'My Mock Harvest Report' : rptTitle }}</h1>
@@ -62,11 +64,14 @@
             <tr>
                 <th v-for="header in headers">{{ header }}</th>
             </tr>
-            <tr v-for="tble in table">
+            <tr v-for="(tble, index) in table">
                 <td>{{ tble.date }}</td>
                 <td>{{ tble.field }}</td>
                 <td>{{ tble.crop }}</td>
                 <td>{{ tble.yield }}</td>
+                <td>
+                    <button type="button" @click="deleteLog(index)">Delete</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -81,18 +86,40 @@
                 rptCrop: 'Kale',
                 crops: ['Broccoli', 'Kale', 'Peas'],
                 fields: ['All', 'Chuau-1', 'SQ7'],
-                headers: ['Date', 'Field', 'Crop', 'Yield'],
-                log: {
+                headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
+                log: [
+                    {
                         date: '05/02/2018',
                         field: 'Chuau-1',
                         crop: 'Kale',
-                        yield: '10 Bunches'
+                        yield: '10 Bunches',
                     },
-                table: []
-
+                    {
+                        date: '05/05/2018',
+                        field: 'SQ7',
+                        crop: 'Kale',
+                        yield: '7 Bunches',
+                    },
+                    {
+                        date: '07/10/2018',
+                        field: 'Chuau-1',
+                        crop: 'Kale',
+                        yield: '12 Bunches',
+                    },
+                ],
+                table: [],
+            },
+            methods: {
+                genRpt: function () {
+                    if (this.table.length < 3) {
+                        this.table.push(this.log[this.table.length]);
+                    }
+                },
+                deleteLog: function (nameIndex) {
+                    this.table.splice(nameIndex, 1);
+                },
             },
         });
         Vue.config.devtools = true;
     </script>
-    
 </body>
