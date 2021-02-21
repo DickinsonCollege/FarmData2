@@ -43,7 +43,7 @@
         </select>
 
         <br /><br />
-        <button type="button">Generate Report</button>
+        <button class="btn btn-primary" v-on:click="table.push(log)">Generate Report</button>
         <hr />
 
         <h1>{{ rptTitle == '' ? 'My Mock Harvest Report' : rptTitle }}</h1>
@@ -82,20 +82,14 @@
                 crops: ['Broccoli', 'Kale', 'Peas'],
                 fields: ['All', 'Chuau-1', 'SQ7'],
                 headers: ['Date', 'Field', 'Crop', 'Yield'],
-                table: [
-                    {
+                log: {
                         date: '05/02/2018',
                         field: 'Chuau-1',
                         crop: 'Kale',
-                        yield: '10 Bunches',
+                        yield: '10 Bunches'
                     },
-                    {
-                        date: '05/05/2018',
-                        field: 'SQ7',
-                        crop: 'Kale',
-                        yield: '7 Bunches',
-                    },
-                ],
+                table: []
+
             },
         });
         Vue.config.devtools = true;
