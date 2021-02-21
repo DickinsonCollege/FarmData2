@@ -59,8 +59,8 @@
             <li><strong>Crop:</strong>{{ rptCrop }}</li>
         </ul>
         <br />
-
-        <table border="1">
+        <p v-if="table.length == 0">There are no matching records.</p>
+        <table border="1" v-else>
             <tr>
                 <th v-for="header in headers">{{ header }}</th>
             </tr>
@@ -86,6 +86,7 @@
                 rptCrop: 'Kale',
                 crops: ['Broccoli', 'Kale', 'Peas'],
                 fields: ['All', 'Chuau-1', 'SQ7'],
+                isEmpty: 'true',
                 headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 log: [
                     {
@@ -117,8 +118,8 @@
                 },
                 deleteLog: function (nameIndex) {
                     this.table.splice(nameIndex, 1);
-                },
-            },
+                }
+            }
         });
         Vue.config.devtools = true;
     </script>
