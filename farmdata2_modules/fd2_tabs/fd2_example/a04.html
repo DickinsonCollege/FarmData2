@@ -28,7 +28,7 @@
  </ul>
 </select>
     <label for = "simple">Field:</label>
- <select id="simple" name="simple">
+ <select id="simple" name="simple" v-model="rptField">
  <ul>
     <option v-for="field in fields">{{ field }}<option>
 </ul>
@@ -37,7 +37,7 @@
 <br>
 <br>
 
-<button type="button">
+<button class="button" @click="hlogs.push(newHlog)">
     Generate Report
 </button>
 
@@ -61,16 +61,10 @@
     <th>Yield</th>
 </tr>
 <tr v-for="hlog in hlogs" >
-    <td >{{hlog.date1}}</td>
-    <td >{{ hlog.field1 }}</td>
-    <td >{{ hlog.crop1 }}</td>
-    <td >{{ hlog.yeild1 }}</td>
-</tr>
-<tr v-for="hlog in hlogs">
-    <td >{{ hlog.date2 }}</td>
-    <td >{{ hlog.feild2 }}</td>
-    <td >{{ hlog.crop2 }}</td>
-    <td >{{ hlog.yeild2 }}</td>
+    <td >{{StartDate}}</td>
+    <td >{{ rptField }}</td>
+    <td >{{ rptCrop }}</td>
+    <td >{{ hlog.yeild }}</td>
 </tr>
 </table>
 </div>
@@ -83,6 +77,8 @@
                 StartDate: "2018-05-01",
                 EndDate: "2018-05-15",
                 rptCrop: "Kale",
+                rptField:"Chuau-1",
+                newHlog: {date: "", field: "", crop: "", yeild: "10 Bunches"},
                 crops: [
                     "Broccoli",
                     "Kale",
@@ -94,8 +90,6 @@
                      "SQ7",
                  ],
                  hlogs : [
-                     {date1: "05/02/2018", field1: "Chuau-1", crop1: "Kale", yeild1: "10 Bunches" },
-                     {date2:"05/05/2018", feild2: "SQ7", crop2: "Kale", yeild2: "7 Bunches"}
                  ]
         }
     });
