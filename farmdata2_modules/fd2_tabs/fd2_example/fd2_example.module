@@ -87,6 +87,14 @@ function fd2_example_menu() {
     'access arguments' => array('View FD2 Example'),
     'weight' => 100,
 );
+    $items['farm/fd2-example/a04'] = array(
+    'title' => 'A04',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('a04.html'),
+    'access arguments' => array('View FD2 Example'),
+    'weight' => 100,
+);
   return $items;
 };
 
