@@ -21,7 +21,7 @@
     <select id="crop" name="crop" v-model="crop">
         <option v-for="item in cropOptions">{{ item }}</option>
     </select>
-    
+
     <label for="field">Field:</label>
     <select id="field" name="feild">
         <option v-for="item in fieldOptions">{{ item }}</option>
@@ -51,7 +51,14 @@
             <th>Crop</th>
             <th>Yield</th>
         </tr>
-        <tr>
+        <tr v-for="row in rows">
+            <th>{{ row.date }}</th>
+            <th>{{ row.feild }}</th>
+            <th>{{ row.crop }}</th>
+            <th>{{ row.yield }}</th>
+        </tr>
+            
+        <!--<tr>
             <td>05/02/2018</td>
             <td>Chuau-1</td>
             <td>Kale</td>
@@ -62,7 +69,7 @@
             <td>SQ7</td>
             <td>Kale</td>
             <td>7 Bunches</td>
-        </tr>
+        </tr>-->
     </table>
     </div>
     <script src="https://unpkg.com/vue"></script>
@@ -75,7 +82,11 @@
                 crop: '',
                 cropOptions: ['Broccoli', 'Kale', 'Peas'],
                 fieldOptions: ['All', 'Chuau1', 'SQ7'],
-		        header: null,
+                header: null,
+                rows: [
+                    {date: '05/02/2018', feild: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
+                    {date: '05/02/2018', feild: 'SQ7', crop: 'Kale', yield: '7 Bunches'},
+                ]
 			}
 		});
 	</script>
