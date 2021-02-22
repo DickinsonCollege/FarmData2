@@ -1,20 +1,10 @@
 <body>
-
     <div id="harvest-report" v-clock> 
-        <h1>{{ header }}</h1> 
+        <h1>My Harvest Report</h1>
+        <!-- <h2>{{ header }}</h2> -->
         <label for='title'>Title:</label>
         <input type="text" id="title" v-model="header">
-    </div>
-    <script src="https://unpkg.com/vue"></script>
-    <script>
-		var harvestReport = new Vue({
-		    el: '#harvest-report',
-			data: {
-                
-		        header: 'My mock report'
-			}
-		});
-	</script>
+    
     
     <p>This page is a <i>mockup</i> of a form generating a harvest report<br> This is an experiment done by 
         Iris</p>
@@ -45,7 +35,7 @@
     </button>
     
     <hr>
-    <h2>My Mock report</h2>
+    <h2>{{ header }}</h2>
     
     <p>Details:</p>
     <ul>
@@ -74,4 +64,15 @@
             <td>7 Bunches</td>
         </tr>
     </table>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+		var harvestReport = new Vue({
+		    el: '#harvest-report',
+			data: {
+                
+		        header: 'My mock report'
+			}
+		});
+	</script>
 </body>
