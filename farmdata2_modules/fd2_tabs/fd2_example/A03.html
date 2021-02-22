@@ -35,7 +35,7 @@
     </button>
     
     <hr>
-    <h2>{{ header }}</h2>
+    <h2>{{ header ? header: 'My Mock Report' }}</h2>
     
     <p>Details:</p>
     <ul>
@@ -73,7 +73,7 @@
                 start: '',
                 end: '',
                 crop: '',
-		        header: 'My mock report',
+		        header: null,
 			}
 		});
 	</script>
