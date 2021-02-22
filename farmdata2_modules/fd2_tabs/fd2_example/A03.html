@@ -12,13 +12,13 @@
     <input type="text" id="title" name="title" value="title"> -->
     <br>
     <label for="start">Start:</label>
-    <input type="date" id="start" name="start" min="2014-01-01" max="2022-01-01">
+    <input type="date" id="start" name="start" min="2014-01-01" max="2022-01-01" v-model="start">
     
     <label for="end">End:</label> 
-    <input type="date" id="end" name="end" value="2018-05-01" min="2018-05-01" max="2022-01-01">
+    <input type="date" id="end" name="end" min="2018-05-01" max="2022-01-01" v-model="end">
      <br>
     <label for="crop">Crop:</label>
-    <select id="crop" name="crop">
+    <select id="crop" name="crop" v-model="crop">
         <option>Broccoli</option>
         <option selected>Kale</option>
         <option>Peas</option>
@@ -39,9 +39,9 @@
     
     <p>Details:</p>
     <ul>
-        <li>Start:</li>
-        <li>End:</li>
-        <li>Crop:</li>
+        <li>Start: {{ start }}</li>
+        <li>End: {{end}}</li>
+        <li>Crop: {{crop}}</li>
     </ul>
     <br>
     <table border=1>
@@ -70,8 +70,10 @@
 		var harvestReport = new Vue({
 		    el: '#harvest-report',
 			data: {
-                
-		        header: 'My mock report'
+                start: '',
+                end: '',
+                crop: '',
+		        header: 'My mock report',
 			}
 		});
 	</script>
