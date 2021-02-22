@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<body>
 		<h1>Harvest Report</h1>
 		<p>This page is a  <i>mockup</i> of a form for generating a harvest report. </p>
 		<div id="a03vue" v-cloak>
-			<label>Title:
-			<input type="text" id="title" name="title" value="My Mock Report" v-model="header"> </label> 
+			<label>{{ Title ? Title : 'Mock Harvest Report' }}
+			<input type="text" id="title" name="title" value="title" v-model="header"> </label> 
 		<br>
 			<label for="start">Start:</label>
     			<input type="date" id="start" name="Start" v-model="StartDate" min="2014-01-01" max="2022-01-01">
@@ -27,11 +27,12 @@
 				</select>
 			</label>
 		<br> 
-		<button type="button">Generate Report</button>
+			<button type="button">Generate Report</button>
 		<hr>
 
-		<h1>{{ header }}</h1>
-		<p>Details:</p>
+			<h1>{{ header }}</h1>
+			<input type="text" v-model="header">
+			<p>Details:</p>
 
 		<ul>
 			<li><strong>Start:</strong>{{ startDate }}</li>
@@ -61,13 +62,14 @@
 		</div>
 
 		<script>
-			var a03vue = new Vue({
-				el: '#ao3vue',
+			var a03vue = New Vue({
+				el: '#a03vue',
 				data: {
-					header: 'My Mock Report',
-					startDate: '2018-05-01',
-					endDate: '2018-05-15',
-					reportCrop: 'Kale',
+					Title: null
+					header: "My Mock Report",
+					startDate: "2018-05-01",
+					endDate: "2018-05-15",
+					reportCrop: "Kale",
 				}
 			});
 		</script>
