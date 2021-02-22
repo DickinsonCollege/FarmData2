@@ -1,5 +1,5 @@
 <body>
-    <div id="harvest-report" v-clock> 
+    <div id="harvest-report" v-cloak> 
         <h1>My Harvest Report</h1>
         <!-- <h2>{{ header }}</h2> -->
         <label for='title'>Title:</label>
@@ -19,15 +19,15 @@
      <br>
     <label for="crop">Crop:</label>
     <select id="crop" name="crop" v-model="crop">
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
+        <option v-for="item in cropOptions">{{ item }}</option>
     </select>
+    
     <label for="field">Field:</label>
     <select id="field" name="feild">
-        <option selected>All</option>
+        <option v-for="item in fieldOptions">{{ item }}</option>
+        <!--<option selected>All</option>
         <option>Chuau1</option>
-        <option>SQ7</option>
+        <option>SQ7</option>-->
     </select>
     <br>
     <button type="button">
@@ -73,6 +73,8 @@
                 start: '',
                 end: '',
                 crop: '',
+                cropOptions: ['Broccoli', 'Kale', 'Peas'],
+                fieldOptions: ['All', 'Chuau1', 'SQ7'],
 		        header: null,
 			}
 		});
