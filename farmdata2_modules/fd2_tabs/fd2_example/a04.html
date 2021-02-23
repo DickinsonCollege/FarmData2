@@ -44,8 +44,9 @@
 <!-- <label for = “name”>Name:</label>
 <input type="text" id="name" v-model="newName">
 <button class="button" @click="saveName">Add Name</button>
--->
 
+<li v-for='(name,index) in names'><button type='button' @click='deleteName'>Delete</button></li>
+-->
 
 <hr>
     <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
@@ -65,12 +66,14 @@
     <th>Field</th>
     <th>Crop</th>
     <th>Yield</th>
+    <th>Delete</th>
 </tr>
-<tr v-for="hlog in hlogs" >
+<tr v-for=" (hlog,index) in hlogs" >
     <td >{{hlog.date}}</td>
     <td >{{ hlog.field }}</td>
     <td >{{ hlog.crop }}</td>
     <td >{{ hlog.yeild }}</td>
+    <td><button type="button" @click="hlogs.splice(index,1)">Delete</button></td>
 </tr>
 </table>
 </div>
@@ -111,7 +114,7 @@
             }
         }
     }
-    });
+});
 Vue.config.devtools = true;
 </script>
 </body>
