@@ -37,7 +37,7 @@
 <br>
 <br>
 
-<button  class="button"  @click="saveRpt">
+<button class="button" @click="saveRpt" >
     Generate Report
 </button>
 
@@ -50,7 +50,7 @@
 <li v-if="names.length === 0">No names yet!</li>
 -->
 
-
+<div v-if="state === 'edit'">
 <hr>
     <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
 <br>
@@ -89,13 +89,14 @@
     <li v-for='card in cards'>{{ card.rank + " of " + card.suit }}</li>
 </div>
 -->
-
+</div>
 </div>
 
  <script>
 	var databinding = new Vue({
 		el: "#harvest-report",
 		data: {
+                state: "default",
                 header: "Mock Harvest Report",
                 StartDate: "2018-05-01",
                 EndDate: "2018-05-15",
@@ -119,6 +120,7 @@
             saveRpt: function() {
             if (this.hlogs.length == 0) {
                this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+               this.state = 'edit';
             } else if (this.hlogs.length == 1){
                 this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
             } else if (this.hlogs.length == 2){
