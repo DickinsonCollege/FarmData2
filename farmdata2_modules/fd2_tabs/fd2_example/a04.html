@@ -1,0 +1,74 @@
+<html>
+    
+<body>
+    <h1>Harvest Report</h1>
+    <br>
+    <p>This page is a <i>mockup</i> of a form for generating a harvest report</p>
+    <div id="report-bind" v-cloak>
+    <label for="title">Title:</label>
+    <input type="text" id="title" v-model="rptTitle">
+    <br><br>
+    <label for="start">Start:</label>
+    <input type="date" id="start" min="2014-01-01" max="2022-01-01" v-model="rptStart"> 
+    <label for="end">End:</label>
+    <input type="date" id="end" min="2018-05-01" max="2022-01-01" v-model="rptEnd">
+    <br><br>
+    <label for="crop-search">Crop:</label>
+    <select id="crop-search" v-model="rptCrop"> 
+        <option v-for="crop in crops" >{{crop}}</option>
+    </select>
+    <label for="field-search">Field:</label>
+     <select id="field-search">
+        <option v-for="field in fields" >{{field}}</option>
+    </select>
+    <br><br>
+    <button type="button" id="generate-report">Generate Report</button>
+    <hr>
+    
+    <h1>{{rptTitle ? rptTitle: 'Mock Harvest Report'}}</h1>
+    <p>Details:</p>
+    <ul>
+        <li><b>Start: {{rptStart}}</b></li>
+        <li><b>End: {{rptEnd}}</b></li>
+        <li><b>Crop: {{rptCrop}}</b></li>
+    </ul>
+     <table border=1>
+  <tr>
+    <th>Date</th>
+    <th>Field</th>
+    <th>Crop</th>
+    <th>Yield</th>
+  </tr>
+  <tr>
+    <td>{{harvestLog[0].Date}}</td>
+    <td>{{harvestLog[0].Field}}</td>
+    <td>{{harvestLog[0].Crop}}</td>
+    <td>{{harvestLog[0].Yield}}</td>
+  </tr>
+  <tr>
+     <td>{{harvestLog[1].Date}}</td>
+    <td>{{harvestLog[1].Field}}</td>
+    <td>{{harvestLog[1].Crop}}</td>
+    <td>{{harvestLog[1].Yield}}</td>
+  </tr>
+</table> 
+</div>
+<script>
+    var reportVue = new Vue({
+        el: '#report-bind',
+        data: {
+        rptTitle: '',
+        rptStart:'',
+        rptEnd:'',
+        rptCrop:'',
+        crops: ['Broccoli', 'Kale', 'Peas'],
+        fields: ['All', 'Chuau1', 'SQ7'],
+        harvestLog:[
+                {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10 Bunches'},
+                {Date: '05/05/2018', Field: 'All', Crop:'Peas', Yield: '7 Bunches'} ]
+        }
+    });
+    Vue.config.devtools = true;
+</script>
+</body>
+</html>
