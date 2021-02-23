@@ -37,16 +37,19 @@
 <br>
 <br>
 
-<button class="button" @click="saveRpt">
+<button  class="button"  @click="saveRpt">
     Generate Report
 </button>
 
-<!-- <label for = “name”>Name:</label>
+<!--
+<label for = “name”>Name:</label>
 <input type="text" id="name" v-model="newName">
 <button class="button" @click="saveName">Add Name</button>
 
 <li v-for='(name,index) in names'><button type='button' @click='deleteName'>Delete</button></li>
+<li v-if="names.length === 0">No names yet!</li>
 -->
+
 
 <hr>
     <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
@@ -60,7 +63,7 @@
 </p>
 <br>
 <br>
-<table border="1">
+<table border="1" v-if="hlogs.length > 0">
 <tr>
     <th>Date</th>
     <th>Field</th>
@@ -76,6 +79,17 @@
     <td><button type="button" @click="hlogs.splice(index,1)">Delete</button></td>
 </tr>
 </table>
+<p v-if="hlogs.length === 0">No matching records.</p>
+<!--
+<div class="header">
+    <button v-if="state === 'default'" class="button" @click="changestate('edit')">Show Cards</button>
+    <button v-else class="button" @click="changestate('default')">Hide Cards</button>
+</div>
+<div v-if="state === 'edit'">
+    <li v-for='card in cards'>{{ card.rank + " of " + card.suit }}</li>
+</div>
+-->
+
 </div>
 
  <script>
