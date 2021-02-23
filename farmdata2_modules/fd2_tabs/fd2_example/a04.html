@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+      <div id="farm">
+
+            <h1><strong>Harvest Report </strong></h1>
+            <p> This page is a <i>mockup</i> of a form for generating a harvest report.</p>
+            <br>
+
+            <label for="title">Title:</label>
+            <input type="text" v-model="header">
+            
+        
+            <br><br>
+
+            <label for="start">Start:</label>
+            <input type="date" id="start" name="trip-start"
+                v-model="startDay"
+                min="2014-01-01" max="2022-01-01">
+
+            <label for="end">End:</label>
+            <input type="date" id="start" name="trip-start"
+                v-model="endDay"
+                min="2015-05-01" max="2022-01-01">
+            <br><br>
+            
+            <label for="crop">Crop</label>
+            <select id="crop" name="crop" v-model="crop">
+                <option v-for="crop in cropChoices">{{crop}}</option>
+            </select>
+
+            <label for="field">Field</label>
+            <select id="field" name="field">
+                <option v-for="field in fieldChoices">{{field}}</option>
+            </select><br> <br>
+
+            <button type="button">Generate Report</button><br>
+         <hr>
+
+            <h2>{{ header ? header : 'Mock Harvest Report'}}</h2>
+        
+         <br>
+         <p>Details:
+            <ul>
+            <li><strong>Start:</strong> {{ startDay }}</li>  
+            <li><strong>End:</strong>{{ endDay }}</li>  
+            <li><strong>Crop:</strong>{{ crop }}</li>
+            </ul>
+         </p>
+
+            <table border="1'">
+         <tr>
+            <th><strong>Date </strong></th>
+            <th><strong>Field </strong></th>
+            <th><strong>Crop </strong></th>
+            <th><strong>Yield </strong></th>
+         </tr>
+
+          <tr v-for="harvest in harvestReport">
+              <td>{{harvest.date}}</td>
+              <td>{{harvest.field}}</td>
+              <td>{{harvest.crop}}</td>
+              <td>{{harvest.Yield}}</td>
+          </tr>  
+
+            </table>
+            <br>
+     </div>
+        <!--<div id="farm">
+        <style>
+        [v-cloak] {
+            display:none;
+        }
+        </style> -->
+
+        <script>
+        var fd2 = new Vue({
+            el: '#farm',
+            data: {
+              header: 'My Mock Report',
+              startDay: "2018-05-15",
+              endDay: "2018-05-15",
+              crop: "Kale",
+              cropChoices: ['Kale', 'Broccoli', 'Peas'],
+              fieldChoices: ['All', 'Chuau-1', 'SQ-7'],
+              harvestReport: [
+                  {date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches'},
+                  {date:'05/02/2018', field:'SQ7', crop:'Kale', Yield:'7 Bunches'}
+              ]
+            }
+        });
+        Vue.config.devtools = true;
+        </script>
+   </body>
+</html>
