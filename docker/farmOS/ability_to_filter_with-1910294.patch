@@ -1,0 +1,255 @@
+diff --git a/restws.entity.inc b/restws.entity.inc
+index 829c8cb..654c6ef 100644
+--- a/restws.entity.inc
++++ b/restws.entity.inc
+@@ -242,7 +242,7 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
+     $query->entityCondition('entity_type', $this->entityType);
+ 
+     foreach ($filters as $filter => $value) {
+-      $this->propertyQueryOperation($query, 'Condition', $filter, $value);
++      $this->propertyQueryCondition($query, $filter, $value);
+     }
+ 
+     $rest_controls = restws_meta_controls();
+@@ -255,7 +255,7 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
+           else {
+             $direction = 'ASC';
+           }
+-          $this->propertyQueryOperation($query, 'OrderBy', $value, $direction);
++          $this->propertyQueryOrderBy($query, $value, $direction);
+           break;
+ 
+         case $rest_controls['limit']:
+@@ -296,7 +296,7 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
+     $query->entityCondition('entity_type', $this->entityType);
+ 
+     foreach ($filters as $filter => $value) {
+-      $this->propertyQueryOperation($query, 'Condition', $filter, $value);
++      $this->propertyQueryCondition($query, $filter, $value);
+     }
+     $query->count();
+     $this->nodeAccess($query);
+@@ -316,7 +316,7 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
+     if ($this->resource() == 'node') {
+       $query->addTag('node_access');
+       if (!user_access('bypass node access')) {
+-        $this->propertyQueryOperation($query, 'Condition', 'status', 1);
++        $this->propertyQueryCondition($query, 'status', 1);
+       }
+     }
+   }
+@@ -345,13 +345,54 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
+ 
+   /**
+    * Helper function which takes care of distinguishing between fields and
+-   * entity properties and executes the right EntityFieldQuery function for it.
++   * entity properties for query order-by clauses and executes the right
++   * EntityFieldQuery function for it.
+    *
+    * @param EntityFieldQuery $query
+    *   The EntityFieldQuery pointer which should be used.
+    *
+-   * @param string $operation
+-   *   The general function name, without the words 'property' or 'field'.
++   * @param string $property
++   *   The property or field which should be used.
++   *
++   * @param string|array $value
++   *   The value for the function.
++   */
++  protected function propertyQueryOrderBy(EntityFieldQuery $query, $property, $value) {
++    $properties = $this->propertyInfo();
++
++    // If field is not set, then the filter is a property and we can extract
++    // the schema field from the property array.
++    if (empty($properties[$property]['field'])) {
++      $column = $properties[$property]['schema field'];
++      $query->propertyOrderBy($column, $value);
++    }
++    else {
++      // For fields we need the field info to get the right column for the
++      // query.
++      $field_info = field_info_field($property);
++      if (is_array($value)) {
++        // Specific column filters are given, so add a query condition for each
++        // one of them.
++        foreach ($value as $column => $val) {
++          $query->fieldOrderBy($field_info, $column, $value);
++        }
++      }
++      else {
++        // Just pick the first field column for the operation.
++        $columns = array_keys($field_info['columns']);
++        $column = $columns[0];
++        $query->fieldOrderBy($field_info, $column, $value);
++      }
++    }
++  }
++
++  /**
++   * Helper function which takes care of distinguishing between fields and
++   * entity properties for query conditions and executes the right EntityFieldQuery
++   * function for it.
++   *
++   * @param EntityFieldQuery $query
++   *   The EntityFieldQuery pointer which should be used.
+    *
+    * @param string $property
+    *   The property or field which should be used.
+@@ -359,7 +400,7 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
+    * @param string|array $value
+    *   The value for the function.
+    */
+-  protected function propertyQueryOperation(EntityFieldQuery $query, $operation, $property, $value) {
++  protected function propertyQueryCondition(EntityFieldQuery $query, $property, $value) {
+     $properties = $this->propertyInfo();
+ 
+     // Check property access.
+@@ -373,28 +414,84 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
+     // the schema field from the property array.
+     if (empty($properties[$property]['field'])) {
+       $column = $properties[$property]['schema field'];
+-      $operation = 'property' . $operation;
+-      $query->$operation($column, $value);
++      $condition = $this->conditionValueComponents($value);
++      if (is_array($value)) {
++        // Operators.
++        foreach ($value as $operator => $operator_value) {
++          $oper = $this->conditionValueComponents(array($operator => $operator_value));
++          $query->propertyCondition($column, $oper['value'], $oper['operator']);
++        }
++      }
++      else {
++        $query->propertyCondition($column, $condition['value'], $condition['operator']);
++      }
+     }
+     else {
+       // For fields we need the field info to get the right column for the
+       // query.
+       $field_info = field_info_field($property);
+-      $operation = 'field' . $operation;
+       if (is_array($value)) {
+         // Specific column filters are given, so add a query condition for each
+         // one of them.
+         foreach ($value as $column => $val) {
+-          $query->$operation($field_info, $column, $val);
++          if (!is_array($val)) {
++            // No operator given so we assume =
++            $query->fieldCondition($field_info, $column, $val);
++          }
++          else {
++            foreach ($val as $oper => $ovalue) {
++              $condition = $this->conditionValueComponents(array($oper => $ovalue));
++              $query->fieldCondition($field_info, $column, $condition['value'], $condition['operator']);
++            }
++          }
+         }
+       }
+       else {
+         // Just pick the first field column for the operation.
+         $columns = array_keys($field_info['columns']);
+         $column = $columns[0];
+-        $query->$operation($field_info, $column, $value);
++        $condition = $this->conditionValueComponents($value);
++        $query->fieldCondition($field_info, $column, $condition['value'], $condition['operator']);
++      }
++    }
++  }
++
++  protected function conditionValueComponents($value) {
++    $allowed_operators = array(
++      // Orders.
++      'le' => '<=',
++      'lt' => '<',
++      'gt' => '>',
++      'ge' => '>=',
++      // Equality.
++      'eq' => '=',
++      'ne' => '<>',
++      // Strings.
++      'sw' => 'STARTS_WITH',
++      'ct' => 'CONTAINS',
++    );
++
++    if (variable_get('restws_filter_operators', TRUE)) {
++      if (is_array($value)) {
++        $operator = key($value);
++        $value = reset($value);
++      }
++      else {
++        $operator = 'eq';
++      }
++
++      if (!isset($allowed_operators[$operator])) {
++        throw new RestWSException(sprintf('"%s" is not a valid operator.', $operator), 400);
+       }
+     }
++    else {
++      $operator = 'eq';
++    }
++
++    return array(
++      'operator' => $allowed_operators[$operator],
++      'value' => $value,
++    );
+   }
+ 
+   /**
+diff --git a/restws.module b/restws.module
+index 17520ec..7fabb1b 100644
+--- a/restws.module
++++ b/restws.module
+@@ -173,6 +173,8 @@ class RestWSException extends Exception {
+   public function getHTTPError() {
+     $code = $this->getCode();
+     switch ($code) {
++      case 400:
++        return '400 Bad Request';
+       case 403:
+         return '403 Forbidden';
+ 
+diff --git a/restws.test b/restws.test
+index 3069f5d..253a9ae 100644
+--- a/restws.test
++++ b/restws.test
+@@ -441,6 +441,40 @@ class RestWSTestCase extends DrupalWebTestCase {
+     $this->assertEqual($nodes['list'][1]['title'], 'node3', 'Right node title was received.');
+     $this->assertEqual($nodes['list'][1]['field_tags'][0]['id'], 1, 'Node has taxonomy term.');
+ 
++    // TODO: tests for field-conditions.
++    variable_set('restws_filter_operators', TRUE);
++
++    // Query for nodes where title is greater than 'title3'
++    $result = $this->httpRequest('node.json', 'GET', $account, array('title' => array('gt' => 'node3')));
++    $nodes = drupal_json_decode($result);
++    $this->assertEqual($nodes['list'][0]['title'], 'node4', 'Right node title was recieved.');
++    $this->assertEqual(count($nodes['list']), 1, 'The correct number of nodes was recieved.');
++
++    // Query for nodes where title is less than 'title1'
++    $result = $this->httpRequest('node.json', 'GET', $account, array('title' => array('lt' => 'node1')));
++    $nodes = drupal_json_decode($result);
++    $this->assertEqual($nodes['list'][0]['title'], 'node0', 'Right node title was recieved.');
++    $this->assertEqual(count($nodes['list']), 1, 'The correct number of nodes was recieved.');
++
++    // Query for nodes where title is not 'title2'
++    $result = $this->httpRequest('node.json', 'GET', $account, array('title' => array('ne' => 'node2')));
++    $nodes = drupal_json_decode($result);
++    foreach ($nodes['list'] as $node) {
++      $this->assertNotEqual($node['title'], 'node2', 'Right node title was recieved.');
++    }
++    $this->assertEqual(count($nodes['list']), 4, 'The correct number of nodes was recieved.');
++
++    // Query for nodes where title contains 'tle2'
++    $result = $this->httpRequest('node.json', 'GET', $account, array('title' => array('ct' => 'ode2')));
++    $nodes = drupal_json_decode($result);
++    $this->assertEqual($nodes['list'][0]['title'], 'node2', 'Right node title was recieved.');
++    $this->assertEqual(count($nodes['list']), 1, 'The correct number of nodes was recieved.');
++
++    // Query for nodes where title starts with 'title'
++    $result = $this->httpRequest('node.json', 'GET', $account, array('title' => array('sw' => 'node')));
++    $nodes = drupal_json_decode($result);
++    $this->assertEqual(count($nodes['list']), 5, 'The correct number of nodes was recieved.');
++
+     // Test paging and limiting.
+     $result = $this->httpRequest('node.json', 'GET', $account, array('limit' => 2, 'page' => 0));
+     $result_nodes = drupal_json_decode($result);
