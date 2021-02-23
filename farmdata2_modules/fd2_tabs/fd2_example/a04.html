@@ -37,9 +37,15 @@
 <br>
 <br>
 
-<button class="button" @click="hlogs.push(newHlog)">
+<button class="button" @click="saveRpt">
     Generate Report
 </button>
+
+<!-- <label for = “name”>Name:</label>
+<input type="text" id="name" v-model="newName">
+<button class="button" @click="saveName">Add Name</button>
+-->
+
 
 <hr>
     <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
@@ -61,9 +67,9 @@
     <th>Yield</th>
 </tr>
 <tr v-for="hlog in hlogs" >
-    <td >{{StartDate}}</td>
-    <td >{{ rptField }}</td>
-    <td >{{ rptCrop }}</td>
+    <td >{{hlog.date}}</td>
+    <td >{{ hlog.field }}</td>
+    <td >{{ hlog.crop }}</td>
     <td >{{ hlog.yeild }}</td>
 </tr>
 </table>
@@ -91,7 +97,20 @@
                  ],
                  hlogs : [
                  ]
+        },
+        methods: {
+            saveRpt: function() {
+            if (this.hlogs.length == 0) {
+               this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+            } else if (this.hlogs.length == 1){
+                this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+            } else if (this.hlogs.length == 2){
+                this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+            }else if (this.hlogs.length == 3){
+                this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+            }
         }
+    }
     });
 Vue.config.devtools = true;
 </script>
