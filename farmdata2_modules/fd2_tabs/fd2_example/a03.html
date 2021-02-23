@@ -14,16 +14,12 @@
     		<br>
     			<label>Crop:
 				<select id="crop" name="crop" v-model="reportCrop">
-					<option>Brocoli</option>
-					<option selected>Kale</option>
-					<option>Peas</option>
+					<li v-for="crop in crops">{{ crops }}</li>
 				</select>
 			</label>
 			<label>Field:
 				<select id="field" name="field">
-					<option selected>All</option>
-					<option>Chuau-1</option>
-					<option>SQ7</option>
+					<li v-for="field in fields">{{ fields }}</li>
 				</select>
 			</label>
 		<br> 
@@ -69,7 +65,17 @@
 					header: "My Mock Report",
 					startDate: "2018-05-01",
 					endDate: "2018-05-15",
-					reportCrop: "Kale",
+                    reportCrop: "Kale",
+                    crops: [
+                        "Broccoli",
+                        "Kale",
+                        "Peas",
+                    ],
+                    fields: [
+                        "All",
+                        "Chuau-1",
+                        "SQ7",
+                    ],
 				}
 			});
 		</script>
