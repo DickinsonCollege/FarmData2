@@ -13,12 +13,12 @@
 
     <input type="date" id="start" name="start"
        v-model="StartDate"
-       min="2014-01-01" max="2022-01-01">       
+       min="2014-01-01" max="2022-01-01" :max="EndDate">       
     <label for="end">End date:</label>
 
     <input type="date" id="end" name="end"
        v-model="EndDate"
-       min="2018-05-01" max="2022-01-01">
+       min="2018-05-01" max="2022-01-01" :min="StartDate">
 <br>
 <br>
     <label for = "simple">Crop:</label>
@@ -44,7 +44,7 @@
 <!--
 <label for = “name”>Name:</label>
 <input type="text" id="name" v-model="newName">
-<button class="button" @click="saveName">Add Name</button>
+<button class="button" @click="saveName" :disabled="newName.length === 0">Add Name</button>
 
 <li v-for='(name,index) in names'><button type='button' @click='deleteName'>Delete</button></li>
 <li v-if="names.length === 0">No names yet!</li>
