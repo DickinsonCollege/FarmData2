@@ -22,7 +22,7 @@
         <option v-for="field in fields" >{{field}}</option>
     </select>
     <br><br>
-    <button type="button" class="btn btn-primary" @click="harvestLog.push(HLog)" id="generate-report">Generate Report</button>
+    <button type="button" class="btn btn-primary" @click="generateBtn" id="generate-report">Generate Report</button>
     <hr>
     
     <h1>{{rptTitle ? rptTitle: 'Mock Harvest Report'}}</h1>
@@ -58,7 +58,18 @@
         crops: ['Broccoli', 'Kale', 'Peas'],
         fields: ['All', 'Chuau1', 'SQ7'],
         harvestLog:[],
-        HLog: {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10 Bunches'}
+        HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10 Bunches'},
+        {Date: '09/02/2018', Field: 'All', Crop:'Broccoli', Yield: '7 Bunches'},
+        {Date: '11/02/2018', Field: 'SQ7', Crop:'Peas', Yield: '10 Bunches'}
+        ]
+        },
+
+        methods:{
+            generateBtn: function(){
+                if(this.harvestLog.length < 3){
+                    this.harvestLog.push(this.HLog[this.harvestLog.length])
+                }
+            }
         }
     });
     Vue.config.devtools = true;
