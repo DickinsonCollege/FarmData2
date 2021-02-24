@@ -32,21 +32,22 @@
         <li><b>End: {{rptEnd}}</b></li>
         <li><b>Crop: {{rptCrop}}</b></li>
     </ul>
-     <table border=1>
-  <tr>
-    <th>Date</th>
-    <th>Field</th>
-    <th>Crop</th>
-    <th>Yield</th>
-  </tr>
-  <tr v-for="(log,index) in harvestLog">
-    <td>{{log.Date}}</td>
-    <td>{{log.Field}}</td>
-    <td>{{log.Crop}}</td>
-    <td>{{log.Yield}}</td>
-    <td><button type="button"  @click="deleteLog(index)">Delete </button></td>
-  </tr>
-</table> 
+     <p v-if="harvestLog.length == 0">No matching records</p>
+     <table border=1 v-else>
+        <tr>
+            <th>Date</th>
+            <th>Field</th>
+            <th>Crop</th>
+            <th>Yield</th>
+        </tr>
+        <tr v-for="(log,index) in harvestLog">
+            <td>{{log.Date}}</td>
+            <td>{{log.Field}}</td>
+            <td>{{log.Crop}}</td>
+            <td>{{log.Yield}}</td>
+            <td><button type="button"  @click="deleteLog(index)">Delete </button></td>
+        </tr>
+    </table> 
 </div>
 <script>
     var reportVue = new Vue({
