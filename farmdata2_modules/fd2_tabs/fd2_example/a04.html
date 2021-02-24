@@ -39,11 +39,12 @@
     <th>Crop</th>
     <th>Yield</th>
   </tr>
-  <tr v-for="log in harvestLog">
+  <tr v-for="(log,index) in harvestLog">
     <td>{{log.Date}}</td>
     <td>{{log.Field}}</td>
     <td>{{log.Crop}}</td>
     <td>{{log.Yield}}</td>
+    <td><button type="button"  @click="deleteLog(index)">Delete </button></td>
   </tr>
 </table> 
 </div>
@@ -69,7 +70,11 @@
                 if(this.harvestLog.length < 3){
                     this.harvestLog.push(this.HLog[this.harvestLog.length])
                 }
+            },
+            deleteLog: function(index){
+                this.harvestLog.splice(index,1);
             }
+
         }
     });
     Vue.config.devtools = true;
