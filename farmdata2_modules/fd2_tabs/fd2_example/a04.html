@@ -25,6 +25,7 @@
     <button type="button" class="btn btn-primary" @click="generateBtn" id="generate-report">Generate Report</button>
     <hr>
     
+    <div v-if="state=='visible'">
     <h1>{{rptTitle ? rptTitle: 'Mock Harvest Report'}}</h1>
     <p>Details:</p>
     <ul>
@@ -48,7 +49,8 @@
             <td><button type="button"  @click="deleteLog(index)">Delete </button></td>
         </tr>
     </table> 
-</div>
+    </div>
+    </div>
 <script>
     var reportVue = new Vue({
         el: '#report-bind',
@@ -57,6 +59,7 @@
         rptStart:'',
         rptEnd:'',
         rptCrop:'',
+        state:'inVisible',
         crops: ['Broccoli', 'Kale', 'Peas'],
         fields: ['All', 'Chuau1', 'SQ7'],
         harvestLog:[],
@@ -69,6 +72,9 @@
         methods:{
             generateBtn: function(){
                 if(this.harvestLog.length < 3){
+                    if(this.harvestLog.length ==0){
+                        this.state='visible';
+                    }
                     this.harvestLog.push(this.HLog[this.harvestLog.length])
                 }
             },
