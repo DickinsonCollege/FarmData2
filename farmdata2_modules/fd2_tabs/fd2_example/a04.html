@@ -26,7 +26,7 @@
 
     <br>
 
-    <button type="button" @click="harvestLogs.push('')">
+    <button type="button" @click="generateReport">
         Generate Report
     </button>
 
@@ -67,6 +67,18 @@
                 Crops:['Broccoli','Kale','Peas'],
                 Fields:['All','Chuau-1','SQ7'],
                 harvestLogs:[]
+            },
+
+            methods:{
+                generateReport:function() {
+                    if (this.harvestLogs.length==0){
+                        this.harvestLogs.push({date: '05/03/2018', field: 'SQ7', crop: 'Broccoli', yield: '6 bunches'});
+                    } else if(this.harvestLogs.length==1){
+                        this.harvestLogs.push({date: '05/10/2018', field: 'All', crop: 'Peas', yield: '8 bunches'});
+                    } else{
+                        
+                    }
+                }
             }
         });
         Vue.config.devtools = true;
