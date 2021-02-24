@@ -49,10 +49,10 @@
 		</div>
 
 		<script>
-			var a03vue = New Vue({
+			var a03vue = new Vue({
 				el: '#a03vue',
 				data: {
-					Title: null
+					Title: null,
 					header: "My Mock Report",
 					startDate: "2018-05-01",
 					endDate: "2018-05-15",
@@ -72,7 +72,8 @@
                         {date2: "05/05/2018", field2: "SQ7", crop2: "Kale", yield2: "7 Bunches"}
                     ]
 				}
-			});
+            });
+            Vue.config.devtools = true;
 		</script>
 
 	</body>
