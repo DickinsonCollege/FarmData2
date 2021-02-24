@@ -22,7 +22,7 @@
         <option v-for="field in fields" >{{field}}</option>
     </select>
     <br><br>
-    <button type="button" id="generate-report">Generate Report</button>
+    <button type="button" class="btn btn-primary" @click="harvestLog.push(HLog)" id="generate-report">Generate Report</button>
     <hr>
     
     <h1>{{rptTitle ? rptTitle: 'Mock Harvest Report'}}</h1>
@@ -39,17 +39,11 @@
     <th>Crop</th>
     <th>Yield</th>
   </tr>
-  <tr>
-    <td>{{harvestLog[0].Date}}</td>
-    <td>{{harvestLog[0].Field}}</td>
-    <td>{{harvestLog[0].Crop}}</td>
-    <td>{{harvestLog[0].Yield}}</td>
-  </tr>
-  <tr>
-     <td>{{harvestLog[1].Date}}</td>
-    <td>{{harvestLog[1].Field}}</td>
-    <td>{{harvestLog[1].Crop}}</td>
-    <td>{{harvestLog[1].Yield}}</td>
+  <tr v-for="log in harvestLog">
+    <td>{{log.Date}}</td>
+    <td>{{log.Field}}</td>
+    <td>{{log.Crop}}</td>
+    <td>{{log.Yield}}</td>
   </tr>
 </table> 
 </div>
@@ -63,9 +57,8 @@
         rptCrop:'',
         crops: ['Broccoli', 'Kale', 'Peas'],
         fields: ['All', 'Chuau1', 'SQ7'],
-        harvestLog:[
-                {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10 Bunches'},
-                {Date: '05/05/2018', Field: 'All', Crop:'Peas', Yield: '7 Bunches'} ]
+        harvestLog:[],
+        HLog: {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10 Bunches'}
         }
     });
     Vue.config.devtools = true;
