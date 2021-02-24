@@ -48,6 +48,7 @@
 
 <li v-for='(name,index) in names'><button type='button' @click='deleteName'>Delete</button></li>
 <li v-if="names.length === 0">No names yet!</li>
+<p>{{"Total Name Length: " + totalNameLength}}</p>
 -->
 
 <div v-if="state === 'edit'">
@@ -80,6 +81,9 @@
 </tr>
 </table>
 <p v-if="hlogs.length === 0">No matching records.</p>
+<br>
+<br>
+<p>{{"Total Yeild: " + totalYeild}}</p>
 <!--
 <div class="header">
     <button v-if="state === 'default'" class="button" @click="changestate('edit')">Show Cards</button>
@@ -115,6 +119,20 @@
                  ],
                  hlogs : [
                  ]
+        },
+        computed: {
+            totalYeild(){
+            sum= 0;
+            for(let i = 0; i < this.hlogs.length; i++){
+                if(this.hlogs.length === 0){
+                    return 0;
+                }else{
+                yeild = parseInt(this.hlogs[i].yeild.split(" ")[0]);
+                sum = sum + yeild;
+                }
+            }
+            return sum;
+          },
         },
         methods: {
             saveRpt: function() {
