@@ -1,0 +1,81 @@
+<body>
+    <div id="vue" v-cloak>
+    <h1>Harvest Report</h1>
+    <p>This page is a <i>mockup</i> of a form for generating a harvest report</p>
+    <label for="title">Title:</label>
+    <input type="text" id="title" v-model="header">
+
+    <br>
+
+    <label for="start">Start:</label>
+    <input type="date" id="start" v-model="reportDateStart" min="2014-01-01" max="2022-01-01">
+
+    <label for="end">End:</label>
+    <input type="date" id="end" v-model="reportDateEnd" min="2018-05-01" max="2022-01-01">
+
+    <br>
+
+    <label for="crop">Crop:</label>
+    <select id="crops" name="crops" v-model="reportCrop">
+            <option v-for="crop in selectCrop">{{ crop }}</option>
+    </select>
+
+    <label for="field">Field:</label>
+    <select id="field" name="field">
+            <option v-for="field in selectField">{{ field }}</option>
+    </select>
+
+    <button type="button">Generate Report</button>
+    <hr>
+
+    
+        <h2>{{ header ? header: "Mock Harvest Report" }}</h2>
+        <p>Details:</p>
+        <ul>
+            <li><strong>Start:</strong> {{reportDateStart}} </li>
+            <br>
+            <li><strong>End:</strong> {{reportDateEnd}} </li>
+            <br>
+            <li><strong>Crop:</strong> {{reportCrop}} </li>
+        </ul>
+        <br>
+
+        <table border=1>
+            <tr>
+                <th>Date</th>
+                <th>Field</th>
+                <th>Crop</th>
+                <th>Yield</th>
+            </tr>
+            <tr v-for="harvest in reportHarvest">
+                <td> {{harvest.date}} </td>
+                <td> {{harvest.field}} </td>
+                <td> {{harvest.crop}} </td>
+                <td> {{harvest.yield}} </td>
+            </tr>
+
+        </table>
+
+        <p>Boo Sung Kim</p>
+    </div>
+
+    <script>
+        var vueObject = new Vue({
+            el: '#vue',
+            data:{
+                header: 'My Mock Report',
+                reportDateStart: '2018-05-01',
+                reportDateEnd: '2018-05-15',
+                reportCrop: 'Kale',
+                selectCrop: [ 'Broccoli', 'Kale', 'Peas'],
+                selectField: [ 'All', 'Chuau', 'SQ7'],
+                reportHarvest: [
+                    {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
+                    {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 bunches'}
+                ]
+            }
+        })
+        Vue.config.devtools = true;
+    </script>
+
+</body>
