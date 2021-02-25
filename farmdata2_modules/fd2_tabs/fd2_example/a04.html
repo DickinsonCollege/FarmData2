@@ -25,7 +25,7 @@
             <option v-for="field in selectField">{{ field }}</option>
     </select>
 
-    <button type="btn btn-primary" v-on:click="reportHarvest.push(newReport)">Generate Report</button>
+    <button class="btn btn-primary" @click="generateReport">Generate Report</button>
     <hr>
 
     
@@ -70,9 +70,24 @@
                 selectCrop: [ 'Broccoli', 'Kale', 'Peas'],
                 selectField: [ 'All', 'Chuau', 'SQ7'],
                 reportHarvest: [],
-                newReport: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
+                newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
+                newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
+                newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
+            },
+            methods:{
+                generateReport: function(){
+                    if (this.reportHarvest.length == 0){
+                        this.reportHarvest.push(this.newReport01);
+                    }
+                    else if (this.reportHarvest.length == 1){
+                        this.reportHarvest.push(this.newReport02);
+                    }
+                    else if (this.reportHarvest.length == 2) {
+                        this.reportHarvest.push(this.newReport03);
+                    }
+                }
             }
-        })
+        });
         Vue.config.devtools = true;
     </script>
 
