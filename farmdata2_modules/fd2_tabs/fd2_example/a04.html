@@ -47,12 +47,16 @@
             <th>Field</th>
             <th>Crop</th>
             <th>Yield</th>
+            <th>Delete</th>
         </tr>
-        <tr v-for="data in harvestLogs">
+        <tr v-for="(data, dataIndex) in harvestLogs">
             <td>{{data.date}}</td>
             <td>{{data.field}}</td>
             <td>{{data.crop}}</td>
             <td>{{data.yield}}</td>
+            <td>
+                <button type="button" @click="deleteLog">Delete</button>
+            </td>
         </tr>
     </table>
     </div>
@@ -62,8 +66,8 @@
             data:{
                 reportTitle: '',
                 reportStartDate:'2018-05-01',
-                reportEndDate: '2018-05-15',
-                reportCrop: 'Kale',
+                reportEndDate:'2018-05-15',
+                reportCrop:'Kale',
                 Crops:['Broccoli','Kale','Peas'],
                 Fields:['All','Chuau-1','SQ7'],
                 harvestLogs:[]
@@ -76,8 +80,12 @@
                     } else if(this.harvestLogs.length==1){
                         this.harvestLogs.push({date: '05/10/2018', field: 'All', crop: 'Peas', yield: '8 bunches'});
                     } else{
-                        
+
                     }
+                },
+                
+                deleteLog:function(dataIndex){
+                    this.harvestLogs.splice(dataIndex,1);
                 }
             }
         });
