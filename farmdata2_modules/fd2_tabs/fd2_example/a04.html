@@ -24,7 +24,7 @@
     <br><br>
     <button type="button" class="btn btn-primary" @click="generateBtn" id="generate-report">Generate Report</button>
     <hr>
-    
+   
     <div v-if="state=='visible'">
     <h1>{{rptTitle ? rptTitle: 'Mock Harvest Report'}}</h1>
     <p>Details:</p>
@@ -49,7 +49,9 @@
             <td><button type="button"  @click="deleteLog(index)">Delete </button></td>
         </tr>
     </table> 
+    <p>Total Yield: {{totalYield}} BUNCH(s)</p>
     </div>
+
     </div>
 <script>
     var reportVue = new Vue({
@@ -68,6 +70,17 @@
         {Date: '11/02/2018', Field: 'SQ7', Crop:'Peas', Yield: '10 Bunches'}
         ]
         },
+         computed: {
+            totalYield: function(){
+                var total = 0;
+                for(let i = 0; i < this.harvestLog.length; i++){
+                let yield = parseInt(this.harvestLog[i].Yield.split(" ")[0]);
+                total = total + yield;
+                }
+                return total;
+            }
+        },
+
 
         methods:{
             generateBtn: function(){
