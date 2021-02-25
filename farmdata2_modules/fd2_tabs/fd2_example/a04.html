@@ -38,7 +38,8 @@
                 <option v-for="field in fieldChoices">{{field}}</option>
             </select><br> <br>
 
-            <button type="button">Generate Report</button><br>
+            <button type="btn btn-primary" v-on:click="harvestReport.push(newReport)">Generate Report</button><br>
+            
          <hr>
 
             <h2>{{ header ? header : 'Mock Harvest Report'}}</h2>
@@ -70,13 +71,7 @@
             </table>
             <br>
      </div>
-        <!--<div id="farm">
-        <style>
-        [v-cloak] {
-            display:none;
-        }
-        </style> -->
-
+        
         <script>
         var fd2 = new Vue({
             el: '#farm',
@@ -87,10 +82,9 @@
               crop: "Kale",
               cropChoices: ['Kale', 'Broccoli', 'Peas'],
               fieldChoices: ['All', 'Chuau-1', 'SQ-7'],
-              harvestReport: [
-                  {date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches'},
-                  {date:'05/02/2018', field:'SQ7', crop:'Kale', Yield:'7 Bunches'}
-              ]
+              harvestReport: [],
+              newReport:
+                  {date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches'}
             }
         });
         Vue.config.devtools = true;
