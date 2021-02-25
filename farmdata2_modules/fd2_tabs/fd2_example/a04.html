@@ -41,7 +41,9 @@
         <li><Strong>Crop:{{reportCrop}}</Strong></li>
     </ul>
     <br>
-    <table border=1>
+
+    <p v-if="harvestLogs.length===0">There are no matching records.</p>
+    <table v-if="harvestLogs.length!==0" border=1>
         <tr>
             <th>Date</th>
             <th>Field</th>
