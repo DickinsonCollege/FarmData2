@@ -9,9 +9,9 @@
     <br>
 
     <lable for="start">Start:</lable>
-    <input type="date" id="start" name="start date" v-model="reportStartDate" min="2014-01-01" max="2022-01-01">
+    <input type="date" id="start" name="start date" v-model="reportStartDate" min="2014-01-01" :max=reportEndDate>
     <label for="end">End:</label>
-    <input type="date" id="end" name="end date" v-model="reportEndDate" min="2018-05-01" max="2022-01-01">
+    <input type="date" id="end" name="end date" v-model="reportEndDate" :min=reportStartDate max="2022-01-01">
     
     <br>
 
