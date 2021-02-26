@@ -59,6 +59,7 @@
             <th><strong>Field </strong></th>
             <th><strong>Crop </strong></th>
             <th><strong>Yield </strong></th>
+            <th><strong>Delete</strong></th>
          </tr>
 
           <tr v-for="harvest in harvestReport">
@@ -66,6 +67,7 @@
               <td>{{harvest.field}}</td>
               <td>{{harvest.crop}}</td>
               <td>{{harvest.Yield}}</td>
+              <td> <button type="button" @click="deleteReport">Delete</button></td>
           </tr>  
 
             </table>
@@ -87,14 +89,17 @@
             methods: {
                 createReport: function() {
                     if(this.harvestReport.length == 0) {
-                        this.harvestReport.push({date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches'})
+                        this.harvestReport.push({date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches', index:0})
                     } else if(this.harvestReport.length == 1) {
-                        this.harvestReport.push({date:'05/19/2018', field:'SQ-7', crop:'Broccoli', Yield:'9 Bunches'})
+                        this.harvestReport.push({date:'05/19/2018', field:'SQ-7', crop:'Broccoli', Yield:'9 Bunches', index:1})
                     } else if(this.harvestReport.length == 2) {
-                        this.harvestReport.push({date:'05/22/2018', field:'SQ-7', crop:'Peas', Yield:'8 Bunches'})
+                        this.harvestReport.push({date:'05/22/2018', field:'SQ-7', crop:'Peas', Yield:'8 Bunches', index:2})
                     } else {
                        //do not add anything 
                     }
+                },
+                deleteReport:  function(reportIndex) {
+                    this.harvestReport.splice(reportIndex, 1);
                 }
             }
         });
