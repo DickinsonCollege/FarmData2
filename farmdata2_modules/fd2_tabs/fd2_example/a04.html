@@ -38,7 +38,7 @@
                 <option v-for="field in fieldChoices">{{field}}</option>
             </select><br> <br>
 
-            <button type="btn btn-primary" v-on:click="harvestReport.push(newReport)">Generate Report</button><br>
+            <button type="btn btn-primary" @click="createReport">Generate Report</button><br>
             
          <hr>
 
@@ -83,8 +83,19 @@
               cropChoices: ['Kale', 'Broccoli', 'Peas'],
               fieldChoices: ['All', 'Chuau-1', 'SQ-7'],
               harvestReport: [],
-              newReport:
-                  {date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches'}
+            },
+            methods: {
+                createReport: function() {
+                    if(this.harvestReport.length == 0) {
+                        this.harvestReport.push({date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches'})
+                    } else if(this.harvestReport.length == 1) {
+                        this.harvestReport.push({date:'05/19/2018', field:'SQ-7', crop:'Broccoli', Yield:'9 Bunches'})
+                    } else if(this.harvestReport.length == 2) {
+                        this.harvestReport.push({date:'05/22/2018', field:'SQ-7', crop:'Peas', Yield:'8 Bunches'})
+                    } else {
+                       //do not add anything 
+                    }
+                }
             }
         });
         Vue.config.devtools = true;
