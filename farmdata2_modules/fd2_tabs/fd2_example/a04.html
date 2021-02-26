@@ -67,9 +67,12 @@
               <td>{{harvest.Yield}}</td>
               <td> <button type="button" @click="deleteReport">Delete</button></td>
           </tr>  
-
             </table>
+            
+            <p>Total Yield: {{calculateYield }}</p>
             </div>
+
+            
             <br>
      </div>
         
@@ -86,6 +89,16 @@
               harvestReport: [],
               rState: "hidden",
             },
+            computed: {
+                calculateYield() {
+                    let yield = 0;
+                    for(let i=0; i<this.harvestReport.length; i++) {
+                        let log = this.harvestReport[i];
+                        yield = yield + parseInt(log.yield.split("")[0]);
+                    }
+                    return yield;
+                }
+            },
             methods: {
                 createReport: function() {
                     if(this.harvestReport.length == 0) {
@@ -95,7 +108,7 @@
                     } else if(this.harvestReport.length == 2) {
                         this.harvestReport.push({date:'05/22/2018', field:'SQ-7', crop:'Peas', Yield:'8 Bunches', index:2})
                     } else {
-                       //do not add anything 
+                       
                     }
                 },
                 deleteReport:  function(reportIndex) {
@@ -104,7 +117,7 @@
                 reportState: function(visibility) {
                     this.rState = visibility;
                 }
-            }
+            },
         });
         Vue.config.devtools = true;
         </script>
