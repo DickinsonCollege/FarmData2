@@ -8,10 +8,10 @@
     <br>
 
     <label for="start">Start:</label>
-    <input type="date" id="start" v-model="reportDateStart" min="2014-01-01" max="2022-01-01">
+    <input type="date" id="start" v-model="reportDateStart" min="2014-01-01" :max="reportDateEnd">
 
     <label for="end">End:</label>
-    <input type="date" id="end" v-model="reportDateEnd" min="2018-05-01" max="2022-01-01">
+    <input type="date" id="end" v-model="reportDateEnd" :min="reportDateStart" max="2022-01-01">
 
     <br>
 
