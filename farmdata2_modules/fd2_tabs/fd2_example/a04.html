@@ -58,6 +58,9 @@
             </tr>
 
         </table>
+
+        <p>Total Yield: {{ calculateTotalYield }}</p>
+
     </div>
 
         <p>Boo Sung Kim</p>
@@ -96,6 +99,16 @@
                 },
                 toggleVisibility: function(newState){
                     this.visible = newState;
+                }
+            },
+            computed:{
+                calculateTotalYield(){
+                    var yield = 0;
+                    for(let step = 0; step < this.reportHarvest.length; step++){
+                        let log = this.reportHarvest[step];
+                        yield += parseInt(log.yield.split(" ")[0])
+                    }
+                    return yield;
                 }
             }
         });
