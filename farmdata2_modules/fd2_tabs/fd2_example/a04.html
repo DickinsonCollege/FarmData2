@@ -52,8 +52,9 @@
             <li><strong>Crop:</strong>{{ crop }}</li>
             </ul>
          </p>
-
-            <table border="1'">
+         
+            <p v-if="harvestReport.length==0">No harvest logs!</p>
+            <table border="1" v-if="harvestReport!=0">
          <tr>
             <th><strong>Date </strong></th>
             <th><strong>Field </strong></th>
