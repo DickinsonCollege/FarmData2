@@ -38,10 +38,11 @@
                 <option v-for="field in fieldChoices">{{field}}</option>
             </select><br> <br>
 
-            <button type="btn btn-primary" @click="createReport">Generate Report</button><br>
+            <button type="btn btn-primary" @click="createReport(); reportState('visible');">Generate Report</button><br>
             
          <hr>
 
+            <div v-if="rState === 'visible'">
             <h2>{{ header ? header : 'Mock Harvest Report'}}</h2>
         
          <br>
@@ -52,7 +53,7 @@
             <li><strong>Crop:</strong>{{ crop }}</li>
             </ul>
          </p>
-         
+
             <p v-if="harvestReport.length==0">No harvest logs!</p>
             <table border="1" v-if="harvestReport!=0">
          <tr>
@@ -72,6 +73,7 @@
           </tr>  
 
             </table>
+            </div>
             <br>
      </div>
         
@@ -86,6 +88,7 @@
               cropChoices: ['Kale', 'Broccoli', 'Peas'],
               fieldChoices: ['All', 'Chuau-1', 'SQ-7'],
               harvestReport: [],
+              rState: "hidden",
             },
             methods: {
                 createReport: function() {
@@ -101,6 +104,9 @@
                 },
                 deleteReport:  function(reportIndex) {
                     this.harvestReport.splice(reportIndex, 1);
+                },
+                reportState: function(visibility) {
+                    this.rState = visibility;
                 }
             }
         });
