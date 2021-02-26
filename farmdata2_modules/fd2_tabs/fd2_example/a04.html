@@ -40,7 +40,8 @@
         </ul>
         <br>
 
-        <table border=1>
+        <p v-if="reportHarvest.length === 0">No matching records.</p>
+        <table v-else border=1>
             <tr>
                 <th>Date</th>
                 <th>Field</th>
