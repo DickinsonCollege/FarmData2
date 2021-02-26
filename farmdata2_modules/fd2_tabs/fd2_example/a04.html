@@ -25,10 +25,10 @@
             <option v-for="field in selectField">{{ field }}</option>
     </select>
 
-    <button class="btn btn-primary" @click="generateReport">Generate Report</button>
+    <button class="btn btn-primary" @click="generateReport(); toggleVisibility('true')">Generate Report</button>
     <hr>
 
-    
+    <div v-if="this.visible === 'true'">
         <h2>{{ header ? header: "Mock Harvest Report" }}</h2>
         <p>Details:</p>
         <ul>
@@ -58,6 +58,7 @@
             </tr>
 
         </table>
+    </div>
 
         <p>Boo Sung Kim</p>
     </div>
@@ -66,6 +67,7 @@
         var vueObject = new Vue({
             el: '#vue',
             data:{
+                visible: "false",
                 header: 'My Mock Report',
                 reportDateStart: '2018-05-01',
                 reportDateEnd: '2018-05-15',
@@ -91,6 +93,9 @@
                 },
                 deleteReport: function(reportIndex){
                     this.reportHarvest.splice(reportIndex, 1);
+                },
+                toggleVisibility: function(newState){
+                    this.visible = newState;
                 }
             }
         });
