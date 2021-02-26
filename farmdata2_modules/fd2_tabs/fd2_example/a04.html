@@ -46,12 +46,14 @@
                 <th>Field</th>
                 <th>Crop</th>
                 <th>Yield</th>
+                <th>Delete</th>
             </tr>
-            <tr v-for="harvest in reportHarvest">
+            <tr v-for="(harvest, reportIndex) in reportHarvest">
                 <td> {{harvest.date}} </td>
                 <td> {{harvest.field}} </td>
                 <td> {{harvest.crop}} </td>
                 <td> {{harvest.yield}} </td>
+                <td><button type="button" @click="deleteReport(reportIndex)"> Delete </button></td>
             </tr>
 
         </table>
@@ -85,6 +87,9 @@
                     else if (this.reportHarvest.length == 2) {
                         this.reportHarvest.push(this.newReport03);
                     }
+                },
+                deleteReport: function(reportIndex){
+                    this.reportHarvest.splice(reportIndex, 1);
                 }
             }
         });
