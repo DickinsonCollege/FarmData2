@@ -18,14 +18,10 @@
             <br><br>
 
             <label for="start">Start:</label>
-            <input type="date" id="start" name="trip-start"
-                v-model="startDay"
-                min="2014-01-01" max="2022-01-01">
+            <input type="date" id="start" name="trip-start" v-model="startDay" min="2014-01-01" :max="endDay">
 
             <label for="end">End:</label>
-            <input type="date" id="start" name="trip-start"
-                v-model="endDay"
-                min="2015-05-01" max="2022-01-01">
+            <input type="date" id="start" name="trip-start" v-model="endDay" :min="startDay" max="2022-01-01">
             <br><br>
             
             <label for="crop">Crop</label>
