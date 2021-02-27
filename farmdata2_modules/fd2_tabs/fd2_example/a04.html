@@ -65,6 +65,7 @@
             <td><button @click="deleteReport(dataIndex)">Delete</button></td>
         </tr>
     </table>
+    <p>Total Yield: {{ computeTotalYield }}</p>
     </div>
     </div>
         <script>
@@ -102,7 +103,17 @@
             setTableState: function(state){
                   this.tableState = state;
               }
-        }
+          },
+          computed: {
+              computeTotalYield: function(){
+                  let totalYield = 0
+                  for (let i = 0; i < this.reportTable.length; i++){
+                    let yield = parseInt(this.reportTable[i].yield.split(" ")[0])
+                    totalYield += yield
+                  }
+                  return totalYield;
+              }
+            }
         });
         Vue.config.devtools = true;
     </script>
