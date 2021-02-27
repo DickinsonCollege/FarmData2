@@ -28,10 +28,11 @@
     </select>
     <br>
     <br>
-    <button type="button" type="btn btn-primary" v-on:click="generateReport">
+    <button type="button" type="btn btn-primary" v-on:click="generateReport(), setTableState('show')">
     Generate Report
     </button>
 
+     <div id="reportTable" v-if="this.tableState === 'show'">
      <div v-cloak>
         <h1>{{reportTitle ? reportTitle : 'Mock Harvest Report'}}</h1>
     </div>
@@ -47,7 +48,8 @@
 
     <br>
         <p v-if="reportTable.length === 0">No matching records</p>
-        <table v-else border=1>
+
+        <table  id="reportTable" v-else border=1>
         <tr>
             <th>Date</th>
             <th>Field</th>
@@ -64,6 +66,7 @@
         </tr>
     </table>
     </div>
+    </div>
         <script>
           var report = new Vue({
             el: '#report',
@@ -79,6 +82,7 @@
               newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
               newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
               newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
+               tableState: 'hide',
           },
           methods:{
                 generateReport: function(){
@@ -94,7 +98,10 @@
                 },
                  deleteReport: function(dataIndex){
                     this.reportTable.splice(dataIndex, 1);
-            }
+            },
+            setTableState: function(state){
+                  this.tableState = state;
+              }
         }
         });
         Vue.config.devtools = true;
