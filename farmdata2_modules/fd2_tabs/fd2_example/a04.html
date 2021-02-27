@@ -52,12 +52,14 @@
             <th>Field</th>
             <th>Crop</th>
             <th>Yield</th>
+            <th>Delete</th>
         </tr>
-        <tr v-for="data in reportTable">
+        <tr v-for="(data, dataIndex) in reportTable">
             <td>{{data.date}}</td>
             <td>{{data.field}}</td>
             <td>{{data.crop}}</td>
             <td>{{data.yield}}</td>
+            <td><button @click="deleteReport(dataIndex)">Delete</button></td>
         </tr>
     </table>
     </div>
@@ -88,8 +90,11 @@
                     else if (this.reportTable.length == 2) {
                         this.reportTable.push(this.newReport03);
                     }
-                }
+                },
+                 deleteReport: function(dataIndex){
+                    this.reportTable.splice(dataIndex, 1);
             }
+        }
         });
         Vue.config.devtools = true;
     </script>
