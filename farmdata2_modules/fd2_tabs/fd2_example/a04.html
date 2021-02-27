@@ -46,7 +46,8 @@
     </ul>
 
     <br>
-    <table border=1>
+        <p v-if="reportTable.length === 0">No matching records</p>
+        <table v-else border=1>
         <tr>
             <th>Date</th>
             <th>Field</th>
