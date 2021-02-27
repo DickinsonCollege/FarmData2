@@ -28,7 +28,7 @@
     </select>
     <br>
     <br>
-    <button type="button" type="btn btn-primary" v-on:click="reportTable.push(newReport)">
+    <button type="button" type="btn btn-primary" v-on:click="generateReport">
     Generate Report
     </button>
 
@@ -73,9 +73,23 @@
               crops: ['Broccoli', 'Kale', 'Peas'], 
               fields: ['All', 'Chuau-7', 'SQ7'],
               reportTable: [],
-              newReport:
-                  {date:'19/07/2018', field:'Chuau-1', crop:'Broccoli', yield:'7 Bunches'}
-          }
+              newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
+              newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
+              newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
+          },
+          methods:{
+                generateReport: function(){
+                    if (this.reportTable.length == 0){
+                        this.reportTable.push(this.newReport01);
+                    }
+                    else if (this.reportTable.length == 1){
+                        this.reportTable.push(this.newReport02);
+                    }
+                    else if (this.reportTable.length == 2) {
+                        this.reportTable.push(this.newReport03);
+                    }
+                }
+            }
         });
         Vue.config.devtools = true;
     </script>
