@@ -7,71 +7,74 @@
         <input type="text" id="title" v-model="header">
     
     
-    <p>This page is a <i>mockup</i> of a form generating a harvest report<br> This is an experiment done by 
+        <p>This page is a <i>mockup</i> of a form generating a harvest report<br> This is an         experiment done by 
         Iris</p>
-    <!-- <label for="title">Title:</label> 
-    <input type="text" id="title" name="title" value="title"> -->
-    <br>
-    <label for="start">Start:</label>
-    <input type="date" id="start" name="start" min="2014-01-01" max="2022-01-01" v-model="start">
+        <!-- <label for="title">Title:</label> 
+        <input type="text" id="title" name="title" value="title"> -->
+        <br>
+        <label for="start">Start:</label>
+        <input type="date" id="start" name="start" min="2014-01-01" max="2022-01-01" v-model="start">
     
-    <label for="end">End:</label> 
-    <input type="date" id="end" name="end" min="2018-05-01" max="2022-01-01" v-model="end">
-     <br>
-    <label for="crop">Crop:</label>
-    <select id="crop" name="crop" v-model="crop">
-        <option v-for="item in cropOptions">{{ item }}</option>
-    </select>
+        <label for="end">End:</label> 
+        <input type="date" id="end" name="end" min="2018-05-01" max="2022-01-01" v-model="end">
+        <br>
+        <label for="crop">Crop:</label>
+        <select id="crop" name="crop" v-model="crop">
+            <option v-for="item in cropOptions">{{ item }}</option>
+        </select>
 
-    <label for="field">Field:</label>
-    <select id="field" name="feild">
-        <option v-for="item in fieldOptions">{{ item }}</option>
-        <!--<option selected>All</option>
-        <option>Chuau1</option>
-        <option>SQ7</option>-->
-    </select>
-    <br>
-    <button type="button">
-        Generate Report
-    </button>
+        <label for="field">Field:</label>
+        <select id="field" name="feild">
+            <option v-for="item in fieldOptions">{{ item }}</option>
+            <!--<option selected>All</option>
+            <option>Chuau1</option>
+            <option>SQ7</option>-->
+        </select>
+        <br>
+        <div class="add-item-form"> 
+           <button class="btn btn-primary" v-on:click="logsEmpty.push(rows[0])">
+                Generate Report
+            </button> 
+        </div>
+        
     
-    <hr>
-    <h2>{{ header ? header: 'My Mock Report' }}</h2>
+        <hr>
+        <h2>{{ header ? header: 'My Mock Report' }}</h2>
     
-    <p>Details:</p>
-    <ul>
-        <li>Start: {{ start }}</li>
-        <li>End: {{end}}</li>
-        <li>Crop: {{crop}}</li>
-    </ul>
-    <br>
-    <table border=1>
-        <tr>
-            <th>Date</th>
-            <th>Field</th>
-            <th>Crop</th>
-            <th>Yield</th>
-        </tr>
-        <tr v-for="row in rows">
-            <th>{{ row.date }}</th>
-            <th>{{ row.feild }}</th>
-            <th>{{ row.crop }}</th>
-            <th>{{ row.yield }}</th>
-        </tr>
+        <p>Details:</p>
+        <ul>
+            <li>Start: {{ start }}</li>
+            <li>End: {{end}}</li>
+            <li>Crop: {{crop}}</li>
+        </ul>
+        <br>
+        <table border=1>
+            <tr>
+                <th>Date</th>
+                <th>Field</th>
+                <th>Crop</th>
+                <th>Yield</th>
+            </tr>
+            <tr v-for="row in logsEmpty">
+                <th>{{ row.date }}</th>
+                <th>{{ row.feild }}</th>
+                <th>{{ row.crop }}</th>
+                <th>{{ row.yield }}</th>
+            </tr>
             
-        <!--<tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10 Bunches</td>
-        </tr>
-        <tr>
-            <td>05/02/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7 Bunches</td>
-        </tr>-->
-    </table>
+            <!--<tr>
+                <td>05/02/2018</td>
+                <td>Chuau-1</td>
+                <td>Kale</td>
+                <td>10 Bunches</td>
+            </tr>
+            <tr>
+                <td>05/02/2018</td>
+                <td>SQ7</td>
+                <td>Kale</td>
+                <td>7 Bunches</td>
+            </tr>-->
+        </table>
     </div>
     <script src="https://unpkg.com/vue"></script>
     <script>
@@ -84,6 +87,7 @@
                 cropOptions: ['Broccoli', 'Kale', 'Peas'],
                 fieldOptions: ['All', 'Chuau1', 'SQ7'],
                 header: null,
+                logsEmpty: [],
                 rows: [
                     {date: '05/02/2018', feild: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
                     {date: '05/02/2018', feild: 'SQ7', crop: 'Kale', yield: '7 Bunches'},
