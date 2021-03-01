@@ -122,6 +122,17 @@
                     changeReportVisibility: function(newVisibility) {
                         this.reportVisibility = newVisibility;
                     }
+                },
+                created() {
+                    axios.get('/taxonomy_term.json?area_type=field')
+                        .then(response => {
+                            this.fieldList = response.data.list.map(f => f.name);
+                            this.fieldList = this.fieldList.sort();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        }
+                    );
                 }
             });
             Vue.config.devtools = true;
