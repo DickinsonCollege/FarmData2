@@ -32,7 +32,7 @@
         </select>
         <br>
         <div class="add-item-form"> 
-           <button class="btn btn-primary" v-on:click="logsEmpty.push(rows[0])">
+           <button class="btn btn-primary" v-on:click="saveLogs">
                 Generate Report
             </button> 
         </div>
@@ -88,11 +88,25 @@
                 fieldOptions: ['All', 'Chuau1', 'SQ7'],
                 header: null,
                 logsEmpty: [],
+                num: 0,
                 rows: [
                     {date: '05/02/2018', feild: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
                     {date: '05/02/2018', feild: 'SQ7', crop: 'Kale', yield: '7 Bunches'},
                 ]
-			}
+            },
+            methods: {
+                saveLogs: function(){
+                    //this.logsEmpty.push(this.rows[row])
+                    //var num = 0;
+                    if((this.num+1) == this.rows.length){
+                        this.logsEmpty.push(this.rows[this.num]);
+                        this.num = 0;
+                    }else{
+                        this.logsEmpty.push(this.rows[this.num]);
+                        this.num = this.num + 1;
+                    }
+                }
+            }
         });
         Vue.config.devtools = true;
     </script>
