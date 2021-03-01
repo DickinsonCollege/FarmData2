@@ -54,12 +54,16 @@
                 <th>Field</th>
                 <th>Crop</th>
                 <th>Yield</th>
+                <th>Delete</th>
             </tr>
-            <tr v-for="row in logsEmpty">
+            <tr v-for="(row, index) in logsEmpty">
                 <th>{{ row.date }}</th>
                 <th>{{ row.feild }}</th>
                 <th>{{ row.crop }}</th>
                 <th>{{ row.yield }}</th>
+                <th>
+                    <button type='button' @click='deleteLog(index)'>Delete</button>
+                </th>
             </tr>
             
             <!--<tr>
@@ -105,8 +109,11 @@
                         this.logsEmpty.push(this.rows[this.num]);
                         this.num = this.num + 1;
                     }
-                }
-            }
+                },
+                deleteLog: function(logIndex){
+                    this.logsEmpty.splice(logIndex, 1);
+                },
+            },
         });
         Vue.config.devtools = true;
     </script>
