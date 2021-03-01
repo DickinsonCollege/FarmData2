@@ -133,6 +133,15 @@
                             console.log(error);
                         }
                     );
+                    axios.get('/farm_asset.json?type=planting')
+                        .then(response => {
+                            this.cropList = response.data.list.map(c => c.name);
+                            this.cropList = this.cropList.sort();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        }
+                    );
                 }
             });
             Vue.config.devtools = true;
