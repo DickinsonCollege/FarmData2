@@ -410,7 +410,8 @@ class RestWSEntityResourceController implements RestWSQueryResourceControllerInt
 
     // The bundle key is a special case.
     if ($property === 'bundle') {
-      $operation = 'entityCondition' . $operation;
+      //$operation = 'entityCondition' . $operation;
+      $operation = 'entityCondition' 
       $query->$operation($property, $value);
     }
     // If field is not set, then the filter is a property and we can extract
