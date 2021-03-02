@@ -90,11 +90,7 @@
                 rptCrop: "Kale",
                 rptField:"Chuau-1",
                 newHlog: {date: "", field: "", crop: "", yeild: "10 Bunches"},
-                crops: [
-                    "Broccoli",
-                    "Kale",
-                    "Peas",
-                 ],
+                crops: [],
                  fields: [],
                  hlogs : [
                  ]
@@ -134,6 +130,14 @@
      })
      .catch(error => {
        this.fields = ["Service Unavailable"];
+       console.log(error);
+     });
+     axios.get('/farm_asset.json?type=planting')
+     .then(response => {
+        this.crops = response.data.list.map(f => f.name).sort();
+     })
+     .catch(error => {
+       this.crops = ["Service Unavailable"];
        console.log(error);
      });
  },
