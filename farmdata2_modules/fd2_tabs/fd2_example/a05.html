@@ -1,0 +1,120 @@
+<body>
+    <div id="report">
+    <h1>Harvest Report</h1>
+     <p>This page is a <i>mockup</i> of a form for generating a harvest report.</p>
+    <hr>
+
+     <label for="reportTitle">Title: </label>
+     <input type="text" value="My Mock Report" v-model="reportTitle">
+    <br>
+    <br>
+    <label for="start" >Start date:</label>
+    <input type="date" id="start" name="start" value="2018-05-01"
+       min="2014-01-01" :max="reportEndDate" v-model="reportStartDate">
+    <label for="end">End date:</label>
+
+    <input type="date" id="end" name="end" value="2018-05-15"
+       min="2018-05-01" :min="reportStartDate" v-model="reportEndDate">
+    <br>
+    <br>
+    <label for = "crop">Crop:</label>
+    <select id="crop" name="crop"  v-model="reportCrop">
+         <option v-for="crop in crops">{{crop}}</option>
+    </select>
+
+    <label for = "field">Field:</label>
+    <select v-model="reportField">
+         <option v-for="field in fields">{{field}}</option>
+    </select>
+    <br>
+    <br>
+    <button type="button" type="btn btn-primary" v-on:click="generateReport(), setTableState('show')">
+    Generate Report
+    </button>
+
+     <div id="reportTable" v-if="this.tableState === 'show'">
+     <div v-cloak>
+        <h1>{{reportTitle ? reportTitle : 'Mock Harvest Report'}}</h1>
+    </div>
+    
+    <br>
+    <p>Details:</p>
+    <br>
+    <ul>
+            <li><strong>{{reportStartDate}}</strong></li>
+            <li><strong>{{reportEndDate}}</strong></li>
+            <li><strong>{{reportCrop}}</strong></li>
+    </ul>
+
+    <br>
+        <p v-if="reportTable.length === 0">No matching records</p>
+
+        <table  id="reportTable" v-else border=1>
+        <tr>
+            <th>Date</th>
+            <th>Field</th>
+            <th>Crop</th>
+            <th>Yield</th>
+            <th>Delete</th>
+        </tr>
+        <tr v-for="(data, dataIndex) in reportTable">
+            <td>{{data.date}}</td>
+            <td>{{data.field}}</td>
+            <td>{{data.crop}}</td>
+            <td>{{data.yield}}</td>
+            <td><button @click="deleteReport(dataIndex)">Delete</button></td>
+        </tr>
+    </table>
+    <p>Total Yield: {{ computeTotalYield }}</p>
+    </div>
+    </div>
+        <script>
+          var report = new Vue({
+            el: '#report',
+            data:{
+              reportTitle: '',
+              reportStartDate: '',
+              reportEndDate: '',
+              reportCrop: '',
+              reportField: '',
+              crops: ['Broccoli', 'Kale', 'Peas'], 
+              fields: ['All', 'Chuau-7', 'SQ7'],
+              reportTable: [],
+              newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
+              newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
+              newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
+               tableState: 'hide',
+          },
+          methods:{
+                generateReport: function(){
+                    if (this.reportTable.length == 0){
+                        this.reportTable.push(this.newReport01);
+                    }
+                    else if (this.reportTable.length == 1){
+                        this.reportTable.push(this.newReport02);
+                    }
+                    else if (this.reportTable.length == 2) {
+                        this.reportTable.push(this.newReport03);
+                    }
+                },
+                 deleteReport: function(dataIndex){
+                    this.reportTable.splice(dataIndex, 1);
+            },
+            setTableState: function(state){
+                  this.tableState = state;
+              }
+          },
+          computed: {
+              computeTotalYield: function(){
+                  let totalYield = 0
+                  for (let i = 0; i < this.reportTable.length; i++){
+                    let yield = parseInt(this.reportTable[i].yield.split(" ")[0])
+                    totalYield += yield
+                  }
+                  return totalYield;
+              }
+            }
+        });
+        Vue.config.devtools = true;
+    </script>
+</body>
