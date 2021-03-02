@@ -95,11 +95,7 @@
                     "Kale",
                     "Peas",
                  ],
-                 fields: [ 
-                     "Chuau-1",
-                     "All",
-                     "SQ7",
-                 ],
+                 fields: [],
                  hlogs : [
                  ]
         },
@@ -130,7 +126,18 @@
                 this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
             }
         }
-    }
+    },
+    	created() {
+    axios.get('/taxonomy_term.json?area_type=field')
+     .then(response => {
+        this.fields = response.data.list.map(f => f.name).sort();
+     })
+     .catch(error => {
+       this.fields = ["Service Unavailable"];
+       console.log(error);
+     });
+ },
+
 });
 Vue.config.devtools = true;
 </script>
