@@ -73,7 +73,7 @@
                 reportStartDate:'2018-05-01',
                 reportEndDate:'2018-05-15',
                 reportCrop:'Kale',
-                Crops:['Broccoli','Kale','Peas'],
+                Crops:[],
                 Fields:[],
                 harvestLogs:[]
             },
@@ -117,7 +117,17 @@
                     })
                     .catch(error=>{
                         console.log(error);
-                    });
+                    }
+                );
+                axios.get('/farm_asset.json?type=planting')
+                    .then(response => {
+                        this.Crops=response.data.list.map(c=>c.name).sort();
+                    })
+                    .catch(error=>{
+                        console.log(error);
+                    }
+            
+                );
             }
         });
         Vue.config.devtools = true;
