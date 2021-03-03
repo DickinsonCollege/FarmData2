@@ -48,7 +48,8 @@
             <li>Crop: {{crop}}</li>
         </ul>
         <br>
-        <table border=1>
+        <p v-if="rows.length == 0">There is no matching records.</p>
+        <table v-else border=1>
             <tr>
                 <th>Date</th>
                 <th>Field</th>
@@ -95,7 +96,7 @@
                 num: 0,
                 rows: [
                     {date: '05/02/2018', feild: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
-                    {date: '05/02/2018', feild: 'SQ7', crop: 'Kale', yield: '7 Bunches'},
+                    //{date: '05/02/2018', feild: 'SQ7', crop: 'Kale', yield: '7 Bunches'},
                 ]
             },
             methods: {
