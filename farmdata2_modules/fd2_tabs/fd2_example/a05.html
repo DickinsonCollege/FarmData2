@@ -83,7 +83,7 @@
             reportEndDate: '2018-05-15',
             reportCrop: 'Broccoli',
             reportField: 'All',
-            crops: ['Broccoli', 'Kale', 'Peas'], 
+            crops: [], 
             fields: [],
             // reportTableData: [
             //     {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
@@ -127,9 +127,16 @@
             ).catch(error => {
                 this.fields = ['Service Unavailable'];
                 console.log(error)
-            })
-            
-            ;
+            });
+
+            axios.get('/farm_asset.json?type=planting')
+            .then(response => {
+                this.crops = response.data.list.map(f => f.name).sort();
+            }
+            ).catch(error => {
+                this.crops = ['Service Unavailable'];
+                console.log(error)
+            });
         }
         });
         Vue.config.devtools = true;
