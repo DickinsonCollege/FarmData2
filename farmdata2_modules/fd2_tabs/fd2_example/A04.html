@@ -83,6 +83,7 @@
                     <td>7 Bunches</td>
                 </tr>-->
             </table>
+            <p>{{ 'Total Yield: ' + totalYield  }}</p>
         </div>
     </div>
     <script src="https://unpkg.com/vue"></script>
@@ -123,6 +124,16 @@
                     this.logsEmpty.splice(logIndex, 1);
                 },
 
+            },
+            computed:{
+                totalYield(){
+                    let totYield = 0;
+                    for(let step = 0; step < this.logsEmpty.length; step++){
+                        let yield = parseInt(this.logsEmpty[step].yield.split(" ")[0])
+                        totYield = totYield + yield;
+                    }
+                    return totYield;
+                },
             },
         });
         Vue.config.devtools = true;
