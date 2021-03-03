@@ -32,60 +32,65 @@
         </select>
         <br>
         <div class="add-item-form"> 
-           <button class="btn btn-primary" v-on:click="saveLogs">
+           <button class="btn btn-primary" v-on:click="saveLogs" @click="changeState('report')">
                 Generate Report
             </button> 
         </div>
         
     
         <hr>
-        <h2>{{ header ? header: 'My Mock Report' }}</h2>
-    
-        <p>Details:</p>
-        <ul>
-            <li>Start: {{ start }}</li>
-            <li>End: {{end}}</li>
-            <li>Crop: {{crop}}</li>
-        </ul>
-        <br>
-        <p v-if="rows.length == 0">There is no matching records.</p>
-        <table v-else border=1>
-            <tr>
-                <th>Date</th>
-                <th>Field</th>
-                <th>Crop</th>
-                <th>Yield</th>
-                <th>Delete</th>
-            </tr>
-            <tr v-for="(row, index) in logsEmpty">
-                <th>{{ row.date }}</th>
-                <th>{{ row.feild }}</th>
-                <th>{{ row.crop }}</th>
-                <th>{{ row.yield }}</th>
-                <th>
-                    <button type='button' @click='deleteLog(index)'>Delete</button>
-                </th>
-            </tr>
-            
-            <!--<tr>
-                <td>05/02/2018</td>
-                <td>Chuau-1</td>
-                <td>Kale</td>
-                <td>10 Bunches</td>
-            </tr>
-            <tr>
-                <td>05/02/2018</td>
-                <td>SQ7</td>
-                <td>Kale</td>
-                <td>7 Bunches</td>
-            </tr>-->
-        </table>
+        <div v-if="buttonState === 'report'" class="add-item-form">
+            <h2>{{ header ? header: 'My Mock Report' }}</h2>
+        
+            <p>Details:</p>
+            <ul>
+                <li>Start: {{ start }}</li>
+                <li>End: {{end}}</li>
+                <li>Crop: {{crop}}</li>
+            </ul>
+            <br>
+            <p v-if="rows.length == 0">There is no matching records.</p>
+            <table v-else border=1>
+                <tr>
+                    <th>Date</th>
+                    <th>Field</th>
+                    <th>Crop</th>
+                    <th>Yield</th>
+                    <th>Delete</th>
+                </tr>
+                <tr v-for="(row, index) in logsEmpty">
+                    <th>{{ row.date }}</th>
+                    <th>{{ row.feild }}</th>
+                    <th>{{ row.crop }}</th>
+                    <th>{{ row.yield }}</th>
+                    <th>
+                        <button type='button' @click='deleteLog(index)'>
+                            Delete
+                        </button>
+                    </th>
+                </tr>
+                
+                <!--<tr>
+                    <td>05/02/2018</td>
+                    <td>Chuau-1</td>
+                    <td>Kale</td>
+                    <td>10 Bunches</td>
+                </tr>
+                <tr>
+                    <td>05/02/2018</td>
+                    <td>SQ7</td>
+                    <td>Kale</td>
+                    <td>7 Bunches</td>
+                </tr>-->
+            </table>
+        </div>
     </div>
     <script src="https://unpkg.com/vue"></script>
     <script>
 		var harvestReport = new Vue({
 		    el: '#harvest-report',
 			data: {
+                buttonState: 'default',
                 start: '',
                 end: '',
                 crop: '',
@@ -111,9 +116,13 @@
                         this.num = this.num + 1;
                     }
                 },
+                changeState: function(newState){
+                    this.buttonState = newState;
+                },
                 deleteLog: function(logIndex){
                     this.logsEmpty.splice(logIndex, 1);
                 },
+
             },
         });
         Vue.config.devtools = true;
