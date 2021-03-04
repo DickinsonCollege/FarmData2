@@ -75,7 +75,7 @@
                 reportDateStart: '2018-05-01',
                 reportDateEnd: '2018-05-15',
                 reportCrop: 'Kale',
-                selectCrop: [ 'Broccoli', 'Kale', 'Peas'],
+                selectCrop: [],
                 selectField: null,
                 reportHarvest: [],
                 newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
@@ -106,6 +106,18 @@
                 .then(response => {
                     this.selectField = response.data.list.map(f => f.name).sort();
                 })
+                .catch(error => {
+                    this.selectField = ["Service Unavailable"];
+                    console.log.error;
+                });
+                axios.get("/farm_asset.json?type=planting")
+                .then(response => {
+                    this.selectCrop = response.data.list.map(f => f.name).sort();
+                })
+                .catch(error => {
+                    this.selectCrop = ["Service Unavailable"];
+                    console.log.error;
+                });
             },
             computed:{
                 calculateTotalYield(){
