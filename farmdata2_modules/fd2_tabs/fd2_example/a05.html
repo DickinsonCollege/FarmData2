@@ -144,6 +144,13 @@
                         .then((response) => {
                             this.fields = response.data.list.map(f => f.name);;
                         });
+                    axios
+                        .get(
+                            '/farm_asset.json?type=planting'
+                        )
+                        .then((response) => {
+                            this.crops = response.data.list.map(f => f.name);;
+                        });
                 },
         });
         Vue.config.devtools = true;
