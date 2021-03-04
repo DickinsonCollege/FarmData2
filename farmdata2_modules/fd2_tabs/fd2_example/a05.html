@@ -38,7 +38,7 @@
             
          <hr>
 
-            <div v-if="rState === 'visible'">
+         <div v-if="rState === 'visible'">
             <h2>{{ header ? header : 'Mock Harvest Report'}}</h2>
         
          <br>
@@ -50,8 +50,8 @@
             </ul>
          </p>
 
-            <p v-if="harvestReport.length==0">No harvest logs!</p>
-            <table border="1" v-if="harvestReport!=0">
+            <p v-if="harvestReport.length===0">No harvest logs!</p>
+            <table border="1" v-if="harvestReport!==0">
          <tr>
             <th><strong>Date </strong></th>
             <th><strong>Field </strong></th>
@@ -70,7 +70,7 @@
             </table>
             
             <p>Total Yield: {{calculateYield }}</p>
-            </div>
+         </div>
 
             
             <br>
@@ -118,6 +118,17 @@
                     this.rState = visibility;
                 }
             },
+            created() {
+                axios.get('/taxonomy_term.json?area_type=field')
+                     .then(response => {
+                        this.fields = response.data.list.map(f => f.name);
+                        this.fields = this.fields.sort();
+                     })
+                     .catch(error => {
+
+                     }
+                     );
+            }
         });
         Vue.config.devtools = true;
         </script>
