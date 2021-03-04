@@ -66,7 +66,7 @@
         rptEnd:'',
         rptCrop:'',
         state:'inVisible',
-        crops: ['Broccoli', 'Kale', 'Peas'],
+        crops: [],
         fields: [],
         harvestLog:[],
         HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', 
@@ -108,6 +108,10 @@
             axios.get('/taxonomy_term.json?area_type=field')
                 .then(response => {
             this.fields = response.data.list.map(f => f.name).sort();
+            })
+            axios.get('/farm_asset.json?type=planting')
+                .then(response => {
+            this.crops = response.data.list.map(f => f.name).sort();
             })
 
         },
