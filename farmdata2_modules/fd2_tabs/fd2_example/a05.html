@@ -3,15 +3,18 @@
 <body>
     <h1>Harvest Report</h1>
     <br>
-    <p>This page is a <i>mockup</i> of a form for generating a harvest report</p>
+    <p>This page is a <i>mockup</i> of a form for generating a harvest
+    	report</p>
     <div id="report-bind" v-cloak>
     <label for="title">Title:</label>
     <input type="text" id="title" v-model="rptTitle">
     <br><br>
     <label for="start">Start:</label>
-    <input type="date" id="start" min="2014-01-01" :max="rptEnd" v-model="rptStart"> 
+    <input type="date" id="start" min="2014-01-01" :max="rptEnd" 
+    v-model="rptStart"> 
     <label for="end">End:</label>
-    <input type="date" id="end" :min="rptStart" max="2022-01-01" v-model="rptEnd">
+    <input type="date" id="end" :min="rptStart" max="2022-01-01" 
+    v-model="rptEnd">
     <br><br>
     <label for="crop-search">Crop:</label>
     <select id="crop-search" v-model="rptCrop"> 
@@ -22,7 +25,7 @@
         <option v-for="field in fields" >{{field}}</option>
     </select>
     <br><br>
-    <button type="button" class="btn btn-primary" @click="generateBtn" id="generate-report">Generate Report</button>
+    <button type="button" class="btn btn-primary" @click="generateBtn" 	id="generate-report">Generate Report</button>
     <hr>
    
     <div v-if="state=='visible'">
@@ -46,7 +49,8 @@
             <td>{{log.Field}}</td>
             <td>{{log.Crop}}</td>
             <td>{{log.Yield}}</td>
-            <td><button type="button"  @click="deleteLog(index)">Delete </button></td>
+            <td><button type="button"  @click="deleteLog(index)">Delete 
+            </button></td>
         </tr>
     </table> 
     <p>Total Yield: {{totalYield}} BUNCH(s)</p>
@@ -63,18 +67,22 @@
         rptCrop:'',
         state:'inVisible',
         crops: ['Broccoli', 'Kale', 'Peas'],
-        fields: ['All', 'Chuau1', 'SQ7'],
+        fields: [],
         harvestLog:[],
-        HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10 Bunches'},
-        {Date: '09/02/2018', Field: 'All', Crop:'Broccoli', Yield: '7 Bunches'},
-        {Date: '11/02/2018', Field: 'SQ7', Crop:'Peas', Yield: '10 Bunches'}
+        HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', 
+        Yield: '10 Bunches'},
+        {Date: '09/02/2018', Field: 'All', Crop:'Broccoli', 
+        Yield: '7 Bunches'},
+        {Date: '11/02/2018', Field: 'SQ7', Crop:'Peas', 
+        Yield: '10 Bunches'}
         ]
         },
          computed: {
             totalYield: function(){
                 var total = 0;
                 for(let i = 0; i < this.harvestLog.length; i++){
-                let yield = parseInt(this.harvestLog[i].Yield.split(" ")[0]);
+                let yield = parseInt(this.harvestLog[i].Yield.split(" ")
+                [0]);
                 total = total + yield;
                 }
                 return total;
@@ -95,7 +103,16 @@
                 this.harvestLog.splice(index,1);
             }
 
-        }
+        },
+        created(){
+            axios.get('/taxonomy_term.json?area_type=field')
+                .then(response => {
+            this.fields = response.data.list.map(f => f.name).sort();
+            })
+
+        },
+    
+        
     });
     Vue.config.devtools = true;
 </script>
