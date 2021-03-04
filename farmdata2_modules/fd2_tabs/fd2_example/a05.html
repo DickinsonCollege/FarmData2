@@ -85,11 +85,11 @@
             el: '#rptVue',
             data: {
                 rptTitle: '',
-                rptStart: '2018-05-01',
-                rptEnd: '2018-05-15',
+                rptStart: '05/01/2018',
+                rptEnd: '05/15/2018',
                 rptCrop: 'Kale',
                 crops: ['Broccoli', 'Kale', 'Peas'],
-                fields: ['All', 'Chuau-1', 'SQ7'],
+                fields: [],
                 visible: false,
                 headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 log: [
@@ -134,7 +134,17 @@
                 deleteLog: function (nameIndex) {
                     this.table.splice(nameIndex, 1);
                 },
+                
             },
+            created() {
+                    axios
+                        .get(
+                            '/taxonomy_term.json?area_type=field'
+                        )
+                        .then((response) => {
+                            this.fields = response.data.list.map(f => f.name);;
+                        });
+                },
         });
         Vue.config.devtools = true;
     </script>
