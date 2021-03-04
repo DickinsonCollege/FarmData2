@@ -76,7 +76,7 @@
                 reportDateEnd: '2018-05-15',
                 reportCrop: 'Kale',
                 selectCrop: [ 'Broccoli', 'Kale', 'Peas'],
-                selectField: [ 'All', 'Chuau', 'SQ7'],
+                selectField: null,
                 reportHarvest: [],
                 newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
                 newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
@@ -100,6 +100,12 @@
                 toggleVisibility: function(newState){
                     this.visible = newState;
                 }
+            },
+            created(){
+                axios.get("/taxonomy_term.json?area_type=field")
+                .then(response => {
+                    this.selectField = response.data.list.map(f => f.name).sort();
+                })
             },
             computed:{
                 calculateTotalYield(){
