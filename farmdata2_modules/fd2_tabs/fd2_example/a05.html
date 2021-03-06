@@ -78,7 +78,7 @@
               reportCrop: '',
               reportField: '',
               crops: ['Broccoli', 'Kale', 'Peas'], 
-              fields: ['All', 'Chuau-7', 'SQ7'],
+              fields: [],
               reportTable: [],
               newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
               newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
@@ -113,7 +113,19 @@
                   }
                   return totalYield;
               }
+            },
+            created() {
+               axios.get('/taxonomy_term.json?area_type=field')
+               .then(response => {
+                this.fields = response.data.list.map(f => f.name).sort();
             }
+            ).catch(error => {
+                this.fields = ['Service Unavailable'];
+                console.log(error)
+            })
+
+            ;
+        }
         });
         Vue.config.devtools = true;
     </script>
