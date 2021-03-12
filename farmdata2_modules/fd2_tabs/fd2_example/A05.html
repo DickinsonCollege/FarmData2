@@ -96,7 +96,7 @@
                 end: '',
                 crop: '',
                 cropOptions: ['Broccoli', 'Kale', 'Peas'],
-                fieldOptions: ['All', 'Chuau1', 'SQ7'],
+                fieldOptions: null,//['All', 'Chuau1', 'SQ7'],
                 header: null,
                 logsEmpty: [],
                 num: 0,
@@ -104,6 +104,12 @@
                     {date: '05/02/2018', feild: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
                     //{date: '05/02/2018', feild: 'SQ7', crop: 'Kale', yield: '7 Bunches'},
                 ]
+            },
+            created(){
+                axios.get('/taxonomy_term.json?area_type=field')
+                    .then(response =>{
+                        this.fieldOptions = response.data.list.map(f => f.name);
+                    })
             },
             methods: {
                 saveLogs: function(){
