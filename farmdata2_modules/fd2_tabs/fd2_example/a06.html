@@ -107,7 +107,20 @@
               },
               setTableState: function(state){
                   this.tableState = state;
-              }
+              },
+              timestampToDate: function(timestamp) {
+                return new Date(timestamp * 1000);
+              },
+              timestampToYMD: function(timestamp) {
+                let d = this.timestampToDate(timestamp);
+                const month = d.getMonth() < 9 ?
+                                '0' + (d.getMonth() + 1) :
+                                d.getMonth() + 1;
+                const day = d.getDate() < 10 ?
+                            '0' + d.getDate() :
+                                d.getDate();
+                return d.getFullYear() + "-" + month + "-" + day;
+            },
           },
           computed: {
               computeTotalYield: function(){
@@ -146,7 +159,7 @@
                         // field: log.area.name,
                         // crop: log.name.split(' ')[-1],
                         // yield: log.quantity[1].value
-                        date: log.timestamp,
+                        date: this.timestampToYMD(log.timestamp),
                         field: 'blah',
                         crop: 'blah',
                         yield: 'blah'
