@@ -39,7 +39,7 @@
         <input type="date" id="end" :min="reportStartDate" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
-    <button type="button" v-model="logIndex" @click="addHarvestLogs({logIndex}, [{date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'}, {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}]), setTableState('show')">Generate Report</button>
+    <button type="button" v-model="logIndex" @click="setTableState('show')">Generate Report</button>
     <hr>
     <!-- <h1>My Mock Report</h1> -->
     <div id="reportTableSection" v-if="tableState === 'show'">
@@ -71,7 +71,7 @@
                     <td><button @click="deleteHarvestLog(dataIndex)">Delete</button></td>
                 </tr>
             </table>
-            <p>Total yielf: {{computeTotalYield}}</p>
+            <p>Total yield: {{computeTotalYield}}</p>
         </div>
     </div>
     <script>
@@ -94,7 +94,7 @@
             tableState: 'hide'
           },
           methods: {
-              addHarvestLogs: function(index, log){
+              addHarvestLogs: function(index){
                   if (this.logIndex < log.length){
                     this.reportHarvestLogs.push(log[this.logIndex]);
                     this.logIndex+=1;
@@ -137,6 +137,22 @@
                 this.crops = ['Service Unavailable'];
                 console.log(error)
             });
+
+            axios.get('/log.json?type=farm_harvest&area=JASMINE-1')
+            .then(response => {
+                this.reportHarvestLogs = response.data.list.map(log => {
+                    return {
+                        // date: log.timestamp,
+                        // field: log.area.name,
+                        // crop: log.name.split(' ')[-1],
+                        // yield: log.quantity[1].value
+                        date: log.timestamp,
+                        field: 'blah',
+                        crop: 'blah',
+                        yield: 'blah'
+                    }
+                })
+            })
         }
         });
         Vue.config.devtools = true;
