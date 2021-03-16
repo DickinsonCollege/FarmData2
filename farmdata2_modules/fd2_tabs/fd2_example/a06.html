@@ -121,6 +121,10 @@
                                 d.getDate();
                 return d.getFullYear() + "-" + month + "-" + day;
             },
+                getCropName: function(string){
+                    let splitString =  string.split(' ')
+                    return splitString[splitString.length - 1]
+                }
           },
           computed: {
               computeTotalYield: function(){
@@ -160,9 +164,9 @@
                         // crop: log.name.split(' ')[-1],
                         // yield: log.quantity[1].value
                         date: this.timestampToYMD(log.timestamp),
-                        field: 'blah',
-                        crop: 'blah',
-                        yield: 'blah'
+                        field: log.area[0].name,
+                        crop: this.getCropName(log.name),
+                        yield: log.quantity[0].value
                     }
                 })
             })
