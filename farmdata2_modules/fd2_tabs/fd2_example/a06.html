@@ -76,7 +76,7 @@
                     reportVisibility: "hidden",
                     header: 'My Mock Report',
                     reportStart: '2018-05-01',
-                    reportEnd: '2018-05-15',
+                    reportEnd: '2018-07-31',
                     reportCrop: 'Broccoli',
                     selectedField: '',
                     cropList: [
@@ -131,9 +131,9 @@
                                 this.harvestLogs = response.data.list.map(h => {
                                     return {
                                         date:h.timestamp,
-                                        field:'blah',
-                                        crop:'blah',
-                                        yield:'blah',
+                                        field:h.area[0].name,
+                                        crop:h.name.split(" ")[4],
+                                        yield:h.quantity[0].value + ' ' + h.quantity[0].unit.name,
                                     };
                                 });
                             })
