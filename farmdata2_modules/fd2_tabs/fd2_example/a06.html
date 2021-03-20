@@ -20,17 +20,17 @@
 
             <label for="crop">Crop:</label>
             <select id="crop" name="crop" v-model="reportCrop">
-                <option v-for="selectedCrop in cropList">{{selectedCrop}}</option>
+                <option v-for="cropOption in cropList">{{ cropOption }}</option>
             </select>
 
             <label for="field">Field:</label>
-            <select id="field" name="field" >
-                <option v-for="selectedField in fieldList">{{ selectedField }}</option>
+            <select id="field" name="field" v-model=selectedField>
+                <option v-for="fieldOption in fieldList">{{ fieldOption }}</option>
             </select>
 
             <br>
 
-            <button class="btn btn-primary" @click="generateReport(); changeReportVisibility('visible'); jasmine1LogRequest();">Generate Report</button>
+            <button class="btn btn-primary" @click="generateReport(); changeReportVisibility('visible'); fieldLogRequest(selectedField);">Generate Report</button>
 
             <hr>
 
@@ -78,6 +78,7 @@
                     reportStart: '2018-05-01',
                     reportEnd: '2018-05-15',
                     reportCrop: 'Broccoli',
+                    selectedField: '',
                     cropList: [
                         'Broccoli',
                         'Kale',
@@ -122,8 +123,8 @@
                     changeReportVisibility: function(newVisibility) {
                         this.reportVisibility = newVisibility;
                     },
-                    jasmine1LogRequest: function() {
-                        axios.get('/log.json?type=farm_harvest&area=Jasmine-1')
+                    fieldLogRequest: function(field) {
+                        axios.get('/log.json?type=farm_harvest&area=' +  field)
                             .then(response => {
                                 this.harvestLogs = response.data.list.map(h => {
                                     return {
