@@ -124,7 +124,9 @@
                         this.reportVisibility = newVisibility;
                     },
                     fieldLogRequest: function(field) {
-                        axios.get('/log.json?type=farm_harvest&area=' +  field)
+                        let s = this.YMDToTimestamp(this.reportStart);
+                        let e = this.YMDToTimestamp(this.reportEnd);
+                        axios.get('/log.json?type=farm_harvest&area=' +  field + '&timestamp[ge]=' + s + '&timestamp[le]=' + e)
                             .then(response => {
                                 this.harvestLogs = response.data.list.map(h => {
                                     return {
@@ -149,6 +151,11 @@
                                     d.getDate();
                         return d.getFullYear() + "-" + month + "-" + day;
                     }, 
+                    YMDToTimestamp: function(ymd) {
+                        let d = new Date(ymd);
+                        return Math.round(d.getTime()/1000 +
+                                new Date().getTimezoneOffset()*60);
+                    },
                 },
                 created() {
                     axios.get('/taxonomy_term.json?area_type=field')
