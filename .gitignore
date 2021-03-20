@@ -3,7 +3,7 @@ docker/db/*
 .theia/logs/*
 .theia/workspace-storage/*
 .theia/globalStorage/*
-.theia/recentworkspace
+.theia/recentworkspace.json
 
 farmdata2_modules/**/cypress/screenshots/*
 farmdata2_modules/**/cypress/videos/*
