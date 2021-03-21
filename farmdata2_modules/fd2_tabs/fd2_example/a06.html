@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+      <div id="farm">
+
+            <h1><strong>Harvest Report </strong></h1>
+            <p> This page is a <i>mockup</i> of a form for generating a harvest report.</p>
+            <br>
+
+            <label for="title">Title:</label>
+            <input type="text" v-model="header">
+            
+        
+            <br><br>
+
+            <label for="start">Start:</label>
+            <input type="date" id="start" name="start" v-model="startDay" min="2014-01-01" :max="endDay">
+
+            <label for="end">End:</label>
+            <input type="date" id="end" name="end" v-model="endDay" :min="startDay" max="2022-01-01">
+            <br><br>
+            
+            <label for="crop">Crop</label>
+            <select id="crop" name="crop" v-model="crop">
+                <option v-for="crop in cropChoices">{{crop}}</option>
+            </select>
+
+            <label for="field">Field</label>
+            <select id="field" name="field">
+                <option v-for="field in fieldChoices">{{field}}</option>
+            </select><br> <br>
+
+            <button type="btn btn-primary" @click="createReport(); reportState('visible');">Generate Report</button><br>
+            
+            <hr>
+
+          <div v-if="rState === 'visible'">
+                <h2>{{ header ? header : 'Mock Harvest Report'}}</h2>
+            
+                <br>
+                <p>Details:
+                    <ul>
+                    <li><strong>Start:</strong> {{ startDay }}</li>  
+                    <li><strong>End:</strong>{{ endDay }}</li>  
+                    <li><strong>Crop:</strong>{{ crop }}</li>
+                    </ul>
+                </p>
+
+                <p v-if="harvestReport.length===0">No harvest logs!</p>
+
+               <table border="1" v-if="harvestReport!==0">
+                    <tr>
+                        <th><strong>Date </strong></th>
+                        <th><strong>Field </strong></th>
+                        <th><strong>Crop </strong></th>
+                        <th><strong>Yield </strong></th>
+                        <th><strong>Delete</strong></th>
+                    </tr>
+
+                    <tr v-for="harvest in harvestReport">
+                        <td>{{harvest.date}}</td>
+                        <td>{{harvest.field}}</td>
+                        <td>{{harvest.crop}}</td>
+                        <td>{{harvest.Yield}}</td>
+                        <td> <button type="button" @click="deleteReport">Delete</button></td>
+                    </tr>  
+               </table>
+             <p>Total Yield: {{calculateYield }}</p>
+          </div>
+             <br>
+     </div>
+        
+        <script>
+        var fd2 = new Vue({
+            el: '#farm',
+            data: {
+              header: 'My Mock Report',
+              startDay: "2018-05-01",
+              endDay: "2018-05-15",
+              crop: "Kale",
+              cropChoices: [],
+              fieldChoices: [],
+              harvestReport: [],
+              addedLogs:'',
+              rState: 'hidden',
+            },
+            computed: {
+                calculateYield() {
+                    let yield = 0;
+                    for(let i=0; i<this.harvestReport.length; i++) {
+                        let log = this.harvestReport[i];
+                        yield = yield + parseInt(log.yield.split(" ")[0]);
+                    }
+                    return yield;
+                },
+            },
+            methods: {
+                createReport: function() {
+                    if(this.harvestReport.length == 0) {
+                        this.harvestReport.push({date:'05/02/2018', field:'Chuau-1', crop:'Kale', Yield:'10 Bunches', index:0})
+                    } else if(this.harvestReport.length == 1) {
+                        this.harvestReport.push({date:'05/19/2018', field:'SQ-7', crop:'Broccoli', Yield:'9 Bunches', index:1})
+                    } else if(this.harvestReport.length == 2) {
+                        this.harvestReport.push({date:'05/22/2018', field:'SQ-7', crop:'Peas', Yield:'8 Bunches', index:2})
+                    } else {
+                       //blank
+                    }
+                },
+                deleteReport:  function(reportIndex) {
+                    this.harvestReport.splice(reportIndex, 1);
+                },
+                reportState: function(visibility) {
+                    this.rState = visibility;
+                },
+            },
+            created() {
+                axios.get('/taxonomy_term.json?area_type=field')
+                     .then(response => {
+                        this.fieldChoices = response.data.list.map(f => f.name);
+                        this.fieldChoices = this.fieldChoices.sort();
+                     })
+                     .catch(error => {
+                        console.log(error);
+                     }
+                     );
+                     axios.get('/farm_asset.json?type=planting')
+                          .then(response => {
+                              this.cropChoices = response.data.list.map(c => c.name);
+                              this.cropChoices = this.cropChoices.sort();
+                          })
+                          .catch(error => {
+                              console.log(error);
+                          }
+                    );
+                          
+            }
+        });
+        Vue.config.devtools = true;
+        </script>
+   </body>
+</html>
