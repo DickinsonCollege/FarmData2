@@ -100,9 +100,18 @@
                  deleteReport: function(dataIndex){
                     this.reportTable.splice(dataIndex, 1);
             },
-            setTableState: function(state){
-                  this.tableState = state;
-              }
+                 setTableState: function(state){
+                    this.tableState = state;
+              },
+                timestampToYMD: function(timestamp) {
+                     let d = new Date(timestamp*1000)
+                     const month = d.getMonth() < 9 ?
+                                '0' + (d.getMonth() + 1) : d.getMonth() + 1;
+                     const day = d.getDate() < 10 ?
+                            '0' + d.getDate() :
+                                d.getDate();
+                return d.getFullYear() + "-" + month + "-" + day;
+            },
           },
           computed: {
               computeTotalYield: function(){
@@ -112,7 +121,7 @@
                     totalYield += yield
                   }
                   return totalYield;
-              }
+              },
             },
             created() {
                axios.get('/taxonomy_term.json?area_type=field')
@@ -135,9 +144,9 @@
 
             axios.get('/log.json?type=farm_harvest&area=JASMINE-1')
             .then(response => {
-		this.reportTable = response.data.list.map(h => {
+		       this.reportTable = response.data.list.map(h => {
 			return {
-				date:h.timestamp, 
+				date: this.timestampToYMD(h.timestamp), 
 				field:'blah', 
 				crop:'blah', 
 				yield:'blah',
