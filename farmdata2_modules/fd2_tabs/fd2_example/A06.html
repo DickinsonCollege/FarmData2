@@ -133,9 +133,9 @@
                         let unixT = this.YMDToTimestamp(this.end);
                         link = link +'&timestamp[le]=' + unixT;
                     }
-                    /*if(this.crop != ''){
-                        link = link + '&name[ct]' + this.crop;
-                    }*/
+                    if(this.crop != ''){
+                        link = link + '&name[ct]=' + this.crop;
+                    }
                     axios.get(link)
                     .then(response => {
 		                this.logsEmpty = response.data.list.map(h => {
