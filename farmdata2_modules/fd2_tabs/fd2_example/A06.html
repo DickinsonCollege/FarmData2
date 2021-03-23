@@ -123,7 +123,7 @@
                     .then(response => {
 		                this.logsEmpty = response.data.list.map(h => {
 			                return {
-				            date:h.timestamp, 
+				            date:this.timestampToYMD(h.timestamp), 
 				            field:'blah', 
 				            crop:'blah', 
 				            yield:'blah',
@@ -139,6 +139,14 @@
                         this.num = this.num + 1;
                     }*/
                 },
+                timestampToYMD: function(timestamp) {
+			        let d = new Date(timestamp*1000)
+			        const month = d.getMonth() < 9 ? '0' + (d.getMonth() + 1) :
+				        d.getMonth() + 1;
+			        const day = d.getDate() < 10 ? '0' + d.getDate() :
+				        d.getDate();
+			        return d.getFullYear() + "-" + month + "-" + day;
+		        },
                 changeState: function(newState){
                     this.buttonState = newState;
                 },
