@@ -125,6 +125,14 @@
                     if (this.field != ''){
                         link = link + '&area=' + this.field;
                     }
+                    if(this.start != ''){
+                        let unixT = this.YMDToTimestamp(this.start);
+                        link = link + '&timestamp[ge]=' + unixT;
+                    }
+                    if(this.end != ''){
+                        let unixT = this.YMDToTimestamp(this.end);
+                        link = link +'&timestamp[le]=' + unixT;
+                    }
                     /*if(this.crop != ''){
                         link = link + '&name[ct]' + this.crop;
                     }*/
@@ -166,9 +174,10 @@
                 deleteLog: function(logIndex){
                     this.logsEmpty.splice(logIndex, 1);
                 },
-                getSelectedField: function(){
-
-                },
+                YMDToTimestamp: function(ymd) {
+		            let d = new Date(ymd);
+		            return Math.round(d.getTime()/1000 + new Date().getTimezoneOffset()*60);
+		        },
             },
             computed:{
                 totalYield(){
