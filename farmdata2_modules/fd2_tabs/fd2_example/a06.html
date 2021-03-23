@@ -132,6 +132,19 @@
                 this.crops = ['Service Unavailable'];
                 console.log(error)
             });
+
+            axios.get('/log.json?type=farm_harvest&area=JASMINE-1')
+            .then(response => {
+		this.reportTable = response.data.list.map(h => {
+			return {
+				date:h.timestamp, 
+				field:'blah', 
+				crop:'blah', 
+				yield:'blah',
+			};
+		});
+	})
+
         }
         });
         Vue.config.devtools = true;
