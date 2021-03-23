@@ -30,7 +30,7 @@
             <option>Chuau1</option>
             <option>SQ7</option>-->
         </select>
-        
+
         <br>
         <div class="add-item-form"> 
            <button class="btn btn-primary" v-on:click="saveLogs" @click="changeState('report')">
@@ -95,7 +95,7 @@
                 start: '',
                 end: '',
                 crop: '',
-                cropOptions: ['Broccoli', 'Kale', 'Peas'],
+                cropOptions: null, //['Broccoli', 'Kale', 'Peas'],
                 fieldOptions: null,//['All', 'Chuau1', 'SQ7'],
                 header: null,
                 logsEmpty: [],
@@ -119,13 +119,25 @@
                 saveLogs: function(){
                     //this.logsEmpty.push(this.rows[row])
                     //var num = 0;
-                    if((this.num+1) == this.rows.length){
+                    axios.get('/log.json?type=farm_harvest')
+                    .then(response => {
+		                this.logsEmpty = response.data.list.map(h => {
+			                return {
+				            date:h.timestamp, 
+				            field:'blah', 
+				            crop:'blah', 
+				            yield:'blah',
+			                };
+		                });
+	                })
+
+                    /*if((this.num+1) == this.rows.length){
                         this.logsEmpty.push(this.rows[this.num]);
                         this.num = 0;
                     }else{
                         this.logsEmpty.push(this.rows[this.num]);
                         this.num = this.num + 1;
-                    }
+                    }*/
                 },
                 changeState: function(newState){
                     this.buttonState = newState;
