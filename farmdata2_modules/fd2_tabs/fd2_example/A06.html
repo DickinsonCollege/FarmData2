@@ -24,7 +24,7 @@
         </select>
 
         <label for="field">Field:</label>
-        <select id="field" name="feild">
+        <select id="field" name="feild" v-model="field">
             <option v-for="item in fieldOptions">{{ item }}</option>
             <!--<option selected>All</option>
             <option>Chuau1</option>
@@ -47,6 +47,7 @@
                 <li>Start: {{ start }}</li>
                 <li>End: {{end}}</li>
                 <li>Crop: {{crop}}</li>
+                <li>Field: {{field}}</li>
             </ul>
             <br>
             <p v-if="rows.length == 0">There is no matching records.</p>
@@ -95,6 +96,7 @@
                 start: '',
                 end: '',
                 crop: '',
+                field: '',
                 cropOptions: null, //['Broccoli', 'Kale', 'Peas'],
                 fieldOptions: null,//['All', 'Chuau1', 'SQ7'],
                 header: null,
@@ -119,7 +121,14 @@
                 saveLogs: function(){
                     //this.logsEmpty.push(this.rows[row])
                     //var num = 0;
-                    axios.get('/log.json?type=farm_harvest')
+                    let link = '/log.json?type=farm_harvest';
+                    if (this.field != ''){
+                        link = link + '&area=' + this.field;
+                    }
+                    /*if(this.crop != ''){
+                        link = link + '&name[ct]' + this.crop;
+                    }*/
+                    axios.get(link)
                     .then(response => {
 		                this.logsEmpty = response.data.list.map(h => {
 			                return {
@@ -157,11 +166,8 @@
                 deleteLog: function(logIndex){
                     this.logsEmpty.splice(logIndex, 1);
                 },
-                areaToFieldName: function(area) {
-                    //var arrArea = area.split(' ');
-                    //let name = arrArea[arrArea.length-1];
-                    //return name.substring(1,name.length-1);
-                    return area.name;
+                getSelectedField: function(){
+
                 },
             },
             computed:{
