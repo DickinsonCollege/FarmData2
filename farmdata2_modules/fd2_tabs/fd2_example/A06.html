@@ -60,7 +60,7 @@
                 </tr>
                 <tr v-for="(row, index) in logsEmpty">
                     <th>{{ row.date }}</th>
-                    <th>{{ row.feild }}</th>
+                    <th>{{ row.field }}</th>
                     <th>{{ row.crop }}</th>
                     <th>{{ row.yield }}</th>
                     <th>
@@ -124,9 +124,9 @@
 		                this.logsEmpty = response.data.list.map(h => {
 			                return {
 				            date:this.timestampToYMD(h.timestamp), 
-				            field:'blah', 
-				            crop:'blah', 
-				            yield:'blah',
+				            field:h.area[0].name, 
+				            crop:this.nameToPlant(h.name), 
+				            yield:h.quantity[0].value,
 			                };
 		                });
 	                })
@@ -138,6 +138,10 @@
                         this.logsEmpty.push(this.rows[this.num]);
                         this.num = this.num + 1;
                     }*/
+                },
+                nameToPlant: function(name){
+                    var arr = name.split(' ');
+                    return arr[arr.length-1];
                 },
                 timestampToYMD: function(timestamp) {
 			        let d = new Date(timestamp*1000)
@@ -153,12 +157,17 @@
                 deleteLog: function(logIndex){
                     this.logsEmpty.splice(logIndex, 1);
                 },
-
+                areaToFieldName: function(area) {
+                    //var arrArea = area.split(' ');
+                    //let name = arrArea[arrArea.length-1];
+                    //return name.substring(1,name.length-1);
+                    return area.name;
+                },
             },
             computed:{
                 totalYield(){
                     let totYield = 0;
-                    for(let step = 0; step < this.logsEmpty.length; step++){
+                      for(let step = 0; step < this.logsEmpty.length; step++){
                         let yield = parseInt(this.logsEmpty[step].yield.split(" ")[0])
                         totYield = totYield + yield;
                     }
