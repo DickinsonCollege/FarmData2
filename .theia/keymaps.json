@@ -1,0 +1,6 @@
+[
+    {
+        "command": "core.paste",
+        "keybinding": "ctrl+v"
+    }
+]
