@@ -37,8 +37,8 @@
             <option v-for="crop in crops">{{ crop }}</option>
         </select>
 
-        <label for=”field” >Field:</label>
-        <select id="field"v-model="rptField">
+        <label for="”field”">Field:</label>
+        <select id="field" v-model="rptField">
             <option v-for="field in fields">{{ field }}</option>
         </select>
 
@@ -108,23 +108,23 @@
                 },
             },
             methods: {
-                makePath: function (field) {
-                    this.rptPath = '/log.json?type=farm_harvest&area=' + field;
-                },
                 genRpt: function () {
-                    this.makePath(this.rptField)
-                    axios
-                        .get(this.rptPath)
-                        .then((response) => {
-                            this.log = response.data.list.map((h) => {
-                                return {
-                                    date: this.timestampToYMD(h.timestamp),
-                                    field: h.area[0].name,
-                                    crop: h.name.split(" ")[h.name.split(" ").length - 1],
-                                    yield: h.quantity[0].value + " " + h.quantity[0].unit.name,
-                                };
-                            });
+                    this.makePath(this.rptField);
+                    axios.get(this.rptPath).then((response) => {
+                        this.log = response.data.list.map((h) => {
+                            return {
+                                date: this.timestampToYMD(h.timestamp),
+                                field: h.area[0].name,
+                                crop: h.name.split(' ')[
+                                    h.name.split(' ').length - 1
+                                ],
+                                yield:
+                                    h.quantity[0].value +
+                                    ' ' +
+                                    h.quantity[0].unit.name,
+                            };
                         });
+                    });
                     if (this.table.length < 3 && this.visible) {
                         this.table.push(this.log[this.table.length]);
                     }
@@ -133,8 +133,14 @@
                 deleteLog: function (nameIndex) {
                     this.table.splice(nameIndex, 1);
                 },
-                
-                
+                makePath: function () {
+                    this.rptPath =
+                        '/log.json?type=farm_harvest&area=' +
+                        this.rptField +
+                        '&timestamp[ge]=' +
+                        this.YMDToTimestamp(this.rptStart) + '&timestamp[le]=' +this.YMDToTimestamp(this.rptEnd);
+                },
+
                 timestampToDate: function (timestamp) {
                     return new Date(timestamp * 1000);
                 },
@@ -148,7 +154,12 @@
                         d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
                     return d.getFullYear() + '-' + month + '-' + day;
                 },
-                
+                YMDToTimestamp: function (ymd) {
+                    let d = new Date(ymd);
+                    return Math.round(
+                        d.getTime() / 1000 + new Date().getTimezoneOffset() * 60
+                    );
+                },
             },
             created() {
                 axios
