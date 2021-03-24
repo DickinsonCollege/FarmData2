@@ -37,8 +37,8 @@
             <option v-for="crop in crops">{{ crop }}</option>
         </select>
 
-        <label for="”field”">Field:</label>
-        <select id="field">
+        <label for=”field” >Field:</label>
+        <select id="field"v-model="rptField">
             <option v-for="field in fields">{{ field }}</option>
         </select>
 
@@ -84,34 +84,17 @@
         var rptVue = new Vue({
             el: '#rptVue',
             data: {
+                rptPath: '',
                 rptTitle: '',
                 rptStart: '2018-05-01',
                 rptEnd: '2018-05-15',
                 rptCrop: 'Kale',
-                crops: ['Broccoli', 'Kale', 'Peas'],
+                rptField: 'SQ 5',
+                crops: [],
                 fields: [],
                 visible: false,
                 headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
-                log: [
-                    {
-                        date: '2018-05-02',
-                        field: 'Chuau-1',
-                        crop: 'Kale',
-                        yield: '10 Bunches',
-                    },
-                    {
-                        date: '2018-05-05',
-                        field: 'SQ7',
-                        crop: 'Kale',
-                        yield: '7 Bunches',
-                    },
-                    {
-                        date: '2018-07-10',
-                        field: 'Chuau-1',
-                        crop: 'Kale',
-                        yield: '12 Bunches',
-                    },
-                ],
+                log: [],
                 table: [],
             },
             computed: {
@@ -125,9 +108,13 @@
                 },
             },
             methods: {
+                makePath: function (field) {
+                    this.rptPath = '/log.json?type=farm_harvest&area=' + field;
+                },
                 genRpt: function () {
+                    this.makePath(this.rptField)
                     axios
-                        .get('/log.json?type=farm_harvest&area=Jasmine-1')
+                        .get(this.rptPath)
                         .then((response) => {
                             this.log = response.data.list.map((h) => {
                                 return {
@@ -146,6 +133,8 @@
                 deleteLog: function (nameIndex) {
                     this.table.splice(nameIndex, 1);
                 },
+                
+                
                 timestampToDate: function (timestamp) {
                     return new Date(timestamp * 1000);
                 },
