@@ -73,9 +73,9 @@
 <p v-if="hlogs.length === 0">No matching records.</p>
 <br>
 <br>
-
+<!--
 <p>{{"Total Yeild: " + totalYeild}}</p>
-
+--->
 </div>
 </div>
 
@@ -93,35 +93,23 @@
                 crops: [],
                  fields: [],
                  hlogs : [
-                 ]
+                 ],
+                 harvestLogs: []
         },
-        computed: {
-            totalYeild(){
-            sum= 0;
-            for(let i = 0; i < this.hlogs.length; i++){
-                if(this.hlogs.length === 0){
-                    return 0;
-                }else{
-                yeild = parseInt(this.hlogs[i].yeild.split(" ")[0]);
-                sum = sum + yeild;
-                }
-            }
-            return sum;
-          },
-        },
+       
         methods: {
-            saveRpt: function() {
+             saveRpt: function() {
             if (this.hlogs.length == 0) {
-               this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+               this.hlogs.push(this.harvestLogs[0]);
                this.state = 'edit';
             } else if (this.hlogs.length == 1){
-                this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+                this.hlogs.push(this.harvestLogs[1]);
             } else if (this.hlogs.length == 2){
-                this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+                this.hlogs.push(this.harvestLogs[2]);
             }else if (this.hlogs.length == 3){
-                this.hlogs.push({date: this.StartDate, field: this.rptField, crop: this.rptCrop, yeild: "10 Bunches"});
+                this.hlogs.push(this.harvestLogs[3]);
             }
-        }
+     }
     },
     	created() {
     axios.get('/taxonomy_term.json?area_type=field')
@@ -140,6 +128,17 @@
        this.crops = ["Service Unavailable"];
        console.log(error);
      });
+     axios.get('/log.json?type=farm_harvest&area=Jasmine-1')
+     .then(response => {
+		this.harvestLogs = response.data.list.map(h => {
+			return {
+				date:h.timestamp, 
+				field:'blah', 
+				crop:'blah', 
+				yield:'blah',
+			};
+		});
+	})
  },
 
 });
