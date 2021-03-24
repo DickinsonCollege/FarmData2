@@ -124,7 +124,13 @@
 						  '0' + d.getDate() :
 							d.getDate();
 		return d.getFullYear() + "-" + month + "-" + day;
-	},
+    },
+    lastWord: function test(words) {
+    var n = words.split(" ");
+    return n[n.length - 1];
+
+    }
+
     },
     	created() {
     axios.get('/taxonomy_term.json?area_type=field')
@@ -148,9 +154,9 @@
 		this.harvestLogs = response.data.list.map(h => {
 			return {
 				date: this.timestampToYMD(h.timestamp), 
-				field:'blah', 
-				crop:'blah', 
-				yield:'blah',
+				field: h.area[0].name, 
+				crop: this.lastWord(h.name), 
+				yield:h.quantity[0].value,
 			};
 		});
 	})
