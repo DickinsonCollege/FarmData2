@@ -85,8 +85,8 @@
             el: '#rptVue',
             data: {
                 rptTitle: '',
-                rptStart: '05/01/2018',
-                rptEnd: '05/15/2018',
+                rptStart: '2018-05-01',
+                rptEnd: '2018-05-15',
                 rptCrop: 'Kale',
                 crops: ['Broccoli', 'Kale', 'Peas'],
                 fields: [],
@@ -94,19 +94,19 @@
                 headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 log: [
                     {
-                        date: '05/02/2018',
+                        date: '2018-05-02',
                         field: 'Chuau-1',
                         crop: 'Kale',
                         yield: '10 Bunches',
                     },
                     {
-                        date: '05/05/2018',
+                        date: '2018-05-05',
                         field: 'SQ7',
                         crop: 'Kale',
                         yield: '7 Bunches',
                     },
                     {
-                        date: '07/10/2018',
+                        date: '2018-07-10',
                         field: 'Chuau-1',
                         crop: 'Kale',
                         yield: '12 Bunches',
@@ -126,6 +126,18 @@
             },
             methods: {
                 genRpt: function () {
+                    axios
+                        .get('/log.json?type=farm_harvest&area=Jasmine-1')
+                        .then((response) => {
+                            this.log = response.data.list.map((h) => {
+                                return {
+                                    date: h.timestamp,
+                                    field: 'blah',
+                                    crop: 'blah',
+                                    yield: 'blah',
+                                };
+                            });
+                        });
                     if (this.table.length < 3 && this.visible) {
                         this.table.push(this.log[this.table.length]);
                     }
