@@ -65,7 +65,7 @@
                     <th v-for="header in headers">{{ header }}</th>
                 </tr>
                 <tr v-for="(log, index) in table">
-                    <td>{{ log.date }}</td>
+                    <td>{{ timestampToYMD(log.date) }}</td>
                     <td>{{ log.field }}</td>
                     <td>{{ log.crop }}</td>
                     <td>{{ log.yield }}</td>
@@ -146,24 +146,30 @@
                 deleteLog: function (nameIndex) {
                     this.table.splice(nameIndex, 1);
                 },
-                
+                timestampToDate: function (timestamp) {
+                    return new Date(timestamp * 1000);
+                },
+                timestampToYMD: function (timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month =
+                        d.getMonth() < 9
+                            ? '0' + (d.getMonth() + 1)
+                            : d.getMonth() + 1;
+                    const day =
+                        d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+                    return d.getFullYear() + '-' + month + '-' + day;
+                },
             },
             created() {
-                    axios
-                        .get(
-                            '/taxonomy_term.json?area_type=field'
-                        )
-                        .then((response) => {
-                            this.fields = response.data.list.map(f => f.name);;
-                        });
-                    axios
-                        .get(
-                            '/farm_asset.json?type=planting'
-                        )
-                        .then((response) => {
-                            this.crops = response.data.list.map(f => f.name);;
-                        });
-                },
+                axios
+                    .get('/taxonomy_term.json?area_type=field')
+                    .then((response) => {
+                        this.fields = response.data.list.map((f) => f.name);
+                    });
+                axios.get('/farm_asset.json?type=planting').then((response) => {
+                    this.crops = response.data.list.map((f) => f.name);
+                });
+            },
         });
         Vue.config.devtools = true;
     </script>
