@@ -1,0 +1,136 @@
+<body>
+    <div id="vue" v-cloak>
+    <h1>Harvest Report</h1>
+    <p>This page is a <i>mockup</i> of a form for generating a harvest report</p>
+    <label for="title">Title:</label>
+    <input type="text" id="title" v-model="header">
+
+    <br>
+
+    <label for="start">Start:</label>
+    <input type="date" id="start" v-model="reportDateStart" min="2014-01-01" :max="reportDateEnd">
+
+    <label for="end">End:</label>
+    <input type="date" id="end" v-model="reportDateEnd" :min="reportDateStart" max="2022-01-01">
+
+    <br>
+
+    <label for="crop">Crop:</label>
+    <select id="crops" name="crops" v-model="reportCrop">
+            <option v-for="crop in selectCrop">{{ crop }}</option>
+    </select>
+
+    <label for="field">Field:</label>
+    <select id="field" name="field">
+            <option v-for="field in selectField">{{ field }}</option>
+    </select>
+
+    <button class="btn btn-primary" @click="generateReport(); toggleVisibility('true')">Generate Report</button>
+    <hr>
+
+    <div v-if="this.visible === 'true'">
+        <h2>{{ header ? header: "Mock Harvest Report" }}</h2>
+        <p>Details:</p>
+        <ul>
+            <li><strong>Start:</strong> {{reportDateStart}} </li>
+            <br>
+            <li><strong>End:</strong> {{reportDateEnd}} </li>
+            <br>
+            <li><strong>Crop:</strong> {{reportCrop}} </li>
+        </ul>
+        <br>
+
+        <p v-if="reportHarvest.length === 0">No matching records.</p>
+        <table v-else border=1>
+            <tr>
+                <th>Date</th>
+                <th>Field</th>
+                <th>Crop</th>
+                <th>Yield</th>
+                <th>Delete</th>
+            </tr>
+            <tr v-for="(harvest, reportIndex) in reportHarvest">
+                <td> {{harvest.date}} </td>
+                <td> {{harvest.field}} </td>
+                <td> {{harvest.crop}} </td>
+                <td> {{harvest.yield}} </td>
+                <td><button type="button" @click="deleteReport(reportIndex)"> Delete </button></td>
+            </tr>
+
+        </table>
+
+        <p>Total Yield: {{ calculateTotalYield }}</p>
+
+    </div>
+
+        <p>Boo Sung Kim</p>
+    </div>
+
+    <script>
+        var vueObject = new Vue({
+            el: '#vue',
+            data:{
+                visible: "false",
+                header: 'My Mock Report',
+                reportDateStart: '2018-05-01',
+                reportDateEnd: '2018-05-15',
+                reportCrop: 'Kale',
+                selectCrop: [],
+                selectField: null,
+                reportHarvest: [],
+                newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
+                newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
+                newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
+            },
+            methods:{
+                generateReport: function(){
+                    if (this.reportHarvest.length == 0){
+                        this.reportHarvest.push(this.newReport01);
+                    }
+                    else if (this.reportHarvest.length == 1){
+                        this.reportHarvest.push(this.newReport02);
+                    }
+                    else if (this.reportHarvest.length == 2) {
+                        this.reportHarvest.push(this.newReport03);
+                    }
+                },
+                deleteReport: function(reportIndex){
+                    this.reportHarvest.splice(reportIndex, 1);
+                },
+                toggleVisibility: function(newState){
+                    this.visible = newState;
+                }
+            },
+            created(){
+                axios.get("/taxonomy_term.json?area_type=field")
+                .then(response => {
+                    this.selectField = response.data.list.map(f => f.name).sort();
+                })
+                .catch(error => {
+                    this.selectField = ["Service Unavailable"];
+                    console.log.error;
+                });
+                axios.get("/farm_asset.json?type=planting")
+                .then(response => {
+                    this.selectCrop = response.data.list.map(f => f.name).sort();
+                })
+                .catch(error => {
+                    this.selectCrop = ["Service Unavailable"];
+                    console.log.error;
+                });
+            },
+            computed:{
+                calculateTotalYield(){
+                    var yield = 0;
+                    for(let step = 0; step < this.reportHarvest.length; step++){
+                        let log = this.reportHarvest[step];
+                        yield += parseInt(log.yield.split(" ")[0])
+                    }
+                    return yield;
+                }
+            }
+        });
+        Vue.config.devtools = true;
+    </script>
+
+</body>
