@@ -1,0 +1,158 @@
+<body>
+    <h1>Harvest Report</h1>
+    <br />
+    <p>
+        This page is a <i>mockup</i> of a form for generating a harvest report
+    </p>
+    <br />
+
+    <div id="rptVue" v-cloak>
+        <label for="”title”">Title:</label>
+        <input type="text" v-model="rptTitle" id="”title”" />
+
+        <br /><br />
+
+        <label for="start">Start:</label>
+        <input
+            type="date"
+            id="start"
+            v-model="rptStart"
+            min="2014-01-01"
+            :max="rptEnd"
+        />
+
+        <label for="end">End:</label>
+        <input
+            type="date"
+            id="end"
+            v-model="rptEnd"
+            :min="rptStart"
+            max="2022-01-01"
+        />
+
+        <br /><br />
+
+        <label for="”crop”">Crop:</label>
+        <select id="crop" v-model="rptCrop">
+            <option v-for="crop in crops">{{ crop }}</option>
+        </select>
+
+        <label for="”field”">Field:</label>
+        <select id="field">
+            <option v-for="field in fields">{{ field }}</option>
+        </select>
+
+        <br /><br />
+        <button class="btn btn-primary" @click="genRpt">Generate Report</button>
+
+        <div v-if="visible">
+            <hr />
+
+            <h1>{{ rptTitle == '' ? 'My Mock Harvest Report' : rptTitle }}</h1>
+            <br />
+
+            <p>Details:</p>
+            <br />
+            <ul>
+                <li><strong>Start:</strong>{{ rptStart }}</li>
+                <li><strong>End:</strong> {{ rptEnd }}</li>
+                <li><strong>Crop:</strong>{{ rptCrop }}</li>
+            </ul>
+            <br />
+            <p v-if="table.length == 0">There are no matching records.</p>
+            <table border="1" v-else>
+                <tr>
+                    <th v-for="header in headers">{{ header }}</th>
+                </tr>
+                <tr v-for="(log, index) in table">
+                    <td>{{ log.date }}</td>
+                    <td>{{ log.field }}</td>
+                    <td>{{ log.crop }}</td>
+                    <td>{{ log.yield }}</td>
+                    <td>
+                        <button type="button" @click="deleteLog(index)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <p>{{ 'Total Yield: ' + totalYield}}</p>
+        </div>
+    </div>
+
+    <script>
+        var rptVue = new Vue({
+            el: '#rptVue',
+            data: {
+                rptTitle: '',
+                rptStart: '05/01/2018',
+                rptEnd: '05/15/2018',
+                rptCrop: 'Kale',
+                crops: ['Broccoli', 'Kale', 'Peas'],
+                fields: [],
+                visible: false,
+                headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
+                log: [
+                    {
+                        date: '05/02/2018',
+                        field: 'Chuau-1',
+                        crop: 'Kale',
+                        yield: '10 Bunches',
+                    },
+                    {
+                        date: '05/05/2018',
+                        field: 'SQ7',
+                        crop: 'Kale',
+                        yield: '7 Bunches',
+                    },
+                    {
+                        date: '07/10/2018',
+                        field: 'Chuau-1',
+                        crop: 'Kale',
+                        yield: '12 Bunches',
+                    },
+                ],
+                table: [],
+            },
+            computed: {
+                totalYield() {
+                    total = 0;
+                    for (log in this.table) {
+                        yield = parseInt(this.table[log].yield.split(' ')[0]);
+                        total += yield;
+                    }
+                    return total;
+                },
+            },
+            methods: {
+                genRpt: function () {
+                    if (this.table.length < 3 && this.visible) {
+                        this.table.push(this.log[this.table.length]);
+                    }
+                    this.visible = true;
+                },
+                deleteLog: function (nameIndex) {
+                    this.table.splice(nameIndex, 1);
+                },
+                
+            },
+            created() {
+                    axios
+                        .get(
+                            '/taxonomy_term.json?area_type=field'
+                        )
+                        .then((response) => {
+                            this.fields = response.data.list.map(f => f.name);;
+                        });
+                    axios
+                        .get(
+                            '/farm_asset.json?type=planting'
+                        )
+                        .then((response) => {
+                            this.crops = response.data.list.map(f => f.name);;
+                        });
+                },
+        });
+        Vue.config.devtools = true;
+    </script>
+</body>
