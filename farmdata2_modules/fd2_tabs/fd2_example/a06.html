@@ -65,7 +65,7 @@
                     <th v-for="header in headers">{{ header }}</th>
                 </tr>
                 <tr v-for="(log, index) in table">
-                    <td>{{ timestampToYMD(log.date) }}</td>
+                    <td>{{ log.date }}</td>
                     <td>{{ log.field }}</td>
                     <td>{{ log.crop }}</td>
                     <td>{{ log.yield }}</td>
@@ -131,10 +131,10 @@
                         .then((response) => {
                             this.log = response.data.list.map((h) => {
                                 return {
-                                    date: h.timestamp,
-                                    field: 'blah',
-                                    crop: 'blah',
-                                    yield: 'blah',
+                                    date: this.timestampToYMD(h.timestamp),
+                                    field: h.area[0].name,
+                                    crop: h.name.split(" ")[h.name.split(" ").length - 1],
+                                    yield: h.quantity[0].value + " " + h.quantity[0].unit.name,
                                 };
                             });
                         });
@@ -159,6 +159,7 @@
                         d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
                     return d.getFullYear() + '-' + month + '-' + day;
                 },
+                
             },
             created() {
                 axios
