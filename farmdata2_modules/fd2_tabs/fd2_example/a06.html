@@ -39,7 +39,7 @@
         <input type="date" id="end" :min="reportStartDate" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
-    <button type="button" v-model="logIndex" @click="setTableState('show'), getHarvestRequest(reportField), console.log(reportField)">Generate Report</button>
+    <button type="button" v-model="logIndex" @click="setTableState('show'), getHarvestRequest(reportField, YMDToTimestamp(reportStartDate), TimestampFollowingDay(reportEndDate) ), console.log(reportField)">Generate Report</button>
     <hr>
     <!-- <h1>My Mock Report</h1> -->
     <div id="reportTableSection" v-if="tableState === 'show'">
@@ -90,7 +90,6 @@
             logIndex: 0,
             tableState: 'hide',
             harvestLogsAvailable: false,
-            harvestRequest: "`/log.json?type=farm_harvest&area=${this.reportField}`"
           },
           methods: {
               addHarvestLogs: function(index){
@@ -107,6 +106,14 @@
               setTableState: function(state){
                   this.tableState = state;
               },
+              YMDToTimestamp: function(ymd) {
+                let d = new Date(ymd);
+                return Math.round(d.getTime()/1000 +
+                        new Date().getTimezoneOffset()*60);
+                },
+            TimestampFollowingDay: function(ymd) {
+                return this.YMDToTimestamp(ymd) + 60*60*24
+                },
               timestampToDate: function(timestamp) {
                 return new Date(timestamp * 1000);
               },
@@ -125,8 +132,8 @@
                     return splitString[splitString.length - 1]
                 },
 
-                getHarvestRequest: function(reportField){
-                    axios.get('/log.json?type=farm_harvest&area=' + reportField)
+                getHarvestRequest: function(reportField, start, end){
+                    axios.get('/log.json?type=farm_harvest&area=' + reportField + '&timestamp[ge]=' + start + '&timestamp[lt]=' + end)
                     .then(response => {
                     this.reportHarvestLogs = response.data.list.map(log => {
                     return {
