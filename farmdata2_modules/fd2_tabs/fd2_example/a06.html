@@ -34,7 +34,7 @@
                 <option v-for="field in fieldChoices">{{field}}</option>
             </select><br> <br>
 
-            <button type="btn btn-primary" @click="createReport(); reportState('visible');">Generate Report</button><br>
+            <button type="btn btn-primary" @click="createReport(); reportState('visible'); requestHarvestLog();">Generate Report</button><br>
             
             <hr>
 
@@ -106,15 +106,26 @@
                         this.harvestReport.push({date:'05/19/2018', field:'SQ-7', crop:'Broccoli', Yield:'9 Bunches', index:1})
                     } else if(this.harvestReport.length == 2) {
                         this.harvestReport.push({date:'05/22/2018', field:'SQ-7', crop:'Peas', Yield:'8 Bunches', index:2})
-                    } else {
-                       //blank
-                    }
+                    } 
                 },
                 deleteReport:  function(reportIndex) {
                     this.harvestReport.splice(reportIndex, 1);
                 },
                 reportState: function(visibility) {
                     this.rState = visibility;
+                },
+                requestHarvestLog: function() {
+                    axios.get('/log.json?type=farm_harvest&area=Jasmine-1')
+                        .then(response => {
+		                    this.harvestLogs = response.data.list.map(h => {
+                            return {
+                                date:h.timestamp, 
+                                field:'blah', 
+                                crop:'blah', 
+                                yield:'blah',
+                            };
+                        });
+                    })
                 },
             },
             created() {
@@ -129,11 +140,11 @@
                      );
                      axios.get('/farm_asset.json?type=planting')
                           .then(response => {
-                              this.cropChoices = response.data.list.map(c => c.name);
-                              this.cropChoices = this.cropChoices.sort();
+                            this.cropChoices = response.data.list.map(c => c.name);
+                            this.cropChoices = this.cropChoices.sort();
                           })
                           .catch(error => {
-                              console.log(error);
+                            console.log(error);
                           }
                     );
                           
