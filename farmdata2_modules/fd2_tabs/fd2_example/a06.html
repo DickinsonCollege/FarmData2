@@ -28,7 +28,7 @@
     <button type="button" class="btn btn-primary" @click="generateBtn" 	id="generate-report">Generate Report</button>
     <hr>
    
-    <div v-if="state=='visible'">
+    <div>
     <h1>{{rptTitle ? rptTitle: 'Mock Harvest Report'}}</h1>
     <p>Details:</p>
     <ul>
@@ -92,12 +92,17 @@
 
         methods:{
             generateBtn: function(){
-                if(this.harvestLog.length < 3){
-                    if(this.harvestLog.length ==0){
-                        this.state='visible';
-                    }
-                    this.harvestLog.push(this.HLog[this.harvestLog.length])
-                }
+               axios.get('/log.json?type=farm_harvest&area=jasmine-1')
+                .then(response => {
+            this.harvestLog = response.data.list.map(h =>{
+                return{
+                    Date:h.timestamp,
+                    Field: 'blah',
+                    Crop:'blah',
+                    Yield:'blah',
+                };
+            });
+                })
             },
             deleteLog: function(index){
                 this.harvestLog.splice(index,1);
