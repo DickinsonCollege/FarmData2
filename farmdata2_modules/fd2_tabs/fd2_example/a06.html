@@ -21,7 +21,7 @@
     </select>
 
     <label for="field">Field:</label>
-    <select id="field" name="field">
+    <select id="field" name="field" v-model="field">
             <option v-for="field in selectField">{{ field }}</option>
     </select>
 
@@ -81,6 +81,7 @@
                 newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
                 newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
                 newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
+                field: '',
             },
             methods:{
                 generateReport: function(){
@@ -93,7 +94,8 @@
                     // else if (this.reportHarvest.length == 2) {
                     //     this.reportHarvest.push(this.newReport03);
                     // }
-                    axios.get('/log.json?type=farm_harvest')
+                    var emptyLink = '/log.json?type='
+                    axios.get('/log.json?type=farm_harvest&area=Jasmine-1')
                     .then(response => {
 		                this.reportHarvest = response.data.list.map(h => {
 			                return {
