@@ -39,7 +39,7 @@
         <input type="date" id="end" :min="reportStartDate" max="2022-01-01" value="2018-05-15" v-model="reportEndDate">
     </div>
     <br>
-    <button type="button" v-model="logIndex" @click="setTableState('show')">Generate Report</button>
+    <button type="button" v-model="logIndex" @click="setTableState('show'), getHarvestRequest(reportField), console.log(reportField)">Generate Report</button>
     <hr>
     <!-- <h1>My Mock Report</h1> -->
     <div id="reportTableSection" v-if="tableState === 'show'">
@@ -53,9 +53,10 @@
             <li><strong>Start: {{reportStartDate}}</strong></li>
             <li><strong>End: {{reportEndDate}}</strong></li>
             <li><strong>Crop: {{reportCrop}}</strong></li>
+            <li><strong>Field: {{reportField}}</strong></li>
         </ul>
         <table>
-            <p v-if="reportHarvestLogs.length === 0">No matching records currently.</p>
+            <p v-if="reportHarvestLogs.length == 0">No matching records currently.</p>
             <tr v-if="reportHarvestLogs.length !== 0">
                 <th>Date</th>
                 <th>Field</th>
@@ -82,16 +83,14 @@
             reportStartDate: '2018-05-01',
             reportEndDate: '2018-05-15',
             reportCrop: 'Broccoli',
-            reportField: 'All',
+            reportField: '',
             crops: [], 
             fields: [],
-            // reportTableData: [
-            //     {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 Bunches'},
-            //     {date: '05/05/2018', field: 'SQ7', crop: 'Kale', yield: '7 Bunches'}
-            // ]
             reportHarvestLogs: [],
             logIndex: 0,
-            tableState: 'hide'
+            tableState: 'hide',
+            harvestLogsAvailable: false,
+            harvestRequest: "`/log.json?type=farm_harvest&area=${this.reportField}`"
           },
           methods: {
               addHarvestLogs: function(index){
@@ -124,6 +123,21 @@
                 getCropName: function(string){
                     let splitString =  string.split(' ')
                     return splitString[splitString.length - 1]
+                },
+
+                getHarvestRequest: function(reportField){
+                    axios.get('/log.json?type=farm_harvest&area=' + reportField)
+                    .then(response => {
+                    this.reportHarvestLogs = response.data.list.map(log => {
+                    return {
+                        date: this.timestampToYMD(log.timestamp),
+                        field: log.area[0].name,
+                        crop: this.getCropName(log.name),
+                        yield: log.quantity[0].value
+                    }
+                })
+                }
+            )
                 }
           },
           computed: {
@@ -134,6 +148,9 @@
                     totalYield += yield
                   }
                   return totalYield;
+              },
+              getRequestURL: function(){
+                  return `/log.json?type=farm_harvest&area=${this.reportField}`
               }
           },
           created() {
@@ -155,23 +172,22 @@
                 console.log(error)
             });
 
-            axios.get('/log.json?type=farm_harvest&area=JASMINE-1')
-            .then(response => {
-                this.reportHarvestLogs = response.data.list.map(log => {
-                    return {
-                        // date: log.timestamp,
-                        // field: log.area.name,
-                        // crop: log.name.split(' ')[-1],
-                        // yield: log.quantity[1].value
-                        date: this.timestampToYMD(log.timestamp),
-                        field: log.area[0].name,
-                        crop: this.getCropName(log.name),
-                        yield: log.quantity[0].value
-                    }
-                })
-            })
-        }
-        });
+            // axios.get(this.getRequestURL)
+            // .then(response => {
+            //     this.reportHarvestLogs = response.data.list.map(log => {
+            //         return {
+            //             date: this.timestampToYMD(log.timestamp),
+            //             field: log.area[0].name,
+            //             crop: this.getCropName(log.name),
+            //             yield: log.quantity[0].value
+            //         }
+            //     })
+            //     }
+            // )
+            },
+        },
+            
+        );
         Vue.config.devtools = true;
     </script>
 </body>
