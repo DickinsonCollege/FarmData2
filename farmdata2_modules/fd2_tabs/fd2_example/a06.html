@@ -21,7 +21,7 @@
     </select>
 
     <label for="field">Field:</label>
-    <select id="field" name="field" v-model="field">
+    <select id="field" name="field" v-model="selectedField">
             <option v-for="field in selectField">{{ field }}</option>
     </select>
 
@@ -81,10 +81,10 @@
                 newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
                 newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
                 newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
-                field: '',
+                selectedField: '',
             },
             methods:{
-                generateReport: function(){
+                generateReport: function() {
                     // if (this.reportHarvest.length == 0){
                     //     this.reportHarvest.push(this.newReport01);
                     // }
@@ -94,8 +94,18 @@
                     // else if (this.reportHarvest.length == 2) {
                     //     this.reportHarvest.push(this.newReport03);
                     // }
-                    var emptyLink = '/log.json?type='
-                    axios.get('/log.json?type=farm_harvest&area=Jasmine-1')
+
+                    // Due to error in Drupal, this section of the code is not yet possible to write.
+                    if(this.selectedField === "Jasmine Greenhouse"){
+                        var link = '/log.json?type=farm_harvest&area=' + "JASMINE-1&area=JASMINE-3&area=JASMINE-4&area=JASMINE-5";
+                    }
+                    else if(this.selectedField === "Chuau Greenhouse"){
+                        var link = '/log.json?type=farm_harvest&area=' + "CHUAU-1&area=CHUAU-2&area=CHUAU-3&area=CHUAU-4&area=CHUAU-5";
+                    }
+                    else {
+                        var link = '/log.json?type=farm_harvest&area=' + this.selectedField;
+                    }
+                    axios.get(link)
                     .then(response => {
 		                this.reportHarvest = response.data.list.map(h => {
 			                return {
