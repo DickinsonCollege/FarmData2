@@ -97,7 +97,7 @@
                     .then(response => {
 		                this.reportHarvest = response.data.list.map(h => {
 			                return {
-				            date:h.timestamp, 
+				            date: this.timestampToYMD(h.timestamp), 
 				            field:'blah', 
 				            crop:'blah', 
 				            yield:'blah',
@@ -110,7 +110,16 @@
                 },
                 toggleVisibility: function(newState){
                     this.visible = newState;
-                }
+                },
+                timestampToDate: function(timestamp) {
+                    return new Date(timestamp * 1000);
+                },
+                timestampToYMD: function(timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month = d.getMonth() < 9 ? '0' + (d.getMonth() + 1) :d.getMonth() + 1;
+                    const day = d.getDate() < 10 ? '0' + d.getDate() :d.getDate();
+                    return d.getFullYear() + "-" + month + "-" + day;
+                },
             },
             created(){
                 axios.get("/taxonomy_term.json?area_type=field")
