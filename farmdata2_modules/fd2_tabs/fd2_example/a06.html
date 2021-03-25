@@ -84,15 +84,26 @@
             },
             methods:{
                 generateReport: function(){
-                    if (this.reportHarvest.length == 0){
-                        this.reportHarvest.push(this.newReport01);
-                    }
-                    else if (this.reportHarvest.length == 1){
-                        this.reportHarvest.push(this.newReport02);
-                    }
-                    else if (this.reportHarvest.length == 2) {
-                        this.reportHarvest.push(this.newReport03);
-                    }
+                    // if (this.reportHarvest.length == 0){
+                    //     this.reportHarvest.push(this.newReport01);
+                    // }
+                    // else if (this.reportHarvest.length == 1){
+                    //     this.reportHarvest.push(this.newReport02);
+                    // }
+                    // else if (this.reportHarvest.length == 2) {
+                    //     this.reportHarvest.push(this.newReport03);
+                    // }
+                    axios.get('/log.json?type=farm_harvest')
+                    .then(response => {
+		                this.reportHarvest = response.data.list.map(h => {
+			                return {
+				            date:h.timestamp, 
+				            field:'blah', 
+				            crop:'blah', 
+				            yield:'blah',
+			                };
+		                });
+	                })                    
                 },
                 deleteReport: function(reportIndex){
                     this.reportHarvest.splice(reportIndex, 1);
