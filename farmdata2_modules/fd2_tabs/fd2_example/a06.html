@@ -28,7 +28,7 @@
     </select>
     <br>
     <br>
-    <button type="button" type="btn btn-primary" v-on:click="generateReport(), setTableState('show')">
+    <button type="button" type="btn btn-primary" v-on:click="generateReport(reportField), setTableState('show')">
     Generate Report
     </button>
 
@@ -44,6 +44,7 @@
             <li><strong>{{reportStartDate}}</strong></li>
             <li><strong>{{reportEndDate}}</strong></li>
             <li><strong>{{reportCrop}}</strong></li>
+            <li>Field: {{reportField}}</li>
     </ul>
 
     <br>
@@ -80,22 +81,34 @@
               crops: [], 
               fields: [],
               reportTable: [],
-              newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
-              newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
-              newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
-               tableState: 'hide',
+            //   newReport01: {date: '05/02/2018', field: 'Chuau-1', crop: 'Kale', yield: '10 bunches'},
+            //   newReport02: {date: '05/01/2018', field: 'SQ7', crop: 'Broccoli', yield: '10 bunches'},
+            //   newReport03: {date: '05/05/2018', field: 'All', crop: 'Peas', yield: '10 bunches'},
+            //    tableState: 'hide',
           },
           methods:{
-                generateReport: function(){
-                    if (this.reportTable.length == 0){
-                        this.reportTable.push(this.newReport01);
-                    }
-                    else if (this.reportTable.length == 1){
-                        this.reportTable.push(this.newReport02);
-                    }
-                    else if (this.reportTable.length == 2) {
-                        this.reportTable.push(this.newReport03);
-                    }
+                generateReport: function(reportField){
+                    // if (this.reportTable.length == 0){
+                    //     this.reportTable.push(this.newReport01);
+                    // }
+                    // else if (this.reportTable.length == 1){
+                    //     this.reportTable.push(this.newReport02);
+                    // }
+                    // else if (this.reportTable.length == 2) {
+                    //     this.reportTable.push(this.newReport03);
+                    // }
+                axios.get('/log.json?type=farm_harvest&area=' + reportField)
+                .then(response => {
+		            this.reportTable = response.data.list.map(h => {
+			    return {
+				    date: this.timestampToYMD(h.timestamp), 
+				    field: h.area[0].name, 
+				    crop: this.getCropName(h.name), 
+				    yield: h.quantity[0].value,
+		         	};
+	        	});
+	        })
+
                 },
                  deleteReport: function(dataIndex){
                     this.reportTable.splice(dataIndex, 1);
@@ -126,6 +139,7 @@
                   }
                   return totalYield;
               },
+         
             },
             created() {
                axios.get('/taxonomy_term.json?area_type=field')
@@ -145,20 +159,7 @@
                 this.crops = ['Service Unavailable'];
                 console.log(error)
             });
-
-            axios.get('/log.json?type=farm_harvest&area=JASMINE-1')
-            .then(response => {
-		       this.reportTable = response.data.list.map(h => {
-			return {
-				date: this.timestampToYMD(h.timestamp), 
-				field: h.area[0].name, 
-				crop: this.getCropName(h.name), 
-				yield: h.quantity[0].value,
-			};
-		});
-	})
-
-        }
+        },
         });
         Vue.config.devtools = true;
     </script>
