@@ -1,8 +1,23 @@
 <body>
     <h1>Harvest Report</h1>
     <br />
-    <p>
-        This page is a form for generating a harvest report
-    </p>
+    <p>This page is a form for generating a harvest report</p>
     <br />
+    <div id="harvRptVue" v-cloak>
+        <label for="rptTitle">Title:</label>
+        <input type="text" v-model="harvRptTitle" id="rptTitle" />
+
+        <br /><br />
+
+        <button class="btn btn-primary">Generate Report</button>
+    </div>
+    <script>
+        var harvRptVue = new Vue({
+            el: '#harvRptVue',
+            data: {
+                harvRptTitle: 'My Harvest Report',
+            },  
+        });
+        Vue.config.devtools = true;
+    </script>
 </body>
