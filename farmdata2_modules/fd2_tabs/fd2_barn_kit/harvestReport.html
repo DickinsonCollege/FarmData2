@@ -9,24 +9,32 @@
 
         <br /><br />
 
-        <button class="btn btn-primary" @click="genHarvRpt">Generate Report</button>
+        <button class="btn btn-primary" @click="genHarvRpt">
+            Generate Report
+        </button>
         <div v-if="visible">
             <hr />
             <h1>
                 {{ harvRptTitle == '' ? 'My Harvest Report' : harvRptTitle }}
             </h1>
             <br />
-
-            <p v-if="table.length == 0">There are no matching records.</p>
+            <br />
+            <ul>
+                <li><strong>Start:</strong>{{}}</li>
+                <li><strong>End:</strong> {{}}</li>
+                <li><strong>Crop:</strong>{{}}</li>
+            </ul>
+            <br />
+            <p v-if="harvTable.length == 0">There are no matching records.</p>
             <table border="1" v-else>
                 <tr>
-                    <th v-for="header in headers">{{ header }}</th>
+                    <th v-for="header in harvHeaders">{{ header }}</th>
                 </tr>
-                <tr v-for="(log, index) in table">
-                    <td>{{ log.date }}</td>
-                    <td>{{ log.field }}</td>
-                    <td>{{ log.crop }}</td>
-                    <td>{{ log.yield }}</td>
+                <tr v-for="(harvLog, index) in harvTable">
+                    <td>{{ harvLog.date }}</td>
+                    <td>{{ harvLog.field }}</td>
+                    <td>{{ harvLog.crop }}</td>
+                    <td>{{ harvLog.yield }}</td>
                     <td>
                         <button type="button" @click="deleteHarvLog(index)">
                             Delete
@@ -40,40 +48,38 @@
         var harvRptVue = new Vue({
             el: '#harvRptVue',
             data: {
+                rptPath: '/log.json?type=farm_harvest', //change this and add path creator method when filters are added!
                 harvRptTitle: 'My Harvest Report',
                 visible: false,
-                headers: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
-                log: [
-                    {
-                        date: '05/02/2018',
-                        field: 'Chuau-1',
-                        crop: 'Kale',
-                        yield: '10 Bunches',
-                    },
-                    {
-                        date: '05/05/2018',
-                        field: 'SQ7',
-                        crop: 'Kale',
-                        yield: '7 Bunches',
-                    },
-                    {
-                        date: '07/10/2018',
-                        field: 'Chuau-1',
-                        crop: 'Kale',
-                        yield: '12 Bunches',
-                    },
-                ],
-                table: [],
+                harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
+                harvLog: [],
+                harvTable: [],
             },
             methods: {
                 genHarvRpt: function () {
-                    if (this.table.length < this.log.length && this.visible) {
-                        this.table.push(this.log[this.table.length]);
+                    axios.get(this.rptPath).then((response) => {
+                        this.harvLog = response.data.list.map((entry) => {
+                            return {
+                                date: entry.timestamp, //make human readable
+                                field: entry.area[0].name,
+                                crop: entry.name.split(' ')[
+                                    entry.name.split(' ').length - 1
+                                ],
+                                yield:
+                                    entry.quantity[0].value +
+                                    ' ' +
+                                    entry.quantity[0].unit.name,
+                            };
+                        });
+                    });
+                    if (this.harvTable.length < 10 //change 10 to this.harvLog.length when filters are added! 
+                    && this.visible) {
+                        this.harvTable.push(this.harvLog[this.harvTable.length]);
                     }
                     this.visible = true;
                 },
                 deleteHarvLog: function (nameIndex) {
-                    this.table.splice(nameIndex, 1);
+                    this.harvTable.splice(nameIndex, 1);
                 },
             },
         });
