@@ -57,8 +57,10 @@
             },
             methods: {
                 genHarvRpt: function () {
+                    this.visible = true;
                     axios.get(this.rptPath).then((response) => {
                         this.harvLog = response.data.list.map((entry) => {
+                            //console.log('here');
                             return {
                                 date: entry.timestamp, //make human readable
                                 field: entry.area[0].name,
@@ -72,11 +74,11 @@
                             };
                         });
                     });
-                    if (this.harvTable.length < 10 //change 10 to this.harvLog.length when filters are added! 
-                    && this.visible) {
-                        this.harvTable.push(this.harvLog[this.harvTable.length]);
+                    while (this.harvTable.length < this.harvLog.length) {
+                        this.harvTable.push(
+                            this.harvLog[this.harvTable.length]
+                        );
                     }
-                    this.visible = true;
                 },
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
