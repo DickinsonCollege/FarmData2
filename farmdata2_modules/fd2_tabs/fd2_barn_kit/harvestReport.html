@@ -7,6 +7,11 @@
         <label for="rptTitle">Title:</label>
         <input type="text" v-model="harvRptTitle" id="rptTitle" />
 
+        <label for="field">Field: </label>
+        <select v-model="reportField">
+            <option v-for="field in fields">{{field}}</option>
+        </select>
+
         <br /><br />
 
         <button class="btn btn-primary" @click="genHarvRpt">
@@ -23,14 +28,15 @@
                 <li><strong>Start:</strong>{{}}</li>
                 <li><strong>End:</strong> {{}}</li>
                 <li><strong>Crop:</strong>{{}}</li>
+                <li><strong>Field: </strong>{{reportField}}</li>
             </ul>
             <br />
-            <p v-if="harvTable.length == 0">There are no matching records.</p>
+            <p v-if="harvLog.length == 0">There are no matching records.</p>
             <table border="1" v-else>
                 <tr>
                     <th v-for="header in harvHeaders">{{ header }}</th>
                 </tr>
-                <tr v-for="(harvLog, index) in harvTable">
+                <tr v-for="(harvLog, index) in harvLog">
                     <td>{{ harvLog.date }}</td>
                     <td>{{ harvLog.field }}</td>
                     <td>{{ harvLog.crop }}</td>
@@ -48,16 +54,18 @@
         var harvRptVue = new Vue({
             el: '#harvRptVue',
             data: {
-                rptPath: '/log.json?type=farm_harvest', //change this and add path creator method when filters are added!
+                rptPath: this.getRequestURL, //change this and add path creator method when filters are added!
                 harvRptTitle: 'My Harvest Report',
                 visible: false,
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 harvLog: [],
-                harvTable: [],
+                // harvTable: [],
+                reportField: '',
+                fields: [],
             },
             methods: {
                 genHarvRpt: function () {
-                    this.visible = true;
+                    this.makePath();
                     axios.get(this.rptPath).then((response) => {
                         this.harvLog = response.data.list.map((entry) => {
                             //console.log('here');
@@ -74,16 +82,35 @@
                             };
                         });
                     });
-                    while (this.harvTable.length < this.harvLog.length) {
-                        this.harvTable.push(
-                            this.harvLog[this.harvTable.length]
-                        );
-                    }
+                    // while (this.harvTable.length < this.harvLog.length) {
+                    //     this.harvTable.push(
+                    //         this.harvLog[this.harvTable.length]
+                    //     );
+                    // }
+                    this.visible = true;
+                },
+                makePath: function () {
+                    this.rptPath =
+                        '/log.json?type=farm_harvest&area=' +
+                        this.reportField;
+                        // +'&timestamp[ge]=' +
+                        // this.YMDToTimestamp(this.rptStart) + '&timestamp[le]=' +this.YMDToTimestamp(this.rptEnd);
                 },
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
                 },
             },
+            
+            created() {
+            axios.get('/taxonomy_term.json?area_type=field')
+            .then(response => {
+                this.fields = response.data.list.map(f => f.name).sort();
+            }
+            ).catch(error => {
+                this.fields = ['Service Unavailable'];
+                console.log(error)
+            });
+            }
         });
         Vue.config.devtools = true;
     </script>
