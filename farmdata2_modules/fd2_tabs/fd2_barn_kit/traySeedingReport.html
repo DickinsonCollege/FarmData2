@@ -1,0 +1,30 @@
+<head>
+    <h1>Tray Seeding Report</h1>
+</head>
+<body>
+
+<div id= "tray-seeding-report" v-cloak>
+<label for = "cropList">Crop:</label>
+<select id= "cropList" name = "simple" v-model="rptCrop">
+    <ul>
+        <option v-for="crop in crops">{{ crop }}</option>
+    </ul>
+</select>
+</div>
+
+<script>
+    var databinding = new Vue ({
+        el: "#tray-seeding-report",
+        data: {
+            crops: [],
+            rptCrop: "Kale",
+        },
+        created() {
+            axios.get('/farm_asset.json?type=planting').then(response => {
+                this.crops = response.data.list.map(f => f.name).sort();
+            });
+        }
+    });
+Vue.config.devtools = true;
+</script>
+</body>
