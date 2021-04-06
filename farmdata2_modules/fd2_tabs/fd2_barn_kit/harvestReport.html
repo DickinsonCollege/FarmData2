@@ -42,6 +42,7 @@
                     </td>
                 </tr>
             </table>
+            <p>{{ 'Total Yield: ' + totalYield}}</p>
         </div>
     </div>
     <script>
@@ -54,6 +55,16 @@
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 harvLog: [],
                 harvTable: [],
+            },
+            computed: {
+                totalYield() {
+                    total = 0;
+                    for (log in this.harvTable) {
+                        yield = parseInt(this.harvTable[log].yield.split(' ')[0]);
+                        total += yield;
+                    }
+                    return total;
+                },
             },
             methods: {
                 genHarvRpt: function () {
