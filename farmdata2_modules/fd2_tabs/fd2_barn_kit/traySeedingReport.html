@@ -5,6 +5,31 @@
 
             <label for="end">End Date:</label>
             <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
+
+            <br>
+
+            <table border=1>
+                <tr>
+                    <th>Date</th>
+                    <th>Crop</th>
+                    <th>Number of Seeds</th>
+                    <th>Number of Trays</th>
+                    <th>Number of Cells in Each Tray</th>
+                    <th>Seed Varieties</th>
+                    <th>Comments</th>
+                    <th>User Entered</th>
+                </tr>
+                <tr v-for="log in harvestLogs">
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                </tr>
+            </table>
         </div>
 
             <script>
