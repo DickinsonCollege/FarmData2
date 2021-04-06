@@ -58,14 +58,29 @@
             },
             computed: {
                 totalYield() {
-                    total = 0;
+                    endString = "";
+                    yieldTypes = new Map();
                     for (log in this.harvTable) {
-                        yield = parseInt(this.harvTable[log].yield.split(' ')[0]);
-                        total += yield;
+                        value = parseInt(
+                            this.harvTable[log].yield.split(' ')[0]
+                        );
+                        unit = this.harvTable[log].yield.split(' ')[1];
+
+                        if (yieldTypes.has(unit)) {
+                            yieldTypes.set(unit, yieldTypes.get(unit) + value);
+                        } else {
+                            yieldTypes.set(unit, value);
+                        }
                     }
-                    return total;
+                    entries = [...yieldTypes.entries()]
+                    for (entry in entries){
+                        addition = entries[entry][1] + " " + entries[entry][0]  + ", ";
+                        endString += addition;
+                    }
+                    return endString.slice(0, -2);
                 },
             },
+
             methods: {
                 genHarvRpt: function () {
                     this.visible = true;
