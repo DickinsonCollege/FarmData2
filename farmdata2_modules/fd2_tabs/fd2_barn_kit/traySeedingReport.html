@@ -1,0 +1,36 @@
+    <body>
+        <div>
+            <label for="start">Start Date:</label>
+            <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
+
+            <label for="end">End Date:</label>
+            <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
+        </div>
+
+            <script>
+            var traySeedingReport = new Vue({
+                el: '#tray_seeding_report',
+                data: {
+                    reportStart: '2018-05-01',
+                    reportEnd: '2018-07-31',
+                },
+                methods: { 
+                    timestampToYMD: function(timestamp) {
+                        let d = this.timestampToDate(timestamp);
+                        const month = d.getMonth() < 9 ?
+                                     '0' + (d.getMonth() + 1) :
+                                     d.getMonth() + 1;
+                        const day = d.getDate() < 10 ?
+                                 '0' + d.getDate() :
+                                    d.getDate();
+                        return d.getFullYear() + "-" + month + "-" + day;
+                    }, 
+                },
+                created() {
+                    let today = new Date.now();
+                    this.reportEnd = this.timestampToYMD(today);
+                }
+            });
+            Vue.config.devtools = true;
+        </script>
+    </body>
