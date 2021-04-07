@@ -1,0 +1,35 @@
+<head>
+    <h1>Direct Seeding Report</h1>
+</head>
+<body>
+  <div id="DSReport">
+      <label for ="CropsList">Crop(s):</label>
+      <select id="CropsList" name="cropType" v-model="rptCrop">
+          <option>All</option>
+          <option v-for="crop in crops">{{crop}}</option>
+      </select>
+  </div>
+  <script>
+      var dsreportVue = new Vue({
+          el: "#DSReport",
+          data:{
+              rptCrop:"",
+              crops:[],
+          },
+          created(){
+              axios.get("/farm_asset.json?type=planting").then(response=>{
+                  this.crops = response.data.list.map(f =>f.name).sort();
+              });
+          }
+        
+
+        
+        
+        
+         
+
+
+      });
+      Vue.config.devtools=true;
+  </script>
+</body>
