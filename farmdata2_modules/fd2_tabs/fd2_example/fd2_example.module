@@ -71,50 +71,7 @@ function fd2_example_menu() {
     'access arguments' => array('view fd2 example'),
     'weight' => 100,
   );
-  // Add subtag for experiment
-  $items['farm/fd2-example/A02'] = array(
-      'title' => 'A02',
-      'type' => MENU_LOCAL_TASK,
-      'page callback' => 'fd2_example_view',
-      'page arguments' => array('A02.html'),
-      'access arguments' => array('view fd2 example'),
-      'weight' => 100,
-  );
-  //return $items;
-  // Add subtag for the second experiment
-  $items['farm/fd2-example/A03'] = array(
-      'title' => 'A03',
-      'type' => MENU_LOCAL_TASK,
-      'page callback' => 'fd2_example_view',
-      'page arguments' => array('A03.html'),
-      'access arguments' => array('view fd2 example'),
-      'weight' => 100,
-  );
-  // Add subtag for the second experiment
-  $items['farm/fd2-example/A04'] = array(
-      'title' => 'A04',
-      'type' => MENU_LOCAL_TASK,
-      'page callback' => 'fd2_example_view',
-      'page arguments' => array('A04.html'),
-      'access arguments' => array('view fd2 example'),
-      'weight' => 100,
-  );
-  $items['farm/fd2-example/A05'] = array(
-      'title' => 'A05',
-      'type' => MENU_LOCAL_TASK,
-      'page callback' => 'fd2_example_view',
-      'page arguments' => array('A05.html'),
-      'access arguments' => array('view fd2 example'),
-      'weight' => 100,
-  );
-  $items['farm/fd2-example/A06'] = array(
-      'title' => 'A06',
-      'type' => MENU_LOCAL_TASK,
-      'page callback' => 'fd2_example_view',
-      'page arguments' => array('A06.html'),
-      'access arguments' => array('view fd2 example'),
-      'weight' => 100,
-  );
+
   return $items;
 };
 
