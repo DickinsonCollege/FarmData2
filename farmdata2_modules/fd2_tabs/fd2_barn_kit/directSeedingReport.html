@@ -8,6 +8,10 @@
           <option>All</option>
           <option v-for="crop in crops">{{crop}}</option>
       </select>
+      <label for ="DatesTo">Date To:</label>
+      <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11">
+      <label for ="DatesFrom">Date To:</label>
+      <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11">
   </div>
   <script>
       var dsreportVue = new Vue({
