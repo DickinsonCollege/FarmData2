@@ -49,10 +49,10 @@
             <th>  Comments  </th>
         </tr>
 
-        <tr>
-            <td>In Progress</td>
-            <td>     </td>
-            <td>     </td>
+        <tr v-for="log in traySeedingLogs">
+            <td>{{ timestampToYMD(log.date)}}</td>
+            <td>{{ log.crop }}</td>
+            <td>{{ log.numSeeds }}</td>
             <td>     </td>
             <td>     </td>
             <td>     </td>
@@ -70,6 +70,9 @@
                 rptCrop: "Kale",
                 reportStart: '2018-05-01',
                 reportEnd: '2018-07-31',
+                traySeedingLogs: [
+                
+                ],
             },
             methods: { 
                 timestampToYMD: function(timestamp) {
@@ -89,6 +92,20 @@
                     else if(this.crops.length == 1) {
                         this.crops.push({rptCrop: 'Kale', reportStart: '2018-05-01', reportEnd: '2018-07-31'});
                     }
+                },
+                traySeedingLogRequest: function(field) {
+                    let s = this.YMDToTimestamp(this.reportStart);
+                    let e = this.YMDToTimestamp(this.reportEnd);
+                    axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e)
+                        .then(response => {
+                            this.traySeedingLogs = response.data.list.map(t => {
+                                return {
+                                    date:t.timestamp,
+                                    crop:t.name,
+                                    numSeeds:t.quantity,
+                                };
+                            });
+                        })
                 },
             },
             created() {
