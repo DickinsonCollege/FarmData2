@@ -1,41 +1,108 @@
-    <body>
-        <div>
-            //Label and field for Start Date input
-            <label for="start">Start Date:</label>
-            <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
+<head>
+    <h1>Tray Seeding Report</h1>
+</head>
+  
+<body>
+    <div id= "tray-seeding-report" v-cloak>
+        <label for = "cropList">Crop:</label>
+        <select id= "cropList" name = "simple" v-model="rptCrop">
+            <ul>
+                <option v-for="crop in crops">{{ crop }}</option>
+            </ul>
+        </select>
+    </div>
+    <br>
 
-            //Label and field for End Date input
-            <label for="end">End Date:</label>
-            <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
-        </div>
+    <div>
+        <label for="start">Start Date:</label>
+        <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
 
-            <script>
-            var traySeedingReport = new Vue({
-                el: '#tray_seeding_report',
-                data: {
-                    reportStart: '2018-05-01',
-                    reportEnd: '2018-07-31',
-                    traySeedingLogs: [
+        <label for="end">End Date:</label>
+        <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
+    </div>
+    <br>
 
-                    ],
-                },
-                methods: { 
-                    timestampToYMD: function(timestamp) {
-                        let d = this.timestampToDate(timestamp);
-                        const month = d.getMonth() < 9 ?
+    <div>
+        <button class="btn btn-primary" @click="generateReport">Generate Report</button>
+    </div>
+
+    <div v-if="visible">
+        <hr />
+        <h2>Mock Report</h2>
+        <br>
+        <ul>
+            <li><strong>Start:</strong>{{}}</li>
+            <li><strong>End:</strong>{{}}</li>
+            <li><strong>Crop:</strong>{{}}</li>
+        </ul>
+
+        <br>
+        <table border=1>
+        <tr>
+            <th>  Date of Seeding  </th>
+            <th>  Crop  </th>
+            <th>  Number of Seeds  </th>
+            <th>  Number of Trays  </th>
+            <th>  Cells per Tray  </th>
+            <th>  Variety  </th>
+            <th>  User  </th>
+            <th>  Comments  </th>
+        </tr>
+
+        <tr>
+            <td>In Progress</td>
+            <td>     </td>
+            <td>     </td>
+            <td>     </td>
+            <td>     </td>
+            <td>     </td>
+            <td>     </td>
+            <td>     </td>
+        </tr>
+        </table>
+    </div>
+
+    <script>
+        var databinding = new Vue({
+            el: '#tray-seeding-report',
+            data: {
+                crops: [],
+                rptCrop: "Kale",
+                reportStart: '2018-05-01',
+                reportEnd: '2018-07-31',
+            },
+            methods: { 
+                timestampToYMD: function(timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month = d.getMonth() < 9 ?
                                      '0' + (d.getMonth() + 1) :
-                                     d.getMonth() + 1;
-                        const day = d.getDate() < 10 ?
-                                 '0' + d.getDate() :
-                                    d.getDate();
-                        return d.getFullYear() + "-" + month + "-" + day;
-                    }, 
+                                    d.getMonth() + 1;
+                    const day = d.getDate() < 10 ?
+                                '0' + d.getDate() :
+                                d.getDate();
+                    return d.getFullYear() + "-" + month + "-" + day;
+                }, 
+                generateReport: function() {
+                    if(this.crops.length == 0) {
+                        this.crops.push({rptCrop: 'Carrots', reportStart: '2018-05-01', reportEnd: '2018-07-31'});
+                    }
+                    else if(this.crops.length == 1) {
+                        this.crops.push({rptCrop: 'Kale', reportStart: '2018-05-01', reportEnd: '2018-07-31'});
+                    }
                 },
-                created() {
-                    let today = new Date.now();
-                    this.reportEnd = this.timestampToYMD(today);
-                }
-            });
-            Vue.config.devtools = true;
-        </script>
-    </body>
+            },
+            created() {
+                //let today = new Date.now();
+                //this.reportEnd = this.timestampToYMD(today);
+
+                axios.get('/farm_asset.json?type=planting').then(response => {
+                    this.crops = response.data.list.map(f => f.name).sort();
+                });
+
+                let today = new Date.now();
+                this.reportEnd = this.timestampToYMD(today);
+            }
+        });
+       Vue.config.devtools = true;
+    </script>
+</body>
