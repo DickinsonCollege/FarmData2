@@ -42,7 +42,13 @@
                     </td>
                 </tr>
             </table>
-            <p>{{ 'Total Yield: ' + totalYield}}</p>
+            <p>Total Yield:</p>
+            <table border="1">
+                <tr v-for="cropYield in yieldTable">
+                    <td>{{ cropYield[0] }}</td>
+                    <td>{{ cropYield[1] }}</td>
+                </tr>
+            </table>
         </div>
     </div>
     <script>
@@ -55,31 +61,9 @@
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 harvLog: [],
                 harvTable: [],
+                yieldTable: [],
             },
-            computed: {
-                totalYield() {
-                    endString = "";
-                    yieldTypes = new Map();
-                    for (log in this.harvTable) {
-                        value = parseInt(
-                            this.harvTable[log].yield.split(' ')[0]
-                        );
-                        unit = this.harvTable[log].yield.split(' ')[1];
-
-                        if (yieldTypes.has(unit)) {
-                            yieldTypes.set(unit, yieldTypes.get(unit) + value);
-                        } else {
-                            yieldTypes.set(unit, value);
-                        }
-                    }
-                    entries = [...yieldTypes.entries()]
-                    for (entry in entries){
-                        addition = entries[entry][1] + " " + entries[entry][0]  + ", ";
-                        endString += addition;
-                    }
-                    return endString.slice(0, -2);
-                },
-            },
+            computed: {},
 
             methods: {
                 genHarvRpt: function () {
@@ -99,15 +83,49 @@
                                     entry.quantity[0].unit.name,
                             };
                         });
+                        this.totalYield()
                     });
                     while (this.harvTable.length < this.harvLog.length) {
                         this.harvTable.push(
                             this.harvLog[this.harvTable.length]
                         );
                     }
+                    //this.yieldTable = totalYield();
                 },
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
+                    //this.yieldTable = totalYield();
+                },
+                totalYield: function () {
+                    yieldTypes = new Map();
+                    for (log in this.harvTable) {
+                        value = parseFloat(
+                            this.harvTable[log].yield.split(' ')[0]
+                        );
+                        cropUnit =
+                            this.harvTable[log].crop +
+                            ' ' +
+                            this.harvTable[log].yield.split(' ')[1];
+
+                        if (yieldTypes.has(cropUnit)) {
+                            yieldTypes.set(
+                                cropUnit,
+                                yieldTypes.get(cropUnit) + value
+                            );
+                        } else {
+                            yieldTypes.set(cropUnit, value);
+                        }
+                    }
+                    entries = [...yieldTypes.entries()];
+                    for (entry in entries) {
+                        addition = [
+                            entries[entry][0].split(' ')[0],
+                            entries[entry][1] +
+                                ' ' +
+                                entries[entry][0].split(' ')[1],
+                        ];
+                        this.yieldTable.push(addition);
+                    }
                 },
             },
         });
