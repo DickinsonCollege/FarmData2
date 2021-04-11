@@ -8,10 +8,19 @@
           <option>All</option>
           <option v-for="crop in crops">{{crop}}</option>
       </select>
+
       <label for ="DatesTo">Date To:</label>
       <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11">
       <label for ="DatesFrom">Date To:</label>
       <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11">
+
+  <br>
+      <label for ="FieldsList">Field(s):</label>
+      <select id="FieldsList" name="fieldType" v-model="rptField">
+          <option>All</option>
+          <option v-for="field in fields">{{field}}</option>
+      </select>
+
   </div>
   <script>
       var dsreportVue = new Vue({
@@ -19,12 +28,25 @@
           data:{
               rptCrop:"",
               crops:[],
+              rptField: "",
+              fields: [],
+
           },
           created(){
               axios.get("/farm_asset.json?type=planting").then(response=>{
                   this.crops = response.data.list.map(f =>f.name).sort();
               });
+
+              axios.get("/taxonomy_term.json?area_type=field")
+            .then(response => {
+                this.fields = response.data.list.map(f => f.name).sort();
+            }
+            ).catch(error => {
+                this.fields = ['Service Unavailable'];
+                console.log(error)
+            });
           }
+
         
 
         
