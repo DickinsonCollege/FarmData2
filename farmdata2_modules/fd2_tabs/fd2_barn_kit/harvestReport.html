@@ -8,6 +8,11 @@
         <input type="text" v-model="harvRptTitle" id="rptTitle" />
 
         <br /><br />
+        <label for="”crop”">Crop:</label>
+        <select id="crop" v-model="harvRptCrop">
+            <option v-for="crop in harvCrops">{{ crop }}</option>
+        </select>
+        <br /><br />
 
         <button class="btn btn-primary" @click="genHarvRpt">
             Generate Report
@@ -42,7 +47,6 @@
                     </td>
                 </tr>
             </table>
-            <p>{{ 'Total Yield: ' + totalYield}}</p>
         </div>
     </div>
     <script>
@@ -51,20 +55,12 @@
             data: {
                 rptPath: '/log.json?type=farm_harvest', //change this and add path creator method when filters are added!
                 harvRptTitle: 'My Harvest Report',
+                harvRptCrop: 'A',
                 visible: false,
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
+                harvCrops: ['A', 'B', 'C'],
                 harvLog: [],
                 harvTable: [],
-            },
-            computed: {
-                totalYield() {
-                    total = 0;
-                    for (log in this.harvTable) {
-                        yield = parseInt(this.harvTable[log].yield.split(' ')[0]);
-                        total += yield;
-                    }
-                    return total;
-                },
             },
             methods: {
                 genHarvRpt: function () {
