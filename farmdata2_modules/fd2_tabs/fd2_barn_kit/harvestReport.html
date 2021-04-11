@@ -91,6 +91,11 @@
                     this.harvTable.splice(nameIndex, 1);
                 },
             },
+            created() {
+                axios.get('/farm_asset.json?type=planting').then((response) => {
+                    this.harvCrops = response.data.list.map((f) => f.name);
+                });
+            },
         });
         Vue.config.devtools = true;
     </script>
