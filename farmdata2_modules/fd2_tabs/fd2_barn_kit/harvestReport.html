@@ -8,6 +8,11 @@
         <input type="text" v-model="harvRptTitle" id="rptTitle" />
 
         <br /><br />
+        <label for="”crop”">Crop:</label>
+        <select id="crop" v-model="harvRptCrop">
+            <option v-for="crop in harvCrops">{{ crop }}</option>
+        </select>
+        <br /><br />
 
         <button class="btn btn-primary" @click="genHarvRpt">
             Generate Report
@@ -22,7 +27,7 @@
             <ul>
                 <li><strong>Start:</strong>{{}}</li>
                 <li><strong>End:</strong> {{}}</li>
-                <li><strong>Crop:</strong>{{}}</li>
+                <li><strong>Crop:</strong>{{' ' + titleCrop }}</li>
             </ul>
             <br />
             <p v-if="harvTable.length == 0">There are no matching records.</p>
@@ -55,10 +60,15 @@
         var harvRptVue = new Vue({
             el: '#harvRptVue',
             data: {
-                rptPath: '/log.json?type=farm_harvest', //change this and add path creator method when filters are added!
+                rptPath: '', 
                 harvRptTitle: 'My Harvest Report',
+                harvRptCrop: 'ALL',
+                titleCrop: 'ALL',
                 visible: false,
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
+                cropIdPairsFw: new Map(),
+                cropIdPairsBw: new Map(),
+                harvCrops: [],
                 harvTable: [],
                 yieldTable: [],
             },
@@ -67,20 +77,21 @@
             methods: {
                 genHarvRpt: function () {
                     this.visible = true;
+                    this.makePath();
                     axios.get(this.rptPath).then((response) => {
                         this.harvTable = response.data.list.map((entry) => {
-                            //console.log('here');
                             return {
                                 date: entry.timestamp, //make human readable
                                 field: entry.area[0].name,
-                                crop: entry.asset[0].id,
+                                crop: this.cropIdPairsFw.get(entry.asset[0].id),
                                 yield:
                                     entry.quantity[0].value +
                                     ' ' +
                                     entry.quantity[0].unit.name,
                             };
                         });
-                        this.totalYield()
+                        this.totalYield();
+                        this.titleCrop = this.harvRptCrop;
                     });
                 },
                 deleteHarvLog: function (nameIndex) {
@@ -89,6 +100,7 @@
                     this.totalYield();
                 },
                 totalYield: function () {
+                    this.yieldTable = [];
                     yieldTypes = new Map();
                     for (log in this.harvTable) {
                         value = parseFloat(
@@ -96,7 +108,7 @@
                         );
                         cropUnit =
                             this.harvTable[log].crop +
-                            ' ' +
+                            'SPLIT_HERE' +
                             this.harvTable[log].yield.split(' ')[1];
 
                         if (yieldTypes.has(cropUnit)) {
@@ -111,14 +123,36 @@
                     entries = [...yieldTypes.entries()];
                     for (entry in entries) {
                         addition = [
-                            entries[entry][0].split(' ')[0],
+                            entries[entry][0].split('SPLIT_HERE')[0],
                             entries[entry][1] +
                                 ' ' +
-                                entries[entry][0].split(' ')[1],
+                                entries[entry][0].split('SPLIT_HERE')[1],
                         ];
                         this.yieldTable.push(addition);
                     }
+                    this.yieldTable.sort()
                 },
+                makePath: function () {
+                    this.rptPath ='/log.json?type=farm_harvest'
+                    if (!(this.harvRptCrop == 'ALL')){
+                        this.rptPath += '&asset=' +
+                        this.cropIdPairsBw.get(this.harvRptCrop);
+                    }
+                        
+                },
+            },
+            created() {
+                axios.get('/farm_asset.json?type=planting').then((response) => {
+                    this.cropIdPairsFw = new Map(
+                        response.data.list.map((f) => [f.id, f.name])
+                    );
+                    this.cropIdPairsBw = new Map(
+                        response.data.list.map((f) => [f.name, f.id])
+                    );
+                    this.cropIdPairsFw.set('ALL', 'ALL');
+                    this.cropIdPairsBw.set('ALL', 'ALL');
+                    this.harvCrops = Array.from(this.cropIdPairsFw.values());
+                });
             },
         });
         Vue.config.devtools = true;
