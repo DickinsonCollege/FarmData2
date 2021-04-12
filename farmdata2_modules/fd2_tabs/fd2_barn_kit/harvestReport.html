@@ -53,7 +53,7 @@
         var harvRptVue = new Vue({
             el: '#harvRptVue',
             data: {
-                rptPath: '', //change this and add path creator method when filters are added!
+                rptPath: '', 
                 harvRptTitle: 'My Harvest Report',
                 harvRptCrop: 'ALL',
                 visible: false,
@@ -61,7 +61,6 @@
                 cropIdPairsFw: new Map(),
                 cropIdPairsBw: new Map(),
                 harvCrops: [],
-                harvLog: [],
                 harvTable: [],
             },
             methods: {
@@ -70,7 +69,6 @@
                     this.makePath();
                     axios.get(this.rptPath).then((response) => {
                         this.harvTable = response.data.list.map((entry) => {
-                            //console.log('here');
                             return {
                                 date: entry.timestamp, //make human readable
                                 field: entry.area[0].name,
@@ -82,11 +80,7 @@
                             };
                         });
                     });
-                    // while (this.harvTable.length < this.harvLog.length) {
-                    //     this.harvTable.push(
-                    //         this.harvLog[this.harvTable.length]
-                    //     );
-                    // }
+
                 },
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
