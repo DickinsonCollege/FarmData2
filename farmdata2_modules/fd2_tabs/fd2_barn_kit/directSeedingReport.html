@@ -63,18 +63,44 @@
               tableLogs:[],
               //DSLogs should be empty once retrieving API is working
               DSLogs:[{Date:'01/02/2015', Crop:'Carrot', Field:'SQ7', Bed_Feet:'22.0', RowsPerBed:'5', Row_Feet:110.0, Hours:0.02, Annual:'Yes', Comments:'blah', User:'nelsonw'}, {Date:'01/09/2015', Crop:'Broccoli', Field:'SQ7', Bed_Feet:'25.0', RowsPerBed:'10', Row_Feet:110.0, Hours:0.02, Annual:'Yes', Comments:'blah', User:'nelsonw'}],
+              url: '',
 
           },
 
           methods:{
             generateBtn: function(){
                 /* 
-                
+                this.url = '......' // need to find the appropriate path 
+                axios.get(this.url)
+                .then(response => {
+                    this.DSLogs = response.data.list.map(h =>{
+                        return{
+                            Date:this.timestampToYM(h.timestamp),Field: h....,Crop:h.....,Bed_Feet:h....,RowsPerBed:h....Row_Feet:h..., Hours:h..., Annual:h...., Comments:'h..., User:h...,
+                        };
+                    });
+                });
                 */
                 while(this.tableLogs.length < this.DSLogs.length){
                     this.state='visible';this.tableLogs.push(this.DSLogs[this.tableLogs.length])
                 }
-            }
+            },
+            YMDToTimestamp: function (ymd) {
+                let d = new Date(ymd);
+                    return Math.round(
+                        date.getTime() / 1000 + new Date().getTimezoneOffset() * 60
+                    );
+            },
+
+            timestampToYMD: function (timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month =
+                        d.getMonth() < 9
+                            ? '0' + (d.getMonth() + 1)
+                            : d.getMonth() + 1;
+                    const day =
+                        d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+                    return d.getFullYear() + '-' + month + '-' + day;
+                },
         },
 
           created(){
