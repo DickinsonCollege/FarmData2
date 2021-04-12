@@ -59,7 +59,6 @@
                 harvRptTitle: 'My Harvest Report',
                 visible: false,
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
-                harvLog: [],
                 harvTable: [],
                 yieldTable: [],
             },
@@ -69,14 +68,12 @@
                 genHarvRpt: function () {
                     this.visible = true;
                     axios.get(this.rptPath).then((response) => {
-                        this.harvLog = response.data.list.map((entry) => {
+                        this.harvTable = response.data.list.map((entry) => {
                             //console.log('here');
                             return {
                                 date: entry.timestamp, //make human readable
                                 field: entry.area[0].name,
-                                crop: entry.name.split(' ')[
-                                    entry.name.split(' ').length - 1
-                                ],
+                                crop: entry.asset[0].id,
                                 yield:
                                     entry.quantity[0].value +
                                     ' ' +
@@ -85,16 +82,11 @@
                         });
                         this.totalYield()
                     });
-                    while (this.harvTable.length < this.harvLog.length) {
-                        this.harvTable.push(
-                            this.harvLog[this.harvTable.length]
-                        );
-                    }
-                    //this.yieldTable = totalYield();
                 },
                 deleteHarvLog: function (nameIndex) {
+                    this.yieldTable = [];
                     this.harvTable.splice(nameIndex, 1);
-                    //this.yieldTable = totalYield();
+                    this.totalYield();
                 },
                 totalYield: function () {
                     yieldTypes = new Map();
