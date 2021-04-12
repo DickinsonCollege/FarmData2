@@ -38,7 +38,7 @@
                 <tr v-for="(harvLog, index) in harvTable">
                     <td>{{ harvLog.date }}</td>
                     <td>{{ harvLog.field }}</td>
-                    <td>{{ harvLog.crop }}</td>
+                    <td>{{ cropIdPairsFw.get(harvLog.crop) }}</td>
                     <td>{{ harvLog.yield }}</td>
                     <td>
                         <button type="button" @click="deleteHarvLog(index)">
@@ -53,27 +53,28 @@
         var harvRptVue = new Vue({
             el: '#harvRptVue',
             data: {
-                rptPath: '/log.json?type=farm_harvest', //change this and add path creator method when filters are added!
+                rptPath: '', //change this and add path creator method when filters are added!
                 harvRptTitle: 'My Harvest Report',
-                harvRptCrop: 'A',
+                harvRptCrop: 'ALL',
                 visible: false,
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
-                harvCrops: ['A', 'B', 'C'],
+                cropIdPairsFw: new Map(),
+                cropIdPairsBw: new Map(),
+                harvCrops: [],
                 harvLog: [],
                 harvTable: [],
             },
             methods: {
                 genHarvRpt: function () {
                     this.visible = true;
+                    this.makePath();
                     axios.get(this.rptPath).then((response) => {
                         this.harvLog = response.data.list.map((entry) => {
                             //console.log('here');
                             return {
                                 date: entry.timestamp, //make human readable
                                 field: entry.area[0].name,
-                                crop: entry.name.split(' ')[
-                                    entry.name.split(' ').length - 1
-                                ],
+                                crop: entry.asset[0].id,
                                 yield:
                                     entry.quantity[0].value +
                                     ' ' +
@@ -90,10 +91,24 @@
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
                 },
+                makePath: function () {
+                    this.rptPath ='/log.json?type=farm_harvest'
+                    console.log(this.harvRptCrop);
+                    this.rptPath += '&asset=' +
+                    this.cropIdPairsBw.get(this.harvRptCrop);
+                        
+                },
             },
             created() {
                 axios.get('/farm_asset.json?type=planting').then((response) => {
-                    this.harvCrops = response.data.list.map((f) => f.name);
+                    this.cropIdPairsFw = new Map(
+                        response.data.list.map((f) => [f.id, f.name])
+                    );
+                    this.cropIdPairsBw = new Map(
+                        response.data.list.map((f) => [f.name, f.id])
+                    );
+
+                    this.harvCrops = Array.from(this.cropIdPairsFw.values());
                 });
             },
         });
