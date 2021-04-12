@@ -69,7 +69,7 @@
                     this.visible = true;
                     this.makePath();
                     axios.get(this.rptPath).then((response) => {
-                        this.harvLog = response.data.list.map((entry) => {
+                        this.harvTable = response.data.list.map((entry) => {
                             //console.log('here');
                             return {
                                 date: entry.timestamp, //make human readable
@@ -82,20 +82,21 @@
                             };
                         });
                     });
-                    while (this.harvTable.length < this.harvLog.length) {
-                        this.harvTable.push(
-                            this.harvLog[this.harvTable.length]
-                        );
-                    }
+                    // while (this.harvTable.length < this.harvLog.length) {
+                    //     this.harvTable.push(
+                    //         this.harvLog[this.harvTable.length]
+                    //     );
+                    // }
                 },
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
                 },
                 makePath: function () {
                     this.rptPath ='/log.json?type=farm_harvest'
-                    console.log(this.harvRptCrop);
-                    this.rptPath += '&asset=' +
-                    this.cropIdPairsBw.get(this.harvRptCrop);
+                    if (!(this.harvRptCrop == 'ALL')){
+                        this.rptPath += '&asset=' +
+                        this.cropIdPairsBw.get(this.harvRptCrop);
+                    }
                         
                 },
             },
@@ -107,7 +108,8 @@
                     this.cropIdPairsBw = new Map(
                         response.data.list.map((f) => [f.name, f.id])
                     );
-
+                    this.cropIdPairsFw.set('ALL', 'ALL');
+                    this.cropIdPairsBw.set('ALL', 'ALL');
                     this.harvCrops = Array.from(this.cropIdPairsFw.values());
                 });
             },
