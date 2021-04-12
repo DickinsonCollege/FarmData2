@@ -1,7 +1,6 @@
 <head>
     <h1>Tray Seeding Report</h1>
-</head>
-  
+</head> 
 <body>
     <div id= "tray-seeding-report" v-cloak>
         <label for = "cropList">Crop:</label>
@@ -97,7 +96,11 @@
 
                 axios.get('/farm_asset.json?type=planting').then(response => {
                     this.crops = response.data.list.map(f => f.name).sort();
+                    this.crops.splice(0,0,"All");
                 });
+              // push all into crops array, make sure it goes to the top. Just incert on the top.
+              // once i get generate reort report, then get the API request to call all the crops.
+              // Make a API request, make sure to filter out the right things
 
                 let today = new Date.now();
                 this.reportEnd = this.timestampToYMD(today);
