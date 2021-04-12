@@ -75,7 +75,16 @@
                 .then(response => {
                     this.DSLogs = response.data.list.map(h =>{
                         return{
-                            Date:this.timestampToYM(h.timestamp),Field: h....,Crop:h.....,Bed_Feet:h....,RowsPerBed:h....Row_Feet:h..., Hours:h..., Annual:h...., Comments:'h..., User:h...,
+                            Date:this.timestampToYMD(h.timestamp),
+                            Field: h....,
+                            Crop:h.....,
+                            Bed_Feet:h....,
+                            RowsPerBed:h....,
+                            Row_Feet:h..., 
+                            Hours:h..., 
+                            Annual:h...., 
+                            Comments:h..., 
+                            User:h...,
                         };
                     });
                 });
