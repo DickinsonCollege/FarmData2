@@ -2,7 +2,13 @@
     <div id="transplanting">
         <h1>Transplanting Report</h1>
         <label for="start">Start Date:</label>
-        <input type="date" id="start" name="start" v-model="startDate">
+        <input type="date" id="start" name="start" v-bind:max=endDate v-model="startDate">
+
+        <br>
+
+        <label for="end">End Date:</label>
+        <input type="date" id="end" name="end" v-bind:min=startDate  v-model="endDate">
+
         <table style="width:100%" border=1>
             <tr>
                 <th>Crop</th>
@@ -32,6 +38,7 @@
 			data: {
                 message: 'Hi guys!',
                 startDate: '',
+                endDate: '',
             },
             created(){
             },
