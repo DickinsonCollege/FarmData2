@@ -60,8 +60,8 @@
                 harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
                 harvLog: [],
                 // harvTable: [],
-                reportField: '',
-                fields: [],
+                reportField: "",
+                fields: ["All"],
             },
             methods: {
                 genHarvRpt: function () {
@@ -91,10 +91,10 @@
                 },
                 makePath: function () {
                     this.rptPath =
-                        '/log.json?type=farm_harvest&area=' +
-                        this.reportField;
+                        '/log.json?type=farm_harvest' + (this.reportField !== "All" ? '&area=' + this.reportField : '');
                         // +'&timestamp[ge]=' +
                         // this.YMDToTimestamp(this.rptStart) + '&timestamp[le]=' +this.YMDToTimestamp(this.rptEnd);
+                    console.log(this.rptPath)
                 },
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
@@ -104,7 +104,7 @@
             created() {
             axios.get('/taxonomy_term.json?area_type=field')
             .then(response => {
-                this.fields = response.data.list.map(f => f.name).sort();
+                this.fields.push(...response.data.list.map(f => f.name).sort());
             }
             ).catch(error => {
                 this.fields = ['Service Unavailable'];
