@@ -78,15 +78,16 @@
                     return d.getFullYear() + "-" + month + "-" + day;
                 }, 
                 generateReport: function() {
+                    //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
                 if (this.hlogs.length == 0) {
-                    this.hlogs.push({date: this.reportStart, field: "Chuau-1", crop: this.rptCrop, yeild: "10 Bunches"});
+                    this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                     this.state = 'edit';
                     } else if (this.hlogs.length == 1){
-                        this.hlogs.push({date: this.reportStart, field: "Chuau-1", crop: this.rptCrop, yeild: "10 Bunches"});
+                        this.hlogs.push({date: this.reportStart,crop: this.rptCrop});
                     } else if (this.hlogs.length == 2){
-                        this.hlogs.push({date: this.reportStart, field: "Chuau-1", crop: this.rptCrop, yeild: "10 Bunches"});
+                        this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                     }else if (this.hlogs.length == 3){
-                         this.hlogs.push({date: this.reportStart, field: "Chuau-1", crop: this.rptCrop, yeild: "10 Bunches"});
+                         this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                      }
                 },
              },
