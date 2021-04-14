@@ -1,7 +1,6 @@
 <head>
     <h1>Tray Seeding Report</h1>
-</head>
-  
+</head> 
 <body>
     <div id= "tray-seeding-report" v-cloak>
         <label for = "cropList">Crop:</label>
@@ -10,30 +9,24 @@
                 <option v-for="crop in crops">{{ crop }}</option>
             </ul>
         </select>
-    </div>
     <br>
-
-    <div>
         <label for="start">Start Date:</label>
         <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
 
         <label for="end">End Date:</label>
         <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
-    </div>
     <br>
-
-    <div>
         <button class="btn btn-primary" @click="generateReport">Generate Report</button>
-    </div>
 
-    <div v-if="visible">
+
+    <div v-if="state === 'edit'">
         <hr />
         <h2>Mock Report</h2>
         <br>
         <ul>
-            <li><strong>Start:</strong>{{}}</li>
-            <li><strong>End:</strong>{{}}</li>
-            <li><strong>Crop:</strong>{{}}</li>
+            <li><strong>Start:</strong>{{reportStart}}</li>
+            <li><strong>End:</strong>{{reportEnd}}</li>
+            <li><strong>Crop:</strong>{{rptCrop}}</li>
         </ul>
 
         <br>
@@ -47,29 +40,33 @@
             <th>  Variety  </th>
             <th>  User  </th>
             <th>  Comments  </th>
+            <th> Delete </th>
         </tr>
 
-        <tr>
-            <td>In Progress</td>
+        <tr v-for=" (hlog,index) in hlogs">
+            <td> {{hlog.date}}  </td>
+            <td>{{ hlog.crop }}</td>
             <td>     </td>
             <td>     </td>
             <td>     </td>
             <td>     </td>
             <td>     </td>
             <td>     </td>
-            <td>     </td>
+            <td><button type="button" @click="deleteReport(index);popup();">Delete</button></td>
         </tr>
         </table>
     </div>
-
+    </div>
     <script>
         var databinding = new Vue({
             el: '#tray-seeding-report',
             data: {
+                state: "default",
                 crops: [],
                 rptCrop: "Kale",
                 reportStart: '2018-05-01',
                 reportEnd: '2018-07-31',
+                hlogs: [],
             },
             methods: { 
                 timestampToYMD: function(timestamp) {
@@ -83,21 +80,42 @@
                     return d.getFullYear() + "-" + month + "-" + day;
                 }, 
                 generateReport: function() {
-                    if(this.crops.length == 0) {
-                        this.crops.push({rptCrop: 'Carrots', reportStart: '2018-05-01', reportEnd: '2018-07-31'});
-                    }
-                    else if(this.crops.length == 1) {
-                        this.crops.push({rptCrop: 'Kale', reportStart: '2018-05-01', reportEnd: '2018-07-31'});
-                    }
+                    //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
+                if (this.hlogs.length == 0) {
+                    this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
+                    this.state = 'edit';
+                    } else if (this.hlogs.length == 1){
+                        this.hlogs.push({date: this.reportStart,crop: this.rptCrop});
+                    } else if (this.hlogs.length == 2){
+                        this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
+                    }else if (this.hlogs.length == 3){
+                         this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
+                     }
                 },
-            },
+                deleteReport: function(index) {
+                    this.hlogs.splice(index, 1);
+                },
+                popup: function() {
+                    var txt;
+                    if (confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.")) {
+                        deleteReport(index);
+                    } else {
+                        txt = "You pressed Cancel!";
+                    }
+                    //document.getElementById("demo").innerHTML = txt;
+                },
+             },
             created() {
                 //let today = new Date.now();
                 //this.reportEnd = this.timestampToYMD(today);
 
                 axios.get('/farm_asset.json?type=planting').then(response => {
                     this.crops = response.data.list.map(f => f.name).sort();
+                    this.crops.splice(0,0,"All");
                 });
+              // push all into crops array, make sure it goes to the top. Just incert on the top.
+              // once i get generate reort report, then get the API request to call all the crops.
+              // Make a API request, make sure to filter out the right things
 
                 let today = new Date.now();
                 this.reportEnd = this.timestampToYMD(today);
