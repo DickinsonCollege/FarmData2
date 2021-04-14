@@ -58,7 +58,7 @@
         </div>
 
     </div>
-    </div>
+
     <script>
         var databinding = new Vue({
             el: '#tray-seeding-report',
@@ -107,6 +107,17 @@
                          this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                      }
                 },
+                deleteReport: function(index) {
+                    this.hlogs.splice(index, 1);
+                },
+                popup: function() {
+                    var txt;
+                    if (confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.")) {
+                        deleteReport(index);
+                    } else {
+                        txt = "You pressed Cancel!";
+                    }
+                    //document.getElementById("demo").innerHTML = txt;
                 traySeedingLogRequest: function(field) {
                     let s = this.YMDToTimestamp(this.reportStart);
                     let e = this.YMDToTimestamp(this.reportEnd);
@@ -120,8 +131,9 @@
                                 };
                             });
                         })
+
                 },
-            },
+             },
             created() {
                 //let today = new Date.now();
                 //this.reportEnd = this.timestampToYMD(today);
