@@ -42,6 +42,7 @@
                         <td>{{log.Annual}}</td>
                         <td>{{log.Comments}}</td>
                         <td>{{log.User}}</td>
+                        <td> <button @click="editReport(index)">Edit</button></td>
                     </tr>
                 </table> 
 
@@ -59,7 +60,7 @@
               rptStart:'',
               rptEnd:'',
               state:'inVisible',
-              tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User'],
+              tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
               tableLogs:[],
               //DSLogs should be empty once retrieving API is working
               DSLogs:[{Date:'01/02/2015', Crop:'Carrot', Field:'SQ7', Bed_Feet:'22.0', RowsPerBed:'5', Row_Feet:110.0, Hours:0.02, Annual:'Yes', Comments:'blah', User:'nelsonw'}, {Date:'01/09/2015', Crop:'Broccoli', Field:'SQ7', Bed_Feet:'25.0', RowsPerBed:'10', Row_Feet:110.0, Hours:0.02, Annual:'Yes', Comments:'blah', User:'nelsonw'}],
