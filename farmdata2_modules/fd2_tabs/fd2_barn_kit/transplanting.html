@@ -1,7 +1,12 @@
 <body>
     <div id="transplanting">
         <h1>Transplanting Report</h1>
-        Hello
+
+        <label for="field">Field:</label>
+        <select id="field" name="field">
+            <option v-for="field in Fields">{{field}}</option>
+        </select>
+
         <table style="width:100%" border=1>
             <tr>
                 <th>Crop</th>
@@ -30,8 +35,16 @@
 		    el: '#transplanting',
 			data: {
                 message: 'Hi guys!',
+                Fields:[],
             },
             created(){
+                axios.get('/taxonomy_term.json?area_type=field')
+                    .then(response =>{
+                        this.Fields=response.data.list.map(f=>f.name).sort();
+                    })
+                    .catch(error=>{
+                        console.log(error);
+                    });
             },
             methods: {
             },
