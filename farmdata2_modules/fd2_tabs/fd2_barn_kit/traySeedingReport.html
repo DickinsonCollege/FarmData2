@@ -9,7 +9,9 @@
                 <option v-for="crop in crops">{{ crop }}</option>
             </ul>
         </select>
-    <br>
+
+        <br>
+
         <label for="start">Start Date:</label>
         <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
 
@@ -29,34 +31,34 @@
             <li><strong>Crop:</strong>{{rptCrop}}</li>
         </ul>
 
-        <br>
-        <table border=1>
-        <tr>
-            <th>  Date of Seeding  </th>
-            <th>  Crop  </th>
-            <th>  Number of Seeds  </th>
-            <th>  Number of Trays  </th>
-            <th>  Cells per Tray  </th>
-            <th>  Variety  </th>
-            <th>  User  </th>
-            <th>  Comments  </th>
-            <th> Delete </th>
-        </tr>
+            <br>
+            <table border=1>
+            <tr>
+                <th>  Date of Seeding  </th>
+                <th>  Crop  </th>
+                <th>  Number of Seeds  </th>
+                <th>  Number of Trays  </th>
+                <th>  Cells per Tray  </th>
+                <th>  Variety  </th>
+                <th>  User  </th>
+                <th>  Comments  </th>
+            </tr>
 
-        <tr v-for=" (hlog,index) in hlogs">
-            <td> {{hlog.date}}  </td>
-            <td>{{ hlog.crop }}</td>
-            <td>     </td>
-            <td>     </td>
-            <td>     </td>
-            <td>     </td>
-            <td>     </td>
-            <td>     </td>
-            <td><button type="button" @click="deleteReport(index);popup();">Delete</button></td>
-        </tr>
-        </table>
+            <tr v-for="log in traySeedingLogs">
+                <td>{{ timestampToYMD(log.date) }}</td>
+                <td>{{ }}</td>
+                <td>{{ }}</td>
+                <td>     </td>
+                <td>     </td>
+                <td>     </td>
+                <td>     </td>
+                <td>     </td>
+            </tr>
+            </table>
+        </div>
+
     </div>
-    </div>
+
     <script>
         var databinding = new Vue({
             el: '#tray-seeding-report',
@@ -66,7 +68,12 @@
                 rptCrop: "Kale",
                 reportStart: '2018-05-01',
                 reportEnd: '2018-07-31',
-                hlogs: [],
+
+                traySeedingLogs: [
+                    {date: '05/02/2018', crop: 'Kale', numSeeds: '100'},
+                    {date: '05/05/2018', crop: 'Kale', numSeeds: '200'}
+                
+                ],
             },
             methods: { 
                 timestampToYMD: function(timestamp) {
@@ -78,7 +85,15 @@
                                 '0' + d.getDate() :
                                 d.getDate();
                     return d.getFullYear() + "-" + month + "-" + day;
-                }, 
+                },
+                YMDToTimestamp: function(ymd) {
+                        let d = new Date(ymd);
+                        return Math.round(d.getTime()/1000 +
+                                new Date().getTimezoneOffset()*60);
+                },
+                timestampToDate: function(timestamp) {
+                        return new Date(timestamp * 1000);
+                    },
                 generateReport: function() {
                     //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
                 if (this.hlogs.length == 0) {
@@ -103,6 +118,20 @@
                         txt = "You pressed Cancel!";
                     }
                     //document.getElementById("demo").innerHTML = txt;
+                traySeedingLogRequest: function(field) {
+                    let s = this.YMDToTimestamp(this.reportStart);
+                    let e = this.YMDToTimestamp(this.reportEnd);
+                    axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e)
+                        .then(response => {
+                            this.traySeedingLogs = response.data.list.map(t => {
+                                return {
+                                    date:t.timestamp,
+                                    crop:t.name,
+                                    numSeeds:t.quantity,
+                                };
+                            });
+                        })
+
                 },
              },
             created() {
@@ -117,8 +146,8 @@
               // once i get generate reort report, then get the API request to call all the crops.
               // Make a API request, make sure to filter out the right things
 
-                let today = new Date.now();
-                this.reportEnd = this.timestampToYMD(today);
+                //let today = new Date.now();
+                //this.reportEnd = this.timestampToYMD(today);
             }
         });
        Vue.config.devtools = true;
