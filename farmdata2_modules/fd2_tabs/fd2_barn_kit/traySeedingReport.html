@@ -79,6 +79,7 @@
                 }, 
                 generateReport: function() {
                     //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
+                    //also need to get all info from farmOS API and not have it hard coded like this. probably by using a for loop with a created function (axios) with a spedificed planting crop in the URL
                 if (this.hlogs.length == 0) {
                     this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                     this.state = 'edit';
