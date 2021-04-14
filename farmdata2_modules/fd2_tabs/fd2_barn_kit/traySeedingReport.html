@@ -18,7 +18,7 @@
         <label for="end">End Date:</label>
         <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
     <br>
-        <button class="btn btn-primary" @click="generateReport">Generate Report</button>
+        <button class="btn btn-primary" @click="traySeedingLogRequest">Generate Report</button>
 
 
     <div v-if="state === 'edit'">
@@ -44,6 +44,7 @@
                 <th>  Comments  </th>
             </tr>
 
+
             <tr v-for="log in traySeedingLogs">
                 <td>{{ timestampToYMD(log.date) }}</td>
                 <td>{{ }}</td>
@@ -56,7 +57,6 @@
             </tr>
             </table>
         </div>
-
     </div>
 
     <script>
@@ -68,7 +68,6 @@
                 rptCrop: "Kale",
                 reportStart: '2018-05-01',
                 reportEnd: '2018-07-31',
-
                 traySeedingLogs: [
                     {date: '05/02/2018', crop: 'Kale', numSeeds: '100'},
                     {date: '05/05/2018', crop: 'Kale', numSeeds: '200'}
@@ -96,6 +95,7 @@
                     },
                 generateReport: function() {
                     //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
+                    //also need to get all info from farmOS API and not have it hard coded like this. probably by using a for loop with a created function (axios) with a spedificed planting crop in the URL
                 if (this.hlogs.length == 0) {
                     this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                     this.state = 'edit';
@@ -108,7 +108,7 @@
                      }
                 },
                 deleteReport: function(index) {
-                    this.hlogs.splice(index, 1);
+                    this.traySeedingLogs.splice(index, 1);
                 },
                 popup: function() {
                     var txt;
@@ -117,8 +117,9 @@
                     } else {
                         txt = "You pressed Cancel!";
                     }
+                },
                     //document.getElementById("demo").innerHTML = txt;
-                traySeedingLogRequest: function(field) {
+                traySeedingLogRequest: function() {
                     let s = this.YMDToTimestamp(this.reportStart);
                     let e = this.YMDToTimestamp(this.reportEnd);
                     axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e)
@@ -131,7 +132,7 @@
                                 };
                             });
                         })
-
+                    this.state = 'edit';
                 },
              },
             created() {
