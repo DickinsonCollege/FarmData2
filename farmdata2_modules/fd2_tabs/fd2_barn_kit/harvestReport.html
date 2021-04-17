@@ -40,6 +40,7 @@
                     <td>{{ harvLog.field }}</td>
                     <td>{{ harvLog.crop }}</td>
                     <td>{{ harvLog.yield }}</td>
+                    <td>{{ harvLog.worker }}</td>
                     <td>
                         <button type="button" @click="deleteHarvLog(index)">
                             Delete
@@ -65,9 +66,10 @@
                 harvRptCrop: 'ALL',
                 titleCrop: 'ALL',
                 visible: false,
-                harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
+                harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Worker', 'Delete'],
                 cropIdPairsFw: new Map(),
                 cropIdPairsBw: new Map(),
+                UserIdPairs: new Map(),
                 harvCrops: [],
                 harvTable: [],
                 yieldTable: [],
@@ -88,6 +90,7 @@
                                     entry.quantity[0].value +
                                     ' ' +
                                     entry.quantity[0].unit.name,
+                                worker: this.userIdPairs.get(entry.uid.id),
                             };
                         });
                         this.totalYield();
@@ -152,6 +155,11 @@
                     this.cropIdPairsFw.set('ALL', 'ALL');
                     this.cropIdPairsBw.set('ALL', 'ALL');
                     this.harvCrops = Array.from(this.cropIdPairsFw.values());
+                }),
+                axios.get('/user').then((response) => {
+                    this.userIdPairs = new Map(
+                        response.data.list.map((f) => [f.uid, f.name])
+                    );
                 });
             },
         });
