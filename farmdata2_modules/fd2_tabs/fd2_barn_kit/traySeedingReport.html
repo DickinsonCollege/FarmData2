@@ -42,10 +42,11 @@
                 <th>  Variety  </th>
                 <th>  User  </th>
                 <th>  Comments  </th>
+                <th>  Delete  </th>
             </tr>
 
 
-            <tr v-for="log in traySeedingLogs">
+            <tr v-for="(log, index) in traySeedingLogs">
                 <td>{{ timestampToYMD(log.date) }}</td>
                 <td>{{ }}</td>
                 <td>{{ }}</td>
@@ -54,6 +55,7 @@
                 <td>     </td>
                 <td>     </td>
                 <td>     </td>
+                <td><button type="button" @click="deleteReport(index);popup();">Delete</button></td>
             </tr>
             </table>
         </div>
