@@ -58,6 +58,10 @@
                        let unixT = this.YMDToTimestamp(this.startDate);
                        link = link + '&timestamp[ge]=' + unixT;
                    }
+                    if(this.endDate != ''){
+                       let unixT = this.YMDToTimestamp(this.endDate);
+                       link = link + '&timestamp[le]=' + unixT;
+                   }
                    axios.get(link).then(response => {
                        this.logs = response.data.list.map(h => {
                            return{
