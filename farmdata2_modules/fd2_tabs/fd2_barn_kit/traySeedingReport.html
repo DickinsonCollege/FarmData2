@@ -48,7 +48,7 @@
 
             <tr v-for="(log, index) in traySeedingLogs">
                 <td>{{ timestampToYMD(log.date) }}</td>
-                <td>{{ }}</td>
+                <td>{{ log.crop }}</td>
                 <td>{{ }}</td>
                 <td>     </td>
                 <td>     </td>
@@ -124,7 +124,8 @@
                 traySeedingLogRequest: function() {
                     let s = this.YMDToTimestamp(this.reportStart);
                     let e = this.YMDToTimestamp(this.reportEnd);
-                    axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e)
+                    if(this.rptCrop == 'All'){
+                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e )
                         .then(response => {
                             this.traySeedingLogs = response.data.list.map(t => {
                                 return {
@@ -134,6 +135,18 @@
                                 };
                             });
                         })
+                    } else {
+                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e + '&name=Seed%20' + this.rptCrop)
+                        .then(response => {
+                            this.traySeedingLogs = response.data.list.map(t => {
+                                return {
+                                    date:t.timestamp,
+                                    crop:t.name,
+                                    numSeeds:t.quantity,
+                                };
+                            });
+                        })
+                    }
                     this.state = 'edit';
                 },
              },
