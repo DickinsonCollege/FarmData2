@@ -7,6 +7,19 @@
         <label for="rptTitle">Title:</label>
         <input type="text" v-model="harvRptTitle" id="rptTitle" />
 
+        <label for="field">Field: </label>
+        <select v-model="reportField">
+            <option v-for="field in fields">{{field}}</option>
+        </select>
+
+        <div>
+            <label for="start">Start:</label>
+            <input type="date" id="start" v-model="reportStartDate" />
+
+            <label for="end">End:</label>
+            <input type="date" id="end" v-model="reportEndDate" />
+        </div>
+
         <br /><br />
         <label for="”crop”">Crop:</label>
         <select id="crop" v-model="harvRptCrop">
@@ -25,9 +38,10 @@
             <br />
             <br />
             <ul>
-                <li><strong>Start:</strong>{{}}</li>
-                <li><strong>End:</strong> {{}}</li>
+                <li><strong>Start:</strong>{{' ' + reportStartDate}}</li>
+                <li><strong>End:</strong> {{' ' + reportEndDate}}</li>
                 <li><strong>Crop:</strong>{{' ' + titleCrop }}</li>
+                <li><strong>Field: </strong>{{' ' + reportField}}</li>
             </ul>
             <br />
             <p v-if="harvTable.length == 0">There are no matching records.</p>
@@ -36,7 +50,7 @@
                     <th v-for="header in harvHeaders">{{ header }}</th>
                 </tr>
                 <tr v-for="(harvLog, index) in harvTable">
-                    <td>{{ harvLog.date }}</td>
+                    <td>{{ timestampToYMD(harvLog.date) }}</td>
                     <td>{{ harvLog.field }}</td>
                     <td>{{ harvLog.crop }}</td>
                     <td>{{ harvLog.yield }}</td>
@@ -60,22 +74,33 @@
     <script>
         var harvRptVue = new Vue({
             el: '#harvRptVue',
-            data: {
-                rptPath: '', 
-                harvRptTitle: 'My Harvest Report',
-                harvRptCrop: 'ALL',
-                titleCrop: 'ALL',
-                visible: false,
-                harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Worker', 'Delete'],
-                cropIdPairsFw: new Map(),
-                cropIdPairsBw: new Map(),
-                UserIdPairs: new Map(),
-                harvCrops: [],
-                harvTable: [],
-                yieldTable: [],
+            data() {
+                return {
+                    rptPath: this.getRequestURL,
+                    harvRptTitle: 'My Harvest Report',
+                    harvRptCrop: 'ALL',
+                    titleCrop: 'ALL',
+                    visible: false,
+                    harvHeaders: [
+                        'Date',
+                        'Field',
+                        'Crop',
+                        'Yield',
+                        'Worker',
+                        'Delete',
+                    ],
+                    cropIdPairsFw: new Map(),
+                    cropIdPairsBw: new Map(),
+                    UserIdPairs: new Map(),
+                    harvCrops: [],
+                    harvTable: [],
+                    yieldTable: [],
+                    reportField: 'ALL',
+                    fields: ['ALL'],
+                    reportStartDate: this.firstDateOfYear(),
+                    reportEndDate: this.currentDate(),
+                };
             },
-            computed: {},
-
             methods: {
                 genHarvRpt: function () {
                     this.visible = true;
@@ -97,6 +122,7 @@
                         this.titleCrop = this.harvRptCrop;
                     });
                 },
+
                 deleteHarvLog: function (nameIndex) {
                     this.yieldTable = [];
                     this.harvTable.splice(nameIndex, 1);
@@ -133,34 +159,120 @@
                         ];
                         this.yieldTable.push(addition);
                     }
-                    this.yieldTable.sort()
+                    this.yieldTable.sort();
                 },
+                // makePath: function () {
+                //     this.rptPath =
+                //         '/log.json?type=farm_harvest' +
+                //         (this.reportField !== 'All'
+                //             ? '&area=' + this.reportField
+                //             : '') +
+                //         '&timestamp[ge]=' +
+                //         this.YMDToTimestamp(this.reportStartDate) +
+                //         '&timestamp[lt]=' +
+                //         this.TimestampFollowingDay(this.reportEndDate);
+                //     // +'&timestamp[ge]=' +
+                //     // this.YMDToTimestamp(this.rptStart) + '&timestamp[le]=' +this.YMDToTimestamp(this.rptEnd);
+                //     console.log(this.rptPath);
+                // },
                 makePath: function () {
-                    this.rptPath ='/log.json?type=farm_harvest'
-                    if (!(this.harvRptCrop == 'ALL')){
-                        this.rptPath += '&asset=' +
-                        this.cropIdPairsBw.get(this.harvRptCrop);
+                    this.rptPath = '/log.json?type=farm_harvest';
+
+                    if (!(this.harvRptCrop == 'ALL')) {
+                        this.rptPath +=
+                            '&asset=' +
+                            this.cropIdPairsBw.get(this.harvRptCrop);
                     }
-                        
+
+                    if (!(this.reportField == 'ALL')) {
+                            this.rptPath += '&area=' + this.reportField;
+                        }
+                    this.rptPath +=
+                            '&timestamp[ge]=' +
+                            this.YMDToTimestamp(this.reportStartDate) +
+                            '&timestamp[lt]=' +
+                            this.TimestampFollowingDay(this.reportEndDate);
+                },
+                YMDToTimestamp: function (ymd) {
+                    let d = new Date(ymd);
+                    return Math.round(
+                        d.getTime() / 1000 + new Date().getTimezoneOffset() * 60
+                    );
+                },
+                TimestampFollowingDay: function (ymd) {
+                    return this.YMDToTimestamp(ymd) + 60 * 60 * 24;
+                },
+                timestampToDate: function (timestamp) {
+                    return new Date(timestamp * 1000);
+                },
+                timestampToYMD: function (timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month =
+                        d.getMonth() < 9
+                            ? '0' + (d.getMonth() + 1)
+                            : d.getMonth() + 1;
+                    const day =
+                        d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+                    return d.getFullYear() + '-' + month + '-' + day;
+                },
+                firstDateOfYear: function () {
+                    const date = new Date().getFullYear() + '-01-01';
+                    return date;
+                },
+                currentDate: function () {
+                    const d = new Date();
+                    const month =
+                        d.getMonth() < 9
+                            ? '0' + (d.getMonth() + 1)
+                            : d.getMonth() + 1;
+                    const day =
+                        d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+                    return d.getFullYear() + '-' + month + '-' + day;
                 },
             },
+
             created() {
-                axios.get('/farm_asset.json?type=planting').then((response) => {
-                    this.cropIdPairsFw = new Map(
-                        response.data.list.map((f) => [f.id, f.name])
-                    );
-                    this.cropIdPairsBw = new Map(
-                        response.data.list.map((f) => [f.name, f.id])
-                    );
-                    this.cropIdPairsFw.set('ALL', 'ALL');
-                    this.cropIdPairsBw.set('ALL', 'ALL');
-                    this.harvCrops = Array.from(this.cropIdPairsFw.values());
-                }),
-                axios.get('/user').then((response) => {
-                    this.userIdPairs = new Map(
-                        response.data.list.map((f) => [f.uid, f.name])
-                    );
-                });
+                axios
+                    .get('/taxonomy_term.json?area_type=field')
+                    .then((response) => {
+                        this.fields.push(
+                            ...response.data.list.map((f) => f.name).sort()
+                        );
+                    })
+                    .catch((error) => {
+                        this.fields = ['Service Unavailable'];
+                        console.log(error);
+                    });
+                axios
+                    .get('/farm_asset.json?type=planting')
+                    .then((response) => {
+                        this.cropIdPairsFw = new Map(
+                            response.data.list.map((f) => [f.id, f.name])
+                        );
+                        this.cropIdPairsBw = new Map(
+                            response.data.list.map((f) => [f.name, f.id])
+                        );
+                        this.cropIdPairsFw.set('ALL', 'ALL');
+                        this.cropIdPairsBw.set('ALL', 'ALL');
+                        this.harvCrops = Array.from(
+                        this.cropIdPairsFw.values()
+                        ).sort();
+                    })
+                    .catch((error) => {
+                        this.fields = ['Service Unavailable'];
+                        console.log(error);
+                    });
+                axios
+                    .get('/user')
+                    .then((response) => {
+                        this.userIdPairs = new Map(
+                            response.data.list.map((f) => [f.uid, f.name])
+                        );
+                    })
+                    .catch((error) => {
+                        this.fields = ['Service Unavailable'];
+                        console.log(error);
+                    });
             },
         });
         Vue.config.devtools = true;
