@@ -12,6 +12,14 @@
             <option v-for="field in fields">{{field}}</option>
         </select>
 
+        <div>
+            <label for="start">Start:</label>
+            <input type="date" id="start" v-model="reportStartDate">
+    
+            <label for="end">End:</label>
+            <input type="date" id="end" v-model="reportEndDate">
+        </div>
+
         <br /><br />
 
         <button class="btn btn-primary" @click="genHarvRpt">
@@ -53,15 +61,19 @@
     <script>
         var harvRptVue = new Vue({
             el: '#harvRptVue',
-            data: {
-                rptPath: this.getRequestURL, //change this and add path creator method when filters are added!
-                harvRptTitle: 'My Harvest Report',
-                visible: false,
-                harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
-                harvLog: [],
-                // harvTable: [],
-                reportField: "",
-                fields: ["All"],
+            data () {
+                return {
+                    rptPath: this.getRequestURL, //change this and add path creator method when filters are added!
+                    harvRptTitle: 'My Harvest Report',
+                    visible: false,
+                    harvHeaders: ['Date', 'Field', 'Crop', 'Yield', 'Delete'],
+                    harvLog: [],
+                    // harvTable: [],
+                    reportField: "",
+                    fields: ["All"],
+                    reportStartDate: this.firstDateOfYear(),
+                    reportEndDate: this.currentDate(),
+                }
             },
             methods: {
                 genHarvRpt: function () {
@@ -91,7 +103,8 @@
                 },
                 makePath: function () {
                     this.rptPath =
-                        '/log.json?type=farm_harvest' + (this.reportField !== "All" ? '&area=' + this.reportField : '');
+                        '/log.json?type=farm_harvest' + (this.reportField !== "All" ? '&area=' + this.reportField : '')
+                        + '&timestamp[ge]=' + this.YMDToTimestamp(this.reportStartDate) + '&timestamp[lt]=' + this.TimestampFollowingDay(this.reportEndDate);
                         // +'&timestamp[ge]=' +
                         // this.YMDToTimestamp(this.rptStart) + '&timestamp[le]=' +this.YMDToTimestamp(this.rptEnd);
                     console.log(this.rptPath)
@@ -99,7 +112,42 @@
                 deleteHarvLog: function (nameIndex) {
                     this.harvTable.splice(nameIndex, 1);
                 },
-            },
+                YMDToTimestamp: function(ymd) {
+                let d = new Date(ymd);
+                return Math.round(d.getTime()/1000 +
+                        new Date().getTimezoneOffset()*60);
+                },
+                TimestampFollowingDay: function(ymd) {
+                return this.YMDToTimestamp(ymd) + 60*60*24
+                },
+                timestampToDate: function(timestamp) {
+                return new Date(timestamp * 1000);
+                },
+                timestampToYMD: function(timestamp) {
+                let d = this.timestampToDate(timestamp);
+                const month = d.getMonth() < 9 ?
+                                '0' + (d.getMonth() + 1) :
+                                d.getMonth() + 1;
+                const day = d.getDate() < 10 ?
+                            '0' + d.getDate() :
+                                d.getDate();
+                return d.getFullYear() + "-" + month + "-" + day;
+                },
+                firstDateOfYear: function(){
+                    const date = new Date().getFullYear() + "-01-01"
+                    return date
+                },
+                currentDate: function(){
+                    const d = new Date()
+                    const month = d.getMonth() < 9 ?
+                                '0' + (d.getMonth() + 1) :
+                                d.getMonth() + 1;
+                const day = d.getDate() < 10 ?
+                            '0' + d.getDate() :
+                                d.getDate();
+                return d.getFullYear() + "-" + month + "-" + day;
+                }
+        },
             
             created() {
             axios.get('/taxonomy_term.json?area_type=field')
