@@ -2,6 +2,14 @@
     <div id="transplanting">
         <h1>Transplanting Report</h1>
         Hello
+        
+        <label for="crop">Crop:</label>
+        <select id="crop" name="crop" v-model="selectedCrop">
+            <option v-for="crop in selectCrop">{{ crop }}</option>
+        </select>
+
+        <button class="btn btn-primary" @click="generateReport();">Generate Report</button>
+
         <table style="width:100%" border=1>
             <tr>
                 <th>Crop</th>
@@ -20,6 +28,23 @@
                 <th>User</th>
                 <th>Edit</th>
             </tr>
+            <tr v-for="(harvest, reportIndex) in reportHarvest">
+                <td> {{harvest.crop}} </td>
+                <td> </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+            </tr>
         </table>
     </div>
 
@@ -30,10 +55,40 @@
 		    el: '#transplanting',
 			data: {
                 message: 'Hi guys!',
+                reportHarvest: [],
+                selectCrop: null,
+                selectedCrop: 'Arugula',
             },
             created(){
+                axios.get("/farm_asset.json?type=planting")
+                .then(response => {
+                    this.selectCrop = response.data.list.map(f => f.name).sort();
+                })
+                .catch(error => {
+                    this.selectCrop = ["Service Unavailable"];
+                    console.log.error;
+                });
             },
             methods: {
+                generateReport: function() {
+                    var link = '/log.json?type=farm_transplanting&name=transplant+' + this.selectedCrop;
+                    axios.get(link)
+                    .then(response => {
+		                this.reportHarvest = response.data.list.map(h => {
+			                return {
+				            // date: this.timestampToYMD(h.timestamp), 
+				            // field: h.area[0].name, 
+				            crop: this.getCropName(h.name), 
+				            // yield:h.quantity[0].value,
+			                };
+		                });
+	                })                    
+                },
+                getCropName: function(str){
+                    var split = str.split(' ');
+                    // return split[split.length - 1];
+                    return str;
+                },
             },
             computed:{
             },
