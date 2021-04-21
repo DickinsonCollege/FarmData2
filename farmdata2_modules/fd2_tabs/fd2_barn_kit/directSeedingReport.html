@@ -3,15 +3,50 @@
 </head>
 <body>
   <div id="DSReport">
+      <br>
+      <label for ="DatesTo">Date To:</label>
+      <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptStart">
+      <br>
+      <label for ="DatesFrom">Date To:</label>
+      <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptEnd">
+      <br>
       <label for ="CropsList">Crop(s):</label>
       <select id="CropsList" name="cropType" v-model="rptCrop">
           <option>All</option>
           <option v-for="crop in crops">{{crop}}</option>
       </select>
-      <label for ="DatesTo">Date To:</label>
-      <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11">
-      <label for ="DatesFrom">Date To:</label>
-      <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11">
+      <br>
+      <label for ="FieldsList">Field(s):</label>
+      <select id="FieldsList" name="fieldType" v-model="rptField">
+          <option>All</option>
+          <option v-for="field in fields">{{field}}</option>
+      </select>
+      <br><br>
+        <button type="button" class="btn btn-primary" id="generate-report" @click="generateBtn">Generate Report</button>
+        <hr>
+        <div v-if="state=='visible'">
+                <h1>Direct Seeding Report</h1>
+                <br><br>
+                <table border=1>
+                    <tr>
+                        <th v-for="TH in tableHeaders">{{TH}}</th>
+                    </tr>
+                    <tr v-for="(log,index) in tableLogs">
+                        <td>{{log.Date}}</td>
+                        <td>{{log.Crop}}</td>
+                        <td>{{log.Field}}</td>
+                        <td>{{log.Bed_Feet}}</td>
+                        <td>{{log.RowsPerBed}}</td>
+                        <td>{{log.Row_Feet}}</td>
+                        <td>{{log.Hours}}</td>
+                        <td>{{log.Annual}}</td>
+                        <td>{{log.Comments}}</td>
+                        <td>{{log.User}}</td>
+                    </tr>
+                </table> 
+
+            
+        </div>
   </div>
   <script>
       var dsreportVue = new Vue({
@@ -19,18 +54,78 @@
           data:{
               rptCrop:"",
               crops:[],
+              rptField: "",
+              fields: [],
+              rptStart:'',
+              rptEnd:'',
+              state:'inVisible',
+              tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User'],
+              tableLogs:[],
+              //DSLogs should be empty once retrieving API is working
+              DSLogs:[{Date:'01/02/2015', Crop:'Carrot', Field:'SQ7', Bed_Feet:'22.0', RowsPerBed:'5', Row_Feet:110.0, Hours:0.02, Annual:'Yes', Comments:'blah', User:'nelsonw'}, {Date:'01/09/2015', Crop:'Broccoli', Field:'SQ7', Bed_Feet:'25.0', RowsPerBed:'10', Row_Feet:110.0, Hours:0.02, Annual:'Yes', Comments:'blah', User:'nelsonw'}],
+              url: '',
+
           },
+
+          methods:{
+            generateBtn: function(){
+                /* 
+                this.url = '......' // need to find the appropriate path 
+                axios.get(this.url)
+                .then(response => {
+                    this.DSLogs = response.data.list.map(h =>{
+                        return{
+                            Date:this.timestampToYMD(h.timestamp),
+                            Field: h....,
+                            Crop:h.....,
+                            Bed_Feet:h....,
+                            RowsPerBed:h....,
+                            Row_Feet:h..., 
+                            Hours:h..., 
+                            Annual:h...., 
+                            Comments:h..., 
+                            User:h...,
+                        };
+                    });
+                });
+                */
+                while(this.tableLogs.length < this.DSLogs.length){
+                    this.state='visible';this.tableLogs.push(this.DSLogs[this.tableLogs.length])
+                }
+            },
+            YMDToTimestamp: function (ymd) {
+                let d = new Date(ymd);
+                    return Math.round(
+                        date.getTime() / 1000 + new Date().getTimezoneOffset() * 60
+                    );
+            },
+
+            timestampToYMD: function (timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month =
+                        d.getMonth() < 9
+                            ? '0' + (d.getMonth() + 1)
+                            : d.getMonth() + 1;
+                    const day =
+                        d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+                    return d.getFullYear() + '-' + month + '-' + day;
+                },
+        },
+
           created(){
               axios.get("/farm_asset.json?type=planting").then(response=>{
                   this.crops = response.data.list.map(f =>f.name).sort();
               });
-          }
-        
 
-        
-        
-        
-         
+              axios.get("/taxonomy_term.json?area_type=field")
+            .then(response => {
+                this.fields = response.data.list.map(f => f.name).sort();
+            }
+            ).catch(error => {
+                this.fields = ['Service Unavailable'];
+                console.log(error)
+            });
+          }
 
 
       });
