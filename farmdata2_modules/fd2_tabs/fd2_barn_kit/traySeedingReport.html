@@ -1,61 +1,172 @@
-    <body>
-        <div>
-            <label for="start">Start Date:</label>
-            <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
+<head>
+    <h1>Tray Seeding Report</h1>
+</head> 
+<body>
+    <div id= "tray-seeding-report" v-cloak>
+        <label for = "cropList">Crop:</label>
+        <select id= "cropList" name = "simple" v-model="rptCrop">
+            <ul>
+                <option v-for="crop in crops">{{ crop }}</option>
+            </ul>
+        </select>
 
-            <label for="end">End Date:</label>
-            <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
+        <br>
+
+        <label for="start">Start Date:</label>
+        <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
+
+        <label for="end">End Date:</label>
+        <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
+    <br>
+        <button class="btn btn-primary" @click="traySeedingLogRequest">Generate Report</button>
+
+
+    <div v-if="state === 'edit'">
+        <hr />
+        <h2>Mock Report</h2>
+        <br>
+        <ul>
+            <li><strong>Start:</strong>{{reportStart}}</li>
+            <li><strong>End:</strong>{{reportEnd}}</li>
+            <li><strong>Crop:</strong>{{rptCrop}}</li>
+        </ul>
 
             <br>
-
             <table border=1>
-                <tr>
-                    <th>Date</th>
-                    <th>Crop</th>
-                    <th>Number of Seeds</th>
-                    <th>Number of Trays</th>
-                    <th>Number of Cells in Each Tray</th>
-                    <th>Seed Varieties</th>
-                    <th>Comments</th>
-                    <th>User Entered</th>
-                </tr>
-                <tr v-for="log in harvestLogs">
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                </tr>
+            <tr>
+                <th>  Date of Seeding  </th>
+                <th>  Crop  </th>
+                <th>  Number of Seeds  </th>
+                <th>  Number of Trays  </th>
+                <th>  Cells per Tray  </th>
+                <th>  Variety  </th>
+                <th>  User  </th>
+                <th>  Comments  </th>
+                <th>  Delete  </th>
+            </tr>
+
+
+            <tr v-for="(log, index) in traySeedingLogs">
+                <td>{{ timestampToYMD(log.date) }}</td>
+                <td>{{ log.crop }}</td>
+                <td>{{ }}</td>
+                <td>     </td>
+                <td>     </td>
+                <td>     </td>
+                <td>     </td>
+                <td>     </td>
+                <td><button type="button" @click="popup(index);">Delete</button></td>
+            </tr>
             </table>
         </div>
+    </div>
 
-            <script>
-            var traySeedingReport = new Vue({
-                el: '#tray_seeding_report',
-                data: {
-                    reportStart: '2018-05-01',
-                    reportEnd: '2018-07-31',
-                },
-                methods: { 
-                    timestampToYMD: function(timestamp) {
-                        let d = this.timestampToDate(timestamp);
-                        const month = d.getMonth() < 9 ?
+    <p id="test"></p>
+
+    <script>
+        var databinding = new Vue({
+            el: '#tray-seeding-report',
+            data: {
+                state: "default",
+                crops: [],
+                rptCrop: "Kale",
+                reportStart: '2018-05-01',
+                reportEnd: '2018-07-31',
+                traySeedingLogs: [
+                    {date: '05/02/2018', crop: 'Kale', numSeeds: '100'},
+                    {date: '05/05/2018', crop: 'Kale', numSeeds: '200'}
+                
+                ],
+            },
+            methods: { 
+                timestampToYMD: function(timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month = d.getMonth() < 9 ?
                                      '0' + (d.getMonth() + 1) :
-                                     d.getMonth() + 1;
-                        const day = d.getDate() < 10 ?
-                                 '0' + d.getDate() :
-                                    d.getDate();
-                        return d.getFullYear() + "-" + month + "-" + day;
-                    }, 
+                                    d.getMonth() + 1;
+                    const day = d.getDate() < 10 ?
+                                '0' + d.getDate() :
+                                d.getDate();
+                    return d.getFullYear() + "-" + month + "-" + day;
                 },
-                created() {
-                    let today = new Date.now();
-                    this.reportEnd = this.timestampToYMD(today);
-                }
-            });
-            Vue.config.devtools = true;
-        </script>
-    </body>
+                YMDToTimestamp: function(ymd) {
+                        let d = new Date(ymd);
+                        return Math.round(d.getTime()/1000 +
+                                new Date().getTimezoneOffset()*60);
+                },
+                timestampToDate: function(timestamp) {
+                        return new Date(timestamp * 1000);
+                    },
+                generateReport: function() {
+                    //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
+                    //also need to get all info from farmOS API and not have it hard coded like this. probably by using a for loop with a created function (axios) with a spedificed planting crop in the URL
+                if (this.hlogs.length == 0) {
+                    this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
+                    this.state = 'edit';
+                    } else if (this.hlogs.length == 1){
+                        this.hlogs.push({date: this.reportStart,crop: this.rptCrop});
+                    } else if (this.hlogs.length == 2){
+                        this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
+                    }else if (this.hlogs.length == 3){
+                         this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
+                     }
+                },
+    
+                popup: function(index) {
+                    var x = confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.\nDo you want to continue?");
+                    if (x == true) {
+                        this.traySeedingLogs.splice(index, 1);
+                    } else {
+                        
+                    }
+                    document.getElementById("test").innerHTML = txt;
+                },
+
+                traySeedingLogRequest: function() {
+                    let s = this.YMDToTimestamp(this.reportStart);
+                    let e = this.YMDToTimestamp(this.reportEnd);
+                    if(this.rptCrop == 'All'){
+                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e )
+                        .then(response => {
+                            this.traySeedingLogs = response.data.list.map(t => {
+                                return {
+                                    date:t.timestamp,
+                                    crop:t.name,
+                                    numSeeds:t.quantity,
+                                };
+                            });
+                        })
+                    } else {
+                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e + '&name=Seed%20' + this.rptCrop)
+                        .then(response => {
+                            this.traySeedingLogs = response.data.list.map(t => {
+                                return {
+                                    date:t.timestamp,
+                                    crop:t.name,
+                                    numSeeds:t.quantity,
+                                };
+                            });
+                        })
+                    }
+                    this.state = 'edit';
+                },
+             },
+            created() {
+                //let today = new Date.now();
+                //this.reportEnd = this.timestampToYMD(today);
+
+                axios.get('/farm_asset.json?type=planting').then(response => {
+                    this.crops = response.data.list.map(f => f.name).sort();
+                    this.crops.splice(0,0,"All");
+                });
+              // push all into crops array, make sure it goes to the top. Just incert on the top.
+              // once i get generate reort report, then get the API request to call all the crops.
+              // Make a API request, make sure to filter out the right things
+
+                //let today = new Date.now();
+                //this.reportEnd = this.timestampToYMD(today);
+            }
+        });
+       Vue.config.devtools = true;
+    </script>
+</body>
