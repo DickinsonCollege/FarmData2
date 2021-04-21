@@ -55,11 +55,13 @@
                 <td>     </td>
                 <td>     </td>
                 <td>     </td>
-                <td><button type="button" @click="deleteReport(index);popup();">Delete</button></td>
+                <td><button type="button" @click="popup(index);">Delete</button></td>
             </tr>
             </table>
         </div>
     </div>
+
+    <p id="test"></p>
 
     <script>
         var databinding = new Vue({
@@ -109,18 +111,17 @@
                          this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                      }
                 },
-                deleteReport: function(index) {
-                    this.traySeedingLogs.splice(index, 1);
-                },
-                popup: function() {
-                    var txt;
-                    if (confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.")) {
-                        deleteReport(index);
+    
+                popup: function(index) {
+                    var x = confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.\nDo you want to continue?");
+                    if (x == true) {
+                        this.traySeedingLogs.splice(index, 1);
                     } else {
-                        txt = "You pressed Cancel!";
+                        
                     }
+                    document.getElementById("test").innerHTML = txt;
                 },
-                    //document.getElementById("demo").innerHTML = txt;
+
                 traySeedingLogRequest: function() {
                     let s = this.YMDToTimestamp(this.reportStart);
                     let e = this.YMDToTimestamp(this.reportEnd);
