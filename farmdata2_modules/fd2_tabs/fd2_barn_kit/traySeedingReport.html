@@ -43,23 +43,27 @@
                 <th>  Variety  </th>
                 <th>  User  </th>
                 <th>  Comments  </th>
+                <th>  Delete  </th>
             </tr>
 
-            <tr v-for="log in traySeedingLogs">
+
+            <tr v-for="(log, index) in traySeedingLogs">
                 <td>{{ timestampToYMD(log.date) }}</td>
+                <td>{{ log.crop }}</td>
                 <td>{{ }}</td>
-                <td>{{ }}</td>
                 <td>     </td>
                 <td>     </td>
                 <td>     </td>
                 <td>     </td>
                 <td>     </td>
+                <td><button type="button" @click="popup(index);">Delete</button></td>
             </tr>
             </table>
         </div>
+    </div>
 
-    </div>
-    </div>
+    <p id="test"></p>
+
     <script>
         var databinding = new Vue({
             el: '#tray-seeding-report',
@@ -69,7 +73,6 @@
                 rptCrop: "Kale",
                 reportStart: '2018-05-01',
                 reportEnd: '2018-07-31',
-
                 traySeedingLogs: [
                     {date: '05/02/2018', crop: 'Kale', numSeeds: '100'},
                     {date: '05/05/2018', crop: 'Kale', numSeeds: '200'}
@@ -97,6 +100,7 @@
                     },
                 generateReport: function() {
                     //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
+                    //also need to get all info from farmOS API and not have it hard coded like this. probably by using a for loop with a created function (axios) with a spedificed planting crop in the URL
                 if (this.hlogs.length == 0) {
                     this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                     this.state = 'edit';
@@ -108,10 +112,22 @@
                          this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
                      }
                 },
-                traySeedingLogRequest: function(field) {
+    
+                popup: function(index) {
+                    var x = confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.\nDo you want to continue?");
+                    if (x == true) {
+                        this.traySeedingLogs.splice(index, 1);
+                    } else {
+                        
+                    }
+                    document.getElementById("test").innerHTML = txt;
+                },
+
+                traySeedingLogRequest: function() {
                     let s = this.YMDToTimestamp(this.reportStart);
                     let e = this.YMDToTimestamp(this.reportEnd);
-                    axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e)
+                    if(this.rptCrop == 'All'){
+                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e )
                         .then(response => {
                             this.traySeedingLogs = response.data.list.map(t => {
                                 return {
@@ -121,8 +137,21 @@
                                 };
                             });
                         })
+                    } else {
+                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e + '&name=Seed%20' + this.rptCrop)
+                        .then(response => {
+                            this.traySeedingLogs = response.data.list.map(t => {
+                                return {
+                                    date:t.timestamp,
+                                    crop:t.name,
+                                    numSeeds:t.quantity,
+                                };
+                            });
+                        })
+                    }
+                    this.state = 'edit';
                 },
-            },
+             },
             created() {
                 //let today = new Date.now();
                 //this.reportEnd = this.timestampToYMD(today);
