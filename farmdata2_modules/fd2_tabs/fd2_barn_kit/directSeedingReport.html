@@ -31,7 +31,7 @@
                     <tr>
                         <th v-for="TH in tableHeaders">{{TH}}</th>
                     </tr>
-                    <tr v-for="(log,index) in tableLogs">
+                    <tr v-if="isEditable === 'false'" v-for="(log,index) in tableLogs">
                         <td>{{log.Date}}</td>
                         <td>{{log.Crop}}</td>
                         <td>{{log.Field}}</td>
@@ -44,12 +44,35 @@
                         <td>{{log.User}}</td>
                         <td> <button @click="editReport(index)">Edit</button></td>
                     </tr>
+
+                    <tr v-if="isEditable === 'true'" v-for="(log,index) in tableLogs">
+                        <td><input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptStart" ></td> 
+                        <td> <select id="CropsList" name="cropType" v-model="rptCrop">
+                        <option>All</option>
+                        <option v-for="crop in crops">{{crop}}</option>
+                        </select></td>
+                        <td><select id="FieldsList" name="fieldType" v-model="rptField">
+                        <option>All</option>
+                        <option v-for="field in fields">{{field}}</option>
+                        </select></td>
+                        <td><input></input></td>
+                        <td><input></input></td>
+                        <td><input></input></td>
+                        <td><input></input></td>
+                        <td><input></input></td>
+                        <td><input></input></td>
+                        <td><select id="UserList" name="user" v-model="rptUser">
+                        <option v-for="user in users">{{user}}</option></td>
+                        <td> <button @click="editReportDone(index)">Save</button></td>
+                    </tr>
+                    
                 </table> 
 
             
         </div>
   </div>
   <script>
+      
       var dsreportVue = new Vue({
           el: "#DSReport",
           data:{
@@ -59,7 +82,10 @@
               fields: [],
               rptStart:'',
               rptEnd:'',
+              rptUser: "",
+              users: ["user1", "user2"],
               state:'inVisible',
+              isEditable: 'false',
               tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
               tableLogs:[],
               //DSLogs should be empty once retrieving API is working
@@ -69,6 +95,13 @@
           },
 
           methods:{
+
+            editReport: function () {
+                this.isEditable = 'true'
+            },
+            editReportDone: function () {
+                this.isEditable = 'false'
+            },
             generateBtn: function(){
                 /* 
                 this.url = '......' // need to find the appropriate path 
