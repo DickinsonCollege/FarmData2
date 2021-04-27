@@ -42,27 +42,28 @@
                         <td>{{log.Annual}}</td>
                         <td>{{log.Comments}}</td>
                         <td>{{log.User}}</td>
-                        <td> <button @click="editReport(index)">Edit</button></td>
+                        <td> <button @click="editReport(log, index)">Edit</button></td>
                     </tr>
 
                     <tr v-if="isEditable === 'true'" v-for="(log,index) in tableLogs">
-                        <td><input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptStart" ></td> 
-                        <td> <select id="CropsList" name="cropType" v-model="rptCrop">
-                        <option>All</option>
+                        <td><input type="date" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date">{{log.Date}}</td> 
+                        <td> <select id="CropsList" name="cropType">
+                        <option selected> {{log.Crop}} </option>
                         <option v-for="crop in crops">{{crop}}</option>
                         </select></td>
-                        <td><select id="FieldsList" name="fieldType" v-model="rptField">
-                        <option>All</option>
+                        <td><select v-model="log.Field" id="FieldsList" name="fieldType" >
+                        <option selected> {{log.Field}} </option>
                         <option v-for="field in fields">{{field}}</option>
                         </select></td>
-                        <td><input></input></td>
-                        <td><input></input></td>
-                        <td><input></input></td>
-                        <td><input></input></td>
-                        <td><input></input></td>
-                        <td><input></input></td>
+                        <td><input v-model= "log.Bed_Feet"></input></td>
+                        <td><input v-model= "log.RowsPerBed"></input></td>
+                        <td><input v-model= "log.Row_Feet"></input></td>
+                        <td><input v-model= "log.Hours"></input></td>
+                        <td><input v-model= "log.Annual"></input></td>
+                        <td><input v-model= "log.Comments"></input></td>
                         <td><select id="UserList" name="user" v-model="rptUser">
-                        <option v-for="user in users">{{user}}</option></td>
+                        <option v-for="user in users">{{user}}</option>
+                        <option selected> {{log.User}} </option> </td>
                         <td> <button @click="editReportDone(index)">Save</button></td>
                     </tr>
                     
@@ -83,7 +84,8 @@
               rptStart:'',
               rptEnd:'',
               rptUser: "",
-              users: ["user1", "user2"],
+              editLog: " ",
+              users: ["user1", "user2", "nelsonw"],
               state:'inVisible',
               isEditable: 'false',
               tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
@@ -96,8 +98,8 @@
 
           methods:{
 
-            editReport: function () {
-                this.isEditable = 'true'
+            editReport: function (log, index) {
+                this.isEditable= 'true'
             },
             editReportDone: function () {
                 this.isEditable = 'false'
