@@ -27,6 +27,9 @@
         <div v-if="state=='visible'">
                 <h1>Direct Seeding Report</h1>
                 <br><br>
+                <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button>
+
+                <br><br>
                 <table border=1>
                     <tr>
                         <th v-for="TH in tableHeaders">{{TH}}</th>
@@ -85,7 +88,7 @@
               rptEnd:'',
               rptUser: "",
               editLog: " ",
-              users: [],
+              users: ["user1", "user2", "user3"],
               state:'inVisible',
               isEditable: 'false',
               tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
@@ -121,6 +124,16 @@
                     this.state='visible';this.tableLogs.push(this.DSLogs[this.tableLogs.length])
                 }
             },
+            anotherRptButton: function(){
+                this.state="notVisible"
+                this.url =''
+                this.rptCrop =''
+                this.rptField = ''
+                this.rptStart =''
+                this.rptEnd =''
+
+            },
+
             YMDToTimestamp: function (ymd) {
                 let d = new Date(ymd);
                     return Math.round(
@@ -179,9 +192,6 @@
               axios.get("/farm_asset.json?type=planting").then(response=>{
                   this.crops = response.data.list.map(f =>f.name).sort();
               });
-            //  axios.get("/farm_asset.json?type=uid").then(response=>{
-            //       this.users = response.data.list.map(f =>f.name).sort();
-            //   });
 
 
               axios.get("/taxonomy_term.json?area_type=field")
