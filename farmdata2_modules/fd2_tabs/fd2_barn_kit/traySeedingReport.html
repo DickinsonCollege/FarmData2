@@ -51,9 +51,9 @@
                 <td>{{ log.crop }}</td>
                 <td>{{ log.numSeeds }}</td>
                 <td>{{ log.numTrays }}   </td>
-                <td>     </td>
-                <td> {{ log.variety }}    </td>
-                <td>     </td>
+                <td>{{ log.cellsPerTray }}   </td>
+                <td>{{ log.variety }}    </td>
+                <td>{{ log.user }}     </td>
                 <td>     </td>
                 <td><button type="button" @click="deleteReport(index);popup();">Delete</button></td>
             </tr>
@@ -121,6 +121,7 @@
                                     numTrays: t.quantity[0]["value"],
                                     cellsPerTray: t.quantity[0]["label"].substring(0, t.quantity[0]["label"].length - 5),
                                     variety: t.notes.value.substring(3, t.notes.value.length - 5),
+                                    user: t.log_owner[0]["resource"],
                                 };
                             });
                         })
@@ -135,6 +136,7 @@
                                     numTrays: t.quantity[0]["value"],
                                     cellsPerTray: t.quantity[0]["label"].substring(0, t.quantity[0]["label"].length - 5),
                                     variety: t.notes.value.substring(3, t.notes.value.length - 5),
+                                    user: t.log_owner[0]["resource"],
                                 };
                             });
                         })
