@@ -75,6 +75,7 @@
                 .then(response => {
                     this.DSLogs = response.data.list.map(h =>{
                         return{
+                            Date: this.timestampToYMD(h.timestamp),
                             Crop: h.name,
                         };
                     });
@@ -89,6 +90,10 @@
                     return Math.round(
                         d.getTime() / 1000 + new Date().getTimezoneOffset() * 60
                     );
+            },
+
+            timestampToDate: function(timestamp){
+                return new Date(timestamp * 1000)
             },
 
             timestampToYMD: function (timestamp) {
@@ -115,6 +120,19 @@
                     } else {
                         this.url = '/log.json?type=farm_seeding&timestamp[ge]='+tss+'timestamp[le]='+tse
                     }
+                } else {
+                    let seedName = this.rptCrop;
+                    if(this.rptStart == '' && this.rptEnd == ''){
+                        this.url = '/log.json?type=farm_seeding&name=Seed '+seedName
+                    } else if (this.rptStart == ''){
+                        this.url = '/log.json?type=farm_seeding&name=Seed '+seedName+'&timestamp[le]='+tse
+                    }else if (this.rptEnd == ''){
+                         this.url = '/log.json?type=farm_seeding&name=Seed '+seedName+'&timestamp[ge]='+tss
+                    } else {
+                        this.url = '/log.json?type=farm_seeding&name=Seed '+seedName+'&timestamp[ge]='+tss+'&timestamp[le]='+tse
+                    }
+
+
                 }
             }
 
