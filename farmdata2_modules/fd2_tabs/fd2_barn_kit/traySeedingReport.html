@@ -50,7 +50,7 @@
                 <td>{{ timestampToYMD(log.date) }}</td>
                 <td>{{ log.crop }}</td>
                 <td>{{ log.numSeeds }}</td>
-                <td>     </td>
+                <td>{{ log.numTrays }}   </td>
                 <td>     </td>
                 <td> {{ log.variety }}    </td>
                 <td>     </td>
@@ -117,7 +117,10 @@
                                 return {
                                     date:t.timestamp,
                                     crop:t.name,
-                                    numSeeds:t.quantity[1].value,
+                                    numSeeds: t.quantity[0]["measure"],
+                                    numTrays: t.quantity[0]["value"],
+                                    cellsPerTray: t.quantity[0]["label"].substring(0, t.quantity[0]["label"].length - 5),
+                                    variety: t.notes.value.substring(3, t.notes.value.length - 5),
                                 };
                             });
                         })
@@ -128,8 +131,10 @@
                                 return {
                                     date:t.timestamp,
                                     crop:t.name,
-                                    variety:t.quantity,
-                                    numSeeds: t.notes,
+                                    numSeeds: t.quantity[0]["measure"],
+                                    numTrays: t.quantity[0]["value"],
+                                    cellsPerTray: t.quantity[0]["label"].substring(0, t.quantity[0]["label"].length - 5),
+                                    variety: t.notes.value.substring(3, t.notes.value.length - 5),
                                 };
                             });
                         })
