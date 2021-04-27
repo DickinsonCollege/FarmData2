@@ -49,10 +49,10 @@
             <tr v-for="(log, index) in traySeedingLogs">
                 <td>{{ timestampToYMD(log.date) }}</td>
                 <td>{{ log.crop }}</td>
-                <td>{{ }}</td>
+                <td>{{ log.numSeeds }}</td>
                 <td>     </td>
                 <td>     </td>
-                <td>     </td>
+                <td> {{ log.variety }}    </td>
                 <td>     </td>
                 <td>     </td>
                 <td><button type="button" @click="deleteReport(index);popup();">Delete</button></td>
@@ -95,20 +95,6 @@
                 timestampToDate: function(timestamp) {
                         return new Date(timestamp * 1000);
                     },
-                generateReport: function() {
-                    //Need to push number of seeds, trays, cells/Tray, etc. in addition to the date and crop in hlogs array
-                    //also need to get all info from farmOS API and not have it hard coded like this. probably by using a for loop with a created function (axios) with a spedificed planting crop in the URL
-                if (this.hlogs.length == 0) {
-                    this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
-                    this.state = 'edit';
-                    } else if (this.hlogs.length == 1){
-                        this.hlogs.push({date: this.reportStart,crop: this.rptCrop});
-                    } else if (this.hlogs.length == 2){
-                        this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
-                    }else if (this.hlogs.length == 3){
-                         this.hlogs.push({date: this.reportStart, crop: this.rptCrop});
-                     }
-                },
                 deleteReport: function(index) {
                     this.traySeedingLogs.splice(index, 1);
                 },
@@ -131,7 +117,7 @@
                                 return {
                                     date:t.timestamp,
                                     crop:t.name,
-                                    numSeeds:t.quantity,
+                                    numSeeds:t.quantity[1].value,
                                 };
                             });
                         })
@@ -142,7 +128,8 @@
                                 return {
                                     date:t.timestamp,
                                     crop:t.name,
-                                    numSeeds:t.quantity,
+                                    variety:t.quantity,
+                                    numSeeds: t.notes,
                                 };
                             });
                         })
@@ -158,9 +145,6 @@
                     this.crops = response.data.list.map(f => f.name).sort();
                     this.crops.splice(0,0,"All");
                 });
-              // push all into crops array, make sure it goes to the top. Just incert on the top.
-              // once i get generate reort report, then get the API request to call all the crops.
-              // Make a API request, make sure to filter out the right things
 
                 //let today = new Date.now();
                 //this.reportEnd = this.timestampToYMD(today);
