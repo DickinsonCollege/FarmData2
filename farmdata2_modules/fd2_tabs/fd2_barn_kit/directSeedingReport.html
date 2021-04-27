@@ -4,11 +4,11 @@
 <body>
   <div id="DSReport">
       <br>
-      <label for ="DatesTo">Date To:</label>
-      <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptStart">
+      <label for ="DatesFrom">Date From:</label>
+      <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="1980-01-01" max="2021-04-11" v-model="rptStart">
       <br>
-      <label for ="DatesFrom">Date To:</label>
-      <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptEnd">
+      <label for ="DatesTo">Date To:</label>
+      <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptEnd">
       <br>
       <label for ="CropsList">Crop(s):</label>
       <select id="CropsList" name="cropType" v-model="rptCrop">
@@ -69,11 +69,8 @@
 
           methods:{
             generateBtn: function(){
-                 if (this.rptCrop == 'All' && this.rptStart == '' && this.rptEnd == ''){
-                this.url = '/log.json?type=farm_seeding' 
-                } else {
-                    makeURL (this.rptCrop, YMDToTimestamp(this.rptStart), YMDToTimestamp(this.rptEnd))
-                }
+                this.makeURL();
+                
                 axios.get(this.url)
                 .then(response => {
                     this.DSLogs = response.data.list.map(h =>{
@@ -90,7 +87,7 @@
             YMDToTimestamp: function (ymd) {
                 let d = new Date(ymd);
                     return Math.round(
-                        date.getTime() / 1000 + new Date().getTimezoneOffset() * 60
+                        d.getTime() / 1000 + new Date().getTimezoneOffset() * 60
                     );
             },
 
@@ -104,6 +101,22 @@
                         d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
                     return d.getFullYear() + '-' + month + '-' + day;
             },
+
+            makeURL: function (){
+                let tss = this.YMDToTimestamp(this.rptStart)
+                    let tse = this.YMDToTimestamp(this.rptEnd)
+                if (this.rptCrop == 'All'){
+                    if(this.rptStart == '' && this.rptEnd == ''){
+                        this.url = '/log.json?type=farm_seeding'
+                    } else if (this.rptStart == ''){
+                    this.url = '/log.json?type=farm_seeding&timestamp[le]='+tse
+                    }else if (this.rptEnd == ''){
+                         this.url = '/log.json?type=farm_seeding&timestamp[ge]='+tss
+                    } else {
+                        this.url = '/log.json?type=farm_seeding&timestamp[ge]='+tss+'timestamp[le]='+tse
+                    }
+                }
+            }
 
             
               
