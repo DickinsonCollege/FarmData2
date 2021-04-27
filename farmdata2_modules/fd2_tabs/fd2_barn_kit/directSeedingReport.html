@@ -46,7 +46,7 @@
                     </tr>
 
                     <tr v-if="isEditable === 'true'" v-for="(log,index) in tableLogs">
-                        <td><input type="date" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date">{{log.Date}}</td> 
+                        <td><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
                         <td> <select id="CropsList" name="cropType">
                         <option selected> {{log.Crop}} </option>
                         <option v-for="crop in crops">{{crop}}</option>
@@ -85,7 +85,7 @@
               rptEnd:'',
               rptUser: "",
               editLog: " ",
-              users: ["user1", "user2", "nelsonw"],
+              users: [],
               state:'inVisible',
               isEditable: 'false',
               tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
@@ -172,9 +172,6 @@
                 }
             }
 
-            
-              
-
 
         },
 
@@ -182,6 +179,10 @@
               axios.get("/farm_asset.json?type=planting").then(response=>{
                   this.crops = response.data.list.map(f =>f.name).sort();
               });
+            //  axios.get("/farm_asset.json?type=uid").then(response=>{
+            //       this.users = response.data.list.map(f =>f.name).sort();
+            //   });
+
 
               axios.get("/taxonomy_term.json?area_type=field")
             .then(response => {
