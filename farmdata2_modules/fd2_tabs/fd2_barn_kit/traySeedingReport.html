@@ -47,13 +47,13 @@
 
 
             <tr v-for="(log, index) in traySeedingLogs">
-                <td>{{ timestampToYMD(log.date) }}</td>
-                <td>{{ log.crop }}</td>
-                <td>{{ log.numSeeds }}</td>
-                <td>{{ log.numTrays }}   </td>
-                <td>{{ log.cellsPerTray }}   </td>
-                <td>{{ log.variety }}    </td>
-                <td>{{ log.user }}     </td>
+                <td>{{ timestampToYMD(log.timestamp) }}</td>
+                <td>{{ log.name }}</td>
+                <td>{{ log.quantity[0]["measure"] }}</td>
+                <td>{{ log.quantity[0]["value"] }}   </td>
+                <td>{{ log.quantity[0]["label"].substring(0, log.quantity[0]["label"].length - 5) }}   </td>
+                <td>{{ log.notes.value.substring(3, log.notes.value.length - 5) }}    </td>
+                <td>{{ log.log_owner[0]["resource"] }}     </td>
                 <td>     </td>
                 <td><button type="button" @click="popup(index);">Delete</button></td>
             </tr>
@@ -73,8 +73,6 @@
                 reportStart: '2018-05-01',
                 reportEnd: '2018-07-31',
                 traySeedingLogs: [
-                    {date: '05/02/2018', crop: 'Kale', numSeeds: '100'},
-                    {date: '05/05/2018', crop: 'Kale', numSeeds: '200'}
                 
                 ],
             },
@@ -110,39 +108,22 @@
                 },
                     //document.getElementById("test").innerHTML = txt;
                 traySeedingLogRequest: function() {
-                    let s = this.YMDToTimestamp(this.reportStart);
-                    let e = this.YMDToTimestamp(this.reportEnd);
-                    if(this.rptCrop == 'All'){
-                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e )
-                        .then(response => {
-                            this.traySeedingLogs = response.data.list.map(t => {
-                                return {
-                                    date:t.timestamp,
-                                    crop:t.name,
-                                    numSeeds: t.quantity[0]["measure"],
-                                    numTrays: t.quantity[0]["value"],
-                                    cellsPerTray: t.quantity[0]["label"].substring(0, t.quantity[0]["label"].length - 5),
-                                    variety: t.notes.value.substring(3, t.notes.value.length - 5),
-                                    user: t.log_owner[0]["resource"],
-                                };
-                            });
-                        })
-                    } else {
-                        axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e + '&name=Seed%20' + this.rptCrop)
-                        .then(response => {
-                            this.traySeedingLogs = response.data.list.map(t => {
-                                return {
-                                    date:t.timestamp,
-                                    crop:t.name,
-                                    numSeeds: t.quantity[0]["measure"],
-                                    numTrays: t.quantity[0]["value"],
-                                    cellsPerTray: t.quantity[0]["label"].substring(0, t.quantity[0]["label"].length - 5),
-                                    variety: t.notes.value.substring(3, t.notes.value.length - 5),
-                                    user: t.log_owner[0]["resource"],
-                                };
-                            });
-                        })
-                    }
+                    let s = this.YMDToTimestamp(this.reportStart); //start date
+                    let e = this.YMDToTimestamp(this.reportEnd); //end date
+                    let c = "&name=Seed%20" + this.rptCrop //crop
+                        if (this.rptCrop == "All") {
+                            c = "";
+                        }
+                    let next = false;
+
+                    axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e + c)
+                    .then(response => {
+                        this.traySeedingLogs = response.data.list;
+                        if (response.first != response.last) {
+
+                        }
+                    })
+
                     this.state = 'edit';
                 },
              },
