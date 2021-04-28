@@ -44,7 +44,7 @@
             <tr v-for="(harvest, reportIndex) in logs">
                 <td> {{harvest.crop}} </td>
                 <td> </td>
-                <td>  </td>
+                <td> </td>
                 <td> {{harvest.date}} </td>
                 <td>  </td>
                 <td>  </td>
@@ -99,7 +99,9 @@
                        this.logs = response.data.list.map(h => {
                            return{
                                crop: this.getCropName(h.name),
-				                date:this.timestampToYMD(h.timestamp),
+                                date:this.timestampToYMD(h.timestamp),
+                                rowfeet: h.quantity[0].measure,
+                                rowbed: h.quantity[0].label,
                            };
                        });
                    })
