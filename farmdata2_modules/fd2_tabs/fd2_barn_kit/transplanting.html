@@ -1,11 +1,27 @@
 <body>
     <div id="transplanting">
         <h1>Transplanting Report</h1>
-
-        <label for="field">Field:</label>
-        <select id="field" name="field">
-            <option v-for="field in Fields">{{field}}</option>
+        Hello
+        
+        <label for="crop">Crop:</label>
+        <select id="crop" name="crop" v-model="selectedCrop">
+            <option v-for="crop in selectCrop">{{ crop }}</option>
         </select>
+        <label for="start">Start Date:</label>
+        <input type="date" id="start" name="start" v-bind:max="endDate" v-model="startDate">
+
+        <br>
+
+        <label for="end">End Date:</label>
+        <input type="date" id="end" name="end" v-bind:min="startDate"  v-model="endDate">
+
+        <br>
+
+        <div class="add-item-form">
+            <button class="btn btn-primary" v-on:click="saveLogs">
+                Generate Report
+            </button>
+        </div>
 
         <table style="width:100%" border=1>
             <tr>
@@ -25,6 +41,23 @@
                 <th>User</th>
                 <th>Edit</th>
             </tr>
+            <tr v-for="(harvest, reportIndex) in logs">
+                <td> {{harvest.crop}} </td>
+                <td> {{harvest.field}} </td>
+                <td>  </td>
+                <td> {{harvest.date}} </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td> {{harvest.rowFeet}} </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+                <td>  </td>
+            </tr>
         </table>
     </div>
 
@@ -35,18 +68,61 @@
 		    el: '#transplanting',
 			data: {
                 message: 'Hi guys!',
-                Fields:[],
+                startDate: '',
+                endDate: '',
+                logs: [],
+                selectCrop: null,
+                selectedCrop: 'Arugula',
             },
             created(){
-                axios.get('/taxonomy_term.json?area_type=field')
-                    .then(response =>{
-                        this.Fields=response.data.list.map(f=>f.name).sort();
-                    })
-                    .catch(error=>{
-                        console.log(error);
-                    });
+                axios.get("/farm_asset.json?type=planting")
+                .then(response => {
+                    this.selectCrop = response.data.list.map(f => f.name).sort();
+                })
+                .catch(error => {
+                    this.selectCrop = ["Service Unavailable"];
+                    console.log.error;
+                });
             },
             methods: {
+               saveLogs: function(){
+                   let link = '/log.json?type=farm_transplanting&name=transplant+' + this.selectedCrop;
+                   if(this.startDate != ''){
+                       let unixT = this.YMDToTimestamp(this.startDate);
+                       link = link + '&timestamp[ge]=' + unixT;
+                   }
+                    if(this.endDate != ''){
+                       let unixT = this.YMDToTimestamp(this.endDate);
+                       link = link + '&timestamp[le]=' + unixT;
+                   }
+                   axios.get(link).then(response => {
+                       this.logs = response.data.list.map(h => {
+                           return{
+                                crop: this.getCropName(h.name),
+                                date:this.timestampToYMD(h.timestamp),
+                                rowFeet: h.quantity[0].measure,
+                                field: h.movement.area[0].name,
+                           };
+                       });
+                   })
+               },
+               timestampToYMD: function(timestamp){
+                   let d = new Date(timestamp*1000);
+                   const month = d.getMonth() < 9 ? '0' + (d.getMonth() + 1): 
+                        d.getMonth() + 1;
+                    const day = d.getDate() < 10 ? '0' + d.getDate() :
+				        d.getDate();
+			        return d.getFullYear() + "-" + month + "-" + day;
+               },
+               YMDToTimestamp: function(ymd){
+                    let d = new Date(ymd);
+                    return Math.round(d.getTime()/1000 + new Date().getTimezoneOffset()*60);
+               },
+                getCropName: function(str){
+                    var split = str.split(' ');
+                    // return split[split.length - 1];
+                    return str;
+                },
             },
             computed:{
             },
