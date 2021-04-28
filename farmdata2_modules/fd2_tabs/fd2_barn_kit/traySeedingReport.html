@@ -55,11 +55,13 @@
                 <td>{{ log.variety }}    </td>
                 <td>{{ log.user }}     </td>
                 <td>     </td>
-                <td><button type="button" @click="deleteReport(index);popup();">Delete</button></td>
+                <td><button type="button" @click="popup(index);">Delete</button></td>
             </tr>
             </table>
         </div>
     </div>
+
+    <p id="test"></p>
 
     <script>
         var databinding = new Vue({
@@ -106,7 +108,7 @@
                         txt = "You pressed Cancel!";
                     }
                 },
-                    //document.getElementById("demo").innerHTML = txt;
+                    //document.getElementById("test").innerHTML = txt;
                 traySeedingLogRequest: function() {
                     let s = this.YMDToTimestamp(this.reportStart);
                     let e = this.YMDToTimestamp(this.reportEnd);
