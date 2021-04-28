@@ -14,7 +14,7 @@
 
         <div>
             <label for="start">Start:</label>
-            <input type="date" id="start" v-model="reportStartDate" />
+            <input type="date" id="start" :max="reportEndDate" v-model="reportStartDate" />
 
             <label for="end">End:</label>
             <input type="date" id="end" v-model="reportEndDate" />
