@@ -98,15 +98,15 @@
                 deleteReport: function(index) {
                     this.traySeedingLogs.splice(index, 1);
                 },
-                popup: function() {
-                    var txt;
-                    if (confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.")) {
-                        deleteReport(index);
+                popup: function(index) {
+                    var x = confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.\nDo you want to continue?");
+                    if (x == true) {
+                        this.traySeedingLogs.splice(index, 1);
                     } else {
-                        txt = "You pressed Cancel!";
+
                     }
+                    document.getElementById("test").innerHTML = txt;
                 },
-                    //document.getElementById("test").innerHTML = txt;
                 traySeedingLogRequest: function() {
                     let s = this.YMDToTimestamp(this.reportStart); //start date
                     let e = this.YMDToTimestamp(this.reportEnd); //end date
