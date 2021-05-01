@@ -8,46 +8,58 @@
         <input type="text" v-model="harvRptTitle" id="rptTitle" />
 
         <label for="field">Field: </label>
-        <select v-model="reportField">
-            <option v-for="field in fields">{{field}}</option>
+        <select v-model="harvRptField">
+            <option v-for="field in harvFields">{{field}}</option>
         </select>
 
         <div>
             <label for="start">Start:</label>
-            <input type="date" id="start" v-model="reportStartDate" />
+            <input type="date" id="start" v-model="rptStart" />
 
             <label for="end">End:</label>
-            <input type="date" id="end" v-model="reportEndDate" />
+            <input type="date" id="end" v-model="rptEnd" />
         </div>
 
-        <br /><br />
+        <br />
+        <br />
+
         <label for="”crop”">Crop:</label>
         <select id="crop" v-model="harvRptCrop">
             <option v-for="crop in harvCrops">{{ crop }}</option>
         </select>
-        <br /><br />
+
+        <br />
+        <br />
 
         <button class="btn btn-primary" @click="genHarvRpt">
             Generate Report
         </button>
+
         <div v-if="visible">
             <hr />
+
             <h1>{{ savedTitle == '' ? 'My Harvest Report' : savedTitle }}</h1>
+
             <br />
             <br />
+
             <ul>
                 <li><strong>Start:</strong>{{' ' + savedStart}}</li>
                 <li><strong>End:</strong> {{' ' + savedEnd}}</li>
                 <li><strong>Crop:</strong>{{' ' + savedCrop }}</li>
                 <li><strong>Field: </strong>{{' ' + savedField}}</li>
             </ul>
+
             <br />
+
             <p v-if="harvTable.length == 0">There are no matching records.</p>
+
             <div v-else>
                 <table border="1">
                     <tr>
                         <th v-for="header in harvHeaders">{{ header }}</th>
                     </tr>
+
                     <tr v-for="(harvLog, index) in harvTable">
                         <td>{{ timestampToYMD(harvLog.date) }}</td>
                         <td>{{ harvLog.field }}</td>
@@ -61,7 +73,9 @@
                         </td>
                     </tr>
                 </table>
+
                 <br />
+
                 <table border="1">
                     <tr>
                         <th v-for="header in totYieldHeaders">{{ header }}</th>
@@ -71,12 +85,15 @@
                         <td>{{ cropYield[1] }}</td>
                     </tr>
                 </table>
-                <a id="tableDownload" :download="nameGen()" :href="URLGen()"
+
+                <a id="tableDownload" :download="savedTitle + '.csv'" :href="makeFile()"
                     >Download Tables</a
                 >
+
             </div>
         </div>
     </div>
+
     <script>
         var harvRptVue = new Vue({
             el: '#harvRptVue',
@@ -84,15 +101,16 @@
                 return {
                     harvRptTitle: 'My Harvest Report',
                     harvRptCrop: 'ALL',
-                    reportField: 'ALL',
-                    reportStartDate: this.firstDateOfYear(),
-                    reportEndDate: this.currentDate(),
+                    harvRptField: 'ALL',
+                    rptStart: this.firstDateOfYear(),
+                    rptEnd: this.currentDate(),
 
-                    savedTitle: 'My Harvest Report',
-                    savedCrop: 'ALL',
-                    savedField: 'ALL',
-                    savedStart: this.firstDateOfYear(),
-                    savedEnd: this.currentDate(),
+                    //These are to make sure that the displayed information is consistent with the displayed table
+                    savedTitle: this.harvRptTitle,
+                    savedCrop: this.harvRptCrop,
+                    savedField: this.harvRptField,
+                    savedStart: this.rptStart,
+                    savedEnd: this.rptEnd,
 
                     rptPath: this.getRequestURL,
 
@@ -108,7 +126,8 @@
                     ],
                     totYieldHeaders: ['Crop', 'Total Yield'],
 
-                    cropIdPairsFw: new Map(),
+                    //These add the ability to switch back and forth between crops and id numbers
+                    cropIdPairsFw: new Map(),  
                     cropIdPairsBw: new Map(),
 
                     UserIdPairs: new Map(),
@@ -117,7 +136,7 @@
                     yieldTable: [],
 
                     harvCrops: [],
-                    fields: ['ALL'],
+                    harvFields: ['ALL'],
                 };
             },
             methods: {
@@ -127,7 +146,7 @@
                     axios.get(this.rptPath).then((response) => {
                         this.harvTable = response.data.list.map((entry) => {
                             return {
-                                date: entry.timestamp, //make human readable
+                                date: entry.timestamp,
                                 field: entry.area[0].name,
                                 crop: this.cropIdPairsFw.get(entry.asset[0].id),
                                 yield:
@@ -141,9 +160,9 @@
 
                         this.savedCrop = this.harvRptCrop;
                         this.savedTitle = this.harvRptTitle;
-                        this.savedField = this.reportField;
-                        this.savedStart = this.reportStartDate;
-                        this.savedEnd = this.reportEndDate;
+                        this.savedField = this.harvRptField;
+                        this.savedStart = this.rptStart;
+                        this.savedEnd = this.rptEnd;
                     });
                 },
 
@@ -194,14 +213,14 @@
                             this.cropIdPairsBw.get(this.harvRptCrop);
                     }
 
-                    if (!(this.reportField == 'ALL')) {
-                        this.rptPath += '&area=' + this.reportField;
+                    if (!(this.harvRptField == 'ALL')) {
+                        this.rptPath += '&area=' + this.harvRptField;
                     }
                     this.rptPath +=
                         '&timestamp[ge]=' +
-                        this.YMDToTimestamp(this.reportStartDate) +
+                        this.YMDToTimestamp(this.rptStart) +
                         '&timestamp[lt]=' +
-                        this.TimestampFollowingDay(this.reportEndDate);
+                        this.TimestampFollowingDay(this.rptEnd);
                 },
                 YMDToTimestamp: function (ymd) {
                     let d = new Date(ymd);
@@ -263,24 +282,6 @@
                     data = new Blob([tableString + '\n\n' + yieldString], {
                         type: 'text/csv',
                     });
-                    return data;
-                },
-                nameGen: function () {
-                    return (
-                        'Harvest Report: ' +
-                        this.reportStartDate +
-                        ' to ' +
-                        this.reportEndDate +
-                        ' (Crop:' +
-                        this.harvRptCrop +
-                        ', Field:' +
-                        this.reportField +
-                        ')' +
-                        '.csv'
-                    );
-                },
-                URLGen: function () {
-                    data = this.makeFile();
                     return window.URL.createObjectURL(data);
                 },
             },
@@ -289,12 +290,12 @@
                 axios
                     .get('/taxonomy_term.json?area_type=field')
                     .then((response) => {
-                        this.fields.push(
+                        this.harvFields.push(
                             ...response.data.list.map((f) => f.name).sort()
                         );
                     })
                     .catch((error) => {
-                        this.fields = ['Service Unavailable'];
+                        this.harvFields = ['Service Unavailable'];
                         console.log(error);
                     });
                 axios
@@ -313,7 +314,7 @@
                         ).sort();
                     })
                     .catch((error) => {
-                        this.fields = ['Service Unavailable'];
+                        this.harvFields = ['Service Unavailable'];
                         console.log(error);
                     });
                 axios
