@@ -55,6 +55,15 @@ function fd2_barn_kit_menu() {
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   );
+  
+  $items['farm/fd2-barn-kit/harvestReport'] = array(
+      'title' => 'Harvest Report',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'fd2_barn_kit_view',
+      'page arguments' => array('harvestReport.html'),
+      'access arguments' => array('view fd2 barn kit'),
+      'weight' => 100,
+    );
 
 
   return $items;
