@@ -48,8 +48,9 @@
                 <td> {{harvest.date}} </td>
                 <td>  </td>
                 <td> {{harvest.bedFeet}} </td>
-                <td>  </td>
                 <td> {{harvest.rowFeet}} </td>
+                <td> {{harvest.rowsPerBed}} </td>
+                <td>  </td>
                 <td>  </td>
                 <td>  </td>
                 <td>  </td>
@@ -103,6 +104,7 @@
                                 rowFeet: this.getRowFeet(h.quantity[0].measure),
                                 field: h.movement.area[0].name,
                                 bedFeet: this.calculateBedFeet(h.quantity[0].measure, h.quantity[0].label),
+                                rowsPerBed: this.getRowBed(h.quantity[0].label),
                            };
                        });
                    })
