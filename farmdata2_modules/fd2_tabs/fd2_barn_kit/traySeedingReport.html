@@ -21,7 +21,7 @@
         <button class="btn btn-primary" @click="traySeedingLogRequest">Generate Report</button>
 
 
-    <div v-if="state === 'edit'">
+    <div v-if="state === 'edit'"> <!--Makes the report visible after pressing the generate report button-->
         <hr />
         <h2>Mock Report</h2>
         <br>
@@ -47,15 +47,15 @@
 
 
             <tr v-for="(log, index) in traySeedingLogs">
-                <td>{{ timestampToYMD(log.timestamp) }}</td>
-                <td>{{ log.name }}</td>
-                <td>{{ log.quantity[0]["measure"] }}</td>
-                <td>{{ log.quantity[0]["value"] }}   </td>
-                <td>{{ log.quantity[0]["label"].substring(0, log.quantity[0]["label"].length - 5) }}   </td>
-                <td>{{ log.notes.value.substring(3, log.notes.value.length - 5) }}    </td>
-                <td>{{ log.log_owner[0]["resource"] }}     </td>
-                <td>     </td>
-                <td><button type="button" @click="popup(index);">Delete</button></td>
+                <td>{{ timestampToYMD(log.timestamp) }}</td> <!--Grabs the date of the tray seeding from farmOS API -> type: farm_seeding-->
+                <td>{{ log.name }}</td> <!--Grabs the name of the seeding crop from farmOS API -> type: farm_seeding-->
+                <td>{{ log.quantity[0]["measure"] }}</td><!--Grabs the # of seeds from farmOS API -> type: farm_seeding-->
+                <td>{{ log.quantity[0]["value"] }}</td><!--Grabs the # of trays from farmOS API -> type: farm_seeding-->
+                <td>{{ log.quantity[0]["label"].substring(0, log.quantity[0]["label"].length - 5) }}</td><!--Grabs the # of cells per tray from farmOS API -> type: farm_seeding -> Used subtring to get rid of "/flat", just want numeric value-->
+                <td>{{ log.notes.value.substring(3, log.notes.value.length - 5) }}</td><!--Grabs the variety of seeds from farmOS API -> type: farm_seeding -> Used substring to get rid of extra <p> tags-->
+                <td>{{ log.log_owner[0]["resource"] }}</td><!--Grabs the user who submitted the report -> Right now just display's "user" and not the specific username -> farmOS does not provide the specific user in farm_seeding-->
+                <td>     </td><!--Comments will go here-->
+                <td><button type="button" @click="popup(index);">Delete</button></td><!--Delete button with popup warning-->
             </tr>
             </table>
         </div>
@@ -124,20 +124,14 @@
                         }
                     })
 
-                    this.state = 'edit';
+                    this.state = 'edit'; //Makes the report visible after pressing the generate report button
                 },
              },
             created() {
-                //let today = new Date.now();
-                //this.reportEnd = this.timestampToYMD(today);
-
                 axios.get('/farm_asset.json?type=planting').then(response => {
-                    this.crops = response.data.list.map(f => f.name).sort();
-                    this.crops.splice(0,0,"All");
+                    this.crops = response.data.list.map(f => f.name).sort(); //Adds all crops from farmOS API to the crops array sorted in alphabetical order
+                    this.crops.splice(0,0,"All"); //Adds "All" option to top of crops array and the dropdown menu
                 });
-
-                //let today = new Date.now();
-                //this.reportEnd = this.timestampToYMD(today);
             }
         });
        Vue.config.devtools = true;
