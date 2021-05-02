@@ -48,7 +48,7 @@
                 <td> {{harvest.date}} </td>
                 <td>  </td>
                 <td>  </td>
-                <td>  </td>
+                <td> {{harvest.rowsPerBed}} </td>
                 <td>  </td>
                 <td>  </td>
                 <td>  </td>
@@ -98,8 +98,9 @@
                    axios.get(link).then(response => {
                        this.logs = response.data.list.map(h => {
                            return{
-                               crop: this.getCropName(h.name),
-				                date:this.timestampToYMD(h.timestamp),
+                                crop: this.getCropName(h.name),
+                                date:this.timestampToYMD(h.timestamp),
+                                rowsPerBed: h.quantity[0].label,
                            };
                        });
                    })
