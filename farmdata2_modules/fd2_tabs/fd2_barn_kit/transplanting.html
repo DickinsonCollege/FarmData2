@@ -44,10 +44,10 @@
             <tr v-for="(harvest, reportIndex) in logs">
                 <td> {{harvest.crop}} </td>
                 <td> {{harvest.field}} </td>
-                <td>  </td>
+                <td> </td>
                 <td> {{harvest.date}} </td>
                 <td>  </td>
-                <td>  </td>
+                <td> {{harvest.bedFeet}} </td>
                 <td>  </td>
                 <td> {{harvest.rowFeet}} </td>
                 <td>  </td>
@@ -100,11 +100,25 @@
                            return{
                                 crop: this.getCropName(h.name),
                                 date:this.timestampToYMD(h.timestamp),
-                                rowFeet: h.quantity[0].measure,
+                                rowFeet: this.getRowFeet(h.quantity[0].measure),
                                 field: h.movement.area[0].name,
+                                bedFeet: this.calculateBedFeet(h.quantity[0].measure, h.quantity[0].label),
                            };
                        });
                    })
+               },
+               calculateBedFeet: function(rowfeet, rowbed){
+                    rf = this.getRowFeet(rowfeet);
+                    rb = this.getRowBed(rowbed);
+                    return rf/rb;
+               },
+               getRowFeet: function(rowfeet){
+                   let seperateRowFeet = rowfeet.split(' ');
+                   return seperateRowFeet[0];
+               },
+               getRowBed: function(rowbed){
+                   let seperateRowBed = rowbed.split(' ');
+                   return seperateRowBed[0];
                },
                timestampToYMD: function(timestamp){
                    let d = new Date(timestamp*1000);
