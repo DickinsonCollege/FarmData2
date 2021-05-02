@@ -53,8 +53,7 @@
                 <td>  </td>
                 <td>  </td>
                 <td>  </td>
-                <td>  </td>
-                <td>  </td>
+                <td> {{harvest.comments}} </td>
                 <td> {{harvest.user}} </td>
                 <td>  </td>
             </tr>
@@ -104,10 +103,24 @@
                                 field: h.movement.area[0].name,
                                 bedFeet: this.calculateBedFeet(h.quantity[0].measure, h.quantity[0].label),
                                 rowsPerBed: this.getRowBed(h.quantity[0].label),
-                                user: h.log_owner[0].resource,
+                                notes: h.notes,
+                                comments: this.getComments(h.notes.value),
+				 user: h.log_owner[0].resource,
                            };
                        });
                    })
+               },
+               getComments: function(com){
+                   if (typeof com == 'undefined'){
+                       return '';
+                   }
+                   newCom = com.substring(3, com.length - 5);
+                   comSpace = newCom.split('<br />');
+                   print = '';
+                   for (i=0; i < comSpace.length; i++){
+                        print = print + comSpace[i] + '\n';
+                   }
+                   return print;
                },
                calculateBedFeet: function(rowfeet, rowbed){
                     rf = this.getRowFeet(rowfeet);
