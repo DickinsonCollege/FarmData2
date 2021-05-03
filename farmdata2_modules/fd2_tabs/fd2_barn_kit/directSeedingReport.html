@@ -34,21 +34,45 @@
                     <tr>
                         <th v-for="TH in tableHeaders">{{TH}}</th>
                     </tr>
-                    <tr v-if="isEditable === 'false'" v-for="(log,index) in tableLogs">
-                        <td>{{log.Date}}</td>
-                        <td>{{log.Crop}}</td>
-                        <td>{{log.Field}}</td>
-                        <td>{{log.Bed_Feet}}</td>
-                        <td>{{log.RowsPerBed}}</td>
-                        <td>{{log.Row_Feet}}</td>
-                        <td>{{log.Hours}}</td>
-                        <td>{{log.Annual}}</td>
-                        <td>{{log.Comments}}</td>
-                        <td>{{log.User}}</td>
-                        <td> <button @click="editReport(log, index)">Edit</button></td>
+                   
+                    <tr v-for="(log,index) in tableLogs"> 
+                        
+                        <td v-if="editedRow == index"><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
+                        <td v-if="editedRow == index"> <select id="CropsList" name="cropType">
+                        <option selected> {{log.Crop}} </option>
+                        <option v-for="crop in crops">{{crop}}</option>
+                        </select></td>
+                        <td v-if="editedRow == index"><select v-model="log.Field" id="FieldsList" name="fieldType" >
+                        <option selected> {{log.Field}} </option>
+                        <option v-for="field in fields">{{field}}</option>
+                        </select></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Bed_Feet"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.RowsPerBed"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Row_Feet"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Hours"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Annual"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Comments"></input></td>
+                        <td v-if="editedRow == index"><select id="UserList" name="user" v-model="rptUser">
+                        <option v-for="user in users">{{user}}</option>
+                        <option selected> {{log.User}} </option> </td>
+                        <td v-if="editedRow == index"> <button @click="editReportDone(log, index)">Save</button></td>
+                    
+                
+
+                        <td v-if="editedRow != index" >{{log.Date}}</td>
+                        <td v-if="editedRow != index" >{{log.Crop}}</td>
+                        <td v-if="editedRow != index" >{{log.Field}}</td>
+                        <td v-if="editedRow != index" >{{log.Bed_Feet}}</td>
+                        <td v-if="editedRow != index" >{{log.RowsPerBed}}</td>
+                        <td v-if="editedRow != index" >{{log.Row_Feet}}</td>
+                        <td v-if="editedRow != index" >{{log.Hours}}</td>
+                        <td v-if="editedRow != index" >{{log.Annual}}</td>
+                        <td v-if="editedRow != index" >{{log.Comments}}</td>
+                        <td v-if="editedRow != index" >{{log.User}}</td>
+                        <td v-if="editedRow != index" >  <button @click="editReport(log, index)">Edit</button></td>
                     </tr>
 
-                    <tr v-if="isEditable === 'true'" v-for="(log,index) in tableLogs">
+                    <!-- <tr v-if="editedRow == index" v-for="(log,index) in tableLogs">
                         <td><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
                         <td> <select id="CropsList" name="cropType">
                         <option selected> {{log.Crop}} </option>
@@ -68,7 +92,7 @@
                         <option v-for="user in users">{{user}}</option>
                         <option selected> {{log.User}} </option> </td>
                         <td> <button @click="editReportDone(index)">Save</button></td>
-                    </tr>
+                    </tr> -->
                     
                 </table> 
 
@@ -90,7 +114,7 @@
               editLog: " ",
               users: ["user1", "user2", "user3"],
               state:'inVisible',
-              isEditable: 'false',
+              editedRow: -1,
               tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
               tableLogs:[],
               //DSLogs should be empty once retrieving API is working
@@ -102,10 +126,10 @@
           methods:{
 
             editReport: function (log, index) {
-                this.isEditable= 'true'
+                this.editedRow = index
             },
             editReportDone: function () {
-                this.isEditable = 'false'
+                this.editedRow = -1
             },
             generateBtn: function(){
                 this.makeURL();
@@ -187,6 +211,7 @@
 
 
         },
+    
 
           created(){
               axios.get("/farm_asset.json?type=planting").then(response=>{
