@@ -5,10 +5,10 @@
   <div id="DSReport">
       <br>
       <label for ="DatesFrom">Date From:</label>
-      <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="1980-01-01" max="2021-04-11" v-model="rptStart">
+      <input type="date" id="DatesFrom" name="dateStart" value="2021-04-06" min="1980-01-01" max="rptEnd" v-model="rptStart">
       <br>
       <label for ="DatesTo">Date To:</label>
-      <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptEnd">
+      <input type="date" id="DatesTo" name="dateEnd" value="2021-04-06" min="rptStart" max="2041-04-11" v-model="rptEnd">
       <br>
       <label for ="CropsList">Crop(s):</label>
       <select id="CropsList" name="cropType" v-model="rptCrop">
@@ -42,12 +42,19 @@
                         <td>{{log.Annual}}</td>
                         <td>{{log.Comments}}</td>
                         <td>{{log.User}}</td>
+                        <td><button type="button" @click="popup(index);">Delete</button></td>
                     </tr>
                 </table> 
 
             
         </div>
+
   </div>
+
+<script>
+
+</script>
+
   <script>
       var dsreportVue = new Vue({
           el: "#DSReport",
@@ -68,6 +75,7 @@
           },
 
           methods:{
+
             generateBtn: function(){
                 this.makeURL();
                 
@@ -134,12 +142,20 @@
 
 
                 }
-            }
+            },
 
-            
-              
+            deleteReport: function(index) {
+                this.tableLogs.splice(index, 1);
+            },
+            popup: function(index) {
+                var x = confirm("Press OK to delete this seeding record");
+                if (x == true) {
+                    this.tableLogs.splice(index, 1);
+                } else {
 
-
+                }
+                document.getElementById("test").innerHTML = txt;
+            },
         },
 
           created(){
