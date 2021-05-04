@@ -5,10 +5,10 @@
   <div id="DSReport">
       <br>
       <label for ="DatesFrom">Date From:</label>
-      <input type="date" id="DatesFrom" name="date" value="2021-04-06" min="1980-01-01" max="2021-04-11" v-model="rptStart">
+      <input type="date" id="DatesFrom" name="dateStart" value="2021-04-06" min="1980-01-01" max="rptEnd" v-model="rptStart">
       <br>
       <label for ="DatesTo">Date To:</label>
-      <input type="date" id="DatesTo" name="date" value="2021-04-06" min="2020-01-01" max="2021-04-11" v-model="rptEnd">
+      <input type="date" id="DatesTo" name="dateEnd" value="2021-04-06" min="rptStart" max="2041-04-11" v-model="rptEnd">
       <br>
       <label for ="CropsList">Crop(s):</label>
       <select id="CropsList" name="cropType" v-model="rptCrop">
@@ -27,28 +27,90 @@
         <div v-if="state=='visible'">
                 <h1>Direct Seeding Report</h1>
                 <br><br>
+                <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button>
+
+                <br><br>
                 <table border=1>
                     <tr>
                         <th v-for="TH in tableHeaders">{{TH}}</th>
                     </tr>
-                    <tr v-for="(log,index) in tableLogs">
-                        <td>{{log.Date}}</td>
-                        <td>{{log.Crop}}</td>
-                        <td>{{log.Field}}</td>
-                        <td>{{log.Bed_Feet}}</td>
-                        <td>{{log.RowsPerBed}}</td>
-                        <td>{{log.Row_Feet}}</td>
-                        <td>{{log.Hours}}</td>
-                        <td>{{log.Annual}}</td>
-                        <td>{{log.Comments}}</td>
-                        <td>{{log.User}}</td>
+
+                       
+                    <tr v-for="(log,index) in tableLogs"> 
+                        
+                        <td v-if="editedRow == index"><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
+                        <td v-if="editedRow == index"> <select id="CropsList" name="cropType">
+                        <option selected> {{log.Crop}} </option>
+                        <option v-for="crop in crops">{{crop}}</option>
+                        </select></td>
+                        <td v-if="editedRow == index"><select v-model="log.Field" id="FieldsList" name="fieldType" >
+                        <option selected> {{log.Field}} </option>
+                        <option v-for="field in fields">{{field}}</option>
+                        </select></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Bed_Feet"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.RowsPerBed"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Row_Feet"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Hours"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Annual"></input></td>
+                        <td v-if="editedRow == index"><input v-model= "log.Comments"></input></td>
+                        <td v-if="editedRow == index"><select id="UserList" name="user" v-model="rptUser">
+                        <option v-for="user in users">{{user}}</option>
+                        <option selected> {{log.User}} </option> </td>
+                        <td v-if="editedRow == index"> <button @click="editReportDone(log, index)">Save</button></td>
+                        <td v-if="editedRow == index"><button type="button" @click="popup(index);">Delete</button></td>
+                   
+                    
+        
+
+                        <td v-if="editedRow != index" >{{log.Date}}</td>
+                        <td v-if="editedRow != index" >{{log.Crop}}</td>
+                        <td v-if="editedRow != index" >{{log.Field}}</td>
+                        <td v-if="editedRow != index" >{{log.Bed_Feet}}</td>
+                        <td v-if="editedRow != index" >{{log.RowsPerBed}}</td>
+                        <td v-if="editedRow != index" >{{log.Row_Feet}}</td>
+                        <td v-if="editedRow != index" >{{log.Hours}}</td>
+                        <td v-if="editedRow != index" >{{log.Annual}}</td>
+                        <td v-if="editedRow != index" >{{log.Comments}}</td>
+                        <td v-if="editedRow != index" >{{log.User}}</td>
+                        <td v-if="editedRow != index" >  <button @click="editReport(log, index)">Edit</button></td>
+                        <td v-if="editedRow != index"><button type="button" @click="popup(index);">Delete</button></td>
                     </tr>
+
+                    <!-- <tr v-if="editedRow == index" v-for="(log,index) in tableLogs">
+                        <td><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
+                        <td> <select id="CropsList" name="cropType">
+                        <option selected> {{log.Crop}} </option>
+                        <option v-for="crop in crops">{{crop}}</option>
+                        </select></td>
+                        <td><select v-model="log.Field" id="FieldsList" name="fieldType" >
+                        <option selected> {{log.Field}} </option>
+                        <option v-for="field in fields">{{field}}</option>
+                        </select></td>
+                        <td><input v-model= "log.Bed_Feet"></input></td>
+                        <td><input v-model= "log.RowsPerBed"></input></td>
+                        <td><input v-model= "log.Row_Feet"></input></td>
+                        <td><input v-model= "log.Hours"></input></td>
+                        <td><input v-model= "log.Annual"></input></td>
+                        <td><input v-model= "log.Comments"></input></td>
+                        <td><select id="UserList" name="user" v-model="rptUser">
+                        <option v-for="user in users">{{user}}</option>
+                        <option selected> {{log.User}} </option> </td>
+                        <td> <button @click="editReportDone(index)">Save</button></td>
+                    </tr> -->
+                    
                 </table> 
 
             
         </div>
+
   </div>
+
+<script>
+
+</script>
+
   <script>
+      
       var dsreportVue = new Vue({
           el: "#DSReport",
           data:{
@@ -58,8 +120,12 @@
               fields: [],
               rptStart:'',
               rptEnd:'',
+              rptUser: "",
+              editLog: " ",
+              users: ["user1", "user2", "user3"],
               state:'inVisible',
-              tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User'],
+              editedRow: -1,
+              tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
               tableLogs:[],
               //DSLogs should be empty once retrieving API is working
               DSLogs:[],
@@ -68,6 +134,13 @@
           },
 
           methods:{
+
+            editReport: function (log, index) {
+                this.editedRow = index
+            },
+            editReportDone: function () {
+                this.editedRow = -1
+            },
             generateBtn: function(){
                 this.makeURL();
                 
@@ -90,6 +163,18 @@
                     this.state='visible';this.tableLogs.push(this.DSLogs[this.tableLogs.length])
                 }
             },
+            anotherRptButton: function(){
+                this.state="notVisible"
+                this.url =''
+                this.rptCrop =''
+                this.rptField = ''
+                this.rptStart =''
+                this.rptEnd =''
+                this.tableLogs =[]
+                this.DSLogs = []
+
+            },
+
             YMDToTimestamp: function (ymd) {
                 let d = new Date(ymd);
                     return Math.round(
@@ -139,23 +224,33 @@
 
 
                 }
-                
             },
 
         bedFeetCalculate: function(row, rowPbed){
             return row/rowPbed;
-        }
-
-            
-              
-
-
         },
+
+
+            deleteReport: function(index) {
+                this.tableLogs.splice(index, 1);
+            },
+            popup: function(index) {
+                var x = confirm("Press OK to delete this seeding record");
+                if (x == true) {
+                    this.tableLogs.splice(index, 1);
+                } else {
+            }
+
+                document.getElementById("test").innerHTML = txt;
+            },
+        },
+    
 
           created(){
               axios.get("/farm_asset.json?type=planting").then(response=>{
                   this.crops = response.data.list.map(f =>f.name).sort();
               });
+
 
               axios.get("/taxonomy_term.json?area_type=field")
             .then(response => {
