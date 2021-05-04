@@ -80,7 +80,7 @@
                             Row_Feet:h.quantity[0].measure,
                             RowsPerBed:h.quantity[0].label.split('/')[0],
                             Bed_Feet: this.bedFeetCalculate(h.quantity[0].measure,h.quantity[0].label.split('/')[0]),
-                            Comments: h.notes.value,
+                            Comments: h.notes.value.substring(3, h.notes.value.length-5),
                             User:h.log_owner[0].resource,
                         };
                     });
