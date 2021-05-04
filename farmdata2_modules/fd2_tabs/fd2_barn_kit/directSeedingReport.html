@@ -77,6 +77,11 @@
                         return{
                             Date: this.timestampToYMD(h.timestamp),
                             Crop: h.name,
+                            Row_Feet:h.quantity[0].measure,
+                            RowsPerBed:h.quantity[0].label.split('/')[0],
+                            Bed_Feet: this.bedFeetCalculate(h.quantity[0].measure,h.quantity[0].label.split('/')[0]),
+                            Comments: h.notes.value,
+                            User:h.log_owner[0].resource,
                         };
                     });
                 });
@@ -134,7 +139,12 @@
 
 
                 }
-            }
+                
+            },
+
+        bedFeetCalculate: function(row, rowPbed){
+            return row/rowPbed;
+        }
 
             
               
