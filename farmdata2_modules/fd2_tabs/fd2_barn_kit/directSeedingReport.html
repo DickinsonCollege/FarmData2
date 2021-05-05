@@ -8,12 +8,14 @@
   <div id="DSReport">
       
       <br>
+      <!-- Dates fields that allow you to filter the time period for the search. If no dates selected, it will return results from all time. -->
       <label for ="DatesFrom">Date From:</label>
       <input type="date" id="DatesFrom" name="dateStart" value="2021-04-06" min="1980-01-01" max="rptEnd" v-model="rptStart"> 
       <br>
       <label for ="DatesTo">Date To:</label>
       <input type="date" id="DatesTo" name="dateEnd" value="2021-04-06" min="rptStart" max="2041-04-11" v-model="rptEnd">
       <br>
+      <!-- Dropdown menu to select all crops or a specific crop. -->
       <label for ="CropsList">Crop(s):</label>
       <select id="CropsList" name="cropType" v-model="rptCrop">
           <option>All</option>
@@ -226,11 +228,11 @@
             return row/rowPbed;
         },
 
-
+            // deleteReport function is activated when the "Delete" button is clicked and confirmed on the row
             deleteReport: function(index) {
                 this.tableLogs.splice(index, 1);
             },
-            popup: function(index) {
+            popup: function(index) {    // Creates a popup box so that the user can confirm they want to delete the record or not
                 var x = confirm("Press OK to delete this seeding record");
                 if (x == true) {
                     this.tableLogs.splice(index, 1);
