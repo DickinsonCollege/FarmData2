@@ -12,12 +12,16 @@
 
         <br>
 
+        <!--Date input for user to specify the start date of the report-->
         <label for="start">Start Date:</label>
         <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
 
+        <!--Date input for user to specify the end date of the report-->
         <label for="end">End Date:</label>
         <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
-    <br>
+
+        <br>
+
         <button class="btn btn-primary" @click="traySeedingLogRequest">Generate Report</button>
 
 
@@ -77,6 +81,7 @@
                 ],
             },
             methods: { 
+                //recieves a timestamp in Unix time and returns a date in the form "year-month-day"
                 timestampToYMD: function(timestamp) {
                     let d = this.timestampToDate(timestamp);
                     const month = d.getMonth() < 9 ?
@@ -87,14 +92,19 @@
                                 d.getDate();
                     return d.getFullYear() + "-" + month + "-" + day;
                 },
+                
+                //helper method for timestampToYMD
+                timestampToDate: function(timestamp) {
+                    return new Date(timestamp * 1000);
+                },
+
+                //recieves a timestamp in the form "year-month-day" and converts it to Unix time
                 YMDToTimestamp: function(ymd) {
                         let d = new Date(ymd);
                         return Math.round(d.getTime()/1000 +
                                 new Date().getTimezoneOffset()*60);
                 },
-                timestampToDate: function(timestamp) {
-                        return new Date(timestamp * 1000);
-                    },
+
                 deleteReport: function(index) {
                     this.traySeedingLogs.splice(index, 1);
                 },
@@ -107,6 +117,8 @@
                     }
                     document.getElementById("test").innerHTML = txt;
                 },
+                
+                //sends an API request to FarmOS with any attributes specified on the tray seeding report page. Returns the requested logs in array format in the variable traySeedingLogs
                 traySeedingLogRequest: function() {
                     let s = this.YMDToTimestamp(this.reportStart); //start date
                     let e = this.YMDToTimestamp(this.reportEnd); //end date
@@ -119,9 +131,6 @@
                     axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e + c)
                     .then(response => {
                         this.traySeedingLogs = response.data.list;
-                        if (response.first != response.last) {
-
-                        }
                     })
 
                     this.state = 'edit'; //Makes the report visible after pressing the generate report button
@@ -132,6 +141,13 @@
                     this.crops = response.data.list.map(f => f.name).sort(); //Adds all crops from farmOS API to the crops array sorted in alphabetical order
                     this.crops.splice(0,0,"All"); //Adds "All" option to top of crops array and the dropdown menu
                 });
+                
+                
+                //sets the default start date to the beginning of the current year and the default end date to today's date
+                let today = new Date;
+                let todayYMD = this.timestampToYMD(today.getTime() /1000);
+                this.reportEnd = todayYMD;
+                this.reportStart = todayYMD.substring(0,4) + "-01-01";
             }
         });
        Vue.config.devtools = true;
