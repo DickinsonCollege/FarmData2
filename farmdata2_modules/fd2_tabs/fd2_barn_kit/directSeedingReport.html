@@ -27,17 +27,34 @@
         <div v-if="state=='visible'">
                 <h1>Direct Seeding Report</h1>
                 <br><br>
-                <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button>
+                <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button> <!-- onclick clears all the fields, array and url and allows to run another report -->
 
                 <br><br>
-                <table border=1>
+                 <table border=1>  <!--  table that contains generated logs -->
                     <tr>
                         <th v-for="TH in tableHeaders">{{TH}}</th>
                     </tr>
 
                        
                     <tr v-for="(log,index) in tableLogs"> 
+
+                         <!-- default state of the table with non-editable logs-->
                         
+                        <td v-if="editedRow != index" >{{log.Date}}</td>
+                        <td v-if="editedRow != index" >{{log.Crop}}</td>
+                        <td v-if="editedRow != index" >{{log.Field}}</td>
+                        <td v-if="editedRow != index" >{{log.Bed_Feet}}</td>
+                        <td v-if="editedRow != index" >{{log.RowsPerBed}}</td>
+                        <td v-if="editedRow != index" >{{log.Row_Feet}}</td>
+                        <td v-if="editedRow != index" >{{log.Hours}}</td>
+                        <td v-if="editedRow != index" >{{log.Annual}}</td>
+                        <td v-if="editedRow != index" >{{log.Comments}}</td>
+                        <td v-if="editedRow != index" >{{log.User}}</td>
+                        <td v-if="editedRow != index" >  <button @click="editReport(log, index)">Edit</button></td> <!-- onclick switches the row to edit mode based on the index-->
+                        <td v-if="editedRow != index"><button type="button" @click="popup(index);">Delete</button></td> <!-- onclick opens a popup with an option to delete the row-->
+
+                        <!--the edit mode of the selected row with input fields and dropdown menus to change information about the log -->
+
                         <td v-if="editedRow == index"><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
                         <td v-if="editedRow == index"> <select id="CropsList" name="cropType">
                         <option selected> {{log.Crop}} </option>
@@ -56,47 +73,11 @@
                         <td v-if="editedRow == index"><select id="UserList" name="user" v-model="rptUser">
                         <option v-for="user in users">{{user}}</option>
                         <option selected> {{log.User}} </option> </td>
-                        <td v-if="editedRow == index"> <button @click="editReportDone(log, index)">Save</button></td>
-                        <td v-if="editedRow == index"><button type="button" @click="popup(index);">Delete</button></td>
+                        <td v-if="editedRow == index"> <button @click="editReportDone(log, index)">Save</button></td> <!-- onclick saves altered information and switches the row back to the deafault state-->
+                        <td v-if="editedRow == index"><button type="button" @click="popup(index);">Delete</button></td>  <!-- onclick opens a popup with an option to delete the row-->
                    
                     
-        
-
-                        <td v-if="editedRow != index" >{{log.Date}}</td>
-                        <td v-if="editedRow != index" >{{log.Crop}}</td>
-                        <td v-if="editedRow != index" >{{log.Field}}</td>
-                        <td v-if="editedRow != index" >{{log.Bed_Feet}}</td>
-                        <td v-if="editedRow != index" >{{log.RowsPerBed}}</td>
-                        <td v-if="editedRow != index" >{{log.Row_Feet}}</td>
-                        <td v-if="editedRow != index" >{{log.Hours}}</td>
-                        <td v-if="editedRow != index" >{{log.Annual}}</td>
-                        <td v-if="editedRow != index" >{{log.Comments}}</td>
-                        <td v-if="editedRow != index" >{{log.User}}</td>
-                        <td v-if="editedRow != index" >  <button @click="editReport(log, index)">Edit</button></td>
-                        <td v-if="editedRow != index"><button type="button" @click="popup(index);">Delete</button></td>
                     </tr>
-
-                    <!-- <tr v-if="editedRow == index" v-for="(log,index) in tableLogs">
-                        <td><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
-                        <td> <select id="CropsList" name="cropType">
-                        <option selected> {{log.Crop}} </option>
-                        <option v-for="crop in crops">{{crop}}</option>
-                        </select></td>
-                        <td><select v-model="log.Field" id="FieldsList" name="fieldType" >
-                        <option selected> {{log.Field}} </option>
-                        <option v-for="field in fields">{{field}}</option>
-                        </select></td>
-                        <td><input v-model= "log.Bed_Feet"></input></td>
-                        <td><input v-model= "log.RowsPerBed"></input></td>
-                        <td><input v-model= "log.Row_Feet"></input></td>
-                        <td><input v-model= "log.Hours"></input></td>
-                        <td><input v-model= "log.Annual"></input></td>
-                        <td><input v-model= "log.Comments"></input></td>
-                        <td><select id="UserList" name="user" v-model="rptUser">
-                        <option v-for="user in users">{{user}}</option>
-                        <option selected> {{log.User}} </option> </td>
-                        <td> <button @click="editReportDone(index)">Save</button></td>
-                    </tr> -->
                     
                 </table> 
 
@@ -135,10 +116,10 @@
 
           methods:{
 
-            editReport: function (log, index) {
+            editReport: function (log, index) { //filters the row based on index to be edited 
                 this.editedRow = index
             },
-            editReportDone: function () {
+            editReportDone: function () { // chnages the row back to the default state 
                 this.editedRow = -1
             },
             generateBtn: function(){
@@ -163,7 +144,7 @@
                     this.state='visible';this.tableLogs.push(this.DSLogs[this.tableLogs.length])
                 }
             },
-            anotherRptButton: function(){
+            anotherRptButton: function(){ //clears all the 
                 this.state="notVisible"
                 this.url =''
                 this.rptCrop =''
