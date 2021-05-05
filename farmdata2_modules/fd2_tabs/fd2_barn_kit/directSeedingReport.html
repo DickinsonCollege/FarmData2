@@ -1,11 +1,15 @@
+<!-- Direct Seeding Report sub-tab with features to look up filtered direct seeding data, editor delete the data and download the data.-->
+
 <head>
     <h1>Direct Seeding Report</h1>
 </head>
+
 <body>
   <div id="DSReport">
+      
       <br>
       <label for ="DatesFrom">Date From:</label>
-      <input type="date" id="DatesFrom" name="dateStart" value="2021-04-06" min="1980-01-01" max="rptEnd" v-model="rptStart">
+      <input type="date" id="DatesFrom" name="dateStart" value="2021-04-06" min="1980-01-01" max="rptEnd" v-model="rptStart"> 
       <br>
       <label for ="DatesTo">Date To:</label>
       <input type="date" id="DatesTo" name="dateEnd" value="2021-04-06" min="rptStart" max="2041-04-11" v-model="rptEnd">
@@ -16,19 +20,27 @@
           <option v-for="crop in crops">{{crop}}</option>
       </select>
       <br>
+       <!-- Dropdown menu to select all fields or a specific field. 
+             There is no field data returned when an API request is made, as a result there is no use of this filter at the moment.  -->
       <label for ="FieldsList">Field(s):</label>
       <select id="FieldsList" name="fieldType" v-model="rptField">
           <option>All</option>
           <option v-for="field in fields">{{field}}</option>
       </select>
       <br><br>
-        <button type="button" class="btn btn-primary" id="generate-report" @click="generateBtn">Generate Report</button>
-        <hr>
-        <div v-if="state=='visible'">
-                <h1>Direct Seeding Report</h1>
+      <!-- Button when clicked will generate the table -->
+      <button type="button" class="btn btn-primary" id="generate-report" @click="generateBtn">Generate Report</button>
+      <hr>
+      <!-- Table is visible only after the button is clicked. -->
+      <div v-if="state=='visible'">
+          <h1>Direct Seeding Report</h1>
                 <br><br>
+<<<<<<< HEAD
                 <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button> <!-- onclick clears all the fields, array and url and allows to run another report -->
 
+=======
+                <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button>
+>>>>>>> 3ce56b8d091ca50f3a8c8de82470d1f79ba4d28a
                 <br><br>
                  <table border=1>  <!--  table that contains generated logs -->
                     <tr>
@@ -86,30 +98,27 @@
 
   </div>
 
-<script>
+<!-- Created a Vue object to store and process data. -->
 
-</script>
 
   <script>
-      
       var dsreportVue = new Vue({
           el: "#DSReport",
           data:{
-              rptCrop:"",
-              crops:[],
-              rptField: "",
-              fields: [],
-              rptStart:'',
-              rptEnd:'',
+              rptCrop:"",        // binded to the crop selected from the Crop List dropdown menu above
+              crops:[],         //  array to store crop names
+              rptField: "",     //  binded to the field selected from the Field List dropdown menu above
+              fields: [],       //  array to store field names 
+              rptStart:'',      //  binded to the Date selected from the Date From option
+              rptEnd:'',        //  binded to the Date selected from the Date From option
               rptUser: "",
               editLog: " ",
               users: ["user1", "user2", "user3"],
               state:'inVisible',
               editedRow: -1,
-              tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],
-              tableLogs:[],
-              //DSLogs should be empty once retrieving API is working
-              DSLogs:[],
+              tableHeaders:['Date', 'Crop', 'Field', 'Bed Feet', 'Rows/Bed', 'Row Feet', 'Hours', 'Annual', 'Comments', 'User', 'Edit'],  // array to store headers of the generated table
+              tableLogs:[],     // array to store seeding logs retrieved from API
+              DSLogs:[],    //array to store seedings logs pushed from tableLogs and is used to fill the table
               url: '',
 
           },
@@ -122,6 +131,8 @@
             editReportDone: function () { // chnages the row back to the default state 
                 this.editedRow = -1
             },
+              
+            // generateBtn function called when 'Generate Report' button is clicked
             generateBtn: function(){
                 this.makeURL();
                 
@@ -155,18 +166,21 @@
                 this.DSLogs = []
 
             },
-
+              
+            // return timesatmp equivalent to the input i.e the human readable date 
             YMDToTimestamp: function (ymd) {
                 let d = new Date(ymd);
                     return Math.round(
                         d.getTime() / 1000 + new Date().getTimezoneOffset() * 60
                     );
             },
-
+            
+            // return date  equivalent to the input i.e the timestamp
             timestampToDate: function(timestamp){
                 return new Date(timestamp * 1000)
             },
-
+            
+            // return human readable date  equivalent to the input i.e the timestamp
             timestampToYMD: function (timestamp) {
                     let d = this.timestampToDate(timestamp);
                     const month =
@@ -177,7 +191,8 @@
                         d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
                     return d.getFullYear() + '-' + month + '-' + day;
             },
-
+            
+            // generates the URL for API according the filtered options
             makeURL: function (){
                 let tss = this.YMDToTimestamp(this.rptStart)
                     let tse = this.YMDToTimestamp(this.rptEnd)
