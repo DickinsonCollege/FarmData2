@@ -35,12 +35,8 @@
       <div v-if="state=='visible'">
           <h1>Direct Seeding Report</h1>
                 <br><br>
-<<<<<<< HEAD
                 <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button> <!-- onclick clears all the fields, array and url and allows to run another report -->
 
-=======
-                <button type="button" class="btn btn-primary" id="another-report" @click="anotherRptButton">Run Another Report </button>
->>>>>>> 3ce56b8d091ca50f3a8c8de82470d1f79ba4d28a
                 <br><br>
                  <table border=1>  <!--  table that contains generated logs -->
                     <tr>
@@ -68,12 +64,12 @@
                         <!--the edit mode of the selected row with input fields and dropdown menus to change information about the log -->
 
                         <td v-if="editedRow == index"><input type="text" id="date" name="date"  min="2020-01-01" max="2021-04-11" v-model="log.Date"></td> 
-                        <td v-if="editedRow == index"> <select id="CropsList" name="cropType">
-                        <option selected> {{log.Crop}} </option>
+                        <td v-if="editedRow == index"> <select v-model="log.Crop" id="CropsList" name="cropType">
+                        <option > {{log.Crop}} </option>
                         <option v-for="crop in crops">{{crop}}</option>
                         </select></td>
                         <td v-if="editedRow == index"><select v-model="log.Field" id="FieldsList" name="fieldType" >
-                        <option selected> {{log.Field}} </option>
+                        <option> {{log.Field}} </option>
                         <option v-for="field in fields">{{field}}</option>
                         </select></td>
                         <td v-if="editedRow == index"><input v-model= "log.Bed_Feet"></input></td>
@@ -82,9 +78,9 @@
                         <td v-if="editedRow == index"><input v-model= "log.Hours"></input></td>
                         <td v-if="editedRow == index"><input v-model= "log.Annual"></input></td>
                         <td v-if="editedRow == index"><input v-model= "log.Comments"></input></td>
-                        <td v-if="editedRow == index"><select id="UserList" name="user" v-model="rptUser">
+                        <td v-if="editedRow == index"><select id="UserList" name="user" v-model="log.User">
                         <option v-for="user in users">{{user}}</option>
-                        <option selected> {{log.User}} </option> </td>
+                        <option> {{log.User}} </option> </td>
                         <td v-if="editedRow == index"> <button @click="editReportDone(log, index)">Save</button></td> <!-- onclick saves altered information and switches the row back to the deafault state-->
                         <td v-if="editedRow == index"><button type="button" @click="popup(index);">Delete</button></td>  <!-- onclick opens a popup with an option to delete the row-->
                    
