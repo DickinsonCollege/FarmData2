@@ -81,11 +81,11 @@ The explorer on the left will show the contents and structure of the FarmData2 r
   - Resources:
     - [How to use Eclipse Theia as an IDE](https://eclipsesource.com/blogs/2019/10/04/how-to-use-eclipse-theia-as-an-ide/): An overview of Theia and its use ad an Integrated Development Environment.
 
-As FarmDat2 matures, utilities (e.g. linters and formatters) will be added to the provided Theia IDE. If you choose to use a different editor, all such utilities will be documented in the [INSTALL.md](INSTALL.md) file so that you can install the appropriate plugins for your editor.
+As FarmData2 matures, utilities (e.g. linters and formatters) will be added to the provided Theia IDE. If you choose to use a different editor, all such utilities will be documented in the [INSTALL.md](INSTALL.md) file so that you can install the appropriate plugins for your editor.
 
 ### Front-End Technologies ###
 
-The majority of development for FarmDat2 is front-end (i.e. browser-based).  This section outlines the key technologies that are used for this development.
+The majority of development for FarmData2 is front-end (i.e. browser-based).  This section outlines the key technologies that are used for this development.
 
 #### HTML ####
 
@@ -115,7 +115,7 @@ The majority of development for FarmDat2 is front-end (i.e. browser-based).  Thi
   - Resources:
     - [JavaScript Basics](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics): A great place to start if you have not worked with JavaScript before or want a refresher.
     - [Strings](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Strings): An introduction to the way that strings are created and used in JavaScript.
-    - [Arrays](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Arrays): An introduction to the way that strings are created and used in JavaScript.
+    - [Arrays](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Arrays): An introduction to the way that arrays are created and used in JavaScript.
     - [JavaScript object basics](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Basics): An introduction to the way that objects are created and used in JavaScript.
     - [JavaScript - Dynamic client-side scripting](https://developer.mozilla.org/en-US/docs/Learn/JavaScript): A collection of modules that give a comprehensive introduction to JavaScript.
     - [JavaScript Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference): A comprehensive reference to all of the JavaScript language features.
@@ -179,7 +179,7 @@ All of the docker related configuration and source files are found in the [docke
 
 FarmData2 uses docker-compose to build custom docker images for farmOS and the TheiaIDE containers and to start and network all of the containers.
 
-The docker-compose.yml file in the [docker](https://github.com/DickinsonCollege/FarmData2/tree/main/docker) directory.
+See the docker-compose.yml file in the [docker](https://github.com/DickinsonCollege/FarmData2/tree/main/docker) directory.
 
 #### bash scripting ####
 
