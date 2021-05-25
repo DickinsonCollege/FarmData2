@@ -72,6 +72,16 @@ function fd2_example_menu() {
     'weight' => 100,
   );
 
+  // jmac adding new tab "jmacExampleTab"
+  $items['farm/fd2-example/ex1'] = array(
+      'title' => 'jmac Example Tab',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'fd2_example_view',
+      'page arguments' => array('jmacExampleTab.html'),
+      'access arguments' => array('View FD2 Example added by jmac'),
+      'weight' => 120,
+    );
+
   return $items;
 };
 
