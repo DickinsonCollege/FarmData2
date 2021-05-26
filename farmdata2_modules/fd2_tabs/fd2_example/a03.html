@@ -27,7 +27,7 @@ Clear the Drupal cache:
 
         <p>
             <label for="crop">Crop:</label>
-            <select id="crop" name="crop">
+            <select id="crop" name="crop" v-model="reportCrop">
                 <option>Broccoli</option>
                 <option selected>Kale</option>
                 <option>Peas</option>
@@ -73,15 +73,13 @@ Clear the Drupal cache:
 
         <p>Details:</p>
         <ul>
-            <li>
-                <b>Start:</b> {{ reportStartDate }}
-            </li>
+            <li><b>Start:</b> {{ reportStartDate }}</li>
 
             <li><b>End:</b> {{ reportEndDate }}</li>
 
             <li>
                 <b>Crop:</b>
-                Kale
+                {{reportCrop}}
             </li>
         </ul>
 
@@ -116,6 +114,7 @@ Clear the Drupal cache:
                 // reportStartDate: new Date(2018, 4, 1),
                 reportStartDate: '2018-05-01',
                 reportEndDate: '2018-05-15',
+                reportCrop: 'Kale',
             },
         });
     </script>
