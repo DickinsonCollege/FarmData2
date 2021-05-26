@@ -72,14 +72,24 @@ function fd2_example_menu() {
     'weight' => 100,
   );
 
-  // jmac adding new tab "jmacExampleTab"
-  $items['farm/fd2-example/ex1'] = array(
+  // jmac adding new tab "jmacExampleTab" for html spike
+  $items['farm/fd2-example/jmacExampleTab'] = array(
       'title' => 'jmac Example Tab',
       'type' => MENU_LOCAL_TASK,
       'page callback' => 'fd2_example_view',
       'page arguments' => array('jmacExampleTab.html'),
-      'access arguments' => array('View FD2 Example added by jmac'),
+      'access arguments' => array('View FD2 Example added by jmac for Vue spike'),
       'weight' => 120,
+    );
+
+  // jmac adding new tab "a03" for vue spike
+  $items['farm/fd2-example/a03'] = array(
+      'title' => 'a03',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'fd2_example_view',
+      'page arguments' => array('a03.html'),
+      'access arguments' => array('View FD2 Example added by jmac for Vue spike'),
+      'weight' => 130,
     );
 
   return $items;
