@@ -2,9 +2,7 @@
 <body>
 <style type="text/css">
 table, th, td {
-  border:double 3px black;
-  border-collapse: collapse;
-  font-weight:normal;
+  border:double 1px black;
 }
 </style>
   <h1>Harvest Report</h1>
@@ -17,6 +15,20 @@ table, th, td {
 
 <P><label for="title">Title:</label><input type="text" id="title" name="title" value="My Mock Report">
 
+<P><label for="crop">Crop:</label>
+<select id="crop" name="crop">
+  <option>Broccoli</option>
+  <option selected>Kale</option>
+  <option>Peas</option>
+</select>
+
+<label for="field">Field:</label>
+<select id="field" name="field">
+  <option selected>All</option>
+  <option>Chuau-1</option>
+  <option>SQ7</option>
+</select>
+  
 <P><button type="button">
     Generate Report
 </button>  
@@ -52,22 +64,22 @@ table, th, td {
 <P>
 <table>
   <tr>
-    <th><b>Date</b></th>
-    <th><b>Field</b></th>
-    <th><b>Crop</b></th>
-    <th><b>Yield</b></th>
+    <th>Date</th>
+    <th>Field</th>
+    <th>Crop</th>
+    <th>Yield</th>
   </tr>
   <tr>
-    <th>05/02/2018</th>
-    <th>Chuau-1</th>
-    <th>Kale</th>
-    <th>10 Bunches</th>
+    <td>05/02/2018</td>
+    <td>Chuau-1</td>
+    <td>Kale</td>
+    <td>10 Bunches</td>
   </tr>
   <tr>
-    <th>05/05/2018</th>
-    <th>SQ7</th>
-    <th>Kale</th>
-    <th>7 Bunches</th>
+    <td>05/05/2018</td>
+    <td>SQ7</td>
+    <td>Kale</td>
+    <td>7 Bunches</td>
   </tr>
 </table>
 
