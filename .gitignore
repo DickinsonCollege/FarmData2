@@ -1,4 +1,6 @@
 docker/db/*
+docker/logo/tmp/**
+docker/logo/.htaccess
 
 .theia/logs/*
 .theia/workspace-storage/*
