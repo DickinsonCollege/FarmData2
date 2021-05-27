@@ -11,8 +11,6 @@ Clear the Drupal cache:
         <p>
             This page is a <em>mockup</em> of a form for generating a harvest
             report.
-
-            <!-- <P><label for="comment">Comment:</label><input type="text" id="comment" name="comment" value="comment"> -->
         </p>
 
         <p>
@@ -28,16 +26,12 @@ Clear the Drupal cache:
         <p>
             <label for="crop">Crop:</label>
             <select id="crop" name="crop" v-model="reportCrop">
-                <option>Broccoli</option>
-                <option selected>Kale</option>
-                <option>Peas</option>
+	        <option v-for="crop in crops">{{crop}}</option>
             </select>
 
             <label for="field">Field:</label>
             <select id="field" name="field">
-                <option selected>All</option>
-                <option>Chuau-1</option>
-                <option>SQ7</option>
+	        <option v-for="field in fields">{{field}}</option>
             </select>
         </p>
 
@@ -106,6 +100,7 @@ Clear the Drupal cache:
         </table>
     </div>
 
+    <!-- <script src="https://unpkg.com/vue"></script> -->
     <script>
         var a03Vue = new Vue({
             el: '#a03-vue-app',
@@ -115,6 +110,16 @@ Clear the Drupal cache:
                 reportStartDate: '2018-05-01',
                 reportEndDate: '2018-05-15',
                 reportCrop: 'Kale',
+		crops: [
+		    'Broccoli',
+		    'Kale',
+		    'Peas',
+		],
+		fields: [
+		    'All',
+		    'Chuau-1',
+		    'SQ7',
+		]
             },
         });
     </script>
