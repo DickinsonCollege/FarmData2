@@ -62,7 +62,7 @@ function fd2_barn_kit_menu() {
   $items['farm/fd2-barn-kit/info'] = array(
     'title' => 'Info',
     'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -100,
+    'weight' => -10,
   );
   
   $items['farm/fd2-barn-kit/harvestReport'] = array(
@@ -83,6 +83,15 @@ function fd2_barn_kit_menu() {
     'weight' => -80,
   );
 
+!
+  $items['farm/fd2-barn-kit/traySeedingReport'] = array(
+    'title' => 'Tray Seeding Report',
+    'page callback' => 'fd2_barn_kit_view',
+    'page arguments' => array('traySeedingReport.html'),
+    'access arguments' => array('view fd2 barn kit'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -10,
+  );
   return $items;
 };
 
