@@ -62,8 +62,17 @@ function fd2_barn_kit_menu() {
       'page callback' => 'fd2_barn_kit_view',
       'page arguments' => array('harvestReport.html'),
       'access arguments' => array('view fd2 barn kit'),
-      'weight' => 100,
+      'weight' => -90,
     );
+
+  $items['farm/fd2-barn-kit/directSeedingReport'] = array(
+    'title' => 'Direct Seeding Report',
+    'page callback' => 'fd2_barn_kit_view',
+    'page arguments' => array('directSeedingReport.html'),
+    'access arguments' => array('view fd2 barn kit'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -80,
+  );
 
   return $items;
 };
