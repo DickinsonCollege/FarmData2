@@ -26,12 +26,12 @@ Clear the Drupal cache:
         <p>
             <label for="crop">Crop:</label>
             <select id="crop" name="crop" v-model="reportCrop">
-	        <option v-for="crop in crops">{{crop}}</option>
+                <option v-for="crop in crops">{{crop}}</option>
             </select>
 
             <label for="field">Field:</label>
             <select id="field" name="field">
-	        <option v-for="field in fields">{{field}}</option>
+                <option v-for="field in fields">{{field}}</option>
             </select>
         </p>
 
@@ -63,7 +63,9 @@ Clear the Drupal cache:
 
         <hr />
 
-        <h1>{{ reportTitleStr==='' ? 'Mock Harvest Report' : reportTitleStr }}</h1>
+        <h1>
+            {{ reportTitleStr==='' ? 'Mock Harvest Report' : reportTitleStr }}
+        </h1>
 
         <p>Details:</p>
         <ul>
@@ -104,31 +106,24 @@ Clear the Drupal cache:
                 reportStartDate: '2018-05-01',
                 reportEndDate: '2018-05-15',
                 reportCrop: 'Kale',
-		crops: [
-		    'Broccoli',
-		    'Kale',
-		    'Peas',
-		],
-		fields: [
-		    'All',
-		    'Chuau-1',
-		    'SQ7',
-		],
-		harvestLogs: [
-		    {
-			date: '05/02/2018',
-			field: 'Chuau-1',
-			crop: 'Kale',
-			yield: '10 Bunches',
-		    },
-		    {
-			date: '05/05/2018',
-			field: 'SQ7',
-			crop: 'Kale',
-			yield: '7 Bunches',
-		    },
-		]
+                crops: ['Broccoli', 'Kale', 'Peas'],
+                fields: ['All', 'Chuau-1', 'SQ7'],
+                harvestLogs: [
+                    {
+                        date: '05/02/2018',
+                        field: 'Chuau-1',
+                        crop: 'Kale',
+                        yield: '10 Bunches',
+                    },
+                    {
+                        date: '05/05/2018',
+                        field: 'SQ7',
+                        crop: 'Kale',
+                        yield: '7 Bunches',
+                    },
+                ],
             },
         });
+        Vue.config.devtools = true;
     </script>
 </body>
