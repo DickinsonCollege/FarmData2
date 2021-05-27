@@ -55,13 +55,23 @@ function fd2_barn_kit_menu() {
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -100,
   );
-   $items['farm/fd2-barn-kit/directSeedingReport'] = array(
+  
+  $items['farm/fd2-barn-kit/harvestReport'] = array(
+      'title' => 'Harvest Report',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'fd2_barn_kit_view',
+      'page arguments' => array('harvestReport.html'),
+      'access arguments' => array('view fd2 barn kit'),
+      'weight' => -90,
+    );
+
+  $items['farm/fd2-barn-kit/directSeedingReport'] = array(
     'title' => 'Direct Seeding Report',
     'page callback' => 'fd2_barn_kit_view',
     'page arguments' => array('directSeedingReport.html'),
     'access arguments' => array('view fd2 barn kit'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => -10,
+    'weight' => -80,
   );
 
   return $items;
