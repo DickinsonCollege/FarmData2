@@ -1,0 +1,154 @@
+<head>
+    <h1>Tray Seeding Report</h1>
+</head> 
+<body>
+    <div id= "tray-seeding-report" v-cloak>
+        <label for = "cropList">Crop:</label>
+        <select id= "cropList" name = "simple" v-model="rptCrop">
+            <ul>
+                <option v-for="crop in crops">{{ crop }}</option>
+            </ul>
+        </select>
+
+        <br>
+
+        <!--Date input for user to specify the start date of the report-->
+        <label for="start">Start Date:</label>
+        <input type="date" id="start" name="start" v-model="reportStart" min="2014-01-01" :max="reportEnd">
+
+        <!--Date input for user to specify the end date of the report-->
+        <label for="end">End Date:</label>
+        <input type="date" id="end" name="end" v-model="reportEnd" :min="reportStart" max="2022-01-01">
+
+        <br>
+
+        <button class="btn btn-primary" @click="traySeedingLogRequest">Generate Report</button>
+
+
+    <div v-if="state === 'edit'"> <!--Makes the report visible after pressing the generate report button-->
+        <hr />
+        <br>
+        <ul>
+            <li><strong>Start:</strong>{{reportStart}}</li>
+            <li><strong>End:</strong>{{reportEnd}}</li>
+            <li><strong>Crop:</strong>{{rptCrop}}</li>
+        </ul>
+
+            <br>
+            <table border=1>
+            <tr>
+                <th>  Date of Seeding  </th>
+                <th>  Crop  </th>
+                <th>  Number of Seeds  </th>
+                <th>  Number of Trays  </th>
+                <th>  Cells per Tray  </th>
+                <th>  Variety  </th>
+                <th>  User  </th>
+                <th>  Comments  </th>
+                <th>  Delete  </th>
+            </tr>
+
+
+            <tr v-for="(log, index) in traySeedingLogs">
+                <td>{{ timestampToYMD(log.timestamp) }}</td> <!--Grabs the date of the tray seeding from farmOS API -> type: farm_seeding-->
+                <td>{{ log.name.substring(4, log.name.length) }}</td> <!--Grabs the name of the seeding crop from farmOS API -> type: farm_seeding-->
+                <td>{{ log.quantity[0]["measure"] }}</td><!--Grabs the # of seeds from farmOS API -> type: farm_seeding-->
+                <td>{{ log.quantity[0]["value"] }}</td><!--Grabs the # of trays from farmOS API -> type: farm_seeding-->
+                <td>{{ log.quantity[0]["label"].substring(0, log.quantity[0]["label"].length - 5) }}</td><!--Grabs the # of cells per tray from farmOS API -> type: farm_seeding -> Used subtring to get rid of "/flat", just want numeric value-->
+                <td>{{ log.notes.value.substring(3, log.notes.value.length - 5) }}</td><!--Grabs the variety of seeds from farmOS API -> type: farm_seeding -> Used substring to get rid of extra <p> tags-->
+                <td>{{ log.log_owner[0]["resource"] }}</td><!--Grabs the user who submitted the report -> Right now just display's "user" and not the specific username -> farmOS does not provide the specific user in farm_seeding-->
+                <td>     </td><!--Comments will go here-->
+                <td><button type="button" @click="popup(index);">Delete</button></td><!--Delete button with popup warning-->
+            </tr>
+            </table>
+        </div>
+    </div>
+
+    <p id="test"></p>
+
+    <script>
+        var databinding = new Vue({
+            el: '#tray-seeding-report',
+            data: {
+                state: "default",
+                crops: [],
+                rptCrop: "Kale",
+                reportStart: '2018-05-01',
+                reportEnd: '2018-07-31',
+                traySeedingLogs: [
+                
+                ],
+            },
+            methods: { 
+                //recieves a timestamp in Unix time and returns a date in the form "year-month-day"
+                timestampToYMD: function(timestamp) {
+                    let d = this.timestampToDate(timestamp);
+                    const month = d.getMonth() < 9 ?
+                                     '0' + (d.getMonth() + 1) :
+                                    d.getMonth() + 1;
+                    const day = d.getDate() < 10 ?
+                                '0' + d.getDate() :
+                                d.getDate();
+                    return d.getFullYear() + "-" + month + "-" + day;
+                },
+                
+                //helper method for timestampToYMD
+                timestampToDate: function(timestamp) {
+                    return new Date(timestamp * 1000);
+                },
+
+                //recieves a timestamp in the form "year-month-day" and converts it to Unix time
+                YMDToTimestamp: function(ymd) {
+                        let d = new Date(ymd);
+                        return Math.round(d.getTime()/1000 +
+                                new Date().getTimezoneOffset()*60);
+                },
+
+                deleteReport: function(index) {
+                    this.traySeedingLogs.splice(index, 1);
+                },
+                popup: function(index) {
+                    var x = confirm("Deleting this record will NOT adjust the inventory of corresponding seed codes.\nDo you want to continue?");
+                    if (x == true) {
+                        this.traySeedingLogs.splice(index, 1);
+                    } else {
+
+                    }
+                    document.getElementById("test").innerHTML = txt;
+                },
+                
+                //sends an API request to FarmOS with any attributes specified on the tray seeding report page. Returns the requested logs in array format in the variable traySeedingLogs
+                traySeedingLogRequest: function() {
+                    let s = this.YMDToTimestamp(this.reportStart); //start date
+                    let e = this.YMDToTimestamp(this.reportEnd); //end date
+                    let c = "&name=Seed%20" + this.rptCrop //crop
+                        if (this.rptCrop == "All") {
+                            c = "";
+                        }
+                    let next = false;
+
+                    axios.get('/log.json?type=farm_seeding&timestamp[ge]=' + s + '&timestamp[le]=' + e + c)
+                    .then(response => {
+                        this.traySeedingLogs = response.data.list;
+                    })
+
+                    this.state = 'edit'; //Makes the report visible after pressing the generate report button
+                },
+             },
+            created() {
+                axios.get('/farm_asset.json?type=planting').then(response => {
+                    this.crops = response.data.list.map(f => f.name).sort(); //Adds all crops from farmOS API to the crops array sorted in alphabetical order
+                    this.crops.splice(0,0,"All"); //Adds "All" option to top of crops array and the dropdown menu
+                });
+                
+                
+                //sets the default start date to the beginning of the current year and the default end date to today's date
+                let today = new Date;
+                let todayYMD = this.timestampToYMD(today.getTime() /1000);
+                this.reportEnd = todayYMD;
+                this.reportStart = todayYMD.substring(0,4) + "-01-01";
+            }
+        });
+       Vue.config.devtools = true;
+    </script>
+</body>
