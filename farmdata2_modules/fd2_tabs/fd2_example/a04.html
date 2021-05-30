@@ -58,7 +58,7 @@ Clear the Drupal cache:
         </p>
 
         <p>
-            <button type="button">Generate Report</button>
+            <button type="button" @click="harvestLogs.push(harvestLogsToAdd[0])">Generate Report</button>
         </p>
 
         <hr />
@@ -108,7 +108,8 @@ Clear the Drupal cache:
                 reportCrop: 'Kale',
                 crops: ['Broccoli', 'Kale', 'Peas'],
                 fields: ['All', 'Chuau-1', 'SQ7'],
-                harvestLogs: [
+                harvestLogs: [],
+                harvestLogsToAdd: [
                     {
                         date: '05/02/2018',
                         field: 'Chuau-1',
