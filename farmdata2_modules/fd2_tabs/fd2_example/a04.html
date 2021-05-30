@@ -105,6 +105,7 @@ Clear the Drupal cache:
                 </table>
             </div>
             <div class="harvest-table" v-else><p>No matching records.</p></div>
+            <p>Total yield: {{totalYield}} bunch(es).</p>
         </div>
     </div>
 
@@ -150,6 +151,17 @@ Clear the Drupal cache:
                 },
                 deleteHarvest: function (index) {
                     this.harvestLogs.splice(index, 1);
+                },
+            },
+            computed: {
+                totalYield() {
+                    var tot = 0;
+                    for (let h of this.harvestLogs) {
+                        let yieldStr = h.yield;
+                        let yieldCompts = yieldStr.split(' ');
+                        tot += parseInt(yieldCompts[0]);
+                    }
+                    return tot;
                 },
             },
         });
