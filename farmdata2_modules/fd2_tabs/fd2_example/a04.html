@@ -42,7 +42,7 @@ Clear the Drupal cache:
                 id="start"
                 name="start"
                 min="2014-01-01"
-                max="2022-01-01"
+                :max="reportEndDate"
                 v-model="reportStartDate"
             />
             <label for="end">End date:</label>
@@ -51,7 +51,7 @@ Clear the Drupal cache:
                 type="date"
                 id="end"
                 name="end"
-                min="2018-05-01"
+                :min="reportStartDate"
                 max="2022-01-01"
                 v-model="reportEndDate"
             />
