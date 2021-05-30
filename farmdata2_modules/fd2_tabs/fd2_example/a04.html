@@ -58,7 +58,7 @@ Clear the Drupal cache:
         </p>
 
         <p>
-            <button type="button" @click="harvestLogs.push(harvestLogsToAdd[0])">Generate Report</button>
+            <button type="button" @click="addHarvest()">Generate Report</button>
         </p>
 
         <hr />
@@ -123,9 +123,19 @@ Clear the Drupal cache:
                         yield: '7 Bunches',
                     },
                 ],
+                nextIndexToAdd: 0,
+            },
+            methods: {
+                addHarvest: function () {
+                    if (this.nextIndexToAdd < this.harvestLogsToAdd.length) {
+                        this.harvestLogs.push(
+                            this.harvestLogsToAdd[this.nextIndexToAdd]
+                        );
+                        this.nextIndexToAdd += 1;
+                    }
+                },
             },
         });
         Vue.config.devtools = true;
     </script>
 </body>
-
