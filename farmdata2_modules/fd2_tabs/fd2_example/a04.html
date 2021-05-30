@@ -86,12 +86,15 @@ Clear the Drupal cache:
                 <th>Field</th>
                 <th>Crop</th>
                 <th>Yield</th>
+                <th>Delete</th>
             </tr>
-            <tr v-for="harvest in harvestLogs">
+            <tr v-for="(harvest, index) in harvestLogs">
                 <td>{{harvest.date}}</td>
                 <td>{{harvest.field}}</td>
                 <td>{{harvest.crop}}</td>
                 <td>{{harvest.yield}}</td>
+                <td><button type="button"
+			       @click="deleteHarvest(index)">Delete</button></td>
             </tr>
         </table>
     </div>
@@ -134,6 +137,9 @@ Clear the Drupal cache:
                         this.nextIndexToAdd += 1;
                     }
                 },
+                deleteHarvest: function (index) {
+		    this.harvestLogs.splice(index, 1);
+		}
             },
         });
         Vue.config.devtools = true;
