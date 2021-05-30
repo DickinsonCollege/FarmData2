@@ -80,7 +80,7 @@ Clear the Drupal cache:
         </ul>
 
         <p></p>
-        <table border="1">
+        <div class="harvest-table" v-if="harvestLogs.length>0"><table border="1">
             <tr>
                 <th>Date</th>
                 <th>Field</th>
@@ -93,10 +93,15 @@ Clear the Drupal cache:
                 <td>{{harvest.field}}</td>
                 <td>{{harvest.crop}}</td>
                 <td>{{harvest.yield}}</td>
-                <td><button type="button"
-			       @click="deleteHarvest(index)">Delete</button></td>
+                <td>
+                    <button type="button" @click="deleteHarvest(index)">
+                        Delete
+                    </button>
+                </td>
             </tr>
-        </table>
+        </table></div>
+	<div class="harvest-table" v-else><p>No matching records.
+	</div>
     </div>
 
     <!-- <script src="https://unpkg.com/vue"></script> -->
@@ -138,8 +143,8 @@ Clear the Drupal cache:
                     }
                 },
                 deleteHarvest: function (index) {
-		    this.harvestLogs.splice(index, 1);
-		}
+                    this.harvestLogs.splice(index, 1);
+                },
             },
         });
         Vue.config.devtools = true;
