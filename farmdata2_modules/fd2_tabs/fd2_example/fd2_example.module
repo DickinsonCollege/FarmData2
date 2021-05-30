@@ -102,6 +102,16 @@ function fd2_example_menu() {
       'weight' => 130,
     );
     
+// jmac adding new tab "a05" for vue spike
+  $items['farm/fd2-example/a05'] = array(
+      'title' => 'a05',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'fd2_example_view',
+      'page arguments' => array('a05.html'),
+      'access arguments' => array('View FD2 Example added by jmac for API spike'),
+      'weight' => 130,
+    );
+    
   return $items;
 };
 
