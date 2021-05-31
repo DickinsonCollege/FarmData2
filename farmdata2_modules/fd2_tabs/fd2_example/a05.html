@@ -1,0 +1,170 @@
+<body>
+    <!-- useful command:    
+Clear the Drupal cache:
+
+    docker exec -it fd2_farmdata2 drush cc all
+ -->
+
+    <div id="a05-vue-app" v-cloak>
+        <h1>Harvest Report</h1>
+
+        <p>
+            This page is a <em>mockup</em> of a form for generating a harvest
+            report.
+        </p>
+
+        <p>
+            <label for="reportTitleInput">Title:</label>
+            <input
+                type="text"
+                id="reportTitleInput"
+                name="reportTitleInput"
+                v-model="reportTitleStr"
+            />
+        </p>
+
+        <p>
+            <label for="crop">Crop:</label>
+            <select id="crop" name="crop" v-model="reportCrop">
+                <option v-for="crop in crops">{{crop}}</option>
+            </select>
+
+            <label for="field">Field:</label>
+            <select id="field" name="field">
+                <option v-for="field in fields">{{field}}</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="start">Start date:</label>
+            <input
+                type="date"
+                id="start"
+                name="start"
+                min="2014-01-01"
+                :max="reportEndDate"
+                v-model="reportStartDate"
+            />
+            <label for="end">End date:</label>
+            <!-- jmac: min in following input needs to adapt dynamically -->
+            <input
+                type="date"
+                id="end"
+                name="end"
+                :min="reportStartDate"
+                max="2022-01-01"
+                v-model="reportEndDate"
+            />
+        </p>
+
+        <p>
+            <button type="button" @click="addHarvest()">Generate Report</button>
+        </p>
+
+        <hr />
+
+        <div class="harvest-report" v-if="reportIsVisible">
+            <h1>
+                {{ reportTitleStr==='' ? 'Mock Harvest Report' : reportTitleStr
+                }}
+            </h1>
+
+            <p>Details:</p>
+            <ul>
+                <li><b>Start:</b> {{ reportStartDate }}</li>
+
+                <li><b>End:</b> {{ reportEndDate }}</li>
+
+                <li>
+                    <b>Crop:</b>
+                    {{reportCrop}}
+                </li>
+            </ul>
+
+            <p></p>
+            <div class="harvest-table" v-if="harvestLogs.length>0">
+                <table border="1">
+                    <tr>
+                        <th>Date</th>
+                        <th>Field</th>
+                        <th>Crop</th>
+                        <th>Yield</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr v-for="(harvest, index) in harvestLogs">
+                        <td>{{harvest.date}}</td>
+                        <td>{{harvest.field}}</td>
+                        <td>{{harvest.crop}}</td>
+                        <td>{{harvest.yield}}</td>
+                        <td>
+                            <button type="button" @click="deleteHarvest(index)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="harvest-table" v-else><p>No matching records.</p></div>
+            <p>Total yield: {{totalYield}} bunch(es).</p>
+        </div>
+    </div>
+
+    <!-- <script src="https://unpkg.com/vue"></script> -->
+    <script>
+        var a03Vue = new Vue({
+            el: '#a05-vue-app',
+            data: {
+                reportTitleStr: 'My Mock Report',
+                // reportStartDate: new Date(2018, 4, 1),
+                reportStartDate: '2018-05-01',
+                reportEndDate: '2018-05-15',
+                reportCrop: 'Kale',
+                crops: ['Broccoli', 'Kale', 'Peas'],
+                fields: ['All', 'Chuau-1', 'SQ7'],
+                harvestLogs: [],
+                harvestLogsToAdd: [
+                    {
+                        date: '05/02/2018',
+                        field: 'Chuau-1',
+                        crop: 'Kale',
+                        yield: '10 Bunches',
+                    },
+                    {
+                        date: '05/05/2018',
+                        field: 'SQ7',
+                        crop: 'Kale',
+                        yield: '7 Bunches',
+                    },
+                ],
+                nextIndexToAdd: 0,
+                reportIsVisible: false,
+            },
+            methods: {
+                addHarvest: function () {
+                    if (this.nextIndexToAdd < this.harvestLogsToAdd.length) {
+                        this.harvestLogs.push(
+                            this.harvestLogsToAdd[this.nextIndexToAdd]
+                        );
+                        this.nextIndexToAdd += 1;
+                    }
+                    this.reportIsVisible = true;
+                },
+                deleteHarvest: function (index) {
+                    this.harvestLogs.splice(index, 1);
+                },
+            },
+            computed: {
+                totalYield() {
+                    var tot = 0;
+                    for (let h of this.harvestLogs) {
+                        let yieldStr = h.yield;
+                        let yieldCompts = yieldStr.split(' ');
+                        tot += parseInt(yieldCompts[0]);
+                    }
+                    return tot;
+                },
+            },
+        });
+        Vue.config.devtools = true;
+    </script>
+</body>
