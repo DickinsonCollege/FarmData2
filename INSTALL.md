@@ -51,7 +51,7 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
 
-Then log out and back into the system. When you log back in your user will have the permissions needed in order to use docker commands.
+Then log out and back into the system. When you log back in your user will have the permissions needed in order to use docker commands.  Note that if you are developing on a virtual machine you will need to restart the virtual machine for the changes to take effect.
 
 #### Getting FarmData2 ####
 
