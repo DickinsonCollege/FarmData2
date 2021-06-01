@@ -11,3 +11,6 @@ farmdata2_modules/**/cypress/screenshots/*
 farmdata2_modules/**/cypress/videos/*
 
 .DS_Store
+
+# emacs backup files
+*~

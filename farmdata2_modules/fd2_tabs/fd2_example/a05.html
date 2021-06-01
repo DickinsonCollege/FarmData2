@@ -164,6 +164,19 @@ Clear the Drupal cache:
                     return tot;
                 },
             },
+            created() {
+                axios
+                    .get('/taxonomy_term.json?area_type=field')
+                    .then((response) => {
+                        this.fields = response.data.list
+                            .map((x) => x.name)
+                            .sort();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.fields = ['service unavailable'];
+                    });
+            },
         });
         Vue.config.devtools = true;
     </script>
