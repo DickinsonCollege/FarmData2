@@ -1,0 +1,5 @@
+{
+    "baseUrl": "http://172.17.0.1/",
+    "integrationFolder": ".",
+    "testFiles": "**/*.spec.js"
+}

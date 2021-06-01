@@ -8,9 +8,8 @@ The essential elements of a FarmData2 module named `xyz` would include a folder 
 - `fd2_xyz.info`: Defines the module `xyz` so that it is recognized by Drupal.
 - `fd2_xyz.module`: Contains the PHP implementation of the `xyz` module. This code determines where and when the tab is visible based on the user's role. It also defines the sub-tabs and their content.
 - `abc.html`: The content for a sub-tab `abc` within the `xyz` module (e.g. `info.html`, `ex1.html`).
-- `cypress`: A directory containing end-to-end tests for the `xyz` module using the [Cypress testing framework](https://www.cypress.io).
-  - `cypress.json`: The configuration file for the Cypress tests.
-  - `cypress\integration\abc.spec.js`: The test code for the `abc` sub-tab. There will be at least one `spec` file for each sub-tab (e.g. `info.spec.js`, `ex1.spec.js`) that fully tests its functionality.
+- `abc.spec.js`: A test file for the `abc.html` page using the [Cypress testing framework](https://www.cypress.io). Additionl test files for a given html file should be named `abc.pqr.spec.js` where `pqr` clarifies the testing performed by the file. Multiple additional . and names can be used as necessary. 
+- `cypress`: A directory containing additional cypress tests for the `xyz` module that are not associated with a specific html file.  Test files must be named *.spec.js to be recognized by the FarmData2 cypress configuration.
 
 ### Adding a New Sub-Tab to a FarmData2 Module ###
 
@@ -51,9 +50,9 @@ To add a new sub-tab to the `xyz` module:
      - http://localhost/admin/reports
 1. Replace the _dummy code_ in your `.html` file with the code for your new sub-tab. This file can contain any valid html code including CSS, JavaScript, Vue.js, etc...
    - Sub-tabs typically (e.g. `ex1.html') use [Vue.js](https://vuejs.org/), [Axios](https://github.com/axios/axios) and the [FarmOS API](https://farmos.org/development/api/) to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
-1. Test your sub-tab using the [Cypress testing framework](https://www.cypress.io/) by creating a new `spec.js` file in the `cypress\integration` directory.
+1. Test your sub-tab using the [Cypress testing framework](https://www.cypress.io/) by creating a new `spec.js` file in the module directory that contains the tab.  The name of the spec file should have the same prefix as the tab's `.html` file.  For example, to test `info.html` create an `info.spec.js` file.  If there are multiple tests for the same file use `info.pqr.spec.js` where pqr provides addtional clarifying information about the tests in the file.
    - More information about Cypress and resources for getting started with it are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md#cypress) file.
-1. Launch the Cypress test runner using `./test_runner.bash`  Note: The Cypress test runner executes in a Docker container.  Thus, it may take a few moments for the runner to start, particularly the first time when the image must be fetched.
+1. Launch the Cypress test runner from the fd2_modules directory using the `./test_runner.bash`  Note: The Cypress test runner executes in a Docker container.  Thus, it may take a few moments for the runner to start, particularly the first time when the image must be fetched.
 
 ### Pre-defined Variables ###
 

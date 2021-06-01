@@ -9,5 +9,4 @@ docker run -it \
   --rm \
   -e DISPLAY=$DISPLAY \
   --entrypoint cypress \
-  cypress/included:7.4.0 open --project . \
-  --config baseUrl=http://172.17.0.1
+  cypress/included:7.4.0 open --project .
