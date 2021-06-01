@@ -4,8 +4,8 @@
 let fieldsDropdownComponent = {
     template: `
         <div id='fieldsDropDown'>
-            <label for='fieldSelect'>Field: </label>
-            <select id='fieldSelect' @change='fieldChanged' v-model='selectedField'>
+            <label for='field-select'>Field: </label>
+            <select data-cy="field-select" id='field-select' @change='fieldChanged' v-model='selectedField'>
                 <option v-for='field in fieldsList'>{{field}}</option>
             </select>
         </div>`,
