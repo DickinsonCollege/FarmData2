@@ -16,8 +16,8 @@
     <!-- Exmaple of using a Vue Component -->
     <!-- the fields-dropdown component is defined in ../resources/fieldsDropDownComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
-    <fields-dropdown @field-changed='fieldChange' :fields-list=fieldList></fields-dropdown>
-    <p>Chosen Field: {{selectedField}}</p>
+    <fields-dropdown data-cy="get-field-dropdown" @field-changed='fieldChange' :fields-list=fieldList></fields-dropdown>
+    <p>Chosen Field: <span data-cy="get-selected-field">{{selectedField}}</span></p>
 </div>
 
 <script>
