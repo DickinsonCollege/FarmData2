@@ -22,10 +22,10 @@ describe('Tests for the example sub-tab', () => {
     cy.login('worker1', 'farmdata2')
     cy.visit('/farm/fd2-example/ex1')
 
-    cy.get('[data-cy=get-field-dropdown]').children().eq(1).select("All")
-    cy.get('[data-cy=get-selected-field]').should('have.text', "All")
+    cy.get('[data-cy=field-select]').select("All")
+    cy.get('[data-cy=selected-field]').should('have.text', "All")
 
-    cy.get('[data-cy=get-field-dropdown]').children().eq(1).select("JASMINE-1")
-    cy.get('[data-cy=get-selected-field]').should('have.text', "JASMINE-1")
+    cy.get('[data-cy=field-select]').select("JASMINE-1")
+    cy.get('[data-cy=selected-field]').should('have.text', "JASMINE-1")
   })
 })
