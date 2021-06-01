@@ -1,5 +1,7 @@
 {
     "baseUrl": "http://172.17.0.1/",
     "integrationFolder": ".",
-    "testFiles": "**/*.spec.js"
+    "testFiles": "**/*.spec.js",
+    "video": false,
+    "screenshotOnRunFailure": false
 }
