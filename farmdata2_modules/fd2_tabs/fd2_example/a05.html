@@ -176,6 +176,18 @@ Clear the Drupal cache:
                         console.log(error);
                         this.fields = ['service unavailable'];
                     });
+
+                axios
+                    .get('/farm_asset.json?type=planting')
+                    .then((response) => {
+                        this.crops = response.data.list
+                            .map((x) => x.name)
+                            .sort();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.crops = ['service unavailable'];
+                    });
             },
         });
         Vue.config.devtools = true;
