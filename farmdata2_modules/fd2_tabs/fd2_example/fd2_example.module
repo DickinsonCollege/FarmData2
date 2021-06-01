@@ -109,7 +109,17 @@ function fd2_example_menu() {
       'page callback' => 'fd2_example_view',
       'page arguments' => array('a05.html'),
       'access arguments' => array('View FD2 Example added by jmac for API spike'),
-      'weight' => 130,
+      'weight' => 140,
+    );
+    
+// jmac adding new tab "a06" for fd API spike
+  $items['farm/fd2-example/a06'] = array(
+      'title' => 'a06',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'fd2_example_view',
+      'page arguments' => array('a06.html'),
+      'access arguments' => array('View FD2 Example added by jmac for FarmOS API spike'),
+      'weight' => 150,
     );
     
   return $items;
