@@ -8,8 +8,6 @@ describe('Check the JS vars defined by module', () => {
     // Note: There may be a drupal patch for this.
     //  https://www.drupal.org/project/drupal/issues/2997194
     cy.on('uncaught:exception', (err, runnable) => {
-      expect(err.message).to.include('parent.Drupal is undefined')
-      done()
       return false
     })
 
