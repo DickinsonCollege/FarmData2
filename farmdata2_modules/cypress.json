@@ -1,7 +1,11 @@
 {
     "baseUrl": "http://172.17.0.1/",
-    "integrationFolder": ".",
+    "integrationFolder": "farmdata2_modules",
     "testFiles": "**/*.spec.js",
     "video": false,
-    "screenshotOnRunFailure": false
+    "screenshotOnRunFailure": false,
+    "component": {
+      "componentFolder": "farmdata2_modules",
+       "testFiles": "**/*Component.spec.js"
+    }
 }
