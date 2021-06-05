@@ -27,5 +27,6 @@ docker run -it \
   -w /fd2test \
   --rm \
   -e DISPLAY=$DISPLAY \
+  --name fd2_cypress \
   --entrypoint npx \
   cypress:$FD_VER cypress open-ct --project .
