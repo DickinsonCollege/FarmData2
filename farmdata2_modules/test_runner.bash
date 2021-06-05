@@ -7,6 +7,14 @@ xhost + > /dev/null
 # it will rebuild for anyone using it.
 FD_VER=fd2.2
 
+if [ $# -ne 1 ] || [ "$1" != "e2e" -a "$1" != "ct" ]
+then
+  echo "Usage: test_runner.bash <type>"
+  echo "  <type>: e2e - to run the end to end tests (*.spec.js)"
+  echo "          ct  - to run the component tests (*.comp.spec.js)"
+  exit -1
+fi
+
 # There is a timeout on the yarn command use by
 # npm in the Dockerfile that causes this script to fail if 
 # it doesn't connect quickly enough.  But typically it will
