@@ -49,18 +49,17 @@ RUN id
 # always grab the latest Yarn
 # otherwise the base image might have old versions
 # NPM does not need to be installed as it is already included with Node.
-RUN npm i -g yarn@latest
+RUN npm i -g yarn@1.22.10
 
 # Add the vue command line interface tool
-RUN npm install -g vue
-RUN npm install -g @vue/cli
+RUN npm install -g vue@2.6.13 @vue/cli@4.5.13
 
 # Make a vue project into which the fd2 testing will be mounted
 RUN vue create -d fd2test --packageManager npm
 
 # Add cypress compontent testing to the Vue project.
 WORKDIR fd2test
-RUN npm install --save-dev cypress @cypress/vue @cypress/webpack-dev-server webpack-dev-server
+RUN npm install --save-dev cypress@7.4.0 @cypress/vue@2.2.3 @cypress/webpack-dev-server@1.3.1 webpack-dev-server@3.11.2
 
 # should print Cypress version
 # plus Electron and bundled Node versions
