@@ -6,6 +6,6 @@
     "screenshotOnRunFailure": false,
     "component": {
       "componentFolder": "farmdata2_modules",
-       "testFiles": "**/*.comp.spec.js"
+       "testFiles": "**/*.spec.comp.js"
     }
 }
