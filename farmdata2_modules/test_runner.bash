@@ -15,6 +15,12 @@ then
   exit -1
 fi
 
+TEST_CMD="open"
+if [ "$1" = "ct" ]
+then
+  TEST_CMD="open-ct"
+fi
+
 # There is a timeout on the yarn command use by
 # npm in the Dockerfile that causes this script to fail if 
 # it doesn't connect quickly enough.  But typically it will
@@ -37,4 +43,4 @@ docker run -it \
   -e DISPLAY=$DISPLAY \
   --name fd2_cypress \
   --entrypoint npx \
-  cypress:$FD_VER cypress open-ct --project .
+  cypress:$FD_VER cypress $TEST_CMD --project .
