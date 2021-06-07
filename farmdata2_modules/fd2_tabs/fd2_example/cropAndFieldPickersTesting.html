@@ -1,0 +1,106 @@
+<html>
+<head>
+  <title>Crop Picker Component Testing</title>
+</head>
+
+<body>
+
+<div id="app">
+  <crop-picker :drop-down-list="cropsList" includes-all data-cy="crop-picker-component">Select a crop:</crop-picker>
+  <field-picker :drop-down-list="fieldsList">Select a field:</field-picker>
+</div>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+
+    let CropPickerComponent = {
+      template: `<div>
+        <label for="crops"><slot></slot></label>
+        <input list="crops" v-model="selectedCrop" data-cy="crop-picker-input">
+            <datalist id="crops" data-cy="crop-picker-dropdown">
+                <option v-for="crop in fullDropDown">{{ crop }}</option>
+            </datalist>
+        </div>`,
+      props: {
+        inField: {
+          type: String
+        },
+        dropDownList: {
+          type: Array
+        },
+        includesAll: {
+          type: Boolean,
+        },
+      },
+      data() {
+        return {
+          selectedCrop: null,
+        }
+      },
+      computed: {
+        fullDropDown: function() {
+          let newList = this.dropDownList;
+          if (this.includesAll == true) {
+              newList.splice(0,0,"All");
+          }
+          return newList;
+        }
+      }
+    }
+
+    let FieldPickerComponent = {
+      template: `<div>
+        <label for="fields"><slot></slot></label>
+        <input list="fields" v-model="selectedField">
+            <datalist id="fields">
+                <option v-for="field in fullDropDown"">{{ field }}</option>
+            </datalist>
+        </div>`,
+      props: {
+        includesAll: {
+          type: Boolean
+        },
+        forCrop: {
+          type: String
+        },
+        dropDownList: {
+          type: Array
+        }
+      },
+      data() {
+        return {
+          selectedField: null
+        }
+      },
+      computed: {
+        fullDropDown: function() {
+          let newList = this.dropDownList;
+          if (this.includesAll == true) {
+              newList.splice(0,0,"All");
+          }
+          return newList;
+        }
+      }
+    }
+
+    new Vue({
+      el: '#app',
+      components: {
+        'crop-picker': CropPickerComponent,
+        'field-picker': FieldPickerComponent,
+        'field-and-crop-picker': FieldAndCropPickerComponent
+      },
+      data() {
+          return {
+            cropsList: ["lettuce", "beans", "corn"],
+            fieldsList: ["Chuau", "Jasmine-1", "A"]
+          }
+      }
+    })
+  </script>
+
+
+</body>
+</html>
