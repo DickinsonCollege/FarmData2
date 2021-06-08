@@ -6,8 +6,10 @@
 <body>
 
 <div id="app">
-  <crop-picker :drop-down-list="cropsList" includes-all data-cy="crop-picker-component">Select a crop:</crop-picker>
-  <field-picker :drop-down-list="fieldsList">Select a field:</field-picker>
+  <field-or-crop-dropdown :drop-down-list="cropsList" includes-all data-cy="crop-picker-component">Select a crop:</field-or-crop-dropdown>
+  
+
+  <crop-picker :drop-down-list="cropsList">backup:</crop-picker>
 </div>
 
   <script src="https://unpkg.com/vue"></script>
@@ -18,9 +20,9 @@
     let CropPickerComponent = {
       template: `<div>
         <label for="crops"><slot></slot></label>
-        <input list="crops" v-model="selectedCrop" data-cy="crop-picker-input">
+        <input list="crops" v-model="selectedCrop" data-cy="crop-picker-input" @change="cropChanged">
             <datalist id="crops" data-cy="crop-picker-dropdown">
-                <option v-for="crop in fullDropDown">{{ crop }}</option>
+                <option v-for="crop in fullDropDown" data-cy="crop-picker-options">{{ crop }}</option>
             </datalist>
         </div>`,
       props: {
@@ -39,6 +41,11 @@
           selectedCrop: null,
         }
       },
+      methods: {
+        cropChanged() {
+            this.$emit('cropChanged', this.selectedCrop)
+        }
+      },
       computed: {
         fullDropDown: function() {
           let newList = this.dropDownList;
@@ -53,9 +60,9 @@
     let FieldPickerComponent = {
       template: `<div>
         <label for="fields"><slot></slot></label>
-        <input list="fields" v-model="selectedField">
-            <datalist id="fields">
-                <option v-for="field in fullDropDown"">{{ field }}</option>
+        <input list="fields" v-model="selectedField" data-cy="field-picker-input">
+            <datalist id="fields" data-cy="field-picker-dropdown">
+                <option v-for="field in fullDropDown">{{ field }}</option>
             </datalist>
         </div>`,
       props: {
@@ -88,15 +95,29 @@
     new Vue({
       el: '#app',
       components: {
+        'field-or-crop-dropdown': FieldOrCropDropdownComponent,
         'crop-picker': CropPickerComponent,
-        'field-picker': FieldPickerComponent,
-        'field-and-crop-picker': FieldAndCropPickerComponent
       },
       data() {
           return {
-            cropsList: ["lettuce", "beans", "corn"],
-            fieldsList: ["Chuau", "Jasmine-1", "A"]
+            cropsList: [],
+            fieldsList: []
           }
+      },
+      created() {
+            /**
+             * axios.get('/farm_asset.json?type=planting').then(response => {
+                this.cropsList = response.data.list.map(f => f.name).sort();
+            });
+            axios.get('/taxonomy_term.json?bundle=farm_areas').then(response => {
+                this.fieldsList = response.data.list.map(f => f.name).sort();
+            });
+            */
+
+            //The lines below are added for the sake of testing
+            this.cropsList = ['Corn', 'Beans', 'Peas'];
+            this.fieldsList = ['Chuau', 'Jasmine-1', 'O'];
+            
       }
     })
   </script>
