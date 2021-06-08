@@ -6,7 +6,7 @@
 <body>
 
 <div id="app">
-  <field-or-crop-dropdown :drop-down-list="cropsList" includes-all data-cy="crop-picker-component">Select a crop:</field-or-crop-dropdown>
+  <dropdown-with-all :drop-down-list="cropsList" includes-all data-cy="crop-picker-component">Select a crop:</dropdown-with-all>
   
 
   <crop-picker :drop-down-list="cropsList">backup:</crop-picker>
@@ -95,7 +95,7 @@
     new Vue({
       el: '#app',
       components: {
-        'field-or-crop-dropdown': FieldOrCropDropdownComponent,
+        'dropdown-with-all': DropdownWithAllComponent,
         'crop-picker': CropPickerComponent,
       },
       data() {
