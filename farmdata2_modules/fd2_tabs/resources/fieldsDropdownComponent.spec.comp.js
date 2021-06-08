@@ -1,6 +1,5 @@
 import { mount } from '@cypress/vue'
-import fieldsDropdownComponent from './fieldsDropdownComponent.vue'
-
+import fieldsDropdownComponent from "./fieldsDropdownComponent.js"
 
 describe('fieldsDropdownComponent', () => {
 
@@ -21,5 +20,4 @@ describe('fieldsDropdownComponent', () => {
         cy.get('[data-cy=field-select]').select("a")
         cy.get('[data-cy=field-select]').select("d")
     })
-  
 })
