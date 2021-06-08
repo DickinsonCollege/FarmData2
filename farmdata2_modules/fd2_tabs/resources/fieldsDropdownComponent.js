@@ -1,6 +1,6 @@
 /**
  * Vue.js component that defines the fields dropdown.
- */
+ */ 
 let fieldsDropdownComponent = {
     template: `
         <div id='fieldsDropDown'>
