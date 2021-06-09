@@ -1,6 +1,9 @@
+/**
+ * Vue.js component that defines the dropdown menu.
+ */ 
 let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
-            <label for="dropdownOptions"><slot></slot></label>
+            <label for="dropdownOptions"><slot>Select: </slot></label>
             <input list="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
                 <datalist id="dropdownOptions" data-cy="dropdownOptions">
                    <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
@@ -9,7 +12,8 @@ let DropdownWithAllComponent = {
     props: {
         dropdownList: {
             type: Array,
-            required: true
+            required: true,
+            default: []
         },
         includesAll: {
             type: Boolean,
@@ -21,8 +25,8 @@ let DropdownWithAllComponent = {
         }
     },
     methods: {
-        selectionChanged() {
-            this.$emit('selectionChanged', this.selectedOption)
+        selectionChanged: function() {
+            this.$emit('selection-changed', this.selectedOption)
         }
     },
     computed: {
@@ -30,6 +34,7 @@ let DropdownWithAllComponent = {
             let newList = this.dropdownList;
             if (this.includesAll == true) {
                 newList.splice(0,0,"All");
+                //newList.push("All");
             }
             return newList;
         }
