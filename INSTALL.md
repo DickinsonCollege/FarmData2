@@ -24,7 +24,7 @@ The following are some recommendations for setting up a development platform usi
   - If your machine has 8GB or more of RAM [Ubuntu Desktop](https://ubuntu.com/download/desktop) is recommended with an allocation of at least 4GB of RAM to the virtual machine.
   - If your machine has less than 8GB of RAM Ubuntu based [Linux Lite](https://www.linuxliteos.com/) is recommended with an allocation of half of the machine's RAM to the virtual machine.
   - When creating your virtual machine:
-    - Allocate a virtual disk of at least 20GB.
+    - Allocate a virtual disk of at least 30GB.
     - Set the Video Memory to 128 MB.
    - __MacOS:__ If you are running VirtualBox on MacOS using a machine with a retina display the performance can be quite sluggish. [Launching VirtualBox in Low Resolution Mode](https://forums.virtualbox.org/viewtopic.php?f=8&t=90446&start=75#p470879) will resolve this issue.
 

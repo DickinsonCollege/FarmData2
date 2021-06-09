@@ -73,6 +73,26 @@ To add a new sub-tab to the `xyz` module:
 1. Replace the _dummy code_ in your `.html` file with the code for your new sub-tab. This file can contain any valid html code including CSS, JavaScript, Vue.js, etc...
    - Sub-tabs typically (e.g. `ex1.html`) use Vue.js, Axios and the FarmOS API to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
 
+### JavaScript and CSS Libraries ###
+
+JavaScript and CSS libraries can be included in module by adding them to the module configuration files (i.e. `.info` and `.module`).  
+
+#### Local Libraries ####
+
+Local libraries, such as those in the `fd2_tabs/resources` directory are included by adding them to the `.info` file. For example, in the `fd2_example.info` file the following lines add a css library and a JavaScript library for a Vue Component:
+   ```php
+   stylesheets[all][] = '../resources/fd2.css'
+   scripts[] = '../resources/dropdownWithAllComponent.js'
+   ```
+
+#### Remote or CDN Libraries ####
+
+Libraries such as those served from Content Delivery Networks (CDN) are included by adding them to the `<module>_preprocess_page()` function in the `.module` file.  For example, in the `fd2_example.module` file the following lines add the Vue.js and Axios libraries:
+   ```php
+   drupal_add_js('https://unpkg.com/vue/dist/vue.min.js','external');
+   drupal_add_js('https://unpkg.com/axios/dist/axios.min.js','external');
+   ```
+
 ### Pre-defined Module Variables ###
 
 Drupal Modules can pass variables from the farmOS/Drupal system through to the sub-tab.  All of the current modules define two such variables:
@@ -97,6 +117,11 @@ In addition to the standard implementation of a Vue Component as a JavaScript ob
    ```
 
 More Details: This is a bit of a hack, but here is the explanation.  Modules are used on the server-side to import library code into pages. Unfortunately, these modules are not compatible with the way that Drupal 7 adds scripts to pages.  Drupal 7 adds JavaScript files to a page using a `<script>` tag (with no way to set the `type=module`). This causes the `export` statement to cause an error when the page loads into the browser, as it was supposed to be processed by the server.  The `try/catch` block suppresses that error in the browser when the component is used in a FarmData2 page.  The Cypress Component testing tools however require that a component under test be imported from a module and the `export` statement is necessary to make it possible to test the component.  Thus, this little hack makes it so that we can use the same `.js` file both in FarmData2 through Drupal and in the Cypress Component testing tools.
+
+To use a Vue component within a sub-tab the `.js` file for the component must be added to the `scripts` array in the module's `.info` file.  For example, the following line in the `fd2_example.info` file makes the `DropdownWithAllComponent` available in the `.html` pages that define the sub-tabs on the `FD2 Example` tab:
+   ```php
+   scripts[] = '../resources/dropdownWithAllComponent.js'
+   ```
 
 ## Testing with Cypress ##
 
