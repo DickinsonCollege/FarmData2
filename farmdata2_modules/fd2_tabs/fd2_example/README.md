@@ -120,7 +120,6 @@ More Details: This is a bit of a hack, but here is the explanation.  Modules are
 
 To use a Vue component within a sub-tab the `.js` file for the component must be added to the `scripts` array in the module's `.info` file.  For example, the following line in the `fd2_example.info` file makes the `DropdownWithAllComponent` available in the `.html` pages that define the sub-tabs on the `FD2 Example` tab:
    ```php
-   stylesheets[all][] = '../resources/fd2.css'
    scripts[] = '../resources/dropdownWithAllComponent.js'
    ```
 
