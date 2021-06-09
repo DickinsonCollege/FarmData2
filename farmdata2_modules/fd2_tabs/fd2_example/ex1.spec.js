@@ -23,8 +23,8 @@ describe('Tests for the example sub-tab', () => {
 
   it.only('API call for fields works', () => {
     cy.get('[data-cy=singleOption]')
-        .first().should('have.text', 'All')
-        .next().should('have.text', 'ALF 1')
+      .first().should('have.text', 'All')
+      .next().should('have.text', 'ALF 1')
     
     cy.get('[data-cy=dropdown-input]')
       .type("All{enter}")

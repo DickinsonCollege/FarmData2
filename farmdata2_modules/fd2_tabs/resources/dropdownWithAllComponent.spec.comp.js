@@ -22,7 +22,7 @@ describe('Field and Crop Dropdowns', () => {
             .type('Beans')
             .should('have.value', 'Beans')
     })
- 
+  
     it('contains the right crops and excludes all', () => {
         mount(DropdownWithAllComponent, {
             propsData: {

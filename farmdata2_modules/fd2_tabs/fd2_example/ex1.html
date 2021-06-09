@@ -18,6 +18,10 @@
      <!-- That file is imported by the fd2_example.info file -->
     <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
+
+    <br>
+
+    <date-selection></date-selection>
     
 </div>
 
@@ -30,7 +34,8 @@ new Vue({
     components: {
         // Register the components that are being used.
         'fields-dropdown': fieldsDropdownComponent,
-        'dropdown-with-all': DropdownWithAllComponent
+        'dropdown-with-all': DropdownWithAllComponent,
+        'date-selection': DateSelectionComponent
     },
     data: {
 	    comment: null,

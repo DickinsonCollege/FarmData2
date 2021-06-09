@@ -17,8 +17,8 @@ let DropdownWithAllComponent = {
         },
         includesAll: {
             type: Boolean,
-        },
-    },
+        }, 
+    }, 
     data() {
         return {
             selectedOption: null,
