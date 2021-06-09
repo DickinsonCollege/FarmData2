@@ -1,7 +1,7 @@
 import { mount } from '@cypress/vue'
 import DateSelectionComponent from "./DateSelectionComponent.js"
 
-describe('date selection component', () => {
+describe.only('date selection component', () => {
     beforeEach(() => {
         mount(DateSelectionComponent, {
             propsData: {
@@ -33,3 +33,4 @@ describe('date selection component', () => {
             .should('have.value', '2021-01-01')
     })
 })
+

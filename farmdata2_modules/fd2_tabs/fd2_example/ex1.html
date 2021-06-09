@@ -22,6 +22,11 @@
     <br>
 
     <date-selection default-date="2021-06-08" latest-date="2022-12-31" earliest-date="2020-01-01"></date-selection>
+
+    <br>
+
+    <date-range-selection default-start-date="2021-02-01" default-end-date="2021-11-01"></date-range-selection>
+
 </div>
 
 <script>
@@ -33,7 +38,8 @@ new Vue({
     components: {
         // Register the components that are being used.
         'fields-dropdown': fieldsDropdownComponent,
-        'date-selection': DateSelectionComponent
+        'date-selection': DateSelectionComponent,
+        'date-range-selection': DateRangeSelectionComponent
     },
     data: {
 	    comment: null,

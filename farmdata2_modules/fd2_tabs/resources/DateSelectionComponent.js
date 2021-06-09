@@ -35,7 +35,7 @@ let DateSelectionComponent = {
     },
  }
 
-try {
+ try {
     module.exports = DateSelectionComponent
 }
 catch(err) {}
