@@ -4,7 +4,7 @@
 let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
             <label for="dropdownOptions"><slot>Select: </slot></label>
-            <input list="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
+            <input list="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @focusout="checkInput" @focusout="selectionChanged">
                 <datalist id="dropdownOptions" data-cy="dropdownOptions">
                    <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
                 </datalist>
@@ -12,8 +12,7 @@ let DropdownWithAllComponent = {
     props: {
         dropdownList: {
             type: Array,
-            required: true,
-            default: []
+            required: true
         },
         includesAll: {
             type: Boolean,
@@ -27,6 +26,11 @@ let DropdownWithAllComponent = {
     methods: {
         selectionChanged: function() {
             this.$emit('selection-changed', this.selectedOption)
+        },
+        checkInput: function() {
+            if (!this.fullDropdown.includes(this.selectedOption)) {
+                this.selectedOption = null;
+            }
         }
     },
     computed: {

@@ -42,4 +42,17 @@ describe('Field and Crop Dropdowns', () => {
         cy.get('[data-cy=singleOption]')
             .first().should('have.text', 'All')
     })
+
+    it('will not accept inputs that are not in the menu', () => {
+        mount(DropdownWithAllComponent, {
+            propsData: {
+                dropdownList: ['Corn', 'Beans', 'Peas'],
+                includesAll: true
+            }
+        })
+        cy.get('[data-cy=dropdown-input]')
+            .type('Lettuce')
+            .blur()
+            .should('have.value', '')
+    })
 })
