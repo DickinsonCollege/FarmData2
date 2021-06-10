@@ -1,3 +1,5 @@
+import DateSelectionComponent from "./DateSelectionComponent.js"
+
 let DateRangeSelectionComponent = {
     template: `<div>
                 <date-selection data-cy="start-date-select" :defaultDate="defaultStartDate" :latestDate="latestStartDate" @dateChanged="startDateChange">

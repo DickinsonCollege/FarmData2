@@ -14,13 +14,8 @@
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
     <!-- Exmaple of using a Vue Component -->
-    <!-- the fields-dropdown component is defined in ../resources/fieldsDropDownComponent.js -->
+    <!-- the date-selection and date-range-selection components are defined in ../resources/DateSelectionComponent.js  and ../resources/DateRangeSelectionComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
-    <fields-dropdown @field-changed='fieldChange' :fields-list=fieldList></fields-dropdown>
-    <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
-
-    <br>
-
     <date-selection default-date="2021-06-08" latest-date="2022-12-31" earliest-date="2020-01-01"></date-selection>
 
     <br>
