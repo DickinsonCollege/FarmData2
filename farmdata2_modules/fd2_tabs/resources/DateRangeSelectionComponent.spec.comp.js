@@ -1,6 +1,6 @@
 import { mount } from '@cypress/vue'
-import DateSelectionComponent from "./DateSelectionComponent.js"
-import DateRangeSelectionComponent from "./DateRangeSelectionComponent.js"
+import DateSelectionComponent from "./DateAndDateRangeSelectionComponents.js"
+import DateRangeSelectionComponent from "./DateAndDateRangeSelectionComponents.js"
 
 describe('date range selection component', () => {
     beforeEach(() => {
