@@ -2,9 +2,6 @@ import { mount } from '@cypress/vue'
 import DropdownWithAllComponent from "./dropdownWithAllComponent.js"
 
 describe('Field and Crop Dropdowns', () => {
-    beforeEach(() => {
-    })
-    
     it('renders the dropdown menu', () => {
         mount(DropdownWithAllComponent, {
         })
