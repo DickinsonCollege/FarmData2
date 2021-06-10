@@ -18,6 +18,8 @@
      <!-- That file is imported by the fd2_example.info file -->
     <fields-dropdown @field-changed='fieldChange' :fields-list=fieldList></fields-dropdown>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
+    <br>
+    <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete></custom-table>
 </div>
 
 <script>
@@ -29,6 +31,7 @@ new Vue({
     components: {
         // Register the components that are being used.
         fieldsDropdown: fieldsDropdownComponent,
+        customTable: customTableComponent,
     },
     data: {
 	    comment: null,
@@ -37,6 +40,15 @@ new Vue({
         fieldList: null,
         userID: fd2UserID,
         userName: fd2UserName,
+        testArray: ['cool', 'works?', 'hello'],
+        testObjectArray: [
+            {id: 10, 
+            data: [12, 3, 'answome']},
+            {id: 11,
+            data: [19, 3, 'ansekjdwome'],},
+            {id: 12,
+            data: [12, 12, 'answome12'],},
+        ],
     },
     created() {
         axios
@@ -62,6 +74,20 @@ new Vue({
         },
         fieldChange(newField) {
             this.selectedField = newField;
+        },
+        updateTestObjectArray(newObject){
+            for(i=0; i < this.testObjectArray.length; i++){
+                if(array[i].id === newObject.id){
+                    this.testObjectArray.splice(i, 1, newObject)
+                }
+            }
+        },
+        deleteFromTestObjectArray(deleteObject){
+            for(i=0; i < this.testObjectArray.length; i++){
+                if(array[i].id === newObject.id){
+                    this.testObjectArray.splice(i, 1)
+                }
+            }
         }
     }
 });
