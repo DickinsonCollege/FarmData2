@@ -1,7 +1,7 @@
 import { mount } from '@cypress/vue'
 import DateSelectionComponent from "./DateSelectionComponent.js"
 
-describe.only('date selection component', () => {
+describe('date selection component', () => {
     beforeEach(() => {
         mount(DateSelectionComponent, {
             propsData: {
@@ -10,7 +10,7 @@ describe.only('date selection component', () => {
                 earliestDate: "2021-01-01"
             }
         })
-    })
+    }) 
     it('sets to a default date', () => {
         cy.get('[data-cy=date-select]')
             .should('have.value', '2021-06-09')
