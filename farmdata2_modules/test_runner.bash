@@ -11,7 +11,7 @@ if [ $# -ne 1 ] || [ "$1" != "e2e" -a "$1" != "ct" ]
 then
   echo "Usage: test_runner.bash <type>"
   echo "  <type>: e2e - to run the end to end tests (*.spec.js)"
-  echo "          ct  - to run the component tests (*.comp.spec.js)"
+  echo "          ct  - to run the component tests (*.spec.comp.js)"
   exit -1
 fi
 
