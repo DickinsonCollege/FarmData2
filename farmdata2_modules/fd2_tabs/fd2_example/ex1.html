@@ -14,9 +14,9 @@
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
     <!-- Exmaple of using a Vue Component -->
-    <!-- the fields-dropdown component is defined in ../resources/fieldsDropDownComponent.js -->
+    <!-- the dropdown-with-all component is defined in ../resources/dropdownWithAllComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
-    <fields-dropdown @field-changed='fieldChange' :fields-list=fieldList></fields-dropdown>
+    <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
     <br>
     <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete></custom-table>
@@ -32,12 +32,13 @@ new Vue({
         // Register the components that are being used.
         fieldsDropdown: fieldsDropdownComponent,
         customTable: customTableComponent,
+        'dropdown-with-all': DropdownWithAllComponent
     },
     data: {
 	    comment: null,
         farm: null,
         selectedField: null,
-        fieldList: null,
+        fieldList: [],
         userID: fd2UserID,
         userName: fd2UserName,
         testArray: ['cool', 'works?', 'hello'],
@@ -58,7 +59,6 @@ new Vue({
                 function(f) { return f.name }
             );
             this.fieldList.sort();
-            this.fieldList.unshift("All");
         })
         .catch(error => {
             this.fieldList = [ 'Server error' ]
@@ -88,9 +88,12 @@ new Vue({
                     this.testObjectArray.splice(i, 1)
                 }
             }
+        },
+        fieldChange(selectedOption) {
+            this.selectedField = selectedOption;
         }
     }
-});
+})
 
 Vue.config.devtools = true;
 </script>
