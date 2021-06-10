@@ -1,0 +1,36 @@
+import { mount } from '@cypress/vue'
+import DateSelectionComponent from "./DateSelectionComponent.js"
+
+describe.only('date selection component', () => {
+    beforeEach(() => {
+        mount(DateSelectionComponent, {
+            propsData: {
+                defaultDate: "2021-06-09",
+                latestDate: "2021-12-31",
+                earliestDate: "2021-01-01"
+            }
+        })
+    })
+    it('sets to a default date', () => {
+        cy.get('[data-cy=date-select]')
+            .should('have.value', '2021-06-09')
+    })
+    it('allows selection of the date by the user', () => {
+        cy.get('[data-cy=date-select]')
+            .type('2021-08-02')
+            .should('have.value', '2021-08-02')
+    })
+    it('cannot be set to after latest date', () => {
+        cy.get('[data-cy=date-select]')
+            .type('2022-08-02')
+            .blur()
+            .should('have.value', '2021-12-31')
+    })
+    it('cannot be set to before earliest date', () => {
+        cy.get('[data-cy=date-select]')
+            .type('2010-08-02')
+            .blur()
+            .should('have.value', '2021-01-01')
+    })
+})
+
