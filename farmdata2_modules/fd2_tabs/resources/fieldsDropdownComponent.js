@@ -11,8 +11,10 @@ let fieldsDropdownComponent = {
         </div>`,
     props: {
         fieldsList: {
-            required: true,
-            default: [ 'None' ],
+            required: false,
+            default() {
+                return [ 'None' ]
+            },
         },
     },
     data() {
@@ -26,3 +28,16 @@ let fieldsDropdownComponent = {
         },
     },
 }
+
+/*
+ * Export the fieldsDropdownComponent object as a CommonJS component
+ * so that it can be imported into the component test.  This is 
+ * wrapped in the try/catch to suppress the error that is generated
+ * in the browser when it is added to the Drupal page as a normal
+ * JavaScript file through a <script> tag inserted in the module's
+ * .info file.
+ */
+try {
+    module.exports = fieldsDropdownComponent
+}
+catch(err) {}
