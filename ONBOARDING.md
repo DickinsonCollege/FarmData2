@@ -37,15 +37,15 @@ The following resources can be useful for learning what you'll need to know abou
 
 ## Quickest Start ##
 
-FarmData2 makes use of the following key technologies. HTML, CSS and Bootstrap, JavaScript with Vue.js and Axios, and Cypress for testing. If you are familiar all or most of those it may be sufficient to start by having a look at any of the modules in [farmdata2_modules/fd2_tabs](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2_modules/fd2_tabs). The [README.md](https://github.com/DickinsonCollege/FarmData2/blob/main/farmdata2_modules/fd2_tabs/fd2_example/README.md) in the `fd2_example` module provides the essential information about how to add new modules to FarmData2.
+FarmData2 makes use of the following key technologies. HTML, CSS and Bootstrap, JavaScript with Vue.js and Axios, and Cypress for testing. If you are familiar all or most of those it may be sufficient to start by having a look at any of the modules in [farmdata2_modules/fd2_tabs](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2_modules/fd2_tabs). The [fd2_example/README.md](https://github.com/DickinsonCollege/FarmData2/blob/main/farmdata2_modules/fd2_tabs/fd2_example/README.md) provides the essential information about how to add and test new FarmData2 features.
 
 ## FarmData2 School ##
 
 FarmData2 has been used in a number of undergraduate computer science courses and activities have been developed to guide students through an introduction to FarmData2 and the technologies that it uses.  If you are new to open source and FarmData2 or to any of the technologies that FarmData2 uses, working through these activities will be an efficient way to get up to speed. If you are a more experienced developer you might just pick and choose from these activities, or skip over them completely to the more general resources in the sections below.
 
-The activities will guide you from an introduction to FOSS and FarmData2, through installation of FarmData2 and then through the use of each of the key technologies used in FarmData2. Each activity includes practice using the technologies within the context of FarmData2. Thus, you'll learn not only the technologies, but will get comfortable working within FarmData2 as well.
+The activities will guide you from an introduction to FOSS and FarmData2, through installation of FarmData2 and then through the use of each of the key technologies used in FarmData2. Each activity includes practice using the technologies within the context of FarmData2. Thus, you'll learn not only the technologies, but will get comfortable working within the FarmData2 developer environment as well.
 
-If you use these activities, please keep in mind that they were created for use as assignments in courses. Thus, you shouldn't feel obligated to answer every question and you should skip over any class specific parts that don't make sense outside of a course. When you have completed all of the activities you'll be well on your way to being a FarmData2 developer.
+If you use these activities, please keep in mind that they were created for use as assignments in courses. Thus, you shouldn't feel obligated to answer every question and you should skip over any class specific parts that don't make sense outside of a course. When you have completed all of the activities you'll be well on your way to being a FarmData2 developer.  In addition, while these activites will be updated as FarmData2 evolves, they may not be fully in synch with the latest code in the repository.  If you run in to any issues, use the 
 
 - 01 - Introduction to FOSS & The FarmData2 Community [ [docx](media/Activities/01-IntroToFarmData2.docx) | [pdf](media/Activities/01-IntroToFarmData2.pdf) ]
 - 02 - FarmData2 Developer Install [ [docx](media/Activities/02-DeveloperInstall.docx) | [pdf](media/Activities/02-DeveloperInstall.pdf) ]
@@ -148,7 +148,11 @@ The FarmData2 front end exchanges data with the server using the [FarmOS API](ht
 
 #### Cypress ####
 
-The functionality of FarmData2 modules is tested using the [Cypress framework](https://www.cypress.io/). Cypress is an end-to-end test framework that works by controlling the web browser. A test typically consists of a series of steps that are automated by the cypress tests, called _spec_s. A typical spec consist of the steps:
+The functionality of FarmData2 is tested using the [Cypress framework](https://www.cypress.io/). The tests in FarmData2 consist of end-to-end tests and component tests.  The end-to-end tests run against the developer instance of FarmData2 and check the functionality of the pages.  The component tests check the behavior of custom components that appear in FarmData2, in isolation from the runing instance. FarmData 2 provides support for running both types of Cypress tests in a Docker container that eliminates the need to install or configure Cypress. See the documentation in the [farmdata2_modules/fd2_tabs/README.md](https://github.com/DickinsonCollege/FarmData2/blob/main/farmdata2_modules/fd2_tabs/fd2_example/README.md) file for information about runing Cypress tests in FarmData2. 
+
+##### End-to-End Tests #####
+
+The Cypress end-to-end test framework works by controlling the web browser. A test typically consists of a series of steps that are automated by the Cypress tests, called _spec_s. A typical spec consist of the steps:
   1. Setup the test (e.g. login, prime the database)
   1. Visit a specific page
   1. Query the page for an _html element_ of interest (e.g. button, ext field)
@@ -163,6 +167,20 @@ The functionality of FarmData2 modules is tested using the [Cypress framework](h
     - [Interacting with Elements](https://docs.cypress.io/guides/core-concepts/interacting-with-elements): The main commands in cypress for interacting with elements in the page (e.g. click, select, etc.)
     - [should](https://docs.cypress.io/api/commands/should.html#Syntax): Documentation for the `should` statement that is used to make assertions in cypress tests.
     - [Assertions](https://docs.cypress.io/guides/references/assertions): A reference for all of the assertions (e.g. assertions and chainers for should) that can be used in cypress tests.
+
+##### Component Tests #####
+
+Cypress component tests work by mounting a Vue Component into a browser and allowing tests to interact with it in isolation from the application.  A typical comonent test will:
+  1. Configuring and mounting the component into the test framework.
+  1. Query the component for an _html element_ of interest (e.g. button, ext field)
+  1. Interact with that element (e.g. click the button, enter some text)
+  1. Make an assertion about the result (e.g. the component emits an event or changes state).
+
+  - Resources:
+    - All of the Cypress resources above are also relevant here.
+    - [Component Testing](https://docs.cypress.io/guides/component-testing/introduction): An introduction to the component testing in Cypress. Note: With FarmData2 support you will not need to install or setup the component testing framework.
+    - [Vue Test Utils Guides](https://vue-test-utils.vuejs.org/guides): Cypress component testing is built on top of the Vue Test Utils. So all of their functionality is also available within a Cypress component test. The _Getting Started_, _Common Tips_, _Testing Key, Mouse and other DOM Events_ and _Testing Asynchronous Behavior_ sections are most relevant to FarmData2 testing.
+    - [Vue Test Utils API](https://vue-test-utils.vuejs.org/api/): API documentation for all of the functionality of the Vue Test Utils.
 
 ### Project Automation ###
 
@@ -181,7 +199,7 @@ All of the docker related configuration and source files are found in the [docke
 
 FarmData2 uses docker-compose to build custom docker images for farmOS and the TheiaIDE containers and to start and network all of the containers.
 
-See the docker-compose.yml file in the [docker](https://github.com/DickinsonCollege/FarmData2/tree/main/docker) directory.
+See the `docker-compose.yml` file in the [docker](https://github.com/DickinsonCollege/FarmData2/tree/main/docker) directory.
 
 #### bash scripting ####
 

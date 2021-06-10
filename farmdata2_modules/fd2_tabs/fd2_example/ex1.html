@@ -19,7 +19,8 @@
     <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
     <br>
-    <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete></custom-table>
+    <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete @deleteRow="deleteFromTestObjectArray"></custom-table>
+    
 </div>
 
 <script>
@@ -30,8 +31,7 @@ new Vue({
     el: '#ex1',
     components: {
         // Register the components that are being used.
-        fieldsDropdown: fieldsDropdownComponent,
-        customTable: customTableComponent,
+        customTable: CustomTableComponent,
         'dropdown-with-all': DropdownWithAllComponent
     },
     data: {
@@ -82,9 +82,9 @@ new Vue({
                 }
             }
         },
-        deleteFromTestObjectArray(deleteObject){
-            for(i=0; i < this.testObjectArray.length; i++){
-                if(array[i].id === newObject.id){
+        deleteFromTestObjectArray(deletedObjectID){
+            for(var i=0; i < this.testObjectArray.length; i++){
+                if(this.testObjectArray[i].id === deletedObjectID){
                     this.testObjectArray.splice(i, 1)
                 }
             }
