@@ -1,7 +1,7 @@
 <!-- define a div to wrqp around the app. -->
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="ex1" v-cloak>
-
+ 
     <p>UserID: <span data-cy="user-id">{{ userID }}</span></p>
     <p>UserName: <span data-cy="user-name">{{ userName }}</span></p>
 
@@ -16,11 +16,12 @@
     <!-- Exmaple of using a Vue Component -->
     <!-- the dropdown-with-all component is defined in ../resources/dropdownWithAllComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
-
-    <dropdown-with-all includes-all default-input="All" @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
-
+    <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
-    
+    <br>
+  
+    <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete @delete-row="deleteFromTestObjectArray" @finish-row-edit="updateTestObjectArray"></custom-table>
+
 </div>
 
 <script>
@@ -31,6 +32,7 @@ new Vue({
     el: '#ex1',
     components: {
         // Register the components that are being used.
+        customTable: CustomTableComponent,
         'dropdown-with-all': DropdownWithAllComponent
     },
     data: {
@@ -40,6 +42,15 @@ new Vue({
         fieldList: [],
         userID: fd2UserID,
         userName: fd2UserName,
+        testArray: ['cool', 'works?', 'hello'],
+        testObjectArray: [
+            {id: 10, 
+            data: [12, 3, 'answome']},
+            {id: 11,
+            data: [19, 3, 'ansekjdwome'],},
+            {id: 12,
+            data: [12, 12, 'answome12'],},
+        ],
     },
     created() {
         axios
@@ -62,11 +73,28 @@ new Vue({
             .then(response => (this.farm = response.data.name))
             .catch(error => console.log(error))
         },
+        fieldChange(newField) {
+            this.selectedField = newField;
+        },
+        updateTestObjectArray(newObject){
+            for(i=0; i < this.testObjectArray.length; i++){
+                if(array[i].id === newObject.id){
+                    this.testObjectArray.splice(i, 1, newObject)
+                }
+            }
+        },
+        deleteFromTestObjectArray(deletedObjectID){
+            for(var i=0; i < this.testObjectArray.length; i++){
+                if(this.testObjectArray[i].id === deletedObjectID){
+                    this.testObjectArray.splice(i, 1)
+                }
+            }
+        },
         fieldChange(selectedOption) {
             this.selectedField = selectedOption;
         }
     }
-});
+})
 
 Vue.config.devtools = true;
 </script>

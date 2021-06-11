@@ -5,3 +5,5 @@ package = FarmData2
 
 stylesheets[all][] = '../resources/fd2.css'
 scripts[] = '../resources/dropdownWithAllComponent.js'
+scripts[] = '../resources/customTableComponent.js'
+
