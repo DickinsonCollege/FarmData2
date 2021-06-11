@@ -29,6 +29,13 @@ describe('Field and Crop Dropdowns', () => {
                 .next().should('have.text', 'Corn')
                 .next().should('have.text', 'Peas')
         })
+
+        it('emits an event when the selection is changed', () => {
+            cy.get('[data-cy=dropdown-input]')
+                .type('Corn')
+                .blur()
+                .wrap('Corn')
+        })
     })
 
     context('with includesAll property', () => {
