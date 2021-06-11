@@ -13,7 +13,7 @@ let CustomTableComponent = {
                         </tr>
                     </table>
                 </div>`,
-    props: {
+    props: { 
         rows: {
             type: Array,
             required: false

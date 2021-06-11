@@ -17,7 +17,7 @@ describe('custom table component', () => {
                         ],
                     headers: ['cool', 'works?', 'hello'],
                 }
-            })
+            }) 
         })
         it('the table exist', () => {
             cy.get('[data-cy=custom-table]')
