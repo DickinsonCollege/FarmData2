@@ -53,4 +53,21 @@ describe('Field and Crop Dropdowns', () => {
                 .should('have.value', '')
         })
     })
+
+    context('with defaultInput property', () => {
+        beforeEach(() => {
+            mount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        defaultInput: "All"
+                    }
+            })
+        })
+
+        it('loads with the default input already in the search bar', () => {
+            cy.get('[data-cy=dropdown-input]')
+                .should('have.value', 'All')
+        })
+    })
 })
