@@ -20,7 +20,8 @@
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
     <br>
   
-    <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete @deleteRow="deleteFromTestObjectArray"></custom-table>
+    <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete @delete-row="deleteFromTestObjectArray" @finish-row-edit="updateTestObjectArray"></custom-table>
+
 </div>
 
 <script>

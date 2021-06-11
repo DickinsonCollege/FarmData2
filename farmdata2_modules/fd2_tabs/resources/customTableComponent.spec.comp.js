@@ -93,19 +93,13 @@ describe('custom table component', () => {
                 .first().children().first()
                 .should('have.text','hey')
         })
-        it('can delete a row using the delete button', () => {
-            cy.get('[data-cy=objectTest]')
-                .should('have.length', 3)
+        it('can click the delete button', () => {
 
             cy.get('[data-cy=deleteButton]')
                 .first().click()
 
-            cy.get('[data-cy=objectTest]')
-                .should('have.length', 2)
         })
-        /*it.only('save button emits changes when clicked', () => {
-            cy.spy('finishRowEdit')
-
+        it('save button emits changes when clicked', () => {
             cy.get('[data-cy=editButton]')
                 .should('exist')
                 .first().click()
@@ -115,11 +109,14 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=saveButton]')
                 .should('exist')
-                .first().click()
+                .first().click().wrap({id: 10, 
+                            data: ['hey', 3, 'answome']})
         })
         it('delete button emits deleted row id when clicked', () => {
+            cy.get('[data-cy=deleteButton]')
+                .first().click().wrap(10)
 
-        })*/
+        })
     })
 
 })
