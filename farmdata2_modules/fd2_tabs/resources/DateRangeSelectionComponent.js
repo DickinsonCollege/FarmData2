@@ -37,7 +37,7 @@ let DateRangeSelectionComponent = {
     },
     methods: {
         startDateChange(selectedDate){
-            this.earliestEndDate=selectedDate
+            this.earliestEndDate = selectedDate
         },
         endDateChange(selectedDate){
             this.latestStartDate=selectedDate

@@ -34,5 +34,10 @@ describe('date selection component', () => {
             .blur()
             .should('have.value', '2021-01-01')
     })
+    it('emits date after input type date is blured', () => {
+        cy.get('[data-cy=date-select]')
+            .type('2010-08-02')
+            .blur().wrap('2010-08-02')
+    })
 })
 
