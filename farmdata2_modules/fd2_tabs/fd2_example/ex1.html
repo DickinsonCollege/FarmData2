@@ -19,8 +19,8 @@
     <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
     <br>
+  
     <custom-table :headers="testArray" :rows="testObjectArray" can-edit can-delete @deleteRow="deleteFromTestObjectArray"></custom-table>
-    
 </div>
 
 <script>
