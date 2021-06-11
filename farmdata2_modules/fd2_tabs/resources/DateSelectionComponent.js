@@ -18,7 +18,7 @@ let DateSelectionComponent = {
     data(){
         return {
             selectedDate: this.defaultDate,
-        }
+        } 
     },
     methods: {
         dateChanged() {
@@ -36,6 +36,8 @@ let DateSelectionComponent = {
 }
 
 try {
-    module.exports = DateSelectionComponent
+    module.exports = {
+        DateSelectionComponent: DateSelectionComponent
+    }
 }
 catch(err) {}

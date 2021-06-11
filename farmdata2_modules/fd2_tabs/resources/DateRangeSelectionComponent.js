@@ -1,4 +1,10 @@
-import DateSelectionComponent from "./DateSelectionComponent.js"
+try {
+    DateSelectionComponent
+}
+catch(err) {
+    var DateComps = require("./DateSelectionComponent.js")
+    DateSelectionComponent = DateComps.DateSelectionComponent
+}
 
 let DateRangeSelectionComponent = {
     template: `<div>
@@ -10,7 +16,7 @@ let DateRangeSelectionComponent = {
                 </date-selection>
             </div>
             `,
-    props: {
+    props: { 
         defaultStartDate:{
             type: String,
             required: true
@@ -40,6 +46,8 @@ let DateRangeSelectionComponent = {
 }
 
 try {
-    module.exports = DateRangeSelectionComponent
+    module.exports = {
+        DateRangeSelectionComponent: DateRangeSelectionComponent
+    }
 }
 catch(err) {}

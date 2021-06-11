@@ -1,6 +1,7 @@
 import { mount } from '@cypress/vue'
-import DateSelectionComponent from "./DateSelectionComponent.js"
-import DateRangeSelectionComponent from "./DateRangeSelectionComponent.js"
+
+var DateComps = require("./DateRangeSelectionComponent.js")
+var DateRangeSelectionComponent = DateComps.DateRangeSelectionComponent
 
 describe('date range selection component', () => {
     beforeEach(() => {
@@ -17,7 +18,7 @@ describe('date range selection component', () => {
 
         cy.get('[data-cy=end-date-select]')
             .should('exist')
-    })
+    }) 
     it('fail to change start date to after end date', () => {
         cy.get('[data-cy=start-date-select]')
             .children()

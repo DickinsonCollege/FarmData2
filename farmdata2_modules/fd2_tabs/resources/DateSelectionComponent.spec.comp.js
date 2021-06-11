@@ -1,5 +1,7 @@
 import { mount } from '@cypress/vue'
-import DateSelectionComponent from "./DateSelectionComponent.js"
+
+var DateComps = require("./DateSelectionComponent.js")
+var DateSelectionComponent = DateComps.DateSelectionComponent
 
 describe('date selection component', () => {
     beforeEach(() => {
