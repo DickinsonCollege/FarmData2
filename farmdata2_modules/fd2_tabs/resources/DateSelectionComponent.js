@@ -21,9 +21,6 @@ let DateSelectionComponent = {
         } 
     },
     methods: {
-        /*dateChanged() {
-            this.$emit('dateChanged', this.selectedDate)
-        },*/
         checkBounds() {
             if (this.selectedDate > this.latestDate) {
                 this.selectedDate = this.latestDate;
