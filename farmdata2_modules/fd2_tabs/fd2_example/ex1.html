@@ -14,7 +14,6 @@
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
     <!-- Exmaple of using a Vue Component -->
-<<<<<<< HEAD
     <!-- the date-selection and date-range-selection components are defined in ../resources/DateSelectionComponent.js  and ../resources/DateRangeSelectionComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
     <date-selection default-date="2021-06-08" latest-date="2022-12-31" earliest-date="2020-01-01"></date-selection>
@@ -23,13 +22,11 @@
 
     <date-range-selection default-start-date="2021-02-01" default-end-date="2021-11-01"></date-range-selection>
 
-=======
     <!-- the dropdown-with-all component is defined in ../resources/dropdownWithAllComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
     <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
     
->>>>>>> main
 </div>
 
 <script>
@@ -40,13 +37,9 @@ new Vue({
     el: '#ex1',
     components: {
         // Register the components that are being used.
-<<<<<<< HEAD
-        'fields-dropdown': fieldsDropdownComponent,
         'date-selection': DateSelectionComponent,
-        'date-range-selection': DateRangeSelectionComponent
-=======
+        'date-range-selection': DateRangeSelectionComponent,
         'dropdown-with-all': DropdownWithAllComponent
->>>>>>> main
     },
     data: {
 	    comment: null,
