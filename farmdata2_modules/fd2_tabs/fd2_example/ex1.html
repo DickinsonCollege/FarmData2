@@ -14,10 +14,11 @@
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
     <!-- Exmaple of using a Vue Component -->
-    <!-- the fields-dropdown component is defined in ../resources/fieldsDropDownComponent.js -->
+    <!-- the dropdown-with-all component is defined in ../resources/dropdownWithAllComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
-    <fields-dropdown @field-changed='fieldChange' :fields-list=fieldList></fields-dropdown>
+    <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
+    
 </div>
 
 <script>
@@ -28,13 +29,13 @@ new Vue({
     el: '#ex1',
     components: {
         // Register the components that are being used.
-        'fields-dropdown': fieldsDropdownComponent,
+        'dropdown-with-all': DropdownWithAllComponent
     },
     data: {
 	    comment: null,
         farm: null,
         selectedField: null,
-        fieldList: null,
+        fieldList: [],
         userID: fd2UserID,
         userName: fd2UserName,
     },
@@ -46,7 +47,6 @@ new Vue({
                 function(f) { return f.name }
             );
             this.fieldList.sort();
-            this.fieldList.unshift("All");
         })
         .catch(error => {
             this.fieldList = [ 'Server error' ]
@@ -60,8 +60,8 @@ new Vue({
             .then(response => (this.farm = response.data.name))
             .catch(error => console.log(error))
         },
-        fieldChange(newField) {
-            this.selectedField = newField;
+        fieldChange(selectedOption) {
+            this.selectedField = selectedOption;
         }
     }
 });
