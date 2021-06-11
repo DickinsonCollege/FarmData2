@@ -1,9 +1,14 @@
 import { mount } from '@cypress/vue'
-import DropdownWithAllComponent from "./dropdownWithAllComponent.js"
+
+var DropdownComp = require("./dropdownWithAllComponent.js")
+var DropdownWithAllComponent = DropdownComp.DropdownWithAllComponent
 
 describe('Field and Crop Dropdowns', () => {
     it('renders the dropdown menu', () => {
         mount(DropdownWithAllComponent, {
+            propsData: {
+                dropdownList: [ 'Beans', 'Corn', 'Peas'],
+            }
         })
         cy.get('[data-cy=dropdown-component]').should('exist')
     })

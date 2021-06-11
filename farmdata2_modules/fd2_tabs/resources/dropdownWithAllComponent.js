@@ -53,6 +53,8 @@ let DropdownWithAllComponent = {
  * .info file.
  */
 try {
-    module.exports = DropdownWithAllComponent
+    module.exports = {
+        DropdownWithAllComponent: DropdownWithAllComponent
+    }
 }
 catch(err) {}
