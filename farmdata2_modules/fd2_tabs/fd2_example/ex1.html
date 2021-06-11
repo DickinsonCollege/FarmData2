@@ -16,7 +16,9 @@
     <!-- Exmaple of using a Vue Component -->
     <!-- the dropdown-with-all component is defined in ../resources/dropdownWithAllComponent.js -->
      <!-- That file is imported by the fd2_example.info file -->
+
     <dropdown-with-all includes-all default-input="All" @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
+
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
     
 </div>
