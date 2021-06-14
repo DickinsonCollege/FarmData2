@@ -33,4 +33,5 @@ describe('date range selection component', () => {
                 .blur()
                 .should('have.value', '2021-01-01')
     })
+    
 })
