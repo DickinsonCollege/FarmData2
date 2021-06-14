@@ -31,10 +31,15 @@ describe('Field and Crop Dropdowns', () => {
         })
 
         it('emits an event when the selection is changed', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('selection-changed', spy)
             cy.get('[data-cy=dropdown-input]')
-                .type('Corn')
+                .select('Corn')
                 .blur()
-                .wrap('Corn')
+                .then(() => {
+                    expect(spy).to.be.calledOnce
+                    expect(spy).to.be.calledWith('Corn')
+                })
         })
     })
 
