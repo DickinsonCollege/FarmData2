@@ -16,11 +16,14 @@ let DropdownWithAllComponent = {
         },
         includesAll: {
             type: Boolean,
-        }, 
+        },
+        defaultInput: {
+            type: String
+        } 
     }, 
     data() {
         return {
-            selectedOption: null,
+            selectedOption: this.defaultInput,
         }
     },
     methods: {
@@ -53,6 +56,8 @@ let DropdownWithAllComponent = {
  * .info file.
  */
 try {
-    module.exports = DropdownWithAllComponent
+    module.exports = {
+        DropdownWithAllComponent: DropdownWithAllComponent
+    }
 }
 catch(err) {}
