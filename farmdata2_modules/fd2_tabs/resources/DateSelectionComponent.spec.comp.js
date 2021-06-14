@@ -35,9 +35,13 @@ describe('date selection component', () => {
             .should('have.value', '2021-01-01')
     })
     it('emits date after input type date is blured', () => {
+        const spy = cy.spy()
+        Cypress.vue.$on('dateChanged', spy)
         cy.get('[data-cy=date-select]')
-            .type('2010-08-02')
-            .blur().wrap('2010-08-02')
+            .type('2021-05-02')
+            .blur()
+            .then(() => {
+                expect(spy).to.be.calledWith('2021-05-02')
+            })
     })
 })
-
