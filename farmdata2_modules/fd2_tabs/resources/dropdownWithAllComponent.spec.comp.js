@@ -17,11 +17,11 @@ describe('Field and Crop Dropdowns', () => {
             cy.get('[data-cy=dropdown-component]').should('exist')
         })
         
-        it('accepts input from search bar', () => {
+        /*it('accepts input from search bar', () => {
             cy.get('[data-cy=dropdown-input]')
                 .type('Beans')
                 .should('have.value', 'Beans')
-        })
+        })*/
     
         it('contains the right crops and excludes all', () => {
             cy.get('[data-cy=singleOption]')
@@ -53,12 +53,12 @@ describe('Field and Crop Dropdowns', () => {
                 .first().should('have.text', 'All')
         })
 
-        it('will not accept inputs that are not in the menu', () => {
+        /*it('will not accept inputs that are not in the menu', () => {
             cy.get('[data-cy=dropdown-input]')
                 .type('Lettuce')
                 .blur()
                 .should('have.value', '')
-        })
+        })*/
     })
 
     context('with defaultInput property', () => {

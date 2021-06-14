@@ -18,6 +18,9 @@
      <!-- That file is imported by the fd2_example.info file -->
     <dropdown-with-all includes-all default-input="All" @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
+
+    <dropdown-with-all includes-all default-input="All" @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
+    <p>Chosen Field: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
     
 </div>
 
@@ -36,6 +39,8 @@ new Vue({
         farm: null,
         selectedField: null,
         fieldList: [],
+        selectedCrop: null,
+        cropList: [],
         userID: fd2UserID,
         userName: fd2UserName,
     },
@@ -52,6 +57,15 @@ new Vue({
             this.fieldList = [ 'Server error' ]
             console.log(error)
         })
+        
+        axios.get('/farm_asset.json?type=planting')
+        .then(response => {
+            this.cropList = response.data.list.map(f => f.name).sort();
+        })
+        .catch(error => {
+        this.cropList = [ 'Server error' ]
+            console.log(error)
+        })
     },
     methods: {
         getFarmName() {
@@ -62,6 +76,9 @@ new Vue({
         },
         fieldChange(selectedOption) {
             this.selectedField = selectedOption;
+        },
+        cropChange(selectedOption) {
+            this.selectedCrop = selectedOption;
         }
     }
 });

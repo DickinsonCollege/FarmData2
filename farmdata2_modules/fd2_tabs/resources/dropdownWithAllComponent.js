@@ -4,10 +4,9 @@
 let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
             <label for="dropdownOptions"><slot>Select: </slot></label>
-            <input list="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @focusout="checkInput" @focusout="selectionChanged">
-                <datalist id="dropdownOptions" data-cy="dropdownOptions">
-                   <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
-                </datalist>
+            <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @focusout="checkInput" @focusout="selectionChanged">
+                <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
+            </select>
         </div>`, 
     props: {
         dropdownList: {

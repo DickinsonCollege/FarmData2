@@ -1,0 +1,63 @@
+<div id="ex1" v-cloak>
+
+    <dropdown-with-all includes-all @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
+    <p>Chosen Crop: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
+
+    <dropdown-with-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
+    <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
+
+</div>
+
+<script>
+
+new Vue({
+    el: '#ex1',
+    components: {
+        // Register the components that are being used.
+        'date-selection': DateSelectionComponent,
+        'date-range-selection': DateRangeSelectionComponent,
+        customTable: CustomTableComponent,
+        'dropdown-with-all': DropdownWithAllComponent
+    },
+    data: {
+        selectedField: null,
+        fieldList: [],
+        selectedCrop: null,
+        cropList: [],
+    },
+    created() {
+        axios
+        .get('/taxonomy_term.json?bundle=farm_areas')
+        .then(response => {
+            this.fieldList = response.data.list.map(
+                function(f) { return f.name }
+            );
+            this.fieldList.sort();
+        })
+        .catch(error => {
+            this.fieldList = [ 'Server error' ]
+            console.log(error)
+        })
+
+        axios
+        .get('/farm_asset.json?type=planting')
+        .then(response => {
+            this.cropList = response.data.list.map(f => f.name).sort();
+        })
+        .catch(error => {
+            this.cropList = [ 'Server error' ]
+            console.log(error)
+        })
+    },
+    methods: {
+        fieldChange(newField) {
+            this.selectedField = newField;
+        },
+        cropChange(newCrop) {
+            this.selectedCrop = newCrop;
+        },
+    }
+})
+
+Vue.config.devtools = true;
+</script>
