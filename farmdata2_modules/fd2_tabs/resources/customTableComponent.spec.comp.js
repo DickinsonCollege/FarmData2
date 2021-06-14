@@ -100,6 +100,8 @@ describe('custom table component', () => {
 
         })
         it('save button emits changes when clicked', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('finished-row-edit', spy)
             cy.get('[data-cy=editButton]')
                 .should('exist')
                 .first().click()
@@ -109,12 +111,20 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=saveButton]')
                 .should('exist')
-                .first().click().wrap({id: 10, 
-                            data: ['hey', 3, 'answome']})
+                .first().click()
+                .then(() => {
+                    expect(spy).to.be.calledWith([{id: 10, data: ['hey', 3, 'answome']}])
+                })
         })
         it('delete button emits deleted row id when clicked', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('delete-row', spy)
             cy.get('[data-cy=deleteButton]')
-                .first().click().wrap(10)
+                .first().click()
+                .then(() => {
+                    expect(spy).to.be.calledWith(10)
+                })
+
 
         })
     })
