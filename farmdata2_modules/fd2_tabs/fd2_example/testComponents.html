@@ -1,1 +1,65 @@
-!!!
+<body>
+    <div id="ex1" v-cloak>
+        <!-- Example of a header -->
+        <h1>This is the Gay Agenda</h1>
+
+        <date-range-selection @start-date-change='newStartDate' @end-date-change='newEndDate' :default-start-date=startOfYear :default-end-date=today></date-range-selection>
+
+        <!-- Example of feild drop down -->
+        <dropdown-with-all includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
+        <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
+    </div>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script>dayjs().format()</script>
+    <script>
+        new Vue({
+            el: '#ex1',
+            components: {
+                // Register the components that are being used.
+                'date-selection': DateSelectionComponent,
+                'date-range-selection': DateRangeSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
+            },
+            data: {
+                selectedField: null,
+                fieldList: [],
+                today: dayjs().format('YYYY-MM-DD').toString(),
+                startOfYear: dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                startDate: dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                endDate: dayjs().format('YYYY-MM-DD').toString(),
+            },
+            methods: {
+                getFarmName() {
+                    axios
+                    .get('/farm.json')
+                    .then(response => (this.farm = response.data.name))
+                    .catch(error => console.log(error))
+                },
+                fieldChange(selectedOption) {
+                    this.selectedField = selectedOption;
+                },
+                newStartDate(selectedDate){
+                    this.startDate = selectedDate
+                },
+                newEndDate(selectedDate){
+                    this.endDate = selectedDate
+                },
+            },
+            created() {
+                axios
+                .get('/taxonomy_term.json?bundle=farm_areas')
+                .then(response => {
+                    this.fieldList = response.data.list.map(
+                        function(f) { return f.name }
+                    );
+                    this.fieldList.sort();
+                })
+                .catch(error => {
+                    this.fieldList = [ 'Server error' ]
+                    console.log(error)
+                })
+            },
+        })
+        Vue.config.devtools = true;
+    </script>
+</body>

@@ -33,4 +33,18 @@ describe('date range selection component', () => {
                 .blur()
                 .should('have.value', '2021-01-01')
     })
+    it('emits the new selected start date', () => {
+        cy.get('[data-cy=start-date-select]')
+            .children()
+                .type('2021-05-01')
+                .blur()
+                .wrap('2021-05-01')
+    })
+    it('emits the new slected end date', () => {
+        cy.get('[data-cy=end-date-select]')
+            .children()
+                .type('2021-07-01')
+                .blur()
+                .wrap('have.value', '2021-07-01')
+    })
 })
