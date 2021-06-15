@@ -1,7 +1,7 @@
 import { mount } from '@cypress/vue'
 
 
-var DropdownComp = require("./dropdownWithAllComponent.js")
+var DropdownComp = require("./DropdownWithAllComponent.js")
 var DropdownWithAllComponent = DropdownComp.DropdownWithAllComponent
 
 describe('Field and Crop Dropdowns', () => {
