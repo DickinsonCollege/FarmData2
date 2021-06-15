@@ -21,7 +21,7 @@ describe('Tests for the example sub-tab', () => {
       .should('have.text','Dickinson College Farm')
   })
 
-  it('Fields dropdown is working', () => {
+  it('Fields dropdown component is working', () => {
     cy.get('[data-cy=field-dropdown] > [data-cy=dropdown-input]')
         .select("All")
     cy.get('[data-cy=selected-field]').should('have.text', 'All')
@@ -35,7 +35,7 @@ describe('Tests for the example sub-tab', () => {
     cy.get('[data-cy=selected-field]').should('have.text', 'V')
   })
 
-  it('Crops dropdown is working', () => {
+  it('Crops dropdown component is working', () => {
     cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
         .select("All")
     cy.get('[data-cy=selected-crop]').should('have.text', 'All')
@@ -47,5 +47,24 @@ describe('Tests for the example sub-tab', () => {
     cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
         .select("Zucchini")
     cy.get('[data-cy=selected-crop]').should('have.text', 'Zucchini')
+  })
+
+  it('Date selection component is working', () => {
+    cy.get('[data-cy=date-picker] > [data-cy=date-select]')
+        .type('2021-06-05')
+        .blur()
+    cy.get('[data-cy=selected-date]').should('have.text', '2021-06-05')
+  })
+
+  it('Date range selection component is working', () => {
+    cy.get('[data-cy=start-date-select] > [data-cy=date-select]')
+        .type('2021-06-05')
+        .blur()
+    cy.get('[data-cy=start-date]').should('have.text', '2021-06-05')
+
+    cy.get('[data-cy=end-date-select] > [data-cy=date-select]')
+        .type('2021-06-10')
+        .blur()
+    cy.get('[data-cy=end-date]').should('have.text', '2021-06-10')
   })
 })

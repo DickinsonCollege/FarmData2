@@ -14,9 +14,21 @@
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
     <!-- Exmaple of using a Vue Component -->
+    <!-- Component fiels are contained in the ../resources folder. -->
+    <!-- They are imported to FarmData2 pages in the modules .info file (e.g. fd2_example.info file -->
 
-    <!-- the dropdown-with-all component is defined in ../resources/dropdownWithAllComponent.js -->
-     <!-- That file is imported by the fd2_example.info file -->
+    <!-- the date-selection and date-range-selection components are defined in ../resources/DateSelectionComponent.js  and ../resources/DateRangeSelectionComponent.js -->
+    <date-selection data-cy="date-picker" @date-changed='dateChange' default-date="2021-06-08" latest-date="2021-06-15" earliest-date="2021-06-03"></date-selection>
+    <p>Chosen Date: <span data-cy="selected-date">{{selectedDate}}</span></p>
+    <br>
+
+    <date-range-selection data-cy="date-range" @start-date-changed='startDateChange' @end-date-changed='endDateChange' default-start-date="2021-06-01" default-end-date="2021-06-15"></date-range-selection>
+    <p>Chosen Start Date: <span data-cy="start-date">{{startDate}}</span></p>
+    <p>Chosen End Date: <span data-cy="end-date">{{endDate}}</span></p>
+
+    <br>
+
+    <!-- the dropdown-with-all component is defined in ../resources/DropdownWithAllComponent.js -->
     <dropdown-with-all data-cy="field-dropdown" includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
 
@@ -33,6 +45,8 @@ new Vue({
     el: '#ex1',
     components: {
         // Register the components that are being used.
+        'date-selection': DateSelectionComponent,
+        'date-range-selection': DateRangeSelectionComponent,
         'dropdown-with-all': DropdownWithAllComponent
     },
     data: {
@@ -42,6 +56,9 @@ new Vue({
         fieldList: [],
         selectedCrop: null,
         cropList: [],
+        selectedDate: null,
+        startDate: null,
+        endDate: null,
         userID: fd2UserID,
         userName: fd2UserName,
     },
@@ -80,6 +97,15 @@ new Vue({
         },
         cropChange(selectedOption) {
             this.selectedCrop = selectedOption;
+        },
+        dateChange(selectedDate) {
+            this.selectedDate = selectedDate;
+        },
+        startDateChange(startDate) {
+            this.startDate = startDate;
+        },
+        endDateChange(endDate) {
+            this.endDate = endDate;
         }
     }
 })
