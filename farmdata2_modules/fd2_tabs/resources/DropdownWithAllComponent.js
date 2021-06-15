@@ -5,7 +5,7 @@ let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
             <label for="dropdownOptions"><slot>Select: </slot></label>
             <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
-                <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
+                <option v-for="singleOption in fullDropdown" data-cy="single-option">{{ singleOption }}</option>
             </select>
         </div>`, 
     props: {

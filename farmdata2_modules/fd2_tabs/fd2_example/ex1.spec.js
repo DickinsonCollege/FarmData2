@@ -21,20 +21,31 @@ describe('Tests for the example sub-tab', () => {
       .should('have.text','Dickinson College Farm')
   })
 
-  it.only('API call for fields works', () => {
-    cy.get('[data-cy=singleOption]')
-      .first().should('have.text', 'All')
-      .next().should('have.text', 'ALF 1')
-    
-    cy.get('[data-cy=dropdown-input]')
-      .type("All{enter}")
-    cy.get('[data-cy=selected-field]')
-      .should('have.text', "All")
+  it('Fields dropdown is working', () => {
+    cy.get('[data-cy=field-dropdown] > [data-cy=dropdown-input]')
+        .select("All")
+    cy.get('[data-cy=selected-field]').should('have.text', 'All')
 
-    cy.get('[data-cy=dropdown-input]')
-      .clear()
-      .type("JASMINE-1{enter}")
-    cy.get('[data-cy=selected-field]')
-      .should('have.text', "JASMINE-1")
+    cy.get('[data-cy=field-dropdown] > [data-cy=dropdown-input]')
+        .select("ALF 1")
+    cy.get('[data-cy=selected-field]').should('have.text', 'ALF 1')
+
+    cy.get('[data-cy=field-dropdown] > [data-cy=dropdown-input]')
+        .select("V")
+    cy.get('[data-cy=selected-field]').should('have.text', 'V')
+  })
+
+  it('Crops dropdown is working', () => {
+    cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+        .select("All")
+    cy.get('[data-cy=selected-crop]').should('have.text', 'All')
+
+    cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+        .select("Arugula")
+    cy.get('[data-cy=selected-crop]').should('have.text', 'Arugula')
+
+    cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+        .select("Zucchini")
+    cy.get('[data-cy=selected-crop]').should('have.text', 'Zucchini')
   })
 })

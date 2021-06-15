@@ -19,7 +19,7 @@ describe('Field and Crop Dropdowns', () => {
         })
     
         it('contains the right crops and excludes all', () => {
-            cy.get('[data-cy=singleOption]')
+            cy.get('[data-cy=single-option]')
                 .first().should('have.text', 'Beans')
                 .next().should('have.text', 'Corn')
                 .next().should('have.text', 'Peas')
@@ -48,7 +48,7 @@ describe('Field and Crop Dropdowns', () => {
         })
 
         it('includes the all option when the attribute is included', () => {
-            cy.get('[data-cy=singleOption]')
+            cy.get('[data-cy=single-option]')
                 .first().should('have.text', 'All')
         })
     })
