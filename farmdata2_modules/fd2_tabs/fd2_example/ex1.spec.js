@@ -67,4 +67,14 @@ describe('Tests for the example sub-tab', () => {
         .blur()
     cy.get('[data-cy=end-date]').should('have.text', '2021-06-10')
   })
+
+  it('Check table headers', () => {
+    cy.get('[data-cy=headers]')
+        .first().should('have.text', 'cool')
+        .next().should('have.text', 'works?')
+        .next().should('have.text', 'hello')
+
+    cy.get('[data-cy=edit-header]')
+    cy.get('[data-cy=delete-header]')
+  })
 })

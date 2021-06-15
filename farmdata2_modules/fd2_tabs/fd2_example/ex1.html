@@ -31,10 +31,15 @@
     <!-- the dropdown-with-all component is defined in ../resources/DropdownWithAllComponent.js -->
     <dropdown-with-all data-cy="field-dropdown" includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
-
+    
+    <br>
     <dropdown-with-all data-cy="crop-dropdown" includes-all default-input="All" @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
     <p>Chosen Field: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
 
+    <br>
+
+    <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
+    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
 </div>
 
 <script>
@@ -45,6 +50,7 @@ new Vue({
     el: '#ex1',
     components: {
         // Register the components that are being used.
+        'custom-table': CustomTableComponent,
         'date-selection': DateSelectionComponent,
         'date-range-selection': DateRangeSelectionComponent,
         'dropdown-with-all': DropdownWithAllComponent
@@ -61,6 +67,15 @@ new Vue({
         endDate: null,
         userID: fd2UserID,
         userName: fd2UserName,
+        testArray: ['cool', 'works?', 'hello'],
+        testObjectArray: [
+            {id: 10, 
+            data: [12, 3, 'answome']},
+            {id: 11,
+            data: [19, 3, 'ansekjdwome'],},
+            {id: 12,
+            data: [12, 12, 'answome12'],},
+        ],
     },
     created() {
         axios
@@ -91,6 +106,23 @@ new Vue({
             .get('/farm.json')
             .then(response => (this.farm = response.data.name))
             .catch(error => console.log(error))
+        },
+        fieldChange(newField) {
+            this.selectedField = newField;
+        },
+        updateTestObjectArray(newObject){
+            for(i=0; i < this.testObjectArray.length; i++){
+                if(this.testObjectArray[i] === newObject.id){
+                    this.testObjectArray.splice(i, 1, newObject)
+                }
+            }
+        },
+        deleteFromTestObjectArray(deletedObjectID){
+            for(var i=0; i < this.testObjectArray.length; i++){
+                if(this.testObjectArray[i].id === deletedObjectID){
+                    this.testObjectArray.splice(i, 1)
+                }
+            }
         },
         fieldChange(selectedOption) {
             this.selectedField = selectedOption;
