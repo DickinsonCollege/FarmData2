@@ -4,10 +4,9 @@
 let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
             <label for="dropdownOptions"><slot>Select: </slot></label>
-            <input list="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @focusout="checkInput" @focusout="selectionChanged">
-                <datalist id="dropdownOptions" data-cy="dropdownOptions">
-                   <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
-                </datalist>
+            <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
+                <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
+            </select>
         </div>`, 
     props: {
         dropdownList: {
@@ -16,22 +15,20 @@ let DropdownWithAllComponent = {
         },
         includesAll: {
             type: Boolean,
-        }, 
+        },
+        defaultInput: {
+            type: String
+        } 
     }, 
     data() {
         return {
-            selectedOption: null,
+            selectedOption: this.defaultInput,
         }
     },
     methods: {
         selectionChanged: function() {
             this.$emit('selection-changed', this.selectedOption)
         },
-        checkInput: function() {
-            if (!this.fullDropdown.includes(this.selectedOption)) {
-                this.selectedOption = null;
-            }
-        }
     },
     computed: {
         fullDropdown: function() {
@@ -53,6 +50,8 @@ let DropdownWithAllComponent = {
  * .info file.
  */
 try {
-    module.exports = DropdownWithAllComponent
+    module.exports = {
+        DropdownWithAllComponent: DropdownWithAllComponent
+    }
 }
 catch(err) {}
