@@ -42,5 +42,6 @@ docker run -it \
   --rm \
   -e DISPLAY=$DISPLAY \
   --name fd2_cypress \
+  --network docker_default \
   --entrypoint npx \
   cypress:$FD_VER cypress $TEST_CMD --project .
