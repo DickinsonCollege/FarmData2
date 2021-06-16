@@ -61,7 +61,7 @@ describe('Field and Crop Dropdowns', () => {
                         dropdownList: ['Corn', 'Beans', 'Peas'],
                         includesAll: true,
                         defaultInput: "All"
-                    }
+                    },
             })
         })
 
@@ -69,10 +69,21 @@ describe('Field and Crop Dropdowns', () => {
             cy.get('[data-cy=dropdown-input]')
                 .should('have.value', 'All')
         })
+    })
 
+    context('mounting within the test', () => {
         it('emits an event when the page loads', () => {
             const spy = cy.spy()
             Cypress.vue.$on('selection-changed', spy)
+
+            mount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        defaultInput: "All"
+                    },
+            })
+
             cy.get('[data-cy=dropdown-input]')
                 .then(() => {
                     expect(spy).to.be.calledOnce

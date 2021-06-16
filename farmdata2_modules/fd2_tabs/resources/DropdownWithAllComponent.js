@@ -25,12 +25,17 @@ let DropdownWithAllComponent = {
             selectedOption: this.defaultInput,
         }
     },
-    created () {
-        this.selectionChanged();
+    mounted() {
+        console.log("Just mounted")
+        this.$nextTick(function () {
+            this.selectionChanged();
+            console.log("Just passed selectionChanged after mount")
+        })
     },
     methods: {
         selectionChanged: function() {
             this.$emit('selection-changed', this.selectedOption)
+            console.log("Just emitted selectionChanged")
         },
     },
     computed: {
