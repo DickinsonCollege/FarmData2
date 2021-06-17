@@ -6,12 +6,16 @@
     <p>UserName: <span data-cy="user-name">{{ userName }}</span></p>
 
     <!-- Example of a v-model binding -->
-    <p>Type comment: <input data-cy="comment-field" type='text' v-model='comment'>
+    <p>Type comment: <input data-cy="comment-field" type='text' v-model='comment'></p>
     <p>Comment: <span data-cy="comment">{{ comment }}</span></p>
 
     <!-- Example of event handling and api call -->
     <p><button data-cy="get-name-button" @click='getFarmName'>Get Farm Name</button></p>
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
+
+    <!-- Example of deleting a log -->
+    <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
+    <button data-cy="delete-button" :disabled='!validID' @click='deleteLog'>Delete</button></p>
 
     <!-- Exmaple of using a Vue Component -->
     <!-- Component fiels are contained in the ../resources folder. -->
@@ -65,6 +69,7 @@ new Vue({
         selectedDate: null,
         startDate: null,
         endDate: null,
+        deleteID: null,
         userID: fd2UserID,
         userName: fd2UserName,
         testArray: ['cool', 'works?', 'hello'],
@@ -138,6 +143,18 @@ new Vue({
         },
         endDateChange(endDate) {
             this.endDate = endDate;
+        },
+        deleteLog() {
+            let id = parseInt(this.deleteID)
+            axios
+                .delete('/log/' + id + '.json')
+                .then(response => (alert(response.data)))
+                .catch(error => console.log(error)) 
+        }
+    },
+    computed: {
+        validID: function () {
+            return Number.isInteger(parseInt(this.deleteID))
         }
     }
 })
