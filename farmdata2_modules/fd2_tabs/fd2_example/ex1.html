@@ -40,6 +40,8 @@
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
     <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
+
+    <button @click="saveAPIData">Push</button>
 </div>
 
 <script>
@@ -76,6 +78,7 @@ new Vue({
             {id: 12,
             data: [12, 12, 'answome12'],},
         ],
+        requestTestArray: []
     },
     created() {
         axios
@@ -101,6 +104,9 @@ new Vue({
         })
     },
     methods: {
+        saveAPIData() {
+            this.requestTestArray = apiRequest('/log.json?type=farm_seeding')
+        },
         getFarmName() {
             axios
             .get('/farm.json')

@@ -1,13 +1,16 @@
 import { apiRequest } from './APIRequestFunction.js';
-let val = apiRequest();  // val is "Hello";
 
 describe('API Request Function', () => {
+    var testURL
+    var testArray
+    
     beforeEach(() => {
-        const testURL = '/log.json?type=farm_seeding'
-        const testArray = []
+        testURL = 'http://fd2_farmdata2/log.json?type=farm_seeding'
+        testArray = []
     })
 
     it('completes the request and puts the data into the passed array', () => {
-        expect(apiRequest(testURL,testArray)).to.not.be.empty
+        testArray = apiRequest(testURL)
+        expect(testArray).to.have.length.of.at.least(1)
     })
 })
