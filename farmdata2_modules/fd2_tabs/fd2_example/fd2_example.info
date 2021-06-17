@@ -4,4 +4,8 @@ core = 7.x
 package = FarmData2
 
 stylesheets[all][] = '../resources/fd2.css'
-scripts[] = '../resources/dropdownWithAllComponent.js'
+scripts[] = '../resources/CustomTableComponent.js'
+scripts[] = '../resources/DateSelectionComponent.js'
+scripts[] = '../resources/DateRangeSelectionComponent.js'
+scripts[] = '../resources/DropdownWithAllComponent.js'
+

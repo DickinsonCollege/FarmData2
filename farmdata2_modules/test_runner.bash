@@ -5,7 +5,7 @@ xhost + > /dev/null
 # If Dockerfile in docker/cypress is changed update
 # the version number here to the next increment so that 
 # it will rebuild for anyone using it.
-FD_VER=fd2.2
+FD_VER=fd2.3
 
 if [ $# -ne 1 ] || [ "$1" != "e2e" -a "$1" != "ct" ]
 then
@@ -42,5 +42,6 @@ docker run -it \
   --rm \
   -e DISPLAY=$DISPLAY \
   --name fd2_cypress \
+  --network docker_default \
   --entrypoint npx \
   cypress:$FD_VER cypress $TEST_CMD --project .

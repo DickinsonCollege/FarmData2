@@ -21,20 +21,60 @@ describe('Tests for the example sub-tab', () => {
       .should('have.text','Dickinson College Farm')
   })
 
-  it.only('API call for fields works', () => {
-    cy.get('[data-cy=singleOption]')
-      .first().should('have.text', 'All')
-      .next().should('have.text', 'ALF 1')
-    
-    cy.get('[data-cy=dropdown-input]')
-      .type("All{enter}")
-    cy.get('[data-cy=selected-field]')
-      .should('have.text', "All")
+  it('Fields dropdown component is working', () => {
+    cy.get('[data-cy=field-dropdown] > [data-cy=dropdown-input]')
+        .select("All")
+    cy.get('[data-cy=selected-field]').should('have.text', 'All')
 
-    cy.get('[data-cy=dropdown-input]')
-      .clear()
-      .type("JASMINE-1{enter}")
-    cy.get('[data-cy=selected-field]')
-      .should('have.text', "JASMINE-1")
+    cy.get('[data-cy=field-dropdown] > [data-cy=dropdown-input]')
+        .select("ALF 1")
+    cy.get('[data-cy=selected-field]').should('have.text', 'ALF 1')
+
+    cy.get('[data-cy=field-dropdown] > [data-cy=dropdown-input]')
+        .select("V")
+    cy.get('[data-cy=selected-field]').should('have.text', 'V')
+  })
+
+  it('Crops dropdown component is working', () => {
+    cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+        .select("All")
+    cy.get('[data-cy=selected-crop]').should('have.text', 'All')
+
+    cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+        .select("Arugula")
+    cy.get('[data-cy=selected-crop]').should('have.text', 'Arugula')
+
+    cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+        .select("Zucchini")
+    cy.get('[data-cy=selected-crop]').should('have.text', 'Zucchini')
+  })
+
+  it('Date selection component is working', () => {
+    cy.get('[data-cy=date-picker] > [data-cy=date-select]')
+        .type('2021-06-05')
+        .blur()
+    cy.get('[data-cy=selected-date]').should('have.text', '2021-06-05')
+  })
+
+  it('Date range selection component is working', () => {
+    cy.get('[data-cy=start-date-select] > [data-cy=date-select]')
+        .type('2021-06-05')
+        .blur()
+    cy.get('[data-cy=start-date]').should('have.text', '2021-06-05')
+
+    cy.get('[data-cy=end-date-select] > [data-cy=date-select]')
+        .type('2021-06-10')
+        .blur()
+    cy.get('[data-cy=end-date]').should('have.text', '2021-06-10')
+  })
+
+  it('Check table headers', () => {
+    cy.get('[data-cy=headers]')
+        .first().should('have.text', 'cool')
+        .next().should('have.text', 'works?')
+        .next().should('have.text', 'hello')
+
+    cy.get('[data-cy=edit-header]')
+    cy.get('[data-cy=delete-header]')
   })
 })
