@@ -146,8 +146,9 @@ new Vue({
         },
         deleteLog() {
             let id = parseInt(this.deleteID)
+            let url = '/log/2'
             axios
-                .delete('/log/' + id + '.json')
+                .delete(url)
                 .then(response => (alert(response.data)))
                 .catch(error => console.log(error)) 
         }
