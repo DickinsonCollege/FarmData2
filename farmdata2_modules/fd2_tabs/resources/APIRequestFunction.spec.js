@@ -5,6 +5,7 @@ describe('API Request Function', () => {
     var testArray
     
     beforeEach(() => {
+        cy.login('restws1', 'farmdata2')
         testURL = 'http://fd2_farmdata2/log.json?type=farm_seeding'
         testArray = []
     })

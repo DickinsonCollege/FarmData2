@@ -9,4 +9,5 @@ scripts[] = '../resources/CustomTableComponent.js'
 scripts[] = '../resources/DateSelectionComponent.js'
 scripts[] = '../resources/DateRangeSelectionComponent.js'
 scripts[] = '../resources/DropdownWithAllComponent.js'
+scripts[] = '../resources/APIRequestFunction.js'
 
