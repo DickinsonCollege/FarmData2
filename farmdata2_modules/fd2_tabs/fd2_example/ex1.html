@@ -145,11 +145,14 @@ new Vue({
             this.endDate = endDate;
         },
         deleteLog() {
+            // Need to retrive the session token when logged in and
+            // use that in any requests that modify the database 
+            // (i.e. PUT, POST, DELETE).
             axios
                 .get('/restws/session/token')
                 .then(response => {
                     let token = response.data
-                    
+
                     let id = parseInt(this.deleteID)
                     let url = 'http://localhost/log/' + id
                     axios
