@@ -30,6 +30,7 @@ describe('Field and Crop Dropdowns', () => {
             Cypress.vue.$on('selection-changed', spy)
             cy.get('[data-cy=dropdown-input]')
                 .select('Corn')
+                .blur()
                 .then(() => {
                     expect(spy).to.be.calledOnce
                     expect(spy).to.be.calledWith('Corn')
@@ -60,13 +61,34 @@ describe('Field and Crop Dropdowns', () => {
                         dropdownList: ['Corn', 'Beans', 'Peas'],
                         includesAll: true,
                         defaultInput: "All"
-                    }
+                    },
             })
         })
 
         it('loads with the default input already in the search bar', () => {
             cy.get('[data-cy=dropdown-input]')
                 .should('have.value', 'All')
+        })
+    })
+
+    context('mounting within the test', () => {
+        it('emits an event when the page loads', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('selection-changed', spy)
+
+            mount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        defaultInput: "All"
+                    },
+            })
+
+            cy.get('[data-cy=dropdown-input]')
+                .then(() => {
+                    expect(spy).to.be.calledOnce
+                    expect(spy).to.be.calledWith('All')
+                })
         })
     })
 })
