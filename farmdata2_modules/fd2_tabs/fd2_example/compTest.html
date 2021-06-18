@@ -17,7 +17,7 @@
             <dropdown-with-all includes-all @selection-changed="fieldChange" :dropdown-list="getFieldList" default-input="All">Field:</dropdown-with-all>
             <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
 
-            <custom-table :headers="headers" :rows="createLogs"can-edit can-delete @row-deleted="deleteLog" @finish-row-edit="updateLog"></custom-table>
+            <custom-table :headers="headers" :rows="createLogs"can-edit can-delete @row-deleted="deleteLog" @row-edited="updateLog"></custom-table>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -44,6 +44,7 @@
                 view: true,
                 viewButton: false,
                 idTest: 0,
+                sessionToken: null
             },
             methods: {
                 getFarmName() {
@@ -53,9 +54,11 @@
                     .catch(error => console.log(error))
                 },
                 fieldChange(selectedOption) {
+                    console.log("fieldchanged")
                     this.selectedField = selectedOption
                 },
                 cropChange(selectedOption){
+                    console.log("cropchanged")
                     this.selectedCrop = selectedOption
                 },
                 newStartDate(selectedDate){
@@ -78,7 +81,15 @@
                     this.recursiveRequest(link)
                     this.view = true
                 },
+                getSessionToken() {
+                    axios
+                        .get('/restws/session/token')
+                        .then(response => {
+                            this.sessionToken = response.data
+                        })
+                },
                 deleteLog(deletedObjectID){
+                    console.log(deletedObjectID)
                     let deletedLog = {}
                     this.idTest = deletedObjectID
                     for(var i=0; i < this.logData.length; i++){
@@ -87,25 +98,40 @@
                             deletedLog = this.logData[i]
                         }
                     }
-                    axios.get('/restws/session/token')
-                        .then(response => {
-                            let token = response.data
-                            axios.delete('/log/' + deletedObjectID, {
-                                headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'X-CSRF-TOKEN' : token
-                            }
-                            })
-                                .then(res => {console.log(res)})
-                                .catch(error => {console.log(error)})
-                        })
+                    
+                    axios.delete('/log/' + deletedObjectID, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN' : this.sessionToken
+                        }
+                    })
+                        .then(res => {console.log(res)})
+                        .catch(error => {console.log(error)})
                 },
                 updateLog(newObject){
-                    for(i=0; i < this.logData.length; i++){
+                    console.log("just called updateLog")
+                    console.log(newObject)
+                    logObject = "{ 'name': 'fghjk' }" //newObject[0].data[0]
+                    console.log(logObject)
+                    logID = newObject[0].id
+                    console.log(logID)
+                    let url = 'http://localhost/log/' + logID
+
+                    axios
+                        .post(url, logObject, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN' : this.sessionToken,
+                            }
+                        })
+                        .then(response => console.log(response))
+                        .catch(error => console.log(error)) 
+                    
+                    /*for(i=0; i < this.logData.length; i++){
                         if(this.logData[i].id === newObject.id){
                             this.logData.splice(i, 1, newObject)
                         }
-                    }
+                    }*/
                 },
                 recursiveRequest: function(url) {
                     requestURL = url
@@ -131,6 +157,8 @@
                 },
             },
             created() {
+                this.getSessionToken()
+                
                 let link  = '/log.json?type=farm_transplanting&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
                 this.recursiveRequest(link)
             },

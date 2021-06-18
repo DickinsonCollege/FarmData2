@@ -47,16 +47,16 @@ let CustomTableComponent = {
         editRow: function(index){
             this.rowsToEdit.push(index)
         },
-        finishRowEdit: function(index, idToChange){
+        finishRowEdit: function(index, rowToChange){
             for(var i = 0; i < this.rowsToEdit.length; i++){
                 if(this.rowsToEdit[i] == index){
                     this.rowsToEdit.splice(i, 1)
                 }
             }
-            var row = this.rows.filter(obj => {
+            /*var row = this.rows.filter(obj => {
                 return obj.id === idToChange
-            })
-            this.$emit('row-edited', row)
+            })*/
+            this.$emit('row-edited', rowToChange)
         },
         deleteRow: function(id){
             this.$emit('row-deleted', id)
