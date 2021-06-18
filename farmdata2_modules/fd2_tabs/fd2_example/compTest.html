@@ -1,0 +1,220 @@
+<body>
+    <div id="ex1" v-cloak>
+        <!-- Example of a header -->
+        <h1>This is the Gay Agenda</h1>
+
+        <date-range-selection @start-date-changed='newStartDate' @end-date-changed='newEndDate' :default-start-date=startOfYear :default-end-date=today></date-range-selection>
+
+        <button v-if="viewButton" v-on:click="resetDates">Reset Dates</button>
+        
+        <br>
+        <div v-if="view">
+            <!-- Example of a crop drop down-->
+            <dropdown-with-all includes-all @selection-changed="cropChange" :dropdown-list="getCropList" default-input="All">Crop:</dropdown-with-all>
+            <p>Chosen Crop: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
+
+            <!-- Example of feild drop down -->
+            <dropdown-with-all includes-all @selection-changed="fieldChange" :dropdown-list="getFieldList" default-input="All">Field:</dropdown-with-all>
+            <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
+
+            <custom-table :headers="headers" :rows="createLogs"can-edit can-delete @row-deleted="deleteLog" @finish-row-edit="updateLog"></custom-table>
+        </div>
+    </div>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script>dayjs().format()</script>
+    <script>
+        new Vue({
+            el: '#ex1',
+            components: {
+                // Register the components that are being used.
+                'custom-table': CustomTableComponent,
+                'date-selection': DateSelectionComponent,
+                'date-range-selection': DateRangeSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
+            },
+            data: {
+                selectedField: 'All',
+                selectedCrop: 'All',
+                today: dayjs().format('YYYY-MM-DD').toString(),
+                startOfYear: '2018-01-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                startDate: '2018-01-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                endDate: dayjs().format('YYYY-MM-DD').toString(),
+                headers: ['crop', 'field', 'date'],
+                logData: [],
+                view: true,
+                viewButton: false,
+                idTest: 0,
+            },
+            methods: {
+                getFarmName() {
+                    axios
+                    .get('/farm.json')
+                    .then(response => (this.farm = response.data.name))
+                    .catch(error => console.log(error))
+                },
+                fieldChange(selectedOption) {
+                    this.selectedField = selectedOption
+                },
+                cropChange(selectedOption){
+                    this.selectedCrop = selectedOption
+                },
+                newStartDate(selectedDate){
+                    this.view = false
+                    this.viewButton = true
+                    this.startDate = selectedDate
+                },
+                newEndDate(selectedDate){
+                    this.view = false
+                    this.viewButton = true
+                    this.endDate = selectedDate
+                },
+                resetDates: function(){
+                    this.logData = []
+                    this.selectedCrop = 'All'
+                    this.selectedField = 'All'
+                    this.viewButton = false
+                    
+                    let link  = '/log.json?type=farm_transplanting&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+                    this.recursiveRequest(link)
+                    this.view = true
+                },
+                deleteLog(deletedObjectID){
+                    let deletedLog = {}
+                    this.idTest = deletedObjectID
+                    for(var i=0; i < this.logData.length; i++){
+                        if(this.logData[i].id === deletedObjectID){
+                            this.logData.splice(i, 1)
+                            deletedLog = this.logData[i]
+                        }
+                    }
+                    axios.get('/restws/session/token')
+                        .then(response => {
+                            let token = response.data
+                            axios.delete('/log/' + deletedObjectID, {
+                                headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN' : token
+                            }
+                            })
+                                .then(res => {console.log(res)})
+                                .catch(error => {console.log(error)})
+                        })
+                },
+                updateLog(newObject){
+                    for(i=0; i < this.logData.length; i++){
+                        if(this.logData[i].id === newObject.id){
+                            this.logData.splice(i, 1, newObject)
+                        }
+                    }
+                },
+                recursiveRequest: function(url) {
+                    requestURL = url
+                        axios.get(requestURL)
+                            .then(response => {
+                                next = response.data.next
+                                
+                                this.logData = [].concat(this.logData, response.data.list);
+
+                                if (typeof next == 'undefined') {
+                                    //do nothing, all done!
+                                }
+                                else {
+                                    fullRequestURL = response.data.next
+                                    requestURL = fullRequestURL.substring(16, fullRequestURL.length);
+
+                                    lastRequestURL = response.data.last
+                                    last = lastRequestURL.substring(16, lastRequestURL.length);
+
+                                    this.recursiveRequest(requestURL);
+                                }
+                        })
+                },
+            },
+            created() {
+                let link  = '/log.json?type=farm_transplanting&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+                this.recursiveRequest(link)
+            },
+            computed: {
+                createLogs: function(){
+                    let log = []
+                    let finalFilter = []
+
+                    let filterStartDate = this.logData.filter((x) => x.timestamp > dayjs(this.startDate).unix())
+
+                    let filterEndDate = filterStartDate.filter((x) => x.timestamp < dayjs(this.endDate).unix())
+
+                    let filterFieldList = filterEndDate.filter((x) => typeof x.movement.area[0] != 'undefined')
+
+                    if(this.selectedCrop != 'All' && this.selectedField != 'All'){
+                        let cropLogs = filterFieldList.filter((x) => x.name === ('Transplant ' + this.selectedCrop))
+
+                        finalFilter = cropLogs.filter((x) => x.movement.area[0].name === this.selectedField)
+                    }
+                    else if(this.selectedCrop != 'All'){
+                        finalFilter = filterFieldList.filter((x) => x.name === ('Transplant ' + this.selectedCrop))
+                    }else if(this.selectedField != 'All'){
+                        finalFilter = filterFieldList.filter((x) => x.movement.area[0].name === this.selectedField)
+                    }
+                    else{
+                        finalFilter = filterFieldList.filter((x) => x)
+                    }
+                    log = finalFilter.map(h => {
+                            return{
+                                id: h.id,
+                                data: [h.name, h.movement.area[0].name, dayjs.unix(h.timestamp)],
+                            }
+                    })
+                    return log
+                },
+                getCropList(){
+                    let filterStartDate = this.logData.filter((x) => x.timestamp > dayjs(this.startDate).unix())
+
+                    let filterEndDate = filterStartDate.filter((x) => x.timestamp < dayjs(this.endDate).unix())
+
+                    let filterFieldList = filterEndDate.filter((x) => typeof x.movement.area[0] != 'undefined')
+
+                    let cropList = []
+                    if(this.selectedField != 'All'){
+                        let cropLog = filterFieldList.filter((x) => x.movement.area[0].name === this.selectedField)
+                        cropList = cropLog.map(h =>
+                            h.name.substring(11, h.name.length)
+                        )
+                    }
+                    else{
+                        cropList = filterFieldList.map(h =>
+                            h.name.substring(11, h.name.length)
+                        )
+                    }
+
+                    let crops = new Set(cropList)
+                    let newCropList = Array.from(crops)
+                    return newCropList.sort()
+                },
+                getFieldList(){
+                    let filterStartDate = this.logData.filter((x) => x.timestamp > dayjs(this.startDate).unix())
+
+                    let filterEndDate = filterStartDate.filter((x) => x.timestamp < dayjs(this.endDate).unix())
+
+                    let filterFieldList = filterEndDate.filter((x) => typeof x.movement.area[0] != 'undefined')
+
+                    let fieldList = []
+                    if(this.selectedCrop != 'All'){
+                        let fieldLog = filterFieldList.filter((x) => x.name === ('Transplant ' + this.selectedCrop))
+                        fieldList = fieldLog.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    else{
+                        fieldList = filterFieldList.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    let fields = new Set(fieldList)
+                    let newFieldList = Array.from(fields)
+                    return newFieldList.sort()
+                },
+            },
+        })
+        Vue.config.devtools = true;
+    </script>
+</body>
