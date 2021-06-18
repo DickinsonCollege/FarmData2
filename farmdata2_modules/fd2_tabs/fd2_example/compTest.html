@@ -111,14 +111,14 @@
                 updateLog(newObject){
                     console.log("just called updateLog")
                     console.log(newObject)
-                    logObject = "{ 'name': 'fghjk' }" //newObject[0].data[0]
+                    logObject = { "name": "Transplant Bokchoy" } //newObject[0].data[0]
                     console.log(logObject)
-                    logID = newObject[0].id
+                    logID = "1900"
                     console.log(logID)
                     let url = 'http://localhost/log/' + logID
 
                     axios
-                        .post(url, logObject, {
+                        .put(url, logObject, {
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN' : this.sessionToken,
