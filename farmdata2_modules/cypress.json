@@ -4,6 +4,7 @@
     "testFiles": "**/*.spec.js",
     "video": false,
     "screenshotOnRunFailure": false,
+    "chromeWebSecurity": false,
     "component": {
       "componentFolder": "farmdata2_modules",
        "testFiles": "**/*.spec.comp.js"
