@@ -11,7 +11,7 @@ describe('API Request Function', () => {
     })
 
     it('completes the request and puts the data into the passed array', () => {
-        testArray = apiRequest(testURL)
+        getAllPages(testURL, testArray)
         expect(testArray).to.have.length.of.at.least(1)
     })
 })
