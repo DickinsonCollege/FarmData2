@@ -2,3 +2,5 @@ name = FarmData2 Field Kit
 description = A collection of forms for fast and accurate data entry in the field.
 core = 7.x
 package = FarmData2
+
+scripts[] = '../resources/FarmData2.js'

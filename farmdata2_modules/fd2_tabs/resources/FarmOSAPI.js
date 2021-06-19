@@ -47,4 +47,4 @@ try {
         getAllPages: getAllPages
     }
 }
-catch(err) {}
+catch {}
