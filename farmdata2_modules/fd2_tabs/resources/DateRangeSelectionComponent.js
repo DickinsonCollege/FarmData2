@@ -1,5 +1,5 @@
 try {
-    DateSelectionComponent
+    FarmData2
 }
 catch(err) {
     var DateComps = require("./DateSelectionComponent.js")
@@ -52,4 +52,4 @@ try {
         DateRangeSelectionComponent: DateRangeSelectionComponent
     }
 }
-catch(err) {}
+catch {}

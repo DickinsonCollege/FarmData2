@@ -1,4 +1,5 @@
-import { getAllPages } from './FarmOSAPI.js';
+var FarmOSAPI = require("./FarmOSAPI.js")
+var getAllPages = FarmOSAPI.getAllPages
 
 describe('API Request Function', () => {
     var testArray
