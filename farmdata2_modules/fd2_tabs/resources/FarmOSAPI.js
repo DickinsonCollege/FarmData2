@@ -27,12 +27,12 @@ function getAllPages(url, arr) {
         .then(function(data) {
             arr.push.apply(arr,data.list)
             if (!data.hasOwnProperty('next')) {
-                resolve()
+                resolve(arr)
             }
             else {
-                getAllPages(data.next, arr)
+                return getAllPages(data.next, arr)
                 .then(function() {
-                    resolve()
+                    resolve(arr)
                 })
             }
         })
