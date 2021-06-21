@@ -44,7 +44,8 @@
                 view: true,
                 viewButton: false,
                 idTest: 0,
-                sessionToken: null
+                sessionToken: null,
+                testObject: {},
             },
             methods: {
                 getFarmName() {
@@ -110,10 +111,11 @@
                 },
                 updateLog(newObject){
                     console.log("just called updateLog")
+                    this.testObject = newObject
                     console.log(newObject)
-                    logObject = { "name": "Transplant Bokchoy" } //newObject[0].data[0]
-                    console.log(logObject)
-                    logID = "1900"
+                    logObject = { "name": newObject.data[0] } //newObject[0].data[0]
+                    //console.log(logObject)
+                    logID = newObject.id
                     console.log(logID)
                     let url = 'http://localhost/log/' + logID
 

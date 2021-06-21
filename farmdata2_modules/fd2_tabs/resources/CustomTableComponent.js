@@ -12,7 +12,7 @@ let CustomTableComponent = {
                             </td>
                             <td v-if="canEdit"> 
                                 <button data-cy="edit-button" @click="editRow(index)" v-if="!rowsToEdit.includes(index)">Edit</button> 
-                                <button data-cy="save-button" v-if="rowsToEdit.includes(index)" @click="finishRowEdit(index, row.id)">Save</button>
+                                <button data-cy="save-button" v-if="rowsToEdit.includes(index)" @click="finishRowEdit(index, row)">Save</button>
                             </td>
                             <td v-if="canDelete"> 
                                 <button data-cy="delete-button" @click="deleteRow(row.id)">Delete</button>
