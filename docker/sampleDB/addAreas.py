@@ -16,6 +16,7 @@ response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=
 areasVocabID = response.json()['list'][0]['vid']
 
 def main():
+    print("Adding Farm Areas...")
     # Delete any areas that exist in the database.
     # Call twice because delete of parent areas fail until children are deleted.
     deleteAllAreas()
@@ -32,6 +33,8 @@ def main():
                 childAreaID = addChildArea(row, parentAreaID, weight)
 
             weight+=1
+
+    print("Farm Areas added.")
 
 def deleteAllAreas(): 
     response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_areas", 
