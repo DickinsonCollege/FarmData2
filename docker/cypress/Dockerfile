@@ -57,9 +57,10 @@ RUN npm install -g vue@2.6.13 @vue/cli@4.5.13
 # Make a vue project into which the fd2 testing will be mounted
 RUN vue create -d fd2test --packageManager npm
 
-# Add cypress compontent testing to the Vue project.
+# Add cypress compontent testing and axios to the Vue project.
 WORKDIR fd2test
 RUN npm install --save-dev cypress@7.4.0 @cypress/vue@2.2.3 @cypress/webpack-dev-server@1.3.1 webpack-dev-server@3.11.2
+RUN npm install --save-dev axios
 
 # should print Cypress version
 # plus Electron and bundled Node versions

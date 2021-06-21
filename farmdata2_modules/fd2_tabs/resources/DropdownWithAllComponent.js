@@ -27,10 +27,8 @@ let DropdownWithAllComponent = {
     },
     mounted() {
         console.log("Just mounted")
-        this.$nextTick(function () {
             this.selectionChanged();
             console.log("Just passed selectionChanged after mount")
-        })
     },
     methods: {
         selectionChanged: function() {
