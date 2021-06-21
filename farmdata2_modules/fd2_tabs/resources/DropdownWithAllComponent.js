@@ -4,10 +4,9 @@
 let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
             <label for="dropdownOptions"><slot>Select: </slot></label>
-            <input list="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @focusout="checkInput" @focusout="selectionChanged">
-                <datalist id="dropdownOptions" data-cy="dropdownOptions">
-                   <option v-for="singleOption in fullDropdown" data-cy="singleOption">{{ singleOption }}</option>
-                </datalist>
+            <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
+                <option v-for="singleOption in fullDropdown" data-cy="single-option">{{ singleOption }}</option>
+            </select>
         </div>`, 
     props: {
         dropdownList: {
@@ -30,11 +29,6 @@ let DropdownWithAllComponent = {
         selectionChanged: function() {
             this.$emit('selection-changed', this.selectedOption)
         },
-        checkInput: function() {
-            if (!this.fullDropdown.includes(this.selectedOption)) {
-                this.selectedOption = null;
-            }
-        }
     },
     computed: {
         fullDropdown: function() {
@@ -48,16 +42,12 @@ let DropdownWithAllComponent = {
     }
 }
 /*
- * Export the fieldsDropdownComponent object as a CommonJS component
- * so that it can be imported into the component test.  This is 
- * wrapped in the try/catch to suppress the error that is generated
- * in the browser when it is added to the Drupal page as a normal
- * JavaScript file through a <script> tag inserted in the module's
- * .info file.
+ * Export the DropdownWithAllComponent object as a CommonJS component
+ * so that it can be required bythe component test.
  */
 try {
     module.exports = {
         DropdownWithAllComponent: DropdownWithAllComponent
     }
 }
-catch(err) {}
+catch {}

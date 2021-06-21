@@ -3,19 +3,19 @@ let CustomTableComponent = {
                     <table data-cy="custom-table" style="width:100%" border=1>
                         <tr>
                             <th data-cy="headers" v-for="header in headers">{{ header }}</th>
-                            <th v-if="canEdit">Edit</th>
-                            <th v-if="canDelete">Delete</th>
+                            <th data-cy="edit-header" v-if="canEdit">Edit</th>
+                            <th data-cy="delete-header" v-if="canDelete">Delete</th>
                         </tr>
-                        <tr data-cy="objectTest" v-for="(row, index) in rows">
-                            <td data-cy="tableData" v-for="(item, itemIndex) in row.data">
-                                <input data-cy="testInput" v-if="rowsToEdit.includes(index)" v-model="row.data[itemIndex]"></input><p v-if="!rowsToEdit.includes(index)">{{ item }}</p>
+                        <tr data-cy="object-test" v-for="(row, index) in rows">
+                            <td data-cy="table-data" v-for="(item, itemIndex) in row.data">
+                                <input data-cy="test-input" v-if="rowsToEdit.includes(index)" v-model="row.data[itemIndex]"></input><p v-if="!rowsToEdit.includes(index)">{{ item }}</p>
                             </td>
                             <td v-if="canEdit"> 
-                                <button data-cy="editButton" @click="editRow(index)" v-if="!rowsToEdit.includes(index)">Edit</button> 
-                                <button data-cy="saveButton" v-if="rowsToEdit.includes(index)" @click="finishRowEdit(index, row.id)">Save</button>
+                                <button data-cy="edit-button" @click="editRow(index)" v-if="!rowsToEdit.includes(index)">Edit</button> 
+                                <button data-cy="save-button" v-if="rowsToEdit.includes(index)" @click="finishRowEdit(index, row.id)">Save</button>
                             </td>
                             <td v-if="canDelete"> 
-                                <button data-cy="deleteButton" @click="deleteRow(row.id)">Delete</button>
+                                <button data-cy="delete-button" @click="deleteRow(row.id)">Delete</button>
                             </td>
                         </tr>
                     </table>
@@ -56,14 +56,17 @@ let CustomTableComponent = {
             var row = this.rows.filter(obj => {
                 return obj.id === idToChange
             })
-            this.$emit('finished-row-edit', row)
+            this.$emit('row-edited', row)
         },
         deleteRow: function(id){
-            this.$emit('delete-row', id)
+            this.$emit('row-deleted', id)
         }
     },
 }
-try{
-    module.exports = CustomTableComponent
+
+try {
+    module.exports = {
+        CustomTableComponent: CustomTableComponent
+    }
 }
-catch(err) {}
+catch {}
