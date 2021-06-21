@@ -169,7 +169,6 @@ new Vue({
             let id = parseInt(this.deleteID)
             let url = 'http://localhost/log/' + id
             axios
-<<<<<<< HEAD
                 .delete(url, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
@@ -197,20 +196,6 @@ new Vue({
             axios.get('http://localhost/log.json?type=farm_observation')
                 .then(response => {
                     this.observationLogs = response.data.list;
-=======
-                .get('/restws/session/token')
-                .then(response => response.data)
-                .then(token => {
-                    let id = parseInt(this.deleteID)
-                    let url = 'http://localhost/log/' + id
-                    return axios
-                        .delete(url, {
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'X-CSRF-TOKEN' : token,
-                            }
-                        })
->>>>>>> main
                 })
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
