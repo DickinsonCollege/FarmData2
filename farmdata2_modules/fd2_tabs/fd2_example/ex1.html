@@ -15,7 +15,7 @@
 
     <!-- Example of deleting a log -->
     <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
-    <button data-cy="delete-button" :disabled='!validID' @click='deleteLog'>Delete</button></p>
+    <button data-cy="delete-button" :disabled='!validID' @click="deleteLog('http://localhost/log/', deleteID, sessionToken)">Delete</button></p>
 
     <!-- Example of creating a log -->
     <p>Enter Observation Name: <input type='text' v-model='oName'></p>
@@ -92,7 +92,7 @@ new Vue({
         oName: null
     },
     created() {
-        this.getSessionToken()
+        this.sessionToken = getSessionToken()
         
         axios
         .get('/taxonomy_term.json?bundle=farm_areas')
@@ -155,14 +155,7 @@ new Vue({
         endDateChange(endDate) {
             this.endDate = endDate;
         },
-        getSessionToken() {
-            axios
-                .get('/restws/session/token')
-                .then(response => {
-                    this.sessionToken = response.data
-                })
-        },
-        deleteLog() {
+        /*deleteLog() {
             // Need to retrive the session token when logged in and
             // use that in any requests that modify the database 
             // (i.e. PUT, POST, DELETE).
@@ -177,7 +170,7 @@ new Vue({
                 })
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
-        },
+        },*/
         createObservationLog(logObject) {
             logObject = this.logToCreate
             let url = 'http://localhost/log.json?type=farm_observation'

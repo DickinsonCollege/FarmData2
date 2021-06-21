@@ -42,9 +42,64 @@ function getAllPages(url, arr) {
     })
 }
 
+function getSessionToken() {
+    return new Promise((resolve, reject) => {
+        axios
+        .get('/restws/session/token')
+        .then(response => {
+            return response.data
+        })
+        .then(function(token) {
+            resolve(token)
+        })
+        .catch(function(error){
+            reject(error)
+        })
+    })
+    
+}
+
+function deleteLog(url, deleteID, sessionToken) {
+    // Need to retrive the session token when logged in and
+    // use that in any requests that modify the database 
+    // (i.e. PUT, POST, DELETE).
+    //let id = parseInt(deleteID)
+    url = url + deleteID
+    axios
+        .delete(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then(response => console.log(response))
+        .catch(error => console.log(error))
+}
+
+function modifyLog(url, id, updateObject, sessionToken){
+    url = url + logID
+    axios
+        .put(url, logObject, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then(response => console.log(response))
+        .catch(error => console.log(error)) 
+    
+    /*for(i=0; i < this.logData.length; i++){
+        if(this.logData[i].id === newObject.id){
+            this.logData.splice(i, 1, newObject)
+        }
+    }*/
+}
+
 try {
     module.exports = {
-        getAllPages: getAllPages
+        getAllPages: getAllPages,
+        getSessionToken: getSessionToken,
+        deleteLog: deleteLog
     }
 }
 catch {}

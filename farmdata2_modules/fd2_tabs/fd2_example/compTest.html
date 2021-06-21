@@ -17,7 +17,7 @@
             <dropdown-with-all includes-all @selection-changed="fieldChange" :dropdown-list="getFieldList" default-input="All">Field:</dropdown-with-all>
             <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
 
-            <custom-table :headers="headers" :rows="createLogs"can-edit can-delete @row-deleted="deleteLog" @row-edited="updateLog"></custom-table>
+            <custom-table :headers="headers" :rows="createLogs"can-edit can-delete @row-deleted="deleteHelper" @row-edited="modifyLog('http://localhost/log/', updateObject, updateID)"></custom-table>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -82,14 +82,22 @@
                     this.recursiveRequest(link)
                     this.view = true
                 },
-                getSessionToken() {
+                /*getSessionToken() {
                     axios
                         .get('/restws/session/token')
                         .then(response => {
                             this.sessionToken = response.data
                         })
+                },*/
+                deleteHelper(id) {
+                    deleteLog('http://localhost/log/', id, this.sessionToken)
+                    for(var i=0; i < this.logData.length; i++){
+                        if(this.logData[i].id === id){
+                            this.logData.splice(i, 1)
+                        }
+                    }
                 },
-                deleteLog(deletedObjectID){
+                /*deleteLog(deletedObjectID){
                     console.log(deletedObjectID)
                     let deletedLog = {}
                     this.idTest = deletedObjectID
@@ -108,16 +116,12 @@
                     })
                         .then(res => {console.log(res)})
                         .catch(error => {console.log(error)})
-                },
-                updateLog(newObject){
-                    console.log("just called updateLog")
-                    this.testObject = newObject
-                    console.log(newObject)
-                    logObject = { "name": newObject.data[0] } //newObject[0].data[0]
-                    //console.log(logObject)
-                    logID = newObject.id
-                    console.log(logID)
-                    let url = 'http://localhost/log/' + logID
+                },*/
+                modifyLog(url, id, updateObject){
+                    this.testObject = updateObject
+                    logObject = { "name": updateObject.data[0] }
+                    logID = updateObject.id
+                    url = 'http://localhost/log/' + logID
 
                     axios
                         .put(url, logObject, {
@@ -159,7 +163,11 @@
                 },
             },
             created() {
-                this.getSessionToken()
+                this.sessionToken = getSessionToken().then(token => {
+                    this.sessionToken = token
+                })
+
+                console.log("just called getSessionToken")
                 
                 let link  = '/log.json?type=farm_transplanting&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
                 this.recursiveRequest(link)
