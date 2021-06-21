@@ -14,7 +14,27 @@ A vocabulary consists of a list of term and the relationships between them. Ther
 
 The Farm Areas vocabulary defines each of the areas (fields, greenhouses, beds) on the farm. The areas in the sample database are created from the data in `sampleData/areas.csv`  This vocabulary allows areas to have sub-areas. For example a bed in a field or in a greenhouse.
 
+The terms for the Farm Areas vocabulary can be accessed with the request:
+```
+GET http://localhost/taxonomy_term.json?bundle=farm_areas
+```
+
 ### Farm Crop Families and Farm Crops/Varieties ###
 
-The Farm Crop Families vocabulary defines the _crop category_ names from the USDA Organic INTEGRITY Database (https://organic.ams.usda.gov/integrity/About.aspx).  The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to ROMAINE and GREEN, and conversely they are child crops to LETTUCE.
+The Farm Crop Families vocabulary defines the _crop category_ names from the USDA Organic INTEGRITY Database (https://organic.ams.usda.gov/integrity/About.aspx).  
 
+The terms for the Farm Crop Families vocabulary can be accessed with the request:
+```
+GET http://localhost/taxonomy_term.json?bundle=farm_crop_families"
+```
+
+The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to ROMAINE and GREEN, and conversely they are child crops to LETTUCE.
+
+The terms for the Farm Cropss vocabulary can be accessed with the request:
+```
+GET http://localhost/taxonomy_term.json?bundle=farm_crops"
+```
+
+## Assets ##
+
+## Logs ##
