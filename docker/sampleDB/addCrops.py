@@ -6,7 +6,6 @@
 
 import requests
 from requests.auth import HTTPBasicAuth
-from time import time
 import json
 from csv import reader
 from utils import *
