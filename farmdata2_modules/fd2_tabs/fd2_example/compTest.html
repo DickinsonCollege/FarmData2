@@ -17,7 +17,7 @@
             <dropdown-with-all includes-all @selection-changed="fieldChange" :dropdown-list="getFieldList" default-input="All">Field:</dropdown-with-all>
             <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
 
-            <custom-table :headers="headers" :rows="createLogs"can-edit can-delete @row-deleted="deleteHelper" @row-edited="modifyHelper"></custom-table>
+            <custom-table :headers="headers" :rows="createLogs"can-edit can-delete @row-deleted="deleteHelper" @row-edited="modifyLog('http://localhost/log/', updateObject, updateID)"></custom-table>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -97,45 +97,11 @@
                         }
                     }
                 },
-                /*deleteLog(deletedObjectID){
-                    console.log(deletedObjectID)
-                    let deletedLog = {}
-                    this.idTest = deletedObjectID
-                    for(var i=0; i < this.logData.length; i++){
-                        if(this.logData[i].id === deletedObjectID){
-                            this.logData.splice(i, 1)
-                            deletedLog = this.logData[i]
-                        }
-                    }
+                modifyHelper() {
                     
-                    axios.delete('/log/' + deletedObjectID, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRF-TOKEN' : this.sessionToken
-                        }
-                    })
-                        .then(res => {console.log(res)})
-                        .catch(error => {console.log(error)})
-                },*/
-                modifyHelper(updateObject, id){
-                    console.log(updateObject)
-                    let keys = Object.keys(updateObject)
-                    newUpdateObject = {}
-                    for(i=0; i < keys.length; i++){
-                        if(keys[i] == 'crop'){
-                            newUpdateObject['name'] = updateObject['crop']
-                        }
-                        else if(keys[i] == 'field'){
-                            newUpdateObject['movement.area[0].name'] = updateObject['field']
-                        }
-                        /*else if(keys[i] == 'date'){
-                            this.testObject['date'] = jsonObject['hello']
-                        }*/
-                    }
-                    console.log(newUpdateObject)
-                    modifyLog('http://localhost/log/', id, newUpdateObject, this.sessionToken)
+                    modifyLog('http://localhost/log/', id, updateObject, this.sessionToken)
                 },
-                /*modifyLog(url, id, updateObject){
+                modifyLog(url, id, updateObject){
                     this.testObject = updateObject
                     logObject = { "name": updateObject.data[0] }
                     logID = updateObject.id
@@ -151,12 +117,12 @@
                         .then(response => console.log(response))
                         .catch(error => console.log(error)) 
                     
-                    for(i=0; i < this.logData.length; i++){
+                    /*for(i=0; i < this.logData.length; i++){
                         if(this.logData[i].id === newObject.id){
                             this.logData.splice(i, 1, newObject)
                         }
-                    }
-                },*/
+                    }*/
+                },
                 recursiveRequest: function(url) {
                     requestURL = url
                         axios.get(requestURL)
@@ -181,7 +147,7 @@
                 },
             },
             created() {
-                this.sessionToken = getSessionToken().then(token => {
+                getSessionToken().then(token => {
                     this.sessionToken = token
                 })
 

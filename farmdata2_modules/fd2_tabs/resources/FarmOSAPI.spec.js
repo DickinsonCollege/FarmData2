@@ -1,5 +1,6 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
+var getSessionToken = FarmOSAPI.getSessionToken
 
 describe('API Request Function', () => {
     var testArray
@@ -69,6 +70,14 @@ describe('API Request Function', () => {
                 expect(firstCalls).to.equal(1)
                 expect(secondCalls).to.equal(1)
                 expect(thirdCalls).to.equal(1)
+            })
+        })
+    })
+
+    context('get session token function', () => {
+        it('returns a token when it resolves', () => {
+            getSessionToken().then(token => {
+                expect(token).to.not.be.null
             })
         })
     })
