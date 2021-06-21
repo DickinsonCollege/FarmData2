@@ -38,4 +38,4 @@ try {
         DateSelectionComponent: DateSelectionComponent
     }
 }
-catch(err) {}
+catch {}

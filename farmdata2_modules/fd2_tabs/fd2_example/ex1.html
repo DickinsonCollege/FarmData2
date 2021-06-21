@@ -150,21 +150,20 @@ new Vue({
             // (i.e. PUT, POST, DELETE).
             axios
                 .get('/restws/session/token')
-                .then(response => {
-                    let token = response.data
-
+                .then(response => response.data)
+                .then(token => {
                     let id = parseInt(this.deleteID)
                     let url = 'http://localhost/log/' + id
-                    axios
+                    return axios
                         .delete(url, {
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN' : token,
                             }
                         })
-                        .then(response => console.log(response))
-                        .catch(error => console.log(error))
                 })
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
         }
     },
     computed: {
