@@ -15,7 +15,13 @@
 
     <!-- Example of deleting a log -->
     <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
-    <button data-cy="delete-button" :disabled='!validID' @click='deleteLog'>Delete</button></p>
+    <button data-cy="delete-button" :disabled='!validID' @click="deleteLog('http://localhost/log/', deleteID, sessionToken)">Delete</button></p>
+
+    <!-- Example of creating a log -->
+    <p>Enter Observation Name: <input type='text' v-model='oName'></p>
+    <button data-cy="create-button" @click='createObservationLog'>Create</button></p>
+
+    <button @click="getObservationLogs">Get O-Logs</button>
 
     <!-- Exmaple of using a Vue Component -->
     <!-- Component fiels are contained in the ../resources folder. -->
@@ -82,8 +88,13 @@ new Vue({
             data: [12, 12, 'answome12'],},
         ],
         testObject: {},
+        sessionToken: null,
+        observationLogs: null,
+        oName: null
     },
     created() {
+        this.sessionToken = getSessionToken()
+        
         axios
         .get('/taxonomy_term.json?bundle=farm_areas')
         .then(response => {
@@ -161,23 +172,40 @@ new Vue({
         endDateChange(endDate) {
             this.endDate = endDate;
         },
-        deleteLog() {
+        /*deleteLog() {
             // Need to retrive the session token when logged in and
             // use that in any requests that modify the database 
             // (i.e. PUT, POST, DELETE).
+            let id = parseInt(this.deleteID)
+            let url = 'http://localhost/log/' + id
             axios
-                .get('/restws/session/token')
-                .then(response => response.data)
-                .then(token => {
-                    let id = parseInt(this.deleteID)
-                    let url = 'http://localhost/log/' + id
-                    return axios
-                        .delete(url, {
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'X-CSRF-TOKEN' : token,
-                            }
-                        })
+                .delete(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : this.sessionToken,
+                    }
+                })
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
+        },*/
+        createObservationLog(logObject) {
+            logObject = this.logToCreate
+            let url = 'http://localhost/log.json?type=farm_observation'
+
+            axios
+                .post(url, logObject, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : this.sessionToken,
+                    }
+                })
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
+        },
+        getObservationLogs() {
+            axios.get('http://localhost/log.json?type=farm_observation')
+                .then(response => {
+                    this.observationLogs = response.data.list;
                 })
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
@@ -186,6 +214,15 @@ new Vue({
     computed: {
         validID: function () {
             return Number.isInteger(parseInt(this.deleteID))
+        },
+        logToCreate: function () {
+            let log = {
+            "name": this.oName,
+            "type": "farm_observation",
+            "timestamp": "1526584271",
+            }
+
+            return log
         }
     }
 })
