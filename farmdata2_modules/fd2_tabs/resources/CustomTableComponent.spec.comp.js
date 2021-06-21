@@ -125,7 +125,7 @@ describe('custom table component', () => {
                 .should('exist')
                 .first().click()
                 .then(() => {
-                    expect(spy).to.be.calledWith([{id: 10, data: ['hey', 3, 'answome']}])
+                    expect(spy).to.be.calledWith({cool: 'hey'}, 10)
                 })
         })
 
@@ -137,6 +137,15 @@ describe('custom table component', () => {
                 .then(() => {
                     expect(spy).to.be.calledWith(10)
                 })
+        })
+
+        it('only one row is editable at a time', () => {
+            cy.get('[data-cy=edit-button]')
+            .first().click()
+            //.next().should('be-disabled')
+
+            cy.get('[data-cy=edit-button]')
+                .first().should('be.disabled')
         })
     })
 
