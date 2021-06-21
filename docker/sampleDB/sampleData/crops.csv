@@ -1,0 +1,151 @@
+# Sample Data for the Farm Crop Families.
+#
+# Each line contains the name of a farm crop family.
+#
+# Format:
+#
+# A left justified line creates a term in the Farm Crop Families vocabulary.
+#   These Families are based on the USDA Organic Integrity Database
+#   https://organic.ams.usda.gov/integrity/About.aspx
+#
+# A line beginning with a single comma:
+#   Creates a term in the Farm Crop/Varieties vocabulary,
+#   and links it to the Farm Crop Family that it appears under.
+#
+# A line beginning with two commas:
+#   Creates a term in the Farm Crop/Varieties vocabularly 
+#   and sets its parent to the crop that it appears under.
+#
+# Crop families appear in farmOS in the oder listed in this file.
+# Crops appear in farmOS in alphabetical order in their families or overall.
+#
+# Anything following a # on a line is a considered a comment.
+# Thus, names and descriptions cannot contain #
+# Blank Lines are ignored.
+
+Field/Forageable
+,DANDILION
+,GRASS
+,WHEATGRASS
+Flower Vegetables
+,BROCCOLI
+,BROCCOLI RABE
+,CAULIFLOWER
+Fruit - Berries
+,STRAWBERRY
+Fruit - Citrus Fruits
+Fruit - Melons
+,HONEYDEW
+,WATERMELON
+,CANTELOPE
+Fruit - Pome
+Fruit - Stone 
+Fruit - Tropical Fruits
+Fruit Vegetables
+,CUCUMBER
+,,PICKLING
+,EGGPLANT
+,LOOFA
+,PEPPERS
+,,BELL
+,,HOT
+,,SPECIALTY
+,PUMPKIN
+,SQUASH
+,,BUTTERNUT
+,,SUMMER
+,,WINTER
+,TOMATO
+,,CHERRY
+,,HEIRLOOM
+,,PASTE
+,,PLUM
+,,SLICING
+,ZUCCHINI
+Fungi
+Herbs/Spices
+,BASIL
+,BURDOCK
+,CALALOO
+,CHIVES
+,CILANTRO
+,DILL
+,EPAZOTE
+,FENNEL
+,MARJORAM
+,MINT
+,OREGANO
+,PARSLEY
+,,ROOT
+,ROSEMARY
+,SAGE
+,SORREL
+,STEVIA
+,THYME
+Leaf Vegetables
+,ARUGULA
+,BOKCHOY
+,BRUSSEL SPROUTS
+,CABBAGE
+,,CHINESE
+,CHARD
+,COLLARDS
+,ENDIVE
+,ESCAROLE
+,FRISEE
+,KALE
+,KOHLRABI
+,LETTUCE
+,,FANCY
+,,GREEN
+,,ICEBERG
+,,MES MIX
+,,RED
+,,ROMAINE
+,RADDICHIO
+,SPINACH
+Nursery/Starts/Flowers/Trees
+Nuts
+Sea Vegetables
+Seed/Pod Vegetables
+,BEAN
+,,DRY
+,,FAVA 
+,,LIMA
+,CORN
+,,DRY
+,,SWEET
+,OKRA
+,PEA
+,,SNAP
+,,SNOW
+,SOYBEAN
+Stem Vegetables
+,ASPARAGUS
+,CELERY
+,RHUBARB
+Tuber/Root Vegetables
+,BEET
+,CARROT
+,CELERIAC
+,GARLIC
+,,GREEN
+,,SCAPES
+,LEEK
+,ONION
+,,SPRING HEAD BULK
+,,SPRING
+,,STORAGE
+,,FRESH
+,PARSNIP
+,POTATO
+,,SWEET
+,RADISH
+,,DAIKON
+,,BLACK
+,,WATERMELON
+,RUTABAGA
+,SCALLION
+,TURNIP
+Other
+,SUNFLOWER SEEDS

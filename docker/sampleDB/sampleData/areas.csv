@@ -1,5 +1,7 @@
 # Sample Data for the Farm Areas.
 #
+# Format:
+#
 # Each line represents an area with the follwing comma delimited information:
 #   name,type,description
 #
@@ -10,6 +12,8 @@
 # The existing types of areas in farmOS are are:
 #   bed, building, greenhouse, paddock, field, landmark, water, property, other
 # Most commonly used are bed, greenhouse, fields
+#
+# Areas will appear in the order listed within the system.
 #
 # Anything following a # on a line is a considered a comment.
 # Thus, names and descriptions cannot contain #
