@@ -1,6 +1,5 @@
 import { mount } from '@cypress/vue'
 
-
 var DropdownComp = require("./DropdownWithAllComponent.js")
 var DropdownWithAllComponent = DropdownComp.DropdownWithAllComponent
 

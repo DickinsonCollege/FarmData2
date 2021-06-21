@@ -1,5 +1,7 @@
 import {mount} from '@cypress/vue'
-import CustomTableComponent from './CustomTableComponent.js'
+
+var CustTable = require("./CustomTableComponent.js")
+var CustomTableComponent = CustTable.CustomTableComponent
 
 describe('custom table component', () => {
     

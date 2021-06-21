@@ -63,7 +63,10 @@ let CustomTableComponent = {
         }
     },
 }
-try{
-    module.exports = CustomTableComponent
+
+try {
+    module.exports = {
+        CustomTableComponent: CustomTableComponent
+    }
 }
-catch(err) {}
+catch {}
