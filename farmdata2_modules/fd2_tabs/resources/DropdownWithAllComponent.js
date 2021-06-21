@@ -42,16 +42,12 @@ let DropdownWithAllComponent = {
     }
 }
 /*
- * Export the fieldsDropdownComponent object as a CommonJS component
- * so that it can be imported into the component test.  This is 
- * wrapped in the try/catch to suppress the error that is generated
- * in the browser when it is added to the Drupal page as a normal
- * JavaScript file through a <script> tag inserted in the module's
- * .info file.
+ * Export the DropdownWithAllComponent object as a CommonJS component
+ * so that it can be required bythe component test.
  */
 try {
     module.exports = {
         DropdownWithAllComponent: DropdownWithAllComponent
     }
 }
-catch(err) {}
+catch {}

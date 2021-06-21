@@ -197,6 +197,8 @@ new Vue({
                 .then(response => {
                     this.observationLogs = response.data.list;
                 })
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
         }
     },
     computed: {
