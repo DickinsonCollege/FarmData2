@@ -25,8 +25,9 @@ echo "restws basic authentication enabled."
 source ./addPeople.bash
 
 # Create the vocabularies
-
-
+  # Add all of the areas (fields, greenhouses, beds)
+  ./addAreas.py
+  
 
 echo "Compressing the sample database..."
 cd ..

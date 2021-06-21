@@ -1,0 +1,71 @@
+# Comment?
+
+A,field,Field A
+ALF,field,Field ALF
+,ALF-1,bed,Bed ALF-1 in Field ALF
+,ALF-2,bed,Bed ALF-2 in Field ALF
+,ALF-3,bed,Bed ALF-3 in Field ALF
+,ALF-4,bed,Bed ALF-4 in Field ALF
+B,field,Field B
+C,field,Field C
+CHUAU,greenhouse,The CHUAU Greenhouse
+,CHUAU-1,bed,Bed CHUAU-1 in CHUAU Greenhouse
+,CHUAU-2,bed,Bed CHUAU-2 in CHUAU Greenhouse
+,CHUAU-3,bed,Bed CHUAU-3 in CHUAU Greenhouse
+,CHUAU-4,bed,Bed CHUAU-4 in CHUAU Greenhouse
+,CHUAU-5,bed,Bed CHUAU-5 in CHUAU Greenhouse
+D,field,Field D
+E,field,Field E
+F,field,Field F
+G,field,Field G
+GHANA,greenhouse,The GHANA Greenhouse
+,GHANA-1,bed,Bed GHANA-1 in GHANA Greenhouse
+,GHANA-2,bed,Bed GHANA-2 in GHANA Greenhouse
+,GHANA-3,bed,Bed GHANA-3 in GHANA Greenhouse
+,GHANA-4,bed,Bed GHANA-4 in GHANA Greenhouse
+H,field,Field H
+I,field,Field I
+J,field,Field J
+JASMINE,greenhouse,The JASMINE Greenhouse
+,JASMINE-1,bed,Bed JASMINE-1 in JASMINE Greenhouse
+,JASMINE-2,bed,Bed JASMINE-2 in JASMINE Greenhouse
+,JASMINE-3,bed,Bed JASMINE-3 in JASMINE Greenhouse
+,JASMINE-4,bed,Bed JASMINE-4 in JASMINE Greenhouse
+,JASMINE-5,bed,Bed JASMINE-5 in JASMINE Greenhouse
+,JASMINE-6,bed,Bed JASMINE-6 in JASMINE Greenhouse
+K,field,Field K
+L,field,Field L
+M,field,Field M
+N,field,Field N
+O,field,Field O
+ORION,greenhouse,The ORION Greenhouse
+,ORION-1,bed,Bed ORION-1 in ORION Greenhouse
+,ORION-2,bed,Bed ORION-2 in ORION Greenhouse
+,ORION-3,bed,Bed ORION-3 in ORION Greenhouse
+,ORION-4,bed,Bed ORION-4 in ORION Greenhouse
+,ORION-5,bed,Bed ORION-5 in ORION Greenhouse
+,ORION-6,bed,Bed ORION-6 in ORION Greenhouse
+P,field,Field P
+Q,field,Field Q
+R,field,Field R
+RSCH,field,Field used for research
+S,field,Field S
+SEEDING BENCH,greenhouse,Seeding table in the greenhouse.
+SQ1,field,Field SQ1
+SQ2,field,Field SQ2
+SQ3,field,Field SQ3
+SQ4,field,Field SQ4
+SQ5,field,Field SQ5
+SQ6,field,Field SQ6
+SQ7,field,Field SQ7
+SQ8,field,Field SQ8
+SQ9,field,Field SQ9
+S10,field,Field S10
+T,field,Field T
+TEACHING,field,Field used for TEACHING
+U,field,Field U
+V,field,Field V
+W,field,Field W
+X,field,Field X
+Y,field,Field Y
+Z,field,Field Z
