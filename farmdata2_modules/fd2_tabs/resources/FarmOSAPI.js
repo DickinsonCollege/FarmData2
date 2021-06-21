@@ -77,9 +77,9 @@ function deleteLog(url, deleteID, sessionToken) {
 }
 
 function modifyLog(url, id, updateObject, sessionToken){
-    url = url + logID
+    url = url + id
     axios
-        .put(url, logObject, {
+        .put(url, updateObject, { 
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRF-TOKEN' : sessionToken,

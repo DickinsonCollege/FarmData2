@@ -132,18 +132,17 @@ new Vue({
             console.log(jsonObject)
             let keys = Object.keys(jsonObject)
             for(i=0; i < keys.length; i++){
-                if(keys[i] = 'cool'){
-                    jsonObject['crop'] = jsonObject['cool']
-                    console.log('at crops')
+                if(keys[i] == 'cool'){
+                    this.testObject['crop'] = jsonObject['cool']
                 }
-                else if(keys[i] = 'works?'){
-                    jsonObject['field'] = jsonObject['works?']
+                else if(keys[i] == 'works?'){
+                    this.testObject['field'] = jsonObject['works?']
                 }
-                else if(keys[i] = 'hello'){
-                    jsonObject['date'] = jsonObject['hello']
+                else if(keys[i] == 'hello'){
+                    this.testObject['date'] = jsonObject['hello']
                 }
             }
-            this.testObject = Object.assign({}, jsonObject)
+            //this.testObject = Object.assign({}, jsonObject)
             /*for(i=0; i < this.testObjectArray.length; i++){
                 if(this.testObjectArray[i] === newObject.id){
                     this.testObjectArray.splice(i, 1, newObject)
