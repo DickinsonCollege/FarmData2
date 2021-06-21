@@ -8,11 +8,11 @@ let CustomTableComponent = {
                         </tr>
                         <tr data-cy="object-test" v-for="(row, index) in rows">
                             <td data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                <input data-cy="test-input" v-if="rowsToEdit.includes(index)" v-model="row.data[itemIndex]"></input><p v-if="!rowsToEdit.includes(index)">{{ item }}</p>
+                                <input data-cy="test-input" v-if="rowsToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowsToEdit==index)">{{ item }}</p>
                             </td>
                             <td v-if="canEdit"> 
-                                <button data-cy="edit-button" @click="editRow(index)" v-if="!rowsToEdit.includes(index)">Edit</button> 
-                                <button data-cy="save-button" v-if="rowsToEdit.includes(index)" @click="finishRowEdit(index, row.id)">Save</button>
+                                <button data-cy="edit-button" @click="editRow(index, row)" v-if="!(rowsToEdit==index)" :disabled="disableEdit">Edit</button> 
+                                <button data-cy="save-button" v-if="rowsToEdit==index" @click="finishRowEdit(row.id, row)">Save</button>
                             </td>
                             <td v-if="canDelete"> 
                                 <button data-cy="delete-button" @click="deleteRow(row.id)">Delete</button>
@@ -40,27 +40,49 @@ let CustomTableComponent = {
     },
     data() {
         return {
-            rowsToEdit: [],
+            rowsToEdit: null,
+            oldRow: {},
+            testIndex: null,
+            indexsToChange: [],
         }
     },
     methods: {
-        editRow: function(index){
-            this.rowsToEdit.push(index)
+        editRow: function(index, row){
+            this.oldRow = this.rows[index]
+            this.rowsToEdit = index
+            
+            //this.oldRow = row
         },
-        finishRowEdit: function(index, idToChange){
-            for(var i = 0; i < this.rowsToEdit.length; i++){
-                if(this.rowsToEdit[i] == index){
-                    this.rowsToEdit.splice(i, 1)
-                }
+        finishRowEdit: function(idToChange, row){
+            this.rowsToEdit = null
+            let jsonObject = {}
+            for(i=0; i < this.indexsToChange.length; i ++){
+                let key = this.headers[this.indexsToChange[i]]
+                jsonObject[key] = row.data[this.indexsToChange[i]]
             }
+            this.indexsToChange = []
             var row = this.rows.filter(obj => {
                 return obj.id === idToChange
             })
-            this.$emit('row-edited', row)
+            this.$emit('row-edited', jsonObject, idToChange)
         },
         deleteRow: function(id){
             this.$emit('row-deleted', id)
+        },
+        changedCell: function(itemIndex){
+            if(!this.indexsToChange.includes(itemIndex)){
+                this.indexsToChange.push(itemIndex)
+            }
         }
+    },
+    computed: {
+        disableEdit() {
+            if (this.rowsToEdit != null){
+                return true
+            }else{
+                return false
+            }
+        },
     },
 }
 
