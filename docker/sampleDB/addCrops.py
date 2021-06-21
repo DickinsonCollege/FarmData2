@@ -23,9 +23,9 @@ cropVocabID = response.json()['list'][0]['vid']
 def main():
     print("Adding Farm Crop Families...")
 
-    deleteCropFamilies()
     deleteCrops()
     deleteCrops() # call twice to delete parent crops.
+    deleteCropFamilies()
 
     familyWeight=1
     cropWeight=1
