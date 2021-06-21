@@ -4,7 +4,7 @@
 let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
             <label for="dropdownOptions"><slot>Select: </slot></label>
-            <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
+            <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @focusout="selectionChanged">
                 <option v-for="singleOption in fullDropdown" data-cy="single-option">{{ singleOption }}</option>
             </select>
         </div>`, 
@@ -25,9 +25,15 @@ let DropdownWithAllComponent = {
             selectedOption: this.defaultInput,
         }
     },
+    mounted() {
+        console.log("Just mounted")
+            this.selectionChanged();
+            console.log("Just passed selectionChanged after mount")
+    },
     methods: {
         selectionChanged: function() {
             this.$emit('selection-changed', this.selectedOption)
+            console.log("Just emitted selectionChanged")
         },
     },
     computed: {
