@@ -1,4 +1,19 @@
-# Comment?
+# Sample Data for the Farm Areas.
+#
+# Each line represents an area with the follwing comma delimited information:
+#   name,type,description
+#
+# A line beginning with a comma indicates a sub-area of the nearest 
+# area defined above.  See CHUAU and CHUAU-1, etc below for an 
+# example.
+#
+# The existing types of areas in farmOS are are:
+#   bed, building, greenhouse, paddock, field, landmark, water, property, other
+# Most commonly used are bed, greenhouse, fields
+#
+# Anything following a # on a line is a considered a comment.
+# Thus, names and descriptions cannot contain #
+# Blank Lines are ignored.
 
 A,field,Field A
 ALF,field,Field ALF
