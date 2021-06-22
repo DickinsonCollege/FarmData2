@@ -13,7 +13,6 @@ def decomment(csvfile):
         raw = row.split('#')[0].strip()
         if raw: yield raw
 
-
 def getAllPages(url, theList=[], page=0):
     # Note: Using page argument here because the next URL in the
     # response sometimes does not work (e.g. drops the .json from the
@@ -29,13 +28,13 @@ def getAllPages(url, theList=[], page=0):
         theList.extend(getAllPages(nextURL, theList, page+1))
         return theList
  
+# Get the ID of a specific vocabulary in the taxonomy.
 def getVocabularyID(vocab):
     response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=" + vocab, 
         auth=HTTPBasicAuth(user, passwd))
     vocabID = response.json()['list'][0]['vid']
 
     return vocabID
-
 
 # Get a list of crops. Create compund names for the ones with 
 # parents (e.g. LETTUCE-RED)

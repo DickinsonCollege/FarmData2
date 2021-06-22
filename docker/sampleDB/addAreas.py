@@ -11,8 +11,7 @@ from utils import *
 import sys
 
 # Get the id of the Farm Areas Vocabulary so we can add the areas to it.
-response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=farm_areas", auth=HTTPBasicAuth(user, passwd))
-areasVocabID = response.json()['list'][0]['vid']
+areasVocabID = getVocabularyID('farm_areas')
 
 def main():
     print("Adding Farm Areas...")

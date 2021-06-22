@@ -12,12 +12,10 @@ from utils import *
 import sys
 
 # Get the id of the Farm Crop Families Vocabulary so we can add the areas to it.
-response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=farm_crop_families", auth=HTTPBasicAuth(user, passwd))
-cropFamVocabID = response.json()['list'][0]['vid']
+cropFamVocabID = getVocabularyID("farm_crop_families")
 
 # Get the id of the Farm Crops Vocabulary so we can add the areas to it.
-response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=farm_crops", auth=HTTPBasicAuth(user, passwd))
-cropVocabID = response.json()['list'][0]['vid']
+cropVocabID = getVocabularyID("farm_crops")
 
 def main():
     print("Adding Farm Crop Families...")
