@@ -16,8 +16,8 @@ import sys
 logCatsVocabID = getVocabularyID('farm_log_categories')
 
 # Get lists of all of the recognized crops and fields for validation.
-cropList = getCropList()
-areaList = getAreaList()
+cropMap = getCropMap()
+areaMap = getAreaMap()
 
 def main():
     print("Adding Seedings...")
@@ -46,9 +46,9 @@ def addDirectSeedingData():
 
 def validateRow(line, row):
     crop = row[2]
-    validateCrop(line, crop, cropList)
-    field = row[3]
-    validateField(line, field, areaList)
+    validateCrop(line, crop, cropMap)
+    area = row[3]
+    validateArea(line, area, areaMap)
     
 def addPlanting(row):
    #print("Planting")
@@ -72,7 +72,6 @@ def deleteSeedingCategory(category):
             print("Deleted Log Category: " + catJson['name'] + " with id " + catID)
 
 def addSeedingCategory(category):
-
     # Get the id of the Planting Farm Log Category so that we can use it
     # as a parent for the Direct and Tray seedings.
     response = requests.get("http://localhost/taxonomy_term.json?name=Plantings", 

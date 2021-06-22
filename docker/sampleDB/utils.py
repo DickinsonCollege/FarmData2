@@ -13,6 +13,10 @@ def decomment(csvfile):
         raw = row.split('#')[0].strip()
         if raw: yield raw
 
+# Print the line to standard error.
+def errPrint(line):
+    print(line, file=sys.stderr)
+
 def getAllPages(url, theList=[], page=0):
     # Note: Using page argument here because the next URL in the
     # response sometimes does not work (e.g. drops the .json from the
@@ -36,63 +40,10 @@ def getVocabularyID(vocab):
 
     return vocabID
 
-# Get a list of crops. Create compund names for the ones with 
-# parents (e.g. LETTUCE-RED)
-def getCropList():
-    cropVocabID = getVocabularyID('farm_crops')
-    allCrops = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + cropVocabID)
-    cropList = []
 
-    for crop in allCrops:
-        name = crop['name']
-
-        if len(crop['parent']) != 0:
-            parent = crop['parent'][0]['name']
-            name = parent + "-" + name
-
-        cropList.append(name)
-
-    return cropList
-
-# Print the line to standard error.
-def errPrint(line):
-    print(line, file=sys.stderr)
-
-# Validate and possibly remap the field 
-def validateField(line, field, fieldList):
-    translations = {
-        #"Name in DB": "Correct Name"
-        "ALF 1": "ALF-1",
-        "ALF 2": "ALF-2",
-        "ALF 3": "ALF-3",
-        "ALF 4": "ALF-4",
-        "1-PASTURE": "PASTURE"
-    }
-
-    if field in fieldList:
-        return field
-    else:
-        if field in translations:
-            return translations[field]
-        else:
-            errPrint("Line " + str(line) + ": Error - field " + field + " is not in Farm Areas vocabulary.")
-            errPrint("  Add a translation for " + field + " in validateField in utils.py")
-            #sys.exit(-1)
-
-# Get a list of the Areas.
-def getAreaList():
-    areasVocabID = getVocabularyID('farm_areas')
-    allAreas = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + areasVocabID)
-    areaList = []
-
-    for area in allAreas:
-        name = area['name']
-        areaList.append(name)
-
-    return areaList
-
-# Validate and possibly remap the field 
-def validateCrop(line, crop, cropList):
+# Perform translations on crop names to clean up data so that
+# all crop names in the database are in the Farm Crops/Varieties vocabulary.
+def translateCrop(line, crop):
     translations = {
         #"Name in DB": "Correct Name"
         "CORN, DRY": "CORN-DRY",
@@ -108,12 +59,73 @@ def validateCrop(line, crop, cropList):
         "SWEET POTATO": "POTATO-SWEET",
     }
 
-    if crop in cropList:
+    if crop in translations:
+        return translations[crop]
+    else:
+        errPrint("Line " + str(line) + ": Error - crop " + crop + " is not in Farm Crops/Varities vocabulary.")
+        errPrint("  Add a translation for " + crop + " in translateCrop in utils.py")
+        sys.exit(-1)
+
+# Validate and possibly remap the crops 
+def validateCrop(line, crop, cropMap):
+    if crop in cropMap:
         return crop
     else:
-        if crop in translations:
-            return translations[crop]
-        else:
-            errPrint("Line " + str(line) + ": Error - crop " + crop + " is not in Farm Crops/Varities vocabulary.")
-            errPrint("  Add a translation for " + crop + " in validateCrop in utils.py")
-            #sys.exit(-1)
+        return translateCrop(line, crop)
+
+# Get a map from crop name to id. Create compund names for the ones with 
+# parents (e.g. LETTUCE-RED)
+def getCropMap():
+    cropVocabID = getVocabularyID('farm_crops')
+    allCrops = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + cropVocabID)
+    cropMap = {}
+
+    for crop in allCrops:
+        name = crop['name']
+
+        if len(crop['parent']) != 0:
+            parent = crop['parent'][0]['name']
+            name = parent + "-" + name
+
+        cropMap[name] = crop['tid']
+
+    return cropMap
+
+# Perform translations on area names to clean up data so that
+# all area names in the database are in the Farm Areas vocabulary.
+def translateArea(line, area):
+    translations = {
+        #"Name in DB": "Correct Name"
+        "ALF 1": "ALF-1",
+        "ALF 2": "ALF-2",
+        "ALF 3": "ALF-3",
+        "ALF 4": "ALF-4",
+        "1-PASTURE": "PASTURE"
+    }
+
+    if area in translations:
+        return translations[area]
+    else:
+        errPrint("Line " + str(line) + ": Error - area " + area + " is not in Farm Areas vocabulary.")
+        errPrint("  Add a translation for " + area + " in translateArea in utils.py")
+        sys.exit(-1)
+
+# Validate and possibly remap the area 
+def validateArea(line, area, areaMap):
+    if area in areaMap:
+        return area
+    else:
+        return translateArea(line, area)
+
+# Get a list of the Areas.
+def getAreaMap():
+    areasVocabID = getVocabularyID('farm_areas')
+    allAreas = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + areasVocabID)
+    areaMap = {}
+
+    for area in allAreas:
+        name = area['name']
+        areaMap[name] = area['tid']
+
+    return areaMap
+
