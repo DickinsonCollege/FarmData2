@@ -107,6 +107,7 @@ describe('API Request Function', () => {
                         "timestamp": "1526584271",
                     }
                 }
+
                 cy.request(req).as('created')
                 
                 logID = -1
@@ -115,27 +116,9 @@ describe('API Request Function', () => {
                     logID = response.body.id
                 })
 
-                req2 = {
-                    url: '/log.json?type=farm_observation',
-                    method: 'DELETE',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN' : token,
-                    },
-                    body: {
-                        "name": "heyyy",
-                        "type": "farm_observation",
-                        "timestamp": "1526584271",
-                    }
-                }
-                cy.request(req2).as('deleted')
-
                 deleteLog('/log.json?type=farm_observation', logID, token)
                 .then((response) => {
                     console.log(response)
-                })
-
-                cy.get('@deleted').should((response) => {
                     expect(response.status).to.equal(200)
                 })
             })
