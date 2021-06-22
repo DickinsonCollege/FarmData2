@@ -64,16 +64,23 @@ function deleteLog(url, deleteID, sessionToken) {
     // use that in any requests that modify the database 
     // (i.e. PUT, POST, DELETE).
     //let id = parseInt(deleteID)
-    url = url + deleteID
-    axios
-        .delete(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
-            }
-        })
-        .then(response => console.log(response))
-        .catch(error => console.log(error))
+    return new Promise((resolve, reject) => {
+        url = url + deleteID
+        axios
+            .delete(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : sessionToken,
+                }
+            })
+            
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
 }
 
 function modifyLog(url, id, updateObject, sessionToken){

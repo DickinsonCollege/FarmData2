@@ -1,6 +1,7 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
 var getSessionToken = FarmOSAPI.getSessionToken
+var deleteLog = FarmOSAPI.deleteLog
 
 describe('API Request Function', () => {
     var testArray
@@ -89,67 +90,59 @@ describe('API Request Function', () => {
 
     context('delete function', () => {
         it.only('deletes a log based on log ID', () => {
-            cy.intercept("POST","/log.json?type=farm_observation").as('create')
-
             getSessionToken()
             .then(function(token) {
-                console.log(token)
+                console.log('making log')
 
-
-
-                logObject = {
-                    "name": "heyyy",
-                    "type": "farm_observation",
-                    "timestamp": "1526584271",
-                }
-                let url = '/log.json?type=farm_observation'
-
-                axios
-                    .post(url, logObject, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRF-TOKEN' : token,
-                        }
-                    })
-
-                cy.wait('@create').then((interception) => {
-                    console.log('in create intercept')
-                    assert.isNotNull(interception.response.body, '1st API call has data')
-                })
-
-                //.should(() => {
-                //    console.log('should on create')
-                    //cy.wrap(testArray).should('have.length.gt',0)
-                //})
-
-                
-            })
-            .then(response => {
-                console.log(response)
-                
-            })
-
-            /*sessionToken = null
-            getSessionToken().then(token => {
-                sessionToken = token
-            })
-
-            logObject = {
-                "name": "heyyy",
-                "type": "farm_observation",
-                "timestamp": "1526584271",
-            }
-            let url = '/log.json?type=farm_observation'
-
-            axios
-                .post(url, logObject, {
+                req = {
+                    url: '/log.json?type=farm_observation',
+                    method: 'POST',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN' : sessionToken,
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "heyyy",
+                        "type": "farm_observation",
+                        "timestamp": "1526584271",
                     }
+                }
+                cy.request(req).as('created')
+                
+                logID = -1
+                cy.get('@created').should((response) => {
+                    expect(response.status).to.equal(201)
+                    logID = response.body.id
                 })
-                .then(response => console.log(response))
-                .catch(error => console.log(error))*/
+
+                req2 = {
+                    url: '/log.json?type=farm_observation',
+                    method: 'DELETE',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "heyyy",
+                        "type": "farm_observation",
+                        "timestamp": "1526584271",
+                    }
+                }
+                cy.request(req2).as('deleted')
+
+                deleteLog('/log.json?type=farm_observation', logID, token)
+                .then((response) => {
+                    console.log(response)
+                })
+
+                cy.get('@deleted').should((response) => {
+                    expect(response.status).to.equal(200)
+                })
+            })
+            .then(function(response) {
+                
+                console.log("delete done")
+            })
         })
     })
     
