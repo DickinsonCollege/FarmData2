@@ -16,9 +16,7 @@ areasVocabID = response.json()['list'][0]['vid']
 
 def main():
     print("Adding Farm Areas...")
-    # Delete any areas that exist in the database.
-    # Call twice because delete of parent areas fail until children are deleted.
-    deleteAllAreas()
+
     deleteAllAreas()
 
     # Add all of the areas indicated in the sampleData/areas.csv file.
@@ -36,16 +34,21 @@ def main():
     print("Farm Areas added.")
 
 def deleteAllAreas(): 
-    response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_areas", 
-        auth=HTTPBasicAuth(user, passwd))
-    areasJson = response.json()
-    for area in areasJson['list']:
-        areaID = area['tid']
-        response = requests.delete("http://localhost/taxonomy_term/" + areaID, 
-            auth=HTTPBasicAuth(user, passwd))
+    areasExist = True
 
-        if(response.status_code == 200):
-            print("Deleted: " + area['area_type'] + " " + area['name'] + " with id " + areaID)
+    while areasExist:
+        response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_areas", 
+            auth=HTTPBasicAuth(user, passwd))
+        areasJson = response.json()
+        areasExist = (len(areasJson['list']) > 0)
+        
+        for area in areasJson['list']:
+            areaID = area['tid']
+            response = requests.delete("http://localhost/taxonomy_term/" + areaID, 
+                auth=HTTPBasicAuth(user, passwd))
+
+            if(response.status_code == 200):
+                print("Deleted: " + area['area_type'] + " " + area['name'] + " with id " + areaID)
 
 def addParentArea(row, weight):
     area = {
