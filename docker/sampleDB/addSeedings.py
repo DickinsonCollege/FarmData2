@@ -12,13 +12,12 @@ from csv import reader
 from utils import *
 import sys
 
-# Get the id of the Farm Log Categories Vocabulary so we can add
-# Direct and Tray seedings.
-response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=farm_log_categories", 
-    auth=HTTPBasicAuth(user, passwd))
-logCatsVocabID = response.json()['list'][0]['vid']
+# Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
+logCatsVocabID = getVocabularyID('farm_log_categories')
 
-
+# Get lists of all of the recognized crops and fields for validation.
+cropList = getCropList()
+areaList = getAreaList()
 
 def main():
     print("Adding Seedings...")
@@ -29,9 +28,35 @@ def main():
     directSeedingCatID = addSeedingCategory("Direct Seedings")
     traySeedingCatID = addSeedingCategory("Tray Seedings")
 
+    # Add the Seeding Data
+    addDirectSeedingData()
 
 
     print("Seedings added.")
+
+def addDirectSeedingData():
+    with open('sampleData/directSeeding.csv', 'r') as dsFile:
+        ds_reader = reader(decomment(dsFile))
+        line=1
+        for row in ds_reader:
+            validateRow(line, row)
+            addPlanting(row)
+            addSeeding(row)
+            line+=1
+
+def validateRow(line, row):
+    crop = row[2]
+    validateCrop(line, crop, cropList)
+    field = row[3]
+    validateField(line, field, areaList)
+    
+def addPlanting(row):
+   #print("Planting")
+   return
+
+def addSeeding(row):
+    #print("Seeding")
+    return
 
 def deleteSeedingCategory(category): 
     response = requests.get("http://localhost/taxonomy_term.json?&name=" + category
