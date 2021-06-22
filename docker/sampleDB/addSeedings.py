@@ -28,6 +28,10 @@ def main():
     directSeedingCatID = addSeedingCategory("Direct Seedings")
     traySeedingCatID = addSeedingCategory("Tray Seedings")
 
+    # Delete any Plantings or Seedings that exist.
+    deleteAllAssets('http://localhost/farm_asset.json?type=planting')
+    
+
     # Add the Seeding Data
     addDirectSeedingData()
 
@@ -40,21 +44,42 @@ def addDirectSeedingData():
         line=1
         for row in ds_reader:
             validateRow(line, row)
-            addPlanting(row)
-            addSeeding(row)
+            plantingID = addPlanting(row)
+            addSeeding(row, plantingID)
             line+=1
 
 def validateRow(line, row):
     crop = row[2]
-    validateCrop(line, crop, cropMap)
+    row[2] = validateCrop(line, crop, cropMap)
     area = row[3]
-    validateArea(line, area, areaMap)
+    row[3] = validateArea(line, area, areaMap)
     
 def addPlanting(row):
-   #print("Planting")
-   return
+    planting = {
+        "name": row[1] + " " + row[2] + " " + row[3],
+        "type": "planting",
+        "crop": [{
+            "id": cropMap[row[2]],
+            "resource": "taxonomy_term"
+        }],
+        "uid": {
+            "id": 7,
+            "resource": "user"
+        }
+    }
 
-def addSeeding(row):
+    response = requests.post('http://localhost/farm_asset', 
+        json=planting, auth=HTTPBasicAuth(user, passwd))
+
+    if(response.status_code == 201):
+        plantingID = response.json()['id']
+        print("Created Planting: " + planting['name'] + " with id " + plantingID)
+        return plantingID
+    else:
+        print("Error Creating Planting: " + planting['name'])
+        sys.exit(-1)
+
+def addSeeding(row, plantingID):
     #print("Seeding")
     return
 

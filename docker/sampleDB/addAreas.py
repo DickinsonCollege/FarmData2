@@ -65,7 +65,7 @@ def addParentArea(row, weight):
         print("Created Parent Area: " + area['area_type'] + " " + area['name'] + " with id " + areaID)
         return areaID
     else:
-        print("Error Creating: " + area['area_type'] + " " + area['name'])
+        print("Error Creating Parent Area: " + area['area_type'] + " " + area['name'])
         sys.exit(-1)
 
 def addChildArea(row, parentID, weight):

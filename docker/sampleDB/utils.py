@@ -40,6 +40,21 @@ def getVocabularyID(vocab):
 
     return vocabID
 
+# Delete all of the assets returned by the url.
+def deleteAllAssets(url):
+    moreExist = True
+
+    while moreExist:
+        assets = getAllPages(url)
+        moreExist = (len(assets) > 0)
+        
+        for asset in assets:
+            assetID = asset['id']
+            response = requests.delete("http://localhost/farm_asset/" + assetID, 
+                auth=HTTPBasicAuth(user, passwd))
+
+            if(response.status_code == 200):
+                print("Deleted Asset: " + asset['name'] + " with id " + assetID)
 
 # Perform translations on crop names to clean up data so that
 # all crop names in the database are in the Farm Crops/Varieties vocabulary.
@@ -50,8 +65,8 @@ def translateCrop(line, crop):
         "CORN, SWEET": "CORN-SWEET",
         "GARLIC, GREEN": "GARLIC-GREEN",
         "GREENS, MES MIX": "LETTUCE-MES MIX",
-        "HERB - CILANTRO": "HERB-CILANTRO",
-        "HERB - DILL": "HERB-DILL",
+        "HERB - CILANTRO": "CILANTRO",
+        "HERB - DILL": "DILL",
         "LETTUCE, MES MIX": "LETTUCE-MES MIX",
         "ONION SPRING": "ONION-SPRING",
         "PEA, SNAP": "PEA-SNAP",
