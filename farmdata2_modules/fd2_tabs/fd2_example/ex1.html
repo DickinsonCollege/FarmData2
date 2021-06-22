@@ -44,6 +44,8 @@
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
     <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
+
+    <button @click="getCropMap">Get Crop Map</button>
 </div>
 
 <script>
@@ -81,6 +83,8 @@ new Vue({
             {id: 12,
             data: [12, 12, 'answome12'],},
         ],
+        testCropMap: new Map,
+        testField: [],
     },
     created() {
         axios
@@ -89,6 +93,7 @@ new Vue({
             this.fieldList = response.data.list.map(
                 function(f) { return f.name }
             );
+            this.testField = response
             this.fieldList.sort();
         })
         .catch(error => {
@@ -162,8 +167,20 @@ new Vue({
                             }
                         })
                 })
-                .then(response => console.log(response))
-                .catch(error => console.log(error))
+        },
+        getCropMap(){
+            getCropMap().then((response) => {
+                this.testCropMap = response
+                console.log(this.testCropMap)
+            })
+            getFieldMap().then((response) => {
+                console.log(response)
+            })
+            getUserMap().then((response) => {
+                console.log(response)
+            })
+            //this.testCropMap = cropMap()
+            
         }
     },
     computed: {

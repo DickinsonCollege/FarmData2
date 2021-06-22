@@ -42,9 +42,42 @@ function getAllPages(url, arr) {
     })
 }
 
+function getCropMap(){
+    return getMap('/farm_asset.json?type=planting', 'id')
+}
+
+function getFieldMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid')
+}
+
+function getUserMap(){
+    return getMap('/user', 'uid')
+}
+
+function getMap(url, findID){
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then(function(response) {
+                console.log(response)
+                return response.data.list
+            })
+            .then(function(list) {
+                resolve(new Map(list.map(h => 
+                    [h[findID], h.name]
+                )))
+            })
+            .catch(function(error) {
+                reject(error)
+            })
+    })
+}
+
 try {
     module.exports = {
-        getAllPages: getAllPages
+        getAllPages: getAllPages,
+        getCropMap: getCropMap,
+        getFieldMap: getFieldMap,
+        getUserMap: getUserMap
     }
 }
 catch {}
