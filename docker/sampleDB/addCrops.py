@@ -23,7 +23,6 @@ def main():
     print("Adding Farm Crop Families...")
 
     deleteCrops()
-    deleteCrops() # call twice to delete parent crops.
     deleteCropFamilies()
 
     familyWeight=1
@@ -45,16 +44,21 @@ def main():
     print("Farm Crop Families added.")
 
 def deleteCropFamilies():
-    response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_crop_families", 
-        auth=HTTPBasicAuth(user, passwd))
-    familiesJson = response.json()
-    for family in familiesJson['list']:
-        familyID = family['tid']
-        response = requests.delete("http://localhost/taxonomy_term/" + familyID, 
-            auth=HTTPBasicAuth(user, passwd))
+    familiesExist = True
 
-        if(response.status_code == 200):
-            print("Deleted Crop Family: " + family['name'] + " with id " + familyID)
+    while familiesExist:
+        response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_crop_families", 
+            auth=HTTPBasicAuth(user, passwd))
+        familiesJson = response.json()
+        familiesExist = (len(familiesJson['list']) > 0)
+
+        for family in familiesJson['list']:
+            familyID = family['tid']
+            response = requests.delete("http://localhost/taxonomy_term/" + familyID, 
+                auth=HTTPBasicAuth(user, passwd))
+
+            if(response.status_code == 200):
+                print("Deleted Crop Family: " + family['name'] + " with id " + familyID)
 
 def addCropFamily(row, familyWeight):
     family = {
@@ -75,16 +79,20 @@ def addCropFamily(row, familyWeight):
         sys.exit(-1)
 
 def deleteCrops():
-    response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_crops", 
-        auth=HTTPBasicAuth(user, passwd))
-    cropsJson = response.json()
-    for crop in cropsJson['list']:
-        cropID = crop['tid']
-        response = requests.delete("http://localhost/taxonomy_term/" + cropID, 
+    cropsExist = True
+    while cropsExist:
+        response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_crops", 
             auth=HTTPBasicAuth(user, passwd))
+        cropsJson = response.json()
+        cropsExist = (len(cropsJson['list']) > 0)
 
-        if(response.status_code == 200):
-            print("Deleted Crop: " + crop['name'] + " with id " + cropID)
+        for crop in cropsJson['list']:
+            cropID = crop['tid']
+            response = requests.delete("http://localhost/taxonomy_term/" + cropID, 
+                auth=HTTPBasicAuth(user, passwd))
+
+            if(response.status_code == 200):
+                print("Deleted Crop: " + crop['name'] + " with id " + cropID)
 
 def addParentCrop(row, familyID, cropWeight):
     crop = {
