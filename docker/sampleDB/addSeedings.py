@@ -15,9 +15,10 @@ import sys
 # Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
 logCatsVocabID = getVocabularyID('farm_log_categories')
 
-# Get lists of all of the recognized crops and fields for validation.
+# Get lists of all of the recognized crops, fields and users for validation.
 cropMap = getCropMap()
 areaMap = getAreaMap()
+userMap = getUserMap()
 
 def main():
     print("Adding Seedings...")
@@ -53,6 +54,8 @@ def validateRow(line, row):
     row[2] = validateCrop(line, crop, cropMap)
     area = row[3]
     row[3] = validateArea(line, area, areaMap)
+    user = row[11]
+    row[11] = validateUser(line, user, userMap)
     
 def addPlanting(row):
     planting = {
@@ -63,7 +66,7 @@ def addPlanting(row):
             "resource": "taxonomy_term"
         }],
         "uid": {
-            "id": 7,
+            "id": userMap[row[11]],
             "resource": "user"
         }
     }
@@ -80,7 +83,6 @@ def addPlanting(row):
         sys.exit(-1)
 
 def addSeeding(row, plantingID):
-    #print("Seeding")
     return
 
 def deleteSeedingCategory(category): 
@@ -101,13 +103,13 @@ def addSeedingCategory(category):
     # as a parent for the Direct and Tray seedings.
     response = requests.get("http://localhost/taxonomy_term.json?name=Plantings", 
         auth=HTTPBasicAuth(user, passwd))
-    plantingCatVocabID = response.json()['list'][0]['tid']
+    plantingsID = response.json()['list'][0]['tid']
 
     cat = {
         "name": category,
         "vocabulary": logCatsVocabID,
         "parent": [{
-            "id": plantingCatVocabID,
+            "id": plantingsID,
             "resource": "taxonomy_term"
         }],
     }

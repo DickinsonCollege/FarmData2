@@ -132,7 +132,7 @@ def validateArea(line, area, areaMap):
     else:
         return translateArea(line, area)
 
-# Get a list of the Areas.
+# Get a map of the Areas that maps from name to id.
 def getAreaMap():
     areasVocabID = getVocabularyID('farm_areas')
     allAreas = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + areasVocabID)
@@ -144,3 +144,41 @@ def getAreaMap():
 
     return areaMap
 
+# Perform translations on user names to anonymize the data.
+def translateUser(line, user):
+    translations = {
+        #"Name in DB": "Correct Name"
+        "halpinj": "manager1",
+        "steimanm": "manager2",
+        "wolfje": "worker1",
+        "horowitk": "worker2",
+        "hutchinl": "worker3",
+        "nelsonw": "worker4",
+        "ryanv": "worker5",
+        "wolfje": "worker1",
+    }
+
+    if user in translations:
+        return translations[user]
+    else:
+        errPrint("Line " + str(line) + ": Error - user " + user + " is not a known user.")
+        errPrint("  Add a translation for " + user + " in translateUser in utils.py")
+        sys.exit(-1)
+
+# Validate and possibly remap the users 
+def validateUser(line, user, userMap):
+    if user in userMap:
+        return user
+    else:
+        return translateUser(line, user)
+
+# Get a map of users from name to id.
+def getUserMap():
+    allUsers = getAllPages("http://localhost/user.json")
+    userMap = {}
+
+    for user in allUsers:
+        name = user['name']
+        userMap[name] = user['uid']
+
+    return userMap
