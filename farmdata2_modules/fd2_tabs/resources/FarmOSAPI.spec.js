@@ -80,6 +80,77 @@ describe('API Request Function', () => {
                 expect(token).to.not.be.null
             })
         })
+        it('returns a token of length 43', () => {
+            getSessionToken().then(token => {
+                expect(token.length).to.equal(43)
+            })
+        })
+    })
+
+    context('delete function', () => {
+        it.only('deletes a log based on log ID', () => {
+            cy.intercept("POST","/log.json?type=farm_observation").as('create')
+
+            getSessionToken()
+            .then(function(token) {
+                console.log(token)
+
+
+
+                logObject = {
+                    "name": "heyyy",
+                    "type": "farm_observation",
+                    "timestamp": "1526584271",
+                }
+                let url = '/log.json?type=farm_observation'
+
+                axios
+                    .post(url, logObject, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN' : token,
+                        }
+                    })
+
+                cy.wait('@create').then((interception) => {
+                    console.log('in create intercept')
+                    assert.isNotNull(interception.response.body, '1st API call has data')
+                })
+
+                //.should(() => {
+                //    console.log('should on create')
+                    //cy.wrap(testArray).should('have.length.gt',0)
+                //})
+
+                
+            })
+            .then(response => {
+                console.log(response)
+                
+            })
+
+            /*sessionToken = null
+            getSessionToken().then(token => {
+                sessionToken = token
+            })
+
+            logObject = {
+                "name": "heyyy",
+                "type": "farm_observation",
+                "timestamp": "1526584271",
+            }
+            let url = '/log.json?type=farm_observation'
+
+            axios
+                .post(url, logObject, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : sessionToken,
+                    }
+                })
+                .then(response => console.log(response))
+                .catch(error => console.log(error))*/
+        })
     })
     
 })
