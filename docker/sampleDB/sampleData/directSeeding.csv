@@ -17,472 +17,243 @@
 # 12 "annual"
 # 13 "lastHarvest"
 
-1368	1/1/19	GARLIC	ALF 4	6300	3	18900	18	0.0166667	6 BEDS IN A4;Seed Code: N/A (No Variety) - 6300.0 bed feet	1	wolfje	1	12/31/19
-
-1369	1/1/19	GARLIC	ALF 2	2100	3	6300	6	0.0166667	 2BEDS IN A2;Seed Code: N/A (No Variety) - 2100.0 bed feet	1	wolfje	1	12/31/19
-
-1266	2/4/19	RADISH	CHUAU-2	35	3	105	0.397727273	0.0166667	Seed Code: RH-19-1-UT (NELSON) - 35.0 bed feet	1	halpinj	1	12/31/19
-
-1267	2/13/19	ARUGULA	A	100	1	100	0.235294118	0.0166667	test;Seed Code: N/A (No Variety) - 100.0 bed feet	1	steimanm	1	12/31/19
-
-1269	2/13/19	CARROT	CHUAU-3	84	4	336	1	1	Seed Code: CT-19-1-OG (YAYA) - 84.0 bed feet	1	nelsonw	1	12/31/19
-
-1270	2/13/19	CARROT	CHUAU-3	84	4	336	1	1	Seed Code: CT-19-1-OG (YAYA) - 84.0 bed feet	1	nelsonw	1	12/31/19
-
-1268	2/21/19	ARUGULA	1-PASTURE	100	1	100	1	0.0166667	Test;Seed Code: N/A (No Variety) - 100.0 bed feet	1	steimanm	1	12/31/19
-
-1405	3/25/19	HERB - CILANTRO	GHANA-1	15	3	45	0.15625	0.116667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 50.0 bed feet	1	ryanv	1	12/31/19
-
-1407	3/25/19	LETTUCE, MES MIX	GHANA-3	88	3	264	1	0.0166667	Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet	1	ryanv	1	12/31/19
-
-1408	3/25/19	SPINACH	GHANA-2	86	3	258	0.977272727	0.0166667	Seed Code: SH-19-3-UT (SPACE) - 86.0 bed feet	1	ryanv	1	12/31/19
-
-1409	3/25/19	ONION SPRING	CHUAU-2	10	9	90	0.113636364	0.0166667	Seed Code: OG-19-1-OG (RED LONG OF TROPEA) - 10.0 bed feet	1	ryanv	1	12/31/19
-
-1406	4/1/19	RADISH	GHANA-2	100	5	500	1.136363636	0.0166667	Seed Code: RH-19-2-UT (NERO TONDO) - 100.0 bed feet	1	ryanv	1	12/31/19
-
-1271	4/3/19	PEA, SNAP	T	200	2	400	1.282051282	1	Seed Code: PP-18-1-UT (SUPER SUGAR SNAP) - 100.0 bed feet;Seed Code: PP-19-1-UT (SUPER SUGAR SNAP) - 100.0 bed feet	1	nelsonw	1	12/31/19
-
-1272	4/4/19	BEET	T	125	3	375	0.801282051	0.333333	Seed Code: BT-18-2-OG (EARLY WONDER) - 90.0 bed feet;Seed Code: BT-19-3-OG (EARLY WONDER) - 35.0 bed feet	1	nelsonw	1	12/31/19
-
-1273	4/4/19	CARROT	T	263	3	789	1.685897436	0.416667	Seed Code: CT-19-1-OG (YAYA) - 263.0 bed feet	1	nelsonw	1	12/31/19
-
-1274	4/12/19	LETTUCE, MES MIX	T	100	3	300	0.641025641	0.25	Mixed Varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 50.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 50.0 bed feet	1	nelsonw	1	12/31/19
-
-1275	4/12/19	SPINACH	T	115	3	345	0.737179487	0.25	Seed Code: SH-19-3-UT (SPACE) - 115.0 bed feet	1	nelsonw	1	12/31/19
-
-1276	4/12/19	TURNIP	T	50	3	150	0.320512821	0.0833333	Seed Code: TP-18-2-UT (HAKUREI) - 50.0 bed feet	1	nelsonw	1	12/31/19
-
-1277	4/12/19	LETTUCE, MES MIX	JASMINE-5	88	5	440	1	0.25	Mixed Varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 44.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 44.0 bed feet	1	nelsonw	1	12/31/19
-
-1278	4/12/19	SPINACH	JASMINE-4	88	3	264	1	0.166667	Seed Code: SH-19-3-UT (SPACE) - 88.0 bed feet	1	nelsonw	1	12/31/19
-
-1279	4/12/19	HERB - DILL	GHANA-3	14	5	70	0.159090909	0.0833333	Seed Code: HL-19-1-OG (BOUQUET) - 14.0 bed feet	1	nelsonw	1	12/31/19
-
-1280	4/12/19	TURNIP	CHUAU-1	30	3	90	0.326086957	0.166667	Seed Code: TP-18-2-UT (HAKUREI) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1281	4/19/19	LETTUCE, MES MIX	JASMINE-3	40	5	200	0.454545455	0.166667	Mixed varieties;Seed Code: LX-17-3-UT (TANGO) - 20.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 20.0 bed feet	1	nelsonw	1	12/31/19
-
-1282	4/19/19	RADISH	JASMINE-3	20	5	100	0.227272727	0.166667	"3 rows nelson;
-3 rows pink beauty;Seed Code: RH-19-1-UT (NELSON) - 10.0 bed feet;Seed Code: RH-18-4-OG (PINK BEAUTY) - 10.0 bed feet"	1	nelsonw	1	12/31/19
-
-1283	4/19/19	HERB - CILANTRO	JASMINE-3	12	5	60	0.136363636	0.0833333	Seed Code: HO-16-1-OG (DCF CILANTRO) - 12.0 bed feet	1	nelsonw	1	12/31/19
-
-1284	4/19/19	HERB - DILL	JASMINE-3	12	5	60	0.136363636	0.0833333	Seed Code: HL-19-1-OG (BOUQUET) - 12.0 bed feet	1	nelsonw	1	12/31/19
-
-1285	4/23/19	SPINACH	GHANA-4	82	3	246	0.854166667	0.166667	Seed Code: SH-19-3-UT (SPACE) - 82.0 bed feet	1	nelsonw	1	12/31/19
-
-1286	4/23/19	PEA, SNAP	S	200	2	400	0.904977376	0.0166667	Seed Code: PP-17-1-OG (SUGAR SNAP) - 200.0 bed feet	1	nelsonw	1	12/31/19
-
-1287	4/23/19	BEET	S	150	3	450	0.678733032	0.0166667	Seed Code: BT-19-3-OG (EARLY WONDER) - 150.0 bed feet	1	nelsonw	1	12/31/19
-
-1288	4/23/19	CARROT	S	250	3	750	1.131221719	0.0166667	Seed Code: CT-19-1-OG (YAYA) - 250.0 bed feet	1	nelsonw	1	12/31/19
-
-1289	4/23/19	LETTUCE, MES MIX	S	125	3	375	0.56561086	0.0166667	Mixed varieties ;Seed Code: LX-18-3-UT (TANGO) - 62.5 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 62.5 bed feet	1	nelsonw	1	12/31/19
-
-1290	4/23/19	ONION SPRING	GHANA-4	10	1	10	0.104166667	0.5	Seed Code: N/A (No Variety) - 10.0 bed feet	1	nelsonw	1	12/31/19
-
-1295	5/1/19	PEA, SNAP	T	250	1	250	1.602564103	0.166667	reseeded snap pea 1 due to low germination and sheep damage;Seed Code: PP-17-1-OG (SUGAR SNAP) - 250.0 bed feet	1	nelsonw	1	12/31/19
-
-1366	5/1/19	POTATO	U	1900	1	1900	4.98687664	0.0666667	Field U:;First two and a half rows (half row from eastern side) southern rows are russet ;Row 2.5 to 5 are leftover from last years harvest;Seed Code: N/A (No Variety) - 1.0 bed feet	1	horowitk	1	12/31/19
-
-1291	5/2/19	SPINACH	P	135	3	405	0.661764706	0.166667	Seed Code: SH-19-3-UT (SPACE) - 135.0 bed feet	1	nelsonw	1	12/31/19
-
-1292	5/2/19	RADISH	P	25	3	75	0.12254902	0.0833333	Seed Code: RH-18-4-OG (PINK BEAUTY) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1293	5/2/19	HERB - CILANTRO	P	18	3	54	0.088235294	0.0833333	Seed Code: HO-17-1-OG (DCF CILANTRO) - 18.0 bed feet	1	nelsonw	1	12/31/19
-
-1294	5/2/19	HERB - DILL	P	18	3	54	0.088235294	0.0833333	Seed Code: HL-19-1-OG (BOUQUET) - 18.0 bed feet	1	nelsonw	1	12/31/19
-
-1350	5/2/19	POTATO	Q	3420	1	3420	8.952879581	0.0166667	pls update - not sure what varieties/bed feet was.. JH;Seed Code: N/A (No Variety) - 3040.0 bed feet	1	halpinj	1	12/31/19
-
-1296	5/7/19	LETTUCE, MES MIX	O	123	3	369	0.661290323	0.166667	Mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 41.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 41.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 41.0 bed feet	1	nelsonw	1	12/31/19
-
-1297	5/7/19	TURNIP	O	60	3	180	0.322580645	0.166667	Seed Code: TP-18-2-UT (HAKUREI) - 60.0 bed feet	1	nelsonw	1	12/31/19
-
-1298	5/7/19	BEET	O	185	3	555	0.994623656	0.166667	Seed Code: BT-19-1-OG (DETROIT DARK RED) - 185.0 bed feet	1	nelsonw	1	12/31/19
-
-1299	5/7/19	CARROT	O	280	3	840	1.505376344	0.166667	Seed Code: CT-18-2-UT (HERCULES) - 280.0 bed feet	1	nelsonw	1	12/31/19
-
-1300	5/7/19	BEAN	O	90	2	180	0.483870968	0.166667	Seed Code: BN-18-3-OG (E-Z PICK) - 30.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1301	5/22/19	SPINACH	N	135	3	405	0.870967742	0.166667	Seed Code: SH-18-1-UT (SPACE) - 135.0 bed feet	1	nelsonw	1	12/31/19
-
-1302	5/22/19	HERB - CILANTRO	N	20	3	60	0.129032258	0.0833333	Seed Code: HO-17-1-OG (DCF CILANTRO) - 20.0 bed feet	1	nelsonw	1	12/31/19
-
-1303	5/22/19	HERB - DILL	N	20	1	20	0.129032258	0.0833333	Seed Code: HL-19-1-OG (BOUQUET) - 20.0 bed feet	1	nelsonw	1	12/31/19
-
-1304	5/22/19	LETTUCE, MES MIX	N	144	3	432	0.929032258	0.166667	mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 48.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 48.0 bed feet;Seed Code: LX-18-4-OG (FLASHY TROUT) - 48.0 bed feet	1	nelsonw	1	12/31/19
-
-1305	5/22/19	RADISH	N	30	3	90	0.193548387	0.0833333	Seed Code: RH-18-4-OG (PINK BEAUTY) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1306	5/22/19	BEET	N	175	3	525	1.129032258	0.25	Seed Code: BT-19-1-OG (DETROIT DARK RED) - 175.0 bed feet	1	nelsonw	1	12/31/19
-
-1307	5/22/19	CARROT	N	265	3	795	1.709677419	0.166667	Seed Code: CT-18-1-UT (ROMANCE) - 265.0 bed feet	1	nelsonw	1	12/31/19
-
-1308	5/22/19	BEAN	N	90	2	180	0.580645161	0.166667	Seed Code: BN-18-3-OG (E-Z PICK) - 30.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1309	5/22/19	CORN, SWEET	U	400	2	800	1.049868766	0.166667	Seed Code: CT-19-3-OG (NATURAL SWEET XR) - 400.0 bed feet	1	nelsonw	1	12/31/19
-
-1310	5/26/19	CORN, SWEET	U	400	2	800	1.049868766	0.25	Seed Code: CT-19-3-OG (NATURAL SWEET XR) - 400.0 bed feet	1	nelsonw	1	12/31/19
-
-1312	5/27/19	CARROT	O	275	3	825	1.478494624	0.166667	Reseeded carrots due to poor germination ;Seed Code: CT-19-4-UT (ROMANCE) - 275.0 bed feet	1	nelsonw	1	12/31/19
-
-1313	5/27/19	BEAN	O	90	2	180	0.483870968	0.166667	Reseeded due to poor germination ;Seed Code: BN-18-3-OG (E-Z PICK) - 30.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1311	5/29/19	SWEET POTATO	V	1000	1	1000	3.731343284	6	1000 ft of Beauregard sweet potato  ;Seed Code: N/A (No Variety) - 1000.0 bed feet	1	nelsonw	1	12/31/19
-
-1314	5/30/19	SWEET POTATO	V	230	2	460	0.858208955	3.33333	Murasaki 500 plants;Seed Code: N/A (No Variety) - 230.0 bed feet	1	nelsonw	1	12/31/19
-
-1315	6/4/19	CARROT	L	250	3	750	0.871080139	0.333333	Planet Jr. Seed Plate 13;Seed Code: CT-19-4-UT (ROMANCE) - 250.0 bed feet	1	nelsonw	1	12/31/19
-
-1316	6/4/19	BEET	L	180	3	540	0.6271777	0.25	Planet Jr. Seed Plate 21;Seed Code: BT-19-1-OG (DETROIT DARK RED) - 180.0 bed feet	1	nelsonw	1	12/31/19
-
-1317	6/4/19	PARSNIP	L	500	3	1500	1.742160279	0.5	Planet Jr. Seed Plate 26;Seed Code: PP-19-1-OG (WHITE SPEAR) - 500.0 bed feet	1	nelsonw	1	12/31/19
-
-1318	6/5/19	BEAN	L	105	3	315	0.365853659	0.25	Planet Jr. Seed Plate 36;Seed Code: BN-19-2-OG (E-Z PICK) - 35.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 35.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet	1	nelsonw	1	12/31/19
-
-1319	6/5/19	LETTUCE, MES MIX	L	126	3	378	0.43902439	0.166667	"Mix of all varieties ;
-Planet Jr. Seed Plate 11;Seed Code: LX-17-3-UT (TANGO) - 42.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 42.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 42.0 bed feet"	1	nelsonw	1	12/31/19
-
-1320	6/5/19	RADISH	L	25	3	75	0.087108014	0.0833333	Planet Jr. Seed Plate 9;Seed Code: RH-18-1-OG (RUDOLF) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1321	6/5/19	CORN, SWEET	U	750	2	1500	1.968503937	0.333333	"Reseeded Sweet Corn 1/2;
-Planet Jr. Seed Plate 35;Seed Code: CT-19-1-UT (BODACIOUS) - 750.0 bed feet"	1	nelsonw	1	12/31/19
-
-1322	6/5/19	CORN, SWEET	U	200	2	400	0.524934383	0.0166667	Planet Jr. Seed Plate 32;Seed Code: CT-19-2-OG (ROY'S CALAIS FLINT CORN) - 200.0 bed feet	1	nelsonw	1	12/31/19
-
-1323	6/6/19	SWEET POTATO	V	230	1	230	0.858208955	0.416667	Transplanted sweet potatoes grown on farm. ;Seed Code: N/A (No Variety) - 230.0 bed feet	1	nelsonw	1	12/31/19
-
-1324	6/12/19	BEAN	L	105	2	210	0.365853659	0.25	Seed Code: BN-19-2-OG (E-Z PICK) - 35.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 35.0 bed feet	1	nelsonw	1	12/31/19
-
-1325	6/24/19	BEAN	K	90	2	180	0.316901408	0.25	PJ seed plate 36;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-2-OG (E-Z PICK) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1326	6/24/19	BEET	K	160	3	480	0.563380282	0.166667	PJ seed plate 21;Seed Code: BT-19-1-OG (DETROIT DARK RED) - 160.0 bed feet	1	nelsonw	1	12/31/19
-
-1327	6/24/19	CARROT	K	500	3	1500	1.76056338	0.333333	PJ seed plate 13;Seed Code: CT-19-4-UT (ROMANCE) - 500.0 bed feet	1	nelsonw	1	12/31/19
-
-1328	6/24/19	LETTUCE, MES MIX	K	144	3	432	0.507042254	0.25	PJ seed plate 11;Seed Code: LX-17-3-UT (TANGO) - 48.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 48.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 48.0 bed feet	1	nelsonw	1	12/31/19
-
-1329	6/24/19	HERB - DILL	K	30	3	90	0.105633803	0.0833333	PJ seed plate 18;Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1330	6/24/19	HERB - CILANTRO	K	30	3	90	0.105633803	0.0833333	PJ seed plate 21;Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1331	6/24/19	RADISH	K	25	3	75	0.088028169	0.166667	PJ seed plate 9;Seed Code: RH-18-1-OG (RUDOLF) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1332	6/27/19	CORN, SWEET	K	500	2	1000	1.76056338	0.333333	Seed Code: CT-19-1-UT (BODACIOUS) - 500.0 bed feet	1	nelsonw	1	12/31/19
-
-1335	7/2/19	BEET	J	150	3	450	0.524475524	0.0166667	Seed Code: BT-19-1-OG (DETROIT DARK RED) - 150.0 bed feet	1	nelsonw	1	12/31/19
-
-1336	7/2/19	CARROT	J	440	3	1320	1.538461538	0.0166667	PJ plate 10;Seed Code: CT-19-2-UT (HERCULES) - 440.0 bed feet	1	nelsonw	1	12/31/19
-
-1337	7/2/19	HERB - CILANTRO	K	30	3	90	0.105633803	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1338	7/2/19	HERB - DILL	K	30	3	90	0.105633803	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1339	7/2/19	LETTUCE, MES MIX	J	99	3	297	0.346153846	0.0166667	Mixed varieties ;Seed Code: LX-17-3-UT (TANGO) - 33.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 33.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 33.0 bed feet	1	nelsonw	1	12/31/19
-
-1333	7/4/19	CORN, SWEET	J	500	2	1000	1.748251748	0.0166667	Seed Code: CT-19-1-UT (BODACIOUS) - 500.0 bed feet	1	nelsonw	1	12/31/19
-
-1334	7/4/19	BEAN	J	75	2	150	0.262237762	0.0166667	Seed Code: BN-19-2-OG (E-Z PICK) - 25.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 25.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1340	7/16/19	BEET	Z	400	3	1200	1.418439716	0.0166667	Storage Beets;Seed Code: BT-19-2-OG (RHONDA) - 400.0 bed feet	1	nelsonw	1	12/31/19
-
-1341	7/16/19	CARROT	Z	700	3	2100	2.482269504	0.0166667	Storage carrots ;Seed Code: CT-19-3-OG (DOLCIVA) - 700.0 bed feet	1	nelsonw	1	12/31/19
-
-1342	7/16/19	LETTUCE, MES MIX	Z	198	3	594	0.70212766	0.0166667	"Mixed varieties ;
-200 BF;Seed Code: LX-17-3-UT (TANGO) - 66.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 66.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 66.0 bed feet"	1	nelsonw	1	12/31/19
-
-1343	7/16/19	BEAN	Z	60	2	120	0.212765957	0.0166667	Seed Code: BN-19-2-OG (E-Z PICK) - 20.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 20.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 20.0 bed feet	1	nelsonw	1	12/31/19
-
-1344	7/16/19	BEAN	Z	60	2	120	0.212765957	0.0166667	Seed Code: BN-19-2-OG (E-Z PICK) - 20.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 20.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 20.0 bed feet	1	nelsonw	1	12/31/19
-
-1345	7/22/19	GARLIC	ALF 4	500	3	1500	1.428571429	0.0166667	Seed Code: N/A (No Variety) - 500.0 bed feet	1	halpinj	1	12/31/19
-
-1346	7/29/19	SPINACH	W	300	3	900	0.817438692	0.0166667	Seed Code: SH-19-1-OG (CORVAIR) - 300.0 bed feet	1	nelsonw	1	12/31/19
-
-1347	7/29/19	HERB - DILL	W	25	3	75	0.068119891	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1348	7/29/19	HERB - CILANTRO	W	25	3	75	0.068119891	0.0166667	Seed Code: HO-17-1-OG (DCF CILANTRO) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1349	7/29/19	BEAN	W	90	3	270	0.245231608	0.0166667	"30 BF EZ pick;
+"1368","2019-01-01","GARLIC","ALF 4","6300","3","18900","18","0.0166667","6 BEDS IN A4;Seed Code: N/A (No Variety) - 6300.0 bed feet","1","wolfje","1","2019-12-31",
+"1369","2019-01-01","GARLIC","ALF 2","2100","3","6300","6","0.0166667"," 2BEDS IN A2;Seed Code: N/A (No Variety) - 2100.0 bed feet","1","wolfje","1","2019-12-31",
+"1266","2019-02-04","RADISH","CHUAU-2","35","3","105","0.3977272727272727","0.0166667","Seed Code: RH-19-1-UT (NELSON) - 35.0 bed feet","1","halpinj","1","2019-12-31",
+"1267","2019-02-13","ARUGULA","A","100","1","100","0.23529411764705882","0.0166667","test;Seed Code: N/A (No Variety) - 100.0 bed feet","1","steimanm","1","2019-12-31",
+"1269","2019-02-13","CARROT","CHUAU-3","84","4","336","1","1","Seed Code: CT-19-1-OG (YAYA) - 84.0 bed feet","1","nelsonw","1","2019-12-31",
+"1270","2019-02-13","CARROT","CHUAU-3","84","4","336","1","1","Seed Code: CT-19-1-OG (YAYA) - 84.0 bed feet","1","nelsonw","1","2019-12-31",
+"1268","2019-02-21","ARUGULA","1-PASTURE","100","1","100","1","0.0166667","Test;Seed Code: N/A (No Variety) - 100.0 bed feet","1","steimanm","1","2019-12-31",
+"1405","2019-03-25","HERB - CILANTRO","GHANA-1","15","3","45","0.15625","0.116667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 50.0 bed feet","1","ryanv","1","2019-12-31",
+"1407","2019-03-25","LETTUCE, MES MIX","GHANA-3","88","3","264","1","0.0166667","Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet","1","ryanv","1","2019-12-31",
+"1408","2019-03-25","SPINACH","GHANA-2","86","3","258","0.9772727272727273","0.0166667","Seed Code: SH-19-3-UT (SPACE) - 86.0 bed feet","1","ryanv","1","2019-12-31",
+"1409","2019-03-25","ONION SPRING","CHUAU-2","10","9","90","0.11363636363636363","0.0166667","Seed Code: OG-19-1-OG (RED LONG OF TROPEA) - 10.0 bed feet","1","ryanv","1","2019-12-31",
+"1406","2019-04-01","RADISH","GHANA-2","100","5","500","1.1363636363636365","0.0166667","Seed Code: RH-19-2-UT (NERO TONDO) - 100.0 bed feet","1","ryanv","1","2019-12-31",
+"1271","2019-04-03","PEA, SNAP","T","200","2","400","1.2820512820512822","1","Seed Code: PP-18-1-UT (SUPER SUGAR SNAP) - 100.0 bed feet;Seed Code: PP-19-1-UT (SUPER SUGAR SNAP) - 100.0 bed feet","1","nelsonw","1","2019-12-31",
+"1272","2019-04-04","BEET","T","125","3","375","0.8012820512820513","0.333333","Seed Code: BT-18-2-OG (EARLY WONDER) - 90.0 bed feet;Seed Code: BT-19-3-OG (EARLY WONDER) - 35.0 bed feet","1","nelsonw","1","2019-12-31",
+"1273","2019-04-04","CARROT","T","263","3","789","1.685897435897436","0.416667","Seed Code: CT-19-1-OG (YAYA) - 263.0 bed feet","1","nelsonw","1","2019-12-31",
+"1274","2019-04-12","LETTUCE, MES MIX","T","100","3","300","0.6410256410256411","0.25","Mixed Varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 50.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 50.0 bed feet","1","nelsonw","1","2019-12-31",
+"1275","2019-04-12","SPINACH","T","115","3","345","0.7371794871794872","0.25","Seed Code: SH-19-3-UT (SPACE) - 115.0 bed feet","1","nelsonw","1","2019-12-31",
+"1276","2019-04-12","TURNIP","T","50","3","150","0.32051282051282054","0.0833333","Seed Code: TP-18-2-UT (HAKUREI) - 50.0 bed feet","1","nelsonw","1","2019-12-31",
+"1277","2019-04-12","LETTUCE, MES MIX","JASMINE-5","88","5","440","1","0.25","Mixed Varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 44.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 44.0 bed feet","1","nelsonw","1","2019-12-31",
+"1278","2019-04-12","SPINACH","JASMINE-4","88","3","264","1","0.166667","Seed Code: SH-19-3-UT (SPACE) - 88.0 bed feet","1","nelsonw","1","2019-12-31",
+"1279","2019-04-12","HERB - DILL","GHANA-3","14","5","70","0.1590909090909091","0.0833333","Seed Code: HL-19-1-OG (BOUQUET) - 14.0 bed feet","1","nelsonw","1","2019-12-31",
+"1280","2019-04-12","TURNIP","CHUAU-1","30","3","90","0.32608695652173914","0.166667","Seed Code: TP-18-2-UT (HAKUREI) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1281","2019-04-19","LETTUCE, MES MIX","JASMINE-3","40","5","200","0.45454545454545453","0.166667","Mixed varieties;Seed Code: LX-17-3-UT (TANGO) - 20.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 20.0 bed feet","1","nelsonw","1","2019-12-31",
+"1282","2019-04-19","RADISH","JASMINE-3","20","5","100","0.22727272727272727","0.166667","3 rows nelson;
+3 rows pink beauty;Seed Code: RH-19-1-UT (NELSON) - 10.0 bed feet;Seed Code: RH-18-4-OG (PINK BEAUTY) - 10.0 bed feet","1","nelsonw","1","2019-12-31",
+"1283","2019-04-19","HERB - CILANTRO","JASMINE-3","12","5","60","0.13636363636363635","0.0833333","Seed Code: HO-16-1-OG (DCF CILANTRO) - 12.0 bed feet","1","nelsonw","1","2019-12-31",
+"1284","2019-04-19","HERB - DILL","JASMINE-3","12","5","60","0.13636363636363635","0.0833333","Seed Code: HL-19-1-OG (BOUQUET) - 12.0 bed feet","1","nelsonw","1","2019-12-31",
+"1285","2019-04-23","SPINACH","GHANA-4","82","3","246","0.8541666666666666","0.166667","Seed Code: SH-19-3-UT (SPACE) - 82.0 bed feet","1","nelsonw","1","2019-12-31",
+"1286","2019-04-23","PEA, SNAP","S","200","2","400","0.9049773755656109","0.0166667","Seed Code: PP-17-1-OG (SUGAR SNAP) - 200.0 bed feet","1","nelsonw","1","2019-12-31",
+"1287","2019-04-23","BEET","S","150","3","450","0.6787330316742082","0.0166667","Seed Code: BT-19-3-OG (EARLY WONDER) - 150.0 bed feet","1","nelsonw","1","2019-12-31",
+"1288","2019-04-23","CARROT","S","250","3","750","1.1312217194570136","0.0166667","Seed Code: CT-19-1-OG (YAYA) - 250.0 bed feet","1","nelsonw","1","2019-12-31",
+"1289","2019-04-23","LETTUCE, MES MIX","S","125","3","375","0.5656108597285068","0.0166667","Mixed varieties ;Seed Code: LX-18-3-UT (TANGO) - 62.5 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 62.5 bed feet","1","nelsonw","1","2019-12-31",
+"1290","2019-04-23","ONION SPRING","GHANA-4","10","1","10","0.10416666666666667","0.5","Seed Code: N/A (No Variety) - 10.0 bed feet","1","nelsonw","1","2019-12-31",
+"1295","2019-05-01","PEA, SNAP","T","250","1","250","1.6025641025641026","0.166667","reseeded snap pea 1 due to low germination and sheep damage;Seed Code: PP-17-1-OG (SUGAR SNAP) - 250.0 bed feet","1","nelsonw","1","2019-12-31",
+"1366","2019-05-01","POTATO","U","1900","1","1900","4.986876640419948","0.0666667","Field U:;First two and a half rows (half row from eastern side) southern rows are russet ;Row 2.5 to 5 are leftover from last years harvest;Seed Code: N/A (No Variety) - 1.0 bed feet","1","horowitk","1","2019-12-31",
+"1291","2019-05-02","SPINACH","P","135","3","405","0.6617647058823529","0.166667","Seed Code: SH-19-3-UT (SPACE) - 135.0 bed feet","1","nelsonw","1","2019-12-31",
+"1292","2019-05-02","RADISH","P","25","3","75","0.12254901960784313","0.0833333","Seed Code: RH-18-4-OG (PINK BEAUTY) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1293","2019-05-02","HERB - CILANTRO","P","18","3","54","0.08823529411764706","0.0833333","Seed Code: HO-17-1-OG (DCF CILANTRO) - 18.0 bed feet","1","nelsonw","1","2019-12-31",
+"1294","2019-05-02","HERB - DILL","P","18","3","54","0.08823529411764706","0.0833333","Seed Code: HL-19-1-OG (BOUQUET) - 18.0 bed feet","1","nelsonw","1","2019-12-31",
+"1350","2019-05-02","POTATO","Q","3420","1","3420","8.952879581151832","0.0166667","pls update - not sure what varieties/bed feet was.. JH;Seed Code: N/A (No Variety) - 3040.0 bed feet","1","halpinj","1","2019-12-31",
+"1296","2019-05-07","LETTUCE, MES MIX","O","123","3","369","0.6612903225806451","0.166667","Mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 41.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 41.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 41.0 bed feet","1","nelsonw","1","2019-12-31",
+"1297","2019-05-07","TURNIP","O","60","3","180","0.3225806451612903","0.166667","Seed Code: TP-18-2-UT (HAKUREI) - 60.0 bed feet","1","nelsonw","1","2019-12-31",
+"1298","2019-05-07","BEET","O","185","3","555","0.9946236559139785","0.166667","Seed Code: BT-19-1-OG (DETROIT DARK RED) - 185.0 bed feet","1","nelsonw","1","2019-12-31",
+"1299","2019-05-07","CARROT","O","280","3","840","1.5053763440860215","0.166667","Seed Code: CT-18-2-UT (HERCULES) - 280.0 bed feet","1","nelsonw","1","2019-12-31",
+"1300","2019-05-07","BEAN","O","90","2","180","0.4838709677419355","0.166667","Seed Code: BN-18-3-OG (E-Z PICK) - 30.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1301","2019-05-22","SPINACH","N","135","3","405","0.8709677419354839","0.166667","Seed Code: SH-18-1-UT (SPACE) - 135.0 bed feet","1","nelsonw","1","2019-12-31",
+"1302","2019-05-22","HERB - CILANTRO","N","20","3","60","0.12903225806451613","0.0833333","Seed Code: HO-17-1-OG (DCF CILANTRO) - 20.0 bed feet","1","nelsonw","1","2019-12-31",
+"1303","2019-05-22","HERB - DILL","N","20","1","20","0.12903225806451613","0.0833333","Seed Code: HL-19-1-OG (BOUQUET) - 20.0 bed feet","1","nelsonw","1","2019-12-31",
+"1304","2019-05-22","LETTUCE, MES MIX","N","144","3","432","0.9290322580645162","0.166667","mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 48.0 bed feet;Seed Code: LX-18-3-UT (TANGO) - 48.0 bed feet;Seed Code: LX-18-4-OG (FLASHY TROUT) - 48.0 bed feet","1","nelsonw","1","2019-12-31",
+"1305","2019-05-22","RADISH","N","30","3","90","0.1935483870967742","0.0833333","Seed Code: RH-18-4-OG (PINK BEAUTY) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1306","2019-05-22","BEET","N","175","3","525","1.1290322580645162","0.25","Seed Code: BT-19-1-OG (DETROIT DARK RED) - 175.0 bed feet","1","nelsonw","1","2019-12-31",
+"1307","2019-05-22","CARROT","N","265","3","795","1.7096774193548387","0.166667","Seed Code: CT-18-1-UT (ROMANCE) - 265.0 bed feet","1","nelsonw","1","2019-12-31",
+"1308","2019-05-22","BEAN","N","90","2","180","0.5806451612903226","0.166667","Seed Code: BN-18-3-OG (E-Z PICK) - 30.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1309","2019-05-22","CORN, SWEET","U","400","2","800","1.0498687664041995","0.166667","Seed Code: CT-19-3-OG (NATURAL SWEET XR) - 400.0 bed feet","1","nelsonw","1","2019-12-31",
+"1310","2019-05-26","CORN, SWEET","U","400","2","800","1.0498687664041995","0.25","Seed Code: CT-19-3-OG (NATURAL SWEET XR) - 400.0 bed feet","1","nelsonw","1","2019-12-31",
+"1312","2019-05-27","CARROT","O","275","3","825","1.478494623655914","0.166667","Reseeded carrots due to poor germination ;Seed Code: CT-19-4-UT (ROMANCE) - 275.0 bed feet","1","nelsonw","1","2019-12-31",
+"1313","2019-05-27","BEAN","O","90","2","180","0.4838709677419355","0.166667","Reseeded due to poor germination ;Seed Code: BN-18-3-OG (E-Z PICK) - 30.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1311","2019-05-29","SWEET POTATO","V","1000","1","1000","3.7313432835820897","6","1000 ft of Beauregard sweet potato  ;Seed Code: N/A (No Variety) - 1000.0 bed feet","1","nelsonw","1","2019-12-31",
+"1314","2019-05-30","SWEET POTATO","V","230","2","460","0.8582089552238806","3.33333","Murasaki 500 plants;Seed Code: N/A (No Variety) - 230.0 bed feet","1","nelsonw","1","2019-12-31",
+"1315","2019-06-04","CARROT","L","250","3","750","0.8710801393728222","0.333333","Planet Jr. Seed Plate 13;Seed Code: CT-19-4-UT (ROMANCE) - 250.0 bed feet","1","nelsonw","1","2019-12-31",
+"1316","2019-06-04","BEET","L","180","3","540","0.627177700348432","0.25","Planet Jr. Seed Plate 21;Seed Code: BT-19-1-OG (DETROIT DARK RED) - 180.0 bed feet","1","nelsonw","1","2019-12-31",
+"1317","2019-06-04","PARSNIP","L","500","3","1500","1.7421602787456445","0.5","Planet Jr. Seed Plate 26;Seed Code: PP-19-1-OG (WHITE SPEAR) - 500.0 bed feet","1","nelsonw","1","2019-12-31",
+"1318","2019-06-05","BEAN","L","105","3","315","0.36585365853658536","0.25","Planet Jr. Seed Plate 36;Seed Code: BN-19-2-OG (E-Z PICK) - 35.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 35.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet","1","nelsonw","1","2019-12-31",
+"1319","2019-06-05","LETTUCE, MES MIX","L","126","3","378","0.43902439024390244","0.166667","Mix of all varieties ;
+Planet Jr. Seed Plate 11;Seed Code: LX-17-3-UT (TANGO) - 42.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 42.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 42.0 bed feet","1","nelsonw","1","2019-12-31",
+"1320","2019-06-05","RADISH","L","25","3","75","0.08710801393728224","0.0833333","Planet Jr. Seed Plate 9;Seed Code: RH-18-1-OG (RUDOLF) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1321","2019-06-05","CORN, SWEET","U","750","2","1500","1.968503937007874","0.333333","Reseeded Sweet Corn 1/2;
+Planet Jr. Seed Plate 35;Seed Code: CT-19-1-UT (BODACIOUS) - 750.0 bed feet","1","nelsonw","1","2019-12-31",
+"1322","2019-06-05","CORN, SWEET","U","200","2","400","0.5249343832020997","0.0166667","Planet Jr. Seed Plate 32;Seed Code: CT-19-2-OG (ROY'S CALAIS FLINT CORN) - 200.0 bed feet","1","nelsonw","1","2019-12-31",
+"1323","2019-06-06","SWEET POTATO","V","230","1","230","0.8582089552238806","0.416667","Transplanted sweet potatoes grown on farm. ;Seed Code: N/A (No Variety) - 230.0 bed feet","1","nelsonw","1","2019-12-31",
+"1324","2019-06-12","BEAN","L","105","2","210","0.36585365853658536","0.25","Seed Code: BN-19-2-OG (E-Z PICK) - 35.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 35.0 bed feet","1","nelsonw","1","2019-12-31",
+"1325","2019-06-24","BEAN","K","90","2","180","0.31690140845070425","0.25","PJ seed plate 36;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 30.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 30.0 bed feet;Seed Code: BN-19-2-OG (E-Z PICK) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1326","2019-06-24","BEET","K","160","3","480","0.5633802816901409","0.166667","PJ seed plate 21;Seed Code: BT-19-1-OG (DETROIT DARK RED) - 160.0 bed feet","1","nelsonw","1","2019-12-31",
+"1327","2019-06-24","CARROT","K","500","3","1500","1.7605633802816902","0.333333","PJ seed plate 13;Seed Code: CT-19-4-UT (ROMANCE) - 500.0 bed feet","1","nelsonw","1","2019-12-31",
+"1328","2019-06-24","LETTUCE, MES MIX","K","144","3","432","0.5070422535211268","0.25","PJ seed plate 11;Seed Code: LX-17-3-UT (TANGO) - 48.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 48.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 48.0 bed feet","1","nelsonw","1","2019-12-31",
+"1329","2019-06-24","HERB - DILL","K","30","3","90","0.1056338028169014","0.0833333","PJ seed plate 18;Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1330","2019-06-24","HERB - CILANTRO","K","30","3","90","0.1056338028169014","0.0833333","PJ seed plate 21;Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1331","2019-06-24","RADISH","K","25","3","75","0.0880281690140845","0.166667","PJ seed plate 9;Seed Code: RH-18-1-OG (RUDOLF) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1332","2019-06-27","CORN, SWEET","K","500","2","1000","1.7605633802816902","0.333333","Seed Code: CT-19-1-UT (BODACIOUS) - 500.0 bed feet","1","nelsonw","1","2019-12-31",
+"1335","2019-07-02","BEET","J","150","3","450","0.5244755244755245","0.0166667","Seed Code: BT-19-1-OG (DETROIT DARK RED) - 150.0 bed feet","1","nelsonw","1","2019-12-31",
+"1336","2019-07-02","CARROT","J","440","3","1320","1.5384615384615385","0.0166667","PJ plate 10;Seed Code: CT-19-2-UT (HERCULES) - 440.0 bed feet","1","nelsonw","1","2019-12-31",
+"1337","2019-07-02","HERB - CILANTRO","K","30","3","90","0.1056338028169014","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1338","2019-07-02","HERB - DILL","K","30","3","90","0.1056338028169014","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1339","2019-07-02","LETTUCE, MES MIX","J","99","3","297","0.34615384615384615","0.0166667","Mixed varieties ;Seed Code: LX-17-3-UT (TANGO) - 33.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 33.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 33.0 bed feet","1","nelsonw","1","2019-12-31",
+"1333","2019-07-04","CORN, SWEET","J","500","2","1000","1.7482517482517483","0.0166667","Seed Code: CT-19-1-UT (BODACIOUS) - 500.0 bed feet","1","nelsonw","1","2019-12-31",
+"1334","2019-07-04","BEAN","J","75","2","150","0.26223776223776224","0.0166667","Seed Code: BN-19-2-OG (E-Z PICK) - 25.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 25.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1340","2019-07-16","BEET","Z","400","3","1200","1.4184397163120568","0.0166667","Storage Beets;Seed Code: BT-19-2-OG (RHONDA) - 400.0 bed feet","1","nelsonw","1","2019-12-31",
+"1341","2019-07-16","CARROT","Z","700","3","2100","2.482269503546099","0.0166667","Storage carrots ;Seed Code: CT-19-3-OG (DOLCIVA) - 700.0 bed feet","1","nelsonw","1","2019-12-31",
+"1342","2019-07-16","LETTUCE, MES MIX","Z","198","3","594","0.7021276595744681","0.0166667","Mixed varieties ;
+200 BF;Seed Code: LX-17-3-UT (TANGO) - 66.0 bed feet;Seed Code: LX-17-4-UT (SALAD BOWL) - 66.0 bed feet;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 66.0 bed feet","1","nelsonw","1","2019-12-31",
+"1343","2019-07-16","BEAN","Z","60","2","120","0.2127659574468085","0.0166667","Seed Code: BN-19-2-OG (E-Z PICK) - 20.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 20.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 20.0 bed feet","1","nelsonw","1","2019-12-31",
+"1344","2019-07-16","BEAN","Z","60","2","120","0.2127659574468085","0.0166667","Seed Code: BN-19-2-OG (E-Z PICK) - 20.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 20.0 bed feet;Seed Code: BN-18-4-OG (RODCOR) - 20.0 bed feet","1","nelsonw","1","2019-12-31",
+"1345","2019-07-22","GARLIC","ALF 4","500","3","1500","1.4285714285714286","0.0166667","Seed Code: N/A (No Variety) - 500.0 bed feet","1","halpinj","1","2019-12-31",
+"1346","2019-07-29","SPINACH","W","300","3","900","0.8174386920980926","0.0166667","Seed Code: SH-19-1-OG (CORVAIR) - 300.0 bed feet","1","nelsonw","1","2019-12-31",
+"1347","2019-07-29","HERB - DILL","W","25","3","75","0.0681198910081744","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1348","2019-07-29","HERB - CILANTRO","W","25","3","75","0.0681198910081744","0.0166667","Seed Code: HO-17-1-OG (DCF CILANTRO) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1349","2019-07-29","BEAN","W","90","3","270","0.2452316076294278","0.0166667","30 BF EZ pick;
 30 BF Royal Burgundy;
 30 BF Rodcor;
-;Seed Code: BN-19-2-OG (E-Z PICK) - 90.0 bed feet"	1	nelsonw	1	12/31/19
-
-1351	8/5/19	BEET	X	200	3	600	0.630914826	0.0166667	Seed Code: BT-17-2-OG (RED ACE) - 200.0 bed feet	1	nelsonw	1	12/31/19
-
-1352	8/5/19	CARROT	X	725	3	2175	2.287066246	0.0166667	Seed Code: CT-19-2-UT (HERCULES) - 725.0 bed feet	1	nelsonw	1	12/31/19
-
-1353	8/5/19	TURNIP	X	145	3	435	0.457413249	0.0166667	Seed Code: TP-18-1-OG (PURPLE TOP) - 145.0 bed feet	1	nelsonw	1	12/31/19
-
-1354	8/5/19	SPINACH	X	290	3	870	0.914826498	0.0166667	Seed Code: SH-19-1-OG (CORVAIR) - 290.0 bed feet	1	nelsonw	1	12/31/19
-
-1355	8/5/19	LETTUCE, MES MIX	X	200	3	600	0.630914826	0.0166667	Mixed tango, red salad bowl, green salad bowl;Seed Code: LX-17-4-UT (SALAD BOWL) - 200.0 bed feet	1	nelsonw	1	12/31/19
-
-1356	8/5/19	RADISH	X	45	3	135	0.141955836	0.0166667	Seed Code: RH-18-2-OG (WATERMELON) - 45.0 bed feet	1	nelsonw	1	12/31/19
-
-1357	8/5/19	RADISH DAIKON	X	44	3	132	0.138801262	0.0166667	Seed Code: RN-19-1-UT (KN-BRAVO) - 22.0 bed feet;Seed Code: RN-17-1-UT (MIYASHIGE) - 22.0 bed feet	1	nelsonw	1	12/31/19
-
-1403	8/5/19	BEAN	X	60	2	120	0.189274448	0.0166667	Seed Code: BN-19-10-UT (DULCINA) - 60.0 bed feet	1	nelsonw	1	12/31/19
-
-1358	8/13/19	LETTUCE, MES MIX	Y	275	3	825	0.93220339	0.0166667	Lettuce mix-tango, red salad bowl, Salad bowl;Seed Code: LX-17-3-UT (TANGO) - 275.0 bed feet	1	nelsonw	1	12/31/19
-
-1359	8/13/19	SPINACH	Y	275	3	825	0.93220339	0.0166667	Seed Code: SH-19-2-UT (GAZELLE) - 275.0 bed feet	1	nelsonw	1	12/31/19
-
-1360	8/13/19	BEET	Y	220	3	660	0.745762712	0.0166667	Seed Code: BT-17-1-UT (ZEPPO) - 220.0 bed feet	1	nelsonw	1	12/31/19
-
-1361	8/13/19	HERB - DILL	Y	30	3	90	0.101694915	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1362	8/13/19	HERB - CILANTRO	Y	30	3	90	0.101694915	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1363	8/13/19	TURNIP	Y	200	3	600	0.677966102	0.0166667	Seed Code: TP-18-1-OG (PURPLE TOP) - 200.0 bed feet	1	nelsonw	1	12/31/19
-
-1364	8/13/19	RADISH	Y	25	3	75	0.084745763	0.0166667	Seed Code: RH-18-1-OG (RUDOLF) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1365	8/13/19	RADISH DAIKON	Y	50	3	150	0.169491525	0.0166667	Seed Code: RN-19-1-UT (KN-BRAVO) - 25.0 bed feet;Seed Code: RN-17-1-UT (MIYASHIGE) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1370	8/20/19	LETTUCE, MES MIX	ALF 4	200	3	600	0.571428571	0.0166667	Custom Seed mix;Seed Code: LX-17-3-UT (TANGO) - 200.0 bed feet	1	nelsonw	1	12/31/19
-
-1371	8/20/19	RADISH	ALF 4	130	3	390	0.371428571	0.0166667	Seed Code: RH-18-3-UT (NERO TONDO) - 50.0 bed feet;Seed Code: RH-19-3-OG (WATERMELON) - 50.0 bed feet;Seed Code: RH-17-3-OG (RUDOLF) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1372	8/20/19	CARROT	ALF 4	660	3	1980	1.885714286	0.0166667	Seed Code: CT-19-6-OG (NAPOLI) - 660.0 bed feet	1	nelsonw	1	12/31/19
-
-1373	8/28/19	SPINACH	ALF 4	250	3	750	0.714285714	0.0166667	Seed Code: SH-19-2-UT (GAZELLE) - 250.0 bed feet	1	nelsonw	1	12/31/19
-
-1374	8/28/19	RADISH DAIKON	ALF 4	70	3	210	0.2	0.0166667	Seed Code: RN-17-1-UT (MIYASHIGE) - 35.0 bed feet;Seed Code: RN-17-2-OG (ALPINE) - 35.0 bed feet	1	nelsonw	1	12/31/19
-
-1375	8/28/19	LETTUCE, MES MIX	N	250	3	750	1.612903226	0.0166667	Custom mix of tango, green/red salad bowl ;Seed Code: LX-17-3-UT (TANGO) - 250.0 bed feet	1	nelsonw	1	12/31/19
-
-1376	8/28/19	TURNIP	N	90	3	270	0.580645161	0.0166667	Seed Code: TP-18-1-OG (PURPLE TOP) - 90.0 bed feet	1	nelsonw	1	12/31/19
-
-1384	9/4/19	RADISH	CHUAU-1	35	3	105	0.380434783	0.0166667	Seed Code: RH-17-3-OG (RUDOLF) - 35.0 bed feet	1	nelsonw	1	12/31/19
-
-1385	9/4/19	TURNIP	CHUAU-1	35	3	105	0.380434783	0.0166667	Seed Code: TP-19-1-UT (HAKUREI) - 35.0 bed feet	1	nelsonw	1	12/31/19
-
-1386	9/4/19	HERB - CILANTRO	CHUAU-1	10	3	30	0.108695652	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 10.0 bed feet	1	nelsonw	1	12/31/19
-
-1387	9/4/19	HERB - DILL	CHUAU-1	10	3	30	0.108695652	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 10.0 bed feet	1	nelsonw	1	12/31/19
-
-1388	9/4/19	SPINACH	CHUAU-2	88	5	440	1	0.0166667	Seed Code: SH-19-2-UT (GAZELLE) - 88.0 bed feet	1	nelsonw	1	12/31/19
-
-1389	9/4/19	LETTUCE, MES MIX	CHUAU-3	88	5	440	1.047619048	0.0166667	Lettuce is mixed varieties;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet	1	nelsonw	1	12/31/19
-
-1381	9/10/19	STRAWBERRY	M	880	2	1760	6.769230769	0.0166667	1850 strawberry plants transplanted 6 beds 2 rows;Seed Code: N/A (No Variety) - 880.0 bed feet	1	nelsonw	0	12/31/19
-
-1378	9/11/19	LETTUCE, MES MIX	N	175	3	525	1.129032258	0.0166667	Lettuce is mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 175.0 bed feet	1	nelsonw	1	12/31/19
-
-1379	9/11/19	SPINACH	N	145	3	435	0.935483871	0.0166667	Seed Code: SH-19-2-UT (GAZELLE) - 145.0 bed feet	1	nelsonw	1	12/31/19
-
-1380	9/11/19	RADISH	N	30	3	90	0.193548387	0.0166667	Seed Code: RH-17-3-OG (RUDOLF) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1382	9/13/19	SPINACH	CHUAU-4	88	5	440	1.1	0.0166667	Seed Code: SH-19-2-UT (GAZELLE) - 88.0 bed feet	1	nelsonw	1	12/31/19
-
-1383	9/13/19	LETTUCE, MES MIX	CHUAU-5	88	5	440	1.157894737	0.0166667	Lettuce is mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet	1	nelsonw	1	12/31/19
-
-1390	9/16/19	FENNEL	I	1	1	1	0.003460208	0.0166667	FIX ME;Seed Code: N/A (No Variety) - 1.0 bed feet	1	hutchinl	1	12/31/19
-
-1400	9/24/19	LETTUCE, MES MIX	ORION-5	60	5	300	0.681818182	0.0166667	Seed Code: LX-18-2-OG (RED SALAD BOWL) - 60.0 bed feet	1	nelsonw	1	12/31/19
-
-1401	9/24/19	RADISH	ORION-4	25	3	75	0.284090909	0.0166667	Seed Code: RH-19-1-UT (NELSON) - 25.0 bed feet	1	nelsonw	1	12/31/19
-
-1402	9/24/19	TURNIP	ORION-4	30	3	90	0.340909091	0.0166667	Seed Code: TP-18-2-UT (HAKUREI) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1396	10/4/19	LETTUCE, MES MIX	CHUAU-4	88	5	440	1.1	0.0166667	Custom blend;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet	1	nelsonw	1	12/31/19
-
-1397	10/4/19	SPINACH	CHUAU-4	80	4	320	1	0.0166667	Seed Code: SH-19-1-OG (CORVAIR) - 80.0 bed feet	1	nelsonw	1	12/31/19
-
-1398	10/4/19	SPINACH	CHUAU-5	30	3	90	0.394736842	0.0166667	Seed Code: SH-19-1-OG (CORVAIR) - 30.0 bed feet	1	nelsonw	1	12/31/19
-
-1391	10/7/19	COLLARDS	Y	50	1	50	0.169491525	0.0166667	FIX ME!!;Seed Code: N/A (No Variety) - 50.0 bed feet	1	ryanv	1	12/31/19
-
-1393	10/14/19	CABBAGE	I	1	1	1	0.003460208	0.0166667	FIX THIS;Seed Code: CE-18-6-UT (TIARA) - 1.0 bed feet	1	hutchinl	1	12/31/19
-
-1394	10/15/19	GARLIC	O	1665	3	4995	8.951612903	0.0166667	DCF Saved Seed ;9 Beds ;Seed Code: N/A (No Variety) - 1665.0 bed feet	1	nelsonw	0	7/31/20
-
-1395	10/15/19	GARLIC	L	1110	3	3330	3.867595819	0.0166667	DCF saved seed;4 beds;Seed Code: N/A (No Variety) - 1110.0 bed feet	1	nelsonw	0	7/31/20
-
-1399	10/28/19	TURNIP	JASMINE-1	1	1	1	0.010416667	0.0166667	FIX THIS!!;Seed Code: TP-18-2-UT (HAKUREI) - 1.0 bed feet	1	hutchinl	1	12/31/19
-
-1482	1/5/20	STRAWBERRY	M	900	2	1800	6.923076923	0.0166667	Chandler;Seed Code: N/A (No Variety) - 1.0 bed feet	1	steimanm	1	12/31/20
-
-1404	2/4/20	CARROT	CHUAU-4	84	5	420	1.05	0.0166667	Seed Code: CT-20-2-OG (YAYA) - 84.0 bed feet	1	nelsonw	1	12/31/20
-
-1447	3/6/20	RADISH	CHUAU-5	12	5	60	0.157894737	0.0166667	Seed Code: RH-20-4-OG (SORA) - 12.0 bed feet	1	nelsonw	1	12/31/20
-
-1415	3/10/20	ONION SPRING	CHUAU-1	10	1	10	0.108695652	0.0166667	Seed Code: N/A (No Variety) - 10.0 bed feet	1	nelsonw	1	12/31/20
-
-1416	3/10/20	GARLIC, GREEN	CHUAU-1	10	1	10	0.108695652	0.0166667	Seed Code: N/A (No Variety) - 10.0 bed feet	1	nelsonw	1	12/31/20
-
-1410	3/11/20	LETTUCE, MES MIX	CHUAU-2	88	5	440	1	0.0166667	Mix of lettuce varieties ;Seed Code: LX-20-1-UT (SULU) - 88.0 bed feet	1	nelsonw	1	12/31/20
-
-1411	3/11/20	LETTUCE, MES MIX	CHUAU-2	88	5	440	1	0.0166667	Mix of lettuce varieties ;Seed Code: LX-20-1-UT (SULU) - 88.0 bed feet	1	nelsonw	1	12/31/20
-
-1412	3/12/20	BEET	CHUAU-3	45	5	225	0.535714286	0.0166667	Seed Code: BT-20-2-OG (EARLY WONDER) - 45.0 bed feet	1	nelsonw	1	12/31/20
-
-1413	3/12/20	HERB - CILANTRO	CHUAU-3	15	5	75	0.178571429	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 15.0 bed feet	1	nelsonw	1	12/31/20
-
-1414	3/12/20	HERB - DILL	CHUAU-3	15	5	75	0.178571429	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 15.0 bed feet	1	nelsonw	1	12/31/20
-
-1417	3/17/20	ONION SPRING	CHUAU-3	8	1	8	0.095238095	0.0166667	Seed Code: N/A (No Variety) - 8.0 bed feet	1	nelsonw	1	12/31/20
-
-1418	3/17/20	GARLIC, GREEN	CHUAU-1	10	1	10	0.108695652	0.0166667	Seed Code: N/A (No Variety) - 10.0 bed feet	1	nelsonw	1	12/31/20
-
-1419	3/19/20	SPINACH	ORION-5	88	5	440	1	0.0166667	Seed Code: SH-19-3-UT (SPACE) - 88.0 bed feet	1	nelsonw	1	12/31/20
-
-1420	3/19/20	LETTUCE, MES MIX	ORION-4	60	5	300	0.681818182	0.0166667	Custom mix;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 60.0 bed feet	1	nelsonw	1	12/31/20
-
-1421	3/19/20	TURNIP	ORION-4	30	5	150	0.340909091	0.0166667	Seed Code: TP-19-1-UT (HAKUREI) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1422	3/24/20	ARUGULA	GHANA-4	46	4	184	0.479166667	0.0166667	Seed Code: AA-20-1-OG (ARUGULA) - 46.0 bed feet	1	nelsonw	1	12/31/20
-
-1423	3/24/20	KALE	GHANA-4	46	1	46	0.479166667	0.0166667	RR kale;Seed Code: N/A (No Variety) - 46.0 bed feet	1	nelsonw	1	12/31/20
-
-1424	3/24/20	BOKCHOY	GHANA-4	46	1	46	0.479166667	0.0166667	Seed Code: BY-20-2-OG (TATSOI) - 46.0 bed feet	1	nelsonw	1	12/31/20
-
-1425	3/24/20	BOKCHOY	GHANA-4	46	1	46	0.479166667	0.0166667	Seed Code: BY-20-3-OG (MIZUNA) - 46.0 bed feet	1	nelsonw	1	12/31/20
-
-1426	3/24/20	BOKCHOY	GHANA-4	46	1	46	0.479166667	0.0166667	Seed Code: BY-20-4-OG (MUSTARD) - 46.0 bed feet	1	nelsonw	1	12/31/20
-
-1443	3/24/20	GREENS, MES MIX	GHANA-4	44	4	176	0.458333333	0.0166667	Seed Code: GX-16-6-OG (MIZUNA) - 44.0 bed feet	1	nelsonw	1	12/31/20
-
-1427	4/1/20	ARUGULA	GHANA-1	30	4	120	0.3125	0.0166667	Seed Code: AA-20-1-OG (ARUGULA) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1428	4/1/20	SPINACH	JASMINE-5	88	5	440	1	0.0166667	Seed Code: SH-19-3-UT (SPACE) - 88.0 bed feet	1	nelsonw	1	12/31/20
-
-1429	4/1/20	LETTUCE, MES MIX	JASMINE-4	60	5	300	0.681818182	0.0166667	custom mix;Seed Code: LX-20-1-UT (SULU) - 60.0 bed feet	1	nelsonw	1	12/31/20
-
-1430	4/1/20	RADISH	JASMINE-4	22	5	110	0.25	0.0166667	Seed Code: RH-20-4-OG (SORA) - 11.0 bed feet;Seed Code: RH-20-3-UT (FRENCH BREAKFAST) - 11.0 bed feet	1	nelsonw	1	12/31/20
-
-1431	4/6/20	HERB - CILANTRO	JASMINE-1	15	4	60	0.15625	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 15.0 bed feet	1	nelsonw	1	12/31/20
-
-1432	4/6/20	HERB - DILL	JASMINE-1	15	4	60	0.15625	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 15.0 bed feet	1	nelsonw	1	12/31/20
-
-1433	4/6/20	TURNIP	CHUAU-1	25	4	100	0.27173913	0.0166667	Seed Code: TP-20-1-UT (HAKUREI) - 25.0 bed feet	1	nelsonw	1	12/31/20
-
-1434	4/6/20	CARROT	N	270	3	810	1.741935484	0.0166667	Seed Code: CT-20-2-OG (YAYA) - 270.0 bed feet	1	nelsonw	1	12/31/20
-
-1435	4/6/20	BEET	N	80	3	240	0.516129032	0.0166667	Seed Code: BT-19-3-OG (EARLY WONDER) - 80.0 bed feet	1	nelsonw	1	12/31/20
-
-1436	4/6/20	PEA, SNAP	N	320	1	320	2.064516129	0.0166667	Seed Code: PP-18-1-UT (SUPER SUGAR SNAP) - 320.0 bed feet	1	nelsonw	1	12/31/20
-
-1459	4/7/20	GREENS, MES MIX	CHUAU-5	44	5	220	0.578947368	0.0166667	Seed Code: GX-16-2-OG (RED RUSSIAN ) - 44.0 bed feet	1	nelsonw	1	12/31/20
-
-1437	4/16/20	RADISH	JASMINE-2	22	5	110	0.25	0.0166667	Seed Code: RH-20-4-OG (SORA) - 10.0 bed feet;Seed Code: RH-20-3-UT (FRENCH BREAKFAST) - 12.0 bed feet	1	nelsonw	1	12/31/20
-
-1438	4/20/20	SPINACH	K	150	3	450	0.528169014	0.0166667	Seed Code: SH-20-3-UT (SPACE) - 150.0 bed feet	1	nelsonw	1	12/31/20
-
-1439	4/20/20	LETTUCE, MES MIX	K	125	3	375	0.440140845	0.0166667	Custom mix;Seed Code: LX-20-1-UT (SULU) - 125.0 bed feet	1	nelsonw	1	12/31/20
-
-1440	4/20/20	BEET	K	100	3	300	0.352112676	0.0166667	Seed Code: BT-20-2-OG (EARLY WONDER) - 100.0 bed feet	1	nelsonw	1	12/31/20
-
-1441	4/20/20	PEA, SNAP	K	315	1	315	1.10915493	0.0166667	Seed Code: PP-18-1-UT (SUPER SUGAR SNAP) - 315.0 bed feet	1	nelsonw	1	12/31/20
-
-1442	4/20/20	CARROT	K	270	3	810	0.950704225	0.0166667	Seed Code: CT-20-2-OG (YAYA) - 270.0 bed feet	1	nelsonw	1	12/31/20
-
-1444	5/4/20	POTATO	ALF 4	3600	1	3600	10.28571429	0.0333333	adirondak red 1895;kennebec 1435;purple majesty 270;varieties start W to E;;sunny, 20 mph wind;Seed Code: N/A (No Variety) - 3600.0 bed feet	1	ryanv	1	12/31/20
-
-1445	5/4/20	POTATO	ALF 2	1790	1	1790	5.114285714	0.0166667	"purple majesty 1460;
+;Seed Code: BN-19-2-OG (E-Z PICK) - 90.0 bed feet","1","nelsonw","1","2019-12-31",
+"1351","2019-08-05","BEET","X","200","3","600","0.6309148264984227","0.0166667","Seed Code: BT-17-2-OG (RED ACE) - 200.0 bed feet","1","nelsonw","1","2019-12-31",
+"1352","2019-08-05","CARROT","X","725","3","2175","2.2870662460567823","0.0166667","Seed Code: CT-19-2-UT (HERCULES) - 725.0 bed feet","1","nelsonw","1","2019-12-31",
+"1353","2019-08-05","TURNIP","X","145","3","435","0.45741324921135645","0.0166667","Seed Code: TP-18-1-OG (PURPLE TOP) - 145.0 bed feet","1","nelsonw","1","2019-12-31",
+"1354","2019-08-05","SPINACH","X","290","3","870","0.9148264984227129","0.0166667","Seed Code: SH-19-1-OG (CORVAIR) - 290.0 bed feet","1","nelsonw","1","2019-12-31",
+"1355","2019-08-05","LETTUCE, MES MIX","X","200","3","600","0.6309148264984227","0.0166667","Mixed tango, red salad bowl, green salad bowl;Seed Code: LX-17-4-UT (SALAD BOWL) - 200.0 bed feet","1","nelsonw","1","2019-12-31",
+"1356","2019-08-05","RADISH","X","45","3","135","0.14195583596214512","0.0166667","Seed Code: RH-18-2-OG (WATERMELON) - 45.0 bed feet","1","nelsonw","1","2019-12-31",
+"1357","2019-08-05","RADISH DAIKON","X","44","3","132","0.138801261829653","0.0166667","Seed Code: RN-19-1-UT (KN-BRAVO) - 22.0 bed feet;Seed Code: RN-17-1-UT (MIYASHIGE) - 22.0 bed feet","1","nelsonw","1","2019-12-31",
+"1403","2019-08-05","BEAN","X","60","2","120","0.1892744479495268","0.0166667","Seed Code: BN-19-10-UT (DULCINA) - 60.0 bed feet","1","nelsonw","1","2019-12-31",
+"1358","2019-08-13","LETTUCE, MES MIX","Y","275","3","825","0.9322033898305084","0.0166667","Lettuce mix-tango, red salad bowl, Salad bowl;Seed Code: LX-17-3-UT (TANGO) - 275.0 bed feet","1","nelsonw","1","2019-12-31",
+"1359","2019-08-13","SPINACH","Y","275","3","825","0.9322033898305084","0.0166667","Seed Code: SH-19-2-UT (GAZELLE) - 275.0 bed feet","1","nelsonw","1","2019-12-31",
+"1360","2019-08-13","BEET","Y","220","3","660","0.7457627118644068","0.0166667","Seed Code: BT-17-1-UT (ZEPPO) - 220.0 bed feet","1","nelsonw","1","2019-12-31",
+"1361","2019-08-13","HERB - DILL","Y","30","3","90","0.1016949152542373","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1362","2019-08-13","HERB - CILANTRO","Y","30","3","90","0.1016949152542373","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1363","2019-08-13","TURNIP","Y","200","3","600","0.6779661016949152","0.0166667","Seed Code: TP-18-1-OG (PURPLE TOP) - 200.0 bed feet","1","nelsonw","1","2019-12-31",
+"1364","2019-08-13","RADISH","Y","25","3","75","0.0847457627118644","0.0166667","Seed Code: RH-18-1-OG (RUDOLF) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1365","2019-08-13","RADISH DAIKON","Y","50","3","150","0.1694915254237288","0.0166667","Seed Code: RN-19-1-UT (KN-BRAVO) - 25.0 bed feet;Seed Code: RN-17-1-UT (MIYASHIGE) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1370","2019-08-20","LETTUCE, MES MIX","ALF 4","200","3","600","0.5714285714285714","0.0166667","Custom Seed mix;Seed Code: LX-17-3-UT (TANGO) - 200.0 bed feet","1","nelsonw","1","2019-12-31",
+"1371","2019-08-20","RADISH","ALF 4","130","3","390","0.37142857142857144","0.0166667","Seed Code: RH-18-3-UT (NERO TONDO) - 50.0 bed feet;Seed Code: RH-19-3-OG (WATERMELON) - 50.0 bed feet;Seed Code: RH-17-3-OG (RUDOLF) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1372","2019-08-20","CARROT","ALF 4","660","3","1980","1.8857142857142857","0.0166667","Seed Code: CT-19-6-OG (NAPOLI) - 660.0 bed feet","1","nelsonw","1","2019-12-31",
+"1373","2019-08-28","SPINACH","ALF 4","250","3","750","0.7142857142857143","0.0166667","Seed Code: SH-19-2-UT (GAZELLE) - 250.0 bed feet","1","nelsonw","1","2019-12-31",
+"1374","2019-08-28","RADISH DAIKON","ALF 4","70","3","210","0.2","0.0166667","Seed Code: RN-17-1-UT (MIYASHIGE) - 35.0 bed feet;Seed Code: RN-17-2-OG (ALPINE) - 35.0 bed feet","1","nelsonw","1","2019-12-31",
+"1375","2019-08-28","LETTUCE, MES MIX","N","250","3","750","1.6129032258064515","0.0166667","Custom mix of tango, green/red salad bowl ;Seed Code: LX-17-3-UT (TANGO) - 250.0 bed feet","1","nelsonw","1","2019-12-31",
+"1376","2019-08-28","TURNIP","N","90","3","270","0.5806451612903226","0.0166667","Seed Code: TP-18-1-OG (PURPLE TOP) - 90.0 bed feet","1","nelsonw","1","2019-12-31",
+"1384","2019-09-04","RADISH","CHUAU-1","35","3","105","0.3804347826086957","0.0166667","Seed Code: RH-17-3-OG (RUDOLF) - 35.0 bed feet","1","nelsonw","1","2019-12-31",
+"1385","2019-09-04","TURNIP","CHUAU-1","35","3","105","0.3804347826086957","0.0166667","Seed Code: TP-19-1-UT (HAKUREI) - 35.0 bed feet","1","nelsonw","1","2019-12-31",
+"1386","2019-09-04","HERB - CILANTRO","CHUAU-1","10","3","30","0.10869565217391304","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 10.0 bed feet","1","nelsonw","1","2019-12-31",
+"1387","2019-09-04","HERB - DILL","CHUAU-1","10","3","30","0.10869565217391304","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 10.0 bed feet","1","nelsonw","1","2019-12-31",
+"1388","2019-09-04","SPINACH","CHUAU-2","88","5","440","1","0.0166667","Seed Code: SH-19-2-UT (GAZELLE) - 88.0 bed feet","1","nelsonw","1","2019-12-31",
+"1389","2019-09-04","LETTUCE, MES MIX","CHUAU-3","88","5","440","1.0476190476190477","0.0166667","Lettuce is mixed varieties;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet","1","nelsonw","1","2019-12-31",
+"1381","2019-09-10","STRAWBERRY","M","880","2","1760","6.769230769230769","0.0166667","1850 strawberry plants transplanted 6 beds 2 rows;Seed Code: N/A (No Variety) - 880.0 bed feet","1","nelsonw","0","2019-12-31",
+"1378","2019-09-11","LETTUCE, MES MIX","N","175","3","525","1.1290322580645162","0.0166667","Lettuce is mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 175.0 bed feet","1","nelsonw","1","2019-12-31",
+"1379","2019-09-11","SPINACH","N","145","3","435","0.9354838709677419","0.0166667","Seed Code: SH-19-2-UT (GAZELLE) - 145.0 bed feet","1","nelsonw","1","2019-12-31",
+"1380","2019-09-11","RADISH","N","30","3","90","0.1935483870967742","0.0166667","Seed Code: RH-17-3-OG (RUDOLF) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1382","2019-09-13","SPINACH","CHUAU-4","88","5","440","1.1","0.0166667","Seed Code: SH-19-2-UT (GAZELLE) - 88.0 bed feet","1","nelsonw","1","2019-12-31",
+"1383","2019-09-13","LETTUCE, MES MIX","CHUAU-5","88","5","440","1.1578947368421053","0.0166667","Lettuce is mixed varieties ;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet","1","nelsonw","1","2019-12-31",
+"1390","2019-09-16","FENNEL","I","1","1","1","0.0034602076124567475","0.0166667","FIX ME;Seed Code: N/A (No Variety) - 1.0 bed feet","1","hutchinl","1","2019-12-31",
+"1400","2019-09-24","LETTUCE, MES MIX","ORION-5","60","5","300","0.6818181818181818","0.0166667","Seed Code: LX-18-2-OG (RED SALAD BOWL) - 60.0 bed feet","1","nelsonw","1","2019-12-31",
+"1401","2019-09-24","RADISH","ORION-4","25","3","75","0.2840909090909091","0.0166667","Seed Code: RH-19-1-UT (NELSON) - 25.0 bed feet","1","nelsonw","1","2019-12-31",
+"1402","2019-09-24","TURNIP","ORION-4","30","3","90","0.3409090909090909","0.0166667","Seed Code: TP-18-2-UT (HAKUREI) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1396","2019-10-04","LETTUCE, MES MIX","CHUAU-4","88","5","440","1.1","0.0166667","Custom blend;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 88.0 bed feet","1","nelsonw","1","2019-12-31",
+"1397","2019-10-04","SPINACH","CHUAU-4","80","4","320","1","0.0166667","Seed Code: SH-19-1-OG (CORVAIR) - 80.0 bed feet","1","nelsonw","1","2019-12-31",
+"1398","2019-10-04","SPINACH","CHUAU-5","30","3","90","0.39473684210526316","0.0166667","Seed Code: SH-19-1-OG (CORVAIR) - 30.0 bed feet","1","nelsonw","1","2019-12-31",
+"1391","2019-10-07","COLLARDS","Y","50","1","50","0.1694915254237288","0.0166667","FIX ME!!;Seed Code: N/A (No Variety) - 50.0 bed feet","1","ryanv","1","2019-12-31",
+"1393","2019-10-14","CABBAGE","I","1","1","1","0.0034602076124567475","0.0166667","FIX THIS;Seed Code: CE-18-6-UT (TIARA) - 1.0 bed feet","1","hutchinl","1","2019-12-31",
+"1394","2019-10-15","GARLIC","O","1665","3","4995","8.951612903225806","0.0166667","DCF Saved Seed ;9 Beds ;Seed Code: N/A (No Variety) - 1665.0 bed feet","1","nelsonw","0","2020-07-31",
+"1395","2019-10-15","GARLIC","L","1110","3","3330","3.867595818815331","0.0166667","DCF saved seed;4 beds;Seed Code: N/A (No Variety) - 1110.0 bed feet","1","nelsonw","0","2020-07-31",
+"1399","2019-10-28","TURNIP","JASMINE-1","1","1","1","0.010416666666666666","0.0166667","FIX THIS!!;Seed Code: TP-18-2-UT (HAKUREI) - 1.0 bed feet","1","hutchinl","1","2019-12-31",
+"1482","2020-01-05","STRAWBERRY","M","900","2","1800","6.923076923076923","0.0166667","Chandler;Seed Code: N/A (No Variety) - 1.0 bed feet","1","steimanm","1","2020-12-31",
+"1404","2020-02-04","CARROT","CHUAU-4","84","5","420","1.05","0.0166667","Seed Code: CT-20-2-OG (YAYA) - 84.0 bed feet","1","nelsonw","1","2020-12-31",
+"1447","2020-03-06","RADISH","CHUAU-5","12","5","60","0.15789473684210525","0.0166667","Seed Code: RH-20-4-OG (SORA) - 12.0 bed feet","1","nelsonw","1","2020-12-31",
+"1415","2020-03-10","ONION SPRING","CHUAU-1","10","1","10","0.10869565217391304","0.0166667","Seed Code: N/A (No Variety) - 10.0 bed feet","1","nelsonw","1","2020-12-31",
+"1416","2020-03-10","GARLIC, GREEN","CHUAU-1","10","1","10","0.10869565217391304","0.0166667","Seed Code: N/A (No Variety) - 10.0 bed feet","1","nelsonw","1","2020-12-31",
+"1410","2020-03-11","LETTUCE, MES MIX","CHUAU-2","88","5","440","1","0.0166667","Mix of lettuce varieties ;Seed Code: LX-20-1-UT (SULU) - 88.0 bed feet","1","nelsonw","1","2020-12-31",
+"1411","2020-03-11","LETTUCE, MES MIX","CHUAU-2","88","5","440","1","0.0166667","Mix of lettuce varieties ;Seed Code: LX-20-1-UT (SULU) - 88.0 bed feet","1","nelsonw","1","2020-12-31",
+"1412","2020-03-12","BEET","CHUAU-3","45","5","225","0.5357142857142857","0.0166667","Seed Code: BT-20-2-OG (EARLY WONDER) - 45.0 bed feet","1","nelsonw","1","2020-12-31",
+"1413","2020-03-12","HERB - CILANTRO","CHUAU-3","15","5","75","0.17857142857142858","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 15.0 bed feet","1","nelsonw","1","2020-12-31",
+"1414","2020-03-12","HERB - DILL","CHUAU-3","15","5","75","0.17857142857142858","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 15.0 bed feet","1","nelsonw","1","2020-12-31",
+"1417","2020-03-17","ONION SPRING","CHUAU-3","8","1","8","0.09523809523809523","0.0166667","Seed Code: N/A (No Variety) - 8.0 bed feet","1","nelsonw","1","2020-12-31",
+"1418","2020-03-17","GARLIC, GREEN","CHUAU-1","10","1","10","0.10869565217391304","0.0166667","Seed Code: N/A (No Variety) - 10.0 bed feet","1","nelsonw","1","2020-12-31",
+"1419","2020-03-19","SPINACH","ORION-5","88","5","440","1","0.0166667","Seed Code: SH-19-3-UT (SPACE) - 88.0 bed feet","1","nelsonw","1","2020-12-31",
+"1420","2020-03-19","LETTUCE, MES MIX","ORION-4","60","5","300","0.6818181818181818","0.0166667","Custom mix;Seed Code: LX-18-2-OG (RED SALAD BOWL) - 60.0 bed feet","1","nelsonw","1","2020-12-31",
+"1421","2020-03-19","TURNIP","ORION-4","30","5","150","0.3409090909090909","0.0166667","Seed Code: TP-19-1-UT (HAKUREI) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1422","2020-03-24","ARUGULA","GHANA-4","46","4","184","0.4791666666666667","0.0166667","Seed Code: AA-20-1-OG (ARUGULA) - 46.0 bed feet","1","nelsonw","1","2020-12-31",
+"1423","2020-03-24","KALE","GHANA-4","46","1","46","0.4791666666666667","0.0166667","RR kale;Seed Code: N/A (No Variety) - 46.0 bed feet","1","nelsonw","1","2020-12-31",
+"1424","2020-03-24","BOKCHOY","GHANA-4","46","1","46","0.4791666666666667","0.0166667","Seed Code: BY-20-2-OG (TATSOI) - 46.0 bed feet","1","nelsonw","1","2020-12-31",
+"1425","2020-03-24","BOKCHOY","GHANA-4","46","1","46","0.4791666666666667","0.0166667","Seed Code: BY-20-3-OG (MIZUNA) - 46.0 bed feet","1","nelsonw","1","2020-12-31",
+"1426","2020-03-24","BOKCHOY","GHANA-4","46","1","46","0.4791666666666667","0.0166667","Seed Code: BY-20-4-OG (MUSTARD) - 46.0 bed feet","1","nelsonw","1","2020-12-31",
+"1443","2020-03-24","GREENS, MES MIX","GHANA-4","44","4","176","0.4583333333333333","0.0166667","Seed Code: GX-16-6-OG (MIZUNA) - 44.0 bed feet","1","nelsonw","1","2020-12-31",
+"1427","2020-04-01","ARUGULA","GHANA-1","30","4","120","0.3125","0.0166667","Seed Code: AA-20-1-OG (ARUGULA) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1428","2020-04-01","SPINACH","JASMINE-5","88","5","440","1","0.0166667","Seed Code: SH-19-3-UT (SPACE) - 88.0 bed feet","1","nelsonw","1","2020-12-31",
+"1429","2020-04-01","LETTUCE, MES MIX","JASMINE-4","60","5","300","0.6818181818181818","0.0166667","custom mix;Seed Code: LX-20-1-UT (SULU) - 60.0 bed feet","1","nelsonw","1","2020-12-31",
+"1430","2020-04-01","RADISH","JASMINE-4","22","5","110","0.25","0.0166667","Seed Code: RH-20-4-OG (SORA) - 11.0 bed feet;Seed Code: RH-20-3-UT (FRENCH BREAKFAST) - 11.0 bed feet","1","nelsonw","1","2020-12-31",
+"1431","2020-04-06","HERB - CILANTRO","JASMINE-1","15","4","60","0.15625","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 15.0 bed feet","1","nelsonw","1","2020-12-31",
+"1432","2020-04-06","HERB - DILL","JASMINE-1","15","4","60","0.15625","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 15.0 bed feet","1","nelsonw","1","2020-12-31",
+"1433","2020-04-06","TURNIP","CHUAU-1","25","4","100","0.2717391304347826","0.0166667","Seed Code: TP-20-1-UT (HAKUREI) - 25.0 bed feet","1","nelsonw","1","2020-12-31",
+"1434","2020-04-06","CARROT","N","270","3","810","1.7419354838709677","0.0166667","Seed Code: CT-20-2-OG (YAYA) - 270.0 bed feet","1","nelsonw","1","2020-12-31",
+"1435","2020-04-06","BEET","N","80","3","240","0.5161290322580645","0.0166667","Seed Code: BT-19-3-OG (EARLY WONDER) - 80.0 bed feet","1","nelsonw","1","2020-12-31",
+"1436","2020-04-06","PEA, SNAP","N","320","1","320","2.064516129032258","0.0166667","Seed Code: PP-18-1-UT (SUPER SUGAR SNAP) - 320.0 bed feet","1","nelsonw","1","2020-12-31",
+"1459","2020-04-07","GREENS, MES MIX","CHUAU-5","44","5","220","0.5789473684210527","0.0166667","Seed Code: GX-16-2-OG (RED RUSSIAN ) - 44.0 bed feet","1","nelsonw","1","2020-12-31",
+"1437","2020-04-16","RADISH","JASMINE-2","22","5","110","0.25","0.0166667","Seed Code: RH-20-4-OG (SORA) - 10.0 bed feet;Seed Code: RH-20-3-UT (FRENCH BREAKFAST) - 12.0 bed feet","1","nelsonw","1","2020-12-31",
+"1438","2020-04-20","SPINACH","K","150","3","450","0.528169014084507","0.0166667","Seed Code: SH-20-3-UT (SPACE) - 150.0 bed feet","1","nelsonw","1","2020-12-31",
+"1439","2020-04-20","LETTUCE, MES MIX","K","125","3","375","0.44014084507042256","0.0166667","Custom mix;Seed Code: LX-20-1-UT (SULU) - 125.0 bed feet","1","nelsonw","1","2020-12-31",
+"1440","2020-04-20","BEET","K","100","3","300","0.352112676056338","0.0166667","Seed Code: BT-20-2-OG (EARLY WONDER) - 100.0 bed feet","1","nelsonw","1","2020-12-31",
+"1441","2020-04-20","PEA, SNAP","K","315","1","315","1.1091549295774648","0.0166667","Seed Code: PP-18-1-UT (SUPER SUGAR SNAP) - 315.0 bed feet","1","nelsonw","1","2020-12-31",
+"1442","2020-04-20","CARROT","K","270","3","810","0.9507042253521126","0.0166667","Seed Code: CT-20-2-OG (YAYA) - 270.0 bed feet","1","nelsonw","1","2020-12-31",
+"1444","2020-05-04","POTATO","ALF 4","3600","1","3600","10.285714285714286","0.0333333","adirondak red 1895;kennebec 1435;purple majesty 270;varieties start W to E;;sunny, 20 mph wind;Seed Code: N/A (No Variety) - 3600.0 bed feet","1","ryanv","1","2020-12-31",
+"1445","2020-05-04","POTATO","ALF 2","1790","1","1790","5.114285714285714","0.0166667","purple majesty 1460;
 yukon gold 330;
 ;
-sunny, 20 mph wind;Seed Code: N/A (No Variety) - 1790.0 bed feet"	1	ryanv	1	12/31/20
-
-1446	5/4/20	POTATO	ALF 1	720	1	720	2.057142857	0.0166667	yukon gold;Seed Code: N/A (No Variety) - 720.0 bed feet	1	ryanv	1	12/31/20
-
-1448	5/5/20	LETTUCE, MES MIX	K	130	3	390	0.457746479	0.0166667	Seed Code: LX-20-1-UT (SULU) - 130.0 bed feet	1	nelsonw	1	12/31/20
-
-1449	5/5/20	SPINACH	K	130	3	390	0.457746479	0.0166667	Seed Code: SH-20-3-UT (SPACE) - 130.0 bed feet	1	nelsonw	1	12/31/20
-
-1450	5/5/20	BEET	K	100	3	300	0.352112676	0.0166667	Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet	1	nelsonw	1	12/31/20
-
-1451	5/5/20	TURNIP	K	40	3	120	0.14084507	0.0166667	Seed Code: TP-20-1-UT (HAKUREI) - 40.0 bed feet	1	nelsonw	1	12/31/20
-
-1452	5/5/20	RADISH	K	30	3	90	0.105633803	0.0166667	Seed Code: RH-20-4-OG (SORA) - 15.0 bed feet;Seed Code: RH-20-3-UT (FRENCH BREAKFAST) - 15.0 bed feet	1	nelsonw	1	12/31/20
-
-1453	5/5/20	CARROT	J	270	3	810	0.944055944	0.0166667	Seed Code: CT-20-1-OG (NAPOLI) - 270.0 bed feet	1	nelsonw	1	12/31/20
-
-1454	5/5/20	BEAN	J	105	2	210	0.367132867	0.0166667	Seed Code: BN-18-4-OG (RODCOR) - 35.0 bed feet;Seed Code: BN-19-2-OG (E-Z PICK) - 35.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet	1	nelsonw	1	12/31/20
-
-1455	5/5/20	CORN, SWEET	ALF 1	300	2	600	0.857142857	0.0333333	Seed Code: CT-20-3-OG (ENCHANTED) - 300.0 bed feet	1	nelsonw	1	12/31/20
-
-1456	5/7/20	TURNIP	CHUAU-5	12	5	60	0.157894737	0.0166667	Seed Code: TP-20-1-UT (HAKUREI) - 12.0 bed feet	1	nelsonw	1	12/31/20
-
-1457	5/7/20	HERB - DILL	CHUAU-5	10	5	50	0.131578947	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 8.0 bed feet	1	nelsonw	1	12/31/20
-
-1458	5/7/20	HERB - CILANTRO	CHUAU-5	10	5	50	0.131578947	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 8.0 bed feet	1	nelsonw	1	12/31/20
-
-1460	5/15/20	CORN, SWEET	ALF 1	320	2	640	0.914285714	0.0166667	Seed Code: CT-20-3-OG (ENCHANTED) - 320.0 bed feet	1	nelsonw	1	12/31/20
-
-1461	5/15/20	CARROT	K	270	3	810	0.950704225	0.0166667	Seed Code: CT-20-5-UT (ROMANCE) - 270.0 bed feet	1	nelsonw	1	12/31/20
-
-1462	5/15/20	SPINACH	K	130	3	390	0.457746479	0.0166667	Seed Code: SH-20-3-UT (SPACE) - 130.0 bed feet	1	nelsonw	1	12/31/20
-
-1463	5/15/20	BEAN	K	120	2	240	0.422535211	0.0166667	Seed Code: BN-19-2-OG (E-Z PICK) - 40.0 bed feet;Seed Code: BN-20-1-OG (RODCOR) - 40.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 40.0 bed feet	1	nelsonw	1	12/31/20
-
-1464	5/15/20	LETTUCE, MES MIX	ALF 3	130	3	390	0.371428571	0.0166667	Seed Code: LX-20-2-OG (JERICHO) - 130.0 bed feet	1	nelsonw	1	12/31/20
-
-1465	5/15/20	BEET	ALF 3	100	3	300	0.285714286	0.0166667	Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet	1	nelsonw	1	12/31/20
-
-1466	5/15/20	RADISH	ALF 3	30	3	90	0.085714286	0.0166667	Seed Code: RH-20-4-OG (SORA) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1467	5/15/20	HERB - CILANTRO	ALF 3	30	3	90	0.085714286	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1468	5/15/20	HERB - DILL	ALF 3	30	3	90	0.085714286	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1469	5/18/20	CARROT	N	270	3	810	1.741935484	0.0166667	Seed Code: CT-20-1-OG (NAPOLI) - 270.0 bed feet	1	nelsonw	1	12/31/20
-
-1470	5/18/20	HERB - CILANTRO	N	30	3	90	0.193548387	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1471	5/18/20	HERB - DILL	N	30	3	90	0.193548387	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1472	5/18/20	RADISH	N	15	3	45	0.096774194	0.0166667	Seed Code: RH-20-4-OG (SORA) - 15.0 bed feet	1	nelsonw	1	12/31/20
-
-1473	5/20/20	SWEET POTATO	ALF 2	1500	1	1500	4.285714286	0.0166667	Seed Code: N/A (No Variety) - 1500.0 bed feet	1	nelsonw	1	12/31/20
-
-1475	5/26/20	CORN, SWEET	ALF 1	330	2	660	0.942857143	0.0166667	Seed Code: CT-20-3-OG (ENCHANTED) - 330.0 bed feet	1	nelsonw	1	12/31/20
-
-1476	5/26/20	CORN, DRY	ALF 1	330	2	660	0.942857143	0.0166667	Seed Code: CY-20-1-OG (ROYS CALAIS FLINT CORN) - 330.0 bed feet	1	nelsonw	1	12/31/20
-
-1540	5/26/20	SWEET POTATO	ALF 1	700	1	700	2	0.0166667	Seed Code: N/A (No Variety) - 700.0 bed feet	1	nelsonw	1	12/31/20
-
-1478	6/3/20	CARROT	X	290	3	870	0.914826498	0.0166667	Seed Code: CT-20-5-UT (ROMANCE) - 290.0 bed feet	1	nelsonw	1	12/31/20
-
-1479	6/3/20	BEET	X	100	3	300	0.315457413	0.0166667	Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet	1	nelsonw	1	12/31/20
-
-1480	6/3/20	LETTUCE, MES MIX	X	100	3	300	0.315457413	0.0166667	Seed Code: LX-20-4-UT (SPRITZER) - 100.0 bed feet	1	nelsonw	1	12/31/20
-
-1483	6/8/20	PARSNIP	ALF 3	330	3	990	0.942857143	0.0166667	Seed Code: PP-19-1-OG (WHITE SPEAR) - 330.0 bed feet	1	nelsonw	1	12/31/20
-
-1484	6/8/20	CORN, SWEET	ALF 1	320	2	640	0.914285714	0.0166667	Seed Code: CT-20-1-OG (ALLURE) - 320.0 bed feet	1	nelsonw	1	12/31/20
-
-1485	6/17/20	BEET	X	100	3	300	0.315457413	0.0166667	Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet	1	nelsonw	1	12/31/20
-
-1486	6/17/20	CARROT	X	300	3	900	0.94637224	0.0166667	Seed Code: CT-20-5-UT (ROMANCE) - 300.0 bed feet	1	nelsonw	1	12/31/20
-
-1487	6/17/20	BEAN	X	78	2	156	0.246056782	0.0166667	Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 26.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 26.0 bed feet;Seed Code: BN-20-2-OG (E-Z PICK) - 26.0 bed feet	1	nelsonw	1	12/31/20
-
-1488	6/17/20	LETTUCE, MES MIX	X	130	3	390	0.410094637	0.0166667	Seed Code: LX-20-4-UT (SPRITZER) - 130.0 bed feet	1	nelsonw	1	12/31/20
-
-1489	6/17/20	CORN, SWEET	ALF 1	320	2	640	0.914285714	0.0166667	Seed Code: CT-20-2-OG (ALLURE) - 320.0 bed feet	1	nelsonw	1	12/31/20
-
-1490	6/17/20	HERB - CILANTRO	X	30	3	90	0.094637224	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1491	6/17/20	HERB - DILL	X	30	3	90	0.094637224	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1492	6/30/20	CARROT	Y	460	3	1380	1.559322034	0.0166667	Seed Code: CT-20-4-UT (HERCULES) - 460.0 bed feet	1	nelsonw	1	12/31/20
-
-1493	6/30/20	BEET	Y	135	3	405	0.457627119	0.0166667	Seed Code: BT-20-1-OG (DETROIT DARK RED) - 135.0 bed feet	1	nelsonw	1	12/31/20
-
-1494	6/30/20	LETTUCE, MES MIX	Y	125	3	375	0.423728814	0.0166667	Seed Code: LX-20-3-OG (ANNAPOLIS) - 125.0 bed feet	1	nelsonw	1	12/31/20
-
-1495	6/30/20	BEAN	Y	105	2	210	0.355932203	0.0166667	Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 35.0 bed feet;Seed Code: BN-20-2-OG (E-Z PICK) - 35.0 bed feet	1	nelsonw	1	12/31/20
-
-1496	6/30/20	HERB - CILANTRO	Y	30	3	90	0.101694915	0.0166667	Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1497	6/30/20	HERB - DILL	Y	30	3	90	0.101694915	0.0166667	Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet	1	nelsonw	1	12/31/20
-
-1498	6/30/20	CORN, SWEET	ALF 1	640	2	1280	1.828571429	0.0166667	Seed Code: CT-20-5-OG (NATURAL SWEET XR) - 640.0 bed feet	1	nelsonw	1	12/31/20
-
-1499	7/10/20	CORN, SWEET	ALF 1	240	2	480	0.685714286	0.0166667	Seed Code: CT-20-3-OG (ENCHANTED) - 240.0 bed feet	1	nelsonw	1	12/31/20
-
-1500	7/10/20	BEET	Y	150	3	450	0.508474576	0.0166667	Seed Code: BT-20-1-OG (DETROIT DARK RED) - 150.0 bed feet	1	nelsonw	1	12/31/20
+sunny, 20 mph wind;Seed Code: N/A (No Variety) - 1790.0 bed feet","1","ryanv","1","2020-12-31",
+"1446","2020-05-04","POTATO","ALF 1","720","1","720","2.057142857142857","0.0166667","yukon gold;Seed Code: N/A (No Variety) - 720.0 bed feet","1","ryanv","1","2020-12-31",
+"1448","2020-05-05","LETTUCE, MES MIX","K","130","3","390","0.45774647887323944","0.0166667","Seed Code: LX-20-1-UT (SULU) - 130.0 bed feet","1","nelsonw","1","2020-12-31",
+"1449","2020-05-05","SPINACH","K","130","3","390","0.45774647887323944","0.0166667","Seed Code: SH-20-3-UT (SPACE) - 130.0 bed feet","1","nelsonw","1","2020-12-31",
+"1450","2020-05-05","BEET","K","100","3","300","0.352112676056338","0.0166667","Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet","1","nelsonw","1","2020-12-31",
+"1451","2020-05-05","TURNIP","K","40","3","120","0.14084507042253522","0.0166667","Seed Code: TP-20-1-UT (HAKUREI) - 40.0 bed feet","1","nelsonw","1","2020-12-31",
+"1452","2020-05-05","RADISH","K","30","3","90","0.1056338028169014","0.0166667","Seed Code: RH-20-4-OG (SORA) - 15.0 bed feet;Seed Code: RH-20-3-UT (FRENCH BREAKFAST) - 15.0 bed feet","1","nelsonw","1","2020-12-31",
+"1453","2020-05-05","CARROT","J","270","3","810","0.9440559440559441","0.0166667","Seed Code: CT-20-1-OG (NAPOLI) - 270.0 bed feet","1","nelsonw","1","2020-12-31",
+"1454","2020-05-05","BEAN","J","105","2","210","0.36713286713286714","0.0166667","Seed Code: BN-18-4-OG (RODCOR) - 35.0 bed feet;Seed Code: BN-19-2-OG (E-Z PICK) - 35.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet","1","nelsonw","1","2020-12-31",
+"1455","2020-05-05","CORN, SWEET","ALF 1","300","2","600","0.8571428571428571","0.0333333","Seed Code: CT-20-3-OG (ENCHANTED) - 300.0 bed feet","1","nelsonw","1","2020-12-31",
+"1456","2020-05-07","TURNIP","CHUAU-5","12","5","60","0.15789473684210525","0.0166667","Seed Code: TP-20-1-UT (HAKUREI) - 12.0 bed feet","1","nelsonw","1","2020-12-31",
+"1457","2020-05-07","HERB - DILL","CHUAU-5","10","5","50","0.13157894736842105","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 8.0 bed feet","1","nelsonw","1","2020-12-31",
+"1458","2020-05-07","HERB - CILANTRO","CHUAU-5","10","5","50","0.13157894736842105","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 8.0 bed feet","1","nelsonw","1","2020-12-31",
+"1460","2020-05-15","CORN, SWEET","ALF 1","320","2","640","0.9142857142857143","0.0166667","Seed Code: CT-20-3-OG (ENCHANTED) - 320.0 bed feet","1","nelsonw","1","2020-12-31",
+"1461","2020-05-15","CARROT","K","270","3","810","0.9507042253521126","0.0166667","Seed Code: CT-20-5-UT (ROMANCE) - 270.0 bed feet","1","nelsonw","1","2020-12-31",
+"1462","2020-05-15","SPINACH","K","130","3","390","0.45774647887323944","0.0166667","Seed Code: SH-20-3-UT (SPACE) - 130.0 bed feet","1","nelsonw","1","2020-12-31",
+"1463","2020-05-15","BEAN","K","120","2","240","0.4225352112676056","0.0166667","Seed Code: BN-19-2-OG (E-Z PICK) - 40.0 bed feet;Seed Code: BN-20-1-OG (RODCOR) - 40.0 bed feet;Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 40.0 bed feet","1","nelsonw","1","2020-12-31",
+"1464","2020-05-15","LETTUCE, MES MIX","ALF 3","130","3","390","0.37142857142857144","0.0166667","Seed Code: LX-20-2-OG (JERICHO) - 130.0 bed feet","1","nelsonw","1","2020-12-31",
+"1465","2020-05-15","BEET","ALF 3","100","3","300","0.2857142857142857","0.0166667","Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet","1","nelsonw","1","2020-12-31",
+"1466","2020-05-15","RADISH","ALF 3","30","3","90","0.08571428571428572","0.0166667","Seed Code: RH-20-4-OG (SORA) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1467","2020-05-15","HERB - CILANTRO","ALF 3","30","3","90","0.08571428571428572","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1468","2020-05-15","HERB - DILL","ALF 3","30","3","90","0.08571428571428572","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1469","2020-05-18","CARROT","N","270","3","810","1.7419354838709677","0.0166667","Seed Code: CT-20-1-OG (NAPOLI) - 270.0 bed feet","1","nelsonw","1","2020-12-31",
+"1470","2020-05-18","HERB - CILANTRO","N","30","3","90","0.1935483870967742","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1471","2020-05-18","HERB - DILL","N","30","3","90","0.1935483870967742","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1472","2020-05-18","RADISH","N","15","3","45","0.0967741935483871","0.0166667","Seed Code: RH-20-4-OG (SORA) - 15.0 bed feet","1","nelsonw","1","2020-12-31",
+"1473","2020-05-20","SWEET POTATO","ALF 2","1500","1","1500","4.285714285714286","0.0166667","Seed Code: N/A (No Variety) - 1500.0 bed feet","1","nelsonw","1","2020-12-31",
+"1475","2020-05-26","CORN, SWEET","ALF 1","330","2","660","0.9428571428571428","0.0166667","Seed Code: CT-20-3-OG (ENCHANTED) - 330.0 bed feet","1","nelsonw","1","2020-12-31",
+"1476","2020-05-26","CORN, DRY","ALF 1","330","2","660","0.9428571428571428","0.0166667","Seed Code: CY-20-1-OG (ROYS CALAIS FLINT CORN) - 330.0 bed feet","1","nelsonw","1","2020-12-31",
+"1540","2020-05-26","SWEET POTATO","ALF 1","700","1","700","2","0.0166667","Seed Code: N/A (No Variety) - 700.0 bed feet","1","nelsonw","1","2020-12-31",
+"1478","2020-06-03","CARROT","X","290","3","870","0.9148264984227129","0.0166667","Seed Code: CT-20-5-UT (ROMANCE) - 290.0 bed feet","1","nelsonw","1","2020-12-31",
+"1479","2020-06-03","BEET","X","100","3","300","0.31545741324921134","0.0166667","Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet","1","nelsonw","1","2020-12-31",
+"1480","2020-06-03","LETTUCE, MES MIX","X","100","3","300","0.31545741324921134","0.0166667","Seed Code: LX-20-4-UT (SPRITZER) - 100.0 bed feet","1","nelsonw","1","2020-12-31",
+"1483","2020-06-08","PARSNIP","ALF 3","330","3","990","0.9428571428571428","0.0166667","Seed Code: PP-19-1-OG (WHITE SPEAR) - 330.0 bed feet","1","nelsonw","1","2020-12-31",
+"1484","2020-06-08","CORN, SWEET","ALF 1","320","2","640","0.9142857142857143","0.0166667","Seed Code: CT-20-1-OG (ALLURE) - 320.0 bed feet","1","nelsonw","1","2020-12-31",
+"1485","2020-06-17","BEET","X","100","3","300","0.31545741324921134","0.0166667","Seed Code: BT-20-1-OG (DETROIT DARK RED) - 100.0 bed feet","1","nelsonw","1","2020-12-31",
+"1486","2020-06-17","CARROT","X","300","3","900","0.9463722397476341","0.0166667","Seed Code: CT-20-5-UT (ROMANCE) - 300.0 bed feet","1","nelsonw","1","2020-12-31",
+"1487","2020-06-17","BEAN","X","78","2","156","0.24605678233438485","0.0166667","Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 26.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 26.0 bed feet;Seed Code: BN-20-2-OG (E-Z PICK) - 26.0 bed feet","1","nelsonw","1","2020-12-31",
+"1488","2020-06-17","LETTUCE, MES MIX","X","130","3","390","0.41009463722397477","0.0166667","Seed Code: LX-20-4-UT (SPRITZER) - 130.0 bed feet","1","nelsonw","1","2020-12-31",
+"1489","2020-06-17","CORN, SWEET","ALF 1","320","2","640","0.9142857142857143","0.0166667","Seed Code: CT-20-2-OG (ALLURE) - 320.0 bed feet","1","nelsonw","1","2020-12-31",
+"1490","2020-06-17","HERB - CILANTRO","X","30","3","90","0.0946372239747634","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1491","2020-06-17","HERB - DILL","X","30","3","90","0.0946372239747634","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1492","2020-06-30","CARROT","Y","460","3","1380","1.5593220338983051","0.0166667","Seed Code: CT-20-4-UT (HERCULES) - 460.0 bed feet","1","nelsonw","1","2020-12-31",
+"1493","2020-06-30","BEET","Y","135","3","405","0.4576271186440678","0.0166667","Seed Code: BT-20-1-OG (DETROIT DARK RED) - 135.0 bed feet","1","nelsonw","1","2020-12-31",
+"1494","2020-06-30","LETTUCE, MES MIX","Y","125","3","375","0.423728813559322","0.0166667","Seed Code: LX-20-3-OG (ANNAPOLIS) - 125.0 bed feet","1","nelsonw","1","2020-12-31",
+"1495","2020-06-30","BEAN","Y","105","2","210","0.3559322033898305","0.0166667","Seed Code: BN-19-3-OG (ROYAL BURGUNDY) - 35.0 bed feet;Seed Code: BN-19-4-OG (RODCOR) - 35.0 bed feet;Seed Code: BN-20-2-OG (E-Z PICK) - 35.0 bed feet","1","nelsonw","1","2020-12-31",
+"1496","2020-06-30","HERB - CILANTRO","Y","30","3","90","0.1016949152542373","0.0166667","Seed Code: HO-16-1-OG (DCF CILANTRO) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1497","2020-06-30","HERB - DILL","Y","30","3","90","0.1016949152542373","0.0166667","Seed Code: HL-19-1-OG (BOUQUET) - 30.0 bed feet","1","nelsonw","1","2020-12-31",
+"1498","2020-06-30","CORN, SWEET","ALF 1","640","2","1280","1.8285714285714285","0.0166667","Seed Code: CT-20-5-OG (NATURAL SWEET XR) - 640.0 bed feet","1","nelsonw","1","2020-12-31",
+"1499","2020-07-10","CORN, SWEET","ALF 1","240","2","480","0.6857142857142857","0.0166667","Seed Code: CT-20-3-OG (ENCHANTED) - 240.0 bed feet","1","nelsonw","1","2020-12-31",
+"1500","2020-07-10","BEET","Y","150","3","450","0.5084745762711864","0.0166667","Seed Code: BT-20-1-OG (DETROIT DARK RED) - 150.0 bed feet","1","nelsonw","1","2020-12-31",
