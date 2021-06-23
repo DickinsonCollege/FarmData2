@@ -42,9 +42,52 @@ function getAllPages(url, arr) {
     })
 }
 
+function getSessionToken() {
+    return new Promise((resolve, reject) => {
+        axios
+        .get('/restws/session/token')
+        .then(response => {
+            return response.data
+        })
+        .then(function(token) {
+            resolve(token)
+        })
+        .catch(function(error){
+            reject(error)
+        })
+    })
+    
+}
+
+function deleteLog(url, deleteID, sessionToken) {
+    // Need to retrive the session token when logged in and
+    // use that in any requests that modify the database 
+    // (i.e. PUT, POST, DELETE).
+    //let id = parseInt(deleteID)
+    return new Promise((resolve, reject) => {
+        url = url + deleteID
+        axios
+            .delete(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : sessionToken,
+                }
+            })
+            
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+
 try {
     module.exports = {
-        getAllPages: getAllPages
+        getAllPages: getAllPages,
+        getSessionToken: getSessionToken,
+        deleteLog: deleteLog
     }
 }
 catch {}
