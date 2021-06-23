@@ -1,6 +1,6 @@
 let CustomTableComponent = {
     template:`<div>
-                    <table data-cy="custom-table" style="width:100%" border=1>
+                    <table data-cy="custom-table" style="width:100%" class="pure-table pur-table-bordered" border=1>
                         <tr>
                             <th data-cy="headers" v-for="header in headers">{{ header }}</th>
                             <th data-cy="edit-header" v-if="canEdit">Edit</th>
@@ -11,11 +11,11 @@ let CustomTableComponent = {
                                 <input data-cy="test-input" v-if="rowsToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowsToEdit==index)">{{ item }}</p>
                             </td>
                             <td v-if="canEdit"> 
-                                <button data-cy="edit-button" @click="editRow(index, row)" v-if="!(rowsToEdit==index)" :disabled="disableEdit">Edit</button> 
-                                <button data-cy="save-button" v-if="rowsToEdit==index" @click="finishRowEdit(row.id, row)">Save</button>
+                                <button data-cy="edit-button" @click="editRow(index, row)" v-if="!(rowsToEdit==index)" :disabled="disableEdit"><span class="glyphicon glyphicon-edit"></span></button> 
+                                <button data-cy="save-button" v-if="rowsToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-save"></span></button>
                             </td>
                             <td v-if="canDelete"> 
-                                <button data-cy="delete-button" @click="deleteRow(row.id)">Delete</button>
+                                <button data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
                             </td>
                         </tr>
                     </table>
