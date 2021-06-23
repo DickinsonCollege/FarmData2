@@ -19,7 +19,7 @@ describe('custom table component', () => {
             }) 
         })
 
-        it('the table exist', () => {
+        it('the table exists', () => {
             cy.get('[data-cy=custom-table]')
                 .should('exist')
         })
