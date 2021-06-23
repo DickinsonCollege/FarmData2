@@ -8,11 +8,11 @@ let CustomTableComponent = {
                         </tr>
                         <tr data-cy="object-test" v-for="(row, index) in rows">
                             <td data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                <input data-cy="test-input" v-if="rowsToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowsToEdit==index)">{{ item }}</p>
+                                <input data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
                             </td>
                             <td v-if="canEdit"> 
-                                <button data-cy="edit-button" @click="editRow(index, row)" v-if="!(rowsToEdit==index)" :disabled="disableEdit"><span class="glyphicon glyphicon-edit"></span></button> 
-                                <button data-cy="save-button" v-if="rowsToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-save"></span></button>
+                                <button data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-edit"></span></button> 
+                                <button data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-save"></button>
                             </td>
                             <td v-if="canDelete"> 
                                 <button data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
@@ -40,44 +40,37 @@ let CustomTableComponent = {
     },
     data() {
         return {
-            rowsToEdit: null,
-            oldRow: {},
-            testIndex: null,
-            indexsToChange: [],
+            rowToEdit: null,
+            indexesToChange: [],
         }
     },
     methods: {
-        editRow: function(index, row){
-            this.oldRow = this.rows[index]
-            this.rowsToEdit = index
-            
-            //this.oldRow = row
+        editRow: function(index){
+            this.rowToEdit = index
         },
-        finishRowEdit: function(idToChange, row){
-            this.rowsToEdit = null
+        finishRowEdit: function(id, row){
+            this.rowToEdit = null
             let jsonObject = {}
-            for(i=0; i < this.indexsToChange.length; i ++){
-                let key = this.headers[this.indexsToChange[i]]
-                jsonObject[key] = row.data[this.indexsToChange[i]]
+            for(i=0; i < this.indexesToChange.length; i ++){
+                let key = this.headers[this.indexesToChange[i]]
+                jsonObject[key] = row.data[this.indexesToChange[i]]
             }
-            this.indexsToChange = []
-            var row = this.rows.filter(obj => {
-                return obj.id === idToChange
-            })
-            this.$emit('row-edited', jsonObject, idToChange)
+            this.indexesToChange = []
+
+            this.$emit('row-edited', jsonObject, id)
         },
         deleteRow: function(id){
             this.$emit('row-deleted', id)
         },
         changedCell: function(itemIndex){
-            if(!this.indexsToChange.includes(itemIndex)){
-                this.indexsToChange.push(itemIndex)
+            if(!this.indexesToChange.includes(itemIndex)){
+                this.indexesToChange.push(itemIndex)
             }
         }
     },
     computed: {
-        disableEdit() {
-            if (this.rowsToEdit != null){
+        editDisabled() {
+            if (this.rowToEdit != null){
                 return true
             }else{
                 return false
