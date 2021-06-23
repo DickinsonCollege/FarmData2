@@ -42,19 +42,31 @@ function getAllPages(url, arr) {
     })
 }
 
-function getCropMap(){
-    return getMap('/farm_asset.json?type=planting', 'id')
+function getIDToCropMap(){
+    return getMap('/farm_asset.json?type=planting', 'id', 'name')
 }
 
-function getFieldMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid')
+function getIDToFieldMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
 }
 
-function getUserMap(){
-    return getMap('/user', 'uid')
+function getIDToUserMap(){
+    return getMap('/user', 'uid', 'name')
 }
 
-function getMap(url, findID){
+function getCropToIDMap(){
+    return getMap('/farm_asset.json?type=planting', 'name', 'id')
+}
+
+function getFieldToIDMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
+}
+
+function getUserToIDMap(){
+    return getMap('/user', 'name', 'uid')
+}
+
+function getMap(url, key, value){
     return new Promise((resolve, reject) => {
         axios.get(url)
             .then(function(response) {
@@ -63,7 +75,7 @@ function getMap(url, findID){
             })
             .then(function(list) {
                 resolve(new Map(list.map(h => 
-                    [h[findID], h.name]
+                    [h[key], h[value]]
                 )))
             })
             .catch(function(error) {
@@ -75,9 +87,12 @@ function getMap(url, findID){
 try {
     module.exports = {
         getAllPages: getAllPages,
-        getCropMap: getCropMap,
-        getFieldMap: getFieldMap,
-        getUserMap: getUserMap
+        getIDToCropMap: getIDToCropMap,
+        getIDToFieldMap: getIDToFieldMap,
+        getIDToUserMap: getIDToUserMap,
+        getCropToIDMap: getCropToIDMap,
+        getFieldToIDMap: getFieldToIDMap,
+        getUserToIDMap: getUserToIDMap
     }
 }
 catch {}
