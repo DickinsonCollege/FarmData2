@@ -29,6 +29,8 @@ source ./addPeople.bash
   ./addAreas.py
   # Add the crop families and crops.
   ./addCrops.py
+  # Add the units used for quantities
+  ./addUnits.py
 
 
 echo "Compressing the sample database..."

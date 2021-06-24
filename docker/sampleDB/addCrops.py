@@ -11,17 +11,19 @@ from csv import reader
 from utils import *
 import sys
 
-# Get the id of the Farm Crop Families Vocabulary so we can add the areas to it.
-cropFamVocabID = getVocabularyID("farm_crop_families")
-
-# Get the id of the Farm Crops Vocabulary so we can add the areas to it.
-cropVocabID = getVocabularyID("farm_crops")
-
 def main():
     print("Adding Farm Crop Families...")
 
-    deleteCrops()
-    deleteCropFamilies()
+    # Get the id of the Farm Crop Families Vocabulary so we can add the areas to it.
+    cropFamVocabID = getVocabularyID("farm_crop_families")
+
+    # Get the id of the Farm Crops Vocabulary so we can add the areas to it.
+    cropVocabID = getVocabularyID("farm_crops")
+
+    # Delete all of the crops and the families they belong to.
+    # Note: Must delete crops before the families.
+    deleteAllVocabTerms("http://localhost/taxonomy_term.json?bundle=farm_crops")
+    deleteAllVocabTerms("http://localhost/taxonomy_term.json?bundle=farm_crop_families")
 
     familyWeight=1
     cropWeight=1
@@ -30,115 +32,43 @@ def main():
         crops_reader = reader(decomment(cropsFile))
         for row in crops_reader:
             if row[0] != '':
-                familyID = addCropFamily(row, familyWeight)
+                family = {
+                    "name": row[0],
+                    "vocabulary": cropFamVocabID,
+                    "weight": familyWeight,
+                }
+                familyID = addVocabTerm(family)
                 familyWeight+=1
             elif row[1] != '':
-                parentCropID = addParentCrop(row, familyID, cropWeight)
+                crop = {
+                    "name": row[1],
+                    "vocabulary": cropVocabID,
+                    "crop_family": {
+                        "id": familyID,
+                        "resource": "taxonomy_term"
+                    },
+                    #"weight": cropWeight,   # Omit to use alphabetical order in farmOS
+                }
+                parentCropID = addVocabTerm(crop)
                 cropWeight+=1
             else:
-                childCropID = addChildCrop(row, parentCropID, familyID, cropWeight)
+                crop = {
+                    "name": row[2],
+                    "vocabulary": cropVocabID,
+                    "parent": [{
+                        "id": parentCropID,
+                        "resource": "taxonomy_term"
+                    }],
+                    "crop_family": {    # This is not inherited from parent.
+                        "id": familyID,
+                        "resource": "taxonomy_term"
+                    },
+                    #"weight": cropWeight,   # Omit to use alphabetical order in farmOS
+                }
+                childCropID = addVocabTerm(crop)
                 cropWeight+=1
 
     print("Farm Crop Families added.")
-
-def deleteCropFamilies():
-    familiesExist = True
-
-    while familiesExist:
-        response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_crop_families", 
-            auth=HTTPBasicAuth(user, passwd))
-        familiesJson = response.json()
-        familiesExist = (len(familiesJson['list']) > 0)
-
-        for family in familiesJson['list']:
-            familyID = family['tid']
-            response = requests.delete("http://localhost/taxonomy_term/" + familyID, 
-                auth=HTTPBasicAuth(user, passwd))
-
-            if(response.status_code == 200):
-                print("Deleted Crop Family: " + family['name'] + " with id " + familyID)
-
-def addCropFamily(row, familyWeight):
-    family = {
-        "name": row[0],
-        "vocabulary": cropFamVocabID,
-        "weight": familyWeight,
-    }
-
-    response = requests.post('http://localhost/taxonomy_term', 
-        json=family, auth=HTTPBasicAuth(user, passwd))
-
-    if(response.status_code == 201):
-        familyID = response.json()['id']
-        print("Created Crop Family: " + family['name'] + " with id " + familyID)
-        return familyID
-    else:
-        print("Error Creating Crop Family: " + family['name'])
-        sys.exit(-1)
-
-def deleteCrops():
-    cropsExist = True
-    while cropsExist:
-        response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_crops", 
-            auth=HTTPBasicAuth(user, passwd))
-        cropsJson = response.json()
-        cropsExist = (len(cropsJson['list']) > 0)
-
-        for crop in cropsJson['list']:
-            cropID = crop['tid']
-            response = requests.delete("http://localhost/taxonomy_term/" + cropID, 
-                auth=HTTPBasicAuth(user, passwd))
-
-            if(response.status_code == 200):
-                print("Deleted Crop: " + crop['name'] + " with id " + cropID)
-
-def addParentCrop(row, familyID, cropWeight):
-    crop = {
-        "name": row[1],
-        "vocabulary": cropVocabID,
-        "crop_family": {
-            "id": familyID,
-            "resource": "taxonomy_term"
-        },
-        #"weight": cropWeight,   # Omit to use alphabetical order in farmOS
-    }
-
-    response = requests.post('http://localhost/taxonomy_term', 
-        json=crop, auth=HTTPBasicAuth(user, passwd))
-
-    if(response.status_code == 201):
-        cropID = response.json()['id']
-        print("Created Parent Crop: " + crop['name'] + " with id " + cropID)
-        return cropID
-    else:
-        print("Error Creating Parent Crop: " + crop['name'])
-        sys.exit(-1)
-
-def addChildCrop(row, parentCropID, familyID, cropWeight):
-    crop = {
-        "name": row[2],
-        "vocabulary": cropVocabID,
-        "parent": [{
-            "id": parentCropID,
-            "resource": "taxonomy_term"
-        }],
-        "crop_family": {    # This is not inherited from parent.
-            "id": familyID,
-            "resource": "taxonomy_term"
-        },
-        #"weight": cropWeight,   # Omit to use alphabetical order in farmOS
-    }
-
-    response = requests.post('http://localhost/taxonomy_term', 
-        json=crop, auth=HTTPBasicAuth(user, passwd))
-
-    if(response.status_code == 201):
-        cropID = response.json()['id']
-        print("Created Child Crop: " + crop['name'] + " with id " + cropID)
-        return cropID
-    else:
-        print("Error Creating Child Crop: " + crop['name'])
-        sys.exit(-1)
 
 if __name__ == "__main__":
     main()

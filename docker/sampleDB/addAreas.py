@@ -16,7 +16,7 @@ areasVocabID = getVocabularyID('farm_areas')
 def main():
     print("Adding Farm Areas...")
 
-    deleteAllAreas()
+    deleteAllVocabTerms("http://localhost/taxonomy_term.json?bundle=farm_areas")
 
     # Add all of the areas indicated in the sampleData/areas.csv file.
     weight=1
@@ -24,73 +24,31 @@ def main():
         areas_reader = reader(decomment(areasFile))
         for row in areas_reader:
             if row[0] != '':
-                parentAreaID = addParentArea(row, weight)
+                area = {
+                    "name": row[0],
+                    "area_type": row[1],
+                    "description": row[2],
+                    "vocabulary": areasVocabID,
+                    "weight": weight,
+                }
+                parentAreaID = addVocabTerm(area)
             else:
-                childAreaID = addChildArea(row, parentAreaID, weight)
+                area = {
+                    "name": row[1],
+                    "area_type": row[2],
+                    "description": row[3],
+                    "vocabulary": areasVocabID,
+                    "parent": [{
+                        "id": parentAreaID,
+                        "resource": "taxonomy_term"
+                    }],
+                    "weight": weight,
+                }
+                childAreaID = addVocabTerm(area)
 
             weight+=1
 
     print("Farm Areas added.")
-
-def deleteAllAreas(): 
-    areasExist = True
-
-    while areasExist:
-        response = requests.get("http://localhost/taxonomy_term.json?bundle=farm_areas", 
-            auth=HTTPBasicAuth(user, passwd))
-        areasJson = response.json()
-        areasExist = (len(areasJson['list']) > 0)
-        
-        for area in areasJson['list']:
-            areaID = area['tid']
-            response = requests.delete("http://localhost/taxonomy_term/" + areaID, 
-                auth=HTTPBasicAuth(user, passwd))
-
-            if(response.status_code == 200):
-                print("Deleted: " + area['area_type'] + " " + area['name'] + " with id " + areaID)
-
-def addParentArea(row, weight):
-    area = {
-        "name": row[0],
-        "area_type": row[1],
-        "description": row[2],
-        "vocabulary": areasVocabID,
-        "weight": weight,
-    }
-    response = requests.post('http://localhost/taxonomy_term', 
-        json=area, auth=HTTPBasicAuth(user, passwd))
-
-    if(response.status_code == 201):
-        areaID = response.json()['id']
-        print("Created Parent Area: " + area['area_type'] + " " + area['name'] + " with id " + areaID)
-        return areaID
-    else:
-        print("Error Creating Parent Area: " + area['area_type'] + " " + area['name'])
-        sys.exit(-1)
-
-def addChildArea(row, parentID, weight):
-    area = {
-        "name": row[1],
-        "area_type": row[2],
-        "description": row[3],
-        "vocabulary": areasVocabID,
-        "parent": [{
-            "id": parentID,
-            "resource": "taxonomy_term"
-        }],
-        "weight": weight,
-    }
-    response = requests.post('http://localhost/taxonomy_term', 
-        json=area, auth=HTTPBasicAuth(user, passwd))
-
-    if(response.status_code == 201):
-        areaID = response.json()['id']
-        print("  Created Child Area: " + area['area_type'] + " " + area['name'] + " with id " + areaID)
-        return areaID
-    else:
-        print("  Error Creating Child Area: " + area['area_type'] + " " + area['name'])
-        sys.exit(-1)
-
 
 if __name__ == "__main__":
     main()

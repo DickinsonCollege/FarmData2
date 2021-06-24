@@ -1,6 +1,7 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import sys
+from datetime import datetime
 
 # The username and password for the authorized basic authentication user
 # See addPeople.bash.
@@ -16,6 +17,11 @@ def decomment(csvfile):
 # Print the line to standard error.
 def errPrint(line):
     print(line, file=sys.stderr)
+
+# Convert a YYYY-MM-DD time string into a unix time stamp.
+def YYYYMMDDtoTimestamp(dateStr):
+    theTime = datetime.strptime(dateStr,'%Y-%m-%d')
+    return int(theTime.timestamp())
 
 def getAllPages(url, theList=[], page=0):
     # Note: Using page argument here because the next URL in the
@@ -55,6 +61,34 @@ def deleteAllAssets(url):
 
             if(response.status_code == 200):
                 print("Deleted Asset: " + asset['name'] + " with id " + assetID)
+
+# Delete all of the terms in the vocabulary given by the url.
+def deleteAllVocabTerms(url):
+    termsExist = True
+
+    while termsExist:
+        terms = getAllPages(url)
+        termsExist = (len(terms) > 0)
+
+        for term in terms:
+            termID = term['tid']
+            response = requests.delete("http://localhost/taxonomy_term/" + termID, 
+                auth=HTTPBasicAuth(user, passwd))
+
+            if(response.status_code == 200):
+                print("Deleted Term: " + term['name'] + " with id " + termID)
+
+def addVocabTerm(data):
+    response = requests.post('http://localhost/taxonomy_term', 
+        json=data, auth=HTTPBasicAuth(user, passwd))
+
+    if(response.status_code == 201):
+        termID = response.json()['id']
+        print("Created Term: " + data['name'] + " with id " + termID)
+        return termID
+    else:
+        print("Error Creating Term: " + data['name'])
+        sys.exit(-1)
 
 # Perform translations on crop names to clean up data so that
 # all crop names in the database are in the Farm Crops/Varieties vocabulary.
@@ -144,7 +178,8 @@ def getAreaMap():
 
     return areaMap
 
-# Perform translations on user names to anonymize the data.
+# Perform translations on user names so that the users in the 
+# data match users in the sample data base.
 def translateUser(line, user):
     translations = {
         #"Name in DB": "Correct Name"

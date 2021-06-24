@@ -65,6 +65,7 @@ def addPlanting(row):
             "id": cropMap[row[2]],
             "resource": "taxonomy_term"
         }],
+        "created": YYYYMMDDtoTimestamp(row[1]),
         "uid": {
             "id": userMap[row[11]],
             "resource": "user"
@@ -83,7 +84,53 @@ def addPlanting(row):
         sys.exit(-1)
 
 def addSeeding(row, plantingID):
-    return
+    seeding = {
+        "name": row[1] + " " + row[2] + " " + row[3],
+        "type": "farm_seeding",
+        "timestamp": YYYYMMDDtoTimestamp(row[1]),
+        "notes": row[9],
+        "asset": [{
+            "id": plantingID,
+            "resource": "farm_asset"
+        }],
+        "movement": {
+            "area": [{
+                "id": areaMap[row[3]],
+                "resource": "taxonomy_term"
+            }]
+        },
+        # Quantity is going to take some figuring and may need vocabulary for units.
+        # List so can have multiple of these... bed feet, rows/bed
+        # Can also use this for the time!! What measures are available?
+
+        # Define Units in farm_quantity_unit vocabulary
+        # What does farmOS do with multiple quantitites? And ones it does not recognize?
+        # Does it allow them? Just use the oness it knows?
+        "quantity": [{
+            "measure": "length" 
+            "value": 
+            "unit": {
+
+            }
+        }]
+
+        "created": YYYYMMDDtoTimestamp(row[1]),
+        "uid": {
+            "id": userMap[row[11]],
+            "resource": "user"
+        }
+    }
+
+    response = requests.post('http://localhost/farm_asset', 
+        json=planting, auth=HTTPBasicAuth(user, passwd))
+
+    if(response.status_code == 201):
+        plantingID = response.json()['id']
+        print("Created Planting: " + planting['name'] + " with id " + plantingID)
+        return plantingID
+    else:
+        print("Error Creating Planting: " + planting['name'])
+        sys.exit(-1)
 
 def deleteSeedingCategory(category): 
     response = requests.get("http://localhost/taxonomy_term.json?&name=" + category
