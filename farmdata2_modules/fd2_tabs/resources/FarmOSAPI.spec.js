@@ -34,7 +34,7 @@ describe('API Request Function', () => {
             })
         })
 
-        it('Test on a request with multiple pages', () => {
+        it.only('Test on a request with multiple pages', () => {
             cy.intercept("GET",/log\?type=farm_seeding$/).as('first')
             cy.intercept("GET","/log?type=farm_seeding&page=1").as('second')
             cy.intercept("GET","/log?type=farm_seeding&page=2").as('third')
@@ -65,13 +65,12 @@ describe('API Request Function', () => {
                     thirdCalls++
                 })
 
-                getAllPages("/log?type=farm_seeding", testArray)
-
-            })
-            .then(() => {
-                expect(firstCalls).to.equal(1)
-                expect(secondCalls).to.equal(1)
-                expect(thirdCalls).to.equal(1)
+                cy.wrap(getAllPages("/log?type=farm_seeding", testArray)).as('getAll')
+                cy.wait('@getAll)').then(() => {
+                    expect(firstCalls).to.equal(1)
+                    expect(secondCalls).to.equal(1)
+                    expect(thirdCalls).to.equal(1)
+                })
             })
         })
     })
@@ -90,14 +89,9 @@ describe('API Request Function', () => {
     })
 
     context.only('deleteLog API request function', () => {
-        beforeEach(() => {
-            
-        })
         it('deletes a log based on log ID', () => {
             getSessionToken()
             .then(function(token) {
-                console.log('making log')
-
                 req = {
                     url: '/log.json?type=farm_observation',
                     method: 'POST',
@@ -108,26 +102,29 @@ describe('API Request Function', () => {
                     body: {
                         "name": "pleasegoaway",
                         "type": "farm_observation",
-                        "timestamp": "1526584271",
                     }
                 }
 
                 logID = -1
+                cy.get(logID).as('logID')  // make logID availabe in cy scope as this.logID
+
                 cy.request(req).as('created')
-                cy.get('@created').should((response) => {
+                cy.get('@created').should(function(response) {
                     expect(response.status).to.equal(201)
-                    logID = response.body.id
+                    this.logID = response.body.id
                 })
-
-                cy.wrap(deleteLog('/log.json?type=farm_observation', logID, token)).as('delete')
-                cy.get('@delete').should((response) => {
-                    expect(response.status).to.equal(200)
-                })
-
-                url = '/log.json?type=farm_observation&id=' + logID
-                cy.request(url).as('check')
-                cy.get('@check').should((response) => {
-                    expect(response.body.list.length).to.equal(0)
+                .then(function() {
+                    cy.wrap(deleteLog(this.logID, token))
+                    .as('delete')
+                    cy.get('@delete').should(function(response) {
+                        expect(response.status).to.equal(200)
+                    })
+                }) 
+                .then(function() {
+                    cy.request('/log.json?type=farm_observation&id=' + this.logID).as('check')
+                    cy.get('@check').should(function(response) {
+                        expect(response.body.list.length).to.equal(0)
+                    })
                 })
             })
         })

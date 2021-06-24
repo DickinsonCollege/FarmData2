@@ -59,27 +59,22 @@ function getSessionToken() {
     
 }
 
-function deleteLog(url, deleteID, sessionToken) {
-    // Need to retrive the session token when logged in and
-    // use that in any requests that modify the database 
-    // (i.e. PUT, POST, DELETE).
-    //let id = parseInt(deleteID)
+function deleteLog(logID, sessionToken) {
     return new Promise((resolve, reject) => {
-        url = url + deleteID
+        url = '/log/' + logID
         axios
-            .delete(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN' : sessionToken,
-                }
-            })
-            
-            .then((response) => {
-                resolve(response)
-            })
-            .catch((error) => {
-                reject(error)
-            })
+        .delete(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((error) => {
+            reject(error)
+        })
     })
 }
 
