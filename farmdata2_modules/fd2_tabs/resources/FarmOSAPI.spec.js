@@ -34,7 +34,7 @@ describe('API Request Function', () => {
             })
         })
 
-        it.only('Test on a request with multiple pages', () => {
+        it('Test on a request with multiple pages', () => {
             cy.intercept("GET",/log\?type=farm_seeding$/).as('first')
             cy.intercept("GET","/log?type=farm_seeding&page=1").as('second')
             cy.intercept("GET","/log?type=farm_seeding&page=2").as('third')
@@ -88,7 +88,7 @@ describe('API Request Function', () => {
         })
     })
 
-    context.only('deleteLog API request function', () => {
+    context('deleteLog API request function', () => {
         it('deletes a log based on log ID', () => {
             getSessionToken()
             .then(function(token) {
