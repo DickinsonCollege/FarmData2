@@ -83,52 +83,61 @@ describe('API Request Function', () => {
     
     context('test maping id to name functions', () => {
         it('getIDToUserMap function returns a map', () => {
-            getIDToUserMap().then((idToNameMap) => {
+            cy.wrap(getIDToUserMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
                 expect(idToNameMap).to.be.a('Map')
             })
         })
         it('getIDToUserMap returns correct keys', () => {
-            getIDToUserMap().then((idToNameMap) => {
+            cy.wrap(getIDToUserMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.have.all.keys(null, '6','8','7', '4', '9', '5', '1', '3', '155')
             })
         })
         it('getIDToUserMap correct maps key to value', () => {
-            getIDToUserMap().then((idToNameMap) => {
+            cy.wrap(getIDToUserMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.get(null)).to.equal('Anonymous')
                 expect(idToNameMap.get('5')).to.equal('worker1')
             })
         })
         it('getIDToCropMap function returns a map', () => {
-            getIDToCropMap().then((idToNameMap) => {
+            cy.wrap(getIDToCropMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
                 expect(idToNameMap).to.be.a('Map')
-            })
+            }).wait(200)
         })
         it('getIDToCropMap correct maps key to value', () => {
-            getIDToCropMap().then((idToNameMap) => {
+            cy.wrap(getIDToCropMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.get('117')).to.equal('Cilantro')
                 expect(idToNameMap.get('153')).to.equal('Escarole')
             })
         })
         it('getIDToCropMap to produce a map of length 79', () => {
-            getIDToCropMap().then((idToNameMap) => { 
+            cy.wrap(getIDToCropMap()).as('map')
+            cy.get('@map').should((idToNameMap) => { 
                 expect(idToNameMap.size).to.equal(79)
             })
         })
         it('getIDToFieldMap function returns a map', () => {
-            getIDToFieldMap().then((idToNameMap) => {
+            cy.wrap(getIDToFieldMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
                 expect(idToNameMap).to.be.a('Map')
             })
         })
         it('getIDToFieldMap correct maps key to value', () => {
-            getIDToFieldMap().then((idToNameMap) => {
+            cy.wrap(getIDToFieldMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.size).to.equal(37)
             })
         })
         it('getIDToFieldMap correct maps key to value', () => {
-            getIDToFieldMap().then((idToNameMap) => {
+            cy.wrap(getIDToFieldMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.get('100')).to.equal('O')
                 expect(idToNameMap.get('127')).to.equal('SQ 6')
             })
@@ -137,57 +146,67 @@ describe('API Request Function', () => {
 
     context('test maping name to id functions', () => {
         it('getUserToIDMap function returns a map', () => {
-            getUserToIDMap().then((idToNameMap) => {
+            cy.wrap(getUserToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
                 expect(idToNameMap).to.be.a('Map')
             })
         })
         it('getUserToIDMap returns correct keys', () => {
-            getUserToIDMap().then((idToNameMap) => {
+            cy.wrap(getUserToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.have.all.keys('Anonymous', 'guest','worker1', 'worker2', 'worker3', 'worker4', 'manager1', 'manager2', 'admin', 'restws1')
             })
         })
         it('getUserToIDMap returns map with length 10', () => {
-            getUserToIDMap().then((idToNameMap) => {
+            cy.wrap(getUserToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.size).to.equal(10)
             })
         })
         it('getUserToIDMap correct maps key to value', () => {
-            getUserToIDMap().then((idToNameMap) => {
+            cy.wrap(getUserToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.get('Anonymous')).to.equal(null)
                 expect(idToNameMap.get('worker1')).to.equal('5')
             })
         })
         it('getCropToIDMap function returns a map', () => {
-            getCropToIDMap().then((idToNameMap) => {
+            cy.wrap(getCropToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
                 expect(idToNameMap).to.be.a('Map')
             })
         })
-        it.only('getCropToIDMap correct maps key to value', () => {
-            getCropToIDMap().then((idToNameMap) => {
+        it('getCropToIDMap correct maps key to value', () => {
+            cy.wrap(getCropToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.get('Cilantro')).to.equal('117')
                 expect(idToNameMap.get('Escarole')).to.equal('153')
             })
         })
-        it.only('getCropToIDMap to produce a map of length 77', () => {
-            getCropToIDMap().then((idToNameMap) => { 
+        it('getCropToIDMap to produce a map of length 77', () => {
+            cy.wrap(getCropToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => { 
                 expect(idToNameMap.size).to.equal(77)
             })
         })
         it('getFieldToIDMap function returns a map', () => {
-            getFieldToIDMap().then((idToNameMap) => {
+            cy.wrap(getFieldToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
                 expect(idToNameMap).to.be.a('Map')
             })
         })
         it('getFieldToIDMap to produce a map of length 37', () => {
-            getFieldToIDMap().then((idToNameMap) => {
+            cy.wrap(getFieldToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.size).to.equal(37)
             })
         })
         it('getFieldToIDMap correct maps key to value', () => {
-            getFieldToIDMap().then((idToNameMap) => {
+            cy.wrap(getFieldToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap.get('O')).to.equal('100')
                 expect(idToNameMap.get('SQ 6')).to.equal('127')
             })
