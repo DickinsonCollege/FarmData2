@@ -42,9 +42,47 @@ function getAllPages(url, arr) {
     })
 }
 
+function getSessionToken() {
+    return new Promise((resolve, reject) => {
+        axios
+        .get('/restws/session/token')
+        .then(response => {
+            return response.data
+        })
+        .then(function(token) {
+            resolve(token)
+        })
+        .catch(function(error){
+            reject(error)
+        })
+    })
+}
+
+function createLog(url, newLogObject, sessionToken) {
+    return new Promise((resolve, reject) => {
+        logObject = this.logToCreate
+
+        axios
+            .post(url, newLogObject, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : sessionToken,
+                }
+            })
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+
 try {
     module.exports = {
-        getAllPages: getAllPages
+        getAllPages: getAllPages,
+        getSessionToken: getSessionToken,
+        createLog: createLog
     }
 }
 catch {}
