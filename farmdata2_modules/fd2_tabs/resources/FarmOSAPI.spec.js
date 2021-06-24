@@ -164,13 +164,13 @@ describe('API Request Function', () => {
                 expect(idToNameMap).to.be.a('Map')
             })
         })
-        it('getCropToIDMap correct maps key to value', () => {
+        it.only('getCropToIDMap correct maps key to value', () => {
             getCropToIDMap().then((idToNameMap) => {
                 expect(idToNameMap.get('Cilantro')).to.equal('117')
                 expect(idToNameMap.get('Escarole')).to.equal('153')
             })
         })
-        it('getCropToIDMap to produce a map of length 79', () => {
+        it.only('getCropToIDMap to produce a map of length 77', () => {
             getCropToIDMap().then((idToNameMap) => { 
                 expect(idToNameMap.size).to.equal(77)
             })
