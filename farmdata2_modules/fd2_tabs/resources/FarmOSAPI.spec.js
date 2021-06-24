@@ -90,6 +90,9 @@ describe('API Request Function', () => {
     })
 
     context.only('deleteLog API request function', () => {
+        beforeEach(() => {
+            
+        })
         it('deletes a log based on log ID', () => {
             getSessionToken()
             .then(function(token) {
@@ -103,25 +106,32 @@ describe('API Request Function', () => {
                         'X-CSRF-TOKEN' : token,
                     },
                     body: {
-                        "name": "heyyy",
+                        "name": "pleasegoaway",
                         "type": "farm_observation",
                         "timestamp": "1526584271",
                     }
                 }
-
                 cy.request(req).as('created')
                 
                 logID = -1
                 cy.get('@created').should((response) => {
                     expect(response.status).to.equal(201)
-                    logID = response.body.id
+                    logID = response//.body.id
+                }).then((logID) => {
+                    console.log(logID)
+                    logID = logID.body.id
+                    console.log(logID)
+
+                    deleteLog('/log.json?type=farm_observation', logID, token)
+                    
+                }).then((logID) => {
+                    url = '/log.json?type=farm_observation&id=' + logID
+                    cy.request(url).then((response) => {
+                        expect(response.body.list.length).to.equal(0)
+                        console.log(response.body.list)
+                    })
                 })
 
-                deleteLog('/log.json?type=farm_observation', logID, token)
-                .then((response) => {
-                    console.log(response)
-                    expect(response.status).to.equal(200)
-                })
             })
             .then(function(response) {
                 
