@@ -111,31 +111,24 @@ describe('API Request Function', () => {
                         "timestamp": "1526584271",
                     }
                 }
-                cy.request(req).as('created')
-                
+
                 logID = -1
+                cy.request(req).as('created')
                 cy.get('@created').should((response) => {
                     expect(response.status).to.equal(201)
-                    logID = response//.body.id
-                }).then((logID) => {
-                    console.log(logID)
-                    logID = logID.body.id
-                    console.log(logID)
-
-                    deleteLog('/log.json?type=farm_observation', logID, token)
-                    
-                }).then((logID) => {
-                    url = '/log.json?type=farm_observation&id=' + logID
-                    cy.request(url).then((response) => {
-                        expect(response.body.list.length).to.equal(0)
-                        console.log(response.body.list)
-                    })
+                    logID = response.body.id
                 })
 
-            })
-            .then(function(response) {
-                
-                console.log("delete done")
+                cy.wrap(deleteLog('/log.json?type=farm_observation', logID, token)).as('delete')
+                cy.get('@delete').should((response) => {
+                    expect(response.status).to.equal(200)
+                })
+
+                url = '/log.json?type=farm_observation&id=' + logID
+                cy.request(url).as('check')
+                cy.get('@check').should((response) => {
+                    expect(response.body.list.length).to.equal(0)
+                })
             })
         })
     })
