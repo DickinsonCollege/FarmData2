@@ -44,7 +44,7 @@ describe('API Request Function', () => {
             let thirdCalls=0
 
             cy.wait(1)
-            .then(() => {
+            .then(function() {
                 cy.wait('@first').should(() => {
                     cy.wrap(testArray).should('have.length.gt',0)
                     firstCalls++
@@ -54,8 +54,6 @@ describe('API Request Function', () => {
                     // Just by getting here we know the second page was requested.
 
                     // Check that data made it into testArray.
-                    // Note: depending on timing this may not run until after any
-                    // subsequent calls.
                     cy.wrap(testArray).should('have.length.gt',100)
                     secondCalls++
                 })
@@ -65,8 +63,8 @@ describe('API Request Function', () => {
                     thirdCalls++
                 })
 
-                cy.wrap(getAllPages("/log?type=farm_seeding", testArray)).as('getAll')
-                cy.wait('@getAll)').then(() => {
+                cy.wrap(getAllPages("/log?type=farm_seeding", testArray)).as('all')
+                cy.get('@all').should(() => {
                     expect(firstCalls).to.equal(1)
                     expect(secondCalls).to.equal(1)
                     expect(thirdCalls).to.equal(1)
@@ -116,7 +114,7 @@ describe('API Request Function', () => {
                 .then(function() {
                     cy.wrap(deleteLog(this.logID, token))
                     .as('delete')
-                    cy.get('@delete').should(function(response) {
+                    cy.get('@delete').should((response) => {
                         expect(response.status).to.equal(200)
                     })
                 }) 
