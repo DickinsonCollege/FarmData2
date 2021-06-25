@@ -43,7 +43,7 @@ function getAllPages(url, arr) {
 }
 
 function getIDToCropMap(){
-    return getMap('/farm_asset.json?type=planting', 'id', 'name')
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
 }
 
 function getIDToFieldMap(){
@@ -55,7 +55,7 @@ function getIDToUserMap(){
 }
 
 function getCropToIDMap(){
-    return getMap('/farm_asset.json?type=planting', 'name', 'id')
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
 }
 
 function getFieldToIDMap(){
@@ -70,7 +70,6 @@ function getMap(url, key, value){
     return new Promise((resolve, reject) => {
         axios.get(url)
             .then(function(response) {
-                console.log(response)
                 return response.data.list
             })
             .then(function(list) {
