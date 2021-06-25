@@ -102,6 +102,10 @@
                             console.log('got crop')
                             newUpdateObject['name'] = updateObject['crop']
                         }
+                        else if(key == 'date'){
+                            console.log('got date')
+                            newUpdateObject['timestamp'] = updateObject['date']
+                        }
                     }
                     console.log(newUpdateObject)
                     updateLog('http://localhost/log/', id, newUpdateObject, this.sessionToken)
@@ -188,7 +192,7 @@
                     log = finalFilter.map(h => {
                             return{
                                 id: h.id,
-                                data: [h.name, h.movement.area[0].name, dayjs.unix(h.timestamp)],
+                                data: [h.name, h.movement.area[0].name, h.timestamp],
                             }
                     })
                     return log
