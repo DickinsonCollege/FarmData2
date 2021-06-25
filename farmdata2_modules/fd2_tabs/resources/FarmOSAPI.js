@@ -60,22 +60,22 @@ function getSessionToken() {
 }
 
 function updateLog(url, id, updateObject, sessionToken){
-    url = url + id
-    axios
-        .put(url, updateObject, { 
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
-            }
-        })
-        .then(response => console.log(response))
-        .catch(error => console.log(error)) 
-    
-    /*for(i=0; i < this.logData.length; i++){
-        if(this.logData[i].id === newObject.id){
-            this.logData.splice(i, 1, newObject)
-        }
-    }*/
+    return new Promise((resolve, reject) => {
+        url = url + id
+        axios
+            .put(url, updateObject, { 
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : sessionToken,
+                }
+            })
+            .then(function(response) {
+                resolve(response)
+            })
+            .catch(function(error) {
+                reject(error)
+            }) 
+    })
 }
 
 try {

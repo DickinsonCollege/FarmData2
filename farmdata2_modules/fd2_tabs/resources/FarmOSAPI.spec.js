@@ -1,5 +1,7 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
+var getSessionToken = FarmOSAPI.getSessionToken
+var updateLog = FarmOSAPI.updateLog
 
 describe('API Request Function', () => {
     var testArray
@@ -69,6 +71,31 @@ describe('API Request Function', () => {
             expect(firstCalls).to.equal(1)
             expect(secondCalls).to.equal(1)
             expect(thirdCalls).to.equal(1)
+        })
+    })
+    context('getSessionToken API request function', () => {
+        it('returns a token when it resolves', () => {
+            getSessionToken().then(token => {
+                expect(token).to.not.be.null
+            })
+        })
+        it('returns a token of length 43', () => {
+            getSessionToken().then(token => {
+                expect(token.length).to.equal(43)
+            })
+        })
+    })
+    context.only('update function testing', () => {
+        it('change the crop of a transplanting log', () => {
+            getSessionToken()
+                .then(function(token) {
+                    let newCrop = {name: 'Transplant Kale'}
+                    
+                    cy.wrap(updateLog('http://localhost/log/', '1919', newCrop, token)).as('update')
+                    cy.get('@update').should(function(response) {
+                        expect(response.status).to.equal(200)
+                    })
+                })
         })
     })
 })
