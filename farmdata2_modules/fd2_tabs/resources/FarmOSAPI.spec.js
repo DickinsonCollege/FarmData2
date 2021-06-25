@@ -34,7 +34,7 @@ describe('API Request Function', () => {
             })
         })
 
-        it('Test on a request with multiple pages', () => {
+        it.only('Test on a request with multiple pages', () => {
             cy.intercept("GET",/log\?type=farm_seeding$/).as('first')
             cy.intercept("GET","/log?type=farm_seeding&page=1").as('second')
             cy.intercept("GET","/log?type=farm_seeding&page=2").as('third')
@@ -66,7 +66,7 @@ describe('API Request Function', () => {
                 })
 
                 cy.wrap(getAllPages("/log?type=farm_seeding", testArray)).as('getAll')
-                cy.wait('@getAll)').then(() => {
+                cy.wait('@getAll').then(() => {
                     expect(firstCalls).to.equal(1)
                     expect(secondCalls).to.equal(1)
                     expect(thirdCalls).to.equal(1)
