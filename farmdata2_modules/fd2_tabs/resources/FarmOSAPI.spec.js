@@ -95,7 +95,6 @@ describe('API Request Function', () => {
                     cy.wrap(createLog(url, logObject, token)).as('create')
                     cy.get('@create').should((response) => {
                         logID = response.data.id
-                        //url = '/log.json?type=farm_observation&id=' + logID
                         expect(response.status).to.equal(201)
                     })
                     .then(function() {
@@ -105,11 +104,11 @@ describe('API Request Function', () => {
                         })
                     })
                     .then(function() {
-                        cy.request('DELETE', url + '&id=' + logID).as('delete')
-                        cy.get('@delete').should((response) => {
+                        cy.wrap(deleteLog(this.logID, token)).as('delete')
+                        cy.get('@delete').should(function(response) {
                             expect(response.status).to.equal(200)
                         })
-                    })
+                    }) 
                 })
         })
     })    
