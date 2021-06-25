@@ -56,7 +56,6 @@ function getSessionToken() {
             reject(error)
         })
     })
-    
 }
 
 function deleteLog(logID, sessionToken) {
@@ -78,11 +77,32 @@ function deleteLog(logID, sessionToken) {
     })
 }
 
+function createLog(url, newLogObject, sessionToken) {
+    return new Promise((resolve, reject) => {
+        logObject = this.logToCreate
+
+        axios
+            .post(url, newLogObject, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : sessionToken,
+                }
+            })
+            .then((response) => {
+                resolve(response)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+
 try {
     module.exports = {
         getAllPages: getAllPages,
         getSessionToken: getSessionToken,
-        deleteLog: deleteLog
+        deleteLog: deleteLog,
+        createLog: createLog
     }
 }
 catch {}
