@@ -83,37 +83,32 @@ describe('API Request Function', () => {
                     console.log('making log')
 
                     logObject = {
-                        "name": "heyyy",
+                        "name": "yo",
                         "type": "farm_observation",
                         "timestamp": "1526584271",
                     }
 
                     url = '/log.json?type=farm_observation'
                     logID = -1
+                    cy.get(logID).as('logID')
 
                     cy.wrap(createLog(url, logObject, token)).as('create')
                     cy.get('@create').should((response) => {
                         logID = response.data.id
                         //url = '/log.json?type=farm_observation&id=' + logID
-                        console.log('in the get' + url)
-                        console.log(response)
                         expect(response.status).to.equal(201)
-                        
-                        console.log('in the get' + logID)
-                        
                     })
-
-                    //cy.wrap(() => {console.log(logID); console.log(url)})
-
-                    cy.request(url + logID).as('checkCreated')
-                    cy.get('@checkCreated').should((response) => {
-                        console.log('requesting the new log')
-                        expect(response.body.list.length).to.equal(1)
+                    .then(function() {
+                        cy.request(url + '&id=' + logID).as('checkCreated')
+                        cy.get('@checkCreated').should((response) => {
+                            expect(response.body.list.length).to.equal(1)
+                        })
                     })
-
-                    cy.request('DELETE', url).as('delete')
-                    cy.get('@delete').should((response) => {
-                        expect(response.status).to.equal(200)
+                    .then(function() {
+                        cy.request('DELETE', url + '&id=' + logID).as('delete')
+                        cy.get('@delete').should((response) => {
+                            expect(response.status).to.equal(200)
+                        })
                     })
                 })
         })
