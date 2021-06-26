@@ -1,6 +1,6 @@
 # Direct seeding data for the sample database.
 #
-# Direct seeding logs from FarmData for Jan 1, 2020 to Jan 1, 2021.
+# Direct seeding logs from FarmData for Jan 1, 2019 to July 15, 2020.
 # The fields are:
 # 0  "id"
 # 1  "plantdate"

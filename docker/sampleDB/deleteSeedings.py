@@ -6,7 +6,7 @@ from utils import *
 
 def main():
 
-    print("Deleting Seedings...")
+    print("Deleting Direct and Tray Seedings...")
 
     # Delete any seedings that exist.
     deleteAllLogs('http://localhost/log.json?type=farm_seeding')
@@ -18,7 +18,7 @@ def main():
     deleteSeedingCategory("Direct Seedings")
     deleteSeedingCategory("Tray Seedings")
 
-    print("Seedings deleted.")
+    print("Direct and Tray Seedings deleted.")
 
 def deleteSeedingCategory(category): 
     response = requests.get("http://localhost/taxonomy_term.json?&name=" + category

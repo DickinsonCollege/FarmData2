@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-# Creates the Planting assets and Seeding logs for all of the seedings
-# in the sample data.
-# The data for the plantings and seeding is in the sampleData/cropFamilies.csv file.
+# Creates the Planting assets and Seeding logs for all of the 
+# direct seedings in the sample data.
+# The data for the plantings and seeding is in the sampleData/directSeedings.csv file.
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -11,7 +11,6 @@ import json
 from csv import reader
 from utils import *
 import sys
-import re
 
 # Get lists of all of the recognized crops, fields and users for validation.
 cropMap = getCropMap()
@@ -26,20 +25,13 @@ hoursID = getTermID("Hours")
 peopleID = getTermID("People")
 
 def main():
-    print("Adding Seedings...")
+    print("Adding Direct Seedings...")
 
-    # Add the Log Categories
+    # Add the Log Category
     directSeedingCatID = addSeedingCategory("Direct Seedings")
-    traySeedingCatID = addSeedingCategory("Tray Seedings")
 
     # Add the Seeding Data
-    addDirectSeedingData(directSeedingCatID)
-
-
-    print("Seedings added.")
-
-def addDirectSeedingData(directSeedingCatID):
-    with open('sampleData/directSeeding.csv', 'r') as dsFile:
+    with open('sampleData/directSeedings.csv', 'r') as dsFile:
         ds_reader = reader(decomment(dsFile))
         line=1
         for row in ds_reader:
@@ -47,6 +39,8 @@ def addDirectSeedingData(directSeedingCatID):
             plantingID = addPlanting(row)
             addSeedings(row, plantingID, directSeedingCatID)
             line+=1
+    
+    print("Direct Seedings added.")
 
 def validateRow(line, row):
     crop = row[2]
@@ -85,7 +79,7 @@ def addSeedings(row, plantingID, seedingTypeID):
             details = seeding.split(' - ')
 
             for i in range(0, len(details), 2):
-                seedCode = details[i][11:]
+                seedCode = details[i][11:].strip()
 
                 if ('bed feet' not in details[i+1]):
                     print('Not bed feet!!!')

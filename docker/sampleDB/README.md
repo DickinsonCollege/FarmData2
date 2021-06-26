@@ -9,17 +9,17 @@ A sample database is provided with FarmData2 for development and testing purpose
 Some useful properties of the sample data:
 - It is real data from the Dickinson College farm.
 - The dta runs from Jan 1, 2019 - July 15, 2020. So it includes:
-  - One completed growing season (2019). 
+  - One completed growing season (Jan 1 - Dec 31, 2019). 
   - One in progress growing season (Jan 1 - July 15, 2020).
 
 More details are included in the table below:
 
-Asset/Log Type | 2019 | 2020 
----------------|------|------
-Direct Seeings |  140 |   90 
-Tray Seedings  |  188 |  156
-Total Seedings |  328 |  246
-Plantings      |  328 |  246
+Asset/Log Type | 2019 | 2020 | Total | Notes
+---------------|------|------|-------|------
+Direct Seeings |  182 |  101 |  283  |
+Tray Seedings  |  378 |  313 |  691  |
+Total Seedings |  560 |  414 |  974  |
+Plantings      |  328 |  246 |  574  | A planting may have multiple sedings.
 
 The sub-sections below give more compolete details of each part of the sample database.
 
@@ -102,7 +102,7 @@ A _seeding_ is a crop that has been planted from seed either directly in the gro
 
 Every Seeding Log is associated with a _Planting Asset_, which represents the crop that resulted from the planting.  Planting Logs indicate the crops that are available for future operations (e.g. observation, transplanting, harvesting, etc.).
 
-The seeding logs and associated plantings in the FarmData2 sample database are created by the `addSeedings.py` script using the data in the `sampleData/directSeedings.csv` and `sampleData/traySeedings.csv` files.
+The seeding logs and associated plantings in the FarmData2 sample database are created by the `addDirectSeedings.py` and `addTraySeedings.py` scripts using the data in the `sampleData/directSeedings.csv` and `sampleData/traySeedings.csv` files.
 
 ### Seeding Logs ###
 
@@ -111,7 +111,8 @@ All Seeding Logs can be accessed with the request:
 GET http://localhost/log.json?type=farm_seeding"
 ```
 
-The `log_category` attribute can be used to distinguish between logs for Direct Seedings and logs for Tray Seedings.
+Notes:
+- The `log_category` attribute can be used to distinguish between logs for Direct Seedings and logs for Tray Seedings.
 
 ### Planting Assets ###
 

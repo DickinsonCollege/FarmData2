@@ -9,10 +9,11 @@ user='restws1'
 passwd='farmdata2'
 
 # Skip blank lines and drop all comments.
+# Comment must have # in first column.
 def decomment(csvfile):
     for row in csvfile:
-        raw = row.split('#')[0].strip()
-        if raw: yield raw
+        if row.strip() != "" and not row.startswith('#'):
+            yield row
 
 # Print the line to standard error.
 def errPrint(line):
@@ -152,17 +153,42 @@ def addVocabTerm(data):
 def translateCrop(line, crop):
     translations = {
         #"Name in DB": "Correct Name"
+        "CHINESE CABBAGE": "CABBAGE-CHINESE",
         "CORN, DRY": "CORN-DRY",
         "CORN, SWEET": "CORN-SWEET",
         "GARLIC, GREEN": "GARLIC-GREEN",
         "GREENS, MES MIX": "LETTUCE-MES MIX",
+        "HERB - BASIL": "BASIL",
+        "HERB - CHIVES": "CHIVES",
         "HERB - CILANTRO": "CILANTRO",
         "HERB - DILL": "DILL",
+        "HERB - MARJORAM": "MARJORAM",
+        "HERB - MINT": "MINT",
+        "HERB - OREGANO": "OREGANO",
+        "HERB - PARSLEY": "PARSLEY",
+        "HERB - SAGE": "SAGE",
+        "HERB - THYME": "THYME",
         "LETTUCE, MES MIX": "LETTUCE-MES MIX",
+        "LETTUCE, GREEN": "LETTUCE-GREEN",
+        "LETTUCE, RED": "LETTUCE-RED",
+        "LETTUCE, ROMAINE": "LETTUCE-ROMAINE",
+        "MELON: CANTELOPE": "CANTELOPE",
+        "MELON - WATERMELON": "WATERMELON",
         "ONION SPRING": "ONION-SPRING",
+        "ONION, FRESH": "ONION-FRESH",
+        "ONION STORAGE": "ONION-STORAGE",
         "PEA, SNAP": "PEA-SNAP",
+        "PEPPERS, BELL": "PEPPERS-BELL",
+        "PEPPERS, HOT": "PEPPERS-HOT",
         "RADISH DAIKON": "RADISH-DAIKON",
+        "SQUASH - BUTTERNUT": "SQUASH-BUTTERNUT",
+        "SQUASH, WINTER": "SQUASH-WINTER",
+        "SUMMER SQUASH": "SQUASH-SUMMER",
         "SWEET POTATO": "POTATO-SWEET",
+        "TOMATO, CHERRY": "TOMATO-CHERRY",
+        "TOMATO, HEIRLOOM": "TOMATO-HEIRLOOM",
+        "TOMATO, PASTE": "TOMATO-PASTE",
+        "TOMATO, SLICING": "TOMATO-SLICING",
     }
 
     if crop in translations:
@@ -248,6 +274,8 @@ def translateUser(line, user):
         "nelsonw": "worker4",
         "ryanv": "worker5",
         "wolfje": "worker1",
+        "binhammm": "worker2",
+        "baislepa": "worker3",
     }
 
     if user in translations:
