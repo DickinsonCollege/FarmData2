@@ -12,8 +12,9 @@
 
 Count
 ,Beds
-,Rows
 ,People
+,Seeds
+,Trays
 Length/depth
 ,Row Feet
 ,Bed Feet
@@ -30,4 +31,6 @@ Value
 Rate
 Rating
 Ratio
+,Cells/Tray
+,Rows/Bed
 Probability

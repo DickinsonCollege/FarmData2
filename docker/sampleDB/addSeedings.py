@@ -21,7 +21,7 @@ userMap = getUserMap()
 # Get the term IDs that are needed for quantities.
 rowFtID = getTermID("Row Feet")
 bedFtID = getTermID("Bed Feet")
-rowsID = getTermID("Rows")
+rowsID = getTermID("Rows/Bed")
 hoursID = getTermID("Hours")
 peopleID = getTermID("People")
 
@@ -148,7 +148,7 @@ def addSeeding(row, plantingID, seedingTypeID):
                 "label": "Amount planted"
             },
             {
-                "measure": "Count", 
+                "measure": "ratio", 
                 "value": row[5],  # rows per bed
                                   # Bed feet = row feet / rows/bed
                 "unit": {
@@ -158,7 +158,7 @@ def addSeeding(row, plantingID, seedingTypeID):
                 "label": "Rows/Bed"
             },
             {
-                "measure": "Time", 
+                "measure": "time", 
                 "value": row[8],  # hours worked
                 "unit": {
                     "id": hoursID,
@@ -167,7 +167,7 @@ def addSeeding(row, plantingID, seedingTypeID):
                 "label": "Labor"
             },
             {
-                "measure": "Count", 
+                "measure": "count", 
                 "value": 1,  # number of people (x Time = Total Time)
                              # default 1 here because FarmData didn't record this.
                              # Workers x Labor gives total time

@@ -32,6 +32,10 @@ source ./addPeople.bash
   # Add the units used for quantities
   ./addUnits.py
 
+# Add the data
+  # Add plantings and the direct and tray seedings that creates them.
+  ./addSeedings.py
+  
 
 echo "Compressing the sample database..."
 cd ..
