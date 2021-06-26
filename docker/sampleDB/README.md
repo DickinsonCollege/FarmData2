@@ -2,6 +2,10 @@
 
 This document describes the details of the FarmDat2 data model.  Note that FarmData2 is built on top of farmOS and largely makes use of the standard farmOS data model.
 
+The sections below describe each part of the sample database provided with FarmData2 for development and testing. Several pieces of information are provide for each part of the sample database:
+- The scripts that create each part of the sample data are indicated and provide a good reference for how to create new records in the database.
+- An API request is given for each type of data as well. Accessing these APIs using a tool like Hoppscotch or Postman is a good way to understand the structure of the data returned by API calls in FarmData2. 
+
 ## The Sample Database ##
 
 A sample database is provided with FarmData2 for development and testing purposes.  That database is created by running the `buildSampleDB.bash` script.  That script, and its sub-scripts, use the contents of the csv files in the `sampleData` directory to create the sample database.  Each of csv files in the `sampleData` directory gives a description of its purpose, contents and format in the comments at the top of the file.
