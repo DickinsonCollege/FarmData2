@@ -14,9 +14,7 @@ import sys
 areasVocabID = getVocabularyID('farm_areas')
 
 def main():
-    print("Adding Farm Areas...")
-
-    deleteAllVocabTerms("http://localhost/taxonomy_term.json?bundle=farm_areas")
+    print("Adding Areas...")
 
     # Add all of the areas indicated in the sampleData/areas.csv file.
     weight=1
@@ -48,7 +46,7 @@ def main():
 
             weight+=1
 
-    print("Farm Areas added.")
+    print("Areas added.")
 
 if __name__ == "__main__":
     main()

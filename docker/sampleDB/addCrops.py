@@ -12,18 +12,13 @@ from utils import *
 import sys
 
 def main():
-    print("Adding Farm Crop Families...")
+    print("Adding Crops...")
 
     # Get the id of the Farm Crop Families Vocabulary so we can add the areas to it.
     cropFamVocabID = getVocabularyID("farm_crop_families")
 
     # Get the id of the Farm Crops Vocabulary so we can add the areas to it.
     cropVocabID = getVocabularyID("farm_crops")
-
-    # Delete all of the crops and the families they belong to.
-    # Note: Must delete crops before the families.
-    deleteAllVocabTerms("http://localhost/taxonomy_term.json?bundle=farm_crops")
-    deleteAllVocabTerms("http://localhost/taxonomy_term.json?bundle=farm_crop_families")
 
     familyWeight=1
     cropWeight=1
@@ -68,7 +63,7 @@ def main():
                 childCropID = addVocabTerm(crop)
                 cropWeight+=1
 
-    print("Farm Crop Families added.")
+    print("Crops added.")
 
 if __name__ == "__main__":
     main()

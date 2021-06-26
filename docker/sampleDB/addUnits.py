@@ -16,8 +16,6 @@ def main():
     # Get the id of the Farm Units Vocabulary so we can add the units to it.
     unitsVocabID = getVocabularyID('farm_quantity_units')
 
-    deleteAllVocabTerms("http://localhost/taxonomy_term.json?bundle=farm_quantity_units")
-
     # Add all of the areas indicated in the sampleData/units.csv file.
     with open('sampleData/units.csv', 'r') as unitsFile:
         units_reader = reader(decomment(unitsFile))

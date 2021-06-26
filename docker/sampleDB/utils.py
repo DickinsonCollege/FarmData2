@@ -42,9 +42,13 @@ def getAllPages(url, theList=[], page=0):
 def getVocabularyID(vocab):
     response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=" + vocab, 
         auth=HTTPBasicAuth(user, passwd))
-    vocabID = response.json()['list'][0]['vid']
+    return response.json()['list'][0]['vid']
 
-    return vocabID
+# Get the ID of a specific vocabulary term.
+def getTermID(term):
+    response = requests.get("http://localhost/taxonomy_term.json?name=" + term, 
+        auth=HTTPBasicAuth(user, passwd))
+    return response.json()['list'][0]['tid']
 
 # Delete all of the assets returned by the url.
 def deleteAllAssets(url):
@@ -62,6 +66,50 @@ def deleteAllAssets(url):
             if(response.status_code == 200):
                 print("Deleted Asset: " + asset['name'] + " with id " + assetID)
 
+# Adds the asset indicated by the data object.
+def addAsset(data):
+    response = requests.post('http://localhost/farm_asset', 
+        json=data, auth=HTTPBasicAuth(user, passwd))
+
+    if(response.status_code == 201):
+        assetID = response.json()['id']
+        print("Created Asset: " + data['name'] + " with id " + assetID)
+        return assetID
+    else:
+        print("Error Creating Asset: " + data['name'])
+        sys.exit(-1)
+
+# Delete all of the logs returend by a request to the url
+def deleteAllLogs(url):
+    moreExist = True
+
+    while moreExist:
+        logs = getAllPages(url)
+        moreExist = (len(logs) > 0)
+        
+        for log in logs:
+            logID = log['id']
+            response = requests.delete("http://localhost/log/" + logID, 
+                auth=HTTPBasicAuth(user, passwd))
+
+            if(response.status_code == 200):
+                print("Deleted Log: " + log['name'] + " with id " + logID)
+    
+
+# Add the log indicated by the data object.
+def addLog(data):
+    response = requests.post('http://localhost/log', 
+        json=data, auth=HTTPBasicAuth(user, passwd))
+
+    if(response.status_code == 201):
+        logID = response.json()['id']
+        print("Created Log: " + data['name'] + " with id " + logID)
+        return logID
+    else:
+        print(response)
+        print("Error Creating Log: " + data['name'])
+        sys.exit(-1)
+
 # Delete all of the terms in the vocabulary given by the url.
 def deleteAllVocabTerms(url):
     termsExist = True
@@ -78,6 +126,15 @@ def deleteAllVocabTerms(url):
             if(response.status_code == 200):
                 print("Deleted Term: " + term['name'] + " with id " + termID)
 
+# Delete a single vocabulary term by its id/
+def deleteVocabTerm(termID, term):
+    response = requests.delete("http://localhost/taxonomy_term/" + termID, 
+            auth=HTTPBasicAuth(user, passwd))
+
+    if(response.status_code == 200):
+            print("Deleted Term: " + term + " with id " + termID)
+
+# Add a new vocabulary term to the vocabulary indicated in the data object.
 def addVocabTerm(data):
     response = requests.post('http://localhost/taxonomy_term', 
         json=data, auth=HTTPBasicAuth(user, passwd))

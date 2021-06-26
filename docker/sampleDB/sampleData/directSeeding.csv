@@ -16,6 +16,11 @@
 # 11 "username"
 # 12 "annual"
 # 13 "lastHarvest"
+# 14 blank due to trailing comma
+#
+# Notes:
+#  - records with multiple seed codes in the comments field will be split into
+#    multiple seeding logs asspciated with the same planting.
 
 "1368","2019-01-01","GARLIC","ALF 4","6300","3","18900","18","0.0166667","6 BEDS IN A4;Seed Code: N/A (No Variety) - 6300.0 bed feet","1","wolfje","1","2019-12-31",
 "1369","2019-01-01","GARLIC","ALF 2","2100","3","6300","6","0.0166667"," 2BEDS IN A2;Seed Code: N/A (No Variety) - 2100.0 bed feet","1","wolfje","1","2019-12-31",

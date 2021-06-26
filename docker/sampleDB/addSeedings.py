@@ -11,42 +11,41 @@ import json
 from csv import reader
 from utils import *
 import sys
-
-# Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
-logCatsVocabID = getVocabularyID('farm_log_categories')
+import re
 
 # Get lists of all of the recognized crops, fields and users for validation.
 cropMap = getCropMap()
 areaMap = getAreaMap()
 userMap = getUserMap()
 
+# Get the term IDs that are needed for quantities.
+rowFtID = getTermID("Row Feet")
+bedFtID = getTermID("Bed Feet")
+rowsID = getTermID("Rows")
+hoursID = getTermID("Hours")
+peopleID = getTermID("People")
+
 def main():
     print("Adding Seedings...")
 
     # Add the Log Categories
-    deleteSeedingCategory("Direct Seedings")
-    deleteSeedingCategory("Tray Seedings")
     directSeedingCatID = addSeedingCategory("Direct Seedings")
     traySeedingCatID = addSeedingCategory("Tray Seedings")
 
-    # Delete any Plantings or Seedings that exist.
-    deleteAllAssets('http://localhost/farm_asset.json?type=planting')
-    
-
     # Add the Seeding Data
-    addDirectSeedingData()
+    addDirectSeedingData(directSeedingCatID)
 
 
     print("Seedings added.")
 
-def addDirectSeedingData():
+def addDirectSeedingData(directSeedingCatID):
     with open('sampleData/directSeeding.csv', 'r') as dsFile:
         ds_reader = reader(decomment(dsFile))
         line=1
         for row in ds_reader:
             validateRow(line, row)
             plantingID = addPlanting(row)
-            addSeeding(row, plantingID)
+            addSeedings(row, plantingID, directSeedingCatID)
             line+=1
 
 def validateRow(line, row):
@@ -71,27 +70,66 @@ def addPlanting(row):
             "resource": "user"
         }
     }
+    return addAsset(planting)
 
-    response = requests.post('http://localhost/farm_asset', 
-        json=planting, auth=HTTPBasicAuth(user, passwd))
+# FarmData comments include information about multiple seedings
+# Split each into a different seeding log and associate
+# them with the same planting.
+def addSeedings(row, plantingID, seedingTypeID):
+    seedings = row[9].split(';')
+    seedingCount = 0
+    comment = ""
+    for seeding in seedings:
+        if (seeding.startswith('Seed Code:')):
+            seedingCount+=1
+            details = seeding.split(' - ')
 
-    if(response.status_code == 201):
-        plantingID = response.json()['id']
-        print("Created Planting: " + planting['name'] + " with id " + plantingID)
-        return plantingID
-    else:
-        print("Error Creating Planting: " + planting['name'])
+            for i in range(0, len(details), 2):
+                seedCode = details[i][11:]
+
+                if ('bed feet' not in details[i+1]):
+                    print('Not bed feet!!!')
+                    sys.exit(-1)
+
+                bedfeet = details[i+1][:details[i+1].index(' ')].strip()
+                rowfeet = str(int(float(bedfeet) * int(row[5])))
+
+                #print("***" + seedCode + " *** " + rowfeet)
+                #print("***" + comment)
+
+                row[6] = rowfeet
+                row.append(seedCode)    # row[15]
+                row.append(comment)     # row[16]
+                #comment = ""
+
+                addSeeding(row, plantingID, seedingTypeID)
+
+                row = row[:len(row)-2]  # take last two values off again.
+        else:
+            comment = comment + seeding
+
+    if (seedingCount < 1):
+        print("No seeding data for this record")
         sys.exit(-1)
 
-def addSeeding(row, plantingID):
+ 
+def addSeeding(row, plantingID, seedingTypeID):
     seeding = {
         "name": row[1] + " " + row[2] + " " + row[3],
         "type": "farm_seeding",
         "timestamp": YYYYMMDDtoTimestamp(row[1]),
-        "notes": row[9],
-        "asset": [{
-            "id": plantingID,
+        "done": "1",  # any seeding recorded is done.
+        "notes": {
+            "value": row[16],
+            "format": "farm_format"
+        },
+        "asset": [{ 
+            "id": plantingID,   # Associated planting
             "resource": "farm_asset"
+        }],
+        "log_category": [{
+            "id": seedingTypeID,
+            "resource": "taxonomy_term"
         }],
         "movement": {
             "area": [{
@@ -99,58 +137,68 @@ def addSeeding(row, plantingID):
                 "resource": "taxonomy_term"
             }]
         },
-        # Quantity is going to take some figuring and may need vocabulary for units.
-        # List so can have multiple of these... bed feet, rows/bed
-        # Can also use this for the time!! What measures are available?
-
-        # Define Units in farm_quantity_unit vocabulary
-        # What does farmOS do with multiple quantitites? And ones it does not recognize?
-        # Does it allow them? Just use the oness it knows?
-        "quantity": [{
-            "measure": "length" 
-            "value": 
-            "unit": {
-
-            }
-        }]
-
+        "quantity": [
+            {
+                "measure": "length", 
+                "value": row[6],  # total row feet
+                "unit": {
+                    "id": rowFtID, 
+                    "resource": "taxonomy_term"
+                },
+                "label": "Amount planted"
+            },
+            {
+                "measure": "Count", 
+                "value": row[5],  # rows per bed
+                                  # Bed feet = row feet / rows/bed
+                "unit": {
+                    "id": rowsID,
+                    "resource": "taxonomy_term"
+                },
+                "label": "Rows/Bed"
+            },
+            {
+                "measure": "Time", 
+                "value": row[8],  # hours worked
+                "unit": {
+                    "id": hoursID,
+                    "resource": "taxonomy_term"
+                },
+                "label": "Labor"
+            },
+            {
+                "measure": "Count", 
+                "value": 1,  # number of people (x Time = Total Time)
+                             # default 1 here because FarmData didn't record this.
+                             # Workers x Labor gives total time
+                "unit": {
+                    "id": peopleID,
+                    "resource": "taxonomy_term"
+                },
+                "label": "Workers"
+            },
+        ],
         "created": YYYYMMDDtoTimestamp(row[1]),
         "uid": {
             "id": userMap[row[11]],
             "resource": "user"
-        }
+        },
+        "log_owner": [{
+            "id": userMap[row[11]],
+            "resource": "user"
+        }],
+        "lot_number": row[15]
     }
 
-    response = requests.post('http://localhost/farm_asset', 
-        json=planting, auth=HTTPBasicAuth(user, passwd))
-
-    if(response.status_code == 201):
-        plantingID = response.json()['id']
-        print("Created Planting: " + planting['name'] + " with id " + plantingID)
-        return plantingID
-    else:
-        print("Error Creating Planting: " + planting['name'])
-        sys.exit(-1)
-
-def deleteSeedingCategory(category): 
-    response = requests.get("http://localhost/taxonomy_term.json?&name=" + category
-    , auth=HTTPBasicAuth(user, passwd))
-    catJson = response.json()['list']
-    if len(catJson) > 0:
-        catJson = catJson[0]
-        catID = catJson['tid']
-        response = requests.delete("http://localhost/taxonomy_term/" + catID, 
-            auth=HTTPBasicAuth(user, passwd))
-
-        if(response.status_code == 200):
-            print("Deleted Log Category: " + catJson['name'] + " with id " + catID)
+    return addLog(seeding)
 
 def addSeedingCategory(category):
+    # Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
+    logCatsVocabID = getVocabularyID('farm_log_categories')
+
     # Get the id of the Planting Farm Log Category so that we can use it
     # as a parent for the Direct and Tray seedings.
-    response = requests.get("http://localhost/taxonomy_term.json?name=Plantings", 
-        auth=HTTPBasicAuth(user, passwd))
-    plantingsID = response.json()['list'][0]['tid']
+    plantingsID = getTermID('Plantings')
 
     cat = {
         "name": category,
@@ -160,19 +208,7 @@ def addSeedingCategory(category):
             "resource": "taxonomy_term"
         }],
     }
-    response = requests.post('http://localhost/taxonomy_term', 
-        json=cat, auth=HTTPBasicAuth(user, passwd))
-
-    if(response.status_code == 201):
-        catID = response.json()['id']
-        print("Created Category: " + cat['name'] + " with id " + catID)
-        return catID
-    else:
-        print("Error Creating Category: " + cat['name'])
-        sys.exit(-1)
-
-
-
+    return addVocabTerm(cat)
 
 if __name__ == "__main__":
     main()
