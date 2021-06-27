@@ -33,14 +33,14 @@ The FarmData2 sample database contains the following _People_ (i.e. users):
 
 User Name | Password  | Notes |
 ----------|-----------|--------
-manager1  | farmdata2 | Full access
+manager1  | farmdata2 | Full edit permissions
 manager2  | farmdata2 |
-worker1   | farmdata2 | Limited edite permissions
+worker1   | farmdata2 | Limited edit permissions
 worker2   | farmdata2 |
 worker3   | farmdata2 |
 worker4   | farmdata2 |
 worker5   | farmdata2 |
-guest     | farmdata2 | Limited view permissions
+guest     | farmdata2 | No edit permissions
 restws1   | farmdata2 | For REST API access only.
 
 The users in the FarmData2 sample database are created by the `addPeople.bash` script.
