@@ -21,6 +21,12 @@ echo "Enabling restws basic authentication..."
 docker exec -it fd2_farmdata2 drush en restws_basic_auth -y
 echo "restws basic authentication enabled."
 
+echo "Enabling FarmData2 modules..."
+docker exec -it fd2_farmdata2 drush en fd2_example -y
+docker exec -it fd2_farmdata2 drush en fd2_barn_kit -y
+docker exec -it fd2_farmdata2 drush en fd2_field_kit -y
+echo "Enabled."
+
 # Create the 'people' (i.e. users) in the sample FarmData2 database.
 source ./addPeople.bash
 
