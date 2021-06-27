@@ -12,6 +12,8 @@ def main():
     deleteAllLogs('http://localhost/log.json?type=farm_seeding')
 
     # Delete any Plantings that exist.
+    # Will not delete any Plantings associated with Transplant Logs
+    # Those will be deleted by deleteTransplantings.py
     deleteAllAssets('http://localhost/farm_asset.json?type=planting')
 
     # Delete the seeding categories that were added.

@@ -19,7 +19,6 @@ userMap = getUserMap()
 
 # Get the term IDs that are needed for quantities.
 rowFtID = getTermID("Row Feet")
-bedFtID = getTermID("Bed Feet")
 rowsID = getTermID("Rows/Bed")
 hoursID = getTermID("Hours")
 peopleID = getTermID("People")
