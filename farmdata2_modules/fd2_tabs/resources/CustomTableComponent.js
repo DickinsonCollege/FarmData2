@@ -1,6 +1,6 @@
 let CustomTableComponent = {
     template:`<div>
-                    <table data-cy="custom-table" style="width:100%" border=1>
+                    <table data-cy="custom-table" style="width:100%" class="pure-table pur-table-bordered" border=1>
                         <tr>
                             <th data-cy="headers" v-for="header in headers">{{ header }}</th>
                             <th data-cy="edit-header" v-if="canEdit">Edit</th>
@@ -8,14 +8,14 @@ let CustomTableComponent = {
                         </tr>
                         <tr data-cy="object-test" v-for="(row, index) in rows">
                             <td data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                <input data-cy="test-input" v-if="rowsToEdit.includes(index)" v-model="row.data[itemIndex]"></input><p v-if="!rowsToEdit.includes(index)">{{ item }}</p>
+                                <input data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
                             </td>
                             <td v-if="canEdit"> 
-                                <button data-cy="edit-button" @click="editRow(index)" v-if="!rowsToEdit.includes(index)">Edit</button> 
-                                <button data-cy="save-button" v-if="rowsToEdit.includes(index)" @click="finishRowEdit(index, row.id)">Save</button>
+                                <button data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-edit"></span></button> 
+                                <button data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-save"></button>
                             </td>
                             <td v-if="canDelete"> 
-                                <button data-cy="delete-button" @click="deleteRow(row.id)">Delete</button>
+                                <button data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
                             </td>
                         </tr>
                     </table>
@@ -40,27 +40,42 @@ let CustomTableComponent = {
     },
     data() {
         return {
-            rowsToEdit: [],
+            rowToEdit: null,
+            indexesToChange: [],
         }
     },
     methods: {
         editRow: function(index){
-            this.rowsToEdit.push(index)
+            this.rowToEdit = index
         },
-        finishRowEdit: function(index, idToChange){
-            for(var i = 0; i < this.rowsToEdit.length; i++){
-                if(this.rowsToEdit[i] == index){
-                    this.rowsToEdit.splice(i, 1)
-                }
+        finishRowEdit: function(id, row){
+            this.rowToEdit = null
+            let jsonObject = {}
+            for(i=0; i < this.indexesToChange.length; i ++){
+                let key = this.headers[this.indexesToChange[i]]
+                jsonObject[key] = row.data[this.indexesToChange[i]]
             }
-            var row = this.rows.filter(obj => {
-                return obj.id === idToChange
-            })
-            this.$emit('row-edited', row)
+            this.indexesToChange = []
+
+            this.$emit('row-edited', jsonObject, id)
         },
         deleteRow: function(id){
             this.$emit('row-deleted', id)
+        },
+        changedCell: function(itemIndex){
+            if(!this.indexesToChange.includes(itemIndex)){
+                this.indexesToChange.push(itemIndex)
+            }
         }
+    },
+    computed: {
+        editDisabled() {
+            if (this.rowToEdit != null){
+                return true
+            }else{
+                return false
+            }
+        },
     },
 }
 
