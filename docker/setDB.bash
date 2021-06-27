@@ -2,14 +2,13 @@
 
 # Change the database that is being used by FarmData2.
 # This script
-#  - shuts down FarmData2
-#  - removes the current docker/db folder
+#  - shuts down FarmData2 (if running)
+#  - removes the current docker/db folder (if it exists)
 #  - extracts the indicated compressed db.*.tar.bzip file
-#  - restarts FarmData2
-#  - clears the drupal cache
+#  - restarts FarmData2 (if it was running)
+#  - clears the drupal cache (if running)
 
 FILE="db.$1.tar.bz2"
-echo $FILE
 
 if [ ! -e $FILE ]
 then
@@ -21,10 +20,34 @@ then
   echo "            - orig - the original development db"
   echo "               - depricated and will go away."
 else
+
   echo "Switching to the "$FILE" database..."
-  ./fd2-down.bash
-  sudo rm -rf db
+
+  FD2_RUNNING=$(docker ps | grep fd2_farmdata2 | wc -l)
+  if [ $FD2_RUNNING -eq 1 ]
+  then
+    echo "  Stopping FarmData2..."
+    ./fd2-down.bash
+    echo "  Stopped."
+  fi
+
+  if [ -d "db" ]
+  then
+    echo "  Removing old database..."
+    sudo rm -rf db
+    echo "  Removed."
+  fi
+
+  echo "  Extracting new database image..." 
   tar -xjf $FILE
-  ./fd2-up.bash
+  echo "  Extracted."
+
+  if [ $FD2_RUNNING -eq 1 ]
+  then
+    echo "  Restarting FarmData2..."
+    ./fd2-up.bash
+    echo "  Restarted."
+  fi
+
   echo "Switched to "$FILE" database."
 fi
