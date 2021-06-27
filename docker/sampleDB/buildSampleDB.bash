@@ -17,6 +17,11 @@ tar -xjf db.empty.tar.bz2
 cd sampleDB
 echo "Switched to empty db image."
 
+echo "Setting farm info..."
+docker exec -it fd2_farmdata2 drush vset site_name "Sample Farm"
+docker exec -it fd2_farmdata2 drush vset site_slogan "Farm with sample data for development and testing."
+echo "Set."
+
 echo "Enabling restws basic authentication..."
 docker exec -it fd2_farmdata2 drush en restws_basic_auth -y
 echo "restws basic authentication enabled."
