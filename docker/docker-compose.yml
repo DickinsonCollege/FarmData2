@@ -18,7 +18,7 @@ services:
       - db
     # If there are changes to the Dockerfile update the tag
     # here to force a new build when main is updated.
-    image: farmos:fd2.3
+    image: farmos:fd2.4
     build:
      context: ./farmOS
      dockerfile: Dockerfile
@@ -28,6 +28,7 @@ services:
       - './logo:/var/www/html/sites/default/files:cached'
       - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:cached'
       - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:cached'
+      - './farmOS/taxonomy_csv:/var/www/html/profiles/farm/modules/contrib/taxonomy_csv:cached'
     ports:
       - '80:80'
     environment:

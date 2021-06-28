@@ -42,10 +42,50 @@ function getAllPages(url, arr) {
     })
 }
 
+function getIDToCropMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
+}
+
+function getIDToFieldMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
+}
+
+function getIDToUserMap(){
+    return getMap('/user', 'uid', 'name')
+}
+
+function getCropToIDMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
+}
+
+function getFieldToIDMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
+}
+
+function getUserToIDMap(){
+    return getMap('/user', 'name', 'uid')
+}
+
+function getMap(url, key, value){
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+        .then(function(response) {
+            return response.data.list
+        })
+        .then(function(list) {
+            resolve(new Map(list.map(h => 
+                [h[key], h[value]]
+            )))
+        })
+        .catch(function(error) {
+            reject(error)
+        })
+    })
+}
+
 function getSessionToken() {
     return new Promise((resolve, reject) => {
-        axios
-        .get('/restws/session/token')
+        axios.get('/restws/session/token')
         .then(response => {
             return response.data
         })
@@ -56,32 +96,76 @@ function getSessionToken() {
             reject(error)
         })
     })
-    
 }
 
 function updateLog(url, id, updateObject, sessionToken){
     return new Promise((resolve, reject) => {
         url = url + id
         axios
-            .put(url, updateObject, { 
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN' : sessionToken,
-                }
-            })
-            .then(function(response) {
+        .put(url, updateObject, { 
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then(function(response) {
+            resolve(response)
+        })
+        .catch(function(error) {
+            reject(error)
+        }) 
+    })
+}
+
+function createLog(url, newLogObject, sessionToken) {
+    return new Promise((resolve, reject) => {
+        axios
+        .post(url, newLogObject, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then((response) => {
                 resolve(response)
-            })
-            .catch(function(error) {
-                reject(error)
-            }) 
+        })
+        .catch((error) => {
+            reject(error)
+        })
+    })
+}
+
+function deleteLog(logID, sessionToken) {
+    return new Promise((resolve, reject) => {
+        url = '/log/' + logID
+        axios
+        .delete(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((error) => {
+            reject(error)
+        })
     })
 }
 
 try {
     module.exports = {
         getAllPages: getAllPages,
+        getIDToCropMap: getIDToCropMap,
+        getIDToFieldMap: getIDToFieldMap,
+        getIDToUserMap: getIDToUserMap,
+        getCropToIDMap: getCropToIDMap,
+        getFieldToIDMap: getFieldToIDMap,
+        getUserToIDMap: getUserToIDMap,
         getSessionToken: getSessionToken,
+        deleteLog: deleteLog,
+        createLog: createLog,
         updateLog: updateLog
     }
 }

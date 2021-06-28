@@ -10,6 +10,7 @@ FROM farmos/farmos:dev
 # update the tag in docker-compose.yml for force the rebuild
 # when main is updated.
 
-COPY restws.entity.inc /var/www/html/profiles/farm/modules/contrib/restws/restws.entity.inc
-COPY restws.module /var/www/html/profiles/farm/modules/contrib/restws/restws.module
-COPY restws.test /var/www/html/profiles/farm/modules/contrib/restws/restws.test
+# Install the files for the restws module that allows date range searches via the API.
+COPY restws/restws.entity.inc /var/www/html/profiles/farm/modules/contrib/restws/restws.entity.inc
+COPY restws/restws.module /var/www/html/profiles/farm/modules/contrib/restws/restws.module
+COPY restws/restws.test /var/www/html/profiles/farm/modules/contrib/restws/restws.test
