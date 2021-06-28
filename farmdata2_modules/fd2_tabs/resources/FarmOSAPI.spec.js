@@ -1,6 +1,7 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
 var getSessionToken = FarmOSAPI.getSessionToken
+var createLog = FarmOSAPI.createLog
 var deleteLog = FarmOSAPI.deleteLog
 
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
@@ -96,6 +97,7 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(10)
             })
         })
+
         it('getIDToCropMap creates correct map with the correct length', () => {
             cy.wrap(getIDToCropMap()).as('map').wait(200)
             cy.get('@map').should((idToNameMap) => {
@@ -106,6 +108,7 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(80)
             })
         })
+
         it('getIDToFieldMap creates correct map with the correct length', () => {
             cy.wrap(getIDToFieldMap()).as('map')
             cy.get('@map').should((idToNameMap) => {
@@ -116,7 +119,8 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(37)
             })
         })
-         it('getUserToIDMap creates correct map with the correct length', () => {
+         
+        it('getUserToIDMap creates correct map with the correct length', () => {
             cy.wrap(getUserToIDMap()).as('map')
             cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
@@ -127,6 +131,7 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(10)
             })
         })
+
         it('getCropToIDMap creates correct map with the correct length', () => {
             cy.wrap(getCropToIDMap()).as('map')
             cy.get('@map').should((idToNameMap) => {
@@ -137,6 +142,7 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(80)
             }).wait(200)
         })
+
         it('getFieldToIDMap creates correct map with the correct length', () => {
             cy.wrap(getFieldToIDMap()).as('map')
             cy.get('@map').should((idToNameMap) => {
@@ -203,4 +209,39 @@ describe('API Request Function', () => {
             })
         })
     })
+
+    context('createLog API request function', () => {
+        it('creates a log with a passed object', () => {
+            getSessionToken()
+            .then(function(token) {
+                logObject = {
+                    "name": "yo",
+                    "type": "farm_observation",
+                    "timestamp": "1526584271",
+                }
+
+                url = '/log.json?type=farm_observation'
+                logID = -1
+                cy.get(logID).as('logID')
+
+                cy.wrap(createLog(url, logObject, token)).as('create')
+                cy.get('@create').should((response) => {
+                    this.logID = response.data.id
+                    expect(response.status).to.equal(201)
+                })
+                .then(function() {
+                    cy.request(url + '&id=' + this.logID).as('checkCreated')
+                    cy.get('@checkCreated').should((response) => {
+                        expect(response.body.list.length).to.equal(1)
+                    })
+                })
+                .then(function() {
+                    cy.wrap(deleteLog(this.logID, token)).as('delete')
+                    cy.get('@delete').should(function(response) {
+                        expect(response.status).to.equal(200)
+                    })
+                }) 
+            })
+        })
+    })    
 })
