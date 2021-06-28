@@ -4,6 +4,10 @@
         <date-range-selection @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
         <button v-if='!inputsVisible' @click='newAPIRequest'>Set Dates</button>
+
+        <div v-if='inputsVisible'>
+            <dropdown-with-all :dropdown-list=getCropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
+        </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <script>dayjs().format()</script>
@@ -21,6 +25,7 @@
                 inputsVisible: false,
                 seedingLogs: [],
                 sessionToken: null,
+                selectedCrop: 'All',
             },
             methods: {
                 startDateChange(selectedDate){
@@ -37,9 +42,20 @@
                     this.inputsVisible = true
                     let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
 
-                    console.log(link)
-
                     getAllPages(link, this.seedingLogs)
+                },
+                cropChange(selectedCrop){
+                    this.selectedCrop = selectedCrop
+                }
+            },
+            computed: {
+                getCropList(){
+                    let cropList = this.seedingLogs.map(h=> 
+                        h.name.split(' ')[1]
+                    )
+                    let crops = new Set(cropList)
+                    let newCropList = Array.from(crops)
+                    return newCropList.sort()
                 }
             },
             created() {
