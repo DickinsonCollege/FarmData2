@@ -211,7 +211,10 @@ def addSeeding(row, plantingID, seedingTypeID):
             "id": userMap[row[1]],
             "resource": "user"
         }],
-        "lot_number": row[7]
+        "lot_number": row[7],
+        "data": json.dumps({ 
+            "cropID": cropMap[row[3]] 
+        })
     }
 
     return addLog(seeding)
