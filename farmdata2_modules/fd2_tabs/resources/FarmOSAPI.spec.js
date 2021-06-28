@@ -84,7 +84,7 @@ describe('API Request Function', () => {
         })
     })
     
-    context.only('test maping functions', () => {
+    context('test maping functions', () => {
         it('getIDToUserMap creates correct map with the correct length', () => {
             cy.wrap(getIDToUserMap()).as('map')
             cy.get('@map').should((idToNameMap) => {
@@ -145,26 +145,6 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(37)
                 expect(idToNameMap.get('O')).to.equal('100')
                 expect(idToNameMap.get('SQ 6')).to.equal('127')
-
-                cy.wait('@second').should(() => {
-                    // Just by getting here we know the second page was requested.
-
-                    // Check that data made it into testArray.
-                    cy.wrap(testArray).should('have.length.gt',100)
-                    secondCalls++
-                })
-
-                cy.wait('@third').should(() => {
-                    cy.wrap(testArray).should('have.length.gt',200)
-                    thirdCalls++
-                })
-
-                cy.wrap(getAllPages("/log?type=farm_seeding", testArray)).as('all')
-                cy.get('@all').should(() => {
-                    expect(firstCalls).to.equal(1)
-                    expect(secondCalls).to.equal(1)
-                    expect(thirdCalls).to.equal(1)
-                })
             })
         })
     })
