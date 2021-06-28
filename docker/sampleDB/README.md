@@ -69,7 +69,7 @@ The terms for the Farm Crop Families vocabulary can be accessed with the request
 GET http://localhost/taxonomy_term.json?bundle=farm_crop_families"
 ```
 
-The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to ROMAINE and GREEN, and conversely they are child crops to LETTUCE.
+The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE. 
 
 The terms for the Farm Crops vocabulary can be accessed with the request:
 ```
@@ -117,6 +117,7 @@ GET http://localhost/log.json?type=farm_seeding"
 
 Notes:
 - The `log_category` attribute can be used to distinguish between logs for Direct Seedings and logs for Tray Seedings.
+- The `data` attribute will contain an object that provides the `tid` of the crop that was seeded (e.g. `{ cropID: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
 
 ### Planting Assets ###
 
