@@ -2,6 +2,15 @@ var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
 var getSessionToken = FarmOSAPI.getSessionToken
 var createLog = FarmOSAPI.createLog
+var deleteLog = FarmOSAPI.deleteLog
+
+var getIDToUserMap = FarmOSAPI.getIDToUserMap
+var getIDToCropMap = FarmOSAPI.getIDToCropMap
+var getIDToFieldMap = FarmOSAPI.getIDToFieldMap
+
+var getUserToIDMap = FarmOSAPI.getUserToIDMap
+var getCropToIDMap = FarmOSAPI.getCropToIDMap
+var getFieldToIDMap = FarmOSAPI.getFieldToIDMap
 
 describe('API Request Function', () => {
     var testArray
@@ -44,7 +53,7 @@ describe('API Request Function', () => {
             let thirdCalls=0
 
             cy.wait(1)
-            .then(() => {
+            .then(function() {
                 cy.wait('@first').should(() => {
                     cy.wrap(testArray).should('have.length.gt',0)
                     firstCalls++
@@ -75,41 +84,164 @@ describe('API Request Function', () => {
             })
         })
     })
+    
+    context('test maping functions', () => {
+        it('getIDToUserMap creates correct map with the correct length', () => {
+            cy.wrap(getIDToUserMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
+                expect(idToNameMap).to.not.be.null
+                expect(idToNameMap).to.be.a('Map')
+                expect(idToNameMap).to.have.all.keys(null, '6','8','7', '4', '9', '5', '1', '3', '155')
+                expect(idToNameMap.get('4')).to.equal('manager2')
+                expect(idToNameMap.get('5')).to.equal('worker1')
+                expect(idToNameMap.size).to.equal(10)
+            })
+        })
+
+        it('getIDToCropMap creates correct map with the correct length', () => {
+            cy.wrap(getIDToCropMap()).as('map').wait(200)
+            cy.get('@map').should((idToNameMap) => {
+                expect(idToNameMap).to.not.be.null
+                expect(idToNameMap).to.be.a('Map')
+                expect(idToNameMap.get('44')).to.equal('Cauliflower')
+                expect(idToNameMap.get('27')).to.equal('Mint')
+                expect(idToNameMap.size).to.equal(80)
+            })
+        })
+
+        it('getIDToFieldMap creates correct map with the correct length', () => {
+            cy.wrap(getIDToFieldMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
+                expect(idToNameMap).to.not.be.null
+                expect(idToNameMap).to.be.a('Map')
+                expect(idToNameMap.get('100')).to.equal('O')
+                expect(idToNameMap.get('127')).to.equal('SQ 6')
+                expect(idToNameMap.size).to.equal(37)
+            })
+        })
+         
+        it('getUserToIDMap creates correct map with the correct length', () => {
+            cy.wrap(getUserToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
+                expect(idToNameMap).to.not.be.null
+                expect(idToNameMap).to.be.a('Map')
+                expect(idToNameMap).to.have.all.keys('Anonymous', 'guest','worker1', 'worker2', 'worker3', 'worker4', 'manager1', 'manager2', 'admin', 'restws1')
+                expect(idToNameMap.get('manager2')).to.equal('4')
+                expect(idToNameMap.get('worker1')).to.equal('5')
+                expect(idToNameMap.size).to.equal(10)
+            })
+        })
+
+        it('getCropToIDMap creates correct map with the correct length', () => {
+            cy.wrap(getCropToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
+                expect(idToNameMap).to.not.be.null
+                expect(idToNameMap).to.be.a('Map')
+                expect(idToNameMap.get('Cauliflower')).to.equal('44')
+                expect(idToNameMap.get('Mint')).to.equal('27')
+                expect(idToNameMap.size).to.equal(80)
+            }).wait(200)
+        })
+
+        it('getFieldToIDMap creates correct map with the correct length', () => {
+            cy.wrap(getFieldToIDMap()).as('map')
+            cy.get('@map').should((idToNameMap) => {
+                expect(idToNameMap).to.not.be.null
+                expect(idToNameMap).to.be.a('Map')
+                expect(idToNameMap.size).to.equal(37)
+                expect(idToNameMap.get('O')).to.equal('100')
+                expect(idToNameMap.get('SQ 6')).to.equal('127')
+            })
+        })
+    })
+
+    context('getSessionToken API request function', () => {
+        it('returns a token when it resolves', () => {
+            getSessionToken().then(token => {
+                expect(token).to.not.be.null
+            })
+        })
+        it('returns a token of length 43', () => {
+            getSessionToken().then(token => {
+                expect(token.length).to.equal(43)
+            })
+        })
+    })
+
+    context('deleteLog API request function', () => {
+        it('deletes a log based on log ID', () => {
+            getSessionToken()
+            .then(function(token) {
+                req = {
+                    url: '/log.json?type=farm_observation',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "pleasegoaway",
+                        "type": "farm_observation",
+                    }
+                }
+
+                logID = -1
+                cy.get(logID).as('logID')  // make logID availabe in cy scope as this.logID
+
+                cy.request(req).as('created')
+                cy.get('@created').should(function(response) {
+                    expect(response.status).to.equal(201)
+                    this.logID = response.body.id
+                })
+                .then(function() {
+                    cy.wrap(deleteLog(this.logID, token))
+                    .as('delete')
+                    cy.get('@delete').should((response) => {
+                        expect(response.status).to.equal(200)
+                    })
+                }) 
+                .then(function() {
+                    cy.request('/log.json?type=farm_observation&id=' + this.logID).as('check')
+                    cy.get('@check').should(function(response) {
+                        expect(response.body.list.length).to.equal(0)
+                    })
+                })
+            })
+        })
+    })
 
     context.only('createLog API request function', () => {
         it('creates a log with a passed object', () => {
             getSessionToken()
-                .then(function(token) {
-                    console.log('making log')
+            .then(function(token) {
+                logObject = {
+                    "name": "yo",
+                    "type": "farm_observation",
+                    "timestamp": "1526584271",
+                }
 
-                    logObject = {
-                        "name": "yo",
-                        "type": "farm_observation",
-                        "timestamp": "1526584271",
-                    }
+                url = '/log.json?type=farm_observation'
+                logID = -1
+                cy.get(logID).as('logID')
 
-                    url = '/log.json?type=farm_observation'
-                    logID = -1
-                    cy.get(logID).as('logID')
-
-                    cy.wrap(createLog(url, logObject, token)).as('create')
-                    cy.get('@create').should((response) => {
-                        logID = response.data.id
-                        expect(response.status).to.equal(201)
-                    })
-                    .then(function() {
-                        cy.request(url + '&id=' + logID).as('checkCreated')
-                        cy.get('@checkCreated').should((response) => {
-                            expect(response.body.list.length).to.equal(1)
-                        })
-                    })
-                    .then(function() {
-                        cy.wrap(deleteLog(this.logID, token)).as('delete')
-                        cy.get('@delete').should(function(response) {
-                            expect(response.status).to.equal(200)
-                        })
-                    }) 
+                cy.wrap(createLog(url, logObject, token)).as('create')
+                cy.get('@create').should((response) => {
+                    logID = response.data.id
+                    expect(response.status).to.equal(201)
                 })
+                .then(function() {
+                    cy.request(url + '&id=' + logID).as('checkCreated')
+                    cy.get('@checkCreated').should((response) => {
+                        expect(response.body.list.length).to.equal(1)
+                    })
+                })
+                .then(function() {
+                    cy.wrap(deleteLog(this.logID, token)).as('delete')
+                    cy.get('@delete').should(function(response) {
+                        expect(response.status).to.equal(200)
+                    })
+                }) 
+            })
         })
     })    
 })
