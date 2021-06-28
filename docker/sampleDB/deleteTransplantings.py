@@ -23,15 +23,17 @@ def main():
         print("  Deleting all Plantings")
         delAllPlantings = True
 
-    with open('sampleData/transplantings.csv', 'r') as tFile:
-        t_reader = reader(decomment(tFile))
-        line=1
-        for row in t_reader:
-            # Delete any transplantings that exist.
-            # deleteAllLogs('http://localhost/log.json?type=farm_transplanting')
+    # Delete any transplantings that exist.
+    deleteAllLogs('http://localhost/log.json?type=farm_transplanting')
 
-     
-            deleteAllAssets('http://localhost/farm_asset.json?type=planting&name[sw]=0000-00-00')
+    # Delete all of the Plantings created specifically for transplantings
+    deleteAllAssets('http://localhost/farm_asset.json?type=planting&name[sw]=0000-00-00')
+
+    if delAllPlantings:
+        deleteAllAssets('http://localhost/farm_asset.json?type=planting')
+
+    # Delete the transplanting category that was added.
+    deleteSeedingCategory("Transplantings")
 
     print("Transplantings deleted.")
 

@@ -185,23 +185,5 @@ def addSeeding(row, plantingID, seedingTypeID):
 
     return addLog(seeding)
 
-def addSeedingCategory(category):
-    # Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
-    logCatsVocabID = getVocabularyID('farm_log_categories')
-
-    # Get the id of the Planting Farm Log Category so that we can use it
-    # as a parent for the Direct and Tray seedings.
-    plantingsID = getTermID('Plantings')
-
-    cat = {
-        "name": category,
-        "vocabulary": logCatsVocabID,
-        "parent": [{
-            "id": plantingsID,
-            "resource": "taxonomy_term"
-        }],
-    }
-    return addVocabTerm(cat)
-
 if __name__ == "__main__":
     main()

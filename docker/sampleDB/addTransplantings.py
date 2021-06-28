@@ -19,8 +19,12 @@ userMap = getUserMap()
 # Get the term IDs that are needed for quantities.
 rowFtID = getTermID("Row Feet")
 rowsID = getTermID("Rows/Bed")
+flatsID = getTermID("Flats")
 hoursID = getTermID("Hours")
 peopleID = getTermID("People")
+
+# Add the Log Category
+transplantingsCatID = addSeedingCategory("Transplantings")
 
 def main():
     print("Adding Transplantings...")
@@ -32,7 +36,7 @@ def main():
         for row in t_reader:
             validateRow(line, row)
             plantingID = getPlanting(row)
-            #addTransplanting(row, plantingID)
+            addTransplanting(row, plantingID)
             line+=1
 
     print("Transplantings added.")
@@ -98,6 +102,93 @@ def addPlanting(row):
         }
     }
     return addAsset(planting)
+
+def addTransplanting(row, plantingID):
+    transplanting = {
+        "name": row[8] + " " + row[3] + " " + row[2],
+        "type": "farm_transplanting",
+        "timestamp": YYYYMMDDtoTimestamp(row[8]),
+        "done": "1",  # any transplanting recorded is done.
+        "notes": {
+            "value": row[13],
+            "format": "farm_format"
+        },
+        "asset": [{ 
+            "id": plantingID,   # Associated planting
+            "resource": "farm_asset"
+        }],
+        "log_category": [{
+            "id": transplantingsCatID,
+            "resource": "taxonomy_term"
+        }],
+        "movement": {
+            "area": [{
+                "id": areaMap[row[2]],
+                "resource": "taxonomy_term"
+            }]
+        },
+        "quantity": [
+            {
+                "measure": "length", 
+                "value": row[7],  # total row feet
+                "unit": {
+                    "id": rowFtID, 
+                    "resource": "taxonomy_term"
+                },
+                "label": "Amount planted"
+            },
+            {
+                "measure": "ratio", 
+                "value": row[6],  # rows per bed
+                                  # Bed feet = row feet / rows/bed
+                "unit": {
+                    "id": rowsID,
+                    "resource": "taxonomy_term"
+                },
+                "label": "Rows/Bed"
+            },
+            {
+                "measure": "count", 
+                "value": row[10],  # flats transplanted
+                "unit": {
+                    "id": flatsID,
+                    "resource": "taxonomy_term"
+                },
+                "label": "Flats"
+            },
+            {
+                "measure": "time", 
+                "value": row[12],  # hours worked
+                "unit": {
+                    "id": hoursID,
+                    "resource": "taxonomy_term"
+                },
+                "label": "Labor"
+            },
+            {
+                "measure": "count", 
+                "value": 1,  # number of people (x Time = Total Time)
+                             # default 1 here because FarmData didn't record this.
+                             # Workers x Labor gives total time
+                "unit": {
+                    "id": peopleID,
+                    "resource": "taxonomy_term"
+                },
+                "label": "Workers"
+            },
+        ],
+        "created": YYYYMMDDtoTimestamp(row[8]),
+        "uid": {
+            "id": userMap[row[1]],
+            "resource": "user"
+        },
+        "log_owner": [{
+            "id": userMap[row[1]],
+            "resource": "user"
+        }],
+    }
+
+    return addLog(transplanting)
     
 
 if __name__ == "__main__":
