@@ -2,8 +2,8 @@
     <div id="seedingReport" v-cloak>
         <h1 class="center">Seeding Report</h1>
         <date-range-selection @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
-        
-        <button v-if='!inputsVisible'>Set Dates</button>
+
+        <button v-if='!inputsVisible' @click='newAPIRequest'>Set Dates</button>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <script>dayjs().format()</script>
@@ -19,17 +19,34 @@
                 startDate:dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
                 inputsVisible: false,
+                seedingLogs: [],
+                sessionToken: null,
             },
             methods: {
                 startDateChange(selectedDate){
                     this.startDate = selectedDate
                     this.inputsVisible = false
+                    this.seedingLogs = []
                 },
                 endDateChange(selectedDate){
                     this.endDate = selectedDate
                     this.inputsVisible = false
+                    this.seedingLogs = []
+                },
+                newAPIRequest(){
+                    this.inputsVisible = true
+                    let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+
+                    console.log(link)
+
+                    getAllPages(link, this.seedingLogs)
                 }
-            }
+            },
+            created() {
+                getSessionToken().then((response) => {
+                    this.sessionToken = response
+                })
+            },
         });
         Vue.config.devtools = true;
     </script>
