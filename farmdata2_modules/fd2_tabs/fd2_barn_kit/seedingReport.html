@@ -1,8 +1,34 @@
 <body>
-
+    <div id="seedingReport" v-cloak>
+        <h1 class="center">Seeding Report</h1>
+        <date-range-selection @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+    </div>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script>dayjs().format()</script>
+    <script>
+        var seedingReport = new Vue ({
+            el: '#seedingReport',
+            components: {
+                'custom-table': CustomTableComponent,
+                'date-range-selection': DateRangeSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
+            },
+            data: {
+                startDate:dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                endDate: dayjs().format('YYYY-MM-DD').toString(),
+                inputsVisable: false,
+            },
+            methods: {
+                startDateChange(selectedDate){
+                    this.startDate = selectedDate
+                    this.inputsVisable = false
+                },
+                endDateChange(selectedDate){
+                    this.endDate = selectedDate
+                    this.inputsVisable = false
+                }
+            }
+        });
+        Vue.config.devtools = true;
+    </script>
 </body>
-<script>
-    var seedingReport = new Vue ({
-        
-    })
-</script>
