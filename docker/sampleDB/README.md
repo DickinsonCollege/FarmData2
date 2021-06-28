@@ -117,7 +117,7 @@ GET http://localhost/log.json?type=farm_seeding"
 
 Notes:
 - The `log_category` attribute can be used to distinguish between logs for Direct Seedings and logs for Tray Seedings.
-- The `data` attribute will contain an object that provides the `tid` of the crop that was seeded (e.g. `{ cropID: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
+- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was seeded (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
 
 ### Planting Assets ###
 

@@ -213,7 +213,7 @@ def addSeeding(row, plantingID, seedingTypeID):
         }],
         "lot_number": row[7],
         "data": json.dumps({ 
-            "cropID": cropMap[row[3]] 
+            "crop_tid": cropMap[row[3]] 
         })
     }
 
