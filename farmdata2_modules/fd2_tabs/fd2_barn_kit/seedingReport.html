@@ -2,6 +2,8 @@
     <div id="seedingReport" v-cloak>
         <h1 class="center">Seeding Report</h1>
         <date-range-selection @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+        
+        <button v-if='!inputsVisible'>Set Dates</button>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <script>dayjs().format()</script>
@@ -16,16 +18,16 @@
             data: {
                 startDate:dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
-                inputsVisable: false,
+                inputsVisible: false,
             },
             methods: {
                 startDateChange(selectedDate){
                     this.startDate = selectedDate
-                    this.inputsVisable = false
+                    this.inputsVisible = false
                 },
                 endDateChange(selectedDate){
                     this.endDate = selectedDate
-                    this.inputsVisable = false
+                    this.inputsVisible = false
                 }
             }
         });
