@@ -69,17 +69,51 @@ function getUserToIDMap(){
 function getMap(url, key, value){
     return new Promise((resolve, reject) => {
         axios.get(url)
-            .then(function(response) {
-                return response.data.list
-            })
-            .then(function(list) {
-                resolve(new Map(list.map(h => 
-                    [h[key], h[value]]
-                )))
-            })
-            .catch(function(error) {
-                reject(error)
-            })
+        .then(function(response) {
+            return response.data.list
+        })
+        .then(function(list) {
+            resolve(new Map(list.map(h => 
+                [h[key], h[value]]
+            )))
+        })
+        .catch(function(error) {
+            reject(error)
+        })
+    })
+}
+
+function getSessionToken() {
+    return new Promise((resolve, reject) => {
+        axios.get('/restws/session/token')
+        .then(response => {
+            return response.data
+        })
+        .then(function(token) {
+            resolve(token)
+        })
+        .catch(function(error){
+            reject(error)
+        })
+    })
+}
+
+function deleteLog(logID, sessionToken) {
+    return new Promise((resolve, reject) => {
+        url = '/log/' + logID
+        axios
+        .delete(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((error) => {
+            reject(error)
+        })
     })
 }
 
@@ -91,7 +125,9 @@ try {
         getIDToUserMap: getIDToUserMap,
         getCropToIDMap: getCropToIDMap,
         getFieldToIDMap: getFieldToIDMap,
-        getUserToIDMap: getUserToIDMap
+        getUserToIDMap: getUserToIDMap,
+        getSessionToken: getSessionToken,
+        deleteLog: deleteLog
     }
 }
 catch {}

@@ -1,5 +1,7 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
+var getSessionToken = FarmOSAPI.getSessionToken
+var deleteLog = FarmOSAPI.deleteLog
 
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
@@ -16,7 +18,8 @@ describe('API Request Function', () => {
         cy.login('restws1', 'farmdata2')
         testArray = []
     })
-    context('api request test', () => {
+
+    context('getAllPages API request function', () => {
         it('Test on a request with one page.', () => {
             cy.intercept("GET",/log\?type=farm_seeding/).as('onlyone')
 
@@ -49,7 +52,7 @@ describe('API Request Function', () => {
             let thirdCalls=0
 
             cy.wait(1)
-            .then(() => {
+            .then(function() {
                 cy.wait('@first').should(() => {
                     cy.wrap(testArray).should('have.length.gt',0)
                     firstCalls++
@@ -142,6 +145,81 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(37)
                 expect(idToNameMap.get('O')).to.equal('100')
                 expect(idToNameMap.get('SQ 6')).to.equal('127')
+
+                cy.wait('@second').should(() => {
+                    // Just by getting here we know the second page was requested.
+
+                    // Check that data made it into testArray.
+                    cy.wrap(testArray).should('have.length.gt',100)
+                    secondCalls++
+                })
+
+                cy.wait('@third').should(() => {
+                    cy.wrap(testArray).should('have.length.gt',200)
+                    thirdCalls++
+                })
+
+                cy.wrap(getAllPages("/log?type=farm_seeding", testArray)).as('all')
+                cy.get('@all').should(() => {
+                    expect(firstCalls).to.equal(1)
+                    expect(secondCalls).to.equal(1)
+                    expect(thirdCalls).to.equal(1)
+                })
+            })
+        })
+    })
+
+    context('getSessionToken API request function', () => {
+        it('returns a token when it resolves', () => {
+            getSessionToken().then(token => {
+                expect(token).to.not.be.null
+            })
+        })
+        it('returns a token of length 43', () => {
+            getSessionToken().then(token => {
+                expect(token.length).to.equal(43)
+            })
+        })
+    })
+
+    context('deleteLog API request function', () => {
+        it('deletes a log based on log ID', () => {
+            getSessionToken()
+            .then(function(token) {
+                req = {
+                    url: '/log.json?type=farm_observation',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "pleasegoaway",
+                        "type": "farm_observation",
+                    }
+                }
+
+                logID = -1
+                cy.get(logID).as('logID')  // make logID availabe in cy scope as this.logID
+
+                cy.request(req).as('created')
+                cy.get('@created').should(function(response) {
+                    expect(response.status).to.equal(201)
+                    this.logID = response.body.id
+                })
+                .then(function() {
+                    cy.wrap(deleteLog(this.logID, token))
+                    .as('delete')
+                    cy.get('@delete').should((response) => {
+                        expect(response.status).to.equal(200)
+                    })
+                }) 
+                .then(function() {
+                    cy.request('/log.json?type=farm_observation&id=' + this.logID).as('check')
+                    cy.get('@check').should(function(response) {
+                        expect(response.body.list.length).to.equal(0)
+                    })
+                })
             })
         })
     })
