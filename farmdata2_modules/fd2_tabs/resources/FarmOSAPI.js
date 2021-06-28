@@ -9,7 +9,7 @@ catch {
 // farmOS API.  All pages should use these so that any
 // updates apply to all pages.
 
-function getAllPages(url, arr) {
+function getAllPages(url, arr=[]) {
     // Retrieves all pages of a multipage response.
     // Usage:   
     //    let result = []
@@ -22,10 +22,11 @@ function getAllPages(url, arr) {
     return new Promise((resolve, reject) => {
         axios.get(url)
         .then(function(response) {
+            arr.push.apply(arr,response.data.list)
             return response.data
         })
         .then(function(data) {
-            arr.push.apply(arr,data.list)
+            //arr.push.apply(arr,data.list)
             if (!data.hasOwnProperty('next')) {
                 resolve(arr)
             }
@@ -42,36 +43,33 @@ function getAllPages(url, arr) {
     })
 }
 
-function getIDToCropMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
-}
-
-function getIDToFieldMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
-}
-
 function getIDToUserMap(){
     return getMap('/user', 'uid', 'name')
-}
-
-function getCropToIDMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
-}
-
-function getFieldToIDMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
 }
 
 function getUserToIDMap(){
     return getMap('/user', 'name', 'uid')
 }
 
+function getIDToCropMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
+}
+
+function getCropToIDMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
+}
+
+function getIDToFieldMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
+}
+
+function getFieldToIDMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
+}
+
 function getMap(url, key, value){
     return new Promise((resolve, reject) => {
-        axios.get(url)
-        .then(function(response) {
-            return response.data.list
-        })
+        getAllPages(url)
         .then(function(list) {
             resolve(new Map(list.map(h => 
                 [h[key], h[value]]

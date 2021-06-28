@@ -32,56 +32,63 @@ describe('API Request Function', () => {
             // There may be a more correct way to wait?
             cy.wait(1)
             .then(() => {
-                cy.wait('@onlyone').should(() => {
-                    cy.wrap(testArray).should('have.length.gt',0)
+                cy.wait('@onlyone').then(() => {
                     calls++
+
+                    // Need to wrap testArray here because it may 
+                    // take a moment for the array to be set after the response
+                    // is received. Wrapping lets use should which automatically
+                    // retries the assertion.
+                    cy.wrap(testArray).should(() => {
+                        expect(testArray).to.have.length(50)
+                    })
                 })
 
-                getAllPages('/log?type=farm_seeding&id[lt]=1500', testArray)
-            })
-            .then(() => {
-                expect(calls).to.equal(1)
+                cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray)).as('onePage')
+                cy.get('@onePage').should(() => {
+                    expect(calls).to.equal(1)
+                })
             })
         })
 
         it('Test on a request with multiple pages', () => {
-            cy.intercept("GET",/log\?type=farm_seeding$/).as('first')
-            cy.intercept("GET","/log?type=farm_seeding&page=1").as('second')
-            cy.intercept("GET","/log?type=farm_seeding&page=2").as('third')
+            cy.intercept("GET","/log?type=farm_seeding&page=5").as('first')
+            cy.intercept("GET","/log?type=farm_seeding&page=6").as('second')
+            cy.intercept("GET","/log?type=farm_seeding&page=9").as('last')
         
             let firstCalls=0
             let secondCalls=0
-            let thirdCalls=0
+            let lastCalls=0
 
             cy.wait(1)
             .then(function() {
-                cy.wait('@first').should(() => {
-                    cy.wrap(testArray).should('have.length.gt',0)
+                cy.wait('@first').then(() => {
                     firstCalls++
+                    cy.wrap(testArray).should(() => {
+                        expect(testArray).to.have.length(100)
+                    })
                 })
 
-                cy.wait('@second').should(() => {
-                    // Just by getting here we know the second page was requested.
-
-                    // Check that data made it into testArray.
-                    // Note: depending on timing this may not run until after any
-                    // subsequent calls.
-                    cy.wrap(testArray).should('have.length.gt',100)
+                cy.wait('@second').then(() => {
                     secondCalls++
+                    cy.wrap(testArray).should(() => {
+                        expect(testArray).to.have.length(200)
+                    })
                 })
 
-                cy.wait('@third').should(() => {
-                    cy.wrap(testArray).should('have.length.gt',200)
-                    thirdCalls++
+                cy.wait('@last', {requestTimeout: 10000}).then(() => {
+                    lastCalls++
+                    cy.wrap(testArray).should(() => {
+                        expect(testArray).to.have.length.gt(400)
+                    })
                 })
 
-                getAllPages("/log?type=farm_seeding", testArray)
-
-            })
-            .then(() => {
-                expect(firstCalls).to.equal(1)
-                expect(secondCalls).to.equal(1)
-                expect(thirdCalls).to.equal(1)
+                cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray)).as('multiPage')
+                cy.get('@multiPage').should(() => {
+                    expect(firstCalls).to.equal(1)
+                    expect(secondCalls).to.equal(1)
+                    expect(lastCalls).to.equal(1)
+                })
             })
         })
     })
@@ -92,23 +99,60 @@ describe('API Request Function', () => {
             cy.get('@map').should((idToNameMap) => {
                 expect(idToNameMap).to.not.be.null
                 expect(idToNameMap).to.be.a('Map')
-                expect(idToNameMap).to.have.all.keys(null, '6','8','7', '4', '9', '5', '1', '3', '155')
-                expect(idToNameMap.get('4')).to.equal('manager2')
-                expect(idToNameMap.get('5')).to.equal('worker1')
-                expect(idToNameMap.size).to.equal(10)
+                expect(idToNameMap.get('1')).to.equal('admin')
+                expect(idToNameMap.get('6')).to.equal('manager1')
+                expect(idToNameMap.get('8')).to.equal('worker1')
+                expect(idToNameMap.get('13')).to.equal('guest')
+                expect(idToNameMap.get('14')).to.equal('restws1')
+                expect(idToNameMap.size).to.equal(11)
+            })
+        })
+        
+        it('getUserToIDMap creates correct map with the correct length', () => {
+            cy.wrap(getUserToIDMap()).as('map')
+            cy.get('@map').should((nameToIdMap) => {
+                expect(nameToIdMap).to.not.be.null
+                expect(nameToIdMap).to.be.a('Map')
+                expect(nameToIdMap.get('admin')).to.equal('1')
+                expect(nameToIdMap.get('manager1')).to.equal('6')
+                expect(nameToIdMap.get('worker1')).to.equal('8')
+                expect(nameToIdMap.get('guest')).to.equal('13')
+                expect(nameToIdMap.get('restws1')).to.equal('14')
+                expect(nameToIdMap.size).to.equal(11)
             })
         })
 
-        it('getIDToCropMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToCropMap()).as('map').wait(200)
-            cy.get('@map').should((idToNameMap) => {
-                expect(idToNameMap).to.not.be.null
-                expect(idToNameMap).to.be.a('Map')
-                expect(idToNameMap.get('44')).to.equal('Cauliflower')
-                expect(idToNameMap.get('27')).to.equal('Mint')
-                expect(idToNameMap.size).to.equal(80)
+        it.only('getIDToCropMap creates correct map with the correct length', () => {
+            cy.wrap(getIDToCropMap()).as('map')
+            cy.get('@map').should((idToCropMap) => {
+                expect(idToCropMap).to.not.be.null
+                expect(idToCropMap).to.be.a('Map')
+
+                // first and last on first page of response
+                expect(idToCropMap.get('137')).to.equal('ARUGULA')
+                expect(idToCropMap.get('135')).to.equal('THYME')
+
+                // first and last on second page of response
+                expect(idToCropMap.get('109')).to.equal('TOMATO')
+                expect(idToCropMap.get('115')).to.equal('ZUCCHINI')
+                
+                expect(idToCropMap.size).to.equal(107)
             })
         })
+
+        it.only('getCropToIDMap creates correct map with the correct length', () => {
+            cy.wrap(getCropToIDMap()).as('map')
+            cy.get('@map').should((cropToIdMap) => {
+                expect(cropToIdMap).to.not.be.null
+                expect(cropToIdMap).to.be.a('Map')
+                expect(cropToIdMap.get('ARUGULA')).to.equal('137')
+                expect(cropToIdMap.get('THYME')).to.equal('135')
+                expect(cropToIdMap.get('TOMATO')).to.equal('109')
+                expect(cropToIdMap.get('ZUCCHINI')).to.equal('115')                
+                expect(cropToIdMap.size).to.equal(107)
+            }).wait(200)
+        })
+
 
         it('getIDToFieldMap creates correct map with the correct length', () => {
             cy.wrap(getIDToFieldMap()).as('map')
@@ -120,29 +164,8 @@ describe('API Request Function', () => {
                 expect(idToNameMap.size).to.equal(37)
             })
         })
-         
-        it('getUserToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getUserToIDMap()).as('map')
-            cy.get('@map').should((idToNameMap) => {
-                expect(idToNameMap).to.not.be.null
-                expect(idToNameMap).to.be.a('Map')
-                expect(idToNameMap).to.have.all.keys('Anonymous', 'guest','worker1', 'worker2', 'worker3', 'worker4', 'manager1', 'manager2', 'admin', 'restws1')
-                expect(idToNameMap.get('manager2')).to.equal('4')
-                expect(idToNameMap.get('worker1')).to.equal('5')
-                expect(idToNameMap.size).to.equal(10)
-            })
-        })
 
-        it('getCropToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getCropToIDMap()).as('map')
-            cy.get('@map').should((idToNameMap) => {
-                expect(idToNameMap).to.not.be.null
-                expect(idToNameMap).to.be.a('Map')
-                expect(idToNameMap.get('Cauliflower')).to.equal('44')
-                expect(idToNameMap.get('Mint')).to.equal('27')
-                expect(idToNameMap.size).to.equal(80)
-            }).wait(200)
-        })
+
 
         it('getFieldToIDMap creates correct map with the correct length', () => {
             cy.wrap(getFieldToIDMap()).as('map')
