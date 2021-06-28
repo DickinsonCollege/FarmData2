@@ -1,9 +1,7 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
 var getSessionToken = FarmOSAPI.getSessionToken
-<<<<<<< HEAD
 var updateLog = FarmOSAPI.updateLog
-=======
 var createLog = FarmOSAPI.createLog
 var deleteLog = FarmOSAPI.deleteLog
 
@@ -14,7 +12,6 @@ var getIDToFieldMap = FarmOSAPI.getIDToFieldMap
 var getUserToIDMap = FarmOSAPI.getUserToIDMap
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
 var getFieldToIDMap = FarmOSAPI.getFieldToIDMap
->>>>>>> main
 
 describe('API Request Function', () => {
     var testArray
@@ -213,7 +210,7 @@ describe('API Request Function', () => {
             })
         })
     })
-<<<<<<< HEAD
+
     context('getSessionToken API request function', () => {
         it('returns a token when it resolves', () => {
             getSessionToken().then(token => {
@@ -226,7 +223,8 @@ describe('API Request Function', () => {
             })
         })
     })
-    context.only('update function testing', () => {
+
+    context('update function testing', () => {
         it('change the crop of a transplanting log', () => {
             getSessionToken()
                 .then(function(token) {
@@ -239,7 +237,6 @@ describe('API Request Function', () => {
                 })
         })
     })
-=======
 
     context('createLog API request function', () => {
         it('creates a log with a passed object', () => {
@@ -275,5 +272,4 @@ describe('API Request Function', () => {
             })
         })
     })    
->>>>>>> main
 })
