@@ -100,8 +100,6 @@ function getSessionToken() {
 
 function createLog(url, newLogObject, sessionToken) {
     return new Promise((resolve, reject) => {
-        logObject = this.logToCreate
-
         axios
         .post(url, newLogObject, {
             headers: {

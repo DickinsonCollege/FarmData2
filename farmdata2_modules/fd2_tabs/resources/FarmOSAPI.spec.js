@@ -210,7 +210,7 @@ describe('API Request Function', () => {
         })
     })
 
-    context.only('createLog API request function', () => {
+    context('createLog API request function', () => {
         it('creates a log with a passed object', () => {
             getSessionToken()
             .then(function(token) {
@@ -226,11 +226,11 @@ describe('API Request Function', () => {
 
                 cy.wrap(createLog(url, logObject, token)).as('create')
                 cy.get('@create').should((response) => {
-                    logID = response.data.id
+                    this.logID = response.data.id
                     expect(response.status).to.equal(201)
                 })
                 .then(function() {
-                    cy.request(url + '&id=' + logID).as('checkCreated')
+                    cy.request(url + '&id=' + this.logID).as('checkCreated')
                     cy.get('@checkCreated').should((response) => {
                         expect(response.body.list.length).to.equal(1)
                     })
