@@ -38,6 +38,9 @@ source ./addPeople.bash
 # Create the vocabularies
   # Add the farm areas (fields, greenhouses, beds)
   ./addAreas.py
+
+  exit()
+  
   # Add the crop families and crops.
   ./addCrops.py
   # Add the units used for quantities
