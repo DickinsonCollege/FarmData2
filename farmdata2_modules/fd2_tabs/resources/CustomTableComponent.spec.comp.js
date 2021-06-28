@@ -5,7 +5,7 @@ var CustomTableComponent = CustTable.CustomTableComponent
 
 describe('custom table component', () => {
     
-    context('when edit and delete butons are not there', () => {
+    context('when edit and delete buttons are not there', () => {
         let prop= {
             rows: [ {id: 10, data: [12, 3, 'answome']},
                     {id: 11, data: [19, 3, 'and'],},
@@ -19,7 +19,7 @@ describe('custom table component', () => {
             }) 
         })
 
-        it('the table exist', () => {
+        it('the table exists', () => {
             cy.get('[data-cy=custom-table]')
                 .should('exist')
         })
@@ -71,9 +71,7 @@ describe('custom table component', () => {
     })
 
     context('with edit and delete button', () => {
-        beforeEach(() => {
-            mount(CustomTableComponent, {
-                propsData: {
+        let prop = {
                     rows: [
                             {id: 10, 
                             data: [12, 3, 'answome']},
@@ -86,6 +84,9 @@ describe('custom table component', () => {
                     canEdit: true,
                     canDelete: true
                 }
+        beforeEach(() => {
+            mount(CustomTableComponent, {
+                propsData: prop
             })  
         })
         
@@ -125,7 +126,7 @@ describe('custom table component', () => {
                 .should('exist')
                 .first().click()
                 .then(() => {
-                    expect(spy).to.be.calledWith([{id: 10, data: ['hey', 3, 'answome']}])
+                    expect(spy).to.be.calledWith({cool: 'hey'}, 10)
                 })
         })
 
@@ -137,6 +138,14 @@ describe('custom table component', () => {
                 .then(() => {
                     expect(spy).to.be.calledWith(10)
                 })
+        })
+
+        it('only one row is editable at a time', () => {
+            cy.get('[data-cy=edit-button]')
+            .first().click()
+
+            cy.get('[data-cy=edit-button]')
+                .first().should('be.disabled')
         })
     })
 

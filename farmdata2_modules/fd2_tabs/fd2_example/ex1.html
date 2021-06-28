@@ -81,6 +81,7 @@ new Vue({
             {id: 12,
             data: [12, 12, 'answome12'],},
         ],
+        testObject: {},
     },
     created() {
         axios
@@ -115,12 +116,28 @@ new Vue({
         fieldChange(newField) {
             this.selectedField = newField;
         },
-        updateTestObjectArray(newObject){
-            for(i=0; i < this.testObjectArray.length; i++){
+        updateTestObjectArray(jsonObject, id){
+            //just for now
+            console.log(jsonObject)
+            let keys = Object.keys(jsonObject)
+            for(i=0; i < keys.length; i++){
+                if(keys[i] = 'cool'){
+                    jsonObject['crop'] = jsonObject['cool']
+                    console.log('at crops')
+                }
+                else if(keys[i] = 'works?'){
+                    jsonObject['field'] = jsonObject['works?']
+                }
+                else if(keys[i] = 'hello'){
+                    jsonObject['date'] = jsonObject['hello']
+                }
+            }
+            this.testObject = Object.assign({}, jsonObject)
+            /*for(i=0; i < this.testObjectArray.length; i++){
                 if(this.testObjectArray[i] === newObject.id){
                     this.testObjectArray.splice(i, 1, newObject)
                 }
-            }
+            }*/
         },
         deleteFromTestObjectArray(deletedObjectID){
             for(var i=0; i < this.testObjectArray.length; i++){

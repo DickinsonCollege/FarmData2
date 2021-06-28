@@ -1,0 +1,36 @@
+# Defines the Units that can be assigned to logs
+
+# Format:
+# Each row defineds a unit.  
+# The parent items (e.g. Count, Weight) correspond to the different 
+# "measures" that can be used in quantity blocks.
+# The sub-types (e.g. Beds, Row Feet) begin with a , and define 
+# the values that can be used for the "Unit" field of a quantity block.
+#
+# Having parent types will allow us to show only the appropriate ones
+# for a given quantity (e.g. only Counts etc...) as appropriate.
+
+Count
+,Beds
+,People
+,Seeds
+,Flats
+Length/depth
+,Row Feet
+,Bed Feet
+Weight
+Area
+,Acres
+Volume
+Time
+,Hours
+Temperature
+Pressure
+Water Content
+Value
+Rate
+Rating
+Ratio
+,Cells/Flat
+,Rows/Bed
+Probability
