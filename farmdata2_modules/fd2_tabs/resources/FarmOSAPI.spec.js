@@ -1,6 +1,7 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
 var getAllPages = FarmOSAPI.getAllPages
 var getSessionToken = FarmOSAPI.getSessionToken
+var updateLog = FarmOSAPI.updateLog
 var createLog = FarmOSAPI.createLog
 var deleteLog = FarmOSAPI.deleteLog
 
@@ -207,6 +208,33 @@ describe('API Request Function', () => {
                     })
                 })
             })
+        })
+    })
+
+    context('getSessionToken API request function', () => {
+        it('returns a token when it resolves', () => {
+            getSessionToken().then(token => {
+                expect(token).to.not.be.null
+            })
+        })
+        it('returns a token of length 43', () => {
+            getSessionToken().then(token => {
+                expect(token.length).to.equal(43)
+            })
+        })
+    })
+
+    context('update function testing', () => {
+        it('change the crop of a transplanting log', () => {
+            getSessionToken()
+                .then(function(token) {
+                    let newCrop = {name: 'Transplant Kale'}
+                    
+                    cy.wrap(updateLog('http://localhost/log/', '1919', newCrop, token)).as('update')
+                    cy.get('@update').should(function(response) {
+                        expect(response.status).to.equal(200)
+                    })
+                })
         })
     })
 

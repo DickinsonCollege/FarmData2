@@ -98,6 +98,25 @@ function getSessionToken() {
     })
 }
 
+function updateLog(url, id, updateObject, sessionToken){
+    return new Promise((resolve, reject) => {
+        url = url + id
+        axios
+        .put(url, updateObject, { 
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then(function(response) {
+            resolve(response)
+        })
+        .catch(function(error) {
+            reject(error)
+        }) 
+    })
+}
+
 function createLog(url, newLogObject, sessionToken) {
     return new Promise((resolve, reject) => {
         axios
@@ -146,7 +165,8 @@ try {
         getUserToIDMap: getUserToIDMap,
         getSessionToken: getSessionToken,
         deleteLog: deleteLog,
-        createLog: createLog
+        createLog: createLog,
+        updateLog: updateLog
     }
 }
 catch {}
