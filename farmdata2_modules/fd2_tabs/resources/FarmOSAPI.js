@@ -96,32 +96,14 @@ function getSessionToken() {
     })
 }
 
-function updateLog(url, id, updateObject, sessionToken){
-    return new Promise((resolve, reject) => {
-        url = url + id
-        axios
-        .put(url, updateObject, { 
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
-            }
-        })
-        .then(function(response) {
-            resolve(response)
-        })
-        .catch(function(error) {
-            reject(error)
-        }) 
-    })
-}
-
-function createLog(url, newLogObject, sessionToken) {
+function createRecord(url, data, sessionToken) {
     return new Promise((resolve, reject) => {
         axios
-        .post(url, newLogObject, {
+        .post(url, data, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
+                'X-CSRF-TOKEN': sessionToken,
+                'Content-Type': 'application/json'
             }
         })
         .then((response) => {
@@ -133,9 +115,27 @@ function createLog(url, newLogObject, sessionToken) {
     })
 }
 
-function deleteLog(logID, sessionToken) {
+function updateRecord(url, updateData, sessionToken){
     return new Promise((resolve, reject) => {
-        url = '/log/' + logID
+        axios
+        .put(url, updateData, { 
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function(response) {
+            resolve(response)
+        })
+        .catch(function(error) {
+            reject(error)
+        }) 
+    })
+}
+
+function deleteRecord(url, sessionToken) {
+    return new Promise((resolve, reject) => {
         axios
         .delete(url, {
             headers: {
@@ -162,9 +162,9 @@ try {
         getFieldToIDMap: getFieldToIDMap,
         getUserToIDMap: getUserToIDMap,
         getSessionToken: getSessionToken,
-        deleteLog: deleteLog,
-        createLog: createLog,
-        updateLog: updateLog
+        deleteRecord: deleteRecord,
+        createRecord: createRecord,
+        updateRecord: updateRecord
     }
 }
 catch {}
