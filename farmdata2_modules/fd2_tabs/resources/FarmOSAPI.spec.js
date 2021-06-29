@@ -7,11 +7,11 @@ var deleteRecord = FarmOSAPI.deleteRecord
 
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
-var getIDToFieldMap = FarmOSAPI.getIDToFieldMap
+var getIDToAreaMap = FarmOSAPI.getIDToAreaMap
 
 var getUserToIDMap = FarmOSAPI.getUserToIDMap
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
-var getFieldToIDMap = FarmOSAPI.getFieldToIDMap
+var getAreaToIDMap = FarmOSAPI.getAreaToIDMap
 
 describe('API Request Function', () => {
     beforeEach(() => {
@@ -161,36 +161,36 @@ describe('API Request Function', () => {
             })
         })
 
-        it('getIDToFieldMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToFieldMap(), {timeout: 10000}).as('map')
-            cy.get('@map').should((idToFieldMap) => {
-                expect(idToFieldMap).to.not.be.null
-                expect(idToFieldMap).to.be.a('Map')
-                expect(idToFieldMap.size).to.equal(70)
+        it('getIDToAreaMap creates correct map with the correct length', () => {
+            cy.wrap(getIDToAreaMap(), {timeout: 10000}).as('map')
+            cy.get('@map').should((idToAreaMap) => {
+                expect(idToAreaMap).to.not.be.null
+                expect(idToAreaMap).to.be.a('Map')
+                expect(idToAreaMap.size).to.equal(70)
 
                 // Check first and last
-                expect(idToFieldMap.get('7')).to.equal('A')
-                expect(idToFieldMap.get('76')).to.equal('Z')
+                expect(idToAreaMap.get('7')).to.equal('A')
+                expect(idToAreaMap.get('76')).to.equal('Z')
 
                 // Check some sub-areas too
-                expect(idToFieldMap.get('15')).to.equal('CHUAU')
-                expect(idToFieldMap.get('16')).to.equal('CHUAU-1')
-                expect(idToFieldMap.get('20')).to.equal('CHUAU-5')
+                expect(idToAreaMap.get('15')).to.equal('CHUAU')
+                expect(idToAreaMap.get('16')).to.equal('CHUAU-1')
+                expect(idToAreaMap.get('20')).to.equal('CHUAU-5')
             })
         })
 
-        it('getFieldToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getFieldToIDMap(), {timeout: 10000}).as('map')
-            cy.get('@map').should((idToFieldMap) => {
-                expect(idToFieldMap).to.not.be.null
-                expect(idToFieldMap).to.be.a('Map')
-                expect(idToFieldMap.size).to.equal(70)
+        it('getAreaToIDMap creates correct map with the correct length', () => {
+            cy.wrap(getAreaToIDMap(), {timeout: 10000}).as('map')
+            cy.get('@map').should((idToAreaMap) => {
+                expect(idToAreaMap).to.not.be.null
+                expect(idToAreaMap).to.be.a('Map')
+                expect(idToAreaMap.size).to.equal(70)
 
-                expect(idToFieldMap.get('A')).to.equal('7')
-                expect(idToFieldMap.get('Z')).to.equal('76')
-                expect(idToFieldMap.get('CHUAU')).to.equal('15')
-                expect(idToFieldMap.get('CHUAU-1')).to.equal('16')
-                expect(idToFieldMap.get('CHUAU-5')).to.equal('20')
+                expect(idToAreaMap.get('A')).to.equal('7')
+                expect(idToAreaMap.get('Z')).to.equal('76')
+                expect(idToAreaMap.get('CHUAU')).to.equal('15')
+                expect(idToAreaMap.get('CHUAU-1')).to.equal('16')
+                expect(idToAreaMap.get('CHUAU-5')).to.equal('20')
             })
         })
     })
