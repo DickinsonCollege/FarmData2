@@ -13,14 +13,19 @@
 #   and links it to the Farm Crop Family that it appears under.
 #
 # A line beginning with two commas:
-#   Creates a term in the Farm Crop/Varieties vocabularly 
-#   and sets its parent to the crop that it appears under.
-#
+#   Creates a term in the Farm Crop/Varieties vocabularly with
+#   the name being PARENT-CHILD (e.g. ONION-SPRING)
+#   and sets its parent to the crop that it appears under 
+#   (i.e. ONION is the parent of ONION-SPRING)
+# 
+# While this may seem strange to prepend the parent name, the issue
+# that arises otherwise is there are duplicate names in the vocabulary
+# (e.g. BEANS-DRY, CORN-DRY)
+# 
 # Crop families appear in farmOS in the oder listed in this file.
 # Crops appear in farmOS in alphabetical order in their families or overall.
 #
-# Anything following a # on a line is a considered a comment.
-# Thus, names and descriptions cannot contain #
+# Any line starting with # is a comment.
 # Blank Lines are ignored.
 
 Field/Forageable
