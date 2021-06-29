@@ -130,19 +130,19 @@ describe('API Request Function', () => {
             cy.get('@map').should((idToCropMap) => {
                 expect(idToCropMap).to.not.be.null
                 expect(idToCropMap).to.be.a('Map')
-                expect(idToCropMap.size).to.equal(107)
+                expect(idToCropMap.size).to.equal(111)
 
                 // first and last on first page of response
-                expect(idToCropMap.get('137')).to.equal('ARUGULA')
-                expect(idToCropMap.get('135')).to.equal('THYME')
+                expect(idToCropMap.get('139')).to.equal('ARUGULA')
+                expect(idToCropMap.get('86')).to.equal('STRAWBERRY')
 
                 // first and last on second page of response
-                expect(idToCropMap.get('109')).to.equal('TOMATO')
+                expect(idToCropMap.get('206')).to.equal('SUNFLOWER SEEDS')
                 expect(idToCropMap.get('115')).to.equal('ZUCCHINI')
 
                 // test some compound names too
-                expect(idToCropMap.get('189')).to.equal('ONION-SPRING')
-                expect(idToCropMap.get('168')).to.equal('CORN-SWEET')
+                expect(idToCropMap.get('193')).to.equal('ONION-SPRING')
+                expect(idToCropMap.get('172')).to.equal('CORN-SWEET')
             })
         })
 
@@ -151,13 +151,13 @@ describe('API Request Function', () => {
             cy.get('@map').should((cropToIdMap) => {
                 expect(cropToIdMap).to.not.be.null
                 expect(cropToIdMap).to.be.a('Map')
-                expect(cropToIdMap.size).to.equal(107)
-                expect(cropToIdMap.get('ARUGULA')).to.equal('137')
-                expect(cropToIdMap.get('THYME')).to.equal('135')
-                expect(cropToIdMap.get('TOMATO')).to.equal('109')
+                expect(cropToIdMap.size).to.equal(111)
+                expect(cropToIdMap.get('ARUGULA')).to.equal('139')
+                expect(cropToIdMap.get('STRAWBERRY')).to.equal('86')
+                expect(cropToIdMap.get('SUNFLOWER SEEDS')).to.equal('206')
                 expect(cropToIdMap.get('ZUCCHINI')).to.equal('115')            
-                expect(cropToIdMap.get('ONION-SPRING')).to.equal('189')
-                expect(cropToIdMap.get('CORN-SWEET')).to.equal('168')        
+                expect(cropToIdMap.get('ONION-SPRING')).to.equal('193')
+                expect(cropToIdMap.get('CORN-SWEET')).to.equal('172')        
             })
         })
 
