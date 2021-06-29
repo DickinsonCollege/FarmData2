@@ -100,7 +100,7 @@ def addSeedings(row, plantingID, seedingTypeID):
 
                 row = row[:len(row)-2]  # take last two values off again.
         else:
-            comment = comment + seeding
+            comment = comment + "; " + seeding
 
     if (seedingCount < 1):
         print("No seeding data for this record")
