@@ -8,7 +8,7 @@
         <div v-if='inputsVisible'>
            <dropdown-with-all :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
-            <dropdown-with-all :dropdown-list=fieldList includes-all default-input='All' @selection-changed='fieldChange'>Field:</dropdown-with-all>
+            <dropdown-with-all :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -28,7 +28,7 @@
                 seedingLogs: [],
                 sessionToken: null,
                 selectedCrop: 'All',
-                selectedField: 'All',
+                selectedArea: 'All',
             },
             methods: {
                 startDateChange(selectedDate){
@@ -50,16 +50,16 @@
                 cropChange(selectedCrop){
                     this.selectedCrop = selectedCrop
                 },
-                fieldChange(selectedField){
-                    this.selectedField = selectedField
+                areaChange(selectedArea){
+                    this.selectedArea = selectedArea
                 }
             },
             computed: {
                 cropList(){
                     let cropArray = []
-                    if(this.selectedField != 'All'){
-                        let fieldFilter = this.seedingLogs.filter((x) => x.movement.area[0].name === this.selectedField)
-                        cropArray = fieldFilter.map(h => 
+                    if(this.selectedArea != 'All'){
+                        let areaFilter = this.seedingLogs.filter((x) => x.movement.area[0].name === this.selectedArea)
+                        cropArray = areaFilter.map(h => 
                             h.name.split(' ')[1]
                         )
                     }
@@ -72,22 +72,22 @@
                     let newCropArray = Array.from(crops)
                     return newCropArray.sort()
                 },
-                fieldList(){
-                    let fieldArray = []
+                areaList(){
+                    let areaArray = []
                     if(this.selectedCrop != 'All'){
                         let cropFilter = this.seedingLogs.filter((x) => x.name.split(' ')[1] === this.selectedCrop)
-                         fieldArray = cropFilter.map(h =>
+                         areaArray = cropFilter.map(h =>
                             h.movement.area[0].name
                         )
                     }
                     else{
-                        fieldArray = this.seedingLogs.map(h =>
+                        areaArray = this.seedingLogs.map(h =>
                             h.movement.area[0].name
                         )
                     }
-                    let fields = new Set(fieldArray)
-                    let newFieldArray = Array.from(fields)
-                    return newFieldArray
+                    let areas = new Set(areaArray)
+                    let newAreaArray = Array.from(areas)
+                    return newAreaArray
                 }
             },
             created() {
