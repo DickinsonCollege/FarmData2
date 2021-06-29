@@ -35,6 +35,7 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
                 headers: ['date', 'crop', 'area', 'Tray/Direct'],
+                cropToIdMap: new Map(),
             },
             methods: {
                 startDateChange(selectedDate){
@@ -71,7 +72,7 @@
                         filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
                     }
                     if(this.selectedCrop != 'All'){
-                        filterRows = filterRows.filter((x) => x.name.split(' ')[1] === this.selectedCrop)
+                        filterRows = filterRows.filter((x) => this.cropToIdMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
                     }
                     if(this.selectedSeeding != 'All'){
                         filterRows = filterRows.filter((x) => x.log_category[0].name === this.selectedSeeding)
@@ -80,7 +81,7 @@
                     let rows = filterRows.map(h => {
                         return{
                             id: h.id,
-                            data: [dayjs.unix(h.timestamp), h.name.split(' ')[1], h.movement.area[0].name, h.log_category[0].name]
+                            data: [dayjs.unix(h.timestamp), this.cropToIdMap.get(JSON.parse(h.data).crop_tid), h.movement.area[0].name, h.log_category[0].name]
                         }
                     })
                     return rows
@@ -97,14 +98,15 @@
                     if(this.selectedArea != 'All'){
                         let areaFilter = seedFilter.filter((x) => x.movement.area[0].name === this.selectedArea)
                         cropArray = areaFilter.map(h => 
-                            h.name.split(' ')[1]
+                            this.cropToIdMap.get(JSON.parse(h.data).crop_tid)
                         )
                     }
                     else{
                         cropArray = seedFilter.map(h=> 
-                            h.name.split(' ')[1]
+                            this.cropToIdMap.get(JSON.parse(h.data).crop_tid)
                         )
                     }
+
                     let crops = new Set(cropArray)
                     let newCropArray = Array.from(crops)
                     return newCropArray.sort()
@@ -119,7 +121,7 @@
                     }
                     let areaArray = []
                     if(this.selectedCrop != 'All'){
-                        let cropFilter = seedFilter.filter((x) => x.name.split(' ')[1] === this.selectedCrop)
+                        let cropFilter = seedFilter.filter((x) => this.cropToIdMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
                          areaArray = cropFilter.map(h =>
                             h.movement.area[0].name
                         )
@@ -143,7 +145,7 @@
                     }
                     let seedingArray = []
                     if(this.selectedCrop != 'All'){
-                        let cropFilter = areaFilter.filter((x) => x.name.   split(' ')[1] === this.selectedCrop)
+                        let cropFilter = areaFilter.filter((x) => this.cropToIdMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
                         seedingArray = cropFilter.map(h =>
                             h.log_category[0].name
                         )
@@ -161,6 +163,9 @@
             created() {
                 getSessionToken().then((response) => {
                     this.sessionToken = response
+                })
+                getIDToCropMap().then((response) => {
+                    this.cropToIdMap = new Map(response)
                 })
             },
         });
