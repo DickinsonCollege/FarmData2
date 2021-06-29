@@ -6,9 +6,9 @@
         <button v-if='!inputsVisible' @click='newAPIRequest'>Set Dates</button>
 
         <div v-if='inputsVisible'>
-           <dropdown-with-all :dropdown-list=getCropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
+           <dropdown-with-all :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
-            <dropdown-with-all :dropdown-list=getFieldList includes-all default-input='All' @selection-changed='fieldChange'>Field:</dropdown-with-all>
+            <dropdown-with-all :dropdown-list=fieldList includes-all default-input='All' @selection-changed='fieldChange'>Field:</dropdown-with-all>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -22,7 +22,7 @@
                 'dropdown-with-all': DropdownWithAllComponent
             },
             data: {
-                startDate:dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
                 inputsVisible: false,
                 seedingLogs: [],
@@ -55,21 +55,39 @@
                 }
             },
             computed: {
-                getCropList(){
-                    let cropList = this.seedingLogs.map(h=> 
-                        h.name.split(' ')[1]
-                    )
-                    let crops = new Set(cropList)
-                    let newCropList = Array.from(crops)
-                    return newCropList.sort()
+                cropList(){
+                    let cropArray = []
+                    if(this.selectedField != 'All'){
+                        let fieldFilter = this.seedingLogs.filter((x) => x.movement.area[0].name === this.selectedField)
+                        cropArray = fieldFilter.map(h => 
+                            h.name.split(' ')[1]
+                        )
+                    }
+                    else{
+                        cropArray = this.seedingLogs.map(h=> 
+                            h.name.split(' ')[1]
+                        )
+                    }
+                    let crops = new Set(cropArray)
+                    let newCropArray = Array.from(crops)
+                    return newCropArray.sort()
                 },
-                getFieldList(){
-                    let fieldList = this.seedingLogs.map(h =>
-                        h.movement.area[0].name
-                    )
-                    let fields = new Set(fieldList)
-                    let newFieldList = Array.from(fields)
-                    return newFieldList
+                fieldList(){
+                    let fieldArray = []
+                    if(this.selectedCrop != 'All'){
+                        let cropFilter = this.seedingLogs.filter((x) => x.name.split(' ')[1] === this.selectedCrop)
+                         fieldArray = cropFilter.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    else{
+                        fieldArray = this.seedingLogs.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    let fields = new Set(fieldArray)
+                    let newFieldArray = Array.from(fields)
+                    return newFieldArray
                 }
             },
             created() {
