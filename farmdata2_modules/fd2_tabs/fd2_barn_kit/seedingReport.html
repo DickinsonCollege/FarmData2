@@ -6,6 +6,8 @@
         <button v-if='!inputsVisible' @click='newAPIRequest'>Set Dates</button>
 
         <div v-if='inputsVisible'>
+            <dropdown-with-all :dropdown-list=seedingList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding</dropdown-with-all>
+
            <dropdown-with-all :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
             <dropdown-with-all :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all>
@@ -29,6 +31,7 @@
                 sessionToken: null,
                 selectedCrop: 'All',
                 selectedArea: 'All',
+                selectedSeeding: 'All',
             },
             methods: {
                 startDateChange(selectedDate){
@@ -52,19 +55,29 @@
                 },
                 areaChange(selectedArea){
                     this.selectedArea = selectedArea
+                },
+                seedingChange(selectedSeeding){
+                    this.selectedSeeding = selectedSeeding
                 }
             },
             computed: {
                 cropList(){
+                    let seedFilter = []
+                    if(this.selectedSeeding != 'All'){
+                        seedFilter = this.seedingLogs.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+                    else{
+                        seedFilter = this.seedingLogs.filter((x) => x)
+                    }
                     let cropArray = []
                     if(this.selectedArea != 'All'){
-                        let areaFilter = this.seedingLogs.filter((x) => x.movement.area[0].name === this.selectedArea)
+                        let areaFilter = seedFilter.filter((x) => x.movement.area[0].name === this.selectedArea)
                         cropArray = areaFilter.map(h => 
                             h.name.split(' ')[1]
                         )
                     }
                     else{
-                        cropArray = this.seedingLogs.map(h=> 
+                        cropArray = seedFilter.map(h=> 
                             h.name.split(' ')[1]
                         )
                     }
@@ -73,21 +86,52 @@
                     return newCropArray.sort()
                 },
                 areaList(){
+                    let seedFilter = []
+                    if(this.selectedSeeding != 'All'){
+                        seedFilter = this.seedingLogs.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+                    else{
+                        seedFilter = this.seedingLogs.filter((x) => x)
+                    }
                     let areaArray = []
                     if(this.selectedCrop != 'All'){
-                        let cropFilter = this.seedingLogs.filter((x) => x.name.split(' ')[1] === this.selectedCrop)
+                        let cropFilter = seedFilter.filter((x) => x.name.split(' ')[1] === this.selectedCrop)
                          areaArray = cropFilter.map(h =>
                             h.movement.area[0].name
                         )
                     }
                     else{
-                        areaArray = this.seedingLogs.map(h =>
+                        areaArray = seedFilter.map(h =>
                             h.movement.area[0].name
                         )
                     }
                     let areas = new Set(areaArray)
                     let newAreaArray = Array.from(areas)
                     return newAreaArray
+                },
+                seedingList(){
+                    let areaFilter = []
+                    if(this.selectedArea != 'All'){
+                        areaFilter = this.seedingLogs.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    }
+                    else{
+                        areaFilter = this.seedingLogs.filter((x) => x)
+                    }
+                    let seedingArray = []
+                    if(this.selectedCrop != 'All'){
+                        let cropFilter = areaFilter.filter((x) => x.name.   split(' ')[1] === this.selectedCrop)
+                        seedingArray = cropFilter.map(h =>
+                            h.log_category[0].name
+                        )
+                    }
+                    else{
+                        seedingArray = areaFilter.map(h => 
+                            h.log_category[0].name
+                        )
+                    }
+                    let seedings = new Set(seedingArray)
+                    let newSeedingArray = Array.from(seedings)
+                    return newSeedingArray
                 }
             },
             created() {
