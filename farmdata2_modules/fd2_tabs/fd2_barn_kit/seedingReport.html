@@ -83,7 +83,7 @@
                         return{
                             id: h.id,
                             data: [
-                                dayjs.unix(h.timestamp), 
+                                dayjs.unix(h.timestamp).format('YYYY-MM-DD'), 
                                 this.cropToIdMap.get(JSON.parse(h.data).crop_tid), 
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
