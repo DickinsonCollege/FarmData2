@@ -1,0 +1,83 @@
+<body>
+    <div id="seedingReport" v-cloak>
+        <h1 class="center">Seeding Report</h1>
+        <date-range-selection @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+
+        <button v-if='!inputsVisible' @click='newAPIRequest'>Set Dates</button>
+
+        <div v-if='inputsVisible'>
+           <dropdown-with-all :dropdown-list=getCropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
+
+            <dropdown-with-all :dropdown-list=getFieldList includes-all default-input='All' @selection-changed='fieldChange'>Field:</dropdown-with-all>
+        </div>
+    </div>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script>dayjs().format()</script>
+    <script>
+        var seedingReport = new Vue ({
+            el: '#seedingReport',
+            components: {
+                'custom-table': CustomTableComponent,
+                'date-range-selection': DateRangeSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
+            },
+            data: {
+                startDate:dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                endDate: dayjs().format('YYYY-MM-DD').toString(),
+                inputsVisible: false,
+                seedingLogs: [],
+                sessionToken: null,
+                selectedCrop: 'All',
+                selectedField: 'All',
+            },
+            methods: {
+                startDateChange(selectedDate){
+                    this.startDate = selectedDate
+                    this.inputsVisible = false
+                    this.seedingLogs = []
+                },
+                endDateChange(selectedDate){
+                    this.endDate = selectedDate
+                    this.inputsVisible = false
+                    this.seedingLogs = []
+                },
+                newAPIRequest(){
+                    this.inputsVisible = true
+                    let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+
+                    getAllPages(link, this.seedingLogs)
+                },
+                cropChange(selectedCrop){
+                    this.selectedCrop = selectedCrop
+                },
+                fieldChange(selectedField){
+                    this.selectedField = selectedField
+                }
+            },
+            computed: {
+                getCropList(){
+                    let cropList = this.seedingLogs.map(h=> 
+                        h.name.split(' ')[1]
+                    )
+                    let crops = new Set(cropList)
+                    let newCropList = Array.from(crops)
+                    return newCropList.sort()
+                },
+                getFieldList(){
+                    let fieldList = this.seedingLogs.map(h =>
+                        h.movement.area[0].name
+                    )
+                    let fields = new Set(fieldList)
+                    let newFieldList = Array.from(fields)
+                    return newFieldList
+                }
+            },
+            created() {
+                getSessionToken().then((response) => {
+                    this.sessionToken = response
+                })
+            },
+        });
+        Vue.config.devtools = true;
+    </script>
+</body>
