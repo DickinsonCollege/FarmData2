@@ -11,6 +11,8 @@
            <dropdown-with-all :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
             <dropdown-with-all :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all>
+
+            <custom-table :rows=createdRows :headers='headers' can-edit can-delete></custom-table>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -32,6 +34,7 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
                 selectedSeeding: 'All',
+                headers: ['date', 'crop', 'area', 'Tray/Direct'],
             },
             methods: {
                 startDateChange(selectedDate){
@@ -61,6 +64,27 @@
                 }
             },
             computed: {
+                createdRows() {
+                    let filterRows = this.seedingLogs.filter((x) => x)
+
+                    if(this.selectedArea != 'All'){
+                        filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    }
+                    if(this.selectedCrop != 'All'){
+                        filterRows = filterRows.filter((x) => x.name.split(' ')[1] === this.selectedCrop)
+                    }
+                    if(this.selectedSeeding != 'All'){
+                        filterRows = filterRows.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+
+                    let rows = filterRows.map(h => {
+                        return{
+                            id: h.id,
+                            data: [dayjs.unix(h.timestamp), h.name.split(' ')[1], h.movement.area[0].name, h.log_category[0].name]
+                        }
+                    })
+                    return rows
+                },
                 cropList(){
                     let seedFilter = []
                     if(this.selectedSeeding != 'All'){
