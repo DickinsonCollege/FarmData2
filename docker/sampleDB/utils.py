@@ -214,11 +214,6 @@ def getCropMap():
 
     for crop in allCrops:
         name = crop['name']
-
-        if len(crop['parent']) != 0:
-            parent = crop['parent'][0]['name']
-            name = parent + "-" + name
-
         cropMap[name] = crop['tid']
 
     return cropMap
