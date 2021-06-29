@@ -34,8 +34,9 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
                 selectedSeeding: 'All',
-                headers: ['date', 'crop', 'area', 'Tray/Direct'],
+                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Comments','User'],
                 cropToIdMap: new Map(),
+                idToUserMap: new Map(),
             },
             methods: {
                 startDateChange(selectedDate){
@@ -81,7 +82,14 @@
                     let rows = filterRows.map(h => {
                         return{
                             id: h.id,
-                            data: [dayjs.unix(h.timestamp), this.cropToIdMap.get(JSON.parse(h.data).crop_tid), h.movement.area[0].name, h.log_category[0].name]
+                            data: [
+                                dayjs.unix(h.timestamp), 
+                                this.cropToIdMap.get(JSON.parse(h.data).crop_tid), 
+                                h.movement.area[0].name, 
+                                h.log_category[0].name, 
+                                h.notes.value.substring(3, h.notes.value.length - 5), 
+                                this.idToUserMap.get(h.uid.id)
+                            ]
                         }
                     })
                     return rows
@@ -166,6 +174,9 @@
                 })
                 getIDToCropMap().then((response) => {
                     this.cropToIdMap = new Map(response)
+                })
+                getIDToUserMap().then((response) => {
+                    this.idToUserMap = new Map (response)
                 })
             },
         });
