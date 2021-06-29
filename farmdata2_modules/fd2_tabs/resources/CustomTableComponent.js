@@ -1,23 +1,27 @@
 let CustomTableComponent = {
     template:`<div>
-                    <table data-cy="custom-table" style="width:100%" class="pure-table pur-table-bordered" border=1>
-                        <tr>
-                            <th data-cy="headers" v-for="header in headers">{{ header }}</th>
-                            <th data-cy="edit-header" v-if="canEdit">Edit</th>
-                            <th data-cy="delete-header" v-if="canDelete">Delete</th>
-                        </tr>
-                        <tr data-cy="object-test" v-for="(row, index) in rows">
-                            <td data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                <input data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
-                            </td>
-                            <td v-if="canEdit"> 
-                                <button data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-edit"></span></button> 
-                                <button data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-save"></button>
-                            </td>
-                            <td v-if="canDelete"> 
-                                <button data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
-                            </td>
-                        </tr>
+                    <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
+                        <thead>
+                            <tr class="bg-success">
+                                <th v-if="visibleColumns[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
+                                <th data-cy="edit-header" width=55 v-if="canEdit">Edit</th>
+                                <th data-cy="delete-header" width=55 v-if="canDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-cy="object-test" v-for="(row, index) in rows">
+                                <td v-if="visibleColumns[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
+                                    <input data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
+                                </td>
+                                <td v-if="canEdit"> 
+                                    <button class="btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
+                                    <button class="btn btn-success" data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></button>
+                                </td>
+                                <td v-if="canDelete"> 
+                                    <button class="btn btn-primary" data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>`,
     props: { 
@@ -36,12 +40,15 @@ let CustomTableComponent = {
         canDelete: {
             type: Boolean,
             default: false
+        },
+        visibleColumns: {
+            type: Array
         }
     },
     data() {
         return {
             rowToEdit: null,
-            indexesToChange: [],
+            indexesToChange: []
         }
     },
     methods: {

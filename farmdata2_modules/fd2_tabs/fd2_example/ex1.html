@@ -43,7 +43,7 @@
     <br>
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
-    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
+    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
 
     <button @click="getCropMap">Get Crop Map</button>
 </div>
@@ -85,6 +85,7 @@ new Vue({
         ],
         testCropMap: new Map,
         testField: [],
+        visibleColumnsArray : [true, false, true]
     },
     created() {
         axios
@@ -134,7 +135,7 @@ new Vue({
                     jsonObject['date'] = jsonObject['hello']
                 }
             }
-            this.testObjectArray = Object.assign({}, jsonObject)
+            //this.testObjectArray = Object.assign({}, jsonObject)
         },
         deleteFromTestObjectArray(deletedObjectID){
             for(var i=0; i < this.testObjectArray.length; i++){
