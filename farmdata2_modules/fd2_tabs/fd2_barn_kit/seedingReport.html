@@ -34,7 +34,7 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
                 selectedSeeding: 'All',
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Comments','User'],
+                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Varieties', 'Comments','User'],
                 cropToIdMap: new Map(),
                 idToUserMap: new Map(),
             },
@@ -87,7 +87,8 @@
                                 this.cropToIdMap.get(JSON.parse(h.data).crop_tid), 
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
-                                h.notes.value.substring(3, h.notes.value.length - 5), 
+                                h.lot_number,
+                                h.notes.value, 
                                 this.idToUserMap.get(h.uid.id)
                             ]
                         }
