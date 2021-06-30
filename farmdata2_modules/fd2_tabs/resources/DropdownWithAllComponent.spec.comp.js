@@ -25,12 +25,11 @@ describe('Field and Crop Dropdowns', () => {
                 .next().should('have.text', 'Peas')
         })
 
-        it('emits an event when the selection is changed', () => {
+        it.only('emits an event when the selection is changed', () => {
             const spy = cy.spy()
             Cypress.vue.$on('selection-changed', spy)
             cy.get('[data-cy=dropdown-input]')
                 .select('Corn')
-                .blur()
                 .then(() => {
                     expect(spy).to.be.calledOnce
                     expect(spy).to.be.calledWith('Corn')
