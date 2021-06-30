@@ -28,7 +28,6 @@ services:
       - './logo:/var/www/html/sites/default/files:cached'
       - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:cached'
       - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:cached'
-      - './farmOS/taxonomy_csv:/var/www/html/profiles/farm/modules/contrib/taxonomy_csv:cached'
     ports:
       - '80:80'
     environment:

@@ -48,7 +48,6 @@ source ./addPeople.bash
   ./addDirectSeedings.py
   ./addTraySeedings.py
   
-
 echo "Compressing the sample database..."
 cd ..
 rm -f db.sample.tar.bz2

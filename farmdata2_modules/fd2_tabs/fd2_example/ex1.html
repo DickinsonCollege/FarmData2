@@ -1,6 +1,6 @@
 <!-- define a div to wrqp around the app. -->
 <!-- apply v-cloak so that app is not visible until after being rendered -->
-<div id="ex1" v-cloak>
+<div id="ex1" v-cloak> 
  
     <p>UserID: <span data-cy="user-id">{{ userID }}</span></p>
     <p>UserName: <span data-cy="user-name">{{ userName }}</span></p>
@@ -44,6 +44,8 @@
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
     <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
+
+    <button @click="getCropMap">Get Crop Map</button>
 </div>
 
 <script>
@@ -81,7 +83,8 @@ new Vue({
             {id: 12,
             data: [12, 12, 'answome12'],},
         ],
-        testObject: {},
+        testCropMap: new Map,
+        testField: [],
     },
     created() {
         axios
@@ -90,6 +93,7 @@ new Vue({
             this.fieldList = response.data.list.map(
                 function(f) { return f.name }
             );
+            this.testField = response
             this.fieldList.sort();
         })
         .catch(error => {
@@ -117,8 +121,6 @@ new Vue({
             this.selectedField = newField;
         },
         updateTestObjectArray(jsonObject, id){
-            //just for now
-            console.log(jsonObject)
             let keys = Object.keys(jsonObject)
             for(i=0; i < keys.length; i++){
                 if(keys[i] = 'cool'){
@@ -132,12 +134,7 @@ new Vue({
                     jsonObject['date'] = jsonObject['hello']
                 }
             }
-            this.testObject = Object.assign({}, jsonObject)
-            /*for(i=0; i < this.testObjectArray.length; i++){
-                if(this.testObjectArray[i] === newObject.id){
-                    this.testObjectArray.splice(i, 1, newObject)
-                }
-            }*/
+            this.testObjectArray = Object.assign({}, jsonObject)
         },
         deleteFromTestObjectArray(deletedObjectID){
             for(var i=0; i < this.testObjectArray.length; i++){
@@ -179,8 +176,20 @@ new Vue({
                             }
                         })
                 })
-                .then(response => console.log(response))
-                .catch(error => console.log(error))
+        },
+        getCropMap(){
+            getCropToIDMap().then((response) => {
+                this.testCropMap = response
+                console.log(this.testCropMap)
+            })
+            getFieldToIDMap().then((response) => {
+                console.log(response)
+            })
+            getIDToUserMap().then((response) => {
+                console.log(response)
+            })
+            //this.testCropMap = cropMap()
+            
         }
     },
     computed: {

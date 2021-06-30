@@ -99,7 +99,7 @@ def addSeedings(row, plantingID, seedingTypeID):
 
                 row = row[:len(row)-2]  # take last two values off again.
         else:
-            comment = comment + seeding
+            comment = comment + "<br>" + seeding
 
     if (seedingCount < 1):
         print("No seeding data for this record")
@@ -180,7 +180,10 @@ def addSeeding(row, plantingID, seedingTypeID):
             "id": userMap[row[11]],
             "resource": "user"
         }],
-        "lot_number": row[15]
+        "lot_number": row[15],
+        "data": json.dumps({ 
+            "crop_tid": cropMap[row[2]] 
+        })
     }
 
     return addLog(seeding)

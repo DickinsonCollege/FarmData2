@@ -42,13 +42,13 @@ def main():
                         "id": familyID,
                         "resource": "taxonomy_term"
                     },
-                    #"weight": cropWeight,   # Omit to use alphabetical order in farmOS
                 }
                 parentCropID = addVocabTerm(crop)
+                parentCropName = row[1]
                 cropWeight+=1
             else:
                 crop = {
-                    "name": row[2],
+                    "name": parentCropName + "-" + row[2],
                     "vocabulary": cropVocabID,
                     "parent": [{
                         "id": parentCropID,

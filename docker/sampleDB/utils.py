@@ -183,18 +183,19 @@ def translateCrop(line, crop):
         "CHINESE CABBAGE": "CABBAGE-CHINESE",
         "CORN, DRY": "CORN-DRY",
         "CORN, SWEET": "CORN-SWEET",
+        "FENNEL": "HERB-FENNEL",
         "GARLIC, GREEN": "GARLIC-GREEN",
-        "GREENS, MES MIX": "LETTUCE-MES MIX",
-        "HERB - BASIL": "BASIL",
-        "HERB - CHIVES": "CHIVES",
-        "HERB - CILANTRO": "CILANTRO",
-        "HERB - DILL": "DILL",
-        "HERB - MARJORAM": "MARJORAM",
-        "HERB - MINT": "MINT",
-        "HERB - OREGANO": "OREGANO",
-        "HERB - PARSLEY": "PARSLEY",
-        "HERB - SAGE": "SAGE",
-        "HERB - THYME": "THYME",
+        "GREENS, MES MIX": "GREENS-MES MIX",
+        "HERB - BASIL": "HERB-BASIL",
+        "HERB - CHIVES": "HERB-CHIVES",
+        "HERB - CILANTRO": "HERB-CILANTRO",
+        "HERB - DILL": "HERB-DILL",
+        "HERB - MARJORAM": "HERB-MARJORAM",
+        "HERB - MINT": "HERB-MINT",
+        "HERB - OREGANO": "HERB-OREGANO",
+        "HERB - PARSLEY": "HERB-PARSLEY",
+        "HERB - SAGE": "HERB-SAGE",
+        "HERB - THYME": "HERB-THYME",
         "LETTUCE, MES MIX": "LETTUCE-MES MIX",
         "LETTUCE, GREEN": "LETTUCE-GREEN",
         "LETTUCE, RED": "LETTUCE-RED",
@@ -241,11 +242,6 @@ def getCropMap():
 
     for crop in allCrops:
         name = crop['name']
-
-        if len(crop['parent']) != 0:
-            parent = crop['parent'][0]['name']
-            name = parent + "-" + name
-
         cropMap[name] = crop['tid']
 
     return cropMap
