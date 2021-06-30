@@ -9,23 +9,25 @@ catch {
 // farmOS API.  All pages should use these so that any
 // updates apply to all pages.
 
-function getAllPages(url, arr) {
+function getAllPages(url, arr=[]) {
     // Retrieves all pages of a multipage response.
     // Usage:   
     //    let result = []
     //    getAllPages(url, result)
-    //
-    // The result array will be filled with the elements from
-    // response.data.list from all of the pages.  Each page of
-    // responses is added to the array as it is retrieved.
-    
+    //       The result array will be filled with the elements from
+    //       response.data.list from all of the pages.  Each page of
+    //       responses is added to the array as it is retrieved.
+    // OR:
+    //    result = getAllPages(url)
+    //        A new array is created, filled and returned.
+
     return new Promise((resolve, reject) => {
         axios.get(url)
         .then(function(response) {
+            arr.push.apply(arr,response.data.list)
             return response.data
         })
         .then(function(data) {
-            arr.push.apply(arr,data.list)
             if (!data.hasOwnProperty('next')) {
                 resolve(arr)
             }
@@ -42,36 +44,40 @@ function getAllPages(url, arr) {
     })
 }
 
-function getIDToCropMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
-}
-
-function getIDToFieldMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
-}
-
 function getIDToUserMap(){
+    // Creates and returns a map from uid to username.
     return getMap('/user', 'uid', 'name')
 }
 
-function getCropToIDMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
-}
-
-function getFieldToIDMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
-}
-
 function getUserToIDMap(){
+    // Creates and returns a map from username to uid.
     return getMap('/user', 'name', 'uid')
 }
 
+function getIDToCropMap(){
+    // Creates and returns a map from crop tid to crop name.
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
+}
+
+function getCropToIDMap(){
+    // Creates and returns a map from crop name to crop tid.
+    return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
+}
+
+function getIDToAreaMap(){
+    // Creates and returns a map from area tid to area name.
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
+}
+
+function getAreaToIDMap(){
+    // Creates and returns a map from area name to area tid.
+    return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
+}
+
 function getMap(url, key, value){
+    // Utility function used by the above functions to get the appropraite maps.
     return new Promise((resolve, reject) => {
-        axios.get(url)
-        .then(function(response) {
-            return response.data.list
-        })
+        getAllPages(url)
         .then(function(list) {
             resolve(new Map(list.map(h => 
                 [h[key], h[value]]
@@ -84,6 +90,9 @@ function getMap(url, key, value){
 }
 
 function getSessionToken() {
+    // Get the session token for the current login.
+    // The session token is required for API requests that modify data.
+    // E.g. createRecord, modifyRecord, deleteRecord.
     return new Promise((resolve, reject) => {
         axios.get('/restws/session/token')
         .then(response => {
@@ -98,32 +107,20 @@ function getSessionToken() {
     })
 }
 
-function updateLog(url, id, updateObject, sessionToken){
-    return new Promise((resolve, reject) => {
-        url = url + id
-        axios
-        .put(url, updateObject, { 
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
-            }
-        })
-        .then(function(response) {
-            resolve(response)
-        })
-        .catch(function(error) {
-            reject(error)
-        }) 
-    })
-}
-
-function createLog(url, newLogObject, sessionToken) {
+function createRecord(url, data, sessionToken) {
+    // Create a new record in the database using the given url and data.
+    // The url can be any farmOS endpoint that can be used for creating records.
+    //    Note: These do not include .json at the end of the endpoint.
+    // It is the caller's responsibility to ensure that the format and content
+    // of the data is appropriate for the endpoint.
+    // Use getSessionToken prior to calling this function to get the token.
     return new Promise((resolve, reject) => {
         axios
-        .post(url, newLogObject, {
+        .post(url, data, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
+                'X-CSRF-TOKEN': sessionToken,
+                'Content-Type': 'application/json'
             }
         })
         .then((response) => {
@@ -135,9 +132,41 @@ function createLog(url, newLogObject, sessionToken) {
     })
 }
 
-function deleteLog(logID, sessionToken) {
+function updateRecord(url, updateData, sessionToken){
+    // Update a record in the database using the given url and data.
+    // The url can be any farmOS endpoint that can be used for updating records.
+    // This will typically end with the id/tid/etc of the log, asset or term to
+    // be updated.
+    //    Note: These endpoints do not include the .json.
+    // It is the caller's responsibility to ensure that the format and content
+    // of the data is appropriate for the endpoint.
+    // Use getSessionToken prior to calling this function to get the token.
     return new Promise((resolve, reject) => {
-        url = '/log/' + logID
+        axios
+        .put(url, updateData, { 
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function(response) {
+            resolve(response)
+        })
+        .catch(function(error) {
+            reject(error)
+        }) 
+    })
+}
+
+function deleteRecord(url, sessionToken) {
+    // Delete a record from the database using the given url.
+    // The url can be any farmOS endpoint that can be used for deleting records.
+    // This will typically end with the id/tid/etc of the log, asset or term to
+    // be deleted.
+    //    Note: These endpoints do not include the .json.
+    // Use getSessionToken prior to calling this function to get the token.
+    return new Promise((resolve, reject) => {
         axios
         .delete(url, {
             headers: {
@@ -158,15 +187,15 @@ try {
     module.exports = {
         getAllPages: getAllPages,
         getIDToCropMap: getIDToCropMap,
-        getIDToFieldMap: getIDToFieldMap,
+        getIDToAreaMap: getIDToAreaMap,
         getIDToUserMap: getIDToUserMap,
         getCropToIDMap: getCropToIDMap,
-        getFieldToIDMap: getFieldToIDMap,
+        getAreaToIDMap: getAreaToIDMap,
         getUserToIDMap: getUserToIDMap,
         getSessionToken: getSessionToken,
-        deleteLog: deleteLog,
-        createLog: createLog,
-        updateLog: updateLog
+        deleteRecord: deleteRecord,
+        createRecord: createRecord,
+        updateRecord: updateRecord
     }
 }
 catch {}
