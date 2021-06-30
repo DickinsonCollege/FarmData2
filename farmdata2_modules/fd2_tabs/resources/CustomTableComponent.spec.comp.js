@@ -11,6 +11,7 @@ describe('custom table component', () => {
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
+            visibleColumns: [true, true, true]
         }
 
         beforeEach(() => {
@@ -65,7 +66,7 @@ describe('custom table component', () => {
         it('prop change updates table', () => {
             prop.rows[0].data = [ 5, 10, 'Wahooo' ]
 
-            cy.get(':nth-child(2) > :nth-child(3) > p')
+            cy.get(':nth-child(1) > :nth-child(3) > p')
                 .should('have.text', 'Wahooo')
         })
     })
@@ -81,6 +82,7 @@ describe('custom table component', () => {
                             data: [12, 12, 'answome12'],},
                         ],
                     headers: ['cool', 'works?', 'hello'],
+                    visibleColumns: [true, true, true],
                     canEdit: true,
                     canDelete: true
                 }
@@ -146,6 +148,46 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=edit-button]')
                 .first().should('be.disabled')
+        })
+    })
+
+    context('with invisible columns', () => {
+        let prop= {
+            rows: [ {id: 10, data: [12, 3, 'answome']},
+                    {id: 11, data: [19, 3, 'and'],},
+                    {id: 12, data: [12, 12, 'answome12'],}, ],
+            headers: ['cool', 'works?', 'hello'],
+            visibleColumns: [true, false, true]
+        }
+
+        beforeEach(() => {
+            mount(CustomTableComponent, {
+                propsData: prop
+            }) 
+        })
+
+        it('only headers with corresponsing true property', () => {
+            cy.get('[data-cy=headers]')
+                .first().should('have.text', 'cool')
+                .next().should('have.text', 'hello')
+        })
+
+        it('only displays rows with corresponsing true property', () => {
+            cy.get('[data-cy=object-test]')
+                .first().should('have.text', '12answome  ')
+                    .children()
+                    .first().should('have.text', 12)
+                    .next().should('have.text', 'answome')
+                .parent()
+                .next().should('have.text', '19and  ')
+                    .children()
+                    .first().should('have.text', 19)
+                    .next().should('have.text', 'and')
+                .parent()
+                .next().should('have.text', '12answome12  ')
+                    .children()
+                    .first().should('have.text', 12)
+                    .next().should('have.text', 'answome12')
         })
     })
 
