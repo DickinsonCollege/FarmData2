@@ -84,8 +84,12 @@ def addPlanting(row):
     # Most of these have a seeding date 0000-00-00
     # In that case we assume the crop arrived at the farm in a tray 
     # and thus was just transplanted without having a seeding date.
-    # If there is a seeding date, there wasn't a record for it in the
-    # seeding data so we'll treat it like a 0000-00-00.
+    # Some of the original data may have had a seeding date, but 
+    # there wasn't a record for it in the seeding data so the seeding date was
+    # hand modified in the sample data to be 0000-00-00 (see above)
+    # In practice those with seeding dates may have been ones where there 
+    # was a planting but it was not recoreded.  there seems to be no
+    # real harm here in treating them like the other 0000-00-00's for the sample data.
     plantingDate = '0000-00-00'
 
     planting = {
