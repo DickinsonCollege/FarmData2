@@ -42,7 +42,8 @@ let CustomTableComponent = {
             default: false
         },
         visibleColumns: {
-            type: Array
+            type: Array,
+            required: true
         }
     },
     data() {
