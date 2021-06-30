@@ -93,7 +93,7 @@ function fd2_barn_kit_menu() {
   );
 
   $items['farm/fd2-barn-kit/seedingReport'] = array(
-    'title' => 'Seeding',
+    'title' => 'Seeding Report',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_barn_kit_view',
     'page arguments' => array('seedingReport.html'),

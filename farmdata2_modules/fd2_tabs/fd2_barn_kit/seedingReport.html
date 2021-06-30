@@ -1,16 +1,21 @@
 <body>
     <div id="seedingReport" v-cloak>
-        <h1 class="center">Seeding Report</h1>
+        <h1 class="text-center">Seeding Report</h1>
         <date-range-selection @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
         <button v-if='!inputsVisible' @click='newAPIRequest'>Set Dates</button>
 
         <div v-if='inputsVisible'>
-            <dropdown-with-all :dropdown-list=seedingList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding</dropdown-with-all>
+            <fieldset class="panel panel-default">
+                <legend class="panel-heading">Filters</legend>
+                <div style="display: grid;width: 100%;grid-template-columns: 33% 33% 33%;">
+                    <dropdown-with-all class="radio-inline"  :dropdown-list=seedingList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding</dropdown-with-all>
+                
+                    <dropdown-with-all class="radio-inline" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
-           <dropdown-with-all :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
-
-            <dropdown-with-all :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all>
+                    <dropdown-with-all class="radio-inline"  :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
+                </div>
+            </fieldset>
 
             <custom-table :rows=createdRows :headers='headers' can-edit can-delete></custom-table>
         </div>
