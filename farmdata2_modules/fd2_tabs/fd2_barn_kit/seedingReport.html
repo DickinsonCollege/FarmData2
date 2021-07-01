@@ -46,8 +46,8 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
                 selectedSeeding: 'All',
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Varieties', 'Comments','User'],
-                visibleColumns: [true, true, true, true, true, true, true],
+                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Tray Seeds', 'Varieties', 'Comments','User'],
+                visibleColumns: [true, true, true, true, true, true, true, true, true],
                 IDToCropMap: new Map(),
                 idToUserMap: new Map(),
                 bedFeet: 0,
@@ -95,8 +95,12 @@
                     let $vm = this
                     let rows = filterRows.map(function(h) {
                         let rowBed = 0
+                        let traySeeds = 0
                         if(h.log_category[0].name === 'Direct Seedings'){
                             rowBed = h.quantity[1].value
+                        }
+                        else{
+                            traySeeds = h.quantity[0].value
                         }
                         return{
                             id: h.id,
@@ -106,6 +110,7 @@
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
                                 rowBed,
+                                traySeeds,
                                 h.lot_number,
                                 h.notes.value,
                                 $vm.idToUserMap.get(h.uid.id)
