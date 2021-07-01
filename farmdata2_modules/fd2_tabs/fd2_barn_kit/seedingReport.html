@@ -25,7 +25,8 @@
 
             <custom-table :visible-columns='visibleColumns' :rows=createdRows :headers='headers' can-edit can-delete></custom-table>
 
-            <p>Total Row/Feet Planted: {{ calculateRowBed }}</p>
+            <p>Total Row/Bed Planted: {{ calculateRowBed }}</p>
+            <p>Total number of Tray Seeds Planted: {{ traySeedsPlanted }}</p>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -199,6 +200,23 @@
                        totalRowBed = totalRowBed + parseFloat(h.quantity[1].value)
                     )
                     return totalRowBed
+                },
+                traySeedsPlanted(){
+                    let filterRows = this.seedingLogs.filter((x) => x)
+
+                    if(this.selectedArea != 'All'){
+                        filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    }
+                    if(this.selectedCrop != 'All'){
+                        filterRows = filterRows.filter((x) => this.cropToIdMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                    }
+                    filterRows = filterRows.filter((x) => x.log_category[0].name === 'Tray Seedings')
+
+                    totalTraySeeds = 0
+                    filterRows.map(h =>
+                       totalTraySeeds = totalTraySeeds + parseFloat(h.quantity[0].value)
+                    )
+                    return totalTraySeeds
                 }
             },
             created() {
