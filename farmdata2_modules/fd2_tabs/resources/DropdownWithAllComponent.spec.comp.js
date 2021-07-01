@@ -29,7 +29,6 @@ describe('Field and Crop Dropdowns', () => {
             Cypress.vue.$on('selection-changed', spy)
             cy.get('[data-cy=dropdown-input]')
                 .select('Corn')
-                .blur()
                 .then(() => {
                     expect(spy).to.be.calledOnce
                     expect(spy).to.be.calledWith('Corn')
