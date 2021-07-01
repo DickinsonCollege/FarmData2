@@ -14,16 +14,18 @@
         <div v-if='inputsVisible'>
             <fieldset class="center-block panel panel-default bg-success" style="width: 75%;">
                 <legend class="panel-heading bg-success" style="background-color: #dff0d8">Filters</legend>
-                <div style="display: grid; width: 100%;grid-template-columns: 33% 33% 33%;">
+                <div style="display: grid; width: 100%;grid-template-columns: 35% 32% 32%;">
                     <dropdown-with-all class="radio-inline"  :dropdown-list=seedingList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding</dropdown-with-all>
                 
                     <dropdown-with-all class="radio-inline" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
-                    <dropdown-with-all class="radio-inline"  :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
+                    <dropdown-with-all class="radio-inline" :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
                 </div>
             </fieldset>
 
-            <custom-table :rows=createdRows :headers='headers' can-edit can-delete></custom-table>
+            <custom-table :visible-columns='visibleColumns' :rows=createdRows :headers='headers' can-edit can-delete></custom-table>
+
+            <p>Total Row/Feet Planted: {{ calculateRowBed }}</p>
         </div>
     </div>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
@@ -46,8 +48,10 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
                 headers: ['date', 'crop', 'area', 'Tray/Direct', 'Varieties', 'Comments','User'],
+                visibleColumns: [true, true, true, true, true, true, true],
                 cropToIdMap: new Map(),
                 idToUserMap: new Map(),
+                bedFeet: 0,
             },
             methods: {
                 startDateChange(selectedDate){
@@ -178,6 +182,23 @@
                     let seedings = new Set(seedingArray)
                     let newSeedingArray = Array.from(seedings)
                     return newSeedingArray
+                },
+                calculateRowBed(){
+                    let filterRows = this.seedingLogs.filter((x) => x)
+
+                    if(this.selectedArea != 'All'){
+                        filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    }
+                    if(this.selectedCrop != 'All'){
+                        filterRows = filterRows.filter((x) => this.cropToIdMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                    }
+                    filterRows = filterRows.filter((x) => x.log_category[0].name === 'Direct Seedings')
+
+                    totalRowBed = 0
+                    filterRows.map(h =>
+                       totalRowBed = totalRowBed + parseFloat(h.quantity[1].value)
+                    )
+                    return totalRowBed
                 }
             },
             created() {
