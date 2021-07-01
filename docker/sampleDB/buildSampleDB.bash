@@ -36,12 +36,12 @@ echo "Enabled."
 source ./addPeople.bash
 
 # Create the vocabularies
+  # Add the units used for quantities
+  ./addUnits.py
   # Add the farm areas (fields, greenhouses, beds)
   ./addAreas.py
   # Add the crop families and crops.
   ./addCrops.py
-  # Add the units used for quantities
-  ./addUnits.py
 
 # Add the data
   # Add plantings and seedings that create them.
