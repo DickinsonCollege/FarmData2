@@ -25,8 +25,16 @@
 
             <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' can-edit can-delete></custom-table>
 
-            <p>Total Row/Bed Planted: {{ totalRowBed }}</p>
             <p>Total number of Tray Seeds Planted: {{ traySeedsPlanted }}</p>
+            <fieldset class="center-block panel panel-default">
+                <legend class="panel-heading" style="background-color: #dff0d8">Direct Seeding Summary</legend>
+                <p>Total Row/Bed Planted: {{ totalRowBed }}</p>
+                <p>Total Row Feet Planted: {{ totalRowFeet }}</p>
+                <p>Total Bed Feet Planted: {{ totalBedFeet }}</p>
+                <p>Total Hours Worked: {{ totalDirectSeedingHours }}</p>
+                <p>Total Bed Feet per Hour: {{ totalBedFeetPerHour }}</p>
+                <p>Total Row Feet per Hour: {{ totalRowFeetPerHour }}</p>
+            </fieldset>
         </div>
     </div>
     <script>
@@ -230,6 +238,41 @@
                     })
 
                     return sumRowBed
+                },
+                totalRowFeet(){
+                    let tableData = this.tableRows
+                    let sumRowFeet = 0
+                    tableData.map(h => {
+                        sumRowFeet = sumRowFeet + parseInt(h.data[5])
+                    })
+                    return sumRowFeet
+                },
+                totalBedFeet(){
+                    let tableData = this.tableRows
+                    let sumBedFeet = 0
+                    tableData.map(h => {
+                        sumBedFeet = sumBedFeet + parseInt(h.data[6])
+                    })
+                    return sumBedFeet
+                },
+                totalDirectSeedingHours(){
+                    let tableData = this.tableRows
+                    let filteredTableData = tableData.filter((x) => x.data[3] === 'Direct Seedings')
+                    let sumHours = 0
+                    filteredTableData.map(h => {
+                        sumHours = sumHours + (parseFloat(h.data[10])*parseFloat(h.data[11]))
+                    })
+                    return sumHours
+                },
+                totalBedFeetPerHour(){
+                    let bedFeet = this.totalBedFeet
+                    let hours = this.totalDirectSeedingHours
+                    return bedFeet/hours
+                },
+                totalRowFeetPerHour(){
+                    let rowFeet = this.totalRowFeet
+                    let hours = this.totalDirectSeedingHours
+                    return rowFeet/hours
                 },
                 traySeedsPlanted(){
                     let tableData = this.tableRows
