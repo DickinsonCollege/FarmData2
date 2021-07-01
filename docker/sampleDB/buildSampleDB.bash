@@ -47,6 +47,8 @@ source ./addPeople.bash
   # Add plantings and seedings that create them.
   ./addDirectSeedings.py
   ./addTraySeedings.py
+  # Add direct seedings and any necessary plantings
+  ./addTransplantings.py
   
 echo "Compressing the sample database..."
 cd ..

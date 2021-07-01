@@ -12,6 +12,8 @@ def main():
     deleteAllLogs('http://localhost/log.json?type=farm_seeding')
 
     # Delete any Plantings that exist.
+    # Will not delete any Plantings associated with Transplant Logs
+    # Those will be deleted by deleteTransplantings.py
     deleteAllAssets('http://localhost/farm_asset.json?type=planting')
 
     # Delete the seeding categories that were added.
@@ -19,15 +21,6 @@ def main():
     deleteSeedingCategory("Tray Seedings")
 
     print("Direct and Tray Seedings deleted.")
-
-def deleteSeedingCategory(category): 
-    response = requests.get("http://localhost/taxonomy_term.json?&name=" + category
-    , auth=HTTPBasicAuth(user, passwd))
-    catJson = response.json()['list']
-    if (len(catJson) > 0):
-        catID = catJson[0]['tid']
-        catName = catJson[0]['name']
-        deleteVocabTerm(catID, catName)
 
 if __name__ == "__main__":
     main()
