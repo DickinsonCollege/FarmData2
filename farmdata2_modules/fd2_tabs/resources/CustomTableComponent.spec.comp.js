@@ -66,7 +66,7 @@ describe('custom table component', () => {
         it('prop change updates table', () => {
             prop.rows[0].data = [ 5, 10, 'Wahooo' ]
 
-            cy.get(':nth-child(1) > :nth-child(3) > p')
+            cy.get(':nth-child(1) > :nth-child(3) > div')
                 .should('have.text', 'Wahooo')
         })
     })
