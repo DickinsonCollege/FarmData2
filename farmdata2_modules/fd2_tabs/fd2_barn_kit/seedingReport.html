@@ -46,8 +46,8 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
                 selectedSeeding: 'All',
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Tray Seeds', 'Varieties', 'Comments','User'],
-                visibleColumns: [true, true, true, true, true, true, true, true, true],
+                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num of Workers','Varieties', 'Comments','User'],
+                visibleColumns: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
                 IDToCropMap: new Map(),
                 idToUserMap: new Map(),
                 bedFeet: 0,
@@ -95,12 +95,26 @@
                     let $vm = this
                     let rows = filterRows.map(function(h) {
                         let rowBed = 0
+                        let rowFeet = 0
+                        let bedFeet = 0
                         let traySeeds = 0
+                        let numOfTrays = 0
+                        let cellsPerTray = 0
+                        let hours = 0
+                        let numWorker = 0
                         if(h.log_category[0].name === 'Direct Seedings'){
                             rowBed = h.quantity[1].value
+                            rowFeet = h.quantity[0].value
+                            bedFeet = rowFeet/rowBed
+                            hours = h.quantity[2].value
+                            numWorkers = h.quantity[3].value
                         }
                         else{
                             traySeeds = h.quantity[0].value
+                            numOfTrays = h.quantity[1].value
+                            cellsPerTray = h.quantity[2].value
+                            hours = h.quantity[3].value
+                            numWorkers = h.quantity[4].value
                         }
                         return{
                             id: h.id,
@@ -110,7 +124,13 @@
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
                                 rowBed,
+                                rowFeet,
+                                bedFeet,
                                 traySeeds,
+                                numOfTrays,
+                                cellsPerTray,
+                                hours,
+                                numWorkers,
                                 h.lot_number,
                                 h.notes.value,
                                 $vm.idToUserMap.get(h.uid.id)
@@ -203,19 +223,11 @@
                     return sumRowBed
                 },
                 traySeedsPlanted(){
-                    let filterRows = this.seedingLogs.filter((x) => x)
+                    let tableData = this.tableRows
 
-                    if(this.selectedArea != 'All'){
-                        filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
-                    }
-                    if(this.selectedCrop != 'All'){
-                        filterRows = filterRows.filter((x) => this.IDToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
-                    }
-                    filterRows = filterRows.filter((x) => x.log_category[0].name === 'Tray Seedings')
-
-                    totalTraySeeds = 0
-                    filterRows.map(h =>
-                       totalTraySeeds = totalTraySeeds + parseFloat(h.quantity[0].value)
+                    let totalTraySeeds = 0
+                    tableData.map(h =>
+                       totalTraySeeds = totalTraySeeds + parseFloat(h.data[5])
                     )
                     return totalTraySeeds
                 }
