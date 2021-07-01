@@ -25,7 +25,7 @@
 
             <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' can-edit can-delete></custom-table>
 
-            <p>Total Row/Bed Planted: {{ calculateRowBed }}</p>
+            <p>Total Row/Bed Planted: {{ totalRowBed }}</p>
             <p>Total number of Tray Seeds Planted: {{ traySeedsPlanted }}</p>
         </div>
     </div>
@@ -47,7 +47,7 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
                 selectedSeeding: 'All',
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Varieties', 'Comments','User'],
+                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Varieties', 'Comments','User'],
                 visibleColumns: [true, true, true, true, true, true, true],
                 IDToCropMap: new Map(),
                 idToUserMap: new Map(),
@@ -93,18 +93,23 @@
                     if(this.selectedSeeding != 'All'){
                         filterRows = filterRows.filter((x) => x.log_category[0].name === this.selectedSeeding)
                     }
-
-                    let rows = filterRows.map(h => {
+                    let $vm = this
+                    let rows = filterRows.map(function(h) {
+                        let rowBed = 0
+                        if(h.log_category[0].name === 'Direct Seedings'){
+                            rowBed = h.quantity[1].value
+                        }
                         return{
                             id: h.id,
                             data: [
-                                dayjs.unix(h.timestamp).format('YYYY-MM-DD'), 
-                                this.IDToCropMap.get(JSON.parse(h.data).crop_tid), 
+                                dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
+                                $vm.IDToCropMap.get(JSON.parse(h.data).crop_tid),
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
+                                rowBed,
                                 h.lot_number,
-                                h.notes.value, 
-                                this.idToUserMap.get(h.uid.id)
+                                h.notes.value,
+                                $vm.idToUserMap.get(h.uid.id)
                             ]
                         }
                     })
@@ -183,22 +188,15 @@
                     let newSeedingArray = Array.from(seedings)
                     return newSeedingArray
                 },
-                calculateRowBed(){
-                    let filterRows = this.seedingLogs.filter((x) => x)
+                totalRowBed(){
+                    let tableData = this.tableRows
+                    
+                    let sumRowBed = 0
+                    tableData.map(h => {
+                        sumRowBed = sumRowBed + parseInt(h.data[4])
+                    })
 
-                    if(this.selectedArea != 'All'){
-                        filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
-                    }
-                    if(this.selectedCrop != 'All'){
-                        filterRows = filterRows.filter((x) => this.IDToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
-                    }
-                    filterRows = filterRows.filter((x) => x.log_category[0].name === 'Direct Seedings')
-
-                    totalRowBed = 0
-                    filterRows.map(h =>
-                       totalRowBed = totalRowBed + parseFloat(h.quantity[1].value)
-                    )
-                    return totalRowBed
+                    return sumRowBed
                 },
                 traySeedsPlanted(){
                     let filterRows = this.seedingLogs.filter((x) => x)
