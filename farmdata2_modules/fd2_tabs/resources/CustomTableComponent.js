@@ -1,8 +1,8 @@
 let CustomTableComponent = {
-    template:`<div>
+    template:`<div class="sticky-table">
                     <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
                         <thead>
-                            <tr class="bg-success">
+                            <tr class="sticky-header">
                                 <th v-if="visibleColumns[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
                                 <th data-cy="edit-header" width=55 v-if="canEdit">Edit</th>
                                 <th data-cy="delete-header" width=55 v-if="canDelete">Delete</th>

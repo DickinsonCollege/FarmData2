@@ -2,3 +2,15 @@
 [v-cloak] {
  display:none;
 }
+
+.sticky-header th {
+  background: #dff0d8;
+  position: sticky;
+  top: -1px;
+  z-index:1;
+}
+
+.sticky-table {
+  height: 70vh;
+  overflow-y: auto;
+}
