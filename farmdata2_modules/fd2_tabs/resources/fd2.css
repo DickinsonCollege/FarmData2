@@ -14,3 +14,12 @@
   height: 70vh;
   overflow-y: auto;
 }
+
+.table-button {
+    padding: 5px 14px !important;
+}
+
+.table-text {
+    font-size: 15px;
+    color: #464545;
+}

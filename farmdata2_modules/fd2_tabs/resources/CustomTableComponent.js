@@ -2,23 +2,23 @@ let CustomTableComponent = {
     template:`<div class="sticky-table">
                     <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
                         <thead>
-                            <tr class="sticky-header">
+                            <tr class="sticky-header table-text">
                                 <th v-if="visibleColumns[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
                                 <th data-cy="edit-header" width=55 v-if="canEdit">Edit</th>
                                 <th data-cy="delete-header" width=55 v-if="canDelete">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-cy="object-test" v-for="(row, index) in rows">
+                            <tr class="table-text" data-cy="object-test" v-for="(row, index) in rows">
                                 <td v-if="visibleColumns[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                    <input data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
+                                    <input data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p  v-if="!(rowToEdit==index)">{{ item }}</p>
                                 </td>
                                 <td v-if="canEdit"> 
-                                    <button class="btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
-                                    <button class="btn btn-success" data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></button>
+                                    <button class="table-button btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
+                                    <button class="table-button btn btn-success" data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></button>
                                 </td>
                                 <td v-if="canDelete"> 
-                                    <button class="btn btn-primary" data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="table-button btn btn-primary" data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
                             </tr>
                         </tbody>
