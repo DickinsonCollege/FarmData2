@@ -69,6 +69,13 @@ describe('custom table component', () => {
             cy.get(':nth-child(1) > :nth-child(3) > div')
                 .should('have.text', 'Wahooo')
         })
+        
+        it('renders HTML elements found in strings', () => {
+            prop.rows[0].data = [ 5, 10, '<p>html baby!<p>' ]
+
+            cy.get(':nth-child(1) > :nth-child(3) > div')
+                .should('have.text', 'html baby!')
+        })
     })
 
     context('with edit and delete button', () => {
