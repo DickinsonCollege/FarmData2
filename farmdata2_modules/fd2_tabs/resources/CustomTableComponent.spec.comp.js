@@ -66,14 +66,16 @@ describe('custom table component', () => {
         it('prop change updates table', () => {
             prop.rows[0].data = [ 5, 10, 'Wahooo' ]
 
-            cy.get(':nth-child(1) > :nth-child(3) > div')
+            cy.get('[data-cy=table-data]')
+                .first().next().next()
                 .should('have.text', 'Wahooo')
         })
         
         it('renders HTML elements found in strings', () => {
             prop.rows[0].data = [ 5, 10, '<p>html baby!<p>' ]
 
-            cy.get(':nth-child(1) > :nth-child(3) > div')
+            cy.get('[data-cy=table-data]')
+                .first().next().next()
                 .should('have.text', 'html baby!')
         })
     })
