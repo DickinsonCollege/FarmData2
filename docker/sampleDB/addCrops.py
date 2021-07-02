@@ -67,8 +67,8 @@ def main():
                         "id": familyID,
                         "resource": "taxonomy_term"
                     },
-                    "unit": {
-                        "id": validateUnit(line,row[2], unitsMap),
+                    "quantity_units": {
+                        "id": unitsMap[validateUnit(line,row[3], unitsMap)],
                         "resource": "taxonomy_term"
                     },
                 }

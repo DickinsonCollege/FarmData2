@@ -13,15 +13,24 @@
 Count
 ,BEDS
 ,BUNCH
-,PEOPLE
-,SEEDS
+,EACH
+,EAR
 ,FLATS
+,HEAD
+,HALFSTALK
+,PEOPLE
+,PIECE
+,SEEDS
+,TRAY
 Length/depth
 ,ROW FEET
 Weight
+,POUND
 Area
 ,ACRES
 Volume
+,PINT
+,QUART
 Time
 ,HOURS
 Temperature
