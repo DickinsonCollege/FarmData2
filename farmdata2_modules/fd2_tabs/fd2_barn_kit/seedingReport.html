@@ -23,7 +23,7 @@
                 </div>
             </fieldset>
 
-            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' can-edit can-delete></custom-table>
+            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' @row-edited='updateRow' can-edit can-delete></custom-table>
 
             <br>
             <div style="display: flex;width: 100%;">
@@ -68,6 +68,7 @@
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
                 IDToCropMap: new Map(),
                 idToUserMap: new Map(),
+                areaToIDMap: new Map(),
                 bedFeet: 0,
             },
             methods: {
@@ -104,6 +105,34 @@
                     else if(selectedSeeding == 'Tray Seedings'){
                         this.visibleColumns = [true, true, true, true,false, false, false, true, true, true,  true, true, true, true, true]
                     }
+                },
+                 updateRow(updateObject, id){
+                    console.log('inside update row')
+                    console.log(updateObject)
+                    let newUpdateObject = {}
+                    let keys = Object.keys(updateObject)
+                    let test = { 'area': [{
+                                    "id": "12",
+                                    "resource": "taxonomy_term",}]
+                                }
+                    for(i=0; i < keys.length; i++){
+                        if(keys[i] == 'date'){
+                            newUpdateObject['timestamp'] = updateObject['date']
+                        }
+                        else if(keys[i] == 'crop'){
+                            newUpdateObject['JSON.parse(data).crop_tid'] = updateObject['crop']
+                        }
+                        else if (keys[i] == 'area'){
+                            newUpdateObject['movement'] = { 'area': [{
+                                    "id": this.areaToIDMap.get(updateObject['area']),
+                                    "resource": "taxonomy_term",}]
+                                }
+                            console.log(newUpdateObject)
+                        }
+                    }
+                    console.log(newUpdateObject)
+                    let url = '/log/' + id
+                    updateRecord(url, newUpdateObject,this.sessionToken)
                 }
             },
             computed: {
@@ -149,7 +178,7 @@
                         return{
                             id: h.id,
                             data: [
-                                dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
+                                h.timestamp,
                                 $vm.IDToCropMap.get(JSON.parse(h.data).crop_tid),
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
@@ -355,7 +384,7 @@
                     let seedsPlanted = this.traySeedsPlanted
                     let hours = this.totalTraySeedingHours
                     return seedsPlanted/hours
-                }
+                },
             },
             created() {
                 getSessionToken().then((response) => {
@@ -366,6 +395,9 @@
                 })
                 getIDToUserMap().then((response) => {
                     this.idToUserMap = new Map (response)
+                })
+                getAreaToIDMap().then((response) => {
+                    this.areaToIDMap = new Map(response)
                 })
             },
         });
