@@ -104,9 +104,11 @@ The quantity units in the FarmData2 sample database are created by the `addUnits
 
 A _seeding_ is a crop that has been planted from seed either directly in the ground (a _Direct Seeding_) or in a seeding tray (a _Tray Seeding_).  There is one _Seeding Log_ for every seeding and each is categorized as either a Direct Seeding or a Tray Seeding. 
 
-Every Seeding Log is associated with a _Planting Asset_, which represents the crop that resulted from the planting.  Planting Logs indicate the crops that are available for future operations (e.g. observation, transplanting, harvesting, etc.).
+Every Seeding Log is associated with a _Planting Asset_, which represents the crop that resulted from the planting.  Planting Assets indicate the crops that are available for future operations (e.g. observation, transplanting, harvesting, etc.).
 
-The seeding logs and associated plantings in the FarmData2 sample database are created by the `addDirectSeedings.py` and `addTraySeedings.py` scripts using the data in the `sampleData/directSeedings.csv` and `sampleData/traySeedings.csv` files.
+The Planting Asset must be created before the Seeding Log because the Seeding Log must reference the Planting Asset that it creates. 
+
+The Seeding Logs and associated Planting Assets in the FarmData2 sample database are created by the `addDirectSeedings.py` and `addTraySeedings.py` scripts using the data in the `sampleData/directSeedings.csv` and `sampleData/traySeedings.csv` files.
 
 ### Seeding Logs ###
 
@@ -125,4 +127,9 @@ All Planting Assets can be accessed with the request:
 ```
 GET http://localhost/farm_asset.json?type=planting"
 ```
+
+Notes:
+- The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to location given in the Seeding Log that references it. Similarly, if the Planting Asset was creatd by a tray seeding, then its location can also be changed by a transplanting operation.
+
+## Transplanting Logs ##
 

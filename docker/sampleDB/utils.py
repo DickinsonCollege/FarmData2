@@ -51,6 +51,33 @@ def getTermID(term):
         auth=HTTPBasicAuth(user, passwd))
     return response.json()['list'][0]['tid']
 
+def addSeedingCategory(category):
+    # Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
+    logCatsVocabID = getVocabularyID('farm_log_categories')
+
+    # Get the id of the Planting Farm Log Category so that we can use it
+    # as a parent for the Direct and Tray seedings.
+    plantingsID = getTermID('Plantings')
+
+    cat = {
+        "name": category,
+        "vocabulary": logCatsVocabID,
+        "parent": [{
+            "id": plantingsID,
+            "resource": "taxonomy_term"
+        }],
+    }
+    return addVocabTerm(cat)
+    
+def deleteSeedingCategory(category): 
+    response = requests.get("http://localhost/taxonomy_term.json?&name=" + category
+    , auth=HTTPBasicAuth(user, passwd))
+    catJson = response.json()['list']
+    if (len(catJson) > 0):
+        catID = catJson[0]['tid']
+        catName = catJson[0]['name']
+        deleteVocabTerm(catID, catName)
+
 # Delete all of the assets returned by the url.
 def deleteAllAssets(url):
     moreExist = True
@@ -156,18 +183,19 @@ def translateCrop(line, crop):
         "CHINESE CABBAGE": "CABBAGE-CHINESE",
         "CORN, DRY": "CORN-DRY",
         "CORN, SWEET": "CORN-SWEET",
+        "FENNEL": "HERB-FENNEL",
         "GARLIC, GREEN": "GARLIC-GREEN",
-        "GREENS, MES MIX": "LETTUCE-MES MIX",
-        "HERB - BASIL": "BASIL",
-        "HERB - CHIVES": "CHIVES",
-        "HERB - CILANTRO": "CILANTRO",
-        "HERB - DILL": "DILL",
-        "HERB - MARJORAM": "MARJORAM",
-        "HERB - MINT": "MINT",
-        "HERB - OREGANO": "OREGANO",
-        "HERB - PARSLEY": "PARSLEY",
-        "HERB - SAGE": "SAGE",
-        "HERB - THYME": "THYME",
+        "GREENS, MES MIX": "GREENS-MES MIX",
+        "HERB - BASIL": "HERB-BASIL",
+        "HERB - CHIVES": "HERB-CHIVES",
+        "HERB - CILANTRO": "HERB-CILANTRO",
+        "HERB - DILL": "HERB-DILL",
+        "HERB - MARJORAM": "HERB-MARJORAM",
+        "HERB - MINT": "HERB-MINT",
+        "HERB - OREGANO": "HERB-OREGANO",
+        "HERB - PARSLEY": "HERB-PARSLEY",
+        "HERB - SAGE": "HERB-SAGE",
+        "HERB - THYME": "HERB-THYME",
         "LETTUCE, MES MIX": "LETTUCE-MES MIX",
         "LETTUCE, GREEN": "LETTUCE-GREEN",
         "LETTUCE, RED": "LETTUCE-RED",
