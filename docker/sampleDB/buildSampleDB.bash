@@ -23,6 +23,7 @@ docker exec -it fd2_farmdata2 drush vset site_slogan "Farm with sample data for 
 echo "Set."
 
 echo "Enabling restws basic authentication..."
+# Adds query parameter criteron for [gt], [lt], etc...
 docker exec -it fd2_farmdata2 drush en restws_basic_auth -y
 echo "restws basic authentication enabled."
 
@@ -32,8 +33,16 @@ docker exec -it fd2_farmdata2 drush en fd2_barn_kit -y
 docker exec -it fd2_farmdata2 drush en fd2_field_kit -y
 echo "Enabled."
 
+echo "Enabling the Field UI module..."
+# Allows the editing of fields associated with vocabularies, logs and assests.
+docker exec -it fd2_farmdata2 drush en field_ui -y
+echo "Enabled."
+
 # Create the 'people' (i.e. users) in the sample FarmData2 database.
 source ./addPeople.bash
+
+# Add custom FarmData2 fields to the Drupal entities.
+docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampleDB
 
 # Create the vocabularies
   # Add the units used for quantities
