@@ -24,7 +24,7 @@
             </fieldset>
 
             <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' @row-deleted="deleteRowLog" @row-edited='updateRow' can-edit can-delete></custom-table>
-            
+
             <br>
             <div style="display: flex;width: 100%;">
                 <fieldset class="center-block panel panel-default" style="width: 50%;">
@@ -117,7 +117,7 @@
                                 }
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
-                            newUpdateObject['timestamp'] = updateObject['date']
+                            newUpdateObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
                         }
                         else if(keys[i] == 'crop'){
                             newUpdateObject['JSON.parse(data).crop_tid'] = updateObject['crop']
@@ -191,7 +191,7 @@
                         return{
                             id: h.id,
                             data: [
-                                h.timestamp,
+                                dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
                                 $vm.IDToCropMap.get(JSON.parse(h.data).crop_tid),
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
