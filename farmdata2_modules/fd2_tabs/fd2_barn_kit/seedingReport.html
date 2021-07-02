@@ -23,7 +23,7 @@
                 </div>
             </fieldset>
 
-            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' can-edit can-delete></custom-table>
+            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' can-edit can-delete @row-deleted="deleteRowLog"></custom-table>
 
             <br>
             <div style="display: flex;width: 100%;">
@@ -104,6 +104,19 @@
                     else if(selectedSeeding == 'Tray Seedings'){
                         this.visibleColumns = [true, true, true, true,false, false, false, true, true, true,  true, true, true, true, true]
                     }
+                },
+                deleteRowLog(logID) {
+                    console.log("start of method " + logID)
+                    let url = '/log/' + logID
+                    deleteRecord(url, this.sessionToken).then(function(response) {
+                        console.log(response)
+                    })
+                    for(var i=0; i < this.seedingLogs.length; i++){
+                        if(this.seedingLogs[i].id === logID){
+                            this.seedingLogs.splice(i, 1)
+                        }
+                    }
+                    console.log("end of method")
                 }
             },
             computed: {
