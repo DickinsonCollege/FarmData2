@@ -25,7 +25,8 @@
 
             <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' can-edit can-delete></custom-table>
 
-            <p>Total number of Tray Seeds Planted: {{ traySeedsPlanted }}</p>
+            <br>
+            
             <fieldset class="center-block panel panel-default">
                 <legend class="panel-heading" style="background-color: #dff0d8">Direct Seeding Summary</legend>
                 <p>Total Row/Bed Planted: {{ totalRowBed }}</p>
@@ -34,6 +35,13 @@
                 <p>Total Hours Worked: {{ totalDirectSeedingHours }}</p>
                 <p>Total Bed Feet per Hour: {{ totalBedFeetPerHour }}</p>
                 <p>Total Row Feet per Hour: {{ totalRowFeetPerHour }}</p>
+            </fieldset>
+            <fieldset class="center-block panel panel-default">
+                <legend class="panel-heading" style="background-color: #dff0d8">Tray Seeding </legend>
+                <p>Total number of Tray Seeds Planted: {{ traySeedsPlanted }}</p>
+                <p>Total number of Trays: {{ totalNumTrays }}</p>
+                <p>Total Hours Worked: {{ totalTraySeedingHours }}</p>
+                <p>Average Seeds Planted per Hour: {{ aveSeedsPerHour }}</p>
             </fieldset>
         </div>
     </div>
@@ -276,12 +284,33 @@
                 },
                 traySeedsPlanted(){
                     let tableData = this.tableRows
-
                     let totalTraySeeds = 0
                     tableData.map(h =>
-                       totalTraySeeds = totalTraySeeds + parseFloat(h.data[5])
+                       totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
                     )
                     return totalTraySeeds
+                },
+                totalNumTrays(){
+                    let tableData = this.tableRows
+                    let totalTrays = 0
+                    tableData.map(h =>
+                       totalTrays = totalTrays + parseFloat(h.data[8])
+                    )
+                    return totalTrays
+                },
+                totalTraySeedingHours(){
+                    let tableData = this.tableRows
+                    let filteredTableData = tableData.filter((x) => x.data[3] === 'Tray Seedings')
+                    let sumHours = 0
+                    filteredTableData.map(h => {
+                        sumHours = sumHours + (parseFloat(h.data[10])*parseFloat(h.data[11]))
+                    })
+                    return sumHours
+                },
+                aveSeedsPerHour(){
+                    let seedsPlanted = this.traySeedsPlanted
+                    let hours = this.totalTraySeedingHours
+                    return seedsPlanted/hours
                 }
             },
             created() {
