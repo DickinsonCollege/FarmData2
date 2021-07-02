@@ -23,8 +23,8 @@
                 </div>
             </fieldset>
 
-            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' @row-edited='updateRow' can-edit can-delete></custom-table>
-
+            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' @row-deleted="deleteRowLog" @row-edited='updateRow' can-edit can-delete></custom-table>
+            
             <br>
             <div style="display: flex;width: 100%;">
                 <fieldset class="center-block panel panel-default" style="width: 50%;">
@@ -106,7 +106,7 @@
                         this.visibleColumns = [true, true, true, true,false, false, false, true, true, true,  true, true, true, true, true]
                     }
                 },
-                 updateRow(updateObject, id){
+                updateRow(updateObject, id){
                     console.log('inside update row')
                     console.log(updateObject)
                     let newUpdateObject = {}
@@ -133,6 +133,19 @@
                     console.log(newUpdateObject)
                     let url = '/log/' + id
                     updateRecord(url, newUpdateObject,this.sessionToken)
+                },
+                deleteRowLog(logID) {
+                    console.log("start of method " + logID)
+                    let url = '/log/' + logID
+                    deleteRecord(url, this.sessionToken).then(function(response) {
+                        console.log(response)
+                    })
+                    for(var i=0; i < this.seedingLogs.length; i++){
+                        if(this.seedingLogs[i].id === logID){
+                            this.seedingLogs.splice(i, 1)
+                        }
+                    }
+                    console.log("end of method")
                 }
             },
             computed: {
