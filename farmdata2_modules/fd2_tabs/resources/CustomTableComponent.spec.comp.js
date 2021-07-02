@@ -11,7 +11,12 @@ describe('custom table component', () => {
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
-            visibleColumns: [true, true, true]
+            visibleColumns: [true, true, true],
+            inputOptions: [
+                {'type': 'text'},
+                {'type': 'text'},
+                {'type': 'text'},
+            ]
         }
 
         beforeEach(() => {
@@ -83,6 +88,11 @@ describe('custom table component', () => {
                         ],
                     headers: ['cool', 'works?', 'hello'],
                     visibleColumns: [true, true, true],
+                    inputOptions: [
+                        {'type': 'text'},
+                        {'type': 'text'},
+                        {'type': 'text'},
+                    ],
                     canEdit: true,
                     canDelete: true
                 }
@@ -157,7 +167,12 @@ describe('custom table component', () => {
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
-            visibleColumns: [true, false, true]
+            visibleColumns: [true, false, true],
+            inputOptions: [
+                {'type': 'text'},
+                {'type': 'text'},
+                {'type': 'text'},
+            ]
         }
 
         beforeEach(() => {

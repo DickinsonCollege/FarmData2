@@ -11,15 +11,9 @@ let CustomTableComponent = {
                         <tbody>
                             <tr data-cy="object-test" v-for="(row, index) in rows">
                                 <td v-if="visibleColumns[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'text'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
-
-                                    <select v-if="rowToEdit==index && inputOptions[itemIndex].type == 'dropdown'" v-model="row.data[itemIndex]">
+                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'text'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea></input><p v-if="!(rowToEdit==index) || inputOptions[itemIndex].type == 'no input'">{{ item }}</p><select v-if="rowToEdit==index && inputOptions[itemIndex].type == 'dropdown'" v-model="row.data[itemIndex]">
                                         <option v-for="option in inputOptions[itemIndex].value">{{ option }}</option>
-                                    </select>
-
-                                    <input type="date" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'date'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
-
-                                    <input type="number" style="width: 70px;" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    </select><input type="date" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'date'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"><input type="number" style="width: 70px;" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                 </td>
                                 <td v-if="canEdit"> 
                                     <button class="btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
