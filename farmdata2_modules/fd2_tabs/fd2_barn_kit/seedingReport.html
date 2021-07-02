@@ -26,23 +26,25 @@
             <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' can-edit can-delete></custom-table>
 
             <br>
+            <div style="display: flex;width: 100%;">
+                <fieldset class="center-block panel panel-default" style="width: 50%;">
+                    <legend class="panel-heading" style="background-color: #dff0d8;">Direct Seeding Summary</legend>
+                    <p style="margin-left: 5%;"> Total Row/Bed Planted: {{ totalRowBed }}</p>
+                    <p style="margin-left: 5%;"> Total Row Feet Planted: {{ totalRowFeet }}</p>
+                    <p style="margin-left: 5%;">Total Bed Feet Planted: {{ totalBedFeet }}</p>
+                    <p style="margin-left: 5%;">Total Hours Worked: {{ totalDirectSeedingHours }}</p>
+                    <p style="margin-left: 5%;">Total Bed Feet per Hour: {{ totalBedFeetPerHour }}</p>
+                    <p style="margin-left: 5%;">Total Row Feet per Hour: {{ totalRowFeetPerHour }}</p>
+                </fieldset>
+                <fieldset class="center-block panel panel-default" style="width: 47%;">
+                    <legend class="panel-heading" style="background-color: #dff0d8">Tray Seeding Summary</legend>
+                    <p style="margin-left: 5%;">Total number of Tray Seeds Planted: {{ traySeedsPlanted }}</p>
+                    <p style="margin-left: 5%;">Total number of Trays: {{ totalNumTrays }}</p>
+                    <p style="margin-left: 5%;">Total Hours Worked: {{ totalTraySeedingHours }}</p>
+                    <p style="margin-left: 5%;">Average Seeds Planted per Hour: {{ aveSeedsPerHour }}</p>
+                </fieldset>
+            </div>
             
-            <fieldset class="center-block panel panel-default">
-                <legend class="panel-heading" style="background-color: #dff0d8">Direct Seeding Summary</legend>
-                <p>Total Row/Bed Planted: {{ totalRowBed }}</p>
-                <p>Total Row Feet Planted: {{ totalRowFeet }}</p>
-                <p>Total Bed Feet Planted: {{ totalBedFeet }}</p>
-                <p>Total Hours Worked: {{ totalDirectSeedingHours }}</p>
-                <p>Total Bed Feet per Hour: {{ totalBedFeetPerHour }}</p>
-                <p>Total Row Feet per Hour: {{ totalRowFeetPerHour }}</p>
-            </fieldset>
-            <fieldset class="center-block panel panel-default">
-                <legend class="panel-heading" style="background-color: #dff0d8">Tray Seeding </legend>
-                <p>Total number of Tray Seeds Planted: {{ traySeedsPlanted }}</p>
-                <p>Total number of Trays: {{ totalNumTrays }}</p>
-                <p>Total Hours Worked: {{ totalTraySeedingHours }}</p>
-                <p>Average Seeds Planted per Hour: {{ aveSeedsPerHour }}</p>
-            </fieldset>
         </div>
     </div>
     <script>
