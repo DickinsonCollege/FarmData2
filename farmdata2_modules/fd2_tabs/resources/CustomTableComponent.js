@@ -11,10 +11,10 @@ let CustomTableComponent = {
                         <tbody>
                             <tr data-cy="object-test" v-for="(row, index) in rows">
                                 <td v-if="visibleColumns[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputOptions[itemIndex].length == 0" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
+                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'text'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
 
-                                    <select v-if="rowToEdit==index && inputOptions[itemIndex].length != 0" v-model="row.data[itemIndex]">
-                                        <option v-for="option in inputOptions[itemIndex]">{{ option }}</option>
+                                    <select v-if="rowToEdit==index && inputOptions[itemIndex].type == 'dropdown'" v-model="row.data[itemIndex]">
+                                        <option v-for="option in inputOptions[itemIndex].value">{{ option }}</option>
                                     </select>
                                 </td>
                                 <td v-if="canEdit"> 

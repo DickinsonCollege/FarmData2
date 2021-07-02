@@ -105,9 +105,9 @@ new Vue({
         testField: [],
         visibleColumnsArray : [true, true, true],
         inputTypesArray: [
-            [],
-            ['1', '2', '3'],
-            []
+            {'type': 'text'},
+            {'type': 'dropdown', 'value': ['1', '2', '3']},
+            {'type': 'text'}
         ]
     },
     created() {
