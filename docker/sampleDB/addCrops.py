@@ -11,6 +11,9 @@ from csv import reader
 from utils import *
 import sys
 
+# Get lists of all of the recognized crops, fields and users for validation.
+unitsMap = getUnitsMap()
+
 def main():
     print("Adding Crops...")
 
@@ -25,6 +28,8 @@ def main():
 
     with open('sampleData/crops.csv', 'r') as cropsFile:
         crops_reader = reader(decomment(cropsFile))
+
+        line=1
         for row in crops_reader:
             if row[0] != '':
                 family = {
@@ -40,6 +45,10 @@ def main():
                     "vocabulary": cropVocabID,
                     "crop_family": {
                         "id": familyID,
+                        "resource": "taxonomy_term"
+                    },
+                    "quantity_units": {
+                        "id": unitsMap[validateUnit(line,row[2], unitsMap)],
                         "resource": "taxonomy_term"
                     },
                 }
@@ -58,10 +67,15 @@ def main():
                         "id": familyID,
                         "resource": "taxonomy_term"
                     },
-                    #"weight": cropWeight,   # Omit to use alphabetical order in farmOS
+                    "unit": {
+                        "id": validateUnit(line,row[2], unitsMap),
+                        "resource": "taxonomy_term"
+                    },
                 }
                 childCropID = addVocabTerm(crop)
                 cropWeight+=1
+
+            line+=1
 
     print("Crops added.")
 

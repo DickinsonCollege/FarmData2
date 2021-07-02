@@ -10,16 +10,11 @@
 // Add fields to the field_crops bundle to hold the default units
 // and information about each possible converion.
 
-// Copy the field_farm_quantity_units field
-// rename it so that it has the name default_units in api responses 
-// and the label Default Units in the UI for editing.
-// Then add an instance of that field to the farm_crops bundle.
-copy_field('field_farm_quantity_units', 'default_units');
-add_field_instance('default_units','taxonomy_term','Default Units','farm_crops');
+// Add a field for the default units of the crop.
+add_field_instance('field_farm_quantity_units','taxonomy_term','Default Units','farm_crops');
 
 // Add a field for quantity that will hold all of the conversions.
 add_field_instance('field_farm_quantity','taxonomy_term','Conversions','farm_crops', 'field_collection_embed');
-
 
 function copy_field($fname, $newname) {
     // If the new field exists, delete it.
