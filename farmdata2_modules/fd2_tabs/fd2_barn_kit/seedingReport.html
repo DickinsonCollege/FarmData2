@@ -107,6 +107,9 @@
                 }
             },
             computed: {
+                /**
+                 * tableRows() filters though seedingLogs to get all the logs that have the correct crop, area, and/or type of seeding that has been selected by the user. Then takes the remaining logs and formats it so that the table component gets the nessary info
+                 */ 
                 tableRows() {
                     let filterRows = this.seedingLogs.filter((x) => x)
 
@@ -166,6 +169,9 @@
                     })
                     return rows
                 },
+                /**
+                 * returns a sorted array of all the crops in the current logs. If area or type of seeding does not equal 'All' then the array will only contain crops that have the selected area and/or type of seeding
+                 */ 
                 cropList(){
                     let seedFilter = []
                     if(this.selectedSeeding != 'All'){
@@ -191,6 +197,9 @@
                     let newCropArray = Array.from(crops)
                     return newCropArray.sort()
                 },
+                /**
+                 * returns a sorted array of all the areas in the current logs. If a crop or type of seeding does not equal 'All' then the array will only contain areas that have the selected crop and/or type of seeding
+                 */ 
                 areaList(){
                     let seedFilter = []
                     if(this.selectedSeeding != 'All'){
@@ -215,6 +224,9 @@
                     let newAreaArray = Array.from(areas)
                     return newAreaArray
                 },
+                /**
+                 * returns a sorted array of all the types of seeding in the current logs. If the area or crop does not equal 'All' then the array will only contain types of seeding that have the selected area and/or crop
+                 */ 
                 seedingList(){
                     let areaFilter = []
                     if(this.selectedArea != 'All'){
@@ -239,6 +251,9 @@
                     let newSeedingArray = Array.from(seedings)
                     return newSeedingArray
                 },
+                /**
+                 * returns the total row/bed for the Direct Seedings
+                 */ 
                 totalRowBed(){
                     let tableData = this.tableRows
                     
@@ -249,6 +264,9 @@
 
                     return sumRowBed
                 },
+                /**
+                 * returns the total row feet for Direct Seeding
+                 */ 
                 totalRowFeet(){
                     let tableData = this.tableRows
                     let sumRowFeet = 0
@@ -257,6 +275,9 @@
                     })
                     return sumRowFeet
                 },
+                /**
+                 * returns the total bed feet for Direct Seeding
+                 */ 
                 totalBedFeet(){
                     let tableData = this.tableRows
                     let sumBedFeet = 0
@@ -265,6 +286,9 @@
                     })
                     return sumBedFeet
                 },
+                /**
+                 * returns the total hours worked for direct seedings. Calculated by mulpitplying hours by workers for each log
+                 */ 
                 totalDirectSeedingHours(){
                     let tableData = this.tableRows
                     let filteredTableData = tableData.filter((x) => x.data[3] === 'Direct Seedings')
@@ -274,16 +298,25 @@
                     })
                     return sumHours
                 },
+                /**
+                 * returns the bed feet per hour for the direct seedings. Calculated by dividing total bedfeet by total hours 
+                 */ 
                 totalBedFeetPerHour(){
                     let bedFeet = this.totalBedFeet
                     let hours = this.totalDirectSeedingHours
                     return bedFeet/hours
                 },
+                /**
+                 * returns the row feet per hour for the direct seedings. Calculated by dividing total rowfeet by total hours
+                 */ 
                 totalRowFeetPerHour(){
                     let rowFeet = this.totalRowFeet
                     let hours = this.totalDirectSeedingHours
                     return rowFeet/hours
                 },
+                /**
+                 * returns the total number of seeds planted for the tray seeding logs
+                 */ 
                 traySeedsPlanted(){
                     let tableData = this.tableRows
                     let totalTraySeeds = 0
@@ -292,6 +325,9 @@
                     )
                     return totalTraySeeds
                 },
+                /**
+                 * returns the total number of trays(flats) for the Tray Seedings logs
+                 */ 
                 totalNumTrays(){
                     let tableData = this.tableRows
                     let totalTrays = 0
@@ -300,6 +336,9 @@
                     )
                     return totalTrays
                 },
+                /**
+                 * returns the total hours worked for the Tray Seeding logs. Calculated by multiplying the hours and workers for each log
+                 */ 
                 totalTraySeedingHours(){
                     let tableData = this.tableRows
                     let filteredTableData = tableData.filter((x) => x.data[3] === 'Tray Seedings')
@@ -309,6 +348,9 @@
                     })
                     return sumHours
                 },
+                /**
+                 * returns the average amount of seeds planted per hour. Calculated by having the total seedings planted divided by the total hours worked
+                 */ 
                 aveSeedsPerHour(){
                     let seedsPlanted = this.traySeedsPlanted
                     let hours = this.totalTraySeedingHours
