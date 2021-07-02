@@ -11,7 +11,11 @@ let CustomTableComponent = {
                         <tbody>
                             <tr data-cy="object-test" v-for="(row, index) in rows">
                                 <td v-if="visibleColumns[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                    <textarea data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
+                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputOptions[itemIndex].length == 0" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea></input><p v-if="!(rowToEdit==index)">{{ item }}</p>
+
+                                    <select v-if="rowToEdit==index && inputOptions[itemIndex].length != 0" v-model="row.data[itemIndex]">
+                                        <option v-for="option in inputOptions[itemIndex]">{{ option }}</option>
+                                    </select>
                                 </td>
                                 <td v-if="canEdit"> 
                                     <button class="btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
@@ -44,6 +48,9 @@ let CustomTableComponent = {
         visibleColumns: {
             type: Array,
             required: true
+        },
+        inputOptions: {
+            type: Array
         }
     },
     data() {

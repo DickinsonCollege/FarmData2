@@ -43,7 +43,7 @@
     <br>
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
-    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
+    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray" :input-options="inputTypesArray"></custom-table>
 
     <button @click="getCropMap">Get Crop Map</button>
 </div>
@@ -103,7 +103,12 @@ new Vue({
         ],
         testCropMap: new Map,
         testField: [],
-        visibleColumnsArray : [true, true, true]
+        visibleColumnsArray : [true, true, true],
+        inputTypesArray: [
+            [],
+            ['1', '2', '3'],
+            []
+        ]
     },
     created() {
         axios
