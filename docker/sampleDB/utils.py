@@ -51,6 +51,12 @@ def getTermID(term):
         auth=HTTPBasicAuth(user, passwd))
     return response.json()['list'][0]['tid']
 
+# Get a vocbulary term with the specified tid.
+def getTerm(tid):
+    response = requests.get("http://localhost/taxonomy_term.json?tid=" + tid, 
+        auth=HTTPBasicAuth(user, passwd))
+    return response.json()['list'][0]
+
 def addSeedingCategory(category):
     # Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
     logCatsVocabID = getVocabularyID('farm_log_categories')
