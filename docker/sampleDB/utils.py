@@ -324,7 +324,7 @@ def validateUser(line, user, userMap):
 
 # Get a map of users from name to id.
 def getUserMap():
-    allUsers = getAllPages("http://localhost/user.json?vocabulary=")
+    allUsers = getAllPages("http://localhost/user.json?")
     userMap = {}
 
     for user in allUsers:
