@@ -25,7 +25,7 @@ echo "Set."
 echo "Enabling restws basic authentication..."
 # Adds query parameter criteron for [gt], [lt], etc...
 docker exec -it fd2_farmdata2 drush en restws_basic_auth -y
-echo "restws basic authentication enabled."
+echo "restws enabled."
 
 echo "Enabling FarmData2 modules..."
 docker exec -it fd2_farmdata2 drush en fd2_example -y
@@ -47,10 +47,10 @@ docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampl
 # Create the vocabularies
   # Add the units used for quantities
   ./addUnits.py
+  # Add the crop families and crops.
+  ./addCrops.py  
   # Add the farm areas (fields, greenhouses, beds)
   ./addAreas.py
-  # Add the crop families and crops.
-  ./addCrops.py
 
 # Add the data
   # Add plantings and seedings that create them.
