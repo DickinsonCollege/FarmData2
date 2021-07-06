@@ -111,12 +111,58 @@
                 updateRow(updateObject, id){
                     console.log('inside update row')
                     console.log(updateObject)
+                    let updateLog = this.seedingLogs.filter((x) => x.id === id)
+                    /*delete updateLog[0].quantity.__ob__
+                    for(i=0; i < updateLog[0].quantity.length; i++){
+                        delete updateLog[0].quantity[i].unit.uri
+                        delete updateLog[0].quantity[i].unit.name
+                        delete updateLog[0].quantity[i].unit.__ob__
+                        delete updateLog[0].quantity[i].__ob__  
+                        //delete updateLog[0].quantity[i].<get label()>
+
+                    }
+                    */
                     let newUpdateObject = {}
+                    //newUpdateObject['quantity'] = Array.from(updateLog[0].quantity)
+                    newUpdateObject['quantity'] = [
+                        {
+                            "measure": "length", 
+                            "value": 10,
+                            "unit": {
+                                "id": "213", 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                       {
+                            "measure": "ratio", 
+                            "value": 1,
+                            "unit": {
+                                "id": "228",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": 1,
+                            "unit": {
+                                "id": "219",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": 1,
+                            "unit": {
+                                "id": "209",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
                     let keys = Object.keys(updateObject)
-                    let test = { 'area': [{
-                                    "id": "12",
-                                    "resource": "taxonomy_term",}]
-                                }
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
                             newUpdateObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
@@ -130,6 +176,22 @@
                                     "resource": "taxonomy_term",}]
                                 }
                             console.log(newUpdateObject)
+                        }
+                        /*else if(keys[i] == 'Tray/Direct'){
+                            let seedingTypeID = 0
+                            if(updateObject['Tray/Direct'] == 'Direct Seedings'){
+                                seedingTypeID = "230"
+                            }
+                            else{
+                                seedingTypeID = "231"
+                            }
+                            newUpdateObject['log_category'] = [{
+                                "id": seedingTypeID,
+                                "resource": "taxonomy_term",
+                            }]
+                        }*/
+                        else if(keys[i] == 'Hours'){
+                            newUpdateObject.quantity[2].value = updateObject['Hours']
                         }
                     }
                     console.log(newUpdateObject)
@@ -400,6 +462,47 @@
                     let hours = this.totalTraySeedingHours
                     return seedsPlanted/hours
                 },
+                getQuantityDirectSeeding(updateLog){
+                    console.log(updateLog)
+                    return [
+                        {
+                            "measure": "length", 
+                            "value": updateLog.quantity[0].value,
+                            "unit": {
+                                "id": 213, 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": updateLog.quantity[1].value,
+                            "unit": {
+                                "id": 228,
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": updateLog.quantity[2].value,
+                            "unit": {
+                                "id": 219,
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": updateLog.quantity[3].value,
+                            "unit": {
+                                "id": 209,
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                },
             },
             created() {
                 getSessionToken().then((response) => {
@@ -417,7 +520,7 @@
                 getAreaToIDMap().then((response) => {
                     this.areaToIDMap = new Map(response)
                 })
-            },
+            }
         });
         Vue.config.devtools = true;
     </script>
