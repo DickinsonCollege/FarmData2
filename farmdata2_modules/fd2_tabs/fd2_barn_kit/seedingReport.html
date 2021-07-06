@@ -127,7 +127,7 @@
                     newUpdateObject['quantity'] = [
                         {
                             "measure": "length", 
-                            "value": 10,
+                            "value": updateLog[0].quantity[0].value,
                             "unit": {
                                 "id": "213", 
                                 "resource": "taxonomy_term"
@@ -136,7 +136,7 @@
                         },
                        {
                             "measure": "ratio", 
-                            "value": 1,
+                            "value": updateLog[0].quantity[1].value,
                             "unit": {
                                 "id": "228",
                                 "resource": "taxonomy_term"
@@ -145,7 +145,7 @@
                         },
                         {
                             "measure": "time", 
-                            "value": 1,
+                            "value": updateLog[0].quantity[2].value,
                             "unit": {
                                 "id": "219",
                                 "resource": "taxonomy_term"
@@ -154,7 +154,7 @@
                         },
                         {
                             "measure": "count", 
-                            "value": 1,
+                            "value": updateLog[0].quantity[3].value,
                             "unit": {
                                 "id": "209",
                                 "resource": "taxonomy_term"
