@@ -39,23 +39,23 @@ describe('custom table component', () => {
 
         it('displays all objects in table', () => {
             cy.get('[data-cy=object-test]')
-                .first().should('have.text', '123answome  ')
+                .first()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 3)
-                    .next().should('have.text', 'answome')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('3'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome'))
                 .parent()
-                .next().should('have.text', '193and  ')
+                .next()
                     .children()
-                    .first().should('have.text', 19)
-                    .next().should('have.text', 3)
-                    .next().should('have.text', 'and')
+                    .first().should($el => expect($el.text().trim()).to.equal('19'))
+                    .next().should($el => expect($el.text().trim()).to.equal('3'))
+                    .next().should($el => expect($el.text().trim()).to.equal('and'))
                 .parent()
-                .next().should('have.text', '1212answome12  ')
+                .next()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 12)
-                    .next().should('have.text', 'answome12')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome12'))
         })
 
         it('the edit buttons should not exist', () => {
@@ -73,7 +73,7 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=table-data]')
                 .first().next().next()
-                .should('have.text', 'Wahooo')
+                .should($el => expect($el.text().trim()).to.equal('Wahooo'));
         })
         
         it('renders HTML elements found in strings', () => {
@@ -81,7 +81,7 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=table-data]')
                 .first().next().next()
-                .should('have.text', 'html baby!')
+                .should($el => expect($el.text().trim()).to.equal('html baby!'));
         })
     })
 
@@ -125,7 +125,7 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=object-test]')
                 .first().children().first()
-                .should('have.text','hey')
+                .should($el => expect($el.text().trim()).to.equal('hey'))
         })
 
         it('can click the delete button', () => {
@@ -198,20 +198,20 @@ describe('custom table component', () => {
 
         it('only displays rows with corresponsing true property', () => {
             cy.get('[data-cy=object-test]')
-                .first().should('have.text', '12answome  ')
+                .first()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 'answome')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome'))
                 .parent()
-                .next().should('have.text', '19and  ')
+                .next()
                     .children()
-                    .first().should('have.text', 19)
-                    .next().should('have.text', 'and')
+                    .first().should($el => expect($el.text().trim()).to.equal('19'))
+                    .next().should($el => expect($el.text().trim()).to.equal('and'))
                 .parent()
-                .next().should('have.text', '12answome12  ')
+                .next()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 'answome12')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome12'))
         })
     })
 
