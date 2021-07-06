@@ -218,18 +218,12 @@ describe('custom table component', () => {
     context('with different input types', () => {
         let prop= {
             rows: [ {id: 10, data: [12, 3, 'answome']},
-                    {id: 11, data: [19, 3, 'and'],},
-                    {id: 12, data: [12, 12, 'answome12'],},
-                    {id: 13, data: [19, 3, 'and'],},
                 ],
-            headers: ['text', 'dropdown', 'date', 'number'],
-            visibleColumns: [true, true, true, true],
+            headers: ['one'],
+            visibleColumns: [true],
             canEdit: true,
             inputOptions: [
-                {'type': 'text'},
-                {'type': 'text'},
-                {'type': 'text'},
-                {'type': 'text'}
+                {'type': 'no input'},
             ]
         }
 
@@ -239,7 +233,28 @@ describe('custom table component', () => {
             }) 
         })
 
+        it('does not allow you to input anything if no input is specified', () => {
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=number-input]')
+                .should("not.exist")
+
+            cy.get('[data-cy=text-input]')
+                .should("not.exist")
+
+            cy.get('[data-cy=date-input]')
+                .should("not.exist")
+
+            cy.get('[data-cy=dropdown-input]')
+                .should("not.exist")
+        })
+
         it('allows you to type in a text field', () => {
+            prop.inputOptions[0] = {'type': 'text'}
+
             cy.get('[data-cy=edit-button]')
                 .should('exist')
                 .first().click()
