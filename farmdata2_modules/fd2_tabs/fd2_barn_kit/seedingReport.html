@@ -5,7 +5,7 @@
             <fieldset class="panel panel-default center-block" style="width: 50%;">
                 <legend class="panel-heading" style="background-color: #d9edf7;">Set Dates</legend>
                 <div style="display: flex;width: 100%; padding: 7px">
-                    <date-range-selection class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+                    <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
                     <button class="btn center-block btn-info" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
                 </div>
