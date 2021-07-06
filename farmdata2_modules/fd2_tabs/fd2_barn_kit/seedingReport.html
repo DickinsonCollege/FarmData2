@@ -72,6 +72,7 @@
                 idToUserMap: new Map(),
                 areaToIDMap: new Map(),
                 bedFeet: 0,
+                updateLog: [],
             },
             methods: {
                 startDateChange(selectedDate){
@@ -111,7 +112,7 @@
                 updateRow(updateObject, id){
                     console.log('inside update row')
                     console.log(updateObject)
-                    let updateLog = this.seedingLogs.filter((x) => x.id === id)
+                    this.updateLog = this.seedingLogs.filter((x) => x.id === id)
                     /*delete updateLog[0].quantity.__ob__
                     for(i=0; i < updateLog[0].quantity.length; i++){
                         delete updateLog[0].quantity[i].unit.uri
@@ -124,7 +125,14 @@
                     */
                     let newUpdateObject = {}
                     //newUpdateObject['quantity'] = Array.from(updateLog[0].quantity)
-                    newUpdateObject['quantity'] = [
+                    if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
+                        newUpdateObject['quantity'] = this.quantityDirectSeeding
+                    }
+                    else{
+                        newUpdateObject['quantity'] = this.quantityTraySeeding
+                    }
+                    
+                    /*[
                         {
                             "measure": "length", 
                             "value": updateLog[0].quantity[0].value,
@@ -161,7 +169,7 @@
                             },
                             "label": "Workers"
                         },
-                    ]
+                    ]*/
                     let keys = Object.keys(updateObject)
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
@@ -191,7 +199,12 @@
                             }]
                         }*/
                         else if(keys[i] == 'Hours'){
-                            newUpdateObject.quantity[2].value = updateObject['Hours']
+                            if(this.updateLog[0].log_category == 'Direct Seedings'){
+                                newUpdateObject.quantity[2].value = updateObject['Hours']
+                            }
+                            else{
+                                newUpdateObject.quantity[3].value = updateObject['Hours']
+                            }
                         }
                     }
                     console.log(newUpdateObject)
@@ -462,46 +475,94 @@
                     let hours = this.totalTraySeedingHours
                     return seedsPlanted/hours
                 },
-                getQuantityDirectSeeding(updateLog){
-                    console.log(updateLog)
+                quantityDirectSeeding(){
                     return [
                         {
                             "measure": "length", 
-                            "value": updateLog.quantity[0].value,
+                            "value": this.updateLog[0].quantity[0].value,
                             "unit": {
-                                "id": 213, 
+                                "id": "213", 
                                 "resource": "taxonomy_term"
                             },
                             "label": "Amount planted"
                         },
-                        {
+                       {
                             "measure": "ratio", 
-                            "value": updateLog.quantity[1].value,
+                            "value": this.updateLog[0].quantity[1].value,
                             "unit": {
-                                "id": 228,
+                                "id": "228",
                                 "resource": "taxonomy_term"
                             },
                             "label": "Rows/Bed"
                         },
                         {
                             "measure": "time", 
-                            "value": updateLog.quantity[2].value,
+                            "value": this.updateLog[0].quantity[2].value,
                             "unit": {
-                                "id": 219,
+                                "id": "219",
                                 "resource": "taxonomy_term"
                             },
                             "label": "Labor"
                         },
                         {
                             "measure": "count", 
-                            "value": updateLog.quantity[3].value,
+                            "value": this.updateLog[0].quantity[3].value,
                             "unit": {
-                                "id": 209,
+                                "id": "209",
                                 "resource": "taxonomy_term"
                             },
                             "label": "Workers"
                         },
                     ]
+                },
+                quantityTraySeeding(){
+                    return [
+                            {
+                                "measure": "count", 
+                                "value": this.updateLog[0].quantity[0].value,
+                                "unit": {
+                                    "id": "128", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Seeds planted"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": this.updateLog[0].quantity[1].value,
+                                "unit": {
+                                    "id": "211", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Flats used"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": this.updateLog[0].quantity[2].value,
+                                "unit": {
+                                    "id": "227",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Cells/Flat"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": this.updateLog[0].quantity[0].value,
+                                "unit": {
+                                    "id": "219",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": this.updateLog[0].quantity[0].value,
+                                "unit": {
+                                    "id": "209",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ]
                 },
             },
             created() {
