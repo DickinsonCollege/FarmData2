@@ -3,14 +3,14 @@ let CustomTableComponent = {
                     <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
                         <thead>
                             <tr class="sticky-header">
-                                <th v-if="visibleColumns[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
+                                <th v-if="isVisible[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
                                 <th data-cy="edit-header" width=55 v-if="canEdit">Edit</th>
                                 <th data-cy="delete-header" width=55 v-if="canDelete">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr data-cy="object-test" v-for="(row, index) in rows">
-                                <td v-if="visibleColumns[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
+                                <td v-if="isVisible[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
                                     <input data-cy="test-input" v-if="rowToEdit==index" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></input><p v-if="!(rowToEdit==index)"><div v-html="item"></div></p>
                                 </td>
                                 <td v-if="canEdit"> 
@@ -43,13 +43,15 @@ let CustomTableComponent = {
         },
         visibleColumns: {
             type: Array,
-            required: true
+            required: true,
+            default: null
         }
     },
     data() {
         return {
             rowToEdit: null,
-            indexesToChange: []
+            indexesToChange: [],
+            isVisible: []
         }
     },
     methods: {
@@ -85,6 +87,17 @@ let CustomTableComponent = {
             }
         },
     },
+    created() {
+        if (this.visibleColumns == null) {
+            for (i = 0; i < this.headers.length; i++) {
+                this.isVisible.push(true);
+            }
+        }
+        else {
+            this.isVisible = this.visibleColumns
+        }
+        
+    }
 }
 
 try {

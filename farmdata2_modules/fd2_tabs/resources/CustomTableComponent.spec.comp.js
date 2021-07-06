@@ -11,7 +11,6 @@ describe('custom table component', () => {
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
-            visibleColumns: [true, true, true]
         }
 
         beforeEach(() => {
@@ -91,7 +90,6 @@ describe('custom table component', () => {
                             data: [12, 12, 'answome12'],},
                         ],
                     headers: ['cool', 'works?', 'hello'],
-                    visibleColumns: [true, true, true],
                     canEdit: true,
                     canDelete: true
                 }
