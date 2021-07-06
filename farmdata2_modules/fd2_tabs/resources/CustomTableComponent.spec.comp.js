@@ -215,4 +215,103 @@ describe('custom table component', () => {
         })
     })
 
+    context('with different input types', () => {
+        let prop= {
+            rows: [ {id: 10, data: [12, 3, 'answome']},
+                    {id: 11, data: [19, 3, 'and'],},
+                    {id: 12, data: [12, 12, 'answome12'],},
+                    {id: 13, data: [19, 3, 'and'],},
+                ],
+            headers: ['text', 'dropdown', 'date', 'number'],
+            visibleColumns: [true, true, true, true],
+            canEdit: true,
+            inputOptions: [
+                {'type': 'text'},
+                {'type': 'text'},
+                {'type': 'text'},
+                {'type': 'text'}
+            ]
+        }
+
+        beforeEach(() => {
+            mount(CustomTableComponent, {
+                propsData: prop
+            }) 
+        })
+
+        it('allows you to type in a text field', () => {
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=test-input]')
+                .first().clear().type('hey')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('hey'))
+        })
+
+        it('allows you to select from a dropdown', () => {
+            prop.inputOptions[0] = {'type': 'dropdown', 'value': [1, 2, 3]}
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=dropdown-input]')
+                .first().select('2')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('2'))
+        })
+
+        it('allows you to specify a date in a date input', () => {
+            prop.inputOptions[0] = {'type': 'date'}
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=date-input]')
+                .first().type('2020-05-14')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('2020-05-14'))
+        })
+
+        it('only allows you to pick numbers in a number input', () => {
+            prop.inputOptions[0] = {'type': 'number'}
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=number-input]')
+                .first().clear().type('12345abcde')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('12345'))
+        })
+    })
+
 })
