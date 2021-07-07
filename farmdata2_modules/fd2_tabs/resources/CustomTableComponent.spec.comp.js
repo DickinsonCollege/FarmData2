@@ -11,6 +11,12 @@ describe('custom table component', () => {
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
+            visibleColumns: [true, true, true],
+            inputOptions: [
+                {'type': 'text'},
+                {'type': 'text'},
+                {'type': 'text'},
+            ]
         }
 
         beforeEach(() => {
@@ -33,23 +39,23 @@ describe('custom table component', () => {
 
         it('displays all objects in table', () => {
             cy.get('[data-cy=object-test]')
-                .first().should('have.text', '123answome  ')
+                .first()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 3)
-                    .next().should('have.text', 'answome')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('3'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome'))
                 .parent()
-                .next().should('have.text', '193and  ')
+                .next()
                     .children()
-                    .first().should('have.text', 19)
-                    .next().should('have.text', 3)
-                    .next().should('have.text', 'and')
+                    .first().should($el => expect($el.text().trim()).to.equal('19'))
+                    .next().should($el => expect($el.text().trim()).to.equal('3'))
+                    .next().should($el => expect($el.text().trim()).to.equal('and'))
                 .parent()
-                .next().should('have.text', '1212answome12  ')
+                .next()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 12)
-                    .next().should('have.text', 'answome12')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome12'))
         })
 
         it('the edit buttons should not exist', () => {
@@ -67,15 +73,15 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=table-data]')
                 .first().next().next()
-                .should('have.text', 'Wahooo')
+                .should($el => expect($el.text().trim()).to.equal('Wahooo'));
         })
         
         it('renders HTML elements found in strings', () => {
-            prop.rows[0].data = [ 5, 10, '<p>html baby!<p>' ]
+            prop.rows[0].data = [ 5, 10, '<p>html baby!</p>' ]
 
             cy.get('[data-cy=table-data]')
                 .first().next().next()
-                .should('have.text', 'html baby!')
+                .should($el => expect($el.text().trim()).to.equal('html baby!'));
         })
     })
 
@@ -90,6 +96,12 @@ describe('custom table component', () => {
                             data: [12, 12, 'answome12'],},
                         ],
                     headers: ['cool', 'works?', 'hello'],
+                    visibleColumns: [true, true, true],
+                    inputOptions: [
+                        {'type': 'text'},
+                        {'type': 'text'},
+                        {'type': 'text'},
+                    ],
                     canEdit: true,
                     canDelete: true
                 }
@@ -113,7 +125,7 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=object-test]')
                 .first().children().first()
-                .should('have.text','hey')
+                .should($el => expect($el.text().trim()).to.equal('hey'))
         })
 
         it('can click the delete button', () => {
@@ -164,7 +176,12 @@ describe('custom table component', () => {
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
-            visibleColumns: [true, false, true]
+            visibleColumns: [true, false, true],
+            inputOptions: [
+                {'type': 'text'},
+                {'type': 'text'},
+                {'type': 'text'},
+            ]
         }
 
         beforeEach(() => {
@@ -181,20 +198,134 @@ describe('custom table component', () => {
 
         it('only displays rows with corresponsing true property', () => {
             cy.get('[data-cy=object-test]')
-                .first().should('have.text', '12answome  ')
+                .first()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 'answome')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome'))
                 .parent()
-                .next().should('have.text', '19and  ')
+                .next()
                     .children()
-                    .first().should('have.text', 19)
-                    .next().should('have.text', 'and')
+                    .first().should($el => expect($el.text().trim()).to.equal('19'))
+                    .next().should($el => expect($el.text().trim()).to.equal('and'))
                 .parent()
-                .next().should('have.text', '12answome12  ')
+                .next()
                     .children()
-                    .first().should('have.text', 12)
-                    .next().should('have.text', 'answome12')
+                    .first().should($el => expect($el.text().trim()).to.equal('12'))
+                    .next().should($el => expect($el.text().trim()).to.equal('answome12'))
+        })
+    })
+
+    context('with different input types', () => {
+        let prop= {
+            rows: [ {id: 10, data: [12, 3, 'answome']},
+                ],
+            headers: ['one'],
+            visibleColumns: [true],
+            canEdit: true,
+            inputOptions: [
+                {'type': 'no input'},
+            ]
+        }
+
+        beforeEach(() => {
+            mount(CustomTableComponent, {
+                propsData: prop
+            }) 
+        })
+
+        it('does not allow you to input anything if no input is specified', () => {
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=number-input]')
+                .should("not.exist")
+
+            cy.get('[data-cy=text-input]')
+                .should("not.exist")
+
+            cy.get('[data-cy=date-input]')
+                .should("not.exist")
+
+            cy.get('[data-cy=dropdown-input]')
+                .should("not.exist")
+        })
+
+        it('allows you to type in a text field', () => {
+            prop.inputOptions[0] = {'type': 'text'}
+
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=test-input]')
+                .first().clear().type('hey')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('hey'))
+        })
+
+        it('allows you to select from a dropdown', () => {
+            prop.inputOptions[0] = {'type': 'dropdown', 'value': [1, 2, 3]}
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=dropdown-input]')
+                .first().select('2')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('2'))
+        })
+
+        it('allows you to specify a date in a date input', () => {
+            prop.inputOptions[0] = {'type': 'date'}
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=date-input]')
+                .first().type('2020-05-14')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('2020-05-14'))
+        })
+
+        it('only allows you to pick numbers in a number input', () => {
+            prop.inputOptions[0] = {'type': 'number'}
+            
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=number-input]')
+                .first().clear().type('12345abcde')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
+                .first().children().first()
+                .should($el => expect($el.text().trim()).to.equal('12345'))
         })
     })
 
