@@ -11,17 +11,17 @@ let CustomTableComponent = {
                         <tbody>
                             <tr data-cy="object-test" v-for="(row, index) in rows">
                                 <td v-if="isVisible[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                    <div v-if="!(rowToEdit==index) || inputOptions[itemIndex].type == 'no input'" v-html="item"></div>
+                                    <div v-if="!(rowToEdit==index) || inputType[itemIndex].type == 'no input'" v-html="item"></div>
                                     
-                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'text'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea>
+                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputType[itemIndex].type == 'text'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea>
                                     
-                                    <select data-cy="dropdown-input" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'dropdown'" v-model="row.data[itemIndex]">
-                                        <option v-for="option in inputOptions[itemIndex].value">{{ option }}</option>
+                                    <select data-cy="dropdown-input" v-if="rowToEdit==index && inputType[itemIndex].type == 'dropdown'" v-model="row.data[itemIndex]">
+                                        <option v-for="option in inputType[itemIndex].value">{{ option }}</option>
                                     </select>
                                     
-                                    <input data-cy="date-input" type="date" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'date'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    <input data-cy="date-input" type="date" v-if="rowToEdit==index && inputType[itemIndex].type == 'date'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                     
-                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEdit==index && inputOptions[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEdit==index && inputType[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                 </td>
                                 <td v-if="canEdit"> 
                                     <button class="btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
@@ -57,14 +57,15 @@ let CustomTableComponent = {
         },
         inputOptions: {
             type: Array,
-            required: true
+            default: null
         }
     },
     data() {
         return {
             rowToEdit: null,
             indexesToChange: [],
-            isVisible: []
+            isVisible: [],
+            inputType: []
         }
     },
     methods: {
@@ -109,7 +110,15 @@ let CustomTableComponent = {
         else {
             this.isVisible = this.visibleColumns
         }
-        
+
+        if (this.inputOptions == null) {
+            for (i = 0; i < this.headers.length; i++) {
+                this.inputType.push({'type': 'text'});
+            }
+        }
+        else {
+            this.inputType = this.inputOptions
+        }
     }
 }
 
