@@ -551,7 +551,17 @@
                     for(i=0; i < this.userToIDMap.size; i++){
                         userNameArray.push(userKeyIterator.next().value)
                     }
-                    return [{type:'date'}, {type:'text'}, {type:'text'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
+                    let cropNameArray = []
+                    const cropKeyIterator = this.cropToIDMap.keys()
+                    for(i=0; i < this.cropToIDMap.size; i++){
+                        cropNameArray.push(cropKeyIterator.next().value)
+                    }
+                    let areaNameArray = []
+                    const areaKeyIterator = this.areaToIDMap.keys()
+                    for(i=0; i < this.areaToIDMap.size; i++){
+                        areaNameArray.push(areaKeyIterator.next().value)
+                    }
+                    return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
                 }
             },
             created() {
