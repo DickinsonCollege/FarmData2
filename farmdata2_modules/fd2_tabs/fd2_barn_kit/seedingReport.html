@@ -146,19 +146,6 @@
                                 }
                             console.log(newUpdateObject)
                         }
-                        /*else if(keys[i] == 'Tray/Direct'){
-                            let seedingTypeID = 0
-                            if(updateObject['Tray/Direct'] == 'Direct Seedings'){
-                                seedingTypeID = "230"
-                            }
-                            else{
-                                seedingTypeID = "231"
-                            }
-                            newUpdateObject['log_category'] = [{
-                                "id": seedingTypeID,
-                                "resource": "taxonomy_term",
-                            }]
-                        }*/
                         else if(keys[i] == 'Hours'){
                             if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
                                 newUpdateObject.quantity[2].value = updateObject['Hours']
@@ -174,6 +161,10 @@
                             else{
                                 newUpdateObject.quantity[4].value = updateObject['Num of Workers']
                             }
+                        }
+                        else if(keys[i] == 'Comments'){
+                            newUpdateObject['notes'] = {'value': updateObject['Comments'],
+                                'format': 'farm_format'}
                         }
                     }
                     console.log(newUpdateObject)
