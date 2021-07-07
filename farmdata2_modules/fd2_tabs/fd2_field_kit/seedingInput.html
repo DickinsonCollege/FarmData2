@@ -3,6 +3,9 @@
        <h1>Seeding Input Log</h1> 
        <date-selection :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
 
+       <br>
+
+       <dropdown-with-all :dropdown-list='cropArray'>Crop:</dropdown-with-all>
     </div>
 
     <script>
@@ -14,12 +17,19 @@
             },
             data:{
                 selectedDate: dayjs().format('YYYY-MM-DD').toString(),
+                cropArray: [],
             },
             methods:{
                 setNewDate(newDate){
                     this.selectedDate = newDate
                 }
             },
+            created(){
+                let fullResponse = []
+                getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
+                    this.cropArray = fullResponse.map((x) => x.name)
+                })
+            }
         })
     Vue.config.devtools = true;
     </script>
