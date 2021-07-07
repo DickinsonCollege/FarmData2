@@ -70,6 +70,7 @@
                 IDToCropMap: new Map(),
                 cropToIDMap: new Map(),
                 idToUserMap: new Map(),
+                userToIDMap: new Map(),
                 areaToIDMap: new Map(),
                 bedFeet: 0,
                 updateLog: [],
@@ -165,6 +166,12 @@
                         else if(keys[i] == 'Comments'){
                             newUpdateObject['notes'] = {'value': updateObject['Comments'],
                                 'format': 'farm_format'}
+                        }
+                        else if(keys[i] == 'User'){
+                            newUpdateObject['uid'] = {
+                                'id': this.userToIDMap.get(updateObject['User']),
+                                'resource': 'user'
+                            }
                         }
                         else if(keys[i] == 'Row/Bed'){
                             newUpdateObject.quantity[1].value = updateObject['Row/Bed']
@@ -552,6 +559,9 @@
                 })
                 getIDToUserMap().then((response) => {
                     this.idToUserMap = new Map (response)
+                })
+                getUserToIDMap().then((response) => {
+                    this.userToIDMap = new Map (response)
                 })
                 getAreaToIDMap().then((response) => {
                     this.areaToIDMap = new Map(response)
