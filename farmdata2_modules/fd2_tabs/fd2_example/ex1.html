@@ -43,7 +43,7 @@
     <br>
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
-    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray"></custom-table>
+    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray" :input-options="inputTypesArray"></custom-table>
 
     <button @click="getCropMap">Get Crop Map</button>
 </div>
@@ -74,36 +74,24 @@ new Vue({
         deleteID: null,
         userID: fd2UserID,
         userName: fd2UserName,
-        testArray: ['cool', 'works?', 'hello'],
+        testArray: ['cool', 'works?', 'num', 'hello'],
         testObjectArray: [
             {id: 10, 
-            data: [12, 3, 'answome']},
+            data: ['2020-09-20', 3, 5, '<p>firstline</p><br><p>secondline</p>']},
             {id: 11,
-            data: [19, 3, 'ansekjdwome'],},
+            data: ['2021-09-20', 3, 8, 'ansekjdwome'],},
             {id: 12,
-            data: [12, 12, 'answome12'],},
-            {id: 10, 
-            data: [12, 3, 'answome']},
-            {id: 11,
-            data: [19, 3, 'ansekjdwome'],},
-            {id: 12,
-            data: [12, 12, 'answome12'],},
-            {id: 10, 
-            data: [12, 3, 'answome']},
-            {id: 11,
-            data: [19, 3, 'ansekjdwome'],},
-            {id: 12,
-            data: [12, 12, 'answome12'],},
-            {id: 10, 
-            data: [12, 3, 'answome']},
-            {id: 11,
-            data: [19, 3, 'ansekjdwome'],},
-            {id: 12,
-            data: [12, 12, 'answome12'],},
+            data: ['2022-09-20', 12, 4, 'answome12'],},
         ],
         testCropMap: new Map,
         testField: [],
-        visibleColumnsArray : [true, true, true]
+        visibleColumnsArray : [true, true, true, true],
+        inputTypesArray: [
+            {'type': 'date'},
+            {'type': 'dropdown', 'value': ['1', '2', '3']},
+            {'type': 'no input'},
+            {'type': 'text'}
+        ]
     },
     created() {
         axios
