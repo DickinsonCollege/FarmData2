@@ -7,6 +7,11 @@
 
        <dropdown-with-all :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
        <dropdown-with-all :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:</dropdown-with-all>
+
+       <br>
+
+       <input type='radio' name='typeOfSeeding' @click='setTraySeeding'><label>Tray Seedings</label>
+       <input type='radio' name='typeOfSeeding' @click='setDirectSeeding'><label>Direct Seedings</label>
     </div>
 
     <script>
@@ -20,6 +25,7 @@
                 selectedDate: dayjs().format('YYYY-MM-DD').toString(),
                 selectedCrop: null,
                 selectedArea: null,
+                selectedSeedingType: null,
                 cropArray: [],
                 areaArray: [],
             },
@@ -32,6 +38,12 @@
                 },
                 setNewArea(newArea){
                     this.selectedArea = newArea
+                },
+                setTraySeeding(){
+                    this.selectedSeedingType = 'Tray Seedings'
+                },
+                setDirectSeeding(){
+                    this.selectedSeedingType = 'Direct Seedings'
                 }
             },
             created(){
