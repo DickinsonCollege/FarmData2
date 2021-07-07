@@ -175,6 +175,9 @@
                         else if(keys[i] == 'Tray Seeds'){
                             newUpdateObject.quantity[0].value = updateObject['Tray Seeds']
                         }
+                        else if(keys[i] == '# of Trays'){
+                            newUpdateObject.quantity[1].value = updateObject['# of Trays']
+                        }
                     }
                     console.log(newUpdateObject)
                     let url = '/log/' + id
