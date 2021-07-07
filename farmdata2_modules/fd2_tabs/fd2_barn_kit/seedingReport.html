@@ -166,6 +166,9 @@
                             newUpdateObject['notes'] = {'value': updateObject['Comments'],
                                 'format': 'farm_format'}
                         }
+                        else if(keys[i] == 'Row/Bed'){
+                            newUpdateObject.quantity[1].value = updateObject['Row/Bed']
+                        }
                     }
                     console.log(newUpdateObject)
                     let url = '/log/' + id
