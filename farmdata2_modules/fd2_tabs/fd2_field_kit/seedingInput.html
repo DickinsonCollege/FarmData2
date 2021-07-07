@@ -5,7 +5,8 @@
 
        <br>
 
-       <dropdown-with-all :dropdown-list='cropArray'>Crop:</dropdown-with-all>
+       <dropdown-with-all :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
+       <dropdown-with-all :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:</dropdown-with-all>
     </div>
 
     <script>
@@ -17,17 +18,29 @@
             },
             data:{
                 selectedDate: dayjs().format('YYYY-MM-DD').toString(),
+                selectedCrop: null,
+                selectedArea: null,
                 cropArray: [],
+                areaArray: [],
             },
             methods:{
                 setNewDate(newDate){
                     this.selectedDate = newDate
+                },
+                setNewCrop(newCrop){
+                    this.selectedCrop = newCrop
+                },
+                setNewArea(newArea){
+                    this.selectedArea = newArea
                 }
             },
             created(){
                 let fullResponse = []
                 getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
-                    this.cropArray = fullResponse.map((x) => x.name)
+                    this.cropArray = fullResponse.map((h) => h.name)
+                })
+                getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
+                    this.areaArray = this.areaArray.map((h) => h.name)
                 })
             }
         })
