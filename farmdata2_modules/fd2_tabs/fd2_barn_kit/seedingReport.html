@@ -23,7 +23,7 @@
                 </div>
             </fieldset>
 
-            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' @row-deleted="deleteRowLog" @row-edited='updateRow' can-edit can-delete></custom-table>
+            <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' can-edit can-delete></custom-table>
 
             <br>
             <div style="display: flex;width: 100%;">
@@ -47,7 +47,6 @@
             
         </div>
     </div>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
     <script>
         var seedingReport = new Vue ({
             el: '#seedingReport',
@@ -67,11 +66,13 @@
                 selectedSeeding: 'All',
                 headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num of Workers','Varieties', 'Comments','User'],
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
+                columnInputs: [{type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}, {type:'text'}],
                 IDToCropMap: new Map(),
                 cropToIDMap: new Map(),
                 idToUserMap: new Map(),
                 areaToIDMap: new Map(),
                 bedFeet: 0,
+                updateLog: [],
             },
             methods: {
                 startDateChange(selectedDate){
@@ -111,12 +112,26 @@
                 updateRow(updateObject, id){
                     console.log('inside update row')
                     console.log(updateObject)
+                    this.updateLog = this.seedingLogs.filter((x) => x.id === id)
+                    /*delete updateLog[0].quantity.__ob__
+                    for(i=0; i < updateLog[0].quantity.length; i++){
+                        delete updateLog[0].quantity[i].unit.uri
+                        delete updateLog[0].quantity[i].unit.name
+                        delete updateLog[0].quantity[i].unit.__ob__
+                        delete updateLog[0].quantity[i].__ob__  
+                        //delete updateLog[0].quantity[i].<get label()>
+
+                    }
+                    */
                     let newUpdateObject = {}
+                    //newUpdateObject['quantity'] = Array.from(updateLog[0].quantity)
+                    if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
+                        newUpdateObject['quantity'] = this.quantityDirectSeeding
+                    }
+                    else{
+                        newUpdateObject['quantity'] = this.quantityTraySeeding
+                    }
                     let keys = Object.keys(updateObject)
-                    let test = { 'area': [{
-                                    "id": "12",
-                                    "resource": "taxonomy_term",}]
-                                }
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
                             newUpdateObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
@@ -130,6 +145,26 @@
                                     "resource": "taxonomy_term",}]
                                 }
                             console.log(newUpdateObject)
+                        }
+                        else if(keys[i] == 'Hours'){
+                            if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
+                                newUpdateObject.quantity[2].value = updateObject['Hours']
+                            }
+                            else{
+                                newUpdateObject.quantity[3].value = updateObject['Hours']
+                            }
+                        }
+                        else if(keys[i] == 'Num of Workers'){
+                            if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
+                                newUpdateObject.quantity[3].value = updateObject['Num of Workers']
+                            }
+                            else{
+                                newUpdateObject.quantity[4].value = updateObject['Num of Workers']
+                            }
+                        }
+                        else if(keys[i] == 'Comments'){
+                            newUpdateObject['notes'] = {'value': updateObject['Comments'],
+                                'format': 'farm_format'}
                         }
                     }
                     console.log(newUpdateObject)
@@ -400,6 +435,95 @@
                     let hours = this.totalTraySeedingHours
                     return seedsPlanted/hours
                 },
+                quantityDirectSeeding(){
+                    return [
+                        {
+                            "measure": "length", 
+                            "value": this.updateLog[0].quantity[0].value,
+                            "unit": {
+                                "id": "213", 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                       {
+                            "measure": "ratio", 
+                            "value": this.updateLog[0].quantity[1].value,
+                            "unit": {
+                                "id": "228",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": this.updateLog[0].quantity[2].value,
+                            "unit": {
+                                "id": "219",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.updateLog[0].quantity[3].value,
+                            "unit": {
+                                "id": "209",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                },
+                quantityTraySeeding(){
+                    return [
+                            {
+                                "measure": "count", 
+                                "value": this.updateLog[0].quantity[0].value,
+                                "unit": {
+                                    "id": "128", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Seeds planted"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": this.updateLog[0].quantity[1].value,
+                                "unit": {
+                                    "id": "211", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Flats used"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": this.updateLog[0].quantity[2].value,
+                                "unit": {
+                                    "id": "227",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Cells/Flat"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": this.updateLog[0].quantity[0].value,
+                                "unit": {
+                                    "id": "219",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": this.updateLog[0].quantity[0].value,
+                                "unit": {
+                                    "id": "209",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ]
+                },
             },
             created() {
                 getSessionToken().then((response) => {
@@ -417,7 +541,7 @@
                 getAreaToIDMap().then((response) => {
                     this.areaToIDMap = new Map(response)
                 })
-            },
+            }
         });
         Vue.config.devtools = true;
     </script>
