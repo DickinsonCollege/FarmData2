@@ -7,7 +7,7 @@
                 <div style="display: flex;width: 100%; padding: 7px">
                     <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
-                    <button class="btn center-block btn-info" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
+                    <button data-cy="generate-rpt-btn" class="btn center-block btn-info" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
                 </div>
             </fieldset>
         </div>
