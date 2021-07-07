@@ -1,3 +1,26 @@
 <body>
-    
+    <div id='seedingInput'>
+       <h1>Seeding Input Log</h1> 
+       <date-selection :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
+
+    </div>
+
+    <script>
+        new Vue({
+            el: '#seedingInput',
+            components:{
+                'date-selection': DateSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
+            },
+            data:{
+                selectedDate: dayjs().format('YYYY-MM-DD').toString(),
+            },
+            methods:{
+                setNewDate(newDate){
+                    this.selectedDate = newDate
+                }
+            },
+        })
+    Vue.config.devtools = true;
+    </script>
 </body>
