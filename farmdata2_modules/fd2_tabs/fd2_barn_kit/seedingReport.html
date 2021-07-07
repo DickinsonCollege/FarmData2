@@ -172,6 +172,9 @@
                         else if(keys[i] == 'Row Feet'){
                             newUpdateObject.quantity[0].value = updateObject['Row Feet']
                         }
+                        else if(keys[i] == 'Tray Seeds'){
+                            newUpdateObject.quantity[0].value = updateObject['Tray Seeds']
+                        }
                     }
                     console.log(newUpdateObject)
                     let url = '/log/' + id
