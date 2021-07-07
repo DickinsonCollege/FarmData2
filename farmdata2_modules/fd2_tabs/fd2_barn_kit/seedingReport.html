@@ -178,6 +178,9 @@
                         else if(keys[i] == '# of Trays'){
                             newUpdateObject.quantity[1].value = updateObject['# of Trays']
                         }
+                        else if(keys[i] == 'Cells Per Tray'){
+                            newUpdateObject.quantity[2].value = updateObject['Cells Per Tray']
+                        }   
                     }
                     console.log(newUpdateObject)
                     let url = '/log/' + id
