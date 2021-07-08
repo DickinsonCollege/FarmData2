@@ -12,6 +12,10 @@
 
        <input type='radio' name='typeOfSeeding' @click='setTraySeeding'><label>Tray Seedings</label>
        <input type='radio' name='typeOfSeeding' @click='setDirectSeeding'><label>Direct Seedings</label>
+
+       <br>
+
+       <label>Number of Workers:</label><input type=number v-model='numWorkers'>
     </div>
 
     <script>
@@ -26,6 +30,7 @@
                 selectedCrop: null,
                 selectedArea: null,
                 selectedSeedingType: null,
+                numWorkers: 0, 
                 cropArray: [],
                 areaArray: [],
             },
@@ -44,7 +49,7 @@
                 },
                 setDirectSeeding(){
                     this.selectedSeedingType = 'Direct Seedings'
-                }
+                },
             },
             created(){
                 let fullResponse = []
