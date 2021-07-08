@@ -28,7 +28,7 @@ let CustomTableComponent = {
                                     <button class="btn btn-success" data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
                                 </td>
                                 <td v-if="canDelete"> 
-                                    <button class="btn btn-primary" data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
                             </tr>
                         </tbody>

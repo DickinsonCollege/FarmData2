@@ -4,7 +4,8 @@
 }
 
 .sticky-header th {
-  background: #dff0d8;
+  background: #d9230f;
+  color: white;
   position: sticky;
   top: -1px;
   z-index:1;
