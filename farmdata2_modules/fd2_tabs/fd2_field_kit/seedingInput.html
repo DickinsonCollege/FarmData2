@@ -1,43 +1,49 @@
 <body>
     <div id='seedingInput'>
-       <h1>Seeding Input Log</h1> 
-       <date-selection :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
-
+       <h1 style='text-align:center;'>Seeding Input Log</h1> 
        <br>
-
-       <dropdown-with-all :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
-       <dropdown-with-all :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:</dropdown-with-all>
-
-       <br>
-
-       <input type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seedings</label>
-       <input type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seedings</label>
-
-       <br>
-
-       <div v-if='(selectedSeedingType=="Tray Seedings")'>
-            <label>Number of Trays Planted: </label><input type=number v-model='numOfTrays'>
-            <label>Cells per Tray: </label><input type=number v-model='numCellsPerTray'>
-            <label>Number of Seeds Plants: </label><input type=number v-model='numSeedsPlanted'>
-       </div>
-       <div v-if='(selectedSeedingType=="Direct Seedings")'>
-            <label>Rows per Bed: </label><input type=number v-model='numRowBed'>
-            <div style='display: flex;'>
-                <label>Number of Feet: </label><input type=number v-model='numFeet'><dropdown-with-all :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
+       <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
+            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
+                <date-selection class="center-block" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
+                <br>
+                <dropdown-with-all class="center-block" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
+                <br>
+                <dropdown-with-all class="center-block" :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:</dropdown-with-all> 
+                <br>
+                <label>Number of Workers: </label><input style='width: 75px;' type=number v-model='numWorkers'>
+                <br>
+                <div style='display:flex; padding-top:25px;'>
+                        <label>Time Spent: </label><input style='width: 75px;' type=number v-model='time'>
+                        <dropdown-with-all style='text-align:center;' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
+                </div>
+                <br>
+                <label>Comments: </label><textarea v-model='comments'></textarea>
             </div>
-       </div>
-
-       <br>
-
-       <label>Number of Workers: </label><input type=number v-model='numWorkers'>
-       <br>
-       <div style='display: flex;'>
-            <label>Time Spent: </label><input type=number v-model='time'>
-            <dropdown-with-all :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
-       </div>
-       <label>Comments: </label><textarea v-model='comments'></textarea>
-
-       <button :disabled='formNotCompleted'>Submit</button>
+       </fieldset>
+       <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+           <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
+                <input type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
+                <input type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
+            </legend>
+            <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
+                <p>Please Select Tray Seeding or Direct Seeding</p>
+            </div>
+            <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
+                <label>Number of Trays Planted: </label><input style='width: 75px;' type=number v-model='numOfTrays'>
+                <br>
+                <label>Cells per Tray: </label><input style='width: 75px;' type=number v-model='numCellsPerTray'>
+                <br>
+                <label>Number of Seeds Plants: </label><input style='width: 75px;' type=number v-model='numSeedsPlanted'>
+            </div>
+            <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
+                <label>Rows per Bed: </label><input style='width: 75px;' type=number v-model='numRowBed'>
+                <div style='display: flex;text-align:center;padding-top: 25px;'>
+                    <label>Number of Feet: </label><input style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
+                </div>
+            </div>
+       </fieldset>
+       <button class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
     </div>
 
     <script>
@@ -48,6 +54,7 @@
                 'dropdown-with-all': DropdownWithAllComponent
             },
             data:{
+                sessionToken: null,
                 selectedDate: dayjs().format('YYYY-MM-DD').toString(),
                 selectedCrop: null,
                 selectedArea: null,
@@ -82,6 +89,11 @@
                 },
                 setNewFeetUnit(newFeetUnit){
                     this.selectedFeetUnit = newFeetUnit
+                },
+                saveLog(){
+                    /*createRecord('', this.logData, this.sessionToken).then((response) => {
+                        console.log(response)
+                    })*/
                 }
             },
             computed: {
@@ -95,9 +107,7 @@
                     if(this.selectedSeedingType == ''){
                         return true
                     }
-                    if(this.selectedFeetUnit == null){
-                        return true
-                    }
+                    
                     if(this.selectedTimeUnit == null){
                         return true
                     }
@@ -109,6 +119,9 @@
                             return true
                         }
                         if(this.numRowBed == 0){
+                            return true
+                        }
+                        if(this.selectedFeetUnit == null){
                             return true
                         }
                     }
@@ -128,6 +141,83 @@
                         return true
                     }
                     return false
+                },
+                logData(){
+                    /*seeding = {
+                        "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
+                        "type": "farm_seeding",
+                        "timestamp": dayjs(this.selectedDate).unix(),
+                        "done": "1",  //any seeding recorded is done.
+                        "notes": {
+                            "value": this.comments,
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": plantingID,   # Associated planting
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": seedingTypeID,
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": areaMap[row[3]],
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": [
+                            {
+                                "measure": "length", 
+                                "value": row[6],  # total row feet
+                                "unit": {
+                                    "id": rowFtID, 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Amount planted"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": row[5],
+                                "unit": {
+                                    "id": rowsID,
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Rows/Bed"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": row[8], 
+                                "unit": {
+                                    "id": hoursID,
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": 1, 
+                                "unit": {
+                                    "id": peopleID,
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ],
+                        "created": YYYYMMDDtoTimestamp(row[1]),
+                        "uid": {
+                            "id": userMap[row[11]],
+                            "resource": "user"
+                        },
+                        "log_owner": [{
+                            "id": userMap[row[11]],
+                            "resource": "user"
+                        }],
+                        "lot_number": row[15],
+                        "data": json.dumps({ 
+                            "crop_tid": cropMap[row[2]] 
+                        })
+                    }*/
                 }
             },
             created(){
@@ -137,6 +227,9 @@
                 })
                 getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
                     this.areaArray = this.areaArray.map((h) => h.name)
+                })
+                getSessionToken().then((response) => {
+                    this.sessionToken = response
                 })
             }
         })
