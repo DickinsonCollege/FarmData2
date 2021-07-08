@@ -73,6 +73,9 @@
                 areaArray: [],
                 timeUnits: ['minutes', 'hours'],
                 feetUnits: ['row', 'bed'],
+                cropToIDMap: new Map(),
+                userToIDMap: new Map(),
+                plantingId: 0,
             },
             methods:{
                 setNewDate(newDate){
@@ -91,6 +94,9 @@
                     this.selectedFeetUnit = newFeetUnit
                 },
                 saveLog(){
+                    createRecord('/farm_asset.json?type=planting', this.plantingLogData, this.sessionToken).then((response) => {
+                        this.plantingId = response.data.id
+                    })
                     /*createRecord('', this.logData, this.sessionToken).then((response) => {
                         console.log(response)
                     })*/
@@ -141,6 +147,18 @@
                         return true
                     }
                     return false
+                },
+                plantingLogData(){
+                    planting = {
+                        "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
+                        "type": "planting",
+                        "crop": [{
+                            "id": this.cropToIDMap.get(this.selectedCrop),
+                            "resource": "taxonomy_term"
+                        }],
+                        "created": dayjs(this.selectedDate).unix(),
+                    }
+                    return planting
                 },
                 logData(){
                     /*seeding = {
@@ -230,6 +248,12 @@
                 })
                 getSessionToken().then((response) => {
                     this.sessionToken = response
+                })
+                getCropToIDMap().then((response) => {
+                    this.cropToIDMap = response
+                })
+                getUserToIDMap().then((response) => {
+                    this.userToIDMap = response
                 })
             }
         })
