@@ -15,7 +15,13 @@
 
        <br>
 
-       <label>Number of Workers:</label><input type=number v-model='numWorkers'>
+       <label>Number of Workers: </label><input type=number v-model='numWorkers'>
+       <br>
+       <div style='display: flex;'>
+            <label>Time Spent: </label><input type=number v-model='time'>
+            <dropdown-with-all :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
+       </div>
+       <label>Comments: </label><textarea></textarea>
     </div>
 
     <script>
@@ -30,9 +36,12 @@
                 selectedCrop: null,
                 selectedArea: null,
                 selectedSeedingType: null,
-                numWorkers: 0, 
+                selectedTimeUnit: null,
+                numWorkers: 0,
+                time: 0, 
                 cropArray: [],
                 areaArray: [],
+                timeUnits: ['minutes', 'hours'],
             },
             methods:{
                 setNewDate(newDate){
@@ -50,6 +59,9 @@
                 setDirectSeeding(){
                     this.selectedSeedingType = 'Direct Seedings'
                 },
+                setNewTimeUnit(newTimeUnit){
+                    this.selectedTimeUnit = newTimeUnit
+                }
             },
             created(){
                 let fullResponse = []
