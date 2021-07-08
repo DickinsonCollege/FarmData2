@@ -2,16 +2,16 @@
     <div id="seedingReport" v-cloak>
         <h1 class="text-center">Seeding Report</h1>
         <fieldset class="panel panel-default center-block" style="width: 50%;">
-            <legend class="panel-heading" style="background-color: #d9edf7;">Set Dates</legend>
+            <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
                 <date-range-selection class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
-                <button class="btn center-block btn-info" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
+                <button class="btn center-block btn-primary" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
             </div>
         </fieldset>
         <div v-if='inputsVisible'>
             <fieldset class="center-block panel panel-default" style="width: 75%;">
-                <legend class="panel-heading" style="background-color: #dff0d8">Filters</legend>
+                <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                 <div style="display: flex; width: 100%;">
                     <dropdown-with-all class="center-block"  :dropdown-list=seedingList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
                 
@@ -27,7 +27,7 @@
 
             <div style="display: flex; width: 100%;">
                 <fieldset class="center-block panel panel-default" style="width: 50%;">
-                    <legend class="panel-heading" style="background-color: #dff0d8;">Direct Seeding Summary</legend>
+                    <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
                     <p style="margin-left: 5%;"> Total Row/Bed Planted: <b>{{ totalRowBed }}</b></p>
                     <p style="margin-left: 5%;"> Total Row Feet Planted: <b>{{ totalRowFeet }}</b></p>
                     <p style="margin-left: 5%;">Total Bed Feet Planted: <b>{{ totalBedFeet }}</b></p>
@@ -36,7 +36,7 @@
                     <p style="margin-left: 5%;">Total Row Feet per Hour: <b>{{ totalRowFeetPerHour }}</b></p>
                 </fieldset>
                 <fieldset class="center-block panel panel-default" style="width: 47%;">
-                    <legend class="panel-heading" style="background-color: #dff0d8">Tray Seeding Summary</legend>
+                    <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
                     <p style="margin-left: 5%;">Total Number of Tray Seeds Planted: <b>{{ traySeedsPlanted }}</b></p>
                     <p style="margin-left: 5%;">Total Number of Trays: <b>{{ totalNumTrays }}</b></p>
                     <p style="margin-left: 5%;">Total Hours Worked: <b>{{ totalTraySeedingHours }}</b></p>
