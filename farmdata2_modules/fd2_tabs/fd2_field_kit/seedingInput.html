@@ -35,9 +35,9 @@
             <label>Time Spent: </label><input type=number v-model='time'>
             <dropdown-with-all :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
        </div>
-       <label>Comments: </label><textarea></textarea>
+       <label>Comments: </label><textarea v-model='comments'></textarea>
 
-       <button>Submit</button>
+       <button :disabled='formNotCompleted'>Submit</button>
     </div>
 
     <script>
@@ -54,6 +54,7 @@
                 selectedSeedingType: '',
                 selectedTimeUnit: null,
                 selectedFeetUnit: null,
+                comments: '',
                 numWorkers: 0,
                 time: 0, 
                 numOfTrays: 0,
@@ -81,6 +82,52 @@
                 },
                 setNewFeetUnit(newFeetUnit){
                     this.selectedFeetUnit = newFeetUnit
+                }
+            },
+            computed: {
+                formNotCompleted(){
+                    if(this.selectedCrop == null){
+                        return true
+                    }
+                    if(this.selectedArea == null){
+                        return true
+                    }
+                    if(this.selectedSeedingType == ''){
+                        return true
+                    }
+                    if(this.selectedFeetUnit == null){
+                        return true
+                    }
+                    if(this.selectedTimeUnit == null){
+                        return true
+                    }
+                    if(this.time == 0){
+                        return true
+                    }
+                    if(this.selectedSeedingType == 'Direct Seedings'){
+                        if(this.numFeet == 0){
+                            return true
+                        }
+                        if(this.numRowBed == 0){
+                            return true
+                        }
+                    }
+                    if(this.selectedSeedingType == 'Tray Seedings'){
+                        if(this.numCellsPerTray == 0){
+                            return true
+                        }
+                        if(this.numOfTrays == 0){
+                            return true
+                        }
+                        
+                        if(this.numSeedsPlanted == 0){
+                            return true
+                        }
+                    }
+                    if(this.numWorkers == 0){
+                        return true
+                    }
+                    return false
                 }
             },
             created(){
