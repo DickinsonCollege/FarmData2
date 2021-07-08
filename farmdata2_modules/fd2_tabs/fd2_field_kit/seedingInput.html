@@ -10,8 +10,22 @@
 
        <br>
 
-       <input type='radio' name='typeOfSeeding' @click='setTraySeeding'><label>Tray Seedings</label>
-       <input type='radio' name='typeOfSeeding' @click='setDirectSeeding'><label>Direct Seedings</label>
+       <input type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seedings</label>
+       <input type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seedings</label>
+
+       <br>
+
+       <div v-if='(selectedSeedingType=="Tray Seedings")'>
+            <label>Number of Trays Planted: </label><input type=number v-model='numOfTrays'>
+            <label>Cells per Tray: </label><input type=number v-model='numCellsPerTray'>
+            <label>Number of Seeds Plants: </label><input type=number v-model='numSeedsPlanted'>
+       </div>
+       <div v-if='(selectedSeedingType=="Direct Seedings")'>
+            <label>Rows per Bed: </label><input type=number v-model='numRowBed'>
+            <div style='display: flex;'>
+                <label>Number of Feet: </label><input type=number v-model='numFeet'><dropdown-with-all :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
+            </div>
+       </div>
 
        <br>
 
@@ -22,6 +36,8 @@
             <dropdown-with-all :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
        </div>
        <label>Comments: </label><textarea></textarea>
+
+       <button>Submit</button>
     </div>
 
     <script>
@@ -35,13 +51,20 @@
                 selectedDate: dayjs().format('YYYY-MM-DD').toString(),
                 selectedCrop: null,
                 selectedArea: null,
-                selectedSeedingType: null,
+                selectedSeedingType: '',
                 selectedTimeUnit: null,
+                selectedFeetUnit: null,
                 numWorkers: 0,
                 time: 0, 
+                numOfTrays: 0,
+                numCellsPerTray: 0,
+                numSeedsPlanted: 0,
+                numRowBed: 0,
+                numFeet: 0,
                 cropArray: [],
                 areaArray: [],
                 timeUnits: ['minutes', 'hours'],
+                feetUnits: ['row', 'bed'],
             },
             methods:{
                 setNewDate(newDate){
@@ -53,14 +76,11 @@
                 setNewArea(newArea){
                     this.selectedArea = newArea
                 },
-                setTraySeeding(){
-                    this.selectedSeedingType = 'Tray Seedings'
-                },
-                setDirectSeeding(){
-                    this.selectedSeedingType = 'Direct Seedings'
-                },
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
+                },
+                setNewFeetUnit(newFeetUnit){
+                    this.selectedFeetUnit = newFeetUnit
                 }
             },
             created(){
