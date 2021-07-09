@@ -1,6 +1,9 @@
 describe('Testing for the seeding report page', () => {
-    it('visits the page and logs in', () => {
+    beforeEach(() => {
         cy.login('manager1', 'farmdata2')
+    })
+    
+    it('visits the page and logs in', () => {
         cy.visit('/farm/fd2-barn-kit/seedingReport')
     })
 
@@ -16,7 +19,7 @@ describe('Testing for the seeding report page', () => {
             .should('exist')
             .type('2019-05-01')
             
-        /**cy.get('[data-cy=date-select]')
+        cy.get('[data-cy=date-select]')
             .each(($el, index, $all) => {
                 if (index == 0) {
                     expect($el).to.have.value('2019-01-01')
@@ -24,7 +27,7 @@ describe('Testing for the seeding report page', () => {
                 else if (index == 1){
                     expect($el).to.have.value('2019-05-01')
                 }
-            })*/
+            })
     })
 
     it('generate report button renders the rest of the page', () => {

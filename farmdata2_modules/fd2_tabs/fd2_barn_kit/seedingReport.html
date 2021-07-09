@@ -1,27 +1,14 @@
 <body>
     <div id="seedingReport" v-cloak>
         <h1 class="text-center">Seeding Report</h1>
-<<<<<<< HEAD
-        <div class="center-block">
-            <fieldset class="panel panel-default center-block" style="width: 50%;">
-                <legend class="panel-heading" style="background-color: #d9edf7;">Set Dates</legend>
-                <div style="display: flex;width: 100%; padding: 7px">
-                    <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
-
-                    <button data-cy="generate-rpt-btn" class="btn center-block btn-info" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
-                </div>
-            </fieldset>
-        </div>
-=======
         <fieldset class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
-                <date-range-selection class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+                <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
-                <button class="btn center-block btn-primary" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
+                <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!inputsVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
             </div>
         </fieldset>
->>>>>>> seedingReportPage
         <div v-if='inputsVisible'>
             <fieldset class="center-block panel panel-default" style="width: 75%;">
                 <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
