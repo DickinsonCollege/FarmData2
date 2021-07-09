@@ -88,9 +88,11 @@ def addPlanting(row):
     # there wasn't a record for it in the seeding data so the seeding date was
     # hand modified in the sample data to be 0000-00-00 (see above)
     # In practice those with seeding dates may have been ones where there 
-    # was a planting but it was not recoreded.  there seems to be no
+    # was a planting but it was not recoreded.  There seems to be no
     # real harm here in treating them like the other 0000-00-00's for the sample data.
-    plantingDate = '0000-00-00'
+
+    # In all cases use the transplanting date as the date of the planting.
+    plantingDate = row[8]
 
     planting = {
         "name": plantingDate + " " + row[3] + " " + row[2],
