@@ -23,11 +23,11 @@ flatsID = getTermID("FLATS")
 hoursID = getTermID("HOURS")
 peopleID = getTermID("PEOPLE")
 
-# Add the Log Category
-transplantingsCatID = addSeedingCategory("Transplantings")
-
 def main():
     print("Adding Transplantings...")
+
+    # Add the Log Category
+    transplantingsCatID = addSeedingCategory("Transplantings")
 
     # Add the Transplatings Data
     with open('sampleData/transplantings.csv', 'r') as tFile:
