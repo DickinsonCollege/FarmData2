@@ -75,6 +75,7 @@
                 feetUnits: ['row', 'bed'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
+                areaToIDMap: new Map(),
                 plantingId: 0,
             },
             methods:{
@@ -94,12 +95,12 @@
                     this.selectedFeetUnit = newFeetUnit
                 },
                 saveLog(){
-                    createRecord('/farm_asset.json?type=planting', this.plantingLogData, this.sessionToken).then((response) => {
+                    createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
                     })
-                    /*createRecord('', this.logData, this.sessionToken).then((response) => {
+                    createRecord('/log', this.logData, this.sessionToken).then((response) => {
                         console.log(response)
-                    })*/
+                    })
                 }
             },
             computed: {
@@ -161,7 +162,7 @@
                     return planting
                 },
                 logData(){
-                    /*seeding = {
+                    seeding = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
                         "type": "farm_seeding",
                         "timestamp": dayjs(this.selectedDate).unix(),
@@ -171,71 +172,64 @@
                             "format": "farm_format"
                         },
                         "asset": [{ 
-                            "id": plantingID,   # Associated planting
+                            "id": this.plantingId,   //Associated planting
                             "resource": "farm_asset"
                         }],
                         "log_category": [{
-                            "id": seedingTypeID,
+                            "id": "230",//currently only direct seeding
                             "resource": "taxonomy_term"
                         }],
                         "movement": {
                             "area": [{
-                                "id": areaMap[row[3]],
+                                "id": this.areaToIDMap.get(this.selectedArea),
                                 "resource": "taxonomy_term"
                             }]
                         },
                         "quantity": [
                             {
                                 "measure": "length", 
-                                "value": row[6],  # total row feet
+                                "value": this.numFeet,  //total row feet
                                 "unit": {
-                                    "id": rowFtID, 
+                                    "id": "213", 
                                     "resource": "taxonomy_term"
                                 },
                                 "label": "Amount planted"
                             },
                             {
                                 "measure": "ratio", 
-                                "value": row[5],
+                                "value": this.numRowBed,
                                 "unit": {
-                                    "id": rowsID,
+                                    "id": "228",
                                     "resource": "taxonomy_term"
                                 },
                                 "label": "Rows/Bed"
                             },
                             {
                                 "measure": "time", 
-                                "value": row[8], 
+                                "value": this.time, 
                                 "unit": {
-                                    "id": hoursID,
+                                    "id": "219",
                                     "resource": "taxonomy_term"
                                 },
                                 "label": "Labor"
                             },
                             {
                                 "measure": "count", 
-                                "value": 1, 
+                                "value": this.numWorkers, 
                                 "unit": {
-                                    "id": peopleID,
+                                    "id": "209",
                                     "resource": "taxonomy_term"
                                 },
                                 "label": "Workers"
                             },
                         ],
-                        "created": YYYYMMDDtoTimestamp(row[1]),
-                        "uid": {
-                            "id": userMap[row[11]],
-                            "resource": "user"
-                        },
-                        "log_owner": [{
-                            "id": userMap[row[11]],
-                            "resource": "user"
-                        }],
-                        "lot_number": row[15],
-                        "data": json.dumps({ 
-                            "crop_tid": cropMap[row[2]] 
+                        "created": dayjs().unix(),
+                        "lot_number": "N/A (No Variety)",
+                        "data": JSON.stringify({ 
+                            "crop_tid": this.cropToIDMap.get(this.selectedCrop)
                         })
-                    }*/
+                    }
+                    return seeding
                 }
             },
             created(){
@@ -254,6 +248,9 @@
                 })
                 getUserToIDMap().then((response) => {
                     this.userToIDMap = response
+                })
+                getAreaToIDMap().then((response) => {
+                    this.areaToIDMap = response
                 })
             }
         })

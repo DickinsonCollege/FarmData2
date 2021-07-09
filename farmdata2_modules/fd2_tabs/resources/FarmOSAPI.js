@@ -74,6 +74,11 @@ function getAreaToIDMap(){
     return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
 }
 
+function getUnitToIDMap(){
+    //creates and returns a map from unit name to unit id
+    return getMap()
+}
+
 function getMap(url, key, value){
     // Utility function used by the above functions to get the appropraite maps.
     return new Promise((resolve, reject) => {
