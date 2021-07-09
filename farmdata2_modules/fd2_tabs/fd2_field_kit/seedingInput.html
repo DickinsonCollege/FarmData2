@@ -202,10 +202,18 @@
                     return seeding
                 },
                 quantityDirectSeeding(){
+                    let time = this.time
+                    let feet = this.numFeet
+                    if(this.selectedTimeUnit == 'minutes'){
+                        time = time / 60
+                    }
+                    if(this.selectedFeetUnit == 'bed'){
+                        feet = feet * this.numRowBed
+                    }
                     quantity = [
                         {
                             "measure": "length", 
-                            "value": this.numFeet,  //total row feet
+                            "value": feet,  //total row feet
                             "unit": {
                                 "id": "213", 
                                 "resource": "taxonomy_term"
@@ -223,7 +231,7 @@
                         },
                         {
                             "measure": "time", 
-                            "value": this.time, 
+                            "value": time, 
                             "unit": {
                                 "id": "219",
                                 "resource": "taxonomy_term"
