@@ -262,6 +262,7 @@ def translateArea(line, area):
         "ALF 2": "ALF-2",
         "ALF 3": "ALF-3",
         "ALF 4": "ALF-4",
+        "ASPARAGUS": "M",   # other asparagus harvests happen here.
         "1-PASTURE": "PASTURE"
     }
 
