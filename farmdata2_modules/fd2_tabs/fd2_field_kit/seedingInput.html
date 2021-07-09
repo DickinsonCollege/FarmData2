@@ -162,6 +162,13 @@
                     return planting
                 },
                 logData(){
+                    let quantityUnits = []
+                    if(this.selectedSeedingType == "Direct Seedings"){
+                        quantityUnits = this.quantityDirectSeeding
+                    }
+                    else if (this.selectedSeedingType == "Tray Seedings"){
+                        quantityUnits = this.quantityTraySeeding
+                    }
                     seeding = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
                         "type": "farm_seeding",
@@ -185,44 +192,7 @@
                                 "resource": "taxonomy_term"
                             }]
                         },
-                        "quantity": [
-                            {
-                                "measure": "length", 
-                                "value": this.numFeet,  //total row feet
-                                "unit": {
-                                    "id": "213", 
-                                    "resource": "taxonomy_term"
-                                },
-                                "label": "Amount planted"
-                            },
-                            {
-                                "measure": "ratio", 
-                                "value": this.numRowBed,
-                                "unit": {
-                                    "id": "228",
-                                    "resource": "taxonomy_term"
-                                },
-                                "label": "Rows/Bed"
-                            },
-                            {
-                                "measure": "time", 
-                                "value": this.time, 
-                                "unit": {
-                                    "id": "219",
-                                    "resource": "taxonomy_term"
-                                },
-                                "label": "Labor"
-                            },
-                            {
-                                "measure": "count", 
-                                "value": this.numWorkers, 
-                                "unit": {
-                                    "id": "209",
-                                    "resource": "taxonomy_term"
-                                },
-                                "label": "Workers"
-                            },
-                        ],
+                        "quantity": quantityUnits,
                         "created": dayjs().unix(),
                         "lot_number": "N/A (No Variety)",
                         "data": JSON.stringify({ 
@@ -230,6 +200,97 @@
                         })
                     }
                     return seeding
+                },
+                quantityDirectSeeding(){
+                    quantity = [
+                        {
+                            "measure": "length", 
+                            "value": this.numFeet,  //total row feet
+                            "unit": {
+                                "id": "213", 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": this.numRowBed,
+                            "unit": {
+                                "id": "228",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": this.time, 
+                            "unit": {
+                                "id": "219",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.numWorkers, 
+                            "unit": {
+                                "id": "209",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                    return quantity
+                },
+                quantityTraySeeding(){
+                    quantity = [
+                        {
+                            "measure": "count", 
+                            "value": this.numSeedsPlanted,  //number of seed planted
+                            "unit": {
+                                "id": "128", 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Seeds planted"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.numOfTrays,  //number of flats(trays)
+                            "unit": {
+                                "id": "211", 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Flats used"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": this.numCellsPerTray,  //cells per flat
+                            "unit": {
+                                "id": "227",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Cells/Flat"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": this.time,  //hours worked
+                            "unit": {
+                                "id": "219",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.numWorkers,
+                            "unit": {
+                                "id": "209",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                    return quantity
                 }
             },
             created(){
