@@ -115,5 +115,35 @@ describe('Testing for the seeding report page', () => {
                     expect($crop[0].innerText).to.equal('LEEK')
                 })
             })
+
+        cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+            cy.get($dropdowns[1])
+                .select('All')
+        })
     })
+
+    it.only('sorts by field', () => {
+        cy.get('[data-cy=area-dropdown]')
+            .should('exist')
+        cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+            cy.get($dropdowns[2]).should('exist')
+                .select('CHUAU')
+                .should('have.value', 'CHUAU')
+        })
+
+        cy.get('[data-cy=object-test]')
+            .each(($el, index, $all) => {
+                cy.get($el).children()
+                .first().next().next().then(($crop) => {
+                    expect($crop[0].innerText).to.equal('CHUAU')
+                })
+            })
+        
+        cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+            cy.get($dropdowns[2])
+                .select('All')
+        })
+    })
+
+    
 })
