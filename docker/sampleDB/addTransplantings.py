@@ -17,11 +17,11 @@ areaMap = getAreaMap()
 userMap = getUserMap()
 
 # Get the term IDs that are needed for quantities.
-rowFtID = getTermID("Row Feet")
-rowsID = getTermID("Rows/Bed")
-flatsID = getTermID("Flats")
-hoursID = getTermID("Hours")
-peopleID = getTermID("People")
+rowFtID = getTermID("ROW FEET")
+rowsID = getTermID("ROWS/BED")
+flatsID = getTermID("FLATS")
+hoursID = getTermID("HOURS")
+peopleID = getTermID("PEOPLE")
 
 # Add the Log Category
 transplantingsCatID = addSeedingCategory("Transplantings")
