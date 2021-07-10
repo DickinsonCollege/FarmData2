@@ -307,6 +307,10 @@ def translateUser(line, user):
         "wolfje": "worker1",
         "binhammm": "worker2",
         "baislepa": "worker3",
+        "tongt": "worker4",
+        "nusekabc": "worker5",
+        "yaojo": "worker1",
+        "baurc": "worker2",
     }
 
     if user in translations:
