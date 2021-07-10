@@ -13,7 +13,18 @@
 #  8: "hours"
 #  9: "comments"
 # 10: blank
-
+#
+# Notes:
+#  - There are a few harvests in this file for STRAWBERRIES, ASPARAGUS
+#    and ROSEMARY that do not have matching plantings in the Jan 1, 2019 - 
+#    July 15, 2020 time frame.  Their earlier plantings were added to the 
+#    directSeedings.csv file.
+#  - Harvests for KALE from area K in 2019 that appear in this file
+#    are remapped by addHarvests.py to one of ["CHUAU-4","T", "O", "J", "Z", "W", "ALF-4"]
+#    because there is no record of KALE in area K at that time.
+#  - Harvests for BRUSSEL SPROUTS in area K in 2019 that appear in this 
+#    file are remapped by addHarvests.py to J becasue there is no record
+#    of BRUSSLE SPROUTS in J at that time.
 
 "9401","halpinj","1","2019-05-07","GHANA-2","SPINACH","17","POUND","0.03","",
 "9402","halpinj","1","2019-05-07","CHUAU-4","LETTUCE, RED","40","HEAD","0.0166667","",
