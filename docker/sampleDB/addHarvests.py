@@ -59,7 +59,7 @@ def addHarvest(row, plantingID):
     harvest = {
         "quantity": [
             {
-                "measure": measuresMap[row[7]],
+                "measure": measureMap[row[7]],
                 "value": row[6],
                 "unit": {
                     "id": unitMap[row[7]],
