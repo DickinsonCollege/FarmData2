@@ -370,3 +370,17 @@ def getUnitsMap():
         unitsMap[name] = unit['tid']
 
     return unitsMap
+
+# Get a map of the units from name to measure
+# The measure is the parent in the unit and needs to be made lowercase.
+def getMeasuresMap():
+    unitsVocabID = getVocabularyID('farm_quantity_units')
+    allUnits = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + unitsVocabID)
+    measuresMap = {}
+
+    for unit in allUnits:
+        if len(unit['parent']) > 0:
+            name = unit['name']
+            measuresMap[name] = unit['parent'][0]['name'].lower()
+
+    return measuresMap
