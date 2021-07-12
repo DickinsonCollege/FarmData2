@@ -64,7 +64,6 @@ let CustomTableComponent = {
         return {
             rowToEdit: null,
             indexesToChange: [],
-            isVisible: [],
             inputType: []
         }
     },
@@ -100,17 +99,20 @@ let CustomTableComponent = {
                 return false
             }
         },
+        isVisible() {
+            let updatedVis = []
+            if (this.visibleColumns == null) {
+                for (i = 0; i < this.headers.length; i++) {
+                    updatedVis.push(true);
+                }
+            }
+            else {
+                updatedVis = this.visibleColumns
+            }
+            return updatedVis;
+        }
     },
     created() {
-        if (this.visibleColumns == null) {
-            for (i = 0; i < this.headers.length; i++) {
-                this.isVisible.push(true);
-            }
-        }
-        else {
-            this.isVisible = this.visibleColumns
-        }
-
         if (this.inputOptions == null) {
             for (i = 0; i < this.headers.length; i++) {
                 this.inputType.push({'type': 'text'});
