@@ -24,6 +24,7 @@ Direct Seeings |  182 |  101 |  283  |
 Tray Seedings  |  378 |  313 |  691  |
 Total Seedings |  560 |  414 |  974  |
 Plantings      |  328 |  246 |  574  | A planting may have multiple sedings.
+Transplantings |  171 |  117 |  288  | Plantings are transplanted and thus may include multiple tray seedings.
 
 The sub-sections below give more compolete details of each part of the sample database.
 
@@ -69,7 +70,7 @@ The terms for the Farm Crop Families vocabulary can be accessed with the request
 GET http://localhost/taxonomy_term.json?bundle=farm_crop_families"
 ```
 
-The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE. 
+The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE.  In addition, each crop has a default unit from the Farm Quantity Units vocabulary (see below) and also a list of conversion factors for converting from the default units to any other unit that may be used for the crop.
 
 The terms for the Farm Crops vocabulary can be accessed with the request:
 ```
@@ -129,7 +130,15 @@ GET http://localhost/farm_asset.json?type=planting"
 ```
 
 Notes:
-- The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to location given in the Seeding Log that references it. Similarly, if the Planting Asset was creatd by a tray seeding, then its location can also be changed by a transplanting operation.
+- The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to location given in the Seeding Log that references it. Similarly, if the Planting Asset was created by a tray seeding, then its location can also be changed by a transplanting operation.
 
 ## Transplanting Logs ##
 
+Each _Transplanting Log_ corresponsds to the transplanting of a _Planting Asset_ created by one or more _Tray Seedings_ from a greenhouse to a field or bed. When a Transplanting Log is created it includes a _Movement_ attribute that indicates the new location of the planting.  The farmOS system uses the Movement Attribute to automatically creates a _Movement Log_ indicating the new location of the Planting Asset.  Future requests for the Planting Asset will then show it in the updated location.
+
+All Transplanting Logs can be accessed with the request:
+```
+GET http://localhost/log.json?type=farm_transplanting"
+```
+
+The Transplanting Logs in the FarmData2 sample database are created by the `addTransplantings.py` script using the data in the `sampleData/transplantings.csv` file.

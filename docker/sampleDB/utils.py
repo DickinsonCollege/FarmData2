@@ -51,6 +51,12 @@ def getTermID(term):
         auth=HTTPBasicAuth(user, passwd))
     return response.json()['list'][0]['tid']
 
+# Get a vocbulary term with the specified tid.
+def getTerm(tid):
+    response = requests.get("http://localhost/taxonomy_term.json?tid=" + tid, 
+        auth=HTTPBasicAuth(user, passwd))
+    return response.json()['list'][0]
+
 def addSeedingCategory(category):
     # Get the id of the Farm Log Categories Vocabulary so we can add Direct and Tray seedings.
     logCatsVocabID = getVocabularyID('farm_log_categories')
@@ -222,7 +228,8 @@ def translateCrop(line, crop):
     if crop in translations:
         return translations[crop]
     else:
-        errPrint("Line " + str(line) + ": Error - crop " + crop + " is not in Farm Crops/Varities vocabulary.")
+        errPrint("Line " + str(line) + ": Error - crop " + crop + " is not in Farm Crops/Varities vocab")
+        errPrint("Line " + str(line) + ": Error - crop " + crop + " is not in Farm Crops/Varities/vocabulary.")
         errPrint("  Add a translation for " + crop + " in translateCrop in utils.py")
         sys.exit(-1)
 
@@ -308,7 +315,7 @@ def translateUser(line, user):
         errPrint("  Add a translation for " + user + " in translateUser in utils.py")
         sys.exit(-1)
 
-# Validate and possibly remap the users 
+# Validate and possibly remap a user 
 def validateUser(line, user, userMap):
     if user in userMap:
         return user
@@ -317,7 +324,7 @@ def validateUser(line, user, userMap):
 
 # Get a map of users from name to id.
 def getUserMap():
-    allUsers = getAllPages("http://localhost/user.json")
+    allUsers = getAllPages("http://localhost/user.json?")
     userMap = {}
 
     for user in allUsers:
@@ -325,3 +332,36 @@ def getUserMap():
         userMap[name] = user['uid']
 
     return userMap
+
+# Perform translations on unit names so that the units in the 
+# data match units in the sample data base.
+def translateUnit(line, unit):
+    translations = {
+        #"Name in DB": "Correct Name"
+    }
+
+    if unit in translations:
+        return translations[unit]
+    else:
+        errPrint("Line " + str(line) + ": Error - unit " + unit + " is not a known unit.")
+        errPrint("  Add a translation for " + unit + " in translateUnits in utils.py")
+        sys.exit(-1)
+
+# Validate and possibly remap a unit
+def validateUnit(line, unit, unitMap):
+    if (unit in unitMap):
+        return unit
+    else:
+        return translateUnit(line, unit)
+
+# Get a map of the units from name to id.
+def getUnitsMap():
+    unitsVocabID = getVocabularyID('farm_quantity_units')
+    allUnits = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + unitsVocabID)
+    unitsMap = {}
+
+    for unit in allUnits:
+        name = unit['name']
+        unitsMap[name] = unit['tid']
+
+    return unitsMap
