@@ -26,7 +26,7 @@
             <br>
 
             <div style="display: flex; width: 100%;">
-                <fieldset class="center-block panel panel-default" style="width: 50%;">
+                <fieldset class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
                     <p style="margin-left: 5%;"> Total Row/Bed Planted: <b>{{ totalRowBed }}</b></p>
                     <p style="margin-left: 5%;"> Total Row Feet Planted: <b>{{ totalRowFeet }}</b></p>
@@ -35,7 +35,7 @@
                     <p style="margin-left: 5%;">Total Bed Feet per Hour: <b>{{ totalBedFeetPerHour }}</b></p>
                     <p style="margin-left: 5%;">Total Row Feet per Hour: <b>{{ totalRowFeetPerHour }}</b></p>
                 </fieldset>
-                <fieldset class="center-block panel panel-default" style="width: 47%;">
+                <fieldset class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
                     <p style="margin-left: 5%;">Total Number of Tray Seeds Planted: <b>{{ traySeedsPlanted }}</b></p>
                     <p style="margin-left: 5%;">Total Number of Trays: <b>{{ totalNumTrays }}</b></p>
@@ -56,20 +56,24 @@
             data: {
                 startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
+
                 inputsVisible: false,
                 seedingLogs: [],
+                updateLog: [],
+
                 sessionToken: null,
                 selectedCrop: 'All',
                 selectedArea: 'All',
                 selectedSeeding: 'All',
+
                 headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num Workers','Varieties', 'Comments','User'],
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
+
                 IDToCropMap: new Map(),
                 cropToIDMap: new Map(),
                 idToUserMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
-                updateLog: [],
             },
             methods: {
                 startDateChange(selectedDate){
