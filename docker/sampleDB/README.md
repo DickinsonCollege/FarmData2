@@ -12,21 +12,22 @@ A sample database is provided with FarmData2 for development and testing purpose
 
 Some useful properties of the sample data:
 - It is real data from the Dickinson College farm.
-- The dta runs from Jan 1, 2019 - July 15, 2020. So it includes:
+- The data runs from Jan 1, 2019 - July 15, 2020. So it includes:
   - One completed growing season (Jan 1 - Dec 31, 2019). 
   - One in progress growing season (Jan 1 - July 15, 2020).
 
 More details are included in the table below:
 
-Asset/Log Type | 2019 | 2020 | Total | Notes
----------------|------|------|-------|------
-Direct Seeings |  182 |  101 |  283  |
-Tray Seedings  |  378 |  313 |  691  |
-Total Seedings |  560 |  414 |  974  |
-Plantings      |  328 |  246 |  574  | A planting may have multiple sedings.
-Transplantings |  171 |  117 |  288  | Plantings are transplanted and thus may include multiple tray seedings.
+Asset/Log Type | 2017 | 2019 | 2020 | Total | Notes
+---------------|------|------|------|-------|-------|
+Direct Seeing  |    3 |  182 |  101 |  286  | 2017 seedings were harvested in 2019.
+Tray Seeding   |    - |  378 |  313 |  691  |
+Total Seedings |    3 |  560 |  414 |  977  |
+Planting       |    3 |  347 |  248 |  595  | A planting may have multiple sedings. A few plantings have no seedings.
+Transplanting  |    - |  171 |  117 |  288  | Plantings are transplanted and thus may include multiple tray seedings. A few transplantings do not have a tray seeding.
+Harvest        |    - | 1592 |  487 | 2079  |
 
-The sub-sections below give more compolete details of each part of the sample database.
+The sub-sections below give more complete details of each part of the sample database.
 
 ## People ##
 
@@ -142,3 +143,14 @@ GET http://localhost/log.json?type=farm_transplanting"
 ```
 
 The Transplanting Logs in the FarmData2 sample database are created by the `addTransplantings.py` script using the data in the `sampleData/transplantings.csv` file.
+
+## Harvest Logs ##
+
+Each _Harvest Log_ represents one harvesting event and is linked to the _Planting Asset_ from which the harvest occurred.
+
+All Harvest Logs can be accessed with the request:
+```
+GET http://localhost/log.json?type=farm_harvest"
+```
+
+The Harvest Logs in the FarmData2 sample database are created by the `addHarvests.py` script using the data in the `sampleData/harvests.csv` file.
