@@ -64,7 +64,6 @@ let CustomTableComponent = {
         return {
             rowToEdit: null,
             indexesToChange: [],
-            inputType: []
         }
     },
     methods: {
@@ -110,16 +109,18 @@ let CustomTableComponent = {
                 updatedVis = this.visibleColumns
             }
             return updatedVis;
-        }
-    },
-    created() {
-        if (this.inputOptions == null) {
-            for (i = 0; i < this.headers.length; i++) {
-                this.inputType.push({'type': 'text'});
+        },
+        inputType() {
+            let typeArray = []
+            if (this.inputOptions == null) {
+                for (i = 0; i < this.headers.length; i++) {
+                    typeArray.push({'type': 'text'});
+                }
             }
-        }
-        else {
-            this.inputType = this.inputOptions
+            else {
+                typeArray = this.inputOptions
+            }
+            return typeArray;
         }
     }
 }
