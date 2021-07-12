@@ -241,7 +241,7 @@
                         let numOfTrays = 0
                         let cellsPerTray = 0
                         let hours = 0
-                        let numWorker = 0
+                        let numWorkers = 0
                         if(h.log_category[0].name === 'Direct Seedings'){
                             rowBed = h.quantity[1].value
                             rowFeet = h.quantity[0].value
@@ -269,8 +269,8 @@
                                 traySeeds,
                                 numOfTrays,
                                 cellsPerTray,
-                                hours,
-                                numWorkers,
+                                (Math.round(hours*100))/100,
+                                (Math.round(numWorkers*100))/100,
                                 h.lot_number,
                                 h.notes.value,
                                 $vm.idToUserMap.get(h.uid.id)
@@ -383,7 +383,7 @@
                     tableData.map(h => {
                         sumRowFeet = sumRowFeet + parseInt(h.data[5])
                     })
-                    return sumRowFeet
+                    return (Math.round(sumRowFeet*100))/100
                 },
                 /**
                  * returns the total bed feet for Direct Seeding
@@ -404,9 +404,9 @@
                     let filteredTableData = tableData.filter((x) => x.data[3] === 'Direct Seedings')
                     let sumHours = 0
                     filteredTableData.map(h => {
-                        sumHours = sumHours + (parseFloat(h.data[10])*parseFloat(h.data[11]))
+                        sumHours = sumHours + h.data[10]//*h.data[11])
                     })
-                    return sumHours
+                    return (Math.round(sumHours*100))/100
                 },
                 /**
                  * returns the bed feet per hour for the direct seedings. Calculated by dividing total bedfeet by total hours 
@@ -414,7 +414,7 @@
                 totalBedFeetPerHour(){
                     let bedFeet = this.totalBedFeet
                     let hours = this.totalDirectSeedingHours
-                    return bedFeet/hours
+                    return (Math.round((bedFeet/hours)*100))/100
                 },
                 /**
                  * returns the row feet per hour for the direct seedings. Calculated by dividing total rowfeet by total hours
@@ -422,7 +422,7 @@
                 totalRowFeetPerHour(){
                     let rowFeet = this.totalRowFeet
                     let hours = this.totalDirectSeedingHours
-                    return rowFeet/hours
+                    return (Math.round((rowFeet/hours)*100))/100
                 },
                 /**
                  * returns the total number of seeds planted for the tray seeding logs
@@ -444,7 +444,7 @@
                     tableData.map(h =>
                        totalTrays = totalTrays + parseFloat(h.data[8])
                     )
-                    return totalTrays
+                    return (Math.round(totalTrays*100))/100
                 },
                 /**
                  * returns the total hours worked for the Tray Seeding logs. Calculated by multiplying the hours and workers for each log
@@ -456,7 +456,7 @@
                     filteredTableData.map(h => {
                         sumHours = sumHours + (parseFloat(h.data[10])*parseFloat(h.data[11]))
                     })
-                    return sumHours
+                    return (Math.round(sumHours*100))/100
                 },
                 /**
                  * returns the average amount of seeds planted per hour. Calculated by having the total seedings planted divided by the total hours worked
@@ -464,7 +464,7 @@
                 aveSeedsPerHour(){
                     let seedsPlanted = this.traySeedsPlanted
                     let hours = this.totalTraySeedingHours
-                    return seedsPlanted/hours
+                    return (Math.round((seedsPlanted/hours)*100))/100
                 },
                 /**
                  * returns the structure for updating the quantity section of the Direct Seeding Logs. The values have not been updated yet.
