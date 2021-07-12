@@ -192,12 +192,16 @@
                             updateSeedingObject.quantity[2].value = updateObject['Cells Per Tray']
                         }   
                     }
+                    console.log('seeding log')
                     console.log(updateSeedingObject)
+                    console.log('planting log')
+                    console.log(updatePlantObject)
                     let seedingUrl = '/log/' + id
                     let plantingUrl = '/farm_asset' + this.updateLog[0].asset[0].id
-                    console.log(this.updateLog[0].asset[0].id)
                     //call updateRecord function to update planting log
-                    updateRecord(seedingUrl, updatePlantObject, this.sessionToken)
+                    if(!(Object.entries(updatePlantObject).length === 0)){
+                        updateRecord(seedingUrl, updatePlantObject, this.sessionToken)
+                    }
                     //call updateRecord function to update seeding log
                     updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
                 },
@@ -579,8 +583,8 @@
                     for(i=0; i < this.areaToIDMap.size; i++){
                         areaNameArray.push(areaKeyIterator.next().value)
                     }
-                    console.log(cropNameArray)
-                    console.log(areaNameArray)
+                    //console.log(cropNameArray)
+                    //console.log(areaNameArray)
                     return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
                 }
             },
