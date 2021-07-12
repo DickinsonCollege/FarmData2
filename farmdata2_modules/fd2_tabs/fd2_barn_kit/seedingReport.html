@@ -147,11 +147,10 @@
                             }
                         }
                         else if(keys[i] == 'Hours'){
-                            if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                                updateSeedingObject.quantity[2].value = updateObject['Hours']
-                            }
-                            else{
-                                updateSeedingObject.quantity[3].value = updateObject['Hours']
+                            for(i=0; i < updateSeedingObject.quantity.length; i++){
+                                if(updateSeedingObject.quantity[i].label == 'Labor'){
+                                    updateSeedingObject.quantity[i].value = updateObject['Hours']
+                                }
                             }
                         }
                         else if(keys[i] == 'Num Workers'){
