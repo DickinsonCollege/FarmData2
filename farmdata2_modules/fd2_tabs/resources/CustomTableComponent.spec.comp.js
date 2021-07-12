@@ -157,12 +157,22 @@ describe('custom table component', () => {
                 .first().should('be.disabled')
         })
 
-        it.only('disables the delete buttons when a row is being edited', () => {
+        it('disables the delete buttons when a row is being edited', () => {
             cy.get('[data-cy=edit-button]')
             .first().click()
 
             cy.get('[data-cy=delete-button]')
                 .first().should('be.disabled')
+        })
+
+        it('emits an event when the edit button is clicked', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('edit-clicked', spy)
+            cy.get('[data-cy=edit-button]')
+                .first().click()
+                .then(() => {
+                    expect(spy).to.be.calledWith()
+                })
         })
     })
 

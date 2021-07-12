@@ -69,6 +69,7 @@ let CustomTableComponent = {
     methods: {
         editRow: function(index){
             this.rowToEdit = index
+            this.$emit('edit-clicked')
         },
         finishRowEdit: function(id, row){
             this.rowToEdit = null
