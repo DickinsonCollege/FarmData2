@@ -156,6 +156,14 @@ describe('custom table component', () => {
             cy.get('[data-cy=edit-button]')
                 .first().should('be.disabled')
         })
+
+        it.only('disables the delete buttons when a row is being edited', () => {
+            cy.get('[data-cy=edit-button]')
+            .first().click()
+
+            cy.get('[data-cy=delete-button]')
+                .first().should('be.disabled')
+        })
     })
 
     context('with invisible columns', () => {
