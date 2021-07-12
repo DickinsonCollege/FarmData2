@@ -8,10 +8,12 @@ var deleteRecord = FarmOSAPI.deleteRecord
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
 var getIDToAreaMap = FarmOSAPI.getIDToAreaMap
+var getIDToUnitMap = FarmOSAPI.getIDToUnitMap
 
 var getUserToIDMap = FarmOSAPI.getUserToIDMap
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
 var getAreaToIDMap = FarmOSAPI.getAreaToIDMap
+var getUnitToIDMap = FarmOSAPI.getUnitToIDMap
 
 describe('API Request Function', () => {
     beforeEach(() => {
@@ -126,7 +128,7 @@ describe('API Request Function', () => {
         })
 
         it('getIDToCropMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToCropMap()).as('map')
+            cy.wrap(getIDToCropMap(), {timeout: 15000}).as('map')
             cy.get('@map').should((idToCropMap) => {
                 expect(idToCropMap).to.not.be.null
                 expect(idToCropMap).to.be.a('Map')
@@ -147,7 +149,7 @@ describe('API Request Function', () => {
         })
 
         it('getCropToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getCropToIDMap()).as('map')
+            cy.wrap(getCropToIDMap(), {timeout: 15000}).as('map')
             cy.get('@map').should((cropToIdMap) => {
                 expect(cropToIdMap).to.not.be.null
                 expect(cropToIdMap).to.be.a('Map')
@@ -162,7 +164,7 @@ describe('API Request Function', () => {
         })
 
         it('getIDToAreaMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToAreaMap(), {timeout: 10000}).as('map')
+            cy.wrap(getIDToAreaMap(), {timeout: 15000}).as('map')
             cy.get('@map').should((idToAreaMap) => {
                 expect(idToAreaMap).to.not.be.null
                 expect(idToAreaMap).to.be.a('Map')
@@ -180,7 +182,7 @@ describe('API Request Function', () => {
         })
 
         it('getAreaToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getAreaToIDMap(), {timeout: 10000}).as('map')
+            cy.wrap(getAreaToIDMap(), {timeout: 15000}).as('map')
             cy.get('@map').should((idToAreaMap) => {
                 expect(idToAreaMap).to.not.be.null
                 expect(idToAreaMap).to.be.a('Map')
@@ -191,6 +193,34 @@ describe('API Request Function', () => {
                 expect(idToAreaMap.get('CHUAU')).to.equal('15')
                 expect(idToAreaMap.get('CHUAU-1')).to.equal('16')
                 expect(idToAreaMap.get('CHUAU-5')).to.equal('20')
+            })
+        })
+        it('getUnitToIDMap creates correct map with the correct length', () => {
+            cy.wrap(getUnitToIDMap(), {timeout: 10000}).as('map')
+            cy.get('@map').should((unitToIDMap) => {
+                expect(unitToIDMap).to.not.be.null
+                expect(unitToIDMap).to.be.a('Map')
+                expect(unitToIDMap.size).to.equal(23)
+
+                expect(unitToIDMap.get('Seeds')).to.equal('210')
+                expect(unitToIDMap.get('Row Feet')).to.equal('213')
+                expect(unitToIDMap.get('Flats')).to.equal('211')
+                expect(unitToIDMap.get('Hours')).to.equal('219')
+                expect(unitToIDMap.get('People')).to.equal('209')
+            })
+        })
+        it('getIDToUnitMap creates correct map with the correct length', () => {
+            cy.wrap(getIDToUnitMap(), {timeout: 10000}).as('map')
+            cy.get('@map').should((IDToUnitMap) => {
+                expect(IDToUnitMap).to.not.be.null
+                expect(IDToUnitMap).to.be.a('Map')
+                expect(IDToUnitMap.size).to.equal(23)
+
+                expect(IDToUnitMap.get('210')).to.equal('Seeds')
+                expect(IDToUnitMap.get('213')).to.equal('Row Feet')
+                expect(IDToUnitMap.get('211')).to.equal('Flats')
+                expect(IDToUnitMap.get('219')).to.equal('Hours')
+                expect(IDToUnitMap.get('209')).to.equal('People')
             })
         })
     })
