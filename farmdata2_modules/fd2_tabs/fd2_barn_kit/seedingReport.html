@@ -13,7 +13,7 @@
             <fieldset class="center-block panel panel-default" style="width: 75%;">
                 <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                 <div style="display: flex; width: 100%;">
-                    <dropdown-with-all class="center-block"  :dropdown-list=seedingList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
+                    <dropdown-with-all class="center-block"  :dropdown-list=seedingTypeList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
                 
                     <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
@@ -336,12 +336,12 @@
                     }
                     let areas = new Set(areaArray)
                     let newAreaArray = Array.from(areas)
-                    return newAreaArray
+                    return newAreaArray.sort()
                 },
                 /**
                  * returns a sorted array of all the types of seeding in the current logs. If the area or crop does not equal 'All' then the array will only contain types of seeding that have the selected area and/or crop
                  */ 
-                seedingList(){
+                seedingTypeList(){
                     let areaFilter = []
                     if(this.selectedArea != 'All'){
                         areaFilter = this.seedingLogs.filter((x) => x.movement.area[0].name === this.selectedArea)
@@ -349,21 +349,21 @@
                     else{
                         areaFilter = this.seedingLogs.filter((x) => x)
                     }
-                    let seedingArray = []
+                    let seedingTypeArray = []
                     if(this.selectedCrop != 'All'){
                         let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
-                        seedingArray = cropFilter.map(h =>
+                        seedingTypeArray = cropFilter.map(h =>
                             h.log_category[0].name
                         )
                     }
                     else{
-                        seedingArray = areaFilter.map(h => 
+                        seedingTypeArray = areaFilter.map(h => 
                             h.log_category[0].name
                         )
                     }
-                    let seedings = new Set(seedingArray)
-                    let newSeedingArray = Array.from(seedings)
-                    return newSeedingArray
+                    let seedingsType = new Set(seedingTypeArray)
+                    let newSeedingTypeArray = Array.from(seedingsType)
+                    return newSeedingTypeArray.sort()
                 },
                 /**
                  * returns the total row/bed for the Direct Seedings
