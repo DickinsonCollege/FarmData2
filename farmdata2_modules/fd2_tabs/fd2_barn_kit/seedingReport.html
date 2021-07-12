@@ -136,7 +136,7 @@
                         else if(keys[i] == 'crop'){
                             updateSeedingObject['data'] = JSON.stringify({"crop_tid": this.cropToIDMap.get(updateObject['crop'])})
                             updatePlantObject['crop'] = [{
-                                "id": this.cropToIDMap.get(updatePlantObject['crop']),
+                                "id": this.cropToIDMap.get(updateObject['crop']),
                                 "resource": "taxonomy_term"
                             }]
                         }
