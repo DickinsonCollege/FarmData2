@@ -112,13 +112,14 @@
                 updateRow(updateObject, id){
                     console.log(updateObject)
                     this.updateLog = this.seedingLogs.filter((x) => x.id === id)
-                    let newUpdateObject = {}
+                    let updateSeedingObject = {}
+                    let updatePlantObject = {}
 
                     if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                        newUpdateObject['quantity'] = this.quantityDirectSeeding
+                        updateSeedingObject['quantity'] = this.quantityDirectSeeding
                     }
                     else{
-                        newUpdateObject['quantity'] = this.quantityTraySeeding
+                        updateSeedingObject['quantity'] = this.quantityTraySeeding
                     }
                     /**
                      * The Table component returns an object with the cells that were updated. We don't know how many or wich ones where updated, so we check for all possible cells that could have been updated.
@@ -126,63 +127,75 @@
                     let keys = Object.keys(updateObject)
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
-                            newUpdateObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
+                            updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
                         }
                         else if(keys[i] == 'crop'){
-                            newUpdateObject['data'] = JSON.stringify({"crop_tid": this.cropToIDMap.get(updateObject['crop'])})
+                            updateSeedingObject['data'] = JSON.stringify({"crop_tid": this.cropToIDMap.get(updateObject['crop'])})
+                            updatePlantObject['crop'] = [{
+                                "id": this.cropToIDMap.get(updatePlantObject['crop']),
+                                "resource": "taxonomy_term"
+                            }]
                         }
                         else if (keys[i] == 'area'){
-                            newUpdateObject['movement'] = { 'area': [{
+                            updateSeedingObject['movement'] = { 'area': [{
                                 "id": this.areaToIDMap.get(updateObject['area']),
                                 "resource": "taxonomy_term",}]
                             }
                         }
                         else if(keys[i] == 'Hours'){
                             if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                                newUpdateObject.quantity[2].value = updateObject['Hours']
+                                updateSeedingObject.quantity[2].value = updateObject['Hours']
                             }
                             else{
-                                newUpdateObject.quantity[3].value = updateObject['Hours']
+                                updateSeedingObject.quantity[3].value = updateObject['Hours']
                             }
                         }
                         else if(keys[i] == 'Num Workers'){
                             if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                                newUpdateObject.quantity[3].value = updateObject['Num Workers']
+                                updateSeedingObject.quantity[3].value = updateObject['Num Workers']
                             }
                             else{
-                                newUpdateObject.quantity[4].value = updateObject['Num Workers']
+                                updateSeedingObject.quantity[4].value = updateObject['Num Workers']
                             }
                         }
                         else if(keys[i] == 'Comments'){
-                            newUpdateObject['notes'] = {'value': updateObject['Comments'],
+                            updateSeedingObject['notes'] = {'value': updateObject['Comments'],
                                 'format': 'farm_format'}
                         }
                         else if(keys[i] == 'User'){
-                            newUpdateObject['uid'] = {
+                            updateSeedingObject['uid'] = {
+                                'id': this.userToIDMap.get(updateObject['User']),
+                                'resource': 'user'
+                            }
+                            updatePlantObject['uid'] = {
                                 'id': this.userToIDMap.get(updateObject['User']),
                                 'resource': 'user'
                             }
                         }
                         else if(keys[i] == 'Row/Bed'){
-                            newUpdateObject.quantity[1].value = updateObject['Row/Bed']
+                            updateSeedingObject.quantity[1].value = updateObject['Row/Bed']
                         }
                         else if(keys[i] == 'Row Feet'){
-                            newUpdateObject.quantity[0].value = updateObject['Row Feet']
+                            updateSeedingObject.quantity[0].value = updateObject['Row Feet']
                         }
                         else if(keys[i] == 'Tray Seeds'){
-                            newUpdateObject.quantity[0].value = updateObject['Tray Seeds']
+                            updateSeedingObject.quantity[0].value = updateObject['Tray Seeds']
                         }
                         else if(keys[i] == '# of Trays'){
-                            newUpdateObject.quantity[1].value = updateObject['# of Trays']
+                            updateSeedingObject.quantity[1].value = updateObject['# of Trays']
                         }
                         else if(keys[i] == 'Cells Per Tray'){
-                            newUpdateObject.quantity[2].value = updateObject['Cells Per Tray']
+                            updateSeedingObject.quantity[2].value = updateObject['Cells Per Tray']
                         }   
                     }
-                    console.log(newUpdateObject)
-                    let url = '/log/' + id
-                    //call updateRecord function which updates the log
-                    updateRecord(url, newUpdateObject,this.sessionToken)
+                    console.log(updateSeedingObject)
+                    let seedingUrl = '/log/' + id
+                    let plantingUrl = '/farm_asset' + this.updateLog[0].asset[0].id
+                    console.log(this.updateLog[0].asset[0].id)
+                    //call updateRecord function to update planting log
+                    updateRecord(seedingUrl, updatePlantObject, this.sessionToken)
+                    //call updateRecord function to update seeding log
+                    updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
                 },
                 /**
                  * Uses deleteRecord function to delete the record in the database. Also deletes the record from the current logs that are in seedingLogs
@@ -554,15 +567,16 @@
                         userNameArray.push(userKeyIterator.next().value)
                     }
                     let cropNameArray = []
-                    const cropKeyIterator = this.cropToIDMap.keys()
-                    for(i=0; i < this.cropToIDMap.size; i++){
-                        cropNameArray.push(cropKeyIterator.next().value)
+                    for(let [key, info] of this.cropToIDMap){
+                        cropNameArray.push(key)
                     }
                     let areaNameArray = []
                     const areaKeyIterator = this.areaToIDMap.keys()
                     for(i=0; i < this.areaToIDMap.size; i++){
                         areaNameArray.push(areaKeyIterator.next().value)
                     }
+                    console.log(cropNameArray)
+                    console.log(areaNameArray)
                     return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
                 }
             },
