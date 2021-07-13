@@ -12,8 +12,6 @@
 
         <div v-if='reportVisible'>
 
-            <div class="loader center-block" v-if="seedingLogs.length == 0"></div>
-
             <div v-if="seedingLogs.length != 0">
                 <fieldset class="center-block panel panel-default" style="width: 75%;">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
@@ -28,6 +26,12 @@
 
                 <custom-table :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' can-edit can-delete></custom-table>
 
+                <br>
+            </div>
+
+            <div class="loader center-block" v-if="stillLoading"></div>
+
+            <div v-if="seedingLogs.length != 0">
                 <br>
 
                 <div style="display: flex; width: 100%;">
@@ -80,6 +84,8 @@
                 idToUserMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
+
+                stillLoading: true
             },
             methods: {
                 startDateChange(selectedDate){
@@ -96,7 +102,9 @@
                     this.reportVisible = true
                     let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
 
-                    getAllPages(link, this.seedingLogs)
+                    getAllPages(link, this.seedingLogs).then(() => {
+                        this.stillLoading = false
+                    })
                 },
                 cropChange(selectedCrop){
                     this.selectedCrop = selectedCrop
