@@ -262,6 +262,7 @@ def translateArea(line, area):
         "ALF 2": "ALF-2",
         "ALF 3": "ALF-3",
         "ALF 4": "ALF-4",
+        "ASPARAGUS": "M",   # other asparagus harvests happen here.
         "1-PASTURE": "PASTURE"
     }
 
@@ -306,6 +307,10 @@ def translateUser(line, user):
         "wolfje": "worker1",
         "binhammm": "worker2",
         "baislepa": "worker3",
+        "tongt": "worker4",
+        "nusekabc": "worker5",
+        "yaojo": "worker1",
+        "baurc": "worker2",
     }
 
     if user in translations:
@@ -365,3 +370,17 @@ def getUnitsMap():
         unitsMap[name] = unit['tid']
 
     return unitsMap
+
+# Get a map of the units from name to measure
+# The measure is the parent in the unit and needs to be made lowercase.
+def getMeasuresMap():
+    unitsVocabID = getVocabularyID('farm_quantity_units')
+    allUnits = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + unitsVocabID)
+    measuresMap = {}
+
+    for unit in allUnits:
+        if len(unit['parent']) > 0:
+            name = unit['name']
+            measuresMap[name] = unit['parent'][0]['name'].lower()
+
+    return measuresMap
