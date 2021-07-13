@@ -15,6 +15,8 @@ var getCropToIDMap = FarmOSAPI.getCropToIDMap
 var getAreaToIDMap = FarmOSAPI.getAreaToIDMap
 var getUnitToIDMap = FarmOSAPI.getUnitToIDMap
 
+var quantityLocation = FarmOSAPI.quantityLocation
+
 describe('API Request Function', () => {
     beforeEach(() => {
         cy.login('restws1', 'farmdata2')
@@ -378,4 +380,53 @@ describe('API Request Function', () => {
             })
         })
     })
-})
+    context('test quantity location function', () => {
+            let quantity = [{
+                "measure": "length", 
+                "value": 5,
+                "unit": {
+                    "id": "1987", 
+                    "resource": "taxonomy_term"
+                },
+                "label": "Amount planted"
+            },
+            {
+                "measure": "ratio", 
+                "value": 19,
+                "unit": {
+                    "id": "98",
+                    "resource": "taxonomy_term"
+                },
+                "label": "Rows/Bed"
+            },
+            {
+                "measure": "time", 
+                "value": 178,
+                "unit": {
+                    "id": "80",
+                    "resource": "taxonomy_term"
+                },
+                "label": "Labor"
+            },
+            {
+                "measure": "count", 
+                "value": 1,
+                "unit": {
+                    "id": "90",
+                    "resource": "taxonomy_term"
+                },
+                "label": "Workers"
+            }]
+
+            it('test if returns 2 for Labor', () => {
+                expect(quantityLocation(quantity, 'Labor')).to.equal(2)
+            })
+            it('test if returns 0 for "Amount planted"', () =>{
+                expect(quantityLocation(quantity, 'Amount planted')).to.equal(0)
+            })
+            it('returns -1 when no label equal the label input', () => {
+                expect(quantityLocation(quantity, 'Yeehaw')).to.equal(-1)
+            })
+        })
+        
+    })

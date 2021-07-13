@@ -3,4 +3,10 @@ description = A collection of forms for reporting and data entry in the barn.
 core = 7.x
 package = FarmData2
 
+stylesheets[all][] = '../resources/fd2.css'
 scripts[] = '../resources/FarmData2.js'
+scripts[] = '../resources/CustomTableComponent.js'
+scripts[] = '../resources/DateSelectionComponent.js'
+scripts[] = '../resources/DateRangeSelectionComponent.js'
+scripts[] = '../resources/DropdownWithAllComponent.js'
+scripts[] = '../resources/FarmOSAPI.js'
