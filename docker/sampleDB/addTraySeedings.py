@@ -19,11 +19,11 @@ areaMap = getAreaMap()
 userMap = getUserMap()
 
 # Get the term IDs that are needed for quantities.
-seedsID = getTermID("Seeds")
-flatsID = getTermID("Flats")
-cellsPerFlatID = getTermID("Cells/Flat")
-hoursID = getTermID("Hours")
-peopleID = getTermID("People")
+seedsID = getTermID("SEEDS")
+flatsID = getTermID("FLATS")
+cellsPerFlatID = getTermID("CELLS/FLAT")
+hoursID = getTermID("HOURS")
+peopleID = getTermID("PEOPLE")
 
 greenhouseIDs = []
 

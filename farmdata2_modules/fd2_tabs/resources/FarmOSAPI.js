@@ -75,8 +75,13 @@ function getAreaToIDMap(){
 }
 
 function getUnitToIDMap(){
-    //creates and returns a map from unit name to unit id
-    return getMap()
+    //create and returns a map from unit name to unit tid.
+    return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'name', 'tid')
+}
+
+function getIDToUnitMap(){
+    //create and returns a map from unit tid to unit name
+    return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'tid', 'name')
 }
 
 function getMap(url, key, value){
@@ -197,6 +202,8 @@ try {
         getCropToIDMap: getCropToIDMap,
         getAreaToIDMap: getAreaToIDMap,
         getUserToIDMap: getUserToIDMap,
+        getUnitToIDMap: getUnitToIDMap,
+        getIDToUnitMap: getIDToUnitMap,
         getSessionToken: getSessionToken,
         deleteRecord: deleteRecord,
         createRecord: createRecord,
