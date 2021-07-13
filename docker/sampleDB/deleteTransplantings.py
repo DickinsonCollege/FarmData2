@@ -12,7 +12,6 @@
 # delete the preexisting Planting assets from the traySeedings.
 
 from utils import *
-from csv import reader
 
 def main():
 

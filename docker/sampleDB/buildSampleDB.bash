@@ -58,6 +58,8 @@ docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampl
   ./addTraySeedings.py
   # Add direct seedings and any necessary plantings
   ./addTransplantings.py
+  # Add the harvests
+  ./addHarvests.py
   
 echo "Compressing the sample database..."
 cd ..
