@@ -192,6 +192,22 @@ function deleteRecord(url, sessionToken) {
         })
     })
 }
+/**
+ * 
+ * @param {is the quantity array in the Direct/Tray Seeding log} quantity 
+ * @param {*the label of the object whose index is being returned} label 
+ * 
+ * @returns The index of the object with the input label in the quantity array 
+ * otherwise returns a negative -1
+ */
+function quantityLocation(quantity, label){
+    for(i=0; i < quantity.length; i++){
+        if(quantity[i].label == label){
+            return i
+        }
+    }
+    return -1
+}
 
 try {
     module.exports = {
@@ -207,7 +223,8 @@ try {
         getSessionToken: getSessionToken,
         deleteRecord: deleteRecord,
         createRecord: createRecord,
-        updateRecord: updateRecord
+        updateRecord: updateRecord,
+        quantityLocation: quantityLocation
     }
 }
 catch {}

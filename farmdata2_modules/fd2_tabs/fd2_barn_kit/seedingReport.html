@@ -1,7 +1,7 @@
 <body>
     <div id="seedingReport" v-cloak>
         <h1 class="text-center">Seeding Report</h1>
-        <fieldset class="panel panel-default center-block" style="width: 50%;">
+        <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
                 <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
@@ -13,7 +13,7 @@
         <div v-if='reportVisible'>
 
             <div v-if="seedingLogs.length != 0">
-                <fieldset data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
+                <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                     <div style="display: flex; width: 100%;">
                         <dropdown-with-all class="center-block"  :dropdown-list=seedingTypeList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
@@ -24,7 +24,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table":visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' can-edit can-delete></custom-table>
+                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' can-edit can-delete></custom-table>
 
                 <br>
             </div>
@@ -35,7 +35,7 @@
                 <br>
 
                 <div style="display: flex; width: 100%;">
-                    <fieldset class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
+                    <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
                         <p style="margin-left: 5%;"> Total Row/Bed Planted: <b>{{ totalRowBed }}</b></p>
                         <p style="margin-left: 5%;"> Total Row Feet Planted: <b>{{ totalRowFeet }}</b></p>
@@ -44,7 +44,7 @@
                         <p style="margin-left: 5%;">Total Bed Feet per Hour: <b>{{ totalBedFeetPerHour }}</b></p>
                         <p style="margin-left: 5%;">Total Row Feet per Hour: <b>{{ totalRowFeetPerHour }}</b></p>
                     </fieldset>
-                    <fieldset class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
+                    <fieldset data-cy="tray-summary" class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
                         <p style="margin-left: 5%;">Total Number of Tray Seeds Planted: <b>{{ traySeedsPlanted }}</b></p>
                         <p style="margin-left: 5%;">Total Number of Trays: <b>{{ totalNumTrays }}</b></p>
@@ -67,6 +67,7 @@
                 startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
 
+                stillLoading: true,
                 reportVisible: false,
                 seedingLogs: [],
                 updateLog: [],
@@ -85,7 +86,7 @@
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
 
-                stillLoading: true
+                rowBeingEdited: false
             },
             methods: {
                 startDateChange(selectedDate){
@@ -217,6 +218,8 @@
                     }
                     //call updateRecord function to update seeding log
                     updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                    
+                    this.rowBeingEdited = false
                 },
                 /**
                  * Uses deleteRecord function to delete the record in the database. Also deletes the record from the current logs that are in seedingLogs
@@ -231,6 +234,9 @@
                             this.seedingLogs.splice(i, 1)
                         }
                     }
+                },
+                disableFilters() {
+                    this.rowBeingEdited = true
                 }
             },
             computed: {

@@ -36,6 +36,8 @@ describe('Testing for the seeding report page', () => {
         cy.get('[data-cy=generate-rpt-btn]')
             .click()
 
+        cy.wait(5000)
+
         cy.get('[data-cy=filters-panel]')
             .should('exist')
 
@@ -144,6 +146,29 @@ describe('Testing for the seeding report page', () => {
                 .select('All')
         })
     })
-
     
+    it.only('has the correct totals in the direct seeding summary', () => {
+        let totalRowFeet = 0;
+
+        cy.get('[data-cy=dropdown-input]').first()
+            .select('Direct Seedings')
+            .should('have.value', 'Direct Seedings')
+        
+        cy.get('[data-cy=object-test]')
+            .each(($el, index, $all) => {
+                cy.get($el).children()
+                .first().next().next().next().next().next().then(($rowFeet) => {
+                    console.log($rowFeet)
+                    totalRowFeet = totalRowFeet + parseInt($rowFeet[0].innerText);
+                })
+            })
+            .then(() => {
+                console.log(totalRowFeet)
+                cy.get('[data-cy=direct-summary]')
+                    .children().first().next().next().children()
+                    .should('have.text', totalRowFeet.toString())
+            })
+
+        
+    })
 })
