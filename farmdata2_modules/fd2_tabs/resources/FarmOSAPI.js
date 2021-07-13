@@ -84,6 +84,16 @@ function getIDToUnitMap(){
     return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'tid', 'name')
 }
 
+function getIDToLogTypeMap(){
+    //create and return a map from log type tid to log type name
+    return getMap('/taxonomy_term.json?bundle=farm_log_categories', 'tid', 'name')
+}
+
+function getLogTypeToIDMap(){
+    //create and return a map from log type name to log type tid
+    return getMap('/taxonomy_term.json?bundle=farm_log_categories', 'name', 'tid')
+}
+
 function getMap(url, key, value){
     // Utility function used by the above functions to get the appropraite maps.
     return new Promise((resolve, reject) => {
@@ -204,6 +214,8 @@ try {
         getUserToIDMap: getUserToIDMap,
         getUnitToIDMap: getUnitToIDMap,
         getIDToUnitMap: getIDToUnitMap,
+        getIDToLogTypeMap: getIDToLogTypeMap,
+        getLogTypeToIDMap: getLogTypeToIDMap,
         getSessionToken: getSessionToken,
         deleteRecord: deleteRecord,
         createRecord: createRecord,
