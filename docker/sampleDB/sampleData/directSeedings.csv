@@ -21,6 +21,17 @@
 # Notes:
 #  - records with multiple seed codes in the comments field will be split into
 #    multiple seeding logs asspciated with the same planting.
+#  - Added record 1033 for asparagus seeding from 2017 so it can be associated with 
+#    its harvest logs in 2019. 
+#  - Added record 1091 for rosemary seeding in TEACHING bed so that it can be associated
+#    with its harvest in 2019.
+#  - Added record 1130 for strawberry seeding from 2017 so it can be associatd with
+#    the harvets logs in 2019.
+
+
+"1033","2017-04-18","ASPARAGUS","M","1","1","1","0.007692307692307693","0.0166667","Seed Code: N/A (No Variety) - 1.0 bed feet","1","steimanm","0","2025-12-31",
+"1091","2017-01-01","HERB-ROSEMARY","TEACHING","5","1","5","0.05","0.0166667","Seed Code: N/A (No Variety) - 5.0 bed feet","1","baurc","0","2019-12-31",
+"1130","2017-08-25","STRAWBERRY","SQ10","960","2","1920","3.2","0.0166667","Seed Code: N/A (No Variety) - 960.0 bed feet","1","baurc","0","2019-12-31",
 
 "1368","2019-01-01","GARLIC","ALF 4","6300","3","18900","18","0.0166667","6 BEDS IN A4;Seed Code: N/A (No Variety) - 6300.0 bed feet","1","wolfje","1","2019-12-31",
 "1369","2019-01-01","GARLIC","ALF 2","2100","3","6300","6","0.0166667"," 2BEDS IN A2;Seed Code: N/A (No Variety) - 2100.0 bed feet","1","wolfje","1","2019-12-31",

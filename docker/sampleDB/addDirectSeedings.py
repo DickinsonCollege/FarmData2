@@ -18,10 +18,10 @@ areaMap = getAreaMap()
 userMap = getUserMap()
 
 # Get the term IDs that are needed for quantities.
-rowFtID = getTermID("Row Feet")
-rowsID = getTermID("Rows/Bed")
-hoursID = getTermID("Hours")
-peopleID = getTermID("People")
+rowFtID = getTermID("ROW FEET")
+rowsID = getTermID("ROWS/BED")
+hoursID = getTermID("HOURS")
+peopleID = getTermID("PEOPLE")
 
 def main():
     print("Adding Direct Seedings...")
