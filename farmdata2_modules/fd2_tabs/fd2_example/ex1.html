@@ -91,7 +91,43 @@ new Vue({
             {'type': 'dropdown', 'value': ['1', '2', '3']},
             {'type': 'number'},
             {'type': 'text'}
-        ]
+        ],
+        testquantity: [{
+                "measure": "length", 
+                "value": 5,
+                "unit": {
+                    "id": "1987", 
+                    "resource": "taxonomy_term"
+                },
+                "label": "Amount planted"
+            },
+            {
+                "measure": "ratio", 
+                "value": 19,
+                "unit": {
+                    "id": "98",
+                    "resource": "taxonomy_term"
+                },
+                "label": "Rows/Bed"
+            },
+            {
+                "measure": "time", 
+                "value": 178,
+                "unit": {
+                    "id": "80",
+                    "resource": "taxonomy_term"
+                },
+                "label": "Labor"
+            },
+            {
+                "measure": "count", 
+                "value": 1,
+                "unit": {
+                    "id": "90",
+                    "resource": "taxonomy_term"
+                },
+                "label": "Workers"
+            }]
     },
     created() {
         axios
@@ -122,6 +158,7 @@ new Vue({
         getIDToUnitMap().then((response) => {
             console.log(response)
         })
+        console.log(quantityLocation(this.testquantity, 'Labor'))
     },
     methods: {
         getFarmName() {
