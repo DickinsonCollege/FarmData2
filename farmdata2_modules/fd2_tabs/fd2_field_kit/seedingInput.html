@@ -76,6 +76,7 @@
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
+                logTypeToIDMap: new Map(),
                 plantingId: 0,
             },
             methods:{
@@ -163,8 +164,10 @@
                 },
                 logData(){
                     let quantityUnits = []
+                    let seedingID = 0
                     if(this.selectedSeedingType == "Direct Seedings"){
                         quantityUnits = this.quantityDirectSeeding
+                        seedingID = this.logTypeToIDMap.get('Direct Seedings')
                     }
                     else if (this.selectedSeedingType == "Tray Seedings"){
                         quantityUnits = this.quantityTraySeeding
@@ -323,6 +326,10 @@
                 })
                 getUnitToIDMap().then((response) => {
                     this.unitToIDMap = response
+                })
+                getLogTypeToIDMap().then((response) => {
+                    this.logTypeToIDMap = response
+                    console.log(response)
                 })
             }
         })
