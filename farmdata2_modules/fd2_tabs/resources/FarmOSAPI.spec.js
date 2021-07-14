@@ -211,32 +211,38 @@ describe('API Request Function', () => {
                 })
             })
         })
-        it('getUnitToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getUnitToIDMap(), {timeout: 10000}).as('map')
-            cy.get('@map').should((unitToIDMap) => {
+        it('Unit map functions get the proper name/id for the units',() => {
+            let seedsID = -1
+            let rowFeetID = -1
+            let flatsID = -1
+            let hoursID = -1
+            let peopleID = -1
+
+            cy.wrap(getUnitToIDMap(), {timeout: 10000}).as('unitMap')
+            cy.get('@unitMap').should(function(unitToIDMap){
                 expect(unitToIDMap).to.not.be.null
                 expect(unitToIDMap).to.be.a('Map')
                 expect(unitToIDMap.size).to.equal(33)
 
-                expect(unitToIDMap.get('SEEDS')).to.equal('17')
-                expect(unitToIDMap.get('ROW FEET')).to.equal('20')
-                expect(unitToIDMap.get('FLATS')).to.equal('12')
-                expect(unitToIDMap.get('HOURS')).to.equal('29')
-                expect(unitToIDMap.get('PEOPLE')).to.equal('15')
+                seedsID = unitToIDMap.get('SEEDS')
+                rowFeetID = unitToIDMap.get('ROW FEET')
+                flatsID = unitToIDMap.get('FLATS')
+                hoursID = unitToIDMap.get('HOURS')
+                peopleID = unitToIDMap.get('PEOPLE')
             })
-        })
-        it('getIDToUnitMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToUnitMap(), {timeout: 10000}).as('map')
-            cy.get('@map').should((IDToUnitMap) => {
-                expect(IDToUnitMap).to.not.be.null
-                expect(IDToUnitMap).to.be.a('Map')
-                expect(IDToUnitMap.size).to.equal(33)
+            .then(() => {
+                cy.wrap(getIDToUnitMap(), {timeout: 10000}).as('idMap')
+                cy.get('@idMap').should(function(idToUnitMap){
+                    expect(idToUnitMap).to.not.be.null
+                    expect(idToUnitMap).to.be.a('Map')
+                    expect(idToUnitMap.size).to.equal(33)
 
-                expect(IDToUnitMap.get('17')).to.equal('SEEDS')
-                expect(IDToUnitMap.get('20')).to.equal('ROW FEET')
-                expect(IDToUnitMap.get('12')).to.equal('FLATS')
-                expect(IDToUnitMap.get('29')).to.equal('HOURS')
-                expect(IDToUnitMap.get('15')).to.equal('PEOPLE')
+                    expect(idToUnitMap.get(seedsID)).to.equal('SEEDS')
+                    expect(idToUnitMap.get(rowFeetID)).to.equal('ROW FEET')
+                    expect(idToUnitMap.get(flatsID)).to.equal('FLATS')
+                    expect(idToUnitMap.get(hoursID)).to.equal('HOURS')
+                    expect(idToUnitMap.get(peopleID)).to.equal('PEOPLE')
+                })
             })
         })
         it('getIDToLogTypeMap create correct map with the correct length', () => {
