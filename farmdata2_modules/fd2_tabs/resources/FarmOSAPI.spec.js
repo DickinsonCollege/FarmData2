@@ -211,39 +211,6 @@ describe('API Request Function', () => {
                 })
             })
         })
-
-        it('getIDToAreaMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToAreaMap(), {timeout: 40000}).as('map')
-            cy.get('@map').should((idToAreaMap) => {
-                expect(idToAreaMap).to.not.be.null
-                expect(idToAreaMap).to.be.a('Map')
-                expect(idToAreaMap.size).to.equal(70)
-
-                // Check first and last
-                expect(idToAreaMap.get('170')).to.equal('A')
-                expect(idToAreaMap.get('239')).to.equal('Z')
-
-                // Check some sub-areas too
-                expect(idToAreaMap.get('178')).to.equal('CHUAU')
-                expect(idToAreaMap.get('179')).to.equal('CHUAU-1')
-                expect(idToAreaMap.get('183')).to.equal('CHUAU-5')
-            })
-        })
-
-        it('getAreaToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getAreaToIDMap(), {timeout: 40000}).as('map')
-            cy.get('@map').should((idToAreaMap) => {
-                expect(idToAreaMap).to.not.be.null
-                expect(idToAreaMap).to.be.a('Map')
-                expect(idToAreaMap.size).to.equal(70)
-
-                expect(idToAreaMap.get('A')).to.equal('170')
-                expect(idToAreaMap.get('Z')).to.equal('239')
-                expect(idToAreaMap.get('CHUAU')).to.equal('178')
-                expect(idToAreaMap.get('CHUAU-1')).to.equal('179')
-                expect(idToAreaMap.get('CHUAU-5')).to.equal('183')
-            })
-        })
         it('getUnitToIDMap creates correct map with the correct length', () => {
             cy.wrap(getUnitToIDMap(), {timeout: 10000}).as('map')
             cy.get('@map').should((unitToIDMap) => {
