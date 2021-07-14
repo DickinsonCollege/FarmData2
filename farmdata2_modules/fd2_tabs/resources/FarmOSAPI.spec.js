@@ -245,28 +245,38 @@ describe('API Request Function', () => {
                 })
             })
         })
-        it('getIDToLogTypeMap create correct map with the correct length', () => {
-            cy.wrap(getIDToLogTypeMap(), {timeout: 10000}).as('map')
-            cy.get('@map').should((IDToLogTypeMap) => {
-                expect(IDToLogTypeMap).to.not.be.null
-                expect(IDToLogTypeMap).to.be.a('Map')
-                expect(IDToLogTypeMap.size).to.equal(9)
+        it('Log Type map functions get the proper name/id for the log types', () => {
+            let directSeedingsID = -1
+            let traySeedingsID = -1
+            let waterID = -1
+            let transplantingsID = -1
+            let animalsID = -1
 
-                expect(IDToLogTypeMap.get('240')).to.equal('Direct Seedings')
-                expect(IDToLogTypeMap.get('241')).to.equal('Tray Seedings')
-                expect(IDToLogTypeMap.get('6')).to.equal('Water')
-            })
-        })
-        it('getLogTypeToIDMap create corret map with correct length', () => {
-            cy.wrap(getLogTypeToIDMap(), {timeout: 10000}).as('map')
-            cy.get('@map').should((logTypeToIDMap) =>{
+            cy.wrap(getLogTypeToIDMap(), {timeout: 10000}).as('logMap')
+            cy.get('@logMap').should(function(logTypeToIDMap){
                 expect(logTypeToIDMap).to.not.be.null
                 expect(logTypeToIDMap).to.be.a('Map')
                 expect(logTypeToIDMap.size).to.equal(9)
 
-                expect(logTypeToIDMap.get('Direct Seedings')).to.equal('240')
-                expect(logTypeToIDMap.get('Tray Seedings')).to.equal('241')
-                expect(logTypeToIDMap.get('Water')).to.equal('6')
+                directSeedingsID = logTypeToIDMap.get('Direct Seedings')
+                traySeedingsID = logTypeToIDMap.get('Tray Seedings')
+                waterID = logTypeToIDMap.get('Water')
+                transplantingsID = logTypeToIDMap.get('Transplantings')
+                animalsID = logTypeToIDMap.get('Animals')
+            })
+            .then(() => {
+                cy.wrap(getIDToLogTypeMap(), {timeout: 10000}).as('idMap')
+                cy.get('@idMap').should(function(idToLogTypeMap){
+                    expect(idToLogTypeMap).to.not.be.null
+                    expect(idToLogTypeMap).to.be.a('Map')
+                    expect(idToLogTypeMap.size).to.equal(9)
+
+                    expect(idToLogTypeMap.get(directSeedingsID)).to.equal('Direct Seedings')
+                    expect(idToLogTypeMap.get(traySeedingsID)).to.equal('Tray Seedings')
+                    expect(idToLogTypeMap.get(waterID)).to.equal('Water')
+                    expect(idToLogTypeMap.get(transplantingsID)).to.equal('Transplantings')
+                    expect(idToLogTypeMap.get(animalsID)).to.equal('Animals')
+                })
             })
         })
     })
