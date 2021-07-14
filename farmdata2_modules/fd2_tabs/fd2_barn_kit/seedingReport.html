@@ -85,6 +85,7 @@
                 idToUserMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
+                unitToIDMap: new Map(),
 
                 rowBeingEdited: false
             },
@@ -498,7 +499,7 @@
                             "measure": "length", 
                             "value": this.updateLog[0].quantity[0].value,
                             "unit": {
-                                "id": "213", 
+                                "id": this.unitToIDMap.get('ROW FEET'), 
                                 "resource": "taxonomy_term"
                             },
                             "label": "Amount planted"
@@ -507,7 +508,7 @@
                             "measure": "ratio", 
                             "value": this.updateLog[0].quantity[1].value,
                             "unit": {
-                                "id": "228",
+                                "id": this.unitToIDMap.get('ROWS/BED'),
                                 "resource": "taxonomy_term"
                             },
                             "label": "Rows/Bed"
@@ -516,7 +517,7 @@
                             "measure": "time", 
                             "value": this.updateLog[0].quantity[2].value,
                             "unit": {
-                                "id": "219",
+                                "id": this.unitToIDMap.get('HOURS'),
                                 "resource": "taxonomy_term"
                             },
                             "label": "Labor"
@@ -525,7 +526,7 @@
                             "measure": "count", 
                             "value": this.updateLog[0].quantity[3].value,
                             "unit": {
-                                "id": "209",
+                                "id": this.unitToIDMap.get('PEOPLE'),
                                 "resource": "taxonomy_term"
                             },
                             "label": "Workers"
@@ -541,7 +542,7 @@
                             "measure": "count", 
                             "value": this.updateLog[0].quantity[0].value,
                             "unit": {
-                                "id": "128", 
+                                "id": this.unitToIDMap.get('SEEDS'), 
                                 "resource": "taxonomy_term"
                             },
                             "label": "Seeds planted"
@@ -550,16 +551,16 @@
                             "measure": "count", 
                             "value": this.updateLog[0].quantity[1].value,
                             "unit": {
-                                "id": "211", 
+                                "id": this.unitToIDMap.get('FLATS'), 
                                 "resource": "taxonomy_term"
                             },
-                            "label": "Flats used"
+                            "label": "Flats used" //also known as trays
                         },
                         {
                             "measure": "ratio", 
                             "value": this.updateLog[0].quantity[2].value,
                             "unit": {
-                                "id": "227",
+                                "id": this.unitToIDMap.get('CELLS/FLAT'),
                                 "resource": "taxonomy_term"
                             },
                             "label": "Cells/Flat"
@@ -568,7 +569,7 @@
                             "measure": "time", 
                             "value": this.updateLog[0].quantity[3].value,
                             "unit": {
-                                "id": "219",
+                                "id": this.unitToIDMap.get('HOURS'),
                                 "resource": "taxonomy_term"
                             },
                             "label": "Labor"
@@ -577,7 +578,7 @@
                             "measure": "count", 
                             "value": this.updateLog[0].quantity[4].value,
                             "unit": {
-                                "id": "209",
+                                "id": this.unitToIDMap.get('PEOPLE'),
                                 "resource": "taxonomy_term"
                             },
                             "label": "Workers"
@@ -625,6 +626,10 @@
                 })
                 getAreaToIDMap().then((response) => {
                     this.areaToIDMap = new Map(response)
+                })
+                getUnitToIDMap().then((response) => {
+                    this.unitToIDMap = new Map(response)
+                    console.log(response)
                 })
             }
         });
