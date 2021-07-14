@@ -9,11 +9,13 @@ var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
 var getIDToAreaMap = FarmOSAPI.getIDToAreaMap
 var getIDToUnitMap = FarmOSAPI.getIDToUnitMap
+var getIDToLogTypeMap = FarmOSAPI.getIDToLogTypeMap
 
 var getUserToIDMap = FarmOSAPI.getUserToIDMap
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
 var getAreaToIDMap = FarmOSAPI.getAreaToIDMap
 var getUnitToIDMap = FarmOSAPI.getUnitToIDMap
+var getLogTypeToIDMap = FarmOSAPI.getLogTypeToIDMap
 
 var quantityLocation = FarmOSAPI.quantityLocation
 
@@ -137,16 +139,16 @@ describe('API Request Function', () => {
                 expect(idToCropMap.size).to.equal(111)
 
                 // first and last on first page of response
-                expect(idToCropMap.get('139')).to.equal('ARUGULA')
-                expect(idToCropMap.get('86')).to.equal('STRAWBERRY')
+                expect(idToCropMap.get('102')).to.equal('ARUGULA')
+                expect(idToCropMap.get('49')).to.equal('STRAWBERRY')
 
                 // first and last on second page of response
-                expect(idToCropMap.get('206')).to.equal('SUNFLOWER SEEDS')
-                expect(idToCropMap.get('115')).to.equal('ZUCCHINI')
+                expect(idToCropMap.get('169')).to.equal('SUNFLOWER SEEDS')
+                expect(idToCropMap.get('78')).to.equal('ZUCCHINI')
 
                 // test some compound names too
-                expect(idToCropMap.get('193')).to.equal('ONION-SPRING')
-                expect(idToCropMap.get('172')).to.equal('CORN-SWEET')
+                expect(idToCropMap.get('156')).to.equal('ONION-SPRING')
+                expect(idToCropMap.get('135')).to.equal('CORN-SWEET')
             })
         })
 
@@ -156,45 +158,45 @@ describe('API Request Function', () => {
                 expect(cropToIdMap).to.not.be.null
                 expect(cropToIdMap).to.be.a('Map')
                 expect(cropToIdMap.size).to.equal(111)
-                expect(cropToIdMap.get('ARUGULA')).to.equal('139')
-                expect(cropToIdMap.get('STRAWBERRY')).to.equal('86')
-                expect(cropToIdMap.get('SUNFLOWER SEEDS')).to.equal('206')
-                expect(cropToIdMap.get('ZUCCHINI')).to.equal('115')            
-                expect(cropToIdMap.get('ONION-SPRING')).to.equal('193')
-                expect(cropToIdMap.get('CORN-SWEET')).to.equal('172')        
+                expect(cropToIdMap.get('ARUGULA')).to.equal('102')
+                expect(cropToIdMap.get('STRAWBERRY')).to.equal('49')
+                expect(cropToIdMap.get('SUNFLOWER SEEDS')).to.equal('169')
+                expect(cropToIdMap.get('ZUCCHINI')).to.equal('78')            
+                expect(cropToIdMap.get('ONION-SPRING')).to.equal('156')
+                expect(cropToIdMap.get('CORN-SWEET')).to.equal('135')        
             })
         })
 
         it('getIDToAreaMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToAreaMap(), {timeout: 15000}).as('map')
+            cy.wrap(getIDToAreaMap(), {timeout: 40000}).as('map')
             cy.get('@map').should((idToAreaMap) => {
                 expect(idToAreaMap).to.not.be.null
                 expect(idToAreaMap).to.be.a('Map')
                 expect(idToAreaMap.size).to.equal(70)
 
                 // Check first and last
-                expect(idToAreaMap.get('7')).to.equal('A')
-                expect(idToAreaMap.get('76')).to.equal('Z')
+                expect(idToAreaMap.get('170')).to.equal('A')
+                expect(idToAreaMap.get('239')).to.equal('Z')
 
                 // Check some sub-areas too
-                expect(idToAreaMap.get('15')).to.equal('CHUAU')
-                expect(idToAreaMap.get('16')).to.equal('CHUAU-1')
-                expect(idToAreaMap.get('20')).to.equal('CHUAU-5')
+                expect(idToAreaMap.get('178')).to.equal('CHUAU')
+                expect(idToAreaMap.get('179')).to.equal('CHUAU-1')
+                expect(idToAreaMap.get('183')).to.equal('CHUAU-5')
             })
         })
 
         it('getAreaToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getAreaToIDMap(), {timeout: 15000}).as('map')
+            cy.wrap(getAreaToIDMap(), {timeout: 40000}).as('map')
             cy.get('@map').should((idToAreaMap) => {
                 expect(idToAreaMap).to.not.be.null
                 expect(idToAreaMap).to.be.a('Map')
                 expect(idToAreaMap.size).to.equal(70)
 
-                expect(idToAreaMap.get('A')).to.equal('7')
-                expect(idToAreaMap.get('Z')).to.equal('76')
-                expect(idToAreaMap.get('CHUAU')).to.equal('15')
-                expect(idToAreaMap.get('CHUAU-1')).to.equal('16')
-                expect(idToAreaMap.get('CHUAU-5')).to.equal('20')
+                expect(idToAreaMap.get('A')).to.equal('170')
+                expect(idToAreaMap.get('Z')).to.equal('239')
+                expect(idToAreaMap.get('CHUAU')).to.equal('178')
+                expect(idToAreaMap.get('CHUAU-1')).to.equal('179')
+                expect(idToAreaMap.get('CHUAU-5')).to.equal('183')
             })
         })
         it('getUnitToIDMap creates correct map with the correct length', () => {
@@ -202,13 +204,13 @@ describe('API Request Function', () => {
             cy.get('@map').should((unitToIDMap) => {
                 expect(unitToIDMap).to.not.be.null
                 expect(unitToIDMap).to.be.a('Map')
-                expect(unitToIDMap.size).to.equal(23)
+                expect(unitToIDMap.size).to.equal(33)
 
-                expect(unitToIDMap.get('Seeds')).to.equal('210')
-                expect(unitToIDMap.get('Row Feet')).to.equal('213')
-                expect(unitToIDMap.get('Flats')).to.equal('211')
-                expect(unitToIDMap.get('Hours')).to.equal('219')
-                expect(unitToIDMap.get('People')).to.equal('209')
+                expect(unitToIDMap.get('SEEDS')).to.equal('17')
+                expect(unitToIDMap.get('ROW FEET')).to.equal('20')
+                expect(unitToIDMap.get('FLATS')).to.equal('12')
+                expect(unitToIDMap.get('HOURS')).to.equal('29')
+                expect(unitToIDMap.get('PEOPLE')).to.equal('15')
             })
         })
         it('getIDToUnitMap creates correct map with the correct length', () => {
@@ -216,13 +218,37 @@ describe('API Request Function', () => {
             cy.get('@map').should((IDToUnitMap) => {
                 expect(IDToUnitMap).to.not.be.null
                 expect(IDToUnitMap).to.be.a('Map')
-                expect(IDToUnitMap.size).to.equal(23)
+                expect(IDToUnitMap.size).to.equal(33)
 
-                expect(IDToUnitMap.get('210')).to.equal('Seeds')
-                expect(IDToUnitMap.get('213')).to.equal('Row Feet')
-                expect(IDToUnitMap.get('211')).to.equal('Flats')
-                expect(IDToUnitMap.get('219')).to.equal('Hours')
-                expect(IDToUnitMap.get('209')).to.equal('People')
+                expect(IDToUnitMap.get('17')).to.equal('SEEDS')
+                expect(IDToUnitMap.get('20')).to.equal('ROW FEET')
+                expect(IDToUnitMap.get('12')).to.equal('FLATS')
+                expect(IDToUnitMap.get('29')).to.equal('HOURS')
+                expect(IDToUnitMap.get('15')).to.equal('PEOPLE')
+            })
+        })
+        it('getIDToLogTypeMap create correct map with the correct length', () => {
+            cy.wrap(getIDToLogTypeMap(), {timeout: 10000}).as('map')
+            cy.get('@map').should((IDToLogTypeMap) => {
+                expect(IDToLogTypeMap).to.not.be.null
+                expect(IDToLogTypeMap).to.be.a('Map')
+                expect(IDToLogTypeMap.size).to.equal(9)
+
+                expect(IDToLogTypeMap.get('240')).to.equal('Direct Seedings')
+                expect(IDToLogTypeMap.get('241')).to.equal('Tray Seedings')
+                expect(IDToLogTypeMap.get('6')).to.equal('Water')
+            })
+        })
+        it('getLogTypeToIDMap create corret map with correct length', () => {
+            cy.wrap(getLogTypeToIDMap(), {timeout: 10000}).as('map')
+            cy.get('@map').should((logTypeToIDMap) =>{
+                expect(logTypeToIDMap).to.not.be.null
+                expect(logTypeToIDMap).to.be.a('Map')
+                expect(logTypeToIDMap.size).to.equal(9)
+
+                expect(logTypeToIDMap.get('Direct Seedings')).to.equal('240')
+                expect(logTypeToIDMap.get('Tray Seedings')).to.equal('241')
+                expect(logTypeToIDMap.get('Water')).to.equal('6')
             })
         })
     })
