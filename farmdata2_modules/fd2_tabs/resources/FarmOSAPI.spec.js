@@ -137,40 +137,44 @@ describe('API Request Function', () => {
                 })
             })
         })
+        it.only('Crop map functions get the proper name/id for the crops', () => {
+            //first and last of the first page of the response
+            let arugulaID = -1
+            let strawberryID = -1
+            //first and last of the second page of the response
+            let sunflowerSeedsID = -1
+            let zuchiniID = -1
+            // test some compound names too
+            let onionSpringID = -1
+            let cornSweetID = -1
 
-        it('getIDToCropMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToCropMap(), {timeout: 15000}).as('map')
-            cy.get('@map').should((idToCropMap) => {
-                expect(idToCropMap).to.not.be.null
-                expect(idToCropMap).to.be.a('Map')
-                expect(idToCropMap.size).to.equal(111)
-
-                // first and last on first page of response
-                expect(idToCropMap.get('102')).to.equal('ARUGULA')
-                expect(idToCropMap.get('49')).to.equal('STRAWBERRY')
-
-                // first and last on second page of response
-                expect(idToCropMap.get('169')).to.equal('SUNFLOWER SEEDS')
-                expect(idToCropMap.get('78')).to.equal('ZUCCHINI')
-
-                // test some compound names too
-                expect(idToCropMap.get('156')).to.equal('ONION-SPRING')
-                expect(idToCropMap.get('135')).to.equal('CORN-SWEET')
-            })
-        })
-
-        it('getCropToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getCropToIDMap(), {timeout: 15000}).as('map')
-            cy.get('@map').should((cropToIdMap) => {
+            cy.wrap(getCropToIDMap(), {timeout: 20000}).as('cropMap')
+            cy.get('@cropMap').should((cropToIdMap) => {
                 expect(cropToIdMap).to.not.be.null
                 expect(cropToIdMap).to.be.a('Map')
                 expect(cropToIdMap.size).to.equal(111)
-                expect(cropToIdMap.get('ARUGULA')).to.equal('102')
-                expect(cropToIdMap.get('STRAWBERRY')).to.equal('49')
-                expect(cropToIdMap.get('SUNFLOWER SEEDS')).to.equal('169')
-                expect(cropToIdMap.get('ZUCCHINI')).to.equal('78')            
-                expect(cropToIdMap.get('ONION-SPRING')).to.equal('156')
-                expect(cropToIdMap.get('CORN-SWEET')).to.equal('135')        
+
+                arugulaID = cropToIdMap.get('ARUGULA')
+                strawberryID = cropToIdMap.get('STRAWBERRY')
+                sunflowerSeedsID = cropToIdMap.get('SUNFLOWER SEEDS')
+                zuchiniID = cropToIdMap.get('ZUCCHINI')
+                onionSpringID = cropToIdMap.get('ONION-SPRING')
+                cornSweetID = cropToIdMap.get('CORN-SWEET')
+            })
+            .then(() => {
+                cy.wrap(getIDToCropMap(), {timeout: 20000}).as('idMap')
+                cy.get('@idMap').should((idToCropMap) => {
+                    expect(idToCropMap).to.not.be.null
+                    expect(idToCropMap).to.be.a('Map')
+                    expect(idToCropMap.size).to.equal(111)
+
+                    expect(idToCropMap.get(arugulaID)).to.equal('ARUGULA')
+                    expect(idToCropMap.get(strawberryID)).to.equal('STRAWBERRY')
+                    expect(idToCropMap.get(sunflowerSeedsID)).to.equal('SUNFLOWER SEEDS')
+                    expect(idToCropMap.get(zuchiniID)).to.equal('ZUCCHINI')
+                    expect(idToCropMap.get(onionSpringID)).to.equal('ONION-SPRING')
+                    expect(idToCropMap.get(cornSweetID)).to.equal('CORN-SWEET')
+                })
             })
         })
 
