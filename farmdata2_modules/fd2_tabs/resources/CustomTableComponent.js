@@ -2,14 +2,14 @@ let CustomTableComponent = {
     template:`<div class="sticky-table">
                     <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
                         <thead>
-                            <tr class="sticky-header">
+                            <tr class="sticky-header table-text">
                                 <th v-if="isVisible[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
                                 <th data-cy="edit-header" width=55 v-if="canEdit">Edit</th>
                                 <th data-cy="delete-header" width=55 v-if="canDelete">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-cy="object-test" v-for="(row, index) in rows">
+                            <tr class="table-text" data-cy="object-test" v-for="(row, index) in rows">
                                 <td v-if="isVisible[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
                                     <div v-if="!(rowToEdit==index) || inputType[itemIndex].type == 'no input'" v-html="item"></div>
                                     
@@ -21,14 +21,14 @@ let CustomTableComponent = {
                                     
                                     <input data-cy="date-input" type="date" v-if="rowToEdit==index && inputType[itemIndex].type == 'date'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                     
-                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEdit==index && inputType[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEdit==index && inputType[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @change="changedCell(itemIndex)">
                                 </td>
                                 <td v-if="canEdit"> 
-                                    <button class="btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
-                                    <button class="btn btn-success" data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
+                                    <button class="table-button btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
+                                    <button class="table-button btn btn-success" data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
                                 </td>
                                 <td v-if="canDelete"> 
-                                    <button class="btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -64,13 +64,12 @@ let CustomTableComponent = {
         return {
             rowToEdit: null,
             indexesToChange: [],
-            isVisible: [],
-            inputType: []
         }
     },
     methods: {
         editRow: function(index){
             this.rowToEdit = index
+            this.$emit('edit-clicked')
         },
         finishRowEdit: function(id, row){
             this.rowToEdit = null
@@ -93,31 +92,36 @@ let CustomTableComponent = {
         }
     },
     computed: {
-        editDisabled() {
+        editDeleteDisabled() {
             if (this.rowToEdit != null){
                 return true
             }else{
                 return false
             }
         },
-    },
-    created() {
-        if (this.visibleColumns == null) {
-            for (i = 0; i < this.headers.length; i++) {
-                this.isVisible.push(true);
+        isVisible() {
+            let updatedVis = []
+            if (this.visibleColumns == null) {
+                for (i = 0; i < this.headers.length; i++) {
+                    updatedVis.push(true);
+                }
             }
-        }
-        else {
-            this.isVisible = this.visibleColumns
-        }
-
-        if (this.inputOptions == null) {
-            for (i = 0; i < this.headers.length; i++) {
-                this.inputType.push({'type': 'text'});
+            else {
+                updatedVis = this.visibleColumns
             }
-        }
-        else {
-            this.inputType = this.inputOptions
+            return updatedVis;
+        },
+        inputType() {
+            let typeArray = []
+            if (this.inputOptions == null) {
+                for (i = 0; i < this.headers.length; i++) {
+                    typeArray.push({'type': 'text'});
+                }
+            }
+            else {
+                typeArray = this.inputOptions
+            }
+            return typeArray;
         }
     }
 }
