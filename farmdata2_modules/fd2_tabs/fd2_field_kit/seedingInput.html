@@ -171,6 +171,7 @@
                     }
                     else if (this.selectedSeedingType == "Tray Seedings"){
                         quantityUnits = this.quantityTraySeeding
+                        seedingID = this.logTypeToIDMap.get('Tray Seedings')
                     }
                     seeding = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
@@ -186,7 +187,7 @@
                             "resource": "farm_asset"
                         }],
                         "log_category": [{
-                            "id": "240",//currently only direct seeding
+                            "id": seedingID,
                             "resource": "taxonomy_term"
                         }],
                         "movement": {
@@ -329,7 +330,6 @@
                 })
                 getLogTypeToIDMap().then((response) => {
                     this.logTypeToIDMap = response
-                    console.log(response)
                 })
             }
         })
