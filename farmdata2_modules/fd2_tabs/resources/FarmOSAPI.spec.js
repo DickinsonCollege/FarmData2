@@ -137,7 +137,7 @@ describe('API Request Function', () => {
                 })
             })
         })
-        it.only('Crop map functions get the proper name/id for the crops', () => {
+        it('Crop map functions get the proper name/id for the crops', () => {
             //first and last of the first page of the response
             let arugulaID = -1
             let strawberryID = -1
@@ -174,6 +174,40 @@ describe('API Request Function', () => {
                     expect(idToCropMap.get(zuchiniID)).to.equal('ZUCCHINI')
                     expect(idToCropMap.get(onionSpringID)).to.equal('ONION-SPRING')
                     expect(idToCropMap.get(cornSweetID)).to.equal('CORN-SWEET')
+                })
+            })
+        })
+        it('Area map functions get the proper name/id for the areas', () => {
+            let aID = -1
+            let zID = -1
+            let chuauID = -1
+            let chuau1ID = -1
+            let chuau5ID = -1
+
+            cy.wrap(getAreaToIDMap(), {timeout: 40000}).as('areaMap')
+            cy.get('@areaMap').should(function(areaToIDMap){
+                expect(areaToIDMap).to.not.be.null
+                expect(areaToIDMap).to.be.a('Map')
+                expect(areaToIDMap.size).to.equal(70)
+
+                aID = areaToIDMap.get('A')  
+                zID = areaToIDMap.get('Z')
+                chuauID = areaToIDMap.get('CHUAU')  
+                chuau1ID = areaToIDMap.get('CHUAU-1') 
+                chuau5ID = areaToIDMap.get('CHUAU-5')           
+            })
+            .then(() => {
+                cy.wrap(getIDToAreaMap(), {timeout: 40000}).as('idMap')
+                cy.get('@idMap').should(function(idToAreaMap){
+                    expect(idToAreaMap).to.not.be.null
+                    expect(idToAreaMap).to.be.a('Map')
+                    expect(idToAreaMap.size).to.equal(70)
+
+                    expect(idToAreaMap.get(aID)).to.equal('A')
+                    expect(idToAreaMap.get(zID)).to.equal('Z')
+                    expect(idToAreaMap.get(chuauID)).to.equal('CHUAU')
+                    expect(idToAreaMap.get(chuau1ID)).to.equal('CHUAU-1')
+                    expect(idToAreaMap.get(chuau5ID)).to.equal('CHUAU-5')
                 })
             })
         })
