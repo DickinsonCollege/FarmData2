@@ -11,21 +11,21 @@ let CustomTableComponent = {
                         <tbody>
                             <tr class="table-text" data-cy="object-test" v-for="(row, index) in rows">
                                 <td v-if="isVisible[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                    <div v-if="!(rowToEdit==index) || inputType[itemIndex].type == 'no input'" v-html="item"></div>
+                                    <div v-if="!(rowToEditIndex==index) || inputType[itemIndex].type == 'no input'" v-html="item"></div>
                                     
-                                    <textarea data-cy="test-input" v-if="rowToEdit==index && inputType[itemIndex].type == 'text'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea>
+                                    <textarea data-cy="test-input" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'text'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea>
                                     
-                                    <select data-cy="dropdown-input" v-if="rowToEdit==index && inputType[itemIndex].type == 'dropdown'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    <select data-cy="dropdown-input" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'dropdown'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                         <option v-for="option in inputType[itemIndex].value">{{ option }}</option>
                                     </select>
                                     
-                                    <input data-cy="date-input" type="date" v-if="rowToEdit==index && inputType[itemIndex].type == 'date'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    <input data-cy="date-input" type="date" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'date'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                     
-                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEdit==index && inputType[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @change="changedCell(itemIndex)">
+                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'number'" v-model="editedRowData.data[itemIndex]" @change="changedCell(itemIndex)">
                                 </td>
                                 <td v-if="canEdit"> 
-                                    <button class="table-button btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
-                                    <button class="table-button btn btn-success" data-cy="save-button" v-if="rowToEdit==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
+                                    <button class="table-button btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEditIndex==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
+                                    <button class="table-button btn btn-success" data-cy="save-button" v-if="rowToEditIndex==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
                                 </td>
                                 <td v-if="canDelete"> 
                                     <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
@@ -62,23 +62,35 @@ let CustomTableComponent = {
     },
     data() {
         return {
-            rowToEdit: null,
+            rowToEditIndex: null,
             indexesToChange: [],
+            editedRowData: {}
+
         }
     },
     methods: {
         editRow: function(index){
-            this.rowToEdit = index
+            this.rowToEditIndex = index
+            this.editedRowData = { 
+                'id': this.rows[index].id,
+                'data': this.rows[index].data
+            }
+
+            console.log(this.editedRowData)
             this.$emit('edit-clicked')
         },
-        finishRowEdit: function(id, row){
-            this.rowToEdit = null
+        finishRowEdit: function(id){
+            this.rowToEditIndex = null
             let jsonObject = {}
             for(i=0; i < this.indexesToChange.length; i ++){
                 let key = this.headers[this.indexesToChange[i]]
-                jsonObject[key] = row.data[this.indexesToChange[i]]
+                jsonObject[key] = editedRowData.data[this.indexesToChange[i]]
             }
             this.indexesToChange = []
+
+            this.editedRowData = {}
+
+            console.log(jsonObject)
 
             this.$emit('row-edited', jsonObject, id)
         },
@@ -87,13 +99,15 @@ let CustomTableComponent = {
         },
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){
-                this.indexesToChange.push(itemIndex)
+                if(this.editedRowData.data[itemIndex] != this.rows[this.rowToEditIndex].data[itemIndex]) {
+                    this.indexesToChange.push(itemIndex)
+                }
             }
         }
     },
     computed: {
         editDeleteDisabled() {
-            if (this.rowToEdit != null){
+            if (this.rowToEditIndex != null){
                 return true
             }else{
                 return false
