@@ -103,31 +103,38 @@ describe('API Request Function', () => {
     })
     
     context('test maping functions', () => {
-        it('getIDToUserMap creates correct map with the correct length', () => {
-            cy.wrap(getIDToUserMap()).as('map')
-            cy.get('@map').should((idToNameMap) => {
-                expect(idToNameMap).to.not.be.null
-                expect(idToNameMap).to.be.a('Map')
-                expect(idToNameMap.size).to.equal(11)
-                expect(idToNameMap.get('1')).to.equal('admin')
-                expect(idToNameMap.get('6')).to.equal('manager1')
-                expect(idToNameMap.get('8')).to.equal('worker1')
-                expect(idToNameMap.get('13')).to.equal('guest')
-                expect(idToNameMap.get('14')).to.equal('restws1')
-            })
-        })
-        
-        it('getUserToIDMap creates correct map with the correct length', () => {
-            cy.wrap(getUserToIDMap()).as('map')
-            cy.get('@map').should((nameToIdMap) => {
+        it('User map functions get the proper name/id for the users', () => {
+            let manager1ID = -1
+            let adminID = -1
+            let worker2ID = -1
+            let guestID = -1
+            let restws1ID = -1
+
+            cy.wrap(getUserToIDMap(), {timeout: 15000}).as('nameMap')
+            cy.get('@nameMap').should(function(nameToIdMap) {
                 expect(nameToIdMap).to.not.be.null
                 expect(nameToIdMap).to.be.a('Map')
                 expect(nameToIdMap.size).to.equal(11)
-                expect(nameToIdMap.get('admin')).to.equal('1')
-                expect(nameToIdMap.get('manager1')).to.equal('6')
-                expect(nameToIdMap.get('worker1')).to.equal('8')
-                expect(nameToIdMap.get('guest')).to.equal('13')
-                expect(nameToIdMap.get('restws1')).to.equal('14')
+
+                manager1ID = nameToIdMap.get('manager1')
+                adminID = nameToIdMap.get('admin')
+                worker2ID = nameToIdMap.get('worker2')
+                guestID = nameToIdMap.get('guest')
+                restws1ID = nameToIdMap.get('restws1')
+            })
+            .then(() => {
+                cy.wrap(getIDToUserMap(), {timeout: 15000}).as('idMap')
+                cy.get('@idMap').should(function(idToNameMap) {
+                    expect(idToNameMap).to.not.be.null
+                    expect(idToNameMap).to.be.a('Map')
+                    expect(idToNameMap.size).to.equal(11)
+
+                    expect(idToNameMap.get(manager1ID)).to.equal('manager1')
+                    expect(idToNameMap.get(adminID)).to.equal('admin')
+                    expect(idToNameMap.get(worker2ID)).to.equal('worker2')
+                    expect(idToNameMap.get(guestID)).to.equal('guest')
+                    expect(idToNameMap.get(restws1ID)).to.equal('restws1')
+                })
             })
         })
 
