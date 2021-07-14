@@ -21,7 +21,7 @@ let CustomTableComponent = {
                                     
                                     <input data-cy="date-input" type="date" v-if="rowToEdit==index && inputType[itemIndex].type == 'date'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                     
-                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEdit==index && inputType[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    <input data-cy="number-input" type="number" style="width: 70px;" v-if="rowToEdit==index && inputType[itemIndex].type == 'number'" v-model="row.data[itemIndex]" @change="changedCell(itemIndex)">
                                 </td>
                                 <td v-if="canEdit"> 
                                     <button class="btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEdit==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
