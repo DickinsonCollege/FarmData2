@@ -134,17 +134,24 @@
                     this.updateLog = this.seedingLogs.filter((x) => x.id === id)
                     let updateSeedingObject = {}
                     let updatePlantObject = {}
-
-                    if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                        updateSeedingObject['quantity'] = this.quantityDirectSeeding
-                    }
-                    else{
-                        updateSeedingObject['quantity'] = this.quantityTraySeeding
-                    }
+                    
+                   
                     /**
                      * The Table component returns an object with the cells that were updated. We don't know how many or wich ones where updated, so we check for all possible cells that could have been updated.
                      */
                     let keys = Object.keys(updateObject)
+                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
+                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
+                        keys.includes('Cells Per Tray')){
+                        if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
+                            updateSeedingObject['quantity'] = this.quantityDirectSeeding
+                        }
+                        else{
+                            updateSeedingObject['quantity'] = this.quantityTraySeeding
+                        }
+                    }
+                    
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
                             updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
@@ -209,8 +216,9 @@
                         updateRecord(seedingUrl, updatePlantObject, this.sessionToken)
                     }
                     //call updateRecord function to update seeding log
-                    updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
-                    
+                    if(!(Object.entries(updateSeedingObject).length === 0)){
+                        updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                    }
                     this.rowBeingEdited = false
                 },
                 /**
