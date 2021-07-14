@@ -5,7 +5,7 @@ describe('Testing for the seeding report page', () => {
         cy.login('manager1', 'farmdata2')
     })
 
-    context('sets up the page (necessary for all other tests)', () => {
+    context.only('sets up the page (necessary for all other tests)', () => {
         it('visits the page and logs in', () => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
         })
@@ -302,6 +302,172 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=tray-summary]')
                 .children().first().next().next().next().next().children()
                 .should('have.text', avgSeedsPerHour.toString())
+        })
+    })
+
+    context('changing the type of seeding changes the visible columns', () => {
+        it('displays only columns relevant to both seedings when "All" is selected', () => {
+            cy.get('[data-cy=dropdown-input]').first()
+                .select('All')
+                .should('have.value', 'All')
+
+            cy.get('[data-cy=headers]')
+                .first().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('date')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('crop')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('area')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Tray/Direct')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Hours')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Num Workers')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Varieties')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Comments')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('User')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Edit')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Delete')
+                })
+        })
+
+        it('displays columns relevant to direct seedings when "Direct Seedings" is selected', () => {
+            cy.get('[data-cy=dropdown-input]').first()
+                .select('Direct Seedings')
+                .should('have.value', 'Direct Seedings')
+
+            cy.get('[data-cy=headers]')
+                .first().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('date')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('crop')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('area')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Tray/Direct')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Row/Bed')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Row Feet')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Bed Feet')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Hours')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Num Workers')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Varieties')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Comments')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('User')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Edit')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Delete')
+                })
+        })
+
+        it('displays columns relevant to tray seedings when "Tray Seedings" is selected', () => {
+            cy.get('[data-cy=dropdown-input]').first()
+                .select('Tray Seedings')
+                .should('have.value', 'Tray Seedings')
+
+            cy.get('[data-cy=headers]')
+                .first().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('date')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('crop')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('area')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Tray/Direct')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Tray Seeds')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('# of Trays')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Cells Per Tray')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Hours')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Num Workers')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Varieties')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Comments')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('User')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Edit')
+                })
+                .next().then(($headerVal) => {
+                    expect($headerVal[0].innerText).to.equal('Delete')
+                })
+        })
+    })
+
+    context.only('date picker and filter behavior', () => {
+        it('doesnt display the report when a new date range is being selected', () => {
+            cy.get('[data-cy=start-date-select]')
+                .should('exist')
+                .type('2019-01-02')
+            cy.get('[data-cy=date-select]')
+                .first()
+                .blur()
+
+            cy.get('[data-cy=filters-panel]')
+                .should('not.exist')
+
+            cy.get('[data-cy=report-table]')
+                .should('not.exist')
+
+            cy.get('[data-cy=direct-summary]')
+                .should('not.exist')
+
+            cy.get('[data-cy=tray-summary]')
+                .should('not.exist')
         })
     })
 })
