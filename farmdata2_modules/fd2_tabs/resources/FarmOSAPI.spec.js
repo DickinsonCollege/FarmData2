@@ -100,7 +100,7 @@ describe('API Request Function', () => {
         })
     })
     
-    context.only('test maping functions', () => {
+    context('test maping functions', () => {
         it('getIDToUserMap creates correct map with the correct length', () => {
             cy.wrap(getIDToUserMap()).as('map')
             cy.get('@map').should((idToNameMap) => {
