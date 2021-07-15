@@ -24,7 +24,7 @@
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
                 <input type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
-                <input type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
+                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
             </legend>
             <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
                 <p>Please Select Tray Seeding or Direct Seeding</p>
@@ -37,9 +37,9 @@
                 <label>Number of Seeds Plants: </label><input style='width: 75px;' type=number v-model='numSeedsPlanted'>
             </div>
             <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <label>Rows per Bed: </label><input style='width: 75px;' type=number v-model='numRowBed'>
+                <label>Rows per Bed: </label><input data-cy='row-bed' style='width: 75px;' type=number v-model='numRowBed'>
                 <div style='display: flex;text-align:center;padding-top: 25px;'>
-                    <label>Number of Feet: </label><input style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
+                    <label>Number of Feet: </label><input data-cy='num-feet' style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
                 </div>
             </div>
        </fieldset>

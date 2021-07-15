@@ -8,7 +8,7 @@ describe('Test the seeding input page', () => {
         it('visits the page', () => {
             cy.visit('/farm/fd2-field-kit/seedingInput')
             //give some time for api requests to come in
-            cy.wait(20000)
+            //cy.wait(20000)
         })
     })
     context('test inputs and buttons', () => {
@@ -77,7 +77,45 @@ describe('Test the seeding input page', () => {
                     .select('A')
                     .should('have.value', 'A')
             })
+        })   
+    })
+    context('select direct seedings and test its inputs', () => {
+        it('select Direct Seeding', () => {
+            cy.get('[data-cy=direct-seedings]')
+                .should('exist')
+                .check()
+                .should('be.checked')
         })
-        
+        it('input a row per bed number', () =>{
+            cy.get('[data-cy=row-bed]')
+                .should('exist')
+                .click()
+                .clear()
+                .type('5')
+                .should('have.value', '5')
+        })
+        it('input the number of feet', () => {
+            cy.get('[data-cy=num-feet')
+                .should('exist')
+                .click()
+                .clear()
+                .type('20')
+                .should('have.value', '20')
+        })
+        it('select feet unit(ei. bed or row)', () => {
+            cy.get('[data-cy=unit-feet')
+                .should('exist')
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[3]).should('exist')
+                    .select('row')
+                    .should('have.value', 'row')
+            })
+        })
+        it('check that submit button is not disabled',() => {
+            cy.get('[data-cy=submit-button')
+                .should('exist')
+                .should('not.be.disabled')
+        })
     })
 })
