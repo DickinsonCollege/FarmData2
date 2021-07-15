@@ -134,17 +134,24 @@
                     this.updateLog = this.seedingLogs.filter((x) => x.id === id)
                     let updateSeedingObject = {}
                     let updatePlantObject = {}
-
-                    if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                        updateSeedingObject['quantity'] = this.quantityDirectSeeding
-                    }
-                    else{
-                        updateSeedingObject['quantity'] = this.quantityTraySeeding
-                    }
+                    
+                   
                     /**
                      * The Table component returns an object with the cells that were updated. We don't know how many or wich ones where updated, so we check for all possible cells that could have been updated.
                      */
                     let keys = Object.keys(updateObject)
+                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
+                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
+                        keys.includes('Cells Per Tray')){
+                        if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
+                            updateSeedingObject['quantity'] = this.quantityDirectSeeding
+                        }
+                        else{
+                            updateSeedingObject['quantity'] = this.quantityTraySeeding
+                        }
+                    }
+                    
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
                             updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
@@ -163,19 +170,14 @@
                             }
                         }
                         else if(keys[i] == 'Hours'){
-                            for(i=0; i < updateSeedingObject.quantity.length; i++){
-                                if(updateSeedingObject.quantity[i].label == 'Labor'){
-                                    updateSeedingObject.quantity[i].value = updateObject['Hours']
-                                }
-                            }
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Labor')].value = updateObject['Hours']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
                         }
                         else if(keys[i] == 'Num Workers'){
-                            if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                                updateSeedingObject.quantity[3].value = updateObject['Num Workers']
-                            }
-                            else{
-                                updateSeedingObject.quantity[4].value = updateObject['Num Workers']
-                            }
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Workers')].value = updateObject['Num Workers']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Num Workers']
                         }
                         else if(keys[i] == 'Comments'){
                             updateSeedingObject['notes'] = {'value': updateObject['Comments'],
@@ -192,21 +194,43 @@
                             }
                         }
                         else if(keys[i] == 'Row/Bed'){
-                            updateSeedingObject.quantity[1].value = updateObject['Row/Bed']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
                         }
                         else if(keys[i] == 'Row Feet'){
-                            updateSeedingObject.quantity[0].value = updateObject['Row Feet']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Amount planted')].value = updateObject['Row Feet']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Amount planted')].value = updateObject['Row Feet']
                         }
                         else if(keys[i] == 'Tray Seeds'){
-                            updateSeedingObject.quantity[0].value = updateObject['Tray Seeds']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Seeds planted')].value = updateObject['Tray Seeds']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Seeds planted')].value = updateObject['Tray Seeds']
                         }
                         else if(keys[i] == '# of Trays'){
-                            updateSeedingObject.quantity[1].value = updateObject['# of Trays']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Flats used')].value = updateObject['# of Trays']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats used')].value = updateObject['# of Trays']
                         }
                         else if(keys[i] == 'Cells Per Tray'){
-                            updateSeedingObject.quantity[2].value = updateObject['Cells Per Tray']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Cells/Flat')].value = updateObject['Cells Per Tray']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Cells/Flat')].value = updateObject['Cells Per Tray']
                         }   
                     }
+                    //replace old update log with current update log
+                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
+                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
+                        keys.includes('Cells Per Tray')){
+                        for(var i=0; i < this.seedingLogs.length; i++){
+                            if(this.seedingLogs[i].id === id){
+                                this.seedingLogs.splice(i, this.updateLog)
+                            }
+                        }    
+                    }
+                    
                     console.log('seeding log')
                     console.log(updateSeedingObject)
                     console.log('planting log')
@@ -218,8 +242,9 @@
                         updateRecord(seedingUrl, updatePlantObject, this.sessionToken)
                     }
                     //call updateRecord function to update seeding log
-                    updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
-                    
+                    if(!(Object.entries(updateSeedingObject).length === 0)){
+                        updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                    }
                     this.rowBeingEdited = false
                 },
                 /**
@@ -554,7 +579,7 @@
                                 "id": this.unitToIDMap.get('FLATS'), 
                                 "resource": "taxonomy_term"
                             },
-                            "label": "Flats used" //also known as trays
+                            "label": "Flats used" //also known as trays used
                         },
                         {
                             "measure": "ratio", 
