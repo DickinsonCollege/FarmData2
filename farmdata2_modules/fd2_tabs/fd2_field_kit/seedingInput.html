@@ -14,11 +14,11 @@
                 <label>Number of Workers: </label><input data-cy="num-workers" style='width: 75px;' type=number v-model='numWorkers'>
                 <br>
                 <div style='display:flex; padding-top:25px;'>
-                        <label>Time Spent: </label><input style='width: 75px;' type=number v-model='time'>
-                        <dropdown-with-all style='text-align:center;' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
+                        <label>Time Spent: </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
+                        <dropdown-with-all data-cy='time-unit' style='text-align:center;' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
                 </div>
                 <br>
-                <label>Comments: </label><textarea v-model='comments'></textarea>
+                <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">

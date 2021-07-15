@@ -7,7 +7,8 @@ describe('Test the seeding input page', () => {
     context('sets up the page', () => {
         it('visits the page', () => {
             cy.visit('/farm/fd2-field-kit/seedingInput')
-            cy.wait(40000)
+            //give some time for api requests to come in
+            cy.wait(20000)
         })
     })
     context('test inputs and buttons', () => {
@@ -41,6 +42,30 @@ describe('Test the seeding input page', () => {
                 .clear()
                 .type('2')
                 .should('have.value', '2')
+        })
+        it('input time spent', () => {
+            cy.get('[data-cy=time-spent]')
+                .should('exist')
+                .click()
+                .clear()
+                .type('10')
+                .should('have.value', '10')
+        })
+        it('select time unit', () => {
+            cy.get('[data-cy=time-unit]')
+                .should('exist')
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[2]).should('exist')
+                    .select('minutes')
+                    .should('have.value', 'minutes')
+            })
+        })
+        it('input comments', () => {
+            cy.get('[data-cy=comments]')
+                .should('exist')
+                .type('Yeeewhaw')
+                .should('have.value', 'Yeeewhaw')
         })
         //last b/c it take sthe longest to load in
         it('select a area', () => {
