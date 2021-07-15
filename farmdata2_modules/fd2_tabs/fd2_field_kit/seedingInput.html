@@ -5,11 +5,11 @@
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <date-selection class="center-block" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
+                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
                 <br>
-                <dropdown-with-all class="center-block" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
+                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
                 <br>
-                <dropdown-with-all class="center-block" :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:</dropdown-with-all> 
+                <dropdown-with-all :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:</dropdown-with-all> 
                 <br>
                 <label>Number of Workers: </label><input style='width: 75px;' type=number v-model='numWorkers'>
                 <br>
@@ -43,7 +43,7 @@
                 </div>
             </div>
        </fieldset>
-       <button class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
+       <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
     </div>
 
     <script>
