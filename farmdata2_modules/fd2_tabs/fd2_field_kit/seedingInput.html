@@ -23,18 +23,18 @@
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
-                <input type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
+                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
             </legend>
             <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
                 <p>Please Select Tray Seeding or Direct Seeding</p>
             </div>
             <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <label>Number of Trays Planted: </label><input style='width: 75px;' type=number v-model='numOfTrays'>
+                <label>Number of Trays Planted: </label><input data-cy='trays-planted' style='width: 75px;' type=number v-model='numOfTrays'>
                 <br>
-                <label>Cells per Tray: </label><input style='width: 75px;' type=number v-model='numCellsPerTray'>
+                <label>Cells per Tray: </label><input data-cy='cells-tray' style='width: 75px;' type=number v-model='numCellsPerTray'>
                 <br>
-                <label>Number of Seeds Plants: </label><input style='width: 75px;' type=number v-model='numSeedsPlanted'>
+                <label>Number of Seeds Plants: </label><input data-cy='seeds-planted' style='width: 75px;' type=number v-model='numSeedsPlanted'>
             </div>
             <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
                 <label>Rows per Bed: </label><input data-cy='row-bed' style='width: 75px;' type=number v-model='numRowBed'>

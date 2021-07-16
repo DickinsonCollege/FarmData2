@@ -8,7 +8,7 @@ describe('Test the seeding input page', () => {
         it('visits the page', () => {
             cy.visit('/farm/fd2-field-kit/seedingInput')
             //give some time for api requests to come in
-            //cy.wait(20000)
+            cy.wait(20000)
         })
     })
     context('test inputs and buttons', () => {
@@ -113,6 +113,43 @@ describe('Test the seeding input page', () => {
             })
         })
         it('check that submit button is not disabled',() => {
+            cy.get('[data-cy=submit-button')
+                .should('exist')
+                .should('not.be.disabled')
+        })
+    })
+    context('select tray seedings and test its inputs', () => {
+        it('select Tray Seeding', () => {
+            cy.get('[data-cy=tray-seedings]')
+                .should('exist')
+                .check()
+                .should('be.checked')
+        })
+        it('input number of Trays', () => {
+            cy.get('[data-cy=trays-planted')
+                .should('exist')
+                .click()
+                .clear()
+                .type('3')
+                .should('have.value', '3')
+        })
+        it('input number of Cells per Tray', () => {
+            cy.get('[data-cy=cells-tray')
+                .should('exist')
+                .click()
+                .clear()
+                .type('25')
+                .should('have.value', '25')
+        })
+        it('input number of seeds planted', () => {
+            cy.get('[data-cy=seeds-planted')
+                .should('exist')
+                .click()
+                .clear()
+                .type('76')
+                .should('have.value', '76')
+        })
+        it('submit button is not disabled', () => {
             cy.get('[data-cy=submit-button')
                 .should('exist')
                 .should('not.be.disabled')
