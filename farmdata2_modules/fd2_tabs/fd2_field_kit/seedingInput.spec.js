@@ -117,6 +117,16 @@ describe('Test the seeding input page', () => {
                 .should('exist')
                 .should('not.be.disabled')
         })
+        it('Tray Seeding inputs should not exist in DOM', () => {
+            cy.get('[data-cy=trays-planted]')
+                .should('not.exist')
+
+            cy.get('[data-cy=cells-tray]')
+                .should('not.exist')
+
+            cy.get('[data-cy=seeds-planted')
+                .should('not.exist')
+        })
     })
     context('select tray seedings and test its inputs', () => {
         it('select Tray Seeding', () => {
@@ -153,6 +163,16 @@ describe('Test the seeding input page', () => {
             cy.get('[data-cy=submit-button')
                 .should('exist')
                 .should('not.be.disabled')
+        })
+        it('Direct Seeding inputs should not exist in DOM', () => {
+            cy.get('[data-cy=row-bed]')
+                .should('not.exist')
+
+            cy.get('[data-cy=num-feet')
+                .should('not.exist')
+
+            cy.get('[data-cy=unit-feet')
+                .should('not.exist')
         })
     })
 })
