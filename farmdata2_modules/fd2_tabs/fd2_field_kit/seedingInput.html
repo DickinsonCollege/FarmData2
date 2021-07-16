@@ -1,0 +1,338 @@
+<body>
+    <div id='seedingInput'>
+       <h1 style='text-align:center;'>Seeding Input Log</h1> 
+       <br>
+       <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
+            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
+                <date-selection class="center-block" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
+                <br>
+                <dropdown-with-all class="center-block" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
+                <br>
+                <dropdown-with-all class="center-block" :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:</dropdown-with-all> 
+                <br>
+                <label>Number of Workers: </label><input style='width: 75px;' type=number v-model='numWorkers'>
+                <br>
+                <div style='display:flex; padding-top:25px;'>
+                        <label>Time Spent: </label><input style='width: 75px;' type=number v-model='time'>
+                        <dropdown-with-all style='text-align:center;' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
+                </div>
+                <br>
+                <label>Comments: </label><textarea v-model='comments'></textarea>
+            </div>
+       </fieldset>
+       <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+           <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
+                <input type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
+                <input type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
+            </legend>
+            <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
+                <p>Please Select Tray Seeding or Direct Seeding</p>
+            </div>
+            <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
+                <label>Number of Trays Planted: </label><input style='width: 75px;' type=number v-model='numOfTrays'>
+                <br>
+                <label>Cells per Tray: </label><input style='width: 75px;' type=number v-model='numCellsPerTray'>
+                <br>
+                <label>Number of Seeds Plants: </label><input style='width: 75px;' type=number v-model='numSeedsPlanted'>
+            </div>
+            <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
+                <label>Rows per Bed: </label><input style='width: 75px;' type=number v-model='numRowBed'>
+                <div style='display: flex;text-align:center;padding-top: 25px;'>
+                    <label>Number of Feet: </label><input style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
+                </div>
+            </div>
+       </fieldset>
+       <button class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#seedingInput',
+            components:{
+                'date-selection': DateSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
+            },
+            data:{
+                sessionToken: null,
+                selectedDate: dayjs().format('YYYY-MM-DD').toString(),
+                selectedCrop: null,
+                selectedArea: null,
+                selectedSeedingType: '',
+                selectedTimeUnit: null,
+                selectedFeetUnit: null,
+                comments: '',
+                numWorkers: 0,
+                time: 0, 
+                numOfTrays: 0,
+                numCellsPerTray: 0,
+                numSeedsPlanted: 0,
+                numRowBed: 0,
+                numFeet: 0,
+                cropArray: [],
+                areaArray: [],
+                timeUnits: ['minutes', 'hours'],
+                feetUnits: ['row', 'bed'],
+                cropToIDMap: new Map(),
+                userToIDMap: new Map(),
+                areaToIDMap: new Map(),
+                logTypeToIDMap: new Map(),
+                plantingId: 0,
+            },
+            methods:{
+                setNewDate(newDate){
+                    this.selectedDate = newDate
+                },
+                setNewCrop(newCrop){
+                    this.selectedCrop = newCrop
+                },
+                setNewArea(newArea){
+                    this.selectedArea = newArea
+                },
+                setNewTimeUnit(newTimeUnit){
+                    this.selectedTimeUnit = newTimeUnit
+                },
+                setNewFeetUnit(newFeetUnit){
+                    this.selectedFeetUnit = newFeetUnit
+                },
+                saveLog(){
+                    createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
+                        this.plantingId = response.data.id
+                        console.log(response.data.id)
+                    })
+                    createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                        console.log(response)
+                    })
+                }
+            },
+            computed: {
+                formNotCompleted(){
+                    if(this.selectedCrop == null){
+                        return true
+                    }
+                    if(this.selectedArea == null){
+                        return true
+                    }
+                    if(this.selectedSeedingType == ''){
+                        return true
+                    }
+                    
+                    if(this.selectedTimeUnit == null){
+                        return true
+                    }
+                    if(this.time == 0){
+                        return true
+                    }
+                    if(this.selectedSeedingType == 'Direct Seedings'){
+                        if(this.numFeet == 0){
+                            return true
+                        }
+                        if(this.numRowBed == 0){
+                            return true
+                        }
+                        if(this.selectedFeetUnit == null){
+                            return true
+                        }
+                    }
+                    if(this.selectedSeedingType == 'Tray Seedings'){
+                        if(this.numCellsPerTray == 0){
+                            return true
+                        }
+                        if(this.numOfTrays == 0){
+                            return true
+                        }
+                        
+                        if(this.numSeedsPlanted == 0){
+                            return true
+                        }
+                    }
+                    if(this.numWorkers == 0){
+                        return true
+                    }
+                    return false
+                },
+                plantingLogData(){
+                    planting = {
+                        "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
+                        "type": "planting",
+                        "crop": [{
+                            "id": this.cropToIDMap.get(this.selectedCrop),
+                            "resource": "taxonomy_term"
+                        }],
+                    }
+                    return planting
+                },
+                logData(){
+                    let quantityUnits = []
+                    let seedingID = 0
+                    if(this.selectedSeedingType == "Direct Seedings"){
+                        quantityUnits = this.quantityDirectSeeding
+                        seedingID = this.logTypeToIDMap.get('Direct Seedings')
+                    }
+                    else if (this.selectedSeedingType == "Tray Seedings"){
+                        quantityUnits = this.quantityTraySeeding
+                        seedingID = this.logTypeToIDMap.get('Tray Seedings')
+                    }
+                    seeding = {
+                        "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
+                        "type": "farm_seeding",
+                        "timestamp": dayjs(this.selectedDate).unix(),
+                        "done": "1",  //any seeding recorded is done.
+                        "notes": {
+                            "value": this.comments,
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": this.plantingId,   //Associated planting
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": seedingID,
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": this.areaToIDMap.get(this.selectedArea),
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": quantityUnits,
+                        "created": dayjs().unix(),
+                        "lot_number": "N/A (No Variety)",
+                        "data": JSON.stringify({ 
+                            "crop_tid": this.cropToIDMap.get(this.selectedCrop)
+                        })
+                    }
+                    return seeding
+                },
+                quantityDirectSeeding(){
+                    let time = this.time
+                    let feet = this.numFeet
+                    if(this.selectedTimeUnit == 'minutes'){
+                        time = time / 60
+                    }
+                    if(this.selectedFeetUnit == 'bed'){
+                        feet = feet * this.numRowBed
+                    }
+                    quantity = [
+                        {
+                            "measure": "length", 
+                            "value": feet,  //total row feet
+                            "unit": {
+                                "id": this.unitToIDMap.get('ROW FEET'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": this.numRowBed,
+                            "unit": {
+                                "id": this.unitToIDMap.get('ROWS/BED'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": time, 
+                            "unit": {
+                                "id": this.unitToIDMap.get('HOURS'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.numWorkers, 
+                            "unit": {
+                                "id": this.unitToIDMap.get('PEOPLE'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                    return quantity
+                },
+                quantityTraySeeding(){
+                    quantity = [
+                        {
+                            "measure": "count", 
+                            "value": this.numSeedsPlanted,  //number of seed planted
+                            "unit": {
+                                "id": this.unitToIDMap.get('SEEDS'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Seeds planted"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.numOfTrays,  //number of flats(trays)
+                            "unit": {
+                                "id": this.unitToIDMap.get('FLATS'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Flats used"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": this.numCellsPerTray,  //cells per flat
+                            "unit": {
+                                "id": this.unitToIDMap.get('CELLS/FLAT'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Cells/Flat"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": this.time,  //hours worked
+                            "unit": {
+                                "id": this.unitToIDMap.get('HOURS'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.numWorkers,
+                            "unit": {
+                                "id": this.unitToIDMap.get('PEOPLE'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                    return quantity
+                }
+            },
+            created(){
+                let fullResponse = []
+                getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
+                    this.cropArray = fullResponse.map((h) => h.name)
+                })
+                getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
+                    this.areaArray = this.areaArray.map((h) => h.name)
+                })
+                getSessionToken().then((response) => {
+                    this.sessionToken = response
+                })
+                getCropToIDMap().then((response) => {
+                    this.cropToIDMap = response
+                })
+                getUserToIDMap().then((response) => {
+                    this.userToIDMap = response
+                })
+                getAreaToIDMap().then((response) => {
+                    this.areaToIDMap = response
+                })
+                getUnitToIDMap().then((response) => {
+                    this.unitToIDMap = response
+                })
+                getLogTypeToIDMap().then((response) => {
+                    this.logTypeToIDMap = response
+                })
+            }
+        })
+    Vue.config.devtools = true;
+    </script>
+</body>
