@@ -99,6 +99,13 @@ let CustomTableComponent = {
                     this.indexesToChange.push(itemIndex)
                 }
             }
+            else if (this.indexesToChange.includes(itemIndex) && (this.editedRowData.data[itemIndex] == this.rows[this.rowToEditIndex].data[itemIndex])){
+                for (i = 0; i < indexesToChange.length; i++) {
+                    if (this.indexesToChange[i] == itemIndex) {
+                        this.indexesToChange.splice(i, 1)
+                    }
+                }
+            }
         }
     },
     computed: {
