@@ -87,7 +87,18 @@ let CustomTableComponent = {
         },
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){
-                this.indexesToChange.push(itemIndex)
+                console.log(this.editedRowData.data[itemIndex])
+                console.log(this.rows[this.rowToEditIndex].data[itemIndex])
+                if(this.editedRowData.data[itemIndex] != this.rows[this.rowToEditIndex].data[itemIndex]) {
+                    this.indexesToChange.push(itemIndex)
+                }
+            }
+            else if (this.indexesToChange.includes(itemIndex) && (this.editedRowData.data[itemIndex] == this.rows[this.rowToEditIndex].data[itemIndex])){
+                for (i = 0; i < indexesToChange.length; i++) {
+                    if (this.indexesToChange[i] == itemIndex) {
+                        this.indexesToChange.splice(i, 1)
+                    }
+                }
             }
         }
     },
