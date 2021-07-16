@@ -75,8 +75,6 @@ let CustomTableComponent = {
                 'id': this.rows[index].id,
                 'data': this.rows[index].data
             }
-
-            console.log(this.editedRowData)
             this.$emit('edit-clicked')
         },
         finishRowEdit: function(id){
@@ -89,8 +87,6 @@ let CustomTableComponent = {
             this.indexesToChange = []
 
             this.editedRowData = {}
-
-            console.log(jsonObject)
 
             this.$emit('row-edited', jsonObject, id)
         },
