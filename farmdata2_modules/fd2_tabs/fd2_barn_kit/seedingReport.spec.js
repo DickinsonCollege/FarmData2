@@ -1,4 +1,8 @@
 const dayjs = require('dayjs')
+var FarmOSAPI = require("./../resources/FarmOSAPI.js")
+var getSessionToken = FarmOSAPI.getSessionToken
+var createRecord = FarmOSAPI.createRecord
+var deleteRecord = FarmOSAPI.deleteRecord
 
 describe('Testing for the seeding report page', () => {
     beforeEach(() => {
@@ -448,7 +452,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context.only('date picker and filter behavior', () => {
+    context('date picker and filter behavior', () => {
         it('doesnt display the report when a new date range is being selected', () => {
             cy.get('[data-cy=start-date-select]')
                 .should('exist')
@@ -467,6 +471,192 @@ describe('Testing for the seeding report page', () => {
                 .should('not.exist')
 
             cy.get('[data-cy=tray-summary]')
+                .should('not.exist')
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
+
+        it('disables the filters while a row is being edited', () => {
+            cy.get('[data-cy=edit-button]').first()
+                .click()
+
+            cy.get('[data-cy=dropdown-input]').first()
+                .should('be.disabled')
+        })
+    })
+
+    context.only('edit and delete buttons work', () => {
+        let logID = 0
+
+        beforeEach(() => {
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.get('[data-cy=start-date-select]')
+                .should('exist')
+                .type('2001-01-25')
+
+            cy.get('[data-cy=end-date-select]')
+                .should('exist')
+                .type('2001-12-25')
+
+            cy.get('[data-cy=generate-rpt-btn]').first()
+                .click()
+
+            cy.wait(15000)
+        })
+
+        it('displays a log that has just been created', () => {
+            
+            cy.wrap(getSessionToken())
+            .then(sessionToken => {
+                token = sessionToken
+     
+                req = {
+                    url: '/log',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "TEST SEEDING",
+                        "type": "farm_seeding",
+                        "timestamp": dayjs('2001-09-20').unix(),
+                        "done": "1",  //any seeding recorded is done.
+                        "notes": {
+                            "value": "This is a test log",
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": "1",   //Associated planting
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": "240",
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": "233",
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": [
+                            {
+                                "measure": "length", 
+                                "value": "5",  //total row feet
+                                "unit": {
+                                    "id": "20", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Amount planted"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": "38",
+                                "unit": {
+                                    "id": "38",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Rows/Bed"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": "0.5", 
+                                "unit": {
+                                    "id": "29",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "1", 
+                                "unit": {
+                                    "id": "15",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ],
+                        "created": dayjs().unix(),
+                        "lot_number": "N/A (No Variety)",
+                        "data": "1"
+                    }
+                }
+
+                cy.request(req).as('create')
+                cy.get('@create').should(function(response) {
+                    expect(response.status).to.equal(201)
+                    logID = response.body.id
+                })
+            })
+
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.get('[data-cy=start-date-select]')
+                .should('exist')
+                .type('2001-01-25')
+
+            cy.get('[data-cy=end-date-select]')
+                .should('exist')
+                .type('2001-12-25')
+
+            cy.get('[data-cy=generate-rpt-btn]').first()
+                .click()
+
+            cy.wait(15000)
+
+            cy.get('[data-cy=object-test]')
+                .first().children()
+                    .first().then(($date) => {
+                        expect($date[0].innerText).to.equal("2001-09-20")
+                    })
+                    .next().then(($crop) => {
+                        expect($crop[0].innerText).to.equal('')
+                    })
+                    .next().then(($area) => {
+                        expect($area[0].innerText).to.equal('TEACHING')
+                    })
+        })
+
+        it('edits the database when a row is edited in the table', () => {
+            cy.get('[data-cy=edit-button]')
+                .first().click()
+
+            cy.get('[data-cy=number-input]')
+                .first()
+                .type('15')
+                .blur()
+
+            cy.get('[data-cy=date-input]')
+                .type('2001-09-28')
+                .blur()
+
+            cy.get('[data-cy=test-input]')
+                .type('New Comment')
+                .blur()
+
+            cy.get('[data-cy=dropdown-table-input]')
+                .first()
+                .select('TOMATO')
+                .blur()
+
+            cy.get('[data-cy=save-button]')
+                .first().click()
+
+            cy.request('/log.json?type=farm_seeding&id=' + logID).as('check')
+                cy.get('@check').should(function(response) {
+                    expect(response.body.list[0].name).to.equal('TEST SEEDING')
+                })
+        })
+
+        it('deletes a log from the database when the delete button is pressed', () => {
+            cy.get('[data-cy=delete-button]')
+                .first().click()
+
+            cy.get('[data-cy=object-test]')
                 .should('not.exist')
         })
     })
