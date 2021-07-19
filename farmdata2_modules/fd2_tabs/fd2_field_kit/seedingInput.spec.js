@@ -238,7 +238,13 @@ describe('Test the seeding input page', () => {
                 cy.get('@getLog').should(function(){
                     //expect(traySeedingLog.length).to.equal(1)
                     expect(traySeedingLog[0].movement.area[0].name).to.equal('A')
-                    console.log(traySeedingLog[0].asset[0].id)
+                })
+            }).then(() => {
+                cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + traySeedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
+
+                cy.get('@getPlanting').should(function(){
+                    expect(plantingLog.length).to.equal(1)
+                    expect(plantingLog[0].crop[0].name).to.equal('BEAN')
                 })
             }).then(() => {
                 cy.wrap(getSessionToken()).as('token')
@@ -246,10 +252,15 @@ describe('Test the seeding input page', () => {
                     token = sessionToken
                 })
             }).then(() => {
-                console.log(traySeedingLog[0].id)
-                cy.wrap(deleteRecord('/log/' + traySeedingLog[0].id, token)).as('delete')
+                cy.wrap(deleteRecord('/log/' + traySeedingLog[0].id, token)).as('deleteSeedingsLog')
 
-                cy.get('@delete').should(function(response) {
+                cy.get('@deleteSeedingsLog').should(function(response) {
+                    expect(response.status).to.equal(200)
+                })
+
+                cy.wrap(deleteRecord('/log/' + plantingLog[0].id, token)).as('deletePlantingLog')
+
+                cy.get('@deletePlantingLog').should(function(response){
                     expect(response.status).to.equal(200)
                 })
             })
