@@ -99,10 +99,12 @@
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
                         console.log(response.data.id)
+                    }).then(() => {
+                        createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                            console.log(response)
+                        })
                     })
-                    createRecord('/log', this.logData, this.sessionToken).then((response) => {
-                        console.log(response)
-                    })
+                    
                 }
             },
             computed: {
