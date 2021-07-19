@@ -9,7 +9,7 @@ describe('Testing for the seeding report page', () => {
         cy.login('manager1', 'farmdata2')
     })
 
-    context.only('sets up the page (necessary for all other tests)', () => {
+    context('sets up the page (necessary for all other tests)', () => {
         it('visits the page and logs in', () => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
         })
@@ -41,9 +41,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
 
-            cy.wait(5000)
-
-            cy.get('[data-cy=filters-panel]')
+            cy.get('[data-cy=filters-panel]', { timeout: 10000 })
                 .should('exist')
 
             cy.get('[data-cy=report-table]')
@@ -65,9 +63,7 @@ describe('Testing for the seeding report page', () => {
             const startTimestamp = dayjs('2019-01-01').unix()
             const endTimestamp = dayjs('2019-03-01').unix()
 
-            cy.wait(5000) //request takes a little while
-
-            cy.get('[data-cy=object-test]')
+            cy.get('[data-cy=object-test]', { timeout: 10000 })
                 .each(($el, index, $all) => {
                     cy.get($el).children()
                     .first().then(($date) => {
@@ -486,7 +482,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context.only('edit and delete buttons work', () => {
+    context('edit and delete buttons work', () => {
         let logID = 0
 
         beforeEach(() => {
@@ -503,7 +499,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
 
-            cy.wait(15000)
+            //cy.wait(15000)
         })
 
         it('displays a log that has just been created', () => {
@@ -606,9 +602,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
 
-            cy.wait(15000)
-
-            cy.get('[data-cy=object-test]')
+            cy.get('[data-cy=object-test]', { timeout: 20000 })
                 .first().children()
                     .first().then(($date) => {
                         expect($date[0].innerText).to.equal("2001-09-20")
