@@ -11,18 +11,28 @@
 # for a given quantity (e.g. only Counts etc...) as appropriate.
 
 Count
-,Beds
-,People
-,Seeds
-,Flats
+,BEDS
+,BUNCH
+,EACH
+,EAR
+,FLATS
+,HEAD
+,HALFSTALK
+,PEOPLE
+,PIECE
+,SEEDS
+,TRAY
 Length/depth
-,Row Feet
+,ROW FEET
 Weight
+,POUND
 Area
-,Acres
+,ACRES
 Volume
+,PINT
+,QUART
 Time
-,Hours
+,HOURS
 Temperature
 Pressure
 Water Content
@@ -30,6 +40,6 @@ Value
 Rate
 Rating
 Ratio
-,Cells/Flat
-,Rows/Bed
+,CELLS/FLAT
+,ROWS/BED
 Probability

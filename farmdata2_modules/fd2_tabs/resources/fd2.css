@@ -4,7 +4,8 @@
 }
 
 .sticky-header th {
-  background: #dff0d8;
+  background: #d9230f;
+  color: white;
   position: sticky;
   top: -1px;
   z-index:1;
@@ -13,4 +14,12 @@
 .sticky-table {
   max-height: 70vh;
   overflow-y: auto;
+}
+
+.table-button {
+    padding: 5px 14px !important;
+}
+
+.table-text {
+    font-size: 15px;
 }

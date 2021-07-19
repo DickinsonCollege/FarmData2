@@ -12,20 +12,22 @@ A sample database is provided with FarmData2 for development and testing purpose
 
 Some useful properties of the sample data:
 - It is real data from the Dickinson College farm.
-- The dta runs from Jan 1, 2019 - July 15, 2020. So it includes:
+- The data runs from Jan 1, 2019 - July 15, 2020. So it includes:
   - One completed growing season (Jan 1 - Dec 31, 2019). 
   - One in progress growing season (Jan 1 - July 15, 2020).
 
 More details are included in the table below:
 
-Asset/Log Type | 2019 | 2020 | Total | Notes
----------------|------|------|-------|------
-Direct Seeings |  182 |  101 |  283  |
-Tray Seedings  |  378 |  313 |  691  |
-Total Seedings |  560 |  414 |  974  |
-Plantings      |  328 |  246 |  574  | A planting may have multiple sedings.
+Asset/Log Type | 2017 | 2019 | 2020 | Total | Notes
+---------------|------|------|------|-------|-------|
+Direct Seeing  |    3 |  182 |  101 |  286  | 2017 seedings were harvested in 2019.
+Tray Seeding   |    - |  378 |  313 |  691  |
+Total Seedings |    3 |  560 |  414 |  977  |
+Planting       |    3 |  347 |  248 |  595  | A planting may have multiple sedings. A few plantings have no seedings.
+Transplanting  |    - |  171 |  117 |  288  | Plantings are transplanted and thus may include multiple tray seedings. A few transplantings do not have a tray seeding.
+Harvest        |    - | 1592 |  487 | 2079  |
 
-The sub-sections below give more compolete details of each part of the sample database.
+The sub-sections below give more complete details of each part of the sample database.
 
 ## People ##
 
@@ -69,7 +71,7 @@ The terms for the Farm Crop Families vocabulary can be accessed with the request
 GET http://localhost/taxonomy_term.json?bundle=farm_crop_families"
 ```
 
-The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE. 
+The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE.  In addition, each crop has a default unit from the Farm Quantity Units vocabulary (see below) and also a list of conversion factors for converting from the default units to any other unit that may be used for the crop.
 
 The terms for the Farm Crops vocabulary can be accessed with the request:
 ```
@@ -129,7 +131,26 @@ GET http://localhost/farm_asset.json?type=planting"
 ```
 
 Notes:
-- The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to location given in the Seeding Log that references it. Similarly, if the Planting Asset was creatd by a tray seeding, then its location can also be changed by a transplanting operation.
+- The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to location given in the Seeding Log that references it. Similarly, if the Planting Asset was created by a tray seeding, then its location can also be changed by a transplanting operation.
 
 ## Transplanting Logs ##
 
+Each _Transplanting Log_ corresponsds to the transplanting of a _Planting Asset_ created by one or more _Tray Seedings_ from a greenhouse to a field or bed. When a Transplanting Log is created it includes a _Movement_ attribute that indicates the new location of the planting.  The farmOS system uses the Movement Attribute to automatically creates a _Movement Log_ indicating the new location of the Planting Asset.  Future requests for the Planting Asset will then show it in the updated location.
+
+All Transplanting Logs can be accessed with the request:
+```
+GET http://localhost/log.json?type=farm_transplanting"
+```
+
+The Transplanting Logs in the FarmData2 sample database are created by the `addTransplantings.py` script using the data in the `sampleData/transplantings.csv` file.
+
+## Harvest Logs ##
+
+Each _Harvest Log_ represents one harvesting event and is linked to the _Planting Asset_ from which the harvest occurred.
+
+All Harvest Logs can be accessed with the request:
+```
+GET http://localhost/log.json?type=farm_harvest"
+```
+
+The Harvest Logs in the FarmData2 sample database are created by the `addHarvests.py` script using the data in the `sampleData/harvests.csv` file.

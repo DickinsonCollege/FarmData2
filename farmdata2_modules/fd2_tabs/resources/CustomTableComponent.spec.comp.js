@@ -11,12 +11,6 @@ describe('custom table component', () => {
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
-            visibleColumns: [true, true, true],
-            inputOptions: [
-                {'type': 'text'},
-                {'type': 'text'},
-                {'type': 'text'},
-            ]
         }
 
         beforeEach(() => {
@@ -96,12 +90,6 @@ describe('custom table component', () => {
                             data: [12, 12, 'answome12'],},
                         ],
                     headers: ['cool', 'works?', 'hello'],
-                    visibleColumns: [true, true, true],
-                    inputOptions: [
-                        {'type': 'text'},
-                        {'type': 'text'},
-                        {'type': 'text'},
-                    ],
                     canEdit: true,
                     canDelete: true
                 }
@@ -168,6 +156,24 @@ describe('custom table component', () => {
             cy.get('[data-cy=edit-button]')
                 .first().should('be.disabled')
         })
+
+        it('disables the delete buttons when a row is being edited', () => {
+            cy.get('[data-cy=edit-button]')
+            .first().click()
+
+            cy.get('[data-cy=delete-button]')
+                .first().should('be.disabled')
+        })
+
+        it('emits an event when the edit button is clicked', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('edit-clicked', spy)
+            cy.get('[data-cy=edit-button]')
+                .first().click()
+                .then(() => {
+                    expect(spy).to.be.calledWith()
+                })
+        })
     })
 
     context('with invisible columns', () => {
@@ -177,11 +183,6 @@ describe('custom table component', () => {
                     {id: 12, data: [12, 12, 'answome12'],}, ],
             headers: ['cool', 'works?', 'hello'],
             visibleColumns: [true, false, true],
-            inputOptions: [
-                {'type': 'text'},
-                {'type': 'text'},
-                {'type': 'text'},
-            ]
         }
 
         beforeEach(() => {

@@ -74,6 +74,26 @@ function getAreaToIDMap(){
     return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
 }
 
+function getUnitToIDMap(){
+    //create and returns a map from unit name to unit tid.
+    return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'name', 'tid')
+}
+
+function getIDToUnitMap(){
+    //create and returns a map from unit tid to unit name
+    return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'tid', 'name')
+}
+
+function getIDToLogTypeMap(){
+    //create and return a map from log type tid to log type name
+    return getMap('/taxonomy_term.json?bundle=farm_log_categories', 'tid', 'name')
+}
+
+function getLogTypeToIDMap(){
+    //create and return a map from log type name to log type tid
+    return getMap('/taxonomy_term.json?bundle=farm_log_categories', 'name', 'tid')
+}
+
 function getMap(url, key, value){
     // Utility function used by the above functions to get the appropraite maps.
     return new Promise((resolve, reject) => {
@@ -182,6 +202,22 @@ function deleteRecord(url, sessionToken) {
         })
     })
 }
+/**
+ * 
+ * @param {is the quantity array in the Direct/Tray Seeding log} quantity 
+ * @param {*the label of the object whose index is being returned} label 
+ * 
+ * @returns The index of the object with the input label in the quantity array 
+ * otherwise returns a negative -1
+ */
+function quantityLocation(quantity, label){
+    for(i=0; i < quantity.length; i++){
+        if(quantity[i].label == label){
+            return i
+        }
+    }
+    return -1
+}
 
 try {
     module.exports = {
@@ -192,10 +228,15 @@ try {
         getCropToIDMap: getCropToIDMap,
         getAreaToIDMap: getAreaToIDMap,
         getUserToIDMap: getUserToIDMap,
+        getUnitToIDMap: getUnitToIDMap,
+        getIDToUnitMap: getIDToUnitMap,
+        getIDToLogTypeMap: getIDToLogTypeMap,
+        getLogTypeToIDMap: getLogTypeToIDMap,
         getSessionToken: getSessionToken,
         deleteRecord: deleteRecord,
         createRecord: createRecord,
-        updateRecord: updateRecord
+        updateRecord: updateRecord,
+        quantityLocation: quantityLocation
     }
 }
 catch {}
