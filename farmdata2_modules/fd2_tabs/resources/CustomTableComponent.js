@@ -64,17 +64,22 @@ let CustomTableComponent = {
         return {
             rowToEditIndex: null,
             indexesToChange: [],
-            editedRowData: {}
+            editedRowData: {},
+            originalRow: {}
 
         }
     },
     methods: {
         editRow: function(index){
             this.rowToEditIndex = index
-            this.editedRowData = { 
+            this.originalRow = JSON.parse(JSON.stringify({ 
                 'id': this.rows[index].id,
                 'data': this.rows[index].data
-            }
+            }))
+            this.editedRowData = JSON.parse(JSON.stringify({ 
+                'id': this.rows[index].id,
+                'data': this.rows[index].data
+            }))
             this.$emit('edit-clicked')
         },
         finishRowEdit: function(id){
@@ -95,12 +100,13 @@ let CustomTableComponent = {
         },
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){
-                if(this.editedRowData.data[itemIndex] != this.rows[this.rowToEditIndex].data[itemIndex]) {
+                if(this.editedRowData.data[itemIndex] != this.originalRow.data[itemIndex]) {
                     this.indexesToChange.push(itemIndex)
                 }
             }
-            else if (this.indexesToChange.includes(itemIndex) && (this.editedRowData.data[itemIndex] == this.rows[this.rowToEditIndex].data[itemIndex])){
-                for (i = 0; i < indexesToChange.length; i++) {
+            else if (this.indexesToChange.includes(itemIndex) && (this.editedRowData.data[itemIndex] == this.originalRow.data[itemIndex])){
+                console.log('got into the else')
+                for (i = 0; i < this.indexesToChange.length; i++) {
                     if (this.indexesToChange[i] == itemIndex) {
                         this.indexesToChange.splice(i, 1)
                     }
