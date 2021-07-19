@@ -79,7 +79,7 @@ describe('custom table component', () => {
         })
     })
 
-    context('with edit and delete button', () => {
+    context.only('with edit and delete button', () => {
         let prop = {
                     rows: [
                             {id: 10, 
@@ -129,13 +129,13 @@ describe('custom table component', () => {
                 .first().click()
 
             cy.get('[data-cy=test-input]')
-                .first().clear().type('hey')
+                .first().clear().type('yo')
 
             cy.get('[data-cy=save-button]')
                 .should('exist')
                 .first().click()
                 .then(() => {
-                    expect(spy).to.be.calledWith({cool: 'hey'}, 10)
+                    expect(spy).to.be.calledWith({cool: 'yo'}, 10)
                 })
         })
 
