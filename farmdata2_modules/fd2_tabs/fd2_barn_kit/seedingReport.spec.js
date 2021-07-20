@@ -9,7 +9,7 @@ describe('Testing for the seeding report page', () => {
         cy.login('manager1', 'farmdata2')
     })
 
-    context('sets up the page (necessary for all other tests)', () => {
+    context('can set dates and then render the report', () => {
         it('visits the page and logs in', () => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
         })
@@ -259,7 +259,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context('has the correct totals in the tray seeding summary', () => {
+    context.only('has the correct totals in the tray seeding summary', () => {
         let totalSeeds = 0
         let totalTrays = 0
         let totalHoursWorked = 0
@@ -298,7 +298,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('has the correct total number of trays', () => {
-            cy.get('[data-cy=dropdown-input]').first()
+            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Tray Seedings')
                 .should('have.value', 'Tray Seedings')
             
@@ -317,7 +317,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('has the correct total number of hours worked', () => {
-            cy.get('[data-cy=dropdown-input]').first()
+            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Tray Seedings')
                 .should('have.value', 'Tray Seedings')
             
@@ -337,7 +337,7 @@ describe('Testing for the seeding report page', () => {
                 })
         })
 
-        it('has the correct average seeds planted per hour', () => {
+        it.only('has the correct average seeds planted per hour', () => {
             let avgSeedsPerHour = Math.round((totalSeeds/totalHoursWorked)*100)/100
 
             cy.get('[data-cy=tray-summary]')
@@ -403,7 +403,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('displays columns relevant to direct seedings when "Direct Seedings" is selected', () => {
-            cy.get('[data-cy=dropdown-input]').first()
+            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Direct Seedings')
                 .should('have.value', 'Direct Seedings')
 
@@ -453,7 +453,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('displays columns relevant to tray seedings when "Tray Seedings" is selected', () => {
-            cy.get('[data-cy=dropdown-input]').first()
+            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Tray Seedings')
                 .should('have.value', 'Tray Seedings')
 
@@ -537,9 +537,6 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=tray-summary]')
                 .should('not.exist')
-
-            cy.get('[data-cy=generate-rpt-btn]')
-                .click()
         })
 
         it('disables the filters while a row is being edited', () => {
@@ -555,22 +552,6 @@ describe('Testing for the seeding report page', () => {
         let logID = 0
 
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
-
-            cy.get('[data-cy=start-date-select]')
-                .should('exist')
-                .type('2001-01-25')
-
-            cy.get('[data-cy=end-date-select]')
-                .should('exist')
-                .type('2001-12-25')
-
-            cy.get('[data-cy=generate-rpt-btn]').first()
-                .click()
-        })
-
-        it('displays a log that has just been created', () => {
-            
             cy.wrap(getSessionToken())
             .then(sessionToken => {
                 token = sessionToken
@@ -668,18 +649,6 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
-
-            cy.get('[data-cy=object-test]', { timeout: 20000 })
-                .first().children()
-                    .first().then(($date) => {
-                        expect($date[0].innerText).to.equal("2001-09-20")
-                    })
-                    .next().then(($crop) => {
-                        expect($crop[0].innerText).to.equal('')
-                    })
-                    .next().then(($area) => {
-                        expect($area[0].innerText).to.equal('TEACHING')
-                    })
         })
 
         it('edits the database when a row is edited in the table', () => {
@@ -711,6 +680,10 @@ describe('Testing for the seeding report page', () => {
                 cy.get('@check').should(function(response) {
                     expect(response.body.list[0].name).to.equal('TEST SEEDING')
                 })
+
+            //use cy.request eventually
+            cy.get('[data-cy=delete-button]')
+                .first().click()
         })
 
         it('deletes a log from the database when the delete button is pressed', () => {
