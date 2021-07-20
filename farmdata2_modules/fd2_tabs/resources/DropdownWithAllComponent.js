@@ -26,14 +26,11 @@ let DropdownWithAllComponent = {
         }
     },
     mounted() {
-        console.log("Just mounted")
             this.selectionChanged();
-            console.log("Just passed selectionChanged after mount")
     },
     methods: {
         selectionChanged: function() {
             this.$emit('selection-changed', this.selectedOption)
-            console.log("Just emitted selectionChanged")
         },
     },
     computed: {
