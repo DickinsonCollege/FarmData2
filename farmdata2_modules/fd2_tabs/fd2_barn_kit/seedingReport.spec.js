@@ -58,6 +58,19 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('displays the right information in the table', () => {
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
         it('requests and displays logs that fall between the specified dates', () => {
             let currentTimestamp = null
             const startTimestamp = dayjs('2019-01-01').unix()
@@ -158,8 +171,22 @@ describe('Testing for the seeding report page', () => {
         let totalBedFeet = 0;
         let totalHoursWorked = 0;
 
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
+
         it('has the correct totals for row feet', () => {
-            cy.get('[data-cy=dropdown-input]').first()
+            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Direct Seedings')
                 .should('have.value', 'Direct Seedings')
             
@@ -237,8 +264,22 @@ describe('Testing for the seeding report page', () => {
         let totalTrays = 0
         let totalHoursWorked = 0
 
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
+
         it('has the correct total number of seeds', () => {
-            cy.get('[data-cy=dropdown-input]').first()
+            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Tray Seedings')
                 .should('have.value', 'Tray Seedings')
             
@@ -306,8 +347,22 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('changing the type of seeding changes the visible columns', () => {
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
+
         it('displays only columns relevant to both seedings when "All" is selected', () => {
-            cy.get('[data-cy=dropdown-input]').first()
+            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('All')
                 .should('have.value', 'All')
 
@@ -449,6 +504,20 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('date picker and filter behavior', () => {
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
+
         it('doesnt display the report when a new date range is being selected', () => {
             cy.get('[data-cy=start-date-select]')
                 .should('exist')
@@ -474,7 +543,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('disables the filters while a row is being edited', () => {
-            cy.get('[data-cy=edit-button]').first()
+            cy.get('[data-cy=edit-button]', {timeout: 10000}).first()
                 .click()
 
             cy.get('[data-cy=dropdown-input]').first()
@@ -498,8 +567,6 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
-
-            //cy.wait(15000)
         })
 
         it('displays a log that has just been created', () => {
