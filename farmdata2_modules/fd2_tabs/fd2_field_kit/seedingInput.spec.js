@@ -7,7 +7,7 @@ var getSessionToken = FarmOSAPI.getSessionToken
 
 describe('Test the seeding input page', () => {
     beforeEach(() => {
-        cy.login('manager1', 'farmdata2')
+        cy.login('manager1', 'farmdata2', {timeout: 45000})
     })
     context('sets up the page', () => {
         it('visits the page', () => {
@@ -180,7 +180,7 @@ describe('Test the seeding input page', () => {
                 .should('not.exist')
         })
     })
-    context.only('create logs in database', () => {
+    context('create logs in database', () => {
         it('create a tray seedings log and a planting log', () => {
             let traySeedingLog = []
             let plantingLog = []
@@ -189,7 +189,7 @@ describe('Test the seeding input page', () => {
             
             cy.visit('/farm/fd2-field-kit/seedingInput', {timeout: 90000})
 
-            cy.wait(37000) //heloo
+            cy.wait(37000)
 
             cy.get('[data-cy=date-select')
                 .type('2011-05-07')
@@ -236,7 +236,7 @@ describe('Test the seeding input page', () => {
                 cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-05-07').unix(), traySeedingLog)).as('getLog')
 
                 cy.get('@getLog').should(function(){
-                    //expect(traySeedingLog.length).to.equal(1)
+                    expect(traySeedingLog.length).to.equal(1)
                     expect(traySeedingLog[0].movement.area[0].name).to.equal('A')
                 })
             }).then(() => {
@@ -255,6 +255,91 @@ describe('Test the seeding input page', () => {
                 cy.wrap(deleteRecord('/log/' + traySeedingLog[0].id, token)).as('deleteSeedingsLog')
 
                 cy.get('@deleteSeedingsLog').should(function(response) {
+                    expect(response.status).to.equal(200)
+                })
+
+                cy.wrap(deleteRecord('/log/' + plantingLog[0].id, token)).as('deletePlantingLog')
+
+                cy.get('@deletePlantingLog').should(function(response){
+                    expect(response.status).to.equal(200)
+                })
+            })
+        })
+        it.only('create a direct seedings log and a planting log', () => {
+            let directSeedingLog = []
+            let plantingLog = []
+            let plantingID = -1
+            let token = 0
+
+            cy.visit('/farm/fd2-field-kit/seedingInput', {timeout: 90000})
+
+            cy.wait(40000)
+
+            cy.get('[data-cy=date-select')
+                .type('2011-08-09')
+
+            cy.get('[data-cy=time-spent]')
+                .clear()
+                .type('10')
+            
+            cy.get('[data-cy=num-workers]')
+                .clear()
+                .type('2')
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[2]).select('minutes')
+            }) 
+
+            cy.get('[data-cy=direct-seedings]')
+                .check()
+
+            cy.get('[data-cy=row-bed]')
+                .clear()
+                .type('5')
+
+            cy.get('[data-cy=num-feet')
+                .clear()
+                .type('20')
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[3]).select('bed')
+            })
+
+            cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
+                cy.get($dropdowns[0]).select('BEET')
+            })
+            
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).select('C')
+            })
+
+            cy.get('[data-cy=submit-button]')
+                .click()
+
+            cy.wait(30000).then(() => {
+                cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), directSeedingLog)).as('getSeeding')
+                console.log(dayjs('2011-08-09').unix())
+                cy.get('@getSeeding').should(function(){
+                    console.log(directSeedingLog)
+                    expect(directSeedingLog.length).to.equal(1)
+                    expect(directSeedingLog[0].movement.area[0].name).to.equal('C')
+                })
+            }).then(() => {
+                cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + directSeedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
+
+                cy.get('@getPlanting').should(function(){
+                    expect(plantingLog.length).to.equal(1)
+                    expect(plantingLog[0].crop[0].name).to.equal('BEET')
+                })
+            }).then(() => {
+                cy.wrap(getSessionToken()).as('token')
+                cy.get('@token').should(function(sessionToken){
+                    token = sessionToken
+                })
+            }).then(() => {
+                cy.wrap(deleteRecord('/log/' + directSeedingLog[0].id, token)).as('deleteSeedingLog')
+
+                cy.get('@deleteSeedingLog').should(function(response){
                     expect(response.status).to.equal(200)
                 })
 
