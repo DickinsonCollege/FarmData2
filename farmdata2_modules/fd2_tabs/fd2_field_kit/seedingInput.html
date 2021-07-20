@@ -257,6 +257,10 @@
                     return quantity
                 },
                 quantityTraySeeding(){
+                    let time = this.time
+                    if(this.selectedTimeUnit == 'minutes'){
+                        time = (Math.round((time / 60)*100))/100)
+                    }
                     quantity = [
                         {
                             "measure": "count", 
@@ -287,7 +291,7 @@
                         },
                         {
                             "measure": "time", 
-                            "value": this.time,  //hours worked
+                            "value": time,  //hours worked
                             "unit": {
                                 "id": this.unitToIDMap.get('HOURS'),
                                 "resource": "taxonomy_term"
