@@ -76,19 +76,21 @@ let CustomTableComponent = {
                 'id': this.rows[index].id,
                 'data': this.rows[index].data
             }))
-            this.editedRowData = JSON.parse(JSON.stringify({ 
+            this.editedRowData = { 
                 'id': this.rows[index].id,
                 'data': this.rows[index].data
-            }))
+            }
             this.$emit('edit-clicked')
         },
         finishRowEdit: function(id){
             this.rowToEditIndex = null
+            
             let jsonObject = {}
             for(i=0; i < this.indexesToChange.length; i ++){
                 let key = this.headers[this.indexesToChange[i]]
-                jsonObject[key] = editedRowData.data[this.indexesToChange[i]]
+                jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
             }
+
             this.indexesToChange = []
 
             this.editedRowData = {}
