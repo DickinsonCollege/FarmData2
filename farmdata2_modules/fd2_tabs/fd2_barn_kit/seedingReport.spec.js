@@ -166,7 +166,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context.only('has the correct totals in the direct seeding summary', () => {
+    context('has the correct totals in the direct seeding summary', () => {
         let totalRowFeet = 0;
         let totalBedFeet = 0;
         let totalHoursWorked = 0;
@@ -461,16 +461,16 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context('date picker and filter behavior', () => {
+    context.only('date picker and filter behavior', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
             cy.get('[data-cy=start-date-select]')
-                .type('2019-01-01')
+                .type('2019-02-13')
 
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-02-16')
 
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
@@ -479,7 +479,7 @@ describe('Testing for the seeding report page', () => {
         it('doesnt display the report when a new date range is being selected', () => {
             cy.get('[data-cy=start-date-select]')
                 .should('exist')
-                .type('2019-01-02')
+                .type('2019-02-13')
             cy.get('[data-cy=date-select]')
                 .first()
                 .blur()
@@ -495,6 +495,166 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=tray-summary]')
                 .should('not.exist')
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
+
+        it('updates crop and area options when a new seeding type has been selected', () => {
+            cy.get('[data-cy=crop-dropdown]', {timeout: 10000})
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'ARUGULA', {timeout: 10000})
+                    .next()
+                        .should('have.value', 'CARROT')
+                    .next()
+                        .should('have.value', 'CHARD')
+                    .next()
+                        .should('have.value', 'ONION-FRESH')
+                    .next()
+                        .should('have.value', 'SCALLION')
+
+            cy.get('[data-cy=area-dropdown]')
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'A')
+                    .next()
+                        .should('have.value', 'CHUAU')
+                    .next()
+                        .should('have.value', 'CHUAU-3')
+                    .next()
+                        .should('have.value', 'SEEDING BENCH')
+
+            cy.get('[data-cy=seeding-type-dropdown]')
+                .children().first().next()
+                    .select('Tray Seedings')
+
+            cy.get('[data-cy=crop-dropdown]')
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'CHARD')
+                    .next()
+                        .should('have.value', 'ONION-FRESH')
+                    .next()
+                        .should('have.value', 'SCALLION')
+
+            cy.get('[data-cy=area-dropdown]')
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'CHUAU')
+                    .next()
+                        .should('have.value', 'SEEDING BENCH')
+
+            cy.get('[data-cy=seeding-type-dropdown]')
+                .children().first().next()
+                    .select('All')
+
+        })
+
+        it('updates seeding type and area options when a new crop has been selected', () => {
+            cy.get('[data-cy=seeding-type-dropdown]', {timeout: 10000})
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'Direct Seedings')
+                    .next()
+                        .should('have.value', 'Tray Seedings')
+
+            cy.get('[data-cy=area-dropdown]')
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'A')
+                    .next()
+                        .should('have.value', 'CHUAU')
+                    .next()
+                        .should('have.value', 'CHUAU-3')
+                    .next()
+                        .should('have.value', 'SEEDING BENCH')
+
+            cy.get('[data-cy=crop-dropdown]')
+                .children().first().next()
+                    .select('SCALLION')
+
+            cy.get('[data-cy=seeding-type-dropdown]')
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'Tray Seedings')
+
+            cy.get('[data-cy=area-dropdown]')
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'CHUAU')
+
+            cy.get('[data-cy=crop-dropdown]')
+                .children().first().next()
+                    .select('All')
+
+        })
+
+        it('updates seeding type and crop options when a new area has been selected', () => {
+            cy.get('[data-cy=seeding-type-dropdown]', {timeout: 10000})
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'Direct Seedings')
+                    .next()
+                        .should('have.value', 'Tray Seedings')
+
+            cy.get('[data-cy=crop-dropdown]', )
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'ARUGULA', {timeout: 10000})
+                    .next()
+                        .should('have.value', 'CARROT')
+                    .next()
+                        .should('have.value', 'CHARD')
+                    .next()
+                        .should('have.value', 'ONION-FRESH')
+                    .next()
+                        .should('have.value', 'SCALLION')
+
+            cy.get('[data-cy=area-dropdown]')
+                .children().first().next()
+                    .select('CHUAU')
+
+            cy.get('[data-cy=seeding-type-dropdown]')
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'Tray Seedings')
+
+            cy.get('[data-cy=crop-dropdown]', )
+                .children().first().next().children()
+                    .first()
+                        .should('have.value', 'All')
+                    .next()
+                        .should('have.value', 'ONION-FRESH')
+                    .next()
+                        .should('have.value', 'SCALLION')
+
+            cy.get('[data-cy=area-dropdown]')
+                .children().first().next()
+                    .select('All')
+
         })
 
         it('disables the filters while a row is being edited', () => {
