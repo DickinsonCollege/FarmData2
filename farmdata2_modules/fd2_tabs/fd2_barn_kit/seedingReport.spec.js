@@ -166,7 +166,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context('has the correct totals in the direct seeding summary', () => {
+    context.only('has the correct totals in the direct seeding summary', () => {
         let totalRowFeet = 0;
         let totalBedFeet = 0;
         let totalHoursWorked = 0;
@@ -183,9 +183,7 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
-        })
 
-        it('has the correct totals for row feet', () => {
             cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Direct Seedings')
                 .should('have.value', 'Direct Seedings')
@@ -196,50 +194,31 @@ describe('Testing for the seeding report page', () => {
                     .first().next().next().next().next().next().then(($rowFeet) => {
                         totalRowFeet = totalRowFeet + parseInt($rowFeet[0].innerText);
                     })
-                })
-                .then(() => {
-                    cy.get('[data-cy=direct-summary]')
-                        .children().first().next().next().children()
-                        .should('have.text', totalRowFeet.toString())
-                })
-        })
-
-        it('has the correct totals for bed feet', () => {
-            cy.get('[data-cy=dropdown-input]').first()
-                .select('Direct Seedings')
-                .should('have.value', 'Direct Seedings')
-            
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().next().next().next().then(($bedFeet) => {
+                    .next().then(($bedFeet) => {
                         totalBedFeet = totalBedFeet + parseInt($bedFeet[0].innerText);
                     })
-                })
-                .then(() => {
-                    cy.get('[data-cy=direct-summary]')
-                        .children().first().next().next().next().children()
-                        .should('have.text', totalBedFeet.toString())
-                })
-        })
-
-        it('has the correct totals for bed feet', () => {
-            cy.get('[data-cy=dropdown-input]').first()
-                .select('Direct Seedings')
-                .should('have.value', 'Direct Seedings')
-            
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().next().next().next().next().then(($hoursWorked) => {
+                    .next().then(($hoursWorked) => {
                         totalHoursWorked = totalHoursWorked + parseFloat($hoursWorked[0].innerText);
                     })
                 })
-                .then(() => {
-                    cy.get('[data-cy=direct-summary]')
-                        .children().first().next().next().next().next().children()
-                        .should('have.text', totalHoursWorked.toString())
-                })
+        })
+
+        it('has the correct totals for row feet', () => {
+            cy.get('[data-cy=direct-summary]')
+                .children().first().next().next().children()
+                .should('have.text', totalRowFeet.toString())
+        })
+
+        it('has the correct totals for bed feet', () => {
+            cy.get('[data-cy=direct-summary]')
+                .children().first().next().next().next().children()
+                .should('have.text', totalBedFeet.toString())
+        })
+
+        it('has the correct totals for bed feet', () => {
+            cy.get('[data-cy=direct-summary]')
+                .children().first().next().next().next().next().children()
+                .should('have.text', totalHoursWorked.toString())
         })
 
         it('has the correct bed feet per hour', () => {
@@ -259,7 +238,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context.only('has the correct totals in the tray seeding summary', () => {
+    context('has the correct totals in the tray seeding summary', () => {
         let totalSeeds = 0
         let totalTrays = 0
         let totalHoursWorked = 0
