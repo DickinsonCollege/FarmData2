@@ -276,9 +276,7 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
-        })
 
-        it('has the correct total number of seeds', () => {
             cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
                 .select('Tray Seedings')
                 .should('have.value', 'Tray Seedings')
@@ -289,58 +287,39 @@ describe('Testing for the seeding report page', () => {
                     .first().next().next().next().next().then(($numSeeds) => {
                         totalSeeds = totalSeeds + parseFloat($numSeeds[0].innerText);
                     })
-                })
-                .then(() => {
-                    cy.get('[data-cy=tray-summary]')
-                        .children().first().next().children()
-                        .should('have.text', totalSeeds.toString())
-                })
-        })
-
-        it('has the correct total number of trays', () => {
-            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
-                .select('Tray Seedings')
-                .should('have.value', 'Tray Seedings')
-            
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().next().next().then(($numTrays) => {
+                    .next().then(($numTrays) => {
                         totalTrays = totalTrays + parseFloat($numTrays[0].innerText);
                     })
-                })
-                .then(() => {
-                    cy.get('[data-cy=tray-summary]')
-                        .children().first().next().next().children()
-                        .should('have.text', totalTrays.toString())
-                })
-        })
-
-        it('has the correct total number of hours worked', () => {
-            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
-                .select('Tray Seedings')
-                .should('have.value', 'Tray Seedings')
-            
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().next().next().next().next().then(($numHours) => {
+                    .next().next().then(($numHours) => {
                         totalHoursWorked = totalHoursWorked + parseFloat($numHours[0].innerText);
                     })
                 })
-                .then(() => {
-                    totalHoursWorked = Math.round((totalHoursWorked)*100)/100
-
-                    cy.get('[data-cy=tray-summary]')
-                        .children().first().next().next().next().children()
-                        .should('have.text', totalHoursWorked.toString())
-                })
         })
 
-        it.only('has the correct average seeds planted per hour', () => {
-            let avgSeedsPerHour = Math.round((totalSeeds/totalHoursWorked)*100)/100
+        it('has the correct total number of seeds', () => {
+            cy.get('[data-cy=tray-summary]')
+                .children().first().next().children()
+                .should('have.text', totalSeeds.toString())
+        })
+
+        it('has the correct total number of trays', () => {
+            cy.get('[data-cy=tray-summary]')
+                .children().first().next().next().children()
+                .should('have.text', totalTrays.toString())
+        })
+
+        it('has the correct total number of hours worked', () => {
+            totalHoursWorked = Math.round((totalHoursWorked)*100)/100
 
             cy.get('[data-cy=tray-summary]')
+                .children().first().next().next().next().children()
+                .should('have.text', totalHoursWorked.toString())
+        })
+
+        it('has the correct average seeds planted per hour', () => {
+            let avgSeedsPerHour = Math.round((totalSeeds/totalHoursWorked)*100)/100
+
+            cy.get('[data-cy=tray-summary]', {timeout: 10000})
                 .children().first().next().next().next().next().children()
                 .should('have.text', avgSeedsPerHour.toString())
         })
