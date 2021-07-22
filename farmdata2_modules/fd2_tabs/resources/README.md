@@ -57,4 +57,32 @@ COMPONENTS:
                 -Emitted When: The delete button of a row is clicked
                 -Payloads:
                     id: The id of the row that has been deleted
+    DateSelection:
+        Example -> 
+            <date-selection default-date="2021-06-08" earliest-date="2021-06-03" latest-date="2021-06-15" @date-changed='dateChange'></date-selection>
 
+        Discription ->
+            Displays a date input on the page, that allows a user to select a date. Has a slot before the date input to put in a discription of the date input.
+        
+        Props -> 
+            default-date:
+                -Required
+                -Structure: A string of numbers in date format YYYY-MM-DD 
+                    '2021-07-22'
+                -Discription: This is the date that will appear on the page in the input when it first loads
+            earliest-date: 
+                -Not Required
+                -Structure: A string of numbers in date format YYYY-MM-DD
+                    '2000-05-29'
+                -Discription: This is the earlist date that the date input will allow the user to choose
+            latest-date:
+                -Not Required
+                -Structure: A string of numbers in date format YYYY-MM-DD
+                    '2053-01-30'
+                -Discription: This is the lastiest date that the date input will allow the user to choose
+
+        Emitted Events ->
+            date-changed:
+                -Emitted When: The date input is focused out on by the user
+                -Payloads:
+                    this.selectedDate: is a string in the format of a date (YYYY-MM-DD). EX: '2021-11-07'
