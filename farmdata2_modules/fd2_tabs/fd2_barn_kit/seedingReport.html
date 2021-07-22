@@ -236,10 +236,10 @@
                     console.log('planting log')
                     console.log(updatePlantObject)
                     let seedingUrl = '/log/' + id
-                    let plantingUrl = '/farm_asset' + this.updateLog[0].asset[0].id
+                    let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
                     //call updateRecord function to update planting log
                     if(!(Object.entries(updatePlantObject).length === 0)){
-                        updateRecord(seedingUrl, updatePlantObject, this.sessionToken)
+                        updateRecord(plantingUrl, updatePlantObject, this.sessionToken)
                     }
                     //call updateRecord function to update seeding log
                     if(!(Object.entries(updateSeedingObject).length === 0)){
