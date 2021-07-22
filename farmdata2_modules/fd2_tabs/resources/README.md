@@ -1,4 +1,5 @@
 COMPONENTS:
+
     CustomTable:
         Example ->
             <custom-table :rows="arrayOfRows" :headers="arrayOfHeaders" can-edit can-delete :visible-columns="visibleColumnsArray" @row-deleted="deleteFromArrayOfRows" @row-edited="updateArrayOfRows" :input-options="inputTypesArray"></custom-table>
@@ -22,10 +23,38 @@ COMPONENTS:
                 -Structure: Boolean
                     can-edit *OR* can-edit=true
                 -Default: false
-                -Description: If true, adds a column to the right side of the table containing buttons that when clicked emits the event 'edit-clicked' and allows the user to edit the values in that row of the table. By default these will be text inputs.
+                -Description: If true, adds a column to the right side of the table containing buttons that when clicked emits the event 'edit-clicked' and allows the user to edit the values in that row of the table. By default these will be text inputs. Clicking the edit button will cause that cell to change to a save button and all other buttons in the table to be disabled.
             can-delete:
                 -Not Required
                 -Structure: Boolean
                     can-delete *OR* can-delete=true
                 -Default: false
                 -Description: If true, adds a column to the right side of the table containing buttons that when clicked emits an event 'row-deleted' with the ID of the row as the payload.
+            visible-columns:
+                -Not Required
+                -Structure: Array of Booleans
+                    [true, true, false, true]
+                -Default: *all elements are true*
+                -Description: Determines which columns in the table are displayed on the page. Must be the same length as the headers array.
+            input-options:
+                -Not Required
+                -Structure: Array of Strings (representing the five input types)
+                    ['text', 'dropdown', 'date', 'number', 'no input']
+                    *strings in this array MUST be one of these five options*
+                -Default: *all elements are 'text'*
+                -Description: Determines the type of input that appears in each row cell when the edit button is clicked.
+
+        Emitted Events ->
+            edit-clicked:
+                -Emitted When: The edit button of a row is clicked
+                -Payloads: none
+            row-edited:
+                -Emitted When: The save button of a row is clicked
+                -Payloads:
+                    jsonObject: An object containing the edited cell information, with the headers as the keys and the inputs as the values. Example: If a user changes the crop of a row to kale, the emitted object will be {crop: 'KALE'}, and if they also edited the area to be Chuau it would be {crop: 'KALE', area: 'CHUAU'}
+                    id: The id of the row that has been edited
+            row-deleted:
+                -Emitted When: The delete button of a row is clicked
+                -Payloads:
+                    id: The id of the row that has been deleted
+
