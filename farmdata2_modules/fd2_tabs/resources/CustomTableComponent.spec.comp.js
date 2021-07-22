@@ -129,13 +129,13 @@ describe('custom table component', () => {
                 .first().click()
 
             cy.get('[data-cy=test-input]')
-                .first().clear().type('hey')
+                .first().clear().type('yo')
 
             cy.get('[data-cy=save-button]')
                 .should('exist')
                 .first().click()
                 .then(() => {
-                    expect(spy).to.be.calledWith({cool: 'hey'}, 10)
+                    expect(spy).to.be.calledWith({cool: 'yo'}, 10)
                 })
         })
 
@@ -172,6 +172,24 @@ describe('custom table component', () => {
                 .first().click()
                 .then(() => {
                     expect(spy).to.be.calledWith()
+                })
+        })
+        it('emits with an empty object payload when a cell gets changed back during editing', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('row-edited', spy)
+            cy.get('[data-cy=edit-button]')
+                .should('exist')
+                .first().click()
+
+            cy.get('[data-cy=test-input]')
+                .first().clear().type('hey')
+                .clear().type('yo')
+
+            cy.get('[data-cy=save-button]')
+                .should('exist')
+                .first().click()
+                .then(() => {
+                    expect(spy).to.be.calledWith({}, 10)
                 })
         })
     })
