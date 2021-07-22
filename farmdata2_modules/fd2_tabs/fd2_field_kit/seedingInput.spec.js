@@ -8,13 +8,13 @@ var quantityLocation = FarmOSAPI.quantityLocation
 
 describe('Test the seeding input page', () => {
     beforeEach(() => {
-        cy.login('manager1', 'farmdata2', {timeout: 45000})
+        cy.login('manager1', 'farmdata2', {timeout: 60000})
 
-        cy.visit('/farm/fd2-field-kit/seedingInput', {timeout: 90000})
+        cy.visit('/farm/fd2-field-kit/seedingInput', {timeout: 120000})
 
         //makes sure that the area is loaded before continueing
         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[1]).contains('A', {timeout: 125000})
+                cy.get($dropdowns[1]).contains('A', {timeout: 130000})
         })
     })
     context('test inputs and buttons', () => {
@@ -241,7 +241,7 @@ describe('Test the seeding input page', () => {
                 .should('not.be.disabled')
         })
     })
-    context.only('create logs in database', () => {
+    context('create logs in database', () => {
         let seedingLog = []
         let plantingLog = []
         let token = 0
@@ -270,6 +270,8 @@ describe('Test the seeding input page', () => {
             })
         })
         afterEach(() => {
+            cy.wait(10000)
+
             cy.wrap(deleteRecord('/log/' + seedingLog[0].id, token)).as('deleteSeedingsLog')
 
             cy.get('@deleteSeedingsLog').should(function(response) {
@@ -298,7 +300,7 @@ describe('Test the seeding input page', () => {
                     .clear()
                     .type('76')
             })
-            it.only('create a tray seedings log and a planting log w/ minutes', () => {
+            it('create a tray seedings log and a planting log w/ minutes', () => {
                 cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                     cy.get($dropdowns[2]).select('minutes')
                 })
@@ -328,7 +330,7 @@ describe('Test the seeding input page', () => {
                     })
                 })
             })
-            it.only('create a tray seedings log and a planting log w/ hours', () => {
+            it('create a tray seedings log and a planting log w/ hours', () => {
                 cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                     cy.get($dropdowns[2]).select('hours')
                 })
@@ -359,50 +361,89 @@ describe('Test the seeding input page', () => {
                 })
             })
         })
-        
-        it('create a direct seedings log and a planting log', () => {
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[2]).select('minutes')
+        context('All tests creating a direct seeding', () => {
+            beforeEach(() => {
+                cy.get('[data-cy=direct-seedings]').check()
+
+                cy.get('[data-cy=row-bed]')
+                    .clear()
+                    .type('5')
+
+                cy.get('[data-cy=num-feet')
+                    .clear()
+                    .type('20')
             })
+            it('create a direct seedings log and a planting log w/ minute and bed', () => {
+                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                    cy.get($dropdowns[2]).select('minutes')
+                })
 
-            cy.get('[data-cy=direct-seedings]')
-                .check()
+                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                    cy.get($dropdowns[3]).select('bed')
+                })
 
-            cy.get('[data-cy=row-bed]')
-                .clear()
-                .type('5')
+                cy.get('[data-cy=submit-button]')
+                    .click()
 
-            cy.get('[data-cy=num-feet')
-                .clear()
-                .type('20')
+                cy.wait(30000).then(() => {
+                    cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getSeeding')
+                    
+                    cy.get('@getSeeding').should(function(){
+                        expect(seedingLog.length).to.equal(1)
+                        expect(seedingLog[0].movement.area[0].name).to.equal('C')
+                        expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('0.17')
+                        expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Amount planted')].value).to.equal('100')
+                    })
+                }).then(() => {
+                    cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
 
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[3]).select('bed')
+                    cy.get('@getPlanting').should(function(){
+                        expect(plantingLog.length).to.equal(1)
+                        expect(plantingLog[0].crop[0].name).to.equal('BEET')
+                    })
+                }).then(() => {
+                    cy.wrap(getSessionToken()).as('token')
+                    cy.get('@token').should(function(sessionToken){
+                        token = sessionToken
+                    })
+                })
             })
-
-            cy.get('[data-cy=submit-button]')
-                .click()
-
-            cy.wait(30000).then(() => {
-                cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getSeeding')
-                
-                cy.get('@getSeeding').should(function(){
-                    expect(seedingLog.length).to.equal(1)
-                    expect(seedingLog[0].movement.area[0].name).to.equal('C')
+            it('create a direct seedings log and a planting log w/ hour and row', () => {
+                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                    cy.get($dropdowns[2]).select('hours')
                 })
-            }).then(() => {
-                cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
 
-                cy.get('@getPlanting').should(function(){
-                    expect(plantingLog.length).to.equal(1)
-                    expect(plantingLog[0].crop[0].name).to.equal('BEET')
+                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                    cy.get($dropdowns[3]).select('row')
                 })
-            }).then(() => {
-                cy.wrap(getSessionToken()).as('token')
-                cy.get('@token').should(function(sessionToken){
-                    token = sessionToken
+
+                cy.get('[data-cy=submit-button]')
+                    .click()
+
+                cy.wait(30000).then(() => {
+                    cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getSeeding')
+                    
+                    cy.get('@getSeeding').should(function(){
+                        expect(seedingLog.length).to.equal(1)
+                        expect(seedingLog[0].movement.area[0].name).to.equal('C')
+                        expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('10')
+                        expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Amount planted')].value).to.equal('20')
+                    })
+                }).then(() => {
+                    cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
+
+                    cy.get('@getPlanting').should(function(){
+                        expect(plantingLog.length).to.equal(1)
+                        expect(plantingLog[0].crop[0].name).to.equal('BEET')
+                    })
+                }).then(() => {
+                    cy.wrap(getSessionToken()).as('token')
+                    cy.get('@token').should(function(sessionToken){
+                        token = sessionToken
+                    })
                 })
             })
         })
+        
     })
 })
