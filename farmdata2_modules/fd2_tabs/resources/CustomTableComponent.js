@@ -15,7 +15,7 @@ let CustomTableComponent = {
                                     
                                     <textarea data-cy="test-input" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'text'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea>
                                     
-                                    <select data-cy="dropdown-input" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'dropdown'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                                    <select data-cy="dropdown-table-input" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'dropdown'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)">
                                         <option v-for="option in inputType[itemIndex].value">{{ option }}</option>
                                     </select>
                                     
