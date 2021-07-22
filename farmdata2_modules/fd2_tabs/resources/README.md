@@ -117,4 +117,8 @@ COMPONENTS:
             selection-changed:
                 -Emitted When: A new option has been selected
                 -Payloads:
+<<<<<<< HEAD
                     selectedOption: The value of the option that has been selected
+=======
+                    selectedOption: The value of the option that has been selected
+>>>>>>> 530a9f4fd365ffe5cfc66af07d2c94db5b318547
