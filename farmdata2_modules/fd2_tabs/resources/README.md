@@ -5,14 +5,14 @@ COMPONENTS:
             <custom-table :rows="arrayOfRows" :headers="arrayOfHeaders" can-edit can-delete :visible-columns="visibleColumnsArray" :input-options="inputTypesArray" @edit-clicked="enterEditMode" @row-edited="updateArrayOfRows" @row-deleted="deleteFromArrayOfRows"></custom-table>
 
         Description ->
-            A table styled to match FarmOS. By using Vue to v-bind the values of the props the table can dynamically update to display relevant information.
+            A table styled to match FarmOS. By using Vue to v-bind the values of the props, the table can dynamically update to display relevant information.
 
         Props ->
             rows:
                 -Required
                 -Structure: Array of objects 
                     [{id: 1, data:[1, 2, 'three']}, {id: 2, data:[4, 5, 'six']}, {id: 3, data:['seven', 8, 9]}]
-                -Decription: Determines what information is displayed in the table. Each object is a row, and each element in the data array is an individual cell in that row. The ID is not displayed, but emitted as a payload with certain methods.
+                -Description: Determines what information is displayed in the table. Each object is a row, and each element in the data array is an individual cell in that row. The ID is not displayed, but emitted as a payload with certain methods.
             headers:
                 -Required
                 -Structure: Array
@@ -57,42 +57,43 @@ COMPONENTS:
                 -Emitted When: The delete button of a row is clicked
                 -Payloads:
                     id: The id of the row that has been deleted
+
     DateSelection:
         Example -> 
             <date-selection default-date="2021-06-08" earliest-date="2021-06-03" latest-date="2021-06-15" @date-changed='dateChange'></date-selection>
 
-        Discription ->
-            Displays a date input on the page, that allows a user to select a date. Has a slot before the date input to put in a discription of the date input.
+        Description ->
+            Displays a date input on the page, that allows a user to select a date. Has a slot before the date input to put in a Description of the date input.
         
         Props -> 
             default-date:
                 -Required
                 -Structure: A string of numbers in date format YYYY-MM-DD 
                     '2021-07-22'
-                -Discription: This is the date that will appear on the page in the input when it first loads
+                -Description: This is the date that will appear in the input when the page first loads
             earliest-date: 
                 -Not Required
                 -Structure: A string of numbers in date format YYYY-MM-DD
                     '2000-05-29'
-                -Discription: This is the earlist date that the date input will allow the user to choose
+                -Description: This is the earlist date that the date input will allow the user to choose
             latest-date:
                 -Not Required
                 -Structure: A string of numbers in date format YYYY-MM-DD
                     '2053-01-30'
-                -Discription: This is the lastiest date that the date input will allow the user to choose
+                -Description: This is the latest date that the date input will allow the user to choose
 
         Emitted Events ->
             date-changed:
-                -Emitted When: The date input is focused out on by the user
+                -Emitted When: The date input is focused out on (clicked away from) by the user
                 -Payloads:
                     this.selectedDate: is a string in the format of a date (YYYY-MM-DD). EX: '2021-11-07'
                 
     Dropdown With All:
         Example ->
-            <dropdown-with-all :dropdown-list=fieldList includes-all default-input="All" @selection-changed="addSelectionToList"></dropdown-with-all>
+            <dropdown-with-all :dropdown-list=fieldList includes-all default-input="All" @selection-changed="addSelectionToList">Select: </dropdown-with-all>
 
         Description -> 
-            A dropdown selection whose options can dynamically change based of the props.
+            A dropdown selection whose options can dynamically change based of the props. Whatever gets added to the slot becomes the label.
 
         Props ->
             dropdown-list:
@@ -117,8 +118,4 @@ COMPONENTS:
             selection-changed:
                 -Emitted When: A new option has been selected
                 -Payloads:
-<<<<<<< HEAD
                     selectedOption: The value of the option that has been selected
-=======
-                    selectedOption: The value of the option that has been selected
->>>>>>> 530a9f4fd365ffe5cfc66af07d2c94db5b318547
