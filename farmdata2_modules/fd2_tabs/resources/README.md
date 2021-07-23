@@ -136,8 +136,21 @@ FUNCTIONS:
                 Description: The url of the request that is being sent
             
             arr:
-                Strucure: Array
+                Structure: Array
                     []
                 Description: The array that the API response is put into
 
+    getSessionToken()
+        Description ->
+            Makes an API request to get the session token, which is necessary for the createRecord(), updateRecord(), and deleteRecord() functions.
 
+        Returns ->
+            A Promise:
+                let sessionToken = null
+                ...
+                getSessionToken().then((token) => {
+                    sessionToken = token;
+                })
+
+        Parameters ->
+            None
