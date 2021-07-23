@@ -55,42 +55,6 @@ function fd2_barn_kit_menu() {
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   );
-  
-  $items['farm/fd2-barn-kit/harvestReport'] = array(
-      'title' => 'Harvest Report',
-      'type' => MENU_LOCAL_TASK,
-      'page callback' => 'fd2_barn_kit_view',
-      'page arguments' => array('harvestReport.html'),
-      'access arguments' => array('view fd2 barn kit'),
-      'weight' => -90,
-    );
-
-  $items['farm/fd2-barn-kit/directSeedingReport'] = array(
-    'title' => 'Direct Seeding Report',
-    'page callback' => 'fd2_barn_kit_view',
-    'page arguments' => array('directSeedingReport.html'),
-    'access arguments' => array('view fd2 barn kit'),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => -80,
-  );
-
-  $items['farm/fd2-barn-kit/traySeedingReport'] = array(
-    'title' => 'Tray Seeding Report',
-    'page callback' => 'fd2_barn_kit_view',
-    'page arguments' => array('traySeedingReport.html'),
-    'access arguments' => array('view fd2 barn kit'),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => -70,
-  );
-
-  $items['farm/fd2-barn-kit/transplanting'] = array(
-    'title' => 'Transplanting',
-    'type' => MENU_LOCAL_TASK,
-    'page callback' => 'fd2_barn_kit_view',
-    'page arguments' => array('transplanting.html'),
-    'access arguments' => array('view fd2 barn kit'),
-    'weight' => -60,
-  );
 
   $items['farm/fd2-barn-kit/seedingReport'] = array(
     'title' => 'Seeding Report',
