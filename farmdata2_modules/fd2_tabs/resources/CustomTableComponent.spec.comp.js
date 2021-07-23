@@ -267,7 +267,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=date-input]')
                 .should("not.exist")
 
-            cy.get('[data-cy=dropdown-input]')
+            cy.get('[data-cy=dropdown-table-input]')
                 .should("not.exist")
         })
 
@@ -297,7 +297,7 @@ describe('custom table component', () => {
                 .should('exist')
                 .first().click()
 
-            cy.get('[data-cy=dropdown-input]')
+            cy.get('[data-cy=dropdown-table-input]')
                 .first().select('2')
 
             cy.get('[data-cy=save-button]')
