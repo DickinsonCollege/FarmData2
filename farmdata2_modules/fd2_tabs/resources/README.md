@@ -198,3 +198,14 @@ FUNCTIONS:
 
         Parameters ->
             None
+
+    quantityLocation(quantity, label)
+        Description ->
+            Finds the location of an object in the quantity that has a specific label. If that label does not exist then it returns a negative one.
+
+        Returns ->
+            An integer representing the the placement of the object in the quantity array that has the specificed label, otherwise returns a negative one.
+
+        Parameters ->
+            quantity: is an array of objects. Each object should have a key called 'label'.
+            label: is a string that is the label in the quantity whose location is trying to be found
