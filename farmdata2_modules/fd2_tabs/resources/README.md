@@ -1,8 +1,10 @@
 COMPONENTS:
 
-    CustomTable:
+    **CustomTable:**
         Example ->
+            ```HTML
             <custom-table :rows="arrayOfRows" :headers="arrayOfHeaders" can-edit can-delete :visible-columns="visibleColumnsArray" :input-options="inputTypesArray" @edit-clicked="enterEditMode" @row-edited="updateArrayOfRows" @row-deleted="deleteFromArrayOfRows"></custom-table>
+            ```
 
         Description ->
             A table styled to match FarmOS. By using Vue to v-bind the values of the props, the table can dynamically update to display relevant information.
@@ -58,7 +60,7 @@ COMPONENTS:
                 -Payloads:
                     id: The id of the row that has been deleted
 
-    DateSelection:
+    **DateSelection:**
         Example -> 
             <date-selection default-date="2021-06-08" earliest-date="2021-06-03" latest-date="2021-06-15" @date-changed='dateChange'></date-selection>
 
@@ -88,7 +90,7 @@ COMPONENTS:
                 -Payloads:
                     this.selectedDate: is a string in the format of a date (YYYY-MM-DD). EX: '2021-11-07'
 
-    DateRangeSelection
+    **DateRangeSelection**
         Example ->
             <date-range-selection default-start-date="2021-06-01" default-end-date="2021-06-15" @start-date-changed='startDateChange' @end-date-changed='endDateChange'></date-range-selection>
 
@@ -117,7 +119,7 @@ COMPONENTS:
                 -Payloads:
                     selectedDate: IS a string in the format of a date (YYYY-MM-DD). EX: '2109-03-05'
                 
-    Dropdown With All:
+    **Dropdown With All:**
         Example ->
             <dropdown-with-all :dropdown-list=fieldList includes-all default-input="All" @selection-changed="addSelectionToList">Select: </dropdown-with-all>
 
@@ -151,7 +153,7 @@ COMPONENTS:
 
 FUNCTIONS:
 
-    getAllPages(url, arr=[])
+    **getAllPages(url, arr=[])**
         Description ->
             Makes an API request with the url that gets passes and puts the response in the passed array.
 
@@ -169,7 +171,7 @@ FUNCTIONS:
                     []
                 Description: The array that the API response is put into
 
-    Map Functions:
+    **Map Functions:**
         Example ->
             getUserToIDMap().then((response) => {
                 this.userToIDMap = response
@@ -184,7 +186,7 @@ FUNCTIONS:
         Parameters ->
             None
 
-    getSessionToken()
+    **getSessionToken()**
         Description ->
             Makes an API request to get the session token, which is necessary for the createRecord(), updateRecord(), and deleteRecord() functions.
 
@@ -199,7 +201,7 @@ FUNCTIONS:
         Parameters ->
             None
 
-    createRecord(url, data, sessionToken)
+    **createRecord(url, data, sessionToken)**
         Description ->
             Creates a record in the database located at the specified url, containing the data that is passed to the function. Whichever kind of record is being created (seeding log, planting log, etc.) determines the structure of the data.
         
@@ -230,7 +232,7 @@ FUNCTIONS:
                     "fcj3ScHC5JFrHC8pCpn7QXIsPa8xU9297CT8KaPGPW8"
                 Description: A string of letters and numbers unique to each particular "session" of a page, used for authentication. Retrieved with the getSessionToken() function.
 
-    updateRecord(url, updateData, sessionToken)
+    **updateRecord(url, updateData, sessionToken)**
         Description ->
             Sends and API request that updates an existing log with the information that is passed to the function.
 
@@ -259,7 +261,7 @@ FUNCTIONS:
                     "fcj3ScHC5JFrHC8pCpn7QXIsPa8xU9297CT8KaPGPW8"
                 Description: A string of letters and numbers unique to each particular "session" of a page, used for authentication. Retrieved with the getSessionToken() function.
 
-    deleteRecord(url, sessionToken)
+    **deleteRecord(url, sessionToken)**
         Description -> 
             Sends an API request that deletes an existing log from the database.
         
@@ -281,7 +283,7 @@ FUNCTIONS:
                     "fcj3ScHC5JFrHC8pCpn7QXIsPa8xU9297CT8KaPGPW8"
                 Description: A string of letters and numbers unique to each particular "session" of a page, used for authentication. Retrieved with the getSessionToken() function.
 
-    quantityLocation(quantity, label)
+    **quantityLocation(quantity, label)**
         Description ->
             Finds the location of an object in the quantity that has a specific label. If that label does not exist then it returns a negative one.
 
