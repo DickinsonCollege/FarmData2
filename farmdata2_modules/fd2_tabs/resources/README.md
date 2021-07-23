@@ -148,3 +148,38 @@ COMPONENTS:
                 -Emitted When: A new option has been selected
                 -Payloads:
                     selectedOption: The value of the option that has been selected
+
+FUNCTIONS:
+
+    getAllPages(url, arr=[])
+        Description ->
+            Makes an API request with the url that gets passes and puts the response in the passed array.
+
+        Returns ->
+            A Promise *but it doesn't need to be used because of the array that is passed as a paramenter*
+        
+        Parameters ->
+            url:
+                Structure: String
+                    "/log.json?type=farm_seeding"
+                Description: The url of the request that is being sent
+            
+            arr:
+                Structure: Array
+                    []
+                Description: The array that the API response is put into
+
+    getSessionToken()
+        Description ->
+            Makes an API request to get the session token, which is necessary for the createRecord(), updateRecord(), and deleteRecord() functions.
+
+        Returns ->
+            A Promise:
+                let sessionToken = null
+                ...
+                getSessionToken().then((token) => {
+                    sessionToken = token;
+                })
+
+        Parameters ->
+            None
