@@ -87,6 +87,35 @@ COMPONENTS:
                 -Emitted When: The date input is focused out on (clicked away from) by the user
                 -Payloads:
                     this.selectedDate: is a string in the format of a date (YYYY-MM-DD). EX: '2021-11-07'
+
+    DateRangeSelection
+        Example -->
+            <date-range-selection default-start-date="2021-06-01" default-end-date="2021-06-15" @start-date-changed='startDateChange' @end-date-changed='endDateChange'></date-range-selection>
+
+        Description -->
+            Provides two date inputs that works as a range. The first with the label 'Start Date:' and the second with the label 'End Date:'.
+
+        Props -->
+            default-start-date:
+                -Required
+                -Structure: A string in date format (YYYY-MM-DD)
+                    '2013-05-30'
+                -Description: This is the value that the start date input will have end the page loads
+            default-end-date:
+                -Required
+                -Structure: A string in date format (YYYY-MM-DD)
+                    '2029-02-29'
+                -Description: This si the value that the end date input will have when the page loads
+
+        Emitted Events -->
+            start-date-changed:
+                -Emitted When: The user focuses off the first date input
+                -Payloads:
+                    selectedDate: Is a string in the format of a date (YYYY-MM-DD). EX: '2050-09-02'
+            end-date-changed:
+                -Emitted When: The user focuses off the second date input
+                -Payloads:
+                    selectedDate: IS a string in the format of a date (YYYY-MM-DD). EX: '2109-03-05'
                 
     Dropdown With All:
         Example ->
