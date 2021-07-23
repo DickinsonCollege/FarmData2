@@ -89,13 +89,13 @@ COMPONENTS:
                     this.selectedDate: is a string in the format of a date (YYYY-MM-DD). EX: '2021-11-07'
 
     DateRangeSelection
-        Example -->
+        Example ->
             <date-range-selection default-start-date="2021-06-01" default-end-date="2021-06-15" @start-date-changed='startDateChange' @end-date-changed='endDateChange'></date-range-selection>
 
-        Description -->
+        Description ->
             Provides two date inputs that works as a range. The first with the label 'Start Date:' and the second with the label 'End Date:'.
 
-        Props -->
+        Props ->
             default-start-date:
                 -Required
                 -Structure: A string in date format (YYYY-MM-DD)
@@ -107,7 +107,7 @@ COMPONENTS:
                     '2029-02-29'
                 -Description: This si the value that the end date input will have when the page loads
 
-        Emitted Events -->
+        Emitted Events ->
             start-date-changed:
                 -Emitted When: The user focuses off the first date input
                 -Payloads:
@@ -168,6 +168,21 @@ FUNCTIONS:
                 Structure: Array
                     []
                 Description: The array that the API response is put into
+
+    Map Functions:
+        Example ->
+            getUserToIDMap().then((response) => {
+                this.userToIDMap = response
+            })
+
+        Description ->
+            These are several functions that all use the same base function: getMap() which is a Promise. This functions makes an API call and returns the a map of one part of an element to another.
+
+        Returns ->
+            A Map: this map either maps the name of the element (ei. crop name) to its id or vice versa. So far it does this for User, Crop, Area, Log Type, and Unit.
+
+        Parameters ->
+            None
 
     getSessionToken()
         Description ->
