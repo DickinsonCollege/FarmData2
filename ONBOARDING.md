@@ -127,6 +127,9 @@ The majority of development for FarmData2 is front-end (i.e. browser-based).  Th
   - Resources:
     - [Vue.js Fundamentals](https://vueschool.io/courses/vuejs-fundamentals): A video based course and a great place to start if you have not worked with Vue.js before or want a refresher. Click the "Start Course" button.
     - [Vue.js Guide](https://vuejs.org/v2/guide): A textual introduction to using Vue.js.
+    - [Vue.js Components](https://vueschool.io/courses/vuejs-components-fundamentals): A video based course that introduces the basics of Vue Components.
+    - [Components Basics](https://github.com/DickinsonCollege/FarmData2/edit/main/ONBOARDING.md): A textual introduction to Vue Components.
+    - [FarmData2 Vue Component Details](https://github.com/DickinsonCollege/FarmData2/blob/main/farmdata2_modules/fd2_tabs/fd2_example/README.md): Information on specifically how FarmData2 uses and tests Vue Components.
 
 #### FarmOS API ####
 
@@ -167,7 +170,7 @@ The Cypress end-to-end test framework works by controlling the web browser. A te
     - [Interacting with Elements](https://docs.cypress.io/guides/core-concepts/interacting-with-elements): The main commands in cypress for interacting with elements in the page (e.g. click, select, etc.)
     - [should](https://docs.cypress.io/api/commands/should.html#Syntax): Documentation for the `should` statement that is used to make assertions in cypress tests.
     - [Assertions](https://docs.cypress.io/guides/references/assertions): A reference for all of the assertions (e.g. assertions and chainers for should) that can be used in cypress tests.
-
+    - [FarmData2 Cypress Tests Details](https://github.com/DickinsonCollege/FarmData2/blob/main/farmdata2_modules/fd2_tabs/fd2_example/README.md): Information on specifically how FarmData2 uses Cypress tests.
 ##### Component Tests #####
 
 Cypress component tests work by mounting a Vue Component into a browser and allowing tests to interact with it in isolation from the application.  A typical comonent test will:
@@ -181,6 +184,7 @@ Cypress component tests work by mounting a Vue Component into a browser and allo
     - [Component Testing](https://docs.cypress.io/guides/component-testing/introduction): An introduction to the component testing in Cypress. Note: With FarmData2 support you will not need to install or setup the component testing framework.
     - [Vue Test Utils Guides](https://vue-test-utils.vuejs.org/guides): Cypress component testing is built on top of the Vue Test Utils. So all of their functionality is also available within a Cypress component test. The _Getting Started_, _Common Tips_, _Testing Key, Mouse and other DOM Events_ and _Testing Asynchronous Behavior_ sections are most relevant to FarmData2 testing.
     - [Vue Test Utils API](https://vue-test-utils.vuejs.org/api/): API documentation for all of the functionality of the Vue Test Utils.
+    - [FarmData2 Cypress Tests Details](https://github.com/DickinsonCollege/FarmData2/blob/main/farmdata2_modules/fd2_tabs/fd2_example/README.md): Information on specifically how FarmData2 uses Cypress tests.
 
 ### Project Automation ###
 
