@@ -116,6 +116,7 @@ describe('Test the seeding input page', () => {
 
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[3]).should('exist')
+                    .should('have.value', 'bed')
                     .select('row')
                     .should('have.value', 'row')
             })
@@ -212,10 +213,6 @@ describe('Test the seeding input page', () => {
             cy.get('[data-cy=num-feet')
                 .clear()
                 .type('20')
-
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[3]).select('row')
-            })
 
             cy.get('[data-cy=submit-button')
                 .should('exist')
@@ -376,10 +373,6 @@ describe('Test the seeding input page', () => {
             it('create a direct seedings log and a planting log w/ minute and bed', () => {
                 cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                     cy.get($dropdowns[2]).select('minutes')
-                })
-
-                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                    cy.get($dropdowns[3]).select('bed')
                 })
 
                 cy.get('[data-cy=submit-button]')
