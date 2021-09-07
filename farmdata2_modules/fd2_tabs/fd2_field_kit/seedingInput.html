@@ -39,7 +39,7 @@
             <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
                 <label>Rows per Bed: </label><input data-cy='row-bed' style='width: 75px;' type=number v-model='numRowBed'>
                 <div style='display: flex;text-align:center;padding-top: 25px;'>
-                    <label>Number of Feet: </label><input data-cy='num-feet' style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
+                    <label>Number of Feet: </label><input data-cy='num-feet' style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
                 </div>
             </div>
        </fieldset>
@@ -60,7 +60,7 @@
                 selectedArea: null,
                 selectedSeedingType: '',
                 selectedTimeUnit: null,
-                selectedFeetUnit: null,
+                selectedFeetUnit: 'bed',
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
@@ -131,9 +131,6 @@
                             return true
                         }
                         if(this.numRowBed == 0){
-                            return true
-                        }
-                        if(this.selectedFeetUnit == null){
                             return true
                         }
                     }
