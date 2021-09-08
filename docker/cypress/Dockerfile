@@ -7,7 +7,9 @@
 FROM cypress/browsers:node14.16.0-chrome89-ff77
 
 # Update the dependencies to get the latest and greatest (and safest!) packages.
-RUN apt update && apt upgrade -y
+# Updating here breaks things if packages move on.  As this is purely a
+# dev tool it's better to stay fixed and not break.
+# RUN apt-get update && apt-get upgrade -y
 
 # avoid too many progress messages
 # https://github.com/cypress-io/cypress/issues/1243
