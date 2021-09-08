@@ -15,7 +15,7 @@
                 <br>
                 <div style='display:flex; padding-top:25px;'>
                         <label>Time Spent: </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
-                        <dropdown-with-all data-cy='time-unit' style='text-align:center;' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
+                        <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
                 </div>
                 <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
@@ -59,7 +59,7 @@
                 selectedCrop: null,
                 selectedArea: null,
                 selectedSeedingType: '',
-                selectedTimeUnit: null,
+                selectedTimeUnit: 'minutes',
                 selectedFeetUnit: null,
                 comments: '',
                 numWorkers: 0,
@@ -117,10 +117,6 @@
                         return true
                     }
                     if(this.selectedSeedingType == ''){
-                        return true
-                    }
-                    
-                    if(this.selectedTimeUnit == null){
                         return true
                     }
                     if(this.time == 0){
