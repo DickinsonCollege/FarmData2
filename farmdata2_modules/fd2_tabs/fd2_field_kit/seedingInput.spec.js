@@ -73,8 +73,9 @@ describe('Test the seeding input page', () => {
 
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[2]).should('exist')
-                    .select('minutes')
                     .should('have.value', 'minutes')
+                    .select('hours')
+                    .should('have.value', 'hours')
             })
         })
         it('input comments', () => {
@@ -116,6 +117,7 @@ describe('Test the seeding input page', () => {
 
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[3]).should('exist')
+                    .should('have.value', 'bed')
                     .select('row')
                     .should('have.value', 'row')
             })
@@ -196,11 +198,6 @@ describe('Test the seeding input page', () => {
              cy.get('[data-cy=time-spent]')
                 .clear()
                 .type('10')
-            
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[2])
-                    .select('minutes')
-            })
         })
         it('submit button is not disabled when direct seeding is filled in', () => {
             cy.get('[data-cy=direct-seedings').check()
@@ -212,10 +209,6 @@ describe('Test the seeding input page', () => {
             cy.get('[data-cy=num-feet')
                 .clear()
                 .type('20')
-
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[3]).select('row')
-            })
 
             cy.get('[data-cy=submit-button')
                 .should('exist')
@@ -301,10 +294,6 @@ describe('Test the seeding input page', () => {
                     .type('76')
             })
             it('create a tray seedings log and a planting log w/ minutes', () => {
-                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                    cy.get($dropdowns[2]).select('minutes')
-                })
-                
                 cy.get('[data-cy=submit-button]')
                     .click()
 
@@ -374,14 +363,6 @@ describe('Test the seeding input page', () => {
                     .type('20')
             })
             it('create a direct seedings log and a planting log w/ minute and bed', () => {
-                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                    cy.get($dropdowns[2]).select('minutes')
-                })
-
-                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                    cy.get($dropdowns[3]).select('bed')
-                })
-
                 cy.get('[data-cy=submit-button]')
                     .click()
 
