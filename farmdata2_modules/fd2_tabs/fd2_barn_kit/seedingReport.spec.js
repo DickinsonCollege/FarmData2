@@ -56,6 +56,33 @@ describe('Testing for the seeding report page', () => {
 
         
     })
+    context.only('can see spinner at appropriate times', () => {
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+        })
+
+        it('show spinner after input', () => {
+            cy.get('[data-cy=loader]').should('be.visible')
+        })
+        it('spinner dissappears after API return', () => {
+            cy.get('[data-cy=report-table]', { timeout: 10000 }).should('be.visible')
+            cy.get('[data-cy=loader]').should('not.exist')
+        })
+        it('spinner reappears after changing values and clicking again', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-02')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=loader]').should('be.visible')
+        })
+    })
 
     context('displays the right information in the table', () => {
         before(() => {
@@ -461,7 +488,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context.only('date picker and filter behavior', () => {
+    context('date picker and filter behavior', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
             cy.visit('/farm/fd2-barn-kit/seedingReport')
