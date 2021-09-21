@@ -53,6 +53,18 @@
                     </fieldset>
                 </div>
             </div>
+            <div v-if="!stillLoading && seedingLogs.length == 0">
+                <div class="box" style="  
+                    border: 5px solid #d62a17;
+                    background-color: white;
+                    padding: 20px;
+                    margin: auto;
+                    width: 50%;
+                    text-align: center;
+                    font-size: large;">
+                     No Logs Found in These Dates 
+                </div> 
+            </div>
         </div>
     </div>
     <script>
@@ -107,6 +119,7 @@
                     getAllPages(link, this.seedingLogs).then(() => {
                         this.stillLoading = false
                     })
+                    this.stillLoading = true
                 },
                 cropChange(selectedCrop){
                     this.selectedCrop = selectedCrop
