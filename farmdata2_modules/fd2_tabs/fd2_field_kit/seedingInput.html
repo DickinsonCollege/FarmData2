@@ -38,12 +38,13 @@
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-              <label>Number of Workers: </label><input data-cy="num-workers" style='width: 75px;' type=number v-model='numWorkers'>
-                <br>
+            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
+                 <label>Workers: </label><input data-cy="num-workers" style='width: 50px;' type=number v-model='numWorkers'>
+                <label>Time: </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
+                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
                 <div style='display:flex; padding-top:25px;'>
-                    <label>Time Spent: </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
-                    <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
+                   
+                    
                 </div>  
             </div>
        </fieldset>
