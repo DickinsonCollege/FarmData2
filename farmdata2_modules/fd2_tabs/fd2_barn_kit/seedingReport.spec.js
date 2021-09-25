@@ -60,25 +60,50 @@ describe('Testing for the seeding report page', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
             cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+        })
+
+        it('show spinner after input', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
                 .type('2019-03-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
-        })
-
-        it('show spinner after input', () => {
             cy.get('[data-cy=loader]').should('be.visible')
         })
-        it('spinner dissappears after API return', () => {
-            cy.get('[data-cy=report-table]', { timeout: 10000 }).should('be.visible')
-            cy.get('[data-cy=loader]').should('not.exist')
+
+        it('spinner dissappears after whole response returns 1 page', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-02-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=report-table]', { timeout: 20000 }).find('tr').its('length').then(length =>{
+                expect(length).to.equal(3)
+                cy.get('[data-cy=loader]').should('not.exist')
+            }) 
+        })
+        it.only('spinner remains before API return', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-05-15')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=report-table]', { timeout: 20000 }).find('tr').its('length').then(length =>{
+                expect(length).to.equal(101)
+                cy.get('[data-cy=loader]').should('exist')
+            })
+            cy.wait(10000)
+            cy.get('[data-cy=report-table]').find('tr').its('length').then(length =>{
+                expect(length).to.equal(263)
+                cy.get('[data-cy=loader]').should('not.exist')
+            })
         })
         it('spinner reappears after changing values and clicking again', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-02')
+                .type('2019-03-03')
             cy.get('[data-cy=generate-rpt-btn]').click()
             cy.get('[data-cy=loader]').should('be.visible')
         })
