@@ -116,10 +116,16 @@
                         console.log('inside if statement')
                         let trayAreaOnly = this.areaResponse.filter((x) => x.area_type === 'greenhouse')
                         areaArray = trayAreaOnly.map((h) => h.name)
+                        if(!areaArray.includes(this.selectedArea)){
+                            this.selectedArea = null
+                        }
                     }
                     else if(this.selectedSeedingType == 'Direct Seedings'){
                         let directAreaOnly = this.areaResponse.filter((x) => x.area_type === 'field' || x.area_type === 'bed')
                         areaArray = directAreaOnly.map((h) => h.name)
+                        if(!areaArray.includes(this.selectedArea)){
+                            this.selectedArea = null
+                        }
                     }
                     else{
                         areaArray = this.areaResponse.map((h) => h.name)
