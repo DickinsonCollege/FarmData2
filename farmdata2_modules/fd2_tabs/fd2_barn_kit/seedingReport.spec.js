@@ -83,22 +83,6 @@ describe('Testing for the seeding report page', () => {
                 cy.get('[data-cy=loader]').should('not.exist')
             }) 
         })
-        it.only('spinner remains before API return', () => {
-            cy.get('[data-cy=start-date-select]')
-                .type('2019-01-01')
-            cy.get('[data-cy=end-date-select]')
-                .type('2019-05-15')
-            cy.get('[data-cy=generate-rpt-btn]').click()
-            cy.get('[data-cy=report-table]', { timeout: 20000 }).find('tr').its('length').then(length =>{
-                expect(length).to.equal(101)
-                cy.get('[data-cy=loader]').should('exist')
-            })
-            cy.wait(10000)
-            cy.get('[data-cy=report-table]').find('tr').its('length').then(length =>{
-                expect(length).to.equal(263)
-                cy.get('[data-cy=loader]').should('not.exist')
-            })
-        })
         it('spinner reappears after changing values and clicking again', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
