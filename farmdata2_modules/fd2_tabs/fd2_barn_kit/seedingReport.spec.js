@@ -56,7 +56,7 @@ describe('Testing for the seeding report page', () => {
 
         
     })
-    context.only('can see spinner at appropriate times', () => {
+    context('can see spinner at appropriate times', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
             cy.visit('/farm/fd2-barn-kit/seedingReport')
