@@ -31,7 +31,7 @@
 
             <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
 
-            <div v-if="seedingLogs.length != 0">
+            <div v-if="!stillLoading && seedingLogs.length != 0">
                 <br>
 
                 <div style="display: flex; width: 100%;">
