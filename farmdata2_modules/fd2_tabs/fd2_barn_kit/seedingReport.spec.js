@@ -97,32 +97,43 @@ describe('Testing for the seeding report page', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
             cy.visit('/farm/fd2-barn-kit/seedingReport')
-
-        })
-
-        it('show both tables with two types', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2020-05-01')
             cy.get('[data-cy=end-date-select]')
                 .type('2020-06-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
-
         })
+
 
         it('show direct seeding message when only tray seeding', () => {
-            cy.get('[data-cy=start-date-select]')
-                .type('2019-05-06')
-            cy.get('[data-cy=end-date-select]')
-                .type('2019-05-10')
-            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=dropdown-input]', {timeout: 20000}).then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .select('ENDIVE')
+                    .should('have.value', 'ENDIVE')
+            })
+            cy.get('[data-cy=direct-summary').should('have.text', 'Direct Seeding Summary  There are no Direct Seeding logs with these parameters')
+        })
+
+        it('show tray seeding message when only direct seeding', () => {
+            cy.get('[data-cy=dropdown-input]', {timeout: 20000}).then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .select('CORN-SWEET')
+                    .should('have.value', 'CORN-SWEET')
+            })
+            cy.get('[data-cy=tray-summary').should('have.text', 'Tray Seeding Summary  There are no Tray Seeding logs with these parameters')
+        })
+
+        it('show both tables with two types', () => {
+            cy.get('[data-cy=direct-summary', {timeout: 20000}).should('be.visible')
+            cy.get('[data-cy=tray-summary]').should('be.visible')
 
         })
-        it('show tray seeding message when only direct seeding', () => {
-            cy.get('[data-cy=start-date-select]')
-                .type('2019-05-01')
-            cy.get('[data-cy=end-date-select]')
-                .type('2019-05-04')
-            cy.get('[data-cy=generate-rpt-btn]').click()
+
+        it('show one tables with one type', () => {
+            cy.get('[data-cy=dropdown-input]', {timeout: 20000}).first().select('Direct Seedings').should('have.value', 'Direct Seedings')
+            cy.get('[data-cy=direct-summary').should('be.visible')
+            cy.get('[data-cy=tray-summary]').should('not.exist')
+
         })
 
     })
