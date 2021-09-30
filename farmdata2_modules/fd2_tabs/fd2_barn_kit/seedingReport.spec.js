@@ -93,6 +93,40 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
+    context('shows message when only one type', () => {
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+        })
+
+        it('show both tables with two types', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2020-05-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2020-06-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+
+        })
+
+        it('show direct seeding message when only tray seeding', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-05-06')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-05-10')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+
+        })
+        it('show tray seeding message when only direct seeding', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-05-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-05-04')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+        })
+
+    })
+
     context('displays the right information in the table', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
