@@ -29,7 +29,7 @@
                 <br>
             </div>
 
-            <div class="loader center-block" v-if="stillLoading"></div>
+            <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
 
             <div v-if="seedingLogs.length != 0">
                 <br>
@@ -107,6 +107,8 @@
                     getAllPages(link, this.seedingLogs).then(() => {
                         this.stillLoading = false
                     })
+                    //Should set stillLoading to its intitial true state when finished
+                    this.stillLoading = true
                 },
                 cropChange(selectedCrop){
                     this.selectedCrop = selectedCrop

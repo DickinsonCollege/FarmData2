@@ -110,7 +110,9 @@
                             console.log(response.data)
                         })
                     })
-                    
+                    if(confirm("You have saved a log! Would you like to go the seeding report page?")){
+                        window.location.replace('/farm/fd2-barn-kit/seedingReport')
+                    }
                 }
             },
             computed: {
