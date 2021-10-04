@@ -1,3 +1,4 @@
+
 ## Installing FarmData2 ##
 
 This document provides a guide to installing the FarmData2 project.  There are separate sections for doing a developer install and a user install.  If you are interested in working on and contributing to the FarmData2 project follow the Developer Install section.  If you are interested in using the FarmData2 application follow the User Install section.
@@ -75,7 +76,8 @@ The FarmData2 repository contains a sample database with anonymized data from se
 ./setDB.bash sample
 ```
 
-When this command completes there should be a `db` directory in the `docker` directory.  The files in this `db` directory are a mySQL database that contain the sample data.  Note that you will only need to do this step once. But the above comman can be used at any time to reset the database to its initial state.
+
+When this command completes there should be a `db` directory in the `docker` directory.  The files in this `db` directory are a mySQL database that contain the sample data.  Note that you will only need to do this step once. But the above command can be used at any time to reset the database to its initial state.
 
 #### Starting FarmData2 ####
 
