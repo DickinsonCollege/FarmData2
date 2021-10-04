@@ -234,7 +234,29 @@ describe('Test the seeding input page', () => {
                 .should('not.be.disabled')
         })
     })
-    context.only('create logs in database', () => {
+    context('check area filter', () => {
+        it('only shows greenhouses when tray seeding is selected', () =>{
+            cy.get('[data-cy=tray-seedings]').click()
+            
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .contains('CHUAU')
+                    .contains('ALF-1').should('not.exist')
+                    .contains('A').should('not.exist')
+            })
+        })
+        it('only shows beds or fields when direct seeding is selected', () =>{
+            cy.get('[data-cy=direct-seedings').click()
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) =>{
+                cy.get($dropdowns[1]).should('exist')
+                    .contains('ALF-1')
+                    .contains('A')
+                    .contains('CHUAU').should('not.exist')
+            })
+        })
+    })
+    context('create logs in database', () => {
         let seedingLog = []
         let plantingLog = []
         let token = 0
