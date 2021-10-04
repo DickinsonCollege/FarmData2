@@ -44,7 +44,7 @@
                 <br>
                 <div style='display:flex; padding-top:25px;'>
                     <label>Time Spent:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
-                    <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                    <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
                 </div>  
             </div>
        </fieldset>
