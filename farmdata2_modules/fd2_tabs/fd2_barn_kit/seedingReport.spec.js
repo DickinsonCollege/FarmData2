@@ -93,6 +93,40 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
+        context.only('can see No Logs message at appropriate times', () => {
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+        })
+
+        it('does not show No Logs message after input with logs', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=no-logs-message]').should('not.exist')
+        })
+
+        it('shows No Logs message after input without logs', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2021-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2021-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=no-logs-message]', {timeout: 20000}).should('be.visible')
+        })
+        it('shows No Logs message after input without logs reinput', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2030-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2030-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=no-logs-message]', {timeout: 20000}).should('be.visible')
+        })
+    })
+
     context('shows message when only one type', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
