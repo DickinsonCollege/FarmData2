@@ -58,8 +58,7 @@ describe('Testing for the seeding report page', () => {
     })
     context('can see spinner at appropriate times', () => {
         before(() => {
-            cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            //cy.visit('/farm/fd2-barn-kit/seedingReport')
 
         })
 
@@ -95,8 +94,8 @@ describe('Testing for the seeding report page', () => {
 
         context('can see No Logs message at appropriate times', () => {
         before(() => {
-            cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            //cy.login('manager1', 'farmdata2')
+            //cy.visit('/farm/fd2-barn-kit/seedingReport')
 
         })
 
@@ -128,16 +127,17 @@ describe('Testing for the seeding report page', () => {
     })
     context('can see summary tables at appropriate times', () => {
         before(() => {
-            cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            //cy.login('manager1', 'farmdata2')
+            //cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+
+        })
+        it('does not immediately display summary tables', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
                 .type('2019-03-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
-
-        })
-        it('does not immediately display summary tables', () => {
                 cy.get('[data-cy=tray-summary]').should('not.exist')
                 cy.get('[data-cy=direct-summary]').should('not.exist')
         })
