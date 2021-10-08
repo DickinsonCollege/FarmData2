@@ -72,6 +72,16 @@ function fd2_example_menu() {
     'weight' => 100,
   );
 
+  //cache spike subtab
+  $items['farm/fd2-example/cacheSpike'] = array(
+    'title' => 'cacheSpike',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('cacheSpike.html'),
+    'access arguments' => array('view fd2 example'),
+    'weight' => 100,
+  );
+
   return $items;
 };
 
