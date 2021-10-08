@@ -187,10 +187,6 @@ describe('Test the seeding input page', () => {
                 cy.get($dropdowns[0]).select('BEAN')
             })
 
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[1]).select('A')
-            })
-
             cy.get('[data-cy=num-workers]')
                 .clear()
                 .type('2')
@@ -200,6 +196,10 @@ describe('Test the seeding input page', () => {
                 .type('10')
         })
         it('submit button is not disabled when direct seeding is filled in', () => {
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).select('A')
+            })
+            
             cy.get('[data-cy=direct-seedings').check()
 
             cy.get('[data-cy=row-bed]')
@@ -215,6 +215,10 @@ describe('Test the seeding input page', () => {
                 .should('not.be.disabled')
         })
         it('submit button is not disabled when trayseeding is filled in',() => {
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).select('CHUAU')
+            })
+            
             cy.get('[data-cy=tray-seedings]').click()
 
             cy.get('[data-cy=trays-planted')
@@ -234,15 +238,20 @@ describe('Test the seeding input page', () => {
                 .should('not.be.disabled')
         })
     })
-    context('check area filter', () => {
+    context.only('check area filter', () => {
         it('only shows greenhouses when tray seeding is selected', () =>{
             cy.get('[data-cy=tray-seedings]').click()
-            
+            //tests that the beds are not in the dropdown
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[1]).should('exist')
                     .contains('CHUAU')
                     .contains('ALF-1').should('not.exist')
-                    .contains('A').should('not.exist')
+            })
+            //tests that the fields are not in the dropdown
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .contains('CHUAU')
+                    .contains('E').should('not.exist') 
             })
         })
         it('only shows beds or fields when direct seeding is selected', () =>{
@@ -301,6 +310,9 @@ describe('Test the seeding input page', () => {
         })
         context('All creation of tray seeding logs test', () => {
             beforeEach(() => {
+                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                    cy.get($dropdowns[1]).select('CHUAU')
+                })
                 cy.get('[data-cy=tray-seedings]').check()
 
                 cy.get('[data-cy=trays-planted')
@@ -326,7 +338,7 @@ describe('Test the seeding input page', () => {
 
                     cy.get('@getLog').should(function(){
                         expect(seedingLog.length).to.equal(1)
-                        expect(seedingLog[0].movement.area[0].name).to.equal('C')
+                        expect(seedingLog[0].movement.area[0].name).to.equal('CHUAU')
                         expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('0.17')
                     })
                 }).then(() => {
@@ -358,7 +370,7 @@ describe('Test the seeding input page', () => {
 
                     cy.get('@getLog').should(function(){
                         expect(seedingLog.length).to.equal(1)
-                        expect(seedingLog[0].movement.area[0].name).to.equal('C')
+                        expect(seedingLog[0].movement.area[0].name).to.equal('CHUAU')
                         expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('10')
                     })
                 }).then(() => {
@@ -378,6 +390,10 @@ describe('Test the seeding input page', () => {
         })
         context('All tests creating a direct seeding', () => {
             beforeEach(() => {
+                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                    cy.get($dropdowns[1]).select('C')
+                })
+
                 cy.get('[data-cy=direct-seedings]').check()
 
                 cy.get('[data-cy=row-bed]')
@@ -457,6 +473,10 @@ describe('Test the seeding input page', () => {
         }) 
         context('Test that popup will send to Seeding Report Page or not', () => {
             beforeEach(() => {
+                cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                    cy.get($dropdowns[1]).select('CHUAU')
+                })
+
                 cy.get('[data-cy=tray-seedings]').check()
 
                 cy.get('[data-cy=trays-planted')

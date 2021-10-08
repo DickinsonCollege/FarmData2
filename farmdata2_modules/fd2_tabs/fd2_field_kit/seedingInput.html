@@ -75,7 +75,6 @@
                 numRowBed: 0,
                 numFeet: 0,
                 cropArray: [],
-                areaArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
                 feetUnits: ['row', 'bed'],
@@ -350,7 +349,6 @@
                     this.cropArray = fullResponse.map((h) => h.name)
                 })
                 getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
-                    this.areaArray = this.areaResponse.map((h) => h.name)
                 })
                 getSessionToken().then((response) => {
                     this.sessionToken = response
