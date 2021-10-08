@@ -5,11 +5,11 @@
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:</date-selection>
+                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
-                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:</dropdown-with-all>
+                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:</dropdown-with-all>
+                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
@@ -20,33 +20,36 @@
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
             </legend>
             <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
-                <p>Please Select Tray Seeding or Direct Seeding</p>
+                <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
             </div>
             <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <label>Number of Trays Planted: </label><input data-cy='trays-planted' style='width: 75px;' type=number v-model='numOfTrays'>
+                <label>Number of Trays Planted:<label style='color: #da4f3f'>*</label> </label><input data-cy='trays-planted' style='width: 75px;' type=number v-model='numOfTrays'>
                 <br>
-                <label>Cells per Tray: </label><input data-cy='cells-tray' style='width: 75px;' type=number v-model='numCellsPerTray'>
+                <label>Cells per Tray:<label style='color: #da4f3f'>*</label> </label><input data-cy='cells-tray' style='width: 75px;' type=number v-model='numCellsPerTray'>
                 <br>
-                <label>Number of Seeds Plants: </label><input data-cy='seeds-planted' style='width: 75px;' type=number v-model='numSeedsPlanted'>
+                <label>Number of Seeds Plants:<label style='color: #da4f3f'>*</label> </label><input data-cy='seeds-planted' style='width: 75px;' type=number v-model='numSeedsPlanted'>
             </div>
             <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <label>Rows per Bed: </label><input data-cy='row-bed' style='width: 75px;' type=number v-model='numRowBed'>
+                <label>Rows per Bed:<label style='color: #da4f3f'>*</label> </label><input data-cy='row-bed' style='width: 75px;' type=number v-model='numRowBed'>
                 <div style='display: flex;text-align:center;padding-top: 25px;'>
-                    <label>Number of Feet: </label><input data-cy='num-feet' style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
+                    <label>Number of Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
                 </div>
             </div>
-       </fieldset>
+       </fieldset>   
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-              <label>Number of Workers: </label><input data-cy="num-workers" style='width: 75px;' type=number v-model='numWorkers'>
+              <label>Number of Workers: <label style='color: #da4f3f'>*</label></label><input data-cy="num-workers" style='width: 75px;' type=number v-model='numWorkers'>
                 <br>
                 <div style='display:flex; padding-top:25px;'>
-                    <label>Time Spent: </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
+                    <label>Time Spent:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
                     <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'>Units:</dropdown-with-all>
                 </div>  
             </div>
        </fieldset>
+       <div style='text-align:center;'>
+           <label style='color: #da4f3f'>* required field.</label>
+       </div>
        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
     </div>
 
