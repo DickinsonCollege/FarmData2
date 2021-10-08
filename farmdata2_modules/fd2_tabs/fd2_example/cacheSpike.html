@@ -3,24 +3,31 @@
         <h1>sup</h1>
         <input type=text v-model='newCache'>
         <button>Save To Cache</button>
+        <button @click='cacheArray'>Put Array in Cache</button>
     </div>
     <script>
-        new Vue ({
+        new Vue({
             el: '#cacheSpike',
             data:{
-                newCache: null
+                newCache: null,
+                testArray: [1, 2, 3, 4],
+                newArray: [],
             },
             methods:{
-
+                cacheArray(){
+                    localStorage.setItem('myArray', JSON.stringify(this.testArray))
+                },
             },
             computed:{
                 saveToCache(){
-
+                    localStorage.setItem('myKey', this.newCache)
                 },
             },
             created(){
-
+                this.newCache = localStorage.getItem('myKey')
+                this.newArray = JSON.parse(localStorage.getItem('myArray'))
             },
         })
+    Vue.config.devtools = true;
     </script>
 </body>
