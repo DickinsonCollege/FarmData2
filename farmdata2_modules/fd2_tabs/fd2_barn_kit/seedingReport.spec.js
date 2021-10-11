@@ -57,8 +57,7 @@ describe('Testing for the seeding report page', () => {
         
     })
     context('can see spinner at appropriate times', () => {
-        before(() => {
-            cy.login('manager1', 'farmdata2')
+        beforeEach(() => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
         })
@@ -91,6 +90,109 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]').click()
             cy.get('[data-cy=loader]').should('be.visible')
         })
+    })
+
+        context('can see No Logs message at appropriate times', () => {
+        beforeEach(() => {
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+        })
+
+        it('does not show No Logs message after input with logs', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=no-logs-message]').should('not.exist')
+        })
+
+        it('shows No Logs message after input without logs', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2021-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2021-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=no-logs-message]', {timeout: 30000}).should('be.visible')
+        })
+        it('shows No Logs message after input without logs reinput', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2030-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2030-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+            cy.get('[data-cy=no-logs-message]', {timeout: 30000}).should('be.visible')
+        })
+    })
+    context('can see summary tables at appropriate times', () => {
+        beforeEach(() => {
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+
+        })
+        it('does not immediately display summary tables', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+                cy.get('[data-cy=tray-summary]').should('not.exist')
+                cy.get('[data-cy=direct-summary]').should('not.exist')
+        })
+        it('shows summary tables after table is fully loaded', () => {
+
+            cy.get('[data-cy=report-table]', { timeout: 30000 }).find('tr').its('length').then(length =>{
+                expect(length).to.equal(35)
+                cy.get('[data-cy=tray-summary]',{ timeout: 30000 }).should('be.visible')
+                cy.get('[data-cy=direct-summary]').should('be.visible')
+            }) 
+        })
+
+
+    })
+
+    context('shows message when only one type', () => {
+        beforeEach(() => {
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.get('[data-cy=start-date-select]')
+                .type('2020-05-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2020-06-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
+        })
+
+
+        it('show direct seeding message when only tray seeding', () => {
+            cy.get('[data-cy=dropdown-input]', {timeout: 30000}).then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .select('ENDIVE')
+                    .should('have.value', 'ENDIVE')
+            })
+            cy.get('[data-cy=direct-summary').should('have.text', 'Direct Seeding Summary  There are no Direct Seeding logs with these parameters')
+        })
+
+        it('show tray seeding message when only direct seeding', () => {
+            cy.get('[data-cy=dropdown-input]', {timeout: 30000}).then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .select('CORN-SWEET')
+                    .should('have.value', 'CORN-SWEET')
+            })
+            cy.get('[data-cy=tray-summary').should('have.text', 'Tray Seeding Summary  There are no Tray Seeding logs with these parameters')
+        })
+
+        it('show both tables with two types', () => {
+            cy.get('[data-cy=direct-summary', {timeout: 30000}).should('be.visible')
+            cy.get('[data-cy=tray-summary]').should('be.visible')
+
+        })
+
+        it('show one tables with one type', () => {
+            cy.get('[data-cy=dropdown-input]', {timeout: 30000}).first().select('Direct Seedings').should('have.value', 'Direct Seedings')
+            cy.get('[data-cy=direct-summary').should('be.visible')
+            cy.get('[data-cy=tray-summary]').should('not.exist')
+
+        })
+
     })
 
     context('displays the right information in the table', () => {
