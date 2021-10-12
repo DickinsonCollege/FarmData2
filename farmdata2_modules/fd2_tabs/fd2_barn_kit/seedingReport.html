@@ -62,9 +62,9 @@
                     </fieldset>
                 </div>
                 <button data-cy="download-btn" class="btn center-block btn-primary">
-                    <a :download="'tableDownload.csv'" :href="makeFile()">Download Tables</a>
+                    <a style= "text-decoration: none; color: white;"
+                    :download="'tableDownload.csv'" :href="makeFile()">Download Tables</a>
             </button>
-
             </div>
             <div v-if="!stillLoading && seedingLogs.length == 0">
                 <div class="box" data-cy="no-logs-message" style="  
@@ -154,50 +154,47 @@
                 },
                 makeFile: function() {
                     let rows = []
-                    let headers = ["Date","Crop","Area","Tray/Direct","Hours","Num Workers","Varieties", "User"]
                     for (i = 0 ; i < this.tableRows.length ; i ++){
-                        rows[i] =
-                        this.tableRows[i].data[0] + ','
-                        + this.tableRows[i].data[1] + ','
-                        + this.tableRows[i].data[2] + ','
-                        + this.tableRows[i].data[3] + ','
-                        + this.tableRows[i].data[10] + ','
-                        + this.tableRows[i].data[11] + ','
-                        + this.tableRows[i].data[12] + ','
-                        + this.tableRows[i].data[14]
-                        
+                        rows[i] = ''
+                        for (j = 0; j < this.tableRows[i].data.length ; j++){
+                            if (this.visibleColumns[j]){
+                                let column = '"' +this.tableRows[i].data[j] + '"'
+                                rows[i] = rows[i] + column + ','
+                            }
+                        }
+
+                    }
+                    tableString = ''
+                    for (k = 0 ; k < this.headers.length ; k ++){
+                        if (this.visibleColumns[k]){
+                            tableString = tableString + this.headers[k] + ','
+                        }
                     }
                     tableString =
-                        headers.slice().join(',') +
+                      tableString +
                         '\n' +
                         rows.join('\n');
                     
-                    // try{
+                    // // try{
 
-                    //     if (document.getElementById("direct-summary") != null){
-                    //        let directSummary = document.getElementById("direct-summary").textContent.split("  ").join("\n")
-                    //        tableString += '\n\n' + directSummary
-                    //     }
+                    // //     if (document.getElementById("direct-summary") != null){
+                    // //        let directSummary = document.getElementById("direct-summary").textContent.split("  ").join("\n")
+                    // //        tableString += '\n\n' + directSummary
+                    // //     }
                         
-                    //     if (document.getElementById("tray-summary") != null){
-                    //         let traySummary = document.getElementById("tray-summary").textContent.split("  ").join("\n")
-                    //         tableString += '\n\n' + traySummary
-                    //     }
+                    // //     if (document.getElementById("tray-summary") != null){
+                    // //         let traySummary = document.getElementById("tray-summary").textContent.split("  ").join("\n")
+                    // //         tableString += '\n\n' + traySummary
+                    // //     }
 
-                    //     data = new Blob([tableString], {
-                    //     type: 'text/csv',
-                    //     });
-                    //     return window.URL.createObjectURL(data);
+                        data = new Blob([tableString], {
+                        type: 'text/csv',
+                        });
+                        return window.URL.createObjectURL(data);
                     //  }catch(e){
                     //      console.log(e instanceof TypeError) 
                     //      console.log("Failed")
                     //  }
-
-
-                    
-
-
-
                 },
                 /**
                  * updates the log that the user saved
