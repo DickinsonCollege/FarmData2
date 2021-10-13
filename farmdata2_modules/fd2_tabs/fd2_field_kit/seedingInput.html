@@ -104,11 +104,8 @@
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
-                        console.log(response.data.id)
                     }).then(() => {
                         createRecord('/log', this.logData, this.sessionToken).then((response) => {
-                            console.log(response.timestamp)
-                            console.log(response.data)
                         })
                     })
                     if(confirm("You have saved a log! Would you like to go the seeding report page?")){
@@ -120,7 +117,6 @@
                 areaFilter(){
                     let areaArray = []
                     if(this.selectedSeedingType == 'Tray Seedings'){
-                        console.log('inside if statement')
                         let trayAreaOnly = this.areaResponse.filter((x) => x.area_type === 'greenhouse')
                         areaArray = trayAreaOnly.map((h) => h.name)
                         if(!areaArray.includes(this.selectedArea)){
@@ -146,7 +142,6 @@
                     return areaArray
                 },
                 formNotCompleted(){
-                    console.log('checking if form is complete')
                     if(this.selectedCrop == null){
                         return true
                     }
@@ -243,7 +238,6 @@
                     let feet = this.numFeet
                     if(this.selectedTimeUnit == 'minutes'){
                         time = (Math.round((time / 60)*100))/100
-                        console.log(time)
                     }
                     if(this.selectedFeetUnit == 'bed'){
                         feet = feet * this.numRowBed
