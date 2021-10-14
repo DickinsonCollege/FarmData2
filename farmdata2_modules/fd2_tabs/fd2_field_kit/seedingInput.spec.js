@@ -234,7 +234,7 @@ describe('Test the seeding input page', () => {
                 .should('not.be.disabled')
         })
     })
-    context.only('create logs in database', () => {
+    context('create logs in database', () => {
         let seedingLog = []
         let plantingLog = []
         let token = 0
