@@ -314,12 +314,30 @@
             },
             created(){
                 let fullResponse = []
-                getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
-                    this.cropArray = fullResponse.map((h) => h.name)
-                })
-                getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
-                    this.areaArray = this.areaArray.map((h) => h.name)
-                })
+                if(localStorage.getItem('crops') == null){
+                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
+                        this.cropArray = fullResponse.map((h) => h.name)
+                        localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                    })
+                }else{
+                    this.cropArray = JSON.parse(localStorage.getItem('crops'))
+                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
+                        this.cropArray = fullResponse.map((h) => h.name)
+                        localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                    })
+                }
+                if(localStorage.getItem('areas') == null){
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
+                        this.areaArray = this.areaArray.map((h) => h.name)
+                        localStorage.setItem('areas', JSON.stringify(this.areaArray))
+                    })
+                }else{
+                    this.areaArray = JSON.parse(localStorage.getItem('areas'))
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
+                        this.areaArray = this.areaArray.map((h) => h.name)
+                        localStorage.setItem('areas', JSON.stringify(this.areaArray))
+                    })
+                }
                 getSessionToken().then((response) => {
                     this.sessionToken = response
                 })
