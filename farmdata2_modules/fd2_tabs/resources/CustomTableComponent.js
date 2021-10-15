@@ -2,12 +2,12 @@ let CustomTableComponent = {
     template:`<div class="sticky-table">
                     <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
                         <thead>
-                            <tr class="sticky-header table-text">
+                            <tr class="sticky-header table-text" data-cy="table-headers">
                                 <th v-if="isVisible[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
                                 <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                                 <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
                                 <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
-                                <th data-cy="delete-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
+                                <th data-cy="cancel-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,7 +31,7 @@ let CustomTableComponent = {
                                 </td>
                                 <td v-if="canDelete"> 
                                     <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" v-if="!(rowToEditIndex==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
-                                    <button class="table-button btn btn-danger" @click="cancelRowEdit(index)" v-if="(rowToEditIndex==index)"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <button class="table-button btn btn-danger" data-cy="cancel-button" @click="cancelRowEdit(index)" v-if="(rowToEditIndex==index)"><span class="glyphicon glyphicon-remove"></span></button>
                                 </td>
                             </tr>
                         </tbody>
