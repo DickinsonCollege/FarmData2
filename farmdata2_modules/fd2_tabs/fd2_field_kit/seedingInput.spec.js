@@ -238,7 +238,7 @@ describe('Test the seeding input page', () => {
                 .should('not.be.disabled')
         })
     })
-    context.only('check area filter', () => {
+    context('check area filter', () => {
         it('only shows greenhouses when tray seeding is selected', () =>{
             cy.get('[data-cy=tray-seedings]').click()
             //tests that the beds are not in the dropdown
