@@ -28,7 +28,8 @@ let CustomTableComponent = {
                                     <button class="table-button btn btn-success" data-cy="save-button" v-if="rowToEditIndex==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
                                 </td>
                                 <td v-if="canDelete"> 
-                                    <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" v-if="!(rowToEditIndex==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="table-button btn btn-danger" @click="cancelRowEdit(index)" v-if="(rowToEditIndex==index)"><span class="glyphicon glyphicon-remove"></span></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -92,10 +93,17 @@ let CustomTableComponent = {
             }
 
             this.indexesToChange = []
-
             this.editedRowData = {}
 
             this.$emit('row-edited', jsonObject, id)
+        },
+        cancelRowEdit: function(index){
+            this.rowToEditIndex = null
+            
+            this.rows[index].data = this.originalRow.data
+            
+            this.indexesToChange = []
+            this.editedRowData = {}
         },
         deleteRow: function(id){
             this.$emit('row-deleted', id)
