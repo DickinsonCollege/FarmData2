@@ -4,8 +4,10 @@ let CustomTableComponent = {
                         <thead>
                             <tr class="sticky-header table-text">
                                 <th v-if="isVisible[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
-                                <th data-cy="edit-header" width=55 v-if="canEdit">Edit</th>
-                                <th data-cy="delete-header" width=55 v-if="canDelete">Delete</th>
+                                <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
+                                <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
+                                <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
+                                <th data-cy="delete-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,13 +68,14 @@ let CustomTableComponent = {
             rowToEditIndex: null,
             indexesToChange: [],
             editedRowData: {},
-            originalRow: {}
-
+            originalRow: {},
+            currentlyEditing: false,
         }
     },
     methods: {
         editRow: function(index){
             this.rowToEditIndex = index
+            this.currentlyEditing = true
             this.originalRow = JSON.parse(JSON.stringify({ 
                 'id': this.rows[index].id,
                 'data': this.rows[index].data
@@ -85,6 +88,7 @@ let CustomTableComponent = {
         },
         finishRowEdit: function(id){
             this.rowToEditIndex = null
+            this.currentlyEditing = false
             
             let jsonObject = {}
             for(i=0; i < this.indexesToChange.length; i ++){
@@ -99,6 +103,7 @@ let CustomTableComponent = {
         },
         cancelRowEdit: function(index){
             this.rowToEditIndex = null
+            this.currentlyEditing = false
             
             this.rows[index].data = this.originalRow.data
             
