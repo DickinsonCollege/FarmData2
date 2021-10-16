@@ -6,12 +6,12 @@ var deleteRecord = FarmOSAPI.deleteRecord
 
 describe('Testing for the seeding report page', () => {
     beforeEach(() => {
-        cy.login('manager1', 'farmdata2')
+        cy.login('manager1', 'farmdata2', {timeout: 60000})
     })
 
     context('can set dates and then render the report', () => {
         it('visits the page and logs in', () => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
         })
 
         it('allows user input of the start and end dates', () => {
@@ -58,7 +58,7 @@ describe('Testing for the seeding report page', () => {
     })
     context('can see spinner at appropriate times', () => {
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
 
         })
 
@@ -94,7 +94,7 @@ describe('Testing for the seeding report page', () => {
 
         context('can see No Logs message at appropriate times', () => {
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
 
         })
 
@@ -126,22 +126,19 @@ describe('Testing for the seeding report page', () => {
     })
     context('can see summary tables at appropriate times', () => {
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
-
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
+            cy.get('[data-cy=start-date-select]').type('2019-01-01')
+            cy.get('[data-cy=end-date-select]').type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]').click()
 
         })
         it('does not immediately display summary tables', () => {
-            cy.get('[data-cy=start-date-select]')
-                .type('2019-01-01')
-            cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
-            cy.get('[data-cy=generate-rpt-btn]').click()
-                cy.get('[data-cy=tray-summary]').should('not.exist')
-                cy.get('[data-cy=direct-summary]').should('not.exist')
+            cy.get('[data-cy=tray-summary]').should('not.exist')
+            cy.get('[data-cy=direct-summary]').should('not.exist')
         })
         it('shows summary tables after table is fully loaded', () => {
 
-            cy.get('[data-cy=report-table]', { timeout: 30000 }).find('tr').its('length').then(length =>{
+            cy.get('[data-cy=report-table]', { timeout: 40000 }).find('tr').its('length').then(length =>{
                 expect(length).to.equal(35)
                 cy.get('[data-cy=tray-summary]',{ timeout: 30000 }).should('be.visible')
                 cy.get('[data-cy=direct-summary]').should('be.visible')
@@ -153,7 +150,7 @@ describe('Testing for the seeding report page', () => {
 
     context('shows message when only one type', () => {
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
             cy.get('[data-cy=start-date-select]')
                 .type('2020-05-01')
             cy.get('[data-cy=end-date-select]')
@@ -163,7 +160,7 @@ describe('Testing for the seeding report page', () => {
 
 
         it('show direct seeding message when only tray seeding', () => {
-            cy.get('[data-cy=dropdown-input]', {timeout: 30000}).then(($dropdowns) => {
+            cy.get('[data-cy=dropdown-input]', {timeout: 40000}).then(($dropdowns) => {
                 cy.get($dropdowns[1]).should('exist')
                     .select('ENDIVE')
                     .should('have.value', 'ENDIVE')
@@ -172,7 +169,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('show tray seeding message when only direct seeding', () => {
-            cy.get('[data-cy=dropdown-input]', {timeout: 30000}).then(($dropdowns) => {
+            cy.get('[data-cy=dropdown-input]', {timeout: 40000}).then(($dropdowns) => {
                 cy.get($dropdowns[1]).should('exist')
                     .select('CORN-SWEET')
                     .should('have.value', 'CORN-SWEET')
@@ -197,8 +194,8 @@ describe('Testing for the seeding report page', () => {
 
     context('displays the right information in the table', () => {
         before(() => {
-            cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.login('manager1', 'farmdata2', {timeout: 60000})
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
@@ -310,8 +307,8 @@ describe('Testing for the seeding report page', () => {
         let totalHoursWorked = 0;
 
         before(() => {
-            cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.login('manager1', 'farmdata2', {timeout: 60000})
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
@@ -342,37 +339,39 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('has the correct totals for row feet', () => {
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().children()
-                .should('have.text', totalRowFeet.toString())
+
+            cy.get('[data-cy=direct-summary]').contains("Total Row Feet Planted: " + totalRowFeet.toString())
+                
+            // .children().first().next().next().children()
+            //     .should('have.text', totalRowFeet.toString())
         })
 
         it('has the correct totals for bed feet', () => {
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().children()
-                .should('have.text', totalBedFeet.toString())
+            cy.get('[data-cy=direct-summary]').contains("Total Bed Feet Planted: " + totalBedFeet.toString())
+                // .children().first().next().next().next().children()
+                // .should('have.text', totalBedFeet.toString())
         })
 
-        it('has the correct totals for bed feet', () => {
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().next().children()
-                .should('have.text', totalHoursWorked.toString())
+        it('has the correct totals for hours worked', () => {
+            cy.get('[data-cy=direct-summary]').contains("Total Hours Worked: " + totalHoursWorked.toString())
+                // .children().first().next().next().next().next().children()
+                // .should('have.text', totalHoursWorked.toString())
         })
 
         it('has the correct bed feet per hour', () => {
             let bedFeetPerHour = (Math.round((totalBedFeet/totalHoursWorked)*100))/100
 
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().next().next().children()
-                .should('have.text', bedFeetPerHour.toString())
+            cy.get('[data-cy=direct-summary]').contains("Total Bed Feet per Hour: " + bedFeetPerHour.toString())
+                // .children().first().next().next().next().next().next().children()
+                // .should('have.text', bedFeetPerHour.toString())
         })
 
         it('has the correct row feet per hour', () => {
             let rowFeetPerHour = (Math.round((totalRowFeet/totalHoursWorked)*100))/100
 
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().next().next().next().children()
-                .should('have.text', rowFeetPerHour.toString())
+            cy.get('[data-cy=direct-summary]').contains("Total Row Feet per Hour: " + rowFeetPerHour.toString())
+                // .children().first().next().next().next().next().next().next().children()
+                // .should('have.text', rowFeetPerHour.toString())
         })
     })
 
@@ -382,8 +381,8 @@ describe('Testing for the seeding report page', () => {
         let totalHoursWorked = 0
 
         before(() => {
-            cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.login('manager1', 'farmdata2', {timeout: 60000})
+            cy.visit('/farm/fd2-barn-kit/seedingReport', {timeout: 60000})
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
@@ -414,36 +413,36 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('has the correct total number of seeds', () => {
-            cy.get('[data-cy=tray-summary]')
-                .children().first().next().children()
-                .should('have.text', totalSeeds.toString())
+            cy.get('[data-cy=tray-summary]').contains("Total Number of Tray Seeds Planted: " + totalSeeds.toString())
+                // .children().first().next().children()
+                // .should('have.text', totalSeeds.toString())
         })
 
         it('has the correct total number of trays', () => {
-            cy.get('[data-cy=tray-summary]')
-                .children().first().next().next().children()
-                .should('have.text', totalTrays.toString())
+            cy.get('[data-cy=tray-summary]').contains("Total Number of Trays: " + totalTrays.toString())
+                // .children().first().next().next().children()
+                // .should('have.text', totalTrays.toString())
         })
 
         it('has the correct total number of hours worked', () => {
             totalHoursWorked = Math.round((totalHoursWorked)*100)/100
 
-            cy.get('[data-cy=tray-summary]')
-                .children().first().next().next().next().children()
-                .should('have.text', totalHoursWorked.toString())
+            cy.get('[data-cy=tray-summary]').contains("Total Hours Worked: " + totalHoursWorked.toString())
+                // .children().first().next().next().next().children()
+                // .should('have.text', totalHoursWorked.toString())
         })
 
         it('has the correct average seeds planted per hour', () => {
             let avgSeedsPerHour = Math.round((totalSeeds/totalHoursWorked)*100)/100
 
-            cy.get('[data-cy=tray-summary]', {timeout: 10000})
-                .children().first().next().next().next().next().children()
-                .should('have.text', avgSeedsPerHour.toString())
+            cy.get('[data-cy=tray-summary]', {timeout: 10000}).contains("Average Seeds Planted per Hour: " + avgSeedsPerHour.toString())
+                // .children().first().next().next().next().next().children()
+                // .should('have.text', avgSeedsPerHour.toString())
         })
     })
 
     context('changing the type of seeding changes the visible columns', () => {
-        before(() => {
+        beforeEach(() => {
             cy.login('manager1', 'farmdata2')
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
