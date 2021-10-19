@@ -2,7 +2,7 @@
     <div id='cacheSpike'>
         <h1>sup</h1>
         <input data-cy='text-input' type=text v-model='newCache'>
-        <button>Save To Cache</button>
+        <button data-cy='text-button' @click='saveToCache'>Save To Cache</button>
         <button @click='cacheArray'>Put Array in Cache</button>
     </div>
     <script>
@@ -17,8 +17,6 @@
                 cacheArray(){
                     localStorage.setItem('myArray', JSON.stringify(this.testArray))
                 },
-            },
-            computed:{
                 saveToCache(){
                     localStorage.setItem('myKey', this.newCache)
                 },

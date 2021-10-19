@@ -9,9 +9,12 @@ describe('testing the cache spike page', () => {
             .should('exist')
             .type('Saving to Cache')
             .should('have.value', 'Saving to Cache')
+
+        cy.get('[data-cy=text-button')
+            .should('exist')
+            .click()
             
         cy.reload()
-        cy.wait(1000)
 
         cy.get('[data-cy=text-input]')
             .should('have.value', 'Saving to Cache')
