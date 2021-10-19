@@ -238,8 +238,6 @@ describe('Test the seeding input page', () => {
                 .should('not.be.disabled')
         })
     })
-<<<<<<< HEAD
-=======
     context('check area filter', () => {
         it('only shows greenhouses when tray seeding is selected', () =>{
             cy.get('[data-cy=tray-seedings]').click()
@@ -267,7 +265,6 @@ describe('Test the seeding input page', () => {
             })
         })
     })
->>>>>>> main
     context('create logs in database', () => {
         let seedingLog = []
         let plantingLog = []
