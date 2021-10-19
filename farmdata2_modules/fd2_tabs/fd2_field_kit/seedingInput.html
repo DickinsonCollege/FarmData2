@@ -9,7 +9,7 @@
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaArray' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
@@ -62,6 +62,7 @@
                 selectedDate: dayjs().format('YYYY-MM-DD').toString(),
                 selectedCrop: null,
                 selectedArea: null,
+                savedArea: null,
                 selectedSeedingType: '',
                 selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
@@ -74,7 +75,7 @@
                 numRowBed: 0,
                 numFeet: 0,
                 cropArray: [],
-                areaArray: [],
+                areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
                 feetUnits: ['row', 'bed'],
                 cropToIDMap: new Map(),
@@ -92,6 +93,7 @@
                 },
                 setNewArea(newArea){
                     this.selectedArea = newArea
+                    this.savedArea = newArea
                 },
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
@@ -102,11 +104,8 @@
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
-                        console.log(response.data.id)
                     }).then(() => {
                         createRecord('/log', this.logData, this.sessionToken).then((response) => {
-                            console.log(response.timestamp)
-                            console.log(response.data)
                         })
                     })
                     if(confirm("You have saved a log! Would you like to go the seeding report page?")){
@@ -115,6 +114,33 @@
                 }
             },
             computed: {
+                areaFilter(){
+                    let areaArray = []
+                    if(this.selectedSeedingType == 'Tray Seedings'){
+                        let trayAreaOnly = this.areaResponse.filter((x) => x.area_type === 'greenhouse')
+                        areaArray = trayAreaOnly.map((h) => h.name)
+                        if(!areaArray.includes(this.selectedArea)){
+                            this.selectedArea = null
+                        }
+                        if(areaArray.includes(this.savedArea)){
+                            this.selectedArea = this.savedArea
+                        }
+                    }
+                    else if(this.selectedSeedingType == 'Direct Seedings'){
+                        let directAreaOnly = this.areaResponse.filter((x) => x.area_type === 'field' || x.area_type === 'bed')
+                        areaArray = directAreaOnly.map((h) => h.name)
+                        if(!areaArray.includes(this.selectedArea)){
+                            this.selectedArea = null
+                        }
+                        if(areaArray.includes(this.savedArea)){
+                            this.selectedArea = this.savedArea
+                        }
+                    }
+                    else{
+                        areaArray = this.areaResponse.map((h) => h.name)
+                    }
+                    return areaArray
+                },
                 formNotCompleted(){
                     if(this.selectedCrop == null){
                         return true
@@ -212,7 +238,6 @@
                     let feet = this.numFeet
                     if(this.selectedTimeUnit == 'minutes'){
                         time = (Math.round((time / 60)*100))/100
-                        console.log(time)
                     }
                     if(this.selectedFeetUnit == 'bed'){
                         feet = feet * this.numRowBed
@@ -327,15 +352,13 @@
                     })
                 }
                 if(localStorage.getItem('areas') == null){
-                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
-                        this.areaArray = this.areaArray.map((h) => h.name)
-                        localStorage.setItem('areas', JSON.stringify(this.areaArray))
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
+                        localStorage.setItem('areas', JSON.stringify(this.areaResponse))
                     })
                 }else{
-                    this.areaArray = JSON.parse(localStorage.getItem('areas'))
-                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaArray).then(() => {
-                        this.areaArray = this.areaArray.map((h) => h.name)
-                        localStorage.setItem('areas', JSON.stringify(this.areaArray))
+                    this.areaResponse = JSON.parse(localStorage.getItem('areas'))
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
+                        localStorage.setItem('areas', JSON.stringify(this.areaResponse))
                     })
                 }
                 getSessionToken().then((response) => {
