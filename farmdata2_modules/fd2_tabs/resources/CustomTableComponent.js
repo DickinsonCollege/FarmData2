@@ -111,7 +111,10 @@ let CustomTableComponent = {
             this.editedRowData = {}
         },
         deleteRow: function(id){
-            this.$emit('row-deleted', id)
+            if(confirm("Would you like ot delete this log?")){
+                this.$emit('row-deleted', id)
+            }
+            
         },
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){
