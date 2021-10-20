@@ -17,6 +17,13 @@ describe('Test the seeding input page', () => {
                 cy.get($dropdowns[1]).contains('A', {timeout: 130000})
         })
     })
+    context('test that data gets cached', () => {
+        it.only('test crop gets cached', () => {
+            cy.reload()
+
+            
+        })
+    })
     context('test inputs and buttons', () => {
         it('button is disabled', () => {
             cy.get('[data-cy=submit-button]')
