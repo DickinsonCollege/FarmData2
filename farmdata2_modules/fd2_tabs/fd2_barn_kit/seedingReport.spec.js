@@ -802,6 +802,32 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=dropdown-input]').first()
                 .should('be.disabled')
         })
+
+        it('filters are no longer diabled when cancel button is clicked', () => {
+            cy.get('[data-cy=edit-button]', {timeout: 10000}).last()
+                .click()
+
+            cy.get('[data-cy=cancel-button]', {timeout: 10000})
+                .first()
+                .should('exist')
+                .click()
+            
+            cy.get('[data-cy=dropdown-input]').first()
+                .should('not.be.disabled')
+        })
+
+        it.only('filters are no longer diabled when save button is clicked', () => {
+            cy.get('[data-cy=edit-button]', {timeout: 10000}).last()
+                .click()
+
+            cy.get('[data-cy=save-button]', {timeout: 10000})
+                .first()
+                .should('exist')
+                .click()
+            
+            cy.get('[data-cy=dropdown-input]').first()
+                .should('not.be.disabled')
+        })
     })
 
     context('edit and delete buttons work', () => {
