@@ -98,7 +98,10 @@ let CustomTableComponent = {
             this.$emit('row-edited', jsonObject, id)
         },
         deleteRow: function(id){
-            this.$emit('row-deleted', id)
+            if(confirm("Would you like ot delete this log?")){
+                this.$emit('row-deleted', id)
+            }
+            
         },
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){
