@@ -265,6 +265,19 @@ describe('custom table component', () => {
             cy.get('[data-cy=cancel-header')
                 .should('exist')
         })
+        it('cancel button emits an event', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('row-canceled', spy)
+            cy.get('[data-cy=edit-button')
+                .first().click()
+
+            cy.get('[data-cy=cancel-button]')
+                .should('exist')
+                .click()
+                .then(() => {
+                    expect(spy).to.be.calledWith()
+                })
+        })
     })
 
     context('with invisible columns', () => {

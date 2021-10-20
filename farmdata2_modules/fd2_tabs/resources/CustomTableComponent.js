@@ -109,6 +109,8 @@ let CustomTableComponent = {
             
             this.indexesToChange = []
             this.editedRowData = {}
+
+            this.$emit('row-canceled')
         },
         deleteRow: function(id){
             if(confirm("Would you like ot delete this log?")){
