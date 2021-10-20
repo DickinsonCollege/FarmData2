@@ -11,7 +11,7 @@ Contributors retain the copyright to their intellectual property.
 
 #### Contributions ####
 
-All contributions to FarmData2 will be licensed as a [Free Cultural Work] using the applicable license agreements as described below. Thus, before any contribution will be accepted __the contributor must certify that they have the right to license the contributed intellectual property__ under the applicable license agreement. This is done explicitly when when a contributor completes the [Developer Certificate of Origin] when opening a Pull Request, or implicitly when posting content to any public forums of the project (for example, but not limited to, issue trackers, message boards or discussion areas).
+All contributions to FarmData2 will be licensed as a [Free Cultural Work] using the applicable license agreements as described below. Thus, before any contribution will be accepted __the contributor must certify that they have the right to license the contributed intellectual property__ under the applicable license agreement. This is done explicitly when when a contributor acknowledges the [Developer Certificate of Origin] when opening a Pull Request, or implicitly when posting content to any public forums of the project (for example, but not limited to, issue trackers, message boards or discussion areas).
 
 [Developer Certificate of Origin]: https://developercertificate.org/
 
