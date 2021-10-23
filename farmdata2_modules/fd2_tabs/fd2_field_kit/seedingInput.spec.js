@@ -18,9 +18,13 @@ describe('Test the seeding input page', () => {
         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[1]).contains('A', {timeout: 130000})
         })
+
+        cy.wait(30000)
     })
     afterEach(() => {
         cy.saveLocalStorage()
+
+        cy.wait(10000)
     })
     context('test inputs and buttons', () => {
         it('button is disabled', () => {
