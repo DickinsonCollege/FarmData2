@@ -49,7 +49,7 @@ If you are are a user of FarmData2 and have a new feature you would like to see 
 The project [Issue Tracker] contains tickets describing known issues with the project.  The tickets for known issues are tagged with the label "bug".  Each reported bug will have a detailed description of how the bug can be observed. Gardening includes activities such as:
 
   * Verifying or clarifying these descriptions.
-  * Enhance the report by providing additional information about the bug (e.g. platforms on which is is or is not seen).
+  * Enhance the report by providing additional information about the bug (e.g. platforms on which it is or is not seen).
   * Confirming that bug does (or does not) exist in the current version.
 
 To participate by Gardening visit the [Issue Tracker] and find something of interest to verify, enhance or clarify.  Try it out in your running version of FarmData2 and add a comment to the ticket with what you find.
