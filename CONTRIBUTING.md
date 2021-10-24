@@ -81,11 +81,11 @@ As a reference, the basic steps for working with GitHub Flow are as follows:
   * Go to the [FarmData2 Repository] (the _upstream_)
   * Fork the _upstream_ repository to your GitHub (the _origin_).
   * [Clone] the _origin_ repository to your local machine.
-  * Set the  _upstream_ remote for your local repository to point to the _upstream_ repository.
+  * https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/configuring-a-remote-for-a-fork for your local repository to point to the _upstream_ repository.
   * Create a _feature branch_ from the _main_ branch your local machine.
   * Make the edits to the documentation or the code in your _feature branch_.
   * Commit your edits.
-    * If the contribution reflects the work of multiple people, ensure that everyone receives attribution by [Creating a commit with multiple authors].
+   * If the contribution reflects the work of multiple people, ensure that everyone receives attribution by [Creating a commit with multiple authors].
   * Pull the most recent _upstream_ version of the _main branch_.
   * Merge the updated _main branch_ into your _feature branch_.
   * Push your _feature branch_ to the _origin_.
