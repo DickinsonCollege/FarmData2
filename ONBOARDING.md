@@ -32,7 +32,7 @@ The following resources can be useful for learning what you'll need to know abou
     - [GitFlow Intro](https://guides.github.com/introduction/flow/): An introduction to an effective way of using GitHub (i.e. a _workflow_).  The followign two guides walk through how to work with existing open source projects and essentially follow GitFlow:
       - [Step-by-step guide to contributing on GitHub](https://www.dataschool.io/how-to-contribute-on-github/)
       - [7 Steps to Get Started with Git](https://www.fosslife.org/7-steps-get-started-git).
-    - [Git Immersion](https://gitimmersion.com/): A tutorial walks through a series of short hands-on exercises that provide practice with the key features of git.
+    - [Git Immersion](https://gitimmersion.com/): A tutorial that walks through a series of short hands-on exercises that provide practice with the key features of git.
     - [Pro Git Book](http://git-scm.com/book/en/v2) | [Learn Git Tutorial](https://www.tutorialspoint.com/git/index.htm): More detailed and comprehensive coverage of git's features and use.
 
 ## Quickest Start ##
