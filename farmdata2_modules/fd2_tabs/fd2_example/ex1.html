@@ -76,8 +76,8 @@ new Vue({
         areaList: [],
         cropList: [],
         //stored inputs selected by users in the components
-        selectedArea: null
-        selectedCrop: null
+        selectedArea: null,
+        selectedCrop: null,
         selectedDate: null,
         startDate: null,
         endDate: null,
@@ -102,8 +102,6 @@ new Vue({
             {'type': 'number'},
             {'type': 'text'}
         ],
-        //???
-        testArea: [],
         //data for creating a log
         testquantity: [{
                 "measure": "length", 
@@ -222,7 +220,6 @@ new Vue({
             this.areaList = response.data.list.map(
                 function(f) { return f.name }
             );
-            this.testArea = response
             this.areaList.sort();
         })
         .catch(error => {
