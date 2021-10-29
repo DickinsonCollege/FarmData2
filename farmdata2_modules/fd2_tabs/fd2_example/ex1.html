@@ -51,7 +51,7 @@
     <br>
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
-    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray" :input-options="inputTypesArray"></custom-table>
+    <custom-table data-cy="test-table":headers="tableHeadersArray" :rows="tableDataArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTableDataArray" @row-edited="updateTableDataArray" :input-options="inputTypesArray"></custom-table>
 </div>
 
 <script>
@@ -86,8 +86,8 @@ new Vue({
         userID: fd2UserID,
         userName: fd2UserName,
         //data used in the table component
-        testArray: ['cool', 'works?', 'num', 'hello'],
-        testObjectArray: [
+        tableHeadersArray: ['cool', 'works?', 'num', 'hello'],
+        tableDataArray: [
             {id: 10, 
             data: ['2020-09-20', 3, 5, '<p>firstline</p><br><p>secondline</p>']},
             {id: 11,
@@ -103,7 +103,7 @@ new Vue({
             {'type': 'text'}
         ],
         //data for creating a log
-        testquantity: [{
+        logQuantity: [{
                 "measure": "length", 
                 "value": 5,
                 "unit": {
@@ -150,7 +150,7 @@ new Vue({
         areaChange(newArea) {
             this.selectedArea = newArea;
         },
-        updateTestObjectArray(jsonObject, id){
+        updateTableDataArray(jsonObject, id){
             let keys = Object.keys(jsonObject)
             for(i=0; i < keys.length; i++){
                 if(keys[i] = 'cool'){
@@ -164,12 +164,12 @@ new Vue({
                     jsonObject['date'] = jsonObject['hello']
                 }
             }
-            //this.testObjectArray = Object.assign({}, jsonObject)
+            //this.tableDataArray = Object.assign({}, jsonObject)
         },
-        deleteFromTestObjectArray(deletedObjectID){
-            for(var i=0; i < this.testObjectArray.length; i++){
-                if(this.testObjectArray[i].id === deletedObjectID){
-                    this.testObjectArray.splice(i, 1)
+        deleteFromTableDataArray(deletedObjectID){
+            for(var i=0; i < this.tableDataArray.length; i++){
+                if(this.tableDataArray[i].id === deletedObjectID){
+                    this.tableDataArray.splice(i, 1)
                 }
             }
         },
@@ -241,7 +241,7 @@ new Vue({
         getIDToLogTypeMap().then((response) => {
             console.log(response)
         })
-        console.log(quantityLocation(this.testquantity, 'Labor'))
+        console.log(quantityLocation(this.logQuantity, 'Labor'))
     },
 })
 //Allows Vue to be accessed in Dev Tools
