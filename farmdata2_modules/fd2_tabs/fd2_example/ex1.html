@@ -52,8 +52,6 @@
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
     <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray" :input-options="inputTypesArray"></custom-table>
-
-    <button @click="getCropMap">Get Crop Map</button>
 </div>
 
 <script>
@@ -235,20 +233,6 @@ new Vue({
                         })
                 })
         },
-        getCropMap(){
-            getCropToIDMap().then((response) => {
-                this.testCropMap = response
-                console.log(this.testCropMap)
-            })
-            getAreaToIDMap().then((response) => {
-                console.log(response)
-            })
-            getIDToUserMap().then((response) => {
-                console.log(response)
-            })
-            //this.testCropMap = cropMap()
-            
-        }
     },
     computed: {
         validID: function () {
