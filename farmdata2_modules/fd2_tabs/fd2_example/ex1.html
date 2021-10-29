@@ -59,6 +59,7 @@
 // el: must match the id of the <div> for the app above.
 // Note: The JS variables fd2UserID and fd2UserName are defined in fd2_example.module
 new Vue({
+    //identifer for the Vue instance, must be equal to the id in the main div above
     el: '#ex1',
     components: {
         // Register the components that are being used.
@@ -68,18 +69,23 @@ new Vue({
         'dropdown-with-all': DropdownWithAllComponent
     },
     data: {
+        //varaibles used in v-bind examples
 	    comment: null,
         farm: null,
-        selectedArea: null,
+        //area and crop lists obtained from api calles
         areaList: [],
-        selectedCrop: null,
         cropList: [],
+        //stored inputs selected by users in the components
+        selectedArea: null
+        selectedCrop: null
         selectedDate: null,
         startDate: null,
         endDate: null,
+        //???
         deleteID: null,
         userID: fd2UserID,
         userName: fd2UserName,
+        //data used in the table component
         testArray: ['cool', 'works?', 'num', 'hello'],
         testObjectArray: [
             {id: 10, 
@@ -89,8 +95,6 @@ new Vue({
             {id: 12,
             data: ['2022-09-20', 12, 4, 'answome12'],},
         ],
-        testCropMap: new Map,
-        testArea: [],
         visibleColumnsArray : [true, true, true, true],
         inputTypesArray: [
             {'type': 'date'},
@@ -98,6 +102,9 @@ new Vue({
             {'type': 'number'},
             {'type': 'text'}
         ],
+        //???
+        testArea: [],
+        //data for creating a log
         testquantity: [{
                 "measure": "length", 
                 "value": 5,
