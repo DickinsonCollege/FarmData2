@@ -24,7 +24,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' can-edit can-delete></custom-table>
+                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
             </div>
@@ -285,7 +285,10 @@
                 },
                 disableFilters() {
                     this.rowBeingEdited = true
-                }
+                },
+                enableFilters(){
+                    this.rowBeingEdited = false
+                },
             },
             computed: {
                 /**
