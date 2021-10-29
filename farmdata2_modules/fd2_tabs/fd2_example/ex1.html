@@ -31,14 +31,22 @@
     <p>Chosen End Date: <span data-cy="end-date">{{endDate}}</span></p>
 
     <br>
+    <!--Example of fielset being used to design a page-->
+    <fieldset class="panel panel-default" style="max-width: 500px;">
+        <!--Lengend is used to create a header in the fieldset-->
+        <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Dropdowns</legend>
+        <!-- the dropdown-with-all component is defined in ../resources/DropdownWithAllComponent.js -->
 
-    <!-- the dropdown-with-all component is defined in ../resources/DropdownWithAllComponent.js -->
-    <dropdown-with-all data-cy="area-dropdown" includes-all @selection-changed='areaChange' :dropdown-list=areaList></dropdown-with-all>
-    <p>Chosen Area: <span data-cy="selected-area">{{selectedArea}}</span></p>
-    
-    <br>
-    <dropdown-with-all data-cy="crop-dropdown" includes-all default-input="All" @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
-    <p>Chosen Area: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
+        <!--Example were no defualt is choosen-->
+        <dropdown-with-all data-cy="area-dropdown" includes-all @selection-changed='areaChange' :dropdown-list=areaList></dropdown-with-all>
+        <p>Chosen Area: <span data-cy="selected-area">{{selectedArea}}</span></p>
+        
+        <br>
+
+        <!--Example of centering components and having a dualt value-->
+        <dropdown-with-all data-cy="crop-dropdown" style="text-align:center;" includes-all default-input="All" @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
+        <p style="text-align:center;">Chosen Area: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
+    </fieldset>
 
     <br>
 
