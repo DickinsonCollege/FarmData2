@@ -142,37 +142,6 @@ new Vue({
                 "label": "Workers"
             }]
     },
-    created() {
-        axios
-        .get('/taxonomy_term.json?bundle=farm_areas')
-        .then(response => {
-            this.areaList = response.data.list.map(
-                function(f) { return f.name }
-            );
-            this.testArea = response
-            this.areaList.sort();
-        })
-        .catch(error => {
-            this.areaList = [ 'Server error' ]
-            console.log(error)
-        })
-        
-        axios.get('/farm_asset.json?type=planting')
-        .then(response => {
-            this.cropList = response.data.list.map(f => f.name).sort();
-        })
-        .catch(error => {
-        this.cropList = [ 'Server error' ]
-            console.log(error)
-        })
-        getUserToIDMap().then((response) => {
-            console.log(response)
-        })
-        getIDToLogTypeMap().then((response) => {
-            console.log(response)
-        })
-        console.log(quantityLocation(this.testquantity, 'Labor'))
-    },
     methods: {
         getFarmName() {
             axios
@@ -245,7 +214,38 @@ new Vue({
         validID: function () {
             return Number.isInteger(parseInt(this.deleteID))
         }
-    }
+    },
+    created() {
+        axios
+        .get('/taxonomy_term.json?bundle=farm_areas')
+        .then(response => {
+            this.areaList = response.data.list.map(
+                function(f) { return f.name }
+            );
+            this.testArea = response
+            this.areaList.sort();
+        })
+        .catch(error => {
+            this.areaList = [ 'Server error' ]
+            console.log(error)
+        })
+        
+        axios.get('/farm_asset.json?type=planting')
+        .then(response => {
+            this.cropList = response.data.list.map(f => f.name).sort();
+        })
+        .catch(error => {
+        this.cropList = [ 'Server error' ]
+            console.log(error)
+        })
+        getUserToIDMap().then((response) => {
+            console.log(response)
+        })
+        getIDToLogTypeMap().then((response) => {
+            console.log(response)
+        })
+        console.log(quantityLocation(this.testquantity, 'Labor'))
+    },
 })
 //Allows Vue to be accessed in Dev Tools
 Vue.config.devtools = true;
