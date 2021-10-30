@@ -241,39 +241,57 @@ new Vue({
             this.endDate = endDate;
         },
     },
+    /**
+     * Computed functions are continously calculate while the page is open
+     */
     computed: {
+        /**
+         * Example of a computed function
+         * Checks to see if the variable deleteID is in fact an integer
+         * returns true it is and false if it is not an innteger
+         */
         validID: function () {
             return Number.isInteger(parseInt(this.deleteID))
         }
     },
+    /**
+     * Everthing done in the created function is executed when the page loads/is created
+     */
     created() {
-        axios
-        .get('/taxonomy_term.json?bundle=farm_areas')
-        .then(response => {
-            this.areaList = response.data.list.map(
-                function(f) { return f.name }
-            );
-            this.areaList.sort();
-        })
-        .catch(error => {
-            this.areaList = [ 'Server error' ]
-            console.log(error)
-        })
-        
-        axios.get('/farm_asset.json?type=planting')
-        .then(response => {
-            this.cropList = response.data.list.map(f => f.name).sort();
-        })
-        .catch(error => {
-        this.cropList = [ 'Server error' ]
-            console.log(error)
-        })
+        /**
+         * Example of using an api call to get the list of all possible crops
+         * This format can be used on most any api call, although this method will only return the first hundred untries. This is because it only return the first page, which has one hundred entries
+         */
+        axios.get('/taxonomy_term.json?bundle=farm_crops')
+            .then(response => {
+                this.cropList = response.data.list.map(f => f.name).sort();
+            })
+            .catch(error => {
+            this.cropList = [ 'Server error' ]
+                console.log(error)
+            })
+        /**
+         * Example of using getAllPages function found in ../resources/FarmOSAPI.js
+         * A simular format can be used for other api links
+         * This function will get more then the first hundred entries
+         */
+        let fullResponse = []
+        getAllPages('/taxonomy_term.json?bundle=farm_areas', fullResponse)
+            .then(() => {
+                this.areaList = fullResponse.map(f=> f.name).sort();
+            })
+        /**
+         * Examples of using  get--To--Map functions found in ../resources/FarmOSAPI.js
+         */
         getUserToIDMap().then((response) => {
             console.log(response)
         })
         getIDToLogTypeMap().then((response) => {
             console.log(response)
         })
+        /**
+         * Exampleof using quantityLocation function found in ../resources/FarmOSAPI.js
+         */
         console.log(quantityLocation(this.logQuantity, 'Labor'))
     },
 })
