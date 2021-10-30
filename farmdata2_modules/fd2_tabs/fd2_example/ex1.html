@@ -103,7 +103,7 @@ new Vue({
             {'type': 'number'},
             {'type': 'text'}
         ],
-        //data for creating a log
+        //data for quantityLocation function example 
         logQuantity: [{
                 "measure": "length", 
                 "value": 5,
@@ -290,7 +290,7 @@ new Vue({
             console.log(response)
         })
         /**
-         * Exampleof using quantityLocation function found in ../resources/FarmOSAPI.js
+         * Example of using quantityLocation function found in ../resources/FarmOSAPI.js
          */
         console.log(quantityLocation(this.logQuantity, 'Labor'))
     },
