@@ -72,9 +72,10 @@ new Vue({
         //varaibles used in v-bind examples
 	    comment: null,
         farm: null,
-        //area and crop lists obtained from api calles
+        //data recieved from api calles in the created function
         areaList: [],
         cropList: [],
+        sessionToken: null,
         //stored inputs selected by users in the components
         selectedArea: null,
         selectedCrop: null,
@@ -258,6 +259,14 @@ new Vue({
      * Everthing done in the created function is executed when the page loads/is created
      */
     created() {
+        /**
+         * Need to retrive the session token when logged in and
+         * use that in any requests that modify the database 
+         * (i.e. PUT, POST, DELETE).
+         */
+        getSessionToken().then((response) => {
+            this.sessionToken = response
+        })
         /**
          * Example of using an api call to get the list of all possible crops
          * This format can be used on most any api call, although this method will only return the first hundred untries. This is because it only return the first page, which has one hundred entries
