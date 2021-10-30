@@ -8,10 +8,12 @@ catch(err) {
 
 let DateRangeSelectionComponent = {
     template: `<div>
-                <date-selection data-cy="start-date-select" :defaultDate="defaultStartDate" :latestDate="latestStartDate" @date-changed="startDateChange">
+                <date-selection data-cy="start-date-select" :defaultDate="defaultStartDate" :latestDate="latestStartDate" @date-changed="startDateChange" 
+                @hide="hide">
                     Start Date:
                 </date-selection>
-                <date-selection data-cy="end-date-select" :defaultDate="defaultEndDate" :earliestDate="earliestEndDate" @date-changed="endDateChange">
+                <date-selection data-cy="end-date-select" :defaultDate="defaultEndDate" :earliestDate="earliestEndDate" @date-changed="endDateChange"
+                @hide="hide">
                     End Date:
                 </date-selection>
             </div>
@@ -36,6 +38,9 @@ let DateRangeSelectionComponent = {
         }
     },
     methods: {
+        hide(){
+            this.$emit('hide')
+        },
         startDateChange(selectedDate){
             this.earliestEndDate = selectedDate
             this.$emit('start-date-changed', selectedDate)

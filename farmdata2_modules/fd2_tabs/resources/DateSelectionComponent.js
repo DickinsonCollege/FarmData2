@@ -1,7 +1,7 @@
 let DateSelectionComponent = {
     template: `<div>
             <slot></slot>
-            <input data-cy="date-select" type="date" :min="earliestDate" :max="latestDate" id="date" v-model="selectedDate" @focusout="checkBounds">
+            <input data-cy="date-select" type="date" :min="earliestDate" :max="latestDate" id="date" v-model="selectedDate" @click="hide" @focusout="checkBounds">
             </div>`,
     props: {
         defaultDate: {
@@ -21,6 +21,9 @@ let DateSelectionComponent = {
         } 
     },
     methods: {
+        hide(){
+            this.$emit('hide')
+        },
         checkBounds() {
             if (this.selectedDate > this.latestDate) {
                 this.selectedDate = this.latestDate;
