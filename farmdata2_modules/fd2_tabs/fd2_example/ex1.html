@@ -142,15 +142,20 @@ new Vue({
             }]
     },
     methods: {
+        /**
+         * Does a api request to get the name of the farm
+         * stores the name of the farm in the variable farm
+         */
         getFarmName() {
             axios
             .get('/farm.json')
             .then(response => (this.farm = response.data.name))
             .catch(error => console.log(error))
         },
-        areaChange(newArea) {
-            this.selectedArea = newArea;
-        },
+        /**
+         * Example of updating a row in the table after it has been saved
+         * This will not save to the database, so if the page is reloaded the changes will not be saved
+         */
         updateTableDataArray(jsonObject, id){
             let keys = Object.keys(jsonObject)
             for(i=0; i < keys.length; i++){
@@ -165,8 +170,11 @@ new Vue({
                     jsonObject['date'] = jsonObject['hello']
                 }
             }
-            //this.tableDataArray = Object.assign({}, jsonObject)
         },
+        /**
+         * Example of deleting a log from the table
+         * In the report pages, the logs are loaded into a variable from a api call, so even if they are deleted from the database they will also need to be deleted from the table as well
+         */
         deleteFromTableDataArray(deletedObjectID){
             for(var i=0; i < this.tableDataArray.length; i++){
                 if(this.tableDataArray[i].id === deletedObjectID){
@@ -174,21 +182,10 @@ new Vue({
                 }
             }
         },
-        areaChange(selectedOption) {
-            this.selectedArea = selectedOption;
-        },
-        cropChange(selectedOption) {
-            this.selectedCrop = selectedOption;
-        },
-        dateChange(selectedDate) {
-            this.selectedDate = selectedDate;
-        },
-        startDateChange(startDate) {
-            this.startDate = startDate;
-        },
-        endDateChange(endDate) {
-            this.endDate = endDate;
-        },
+        /**
+         * Example of deleting a log from the database
+         * deletes the log with the id stored in deleteID variable that the user entered
+         */
         deleteLog() {
             // Need to retrive the session token when logged in and
             // use that in any requests that modify the database 
@@ -207,6 +204,41 @@ new Vue({
                             }
                         })
                 })
+        },
+        /**
+         * This method is run after the @selection-change event in the area dropdown
+         * When that event is emited, this method takes the payload and sets it equal to the selectedArea variable
+         */
+        areaChange(selectedOption) {
+            this.selectedArea = selectedOption;
+        },
+        /**
+         * This method is run after the @selection-change event in the crop dropdown
+         * When that event is emited, this method takes the payload and sets it equal to the selectedCrop variable
+         */
+        cropChange(selectedOption) {
+            this.selectedCrop = selectedOption;
+        },
+        /**
+         * This method is run after the @date-changed event in the date selection
+         * When that event is emited, this method takes the payload and sets it equal to the selectedDate variable
+         */
+        dateChange(selectedDate) {
+            this.selectedDate = selectedDate;
+        },
+        /**
+         * This method is run after the @start-date-changed event in the date range selection
+         * When that event is emited, this method takes the payload and sets it equal to the startDate variable
+         */
+        startDateChange(startDate) {
+            this.startDate = startDate;
+        },
+        /**
+         * This method is run after the @end-date-changed event in the date range selection
+         * When that event is emited, this method takes the payload and sets it equal to the endDate variable
+         */
+        endDateChange(endDate) {
+            this.endDate = endDate;
         },
     },
     computed: {
