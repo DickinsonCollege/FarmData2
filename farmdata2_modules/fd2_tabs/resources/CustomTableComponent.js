@@ -2,10 +2,12 @@ let CustomTableComponent = {
     template:`<div class="sticky-table">
                     <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
                         <thead>
-                            <tr class="sticky-header table-text">
+                            <tr class="sticky-header table-text" data-cy="table-headers">
                                 <th v-if="isVisible[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
-                                <th data-cy="edit-header" width=55 v-if="canEdit">Edit</th>
-                                <th data-cy="delete-header" width=55 v-if="canDelete">Delete</th>
+                                <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
+                                <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
+                                <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
+                                <th data-cy="cancel-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,7 +30,8 @@ let CustomTableComponent = {
                                     <button class="table-button btn btn-success" data-cy="save-button" v-if="rowToEditIndex==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
                                 </td>
                                 <td v-if="canDelete"> 
-                                    <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" v-if="!(rowToEditIndex==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <button class="table-button btn btn-danger" data-cy="cancel-button" @click="cancelRowEdit(index)" v-if="(rowToEditIndex==index)"><span class="glyphicon glyphicon-remove"></span></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -65,13 +68,14 @@ let CustomTableComponent = {
             rowToEditIndex: null,
             indexesToChange: [],
             editedRowData: {},
-            originalRow: {}
-
+            originalRow: {},
+            currentlyEditing: false,
         }
     },
     methods: {
         editRow: function(index){
             this.rowToEditIndex = index
+            this.currentlyEditing = true
             this.originalRow = JSON.parse(JSON.stringify({ 
                 'id': this.rows[index].id,
                 'data': this.rows[index].data
@@ -84,6 +88,7 @@ let CustomTableComponent = {
         },
         finishRowEdit: function(id){
             this.rowToEditIndex = null
+            this.currentlyEditing = false
             
             let jsonObject = {}
             for(i=0; i < this.indexesToChange.length; i ++){
@@ -92,13 +97,26 @@ let CustomTableComponent = {
             }
 
             this.indexesToChange = []
-
             this.editedRowData = {}
 
             this.$emit('row-edited', jsonObject, id)
         },
+        cancelRowEdit: function(index){
+            this.rowToEditIndex = null
+            this.currentlyEditing = false
+            
+            this.rows[index].data = this.originalRow.data
+            
+            this.indexesToChange = []
+            this.editedRowData = {}
+
+            this.$emit('row-canceled')
+        },
         deleteRow: function(id){
-            this.$emit('row-deleted', id)
+            if(confirm("Would you like ot delete this log?")){
+                this.$emit('row-deleted', id)
+            }
+            
         },
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){

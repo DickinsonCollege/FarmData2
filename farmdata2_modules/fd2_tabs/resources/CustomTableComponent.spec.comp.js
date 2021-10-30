@@ -193,6 +193,92 @@ describe('custom table component', () => {
                 })
         })
     })
+    context('Cancel button tests', () => {
+        let prop = {
+                    rows: [
+                            {id: 10, 
+                            data: [12, 3, 'answome']},
+                            {id: 11,
+                            data: [19, 3, 'and'],},
+                            {id: 12,
+                            data: [12, 12, 'answome12'],},
+                        ],
+                    headers: ['cool', 'works?', 'hello'],
+                    canEdit: true,
+                    canDelete: true
+                }
+        beforeEach(() => {
+            mount(CustomTableComponent, {
+                propsData: prop
+            })  
+        })
+        it('cancel button is there when a row is being edited', () => {
+            cy.get('[data-cy=edit-button')
+                .first().click()
+
+            cy.get('[data-cy=cancel-button]')
+                .should('exist')
+        })
+
+        it('Cancel button should undo changes made by editing', () => {
+            cy.get('[data-cy=edit-button')
+                .first().click()
+
+            cy.get('[data-cy=test-input]')
+                .first().clear().type('hey')
+            
+            cy.get('[data-cy=cancel-button]')
+                .first().click()
+
+            cy.get('[data-cy=edit-button')
+                .first().click()
+
+            cy.get('[data-cy=test-input]')
+                .first().should('have.value', 12)
+        })
+
+        it('Header change when editing', () => {
+            cy.get('[data-cy=edit-header')
+                .should('exist')
+
+            cy.get('[data-cy=delete-header')
+                .should('exist')
+
+            cy.get('[data-cy=save-header')
+                .should('not.exist')
+
+            cy.get('[data-cy=cancel-header')
+                .should('not.exist')
+
+            cy.get('[data-cy=edit-button')
+                .first().click()
+            
+            cy.get('[data-cy=edit-header')
+                .should('not.exist')
+
+            cy.get('[data-cy=delete-header')
+                .should('not.exist')
+
+            cy.get('[data-cy=save-header')
+                .should('exist')
+
+            cy.get('[data-cy=cancel-header')
+                .should('exist')
+        })
+        it('cancel button emits an event', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('row-canceled', spy)
+            cy.get('[data-cy=edit-button')
+                .first().click()
+
+            cy.get('[data-cy=cancel-button]')
+                .should('exist')
+                .click()
+                .then(() => {
+                    expect(spy).to.be.calledWith()
+                })
+        })
+    })
 
     context('with invisible columns', () => {
         let prop= {
@@ -348,4 +434,43 @@ describe('custom table component', () => {
         })
     })
 
+    context('Delete button pop up tests', () => {
+        let prop= {
+            rows: [ {id: 10, data: [12, 3, 'answome']},
+                    {id: 11, data: [19, 3, 'and'],},
+                    {id: 12, data: [12, 12, 'answome12'],}, ],
+            headers: ['cool', 'works?', 'hello'],
+            canDelete: true,
+        }
+
+        beforeEach(() => {
+            mount(CustomTableComponent, {
+                propsData: prop
+            }) 
+        })
+        it('confirms that row is delete if "OK" is clicked', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('row-deleted', spy)
+            cy.get('[data-cy=delete-button]')
+                .first().click()
+
+            cy.on("window:confirm", () => true)
+            
+            cy.wait(1000).then(() => { 
+                expect(spy).to.be.calledWith(10)
+            })
+        })
+        it('confirms that row is not deletedd if "cancel" is clicked', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('row-deleted', spy)
+            cy.get('[data-cy=delete-button]')
+                .first().click()
+
+            cy.on("window:confirm", () => false)
+            
+            cy.wait(1000).then(() => { 
+                expect(spy).to.not.be.called
+            })
+        })
+    })
 })
