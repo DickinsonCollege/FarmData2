@@ -13,6 +13,10 @@
     <p><button data-cy="get-name-button" @click='getFarmName'>Get Farm Name</button></p>
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
+    <!--Example of cacheing-->
+    <p>Text to be Cached:<input type="text" v-model='inputToBeCached'></p><button @click='saveToCache'>Cache Input</button>
+    <p>Data Retrieved from Cache: <span>{{ cachedData }} </span></p>
+
     <!-- Example of deleting a log -->
     <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
     <button data-cy="delete-button" :disabled='!validID' @click='deleteLog'>Delete</button></p>
@@ -72,6 +76,9 @@ new Vue({
         //varaibles used in v-bind examples
 	    comment: null,
         farm: null,
+        //variables used in caching example
+        inputToBeCached: null,
+        cachedData: null,
         //data recieved from api calles in the created function
         areaList: [],
         cropList: [],
@@ -152,6 +159,12 @@ new Vue({
             .get('/farm.json')
             .then(response => (this.farm = response.data.name))
             .catch(error => console.log(error))
+        },
+        /**
+         * Example of cacheing data using localStorage
+         */
+        saveToCache() {
+            localStorage.setItem('myInput', JSON.stringify(this.inputToBeCached))
         },
         /**
          * Example of updating a row in the table after it has been saved
@@ -295,6 +308,12 @@ new Vue({
          * Example of using quantityLocation function found in ../resources/FarmOSAPI.js
          */
         console.log(quantityLocation(this.logQuantity, 'Labor'))
+        /**
+         * Example of retrieving data from the cache using localStorage
+         */
+        if(localStorage.getItem('myInput') != null){
+            this.cachedData = JSON.parse(localStorage.getItem('myInput'))
+        }
     },
 })
 //Allows Vue to be accessed in Dev Tools
