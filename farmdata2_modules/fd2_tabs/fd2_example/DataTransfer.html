@@ -1,0 +1,26 @@
+<div id="dataTransfer" v-cloak> 
+    <button @click='request'>
+        RequestData</button>
+    <data-getter @sentData='update'></data-getter>
+    <p>{{value}}</p>
+</div>
+<script>
+new Vue({
+	el: '#dataTransfer',
+	data:{
+    		value : ''
+	},
+	components: {
+    		'data-getter': DataGetterComponent
+	},
+	methods: {
+    		request: function(){
+        		EventBus.$emit('giveString')
+    		},
+    		update: function(newVal){
+        		this.value = newVal
+    		}
+	}
+})
+        Vue.config.devtools = true;
+</script>
