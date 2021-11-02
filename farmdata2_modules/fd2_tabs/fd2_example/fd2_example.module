@@ -103,7 +103,7 @@ function fd2_example_preprocess_page() {
 
     // Define some useful variables in the JavaScript for page.
     global $user;
-    $cmd="var fd2UserID=".$user->uid.";const EventBus = new Vue(); var fd2UserName='".$user->name."';";
+    $cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."';";
     drupal_add_js($cmd,'inline');
   }
 };
