@@ -5,7 +5,7 @@
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
                 <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
-                @hide='hide'
+                @click='hide'
                 :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
                 <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
@@ -114,7 +114,6 @@
             },
             methods: {
                 hide(){
-                    console.log('ya clicked')
                     this.reportVisible = false
                     this.seedingLogs = []
                 },
