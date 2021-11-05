@@ -21,6 +21,10 @@
     <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
     <button data-cy="delete-button" :disabled='!validID' @click='deleteLog'>Delete</button></p>
 
+    <!--Example of Creating a log-->
+    <button data-cy="create-button" @click="createPlantingLog">Create Log</button>
+    <p>Created Log ID: <span>{{ plantingID }} </span></p>
+ 
     <!-- Exmaple of using a Vue Component -->
     <!-- Component fiels are contained in the ../resources folder. -->
     <!-- They are imported to FarmData2 pages in the modules .info file (e.g. fd2_example.info file -->
@@ -89,11 +93,14 @@ new Vue({
         selectedDate: dayjs().format('YYYY-MM-DD').toString(), //sets to today, need to add dayjs to drupal in fd2_example.module for this to work
         startDate: null,
         endDate: null,
-        //stores id of log that will be deleted
+        //stores id of logs
         deleteID: null,
+        plantingID: null,
         //stores the user data that appears at the top of the page
         userID: fd2UserID,
         userName: fd2UserName,
+        //Maps
+        cropToIDMap: new Map(),
         //data used in the table component
         tableHeadersArray: ['cool', 'works?', 'num', 'hello'],
         tableDataArray: [
@@ -212,6 +219,19 @@ new Vue({
                     }
                 })
         },
+        createPlantingLog() {
+            let planting = {
+                "name": this.selectedDate + " BEET  ALF-1",
+                "type": "planting",
+                "crop": [{
+                    "id": this.cropToIDMap.get("BEET"),
+                    "resource": "taxonomy_term"
+                }],
+            }
+            createRecord('/farm_asset', planting, this.sessionToken).then((response) => {
+                this.plantingID = response.data.id
+            })
+        },
         /**
          * This method is run after the @selection-change event in the area dropdown
          * When that event is emited, this method takes the payload and sets it equal to the selectedArea variable
@@ -300,7 +320,8 @@ new Vue({
         /**
          * Examples of using  get--To--Map functions found in ../resources/FarmOSAPI.js
          */
-        getUserToIDMap().then((response) => {
+        getCropToIDMap().then((response) => {
+            this.cropToIDMap = response
             console.log(response)
         })
         getIDToLogTypeMap().then((response) => {
