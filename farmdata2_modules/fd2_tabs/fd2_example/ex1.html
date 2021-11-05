@@ -6,7 +6,7 @@
     <p>UserName: <span data-cy="user-name">{{ userName }}</span></p>
 
     <!-- Example of a v-model binding -->
-    <p>Type comment: <input data-cy="comment-area" type='text' v-model='comment'></p>
+    <p>Type comment: <input data-cy="comment-field" type='text' v-model='comment'></p>
     <p>Comment: <span data-cy="comment">{{ comment }}</span></p>
 
     <!-- Example of event handling and api call -->
@@ -53,7 +53,7 @@
 
         <!--Example of centering components and having a dualt value-->
         <dropdown-with-all data-cy="crop-dropdown" style="text-align:center;" includes-all default-input="All" @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
-        <p style="text-align:center;">Chosen Area: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
+        <p style="text-align:center;">Chosen Crop: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
     </fieldset>
 
     <br>
