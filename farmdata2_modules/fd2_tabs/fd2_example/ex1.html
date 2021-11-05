@@ -86,7 +86,7 @@ new Vue({
         //stored inputs selected by users in the components
         selectedArea: null,
         selectedCrop: null,
-        selectedDate: null,
+        selectedDate: dayjs().format('YYYY-MM-DD').toString(), //sets to today, need to add dayjs to drupal in fd2_example.module for this to work
         startDate: null,
         endDate: null,
         //stores id of log that will be deleted
