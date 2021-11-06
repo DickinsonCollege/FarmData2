@@ -1,3 +1,10 @@
+const dayjs = require('dayjs')
+
+var FarmOSAPI = require('../resources/FarmOSAPI.js')
+var getAllPages = FarmOSAPI.getAllPages
+var deleteRecord = FarmOSAPI.deleteRecord
+var getSessionToken = FarmOSAPI.getSessionToken
+
 describe('Tests for the example sub-tab', () => {
   beforeEach(() => {
     cy.login('worker1', 'farmdata2')
@@ -41,6 +48,40 @@ describe('Tests for the example sub-tab', () => {
     cy.get('[data-cy=cached-info]')
         .should('exist')
         .should('have.text', 'caching some info ')
+  })
+
+  it('testing that delete functionality works', () => {
+
+  })
+
+  it('testing that create planting log functionality works', () => {
+    let plantingID = 0
+    let token = 0
+    cy.get('[data-cy=create-button]')
+        .should('exist')
+        .click()
+
+    cy.wait(2000)
+
+    cy.get('[data-cy=created-id]')
+        .should('exist')
+        .should('not.have.value', null)
+        .should(($id) => {
+            plantingID = $id.val()
+        })
+        .then(() => {
+            cy.wrap(getSessionToken()).as('token')
+            cy.get('@token').should(function(sessionToken){
+                token = sessionToken
+            })
+        })
+        .then(() => {
+            cy.wrap(deleteRecord('/log/' + plantingID, token)).as('deletePlantingLog')
+
+            cy.get('@deletePlantingLog').should(function(response){
+                expect(response.status).to.equal(200)
+            })
+        })
   })
   //example of using a context to break tests up into sections
   context('Tests for Components', () => {
