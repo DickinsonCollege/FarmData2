@@ -26,6 +26,22 @@ describe('Tests for the example sub-tab', () => {
     cy.get('[data-cy=farm-name]')
       .should('have.text','Sample Farm')
   })
+
+  it('caching text that was inputed works', () => {
+    cy.get('[data-cy=cache-input]')
+        .should('exist')
+        .type('caching some info')
+
+    cy.get('[data-cy=cache-button]')
+        .should('exist')
+        .click()
+
+    cy.reload()
+
+    cy.get('[data-cy=cached-info]')
+        .should('exist')
+        .should('have.text', 'caching some info ')
+  })
   //example of using a context to break tests up into sections
   context('Tests for Components', () => {
     it('Areas dropdown component is working', () => {

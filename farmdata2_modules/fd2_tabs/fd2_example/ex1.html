@@ -14,8 +14,8 @@
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
     <!--Example of cacheing-->
-    <p>Text to be Cached:<input type="text" v-model='inputToBeCached'></p><button @click='saveToCache'>Cache Input</button>
-    <p>Data Retrieved from Cache: <span>{{ cachedData }} </span></p>
+    <p>Text to be Cached:<input data-cy="cache-input" type="text" v-model='inputToBeCached'></p><button data-cy="cache-button" @click='saveToCache'>Cache Input</button>
+    <p>Data Retrieved from Cache: <span data-cy="cached-info">{{ cachedData }} </span></p>
 
     <!-- Example of deleting a log -->
     <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
@@ -315,8 +315,6 @@ new Vue({
             .then(() => {
                 this.areaList = fullResponse.map(f=> f.name).sort();
             })
-
-        
         /**
          * Examples of using  get--To--Map functions found in ../resources/FarmOSAPI.js
          */
