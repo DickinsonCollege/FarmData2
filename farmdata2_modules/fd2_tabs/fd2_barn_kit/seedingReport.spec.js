@@ -816,7 +816,7 @@ describe('Testing for the seeding report page', () => {
                 .should('not.be.disabled')
         })
 
-        it.only('filters are no longer diabled when save button is clicked', () => {
+        it('filters are no longer diabled when save button is clicked', () => {
             cy.get('[data-cy=edit-button]', {timeout: 10000}).last()
                 .click()
 
