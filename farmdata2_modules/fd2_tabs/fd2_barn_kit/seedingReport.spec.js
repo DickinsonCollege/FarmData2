@@ -816,7 +816,7 @@ describe('Testing for the seeding report page', () => {
                 .should('not.be.disabled')
         })
 
-        it.only('filters are no longer diabled when save button is clicked', () => {
+        it('filters are no longer diabled when save button is clicked', () => {
             cy.get('[data-cy=edit-button]', {timeout: 10000}).last()
                 .click()
 
@@ -968,7 +968,7 @@ describe('Testing for the seeding report page', () => {
                 .first().click()
         })
 
-        it('deletes a log from the database when the delete button is pressed', () => {
+        it.only('deletes a log from the database when the delete button is pressed', () => {
             cy.get('[data-cy=delete-button]')
                 .first().click()
 

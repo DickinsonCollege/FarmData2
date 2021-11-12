@@ -19,7 +19,7 @@
 
     <!-- Example of deleting a log -->
     <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
-    <button data-cy="delete-button" :disabled='!validID' @click='deleteLog'>Delete</button></p>
+    <button data-cy="delete-log" :disabled='!validID' @click='deleteLog'>Delete</button></p>
 
     <!--Example of Creating a log-->
     <button data-cy="create-button" @click="createPlantingLog">Create Log</button>
@@ -211,13 +211,10 @@ new Vue({
             let id = parseInt(this.deleteID)
             let url = 'http://localhost/log/' + id
             this.deleteID = null
-            return axios
-                .delete(url, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN' : this.sessionToken,
-                    }
-                })
+            console.log(this.sessionToken)
+            deleteRecord(url, this.sessionToken).then((response) => {
+                console.log(response)
+            })
         },
         createPlantingLog() {
             let planting = {
