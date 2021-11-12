@@ -38,8 +38,19 @@ describe('date selection component', () => {
             .blur()
             .should('have.value', '2021-01-01')
     })
+    
+    it('emits on click', () => {
+        const spy = cy.spy()
+        Cypress.vue.$on('click', spy)
+        cy.get('[data-cy=date-select]')
+            .click()
+                .then(() => {
+                    expect(spy).to.be.called
+                 })
+    })
 
-    it('emits date after input type date is blured', () => {
+
+    it('emits date after input type date is blurred', () => {
         const spy = cy.spy()
         Cypress.vue.$on('date-changed', spy)
         cy.get('[data-cy=date-select]')
