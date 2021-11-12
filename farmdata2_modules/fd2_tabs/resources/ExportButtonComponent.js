@@ -1,5 +1,10 @@
 let ExportButtonComponent = {
-    template: '',
+    template: `<div>
+                <button data-cy="download-btn" class="btn center-block btn-primary">
+                    <a style= "text-decoration: none; color: white;"
+                    :download="'tableDownload.csv'" :href="makeFile()">Download Tables</a>
+                </button>
+            </div>`,
     Props:{
         headers:{
             type: Array,
