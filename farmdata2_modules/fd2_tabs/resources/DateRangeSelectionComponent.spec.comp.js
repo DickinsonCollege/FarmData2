@@ -49,6 +49,16 @@ describe('date range selection component', () => {
                  })
     })
 
+    it('emits on click', () => {
+        const spy = cy.spy()
+        Cypress.vue.$on('click', spy)
+        cy.get('[data-cy=start-date-select]')
+            .children().click()
+                .then(() => {
+                    expect(spy).to.be.called
+                 })
+    })
+
     it('emits the new slected end date', () => {
         const spy = cy.spy()
         Cypress.vue.$on('end-date-changed', spy)
