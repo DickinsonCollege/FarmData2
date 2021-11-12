@@ -14,4 +14,18 @@ let ExportButtonComponent = {
             default: null,
         }
     },
+    computed:{
+        isVisible() {
+            let updatedVis = []
+            if (this.visibleColumns == null) {
+                for (i = 0; i < this.headers.length; i++) {
+                    updatedVis.push(true);
+                }
+            }
+            else {
+                updatedVis = this.visibleColumns
+            }
+            return updatedVis;
+        },
+    },
 }
