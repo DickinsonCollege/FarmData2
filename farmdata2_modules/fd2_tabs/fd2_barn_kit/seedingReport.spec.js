@@ -53,20 +53,6 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=tray-summary]')
                 .should('exist')
         })
-
-        it('clicking on date range hides report', () => {
-             cy.get('[data-cy=start-date-select]')
-                .type('2019-01-01').get('[data-cy=end-date-select]')
-                .type('2019-03-01').get('[data-cy=generate-rpt-btn]')
-                .click()
-            cy.get('[data-cy=start-date-select]').click()
-            cy.get('[data-cy=generate-rpt-btn]', { timeout: 10000 })
-                .should('exist').get('[data-cy=filters-panel]')
-                .should('not.exist').get('[data-cy=report-table]')
-                .should('not.exist').get('[data-cy=direct-summary]')
-                .should('not.exist').get('[data-cy=tray-summary]')
-                .should('not.exist')
-        })
         
     })
     context('can see spinner at appropriate times', () => {
@@ -102,6 +88,49 @@ describe('Testing for the seeding report page', () => {
                 .type('2019-03-03')
             cy.get('[data-cy=generate-rpt-btn]').click()
             cy.get('[data-cy=loader]').should('be.visible')
+        })
+    })
+    context.only('clicking on date ranges hides report', () => {
+        beforeEach(() => {
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+        })
+
+        it('clicking on start date range hides report', () => {
+            cy.get('[data-cy=report-table]', {timeout: 10000}).should('exist')
+            cy.get('[data-cy=start-date-select]').click()
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .should('exist')
+            cy.get('[data-cy=filters-panel]')
+                .should('not.exist')
+            cy.get('[data-cy=report-table]')
+                .should('not.exist')
+            cy.get('[data-cy=direct-summary]')
+                .should('not.exist')
+            cy.get('[data-cy=tray-summary]')
+                .should('not.exist')
+        })
+
+        it('clicking on end date range hides report', () => {
+            cy.get('[data-cy=report-table]', {timeout: 10000}).should('exist')
+            cy.get('[data-cy=end-date-select]').click()
+
+            cy.get('[data-cy=generate-rpt-btn]')
+                .should('exist')
+            cy.get('[data-cy=filters-panel]')
+                .should('not.exist')
+            cy.get('[data-cy=report-table]')
+                .should('not.exist')
+            cy.get('[data-cy=direct-summary]')
+                .should('not.exist')
+            cy.get('[data-cy=tray-summary]')
+                .should('not.exist')
         })
     })
 
