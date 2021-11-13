@@ -5,9 +5,9 @@ let ExportButtonComponent = {
                     :download="'tableDownload.csv'" :href="makeFile()">Download Tables</a>
                 </button>
             </div>`,
-    Props:{
-        headers:{
-            type: Array,
+    props:{
+        headers: {
+            type: Array, 
             required: true,
         },
         rows: {
@@ -17,7 +17,38 @@ let ExportButtonComponent = {
         visibleColumns: {
             type: Array,
             default: null,
-        }
+        },
+    },
+    methods:{
+        makeFile: function(){
+            let downloadRows = []
+            let visiableCols = this.isVisible
+            for (i = 0 ; i < this.rows.length ; i ++){
+                downloadRows[i] = ''
+                for (j = 0; j < this.rows[i].data.length ; j++){
+                    if (this.visibleColumns[j]){
+                        let column = '"' +this.rows[i].data[j] + '"'
+                        downloadRows[i] = downloadRows[i] + column + ','
+                    }
+                }
+
+            }
+            tableString = ''
+            for (k = 0 ; k < this.headers.length ; k ++){
+                if (visiableCols[k]){
+                    tableString = tableString + this.headers[k] + ','
+                }
+            }
+            tableString =
+                tableString +
+                '\n' +
+                downloadRows.join('\n');
+            
+            data = new Blob([tableString], {
+                type: 'text/csv',
+            })
+            return window.URL.createObjectURL(data);
+        },
     },
     computed:{
         isVisible() {

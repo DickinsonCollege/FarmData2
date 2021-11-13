@@ -29,6 +29,8 @@
                 <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
+
+                <export-button :rows='tableRows' :headers='headers' :visible-columns='visibleColumns'></export-button>
             </div>
 
             <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
@@ -84,7 +86,8 @@
             components: {
                 'custom-table': CustomTableComponent,
                 'date-range-selection': DateRangeSelectionComponent,
-                'dropdown-with-all': DropdownWithAllComponent
+                'dropdown-with-all': DropdownWithAllComponent,
+                'export-button': ExportButtonComponent
             },
             data: {
                 startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
