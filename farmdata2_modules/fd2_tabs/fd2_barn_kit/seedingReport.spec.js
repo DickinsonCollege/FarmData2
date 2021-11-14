@@ -90,7 +90,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=loader]').should('be.visible')
         })
     })
-    context.only('clicking on date ranges hides report', () => {
+    context('clicking on date ranges hides report', () => {
         beforeEach(() => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
             cy.get('[data-cy=start-date-select]')
