@@ -84,7 +84,28 @@
                 logTypeToIDMap: new Map(),
                 plantingId: 0,
             },
-            methods:{
+            methods:{    
+                clearForm(){
+                    this.sessionToken = null
+                    this.selectedDate = dayjs().format('YYYY-MM-DD').toString()
+                    this.selectedCrop = null
+                    this.selectedArea = null
+                    this.savedArea = null
+                    this.selectedSeedingType = ''
+                    this.selectedFeetUnit = 'bed'
+                    this.selectedTimeUnit = 'minutes'
+                    this.comments = ''
+                    this.numWorkers = 0
+                    this.time = 0
+                    this.numOfTrays = 0
+                    this.numCellsPerTray = 0
+                    this.numSeedsPlanted = 0
+                    this.numRowBed = 0
+                    this.numFeet = 0
+                    this.timeUnits = ['minutes', 'hours']
+                    this.feetUnits = ['row', 'bed']
+                    this.plantingId = 0
+                },        
                 setNewDate(newDate){
                     this.selectedDate = newDate
                 },
@@ -102,14 +123,17 @@
                     this.selectedFeetUnit = newFeetUnit
                 },
                 saveLog(){
-                    createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
+
+                    if(confirm("Would you like to save a log")){
+                        createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
                     }).then(() => {
                         createRecord('/log', this.logData, this.sessionToken).then((response) => {
                         })
+                    }).then(() => {
+                        alert("You have successfully submitted a log")
+                        this.clearForm()
                     })
-                    if(confirm("You have saved a log! Would you like to go the seeding report page?")){
-                        window.location.replace('/farm/fd2-barn-kit/seedingReport')
                     }
                 }
             },
