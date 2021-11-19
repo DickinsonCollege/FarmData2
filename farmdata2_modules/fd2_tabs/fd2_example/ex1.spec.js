@@ -52,61 +52,6 @@ describe('Tests for the example sub-tab', () => {
         .should('have.text', 'caching some info ')
   })
 
-  it.only('testing that delete functionality works', () => {
-    let cropToIDMap = new Map()
-    let plantingID = null
-    let token = 0
-    let planting = {}
-
-    cy.wrap(getSessionToken()).as('token')
-    cy.get('@token').should(function(sessionToken){
-        token = sessionToken
-    }).then(() => {
-        getCropToIDMap().then((response) => {
-            cropToIDMap = response
-            console.log(response)
-        })
-        cy.wait(30000)
-    }).then(() => {
-        console.log(cropToIDMap)
-        planting = {
-            "name": dayjs().format('YYYY-MM-DD').toString() + " BEET  ALF-1",
-            "type": "planting",
-            "crop": [{
-                "id": cropToIDMap.get("BEET"),
-                "resource": "taxonomy_term"
-            }],
-        }
-    }).then(() => {
-        console.log(planting)
-        console.log(token)
-        console.log('sup')
-        createRecord('/farm_asset', planting, token).then((response) => {
-            console.log('inside create')
-            plantingID = response.data.id
-            console.log(plantingID)
-        })
-        cy.wait(10000)
-    }).then(() => {
-        console.log('hello?')
-        console.log(plantingID)
-        cy.get('[data-cy=delete-id]')
-            .should('exist')
-            .type(plantingID)
-
-        cy.get('[data-cy=delete-log]')
-            .should('exist')
-            .click()
-    })/*.then(() => {
-        let plantingLog = []
-        cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + plantingID, plantingLog)).as('getPlanting')
-
-        cy.get('@getPlanting').should(function(){
-            expect(plantingLog.length).to.equal(0)
-        })
-    })*/
-  })
-
   it('testing that create planting log functionality works', () => {
     let plantingID = 0
     let token = 0
