@@ -30,7 +30,7 @@
 
                 <br>
 
-                <export-button :rows='tableRows' :headers='headers' :visible-columns='visibleColumns'></export-button>
+                <export-button :rows='tableRows' :headers='headers' :visible-columns='visibleColumns' :extra-data='testData'></export-button>
             </div>
 
             <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
@@ -113,7 +113,7 @@
                 areaToIDMap: new Map(),
                 unitToIDMap: new Map(),
 
-                rowBeingEdited: false
+                rowBeingEdited: false,
             },
             methods: {
                 hide(){
@@ -300,7 +300,10 @@
                 },
             },
             computed: {
-                /**
+                testData() {
+                    return {data: ['sup', 'yeehaw', 'hey']}
+                },
+                 /**
                  * tableRows() filters though seedingLogs to get all the logs that have the correct crop, area, and/or type of seeding that has been selected by the user. Then takes the remaining logs and formats it so that the table component gets the necessary info
                  */ 
                 tableRows() {
@@ -679,6 +682,7 @@
                 }
             },
             created() {
+                console.log(this.testData)
                 getSessionToken().then((response) => {
                     this.sessionToken = response
                 })
