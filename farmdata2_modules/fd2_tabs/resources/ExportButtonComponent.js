@@ -45,15 +45,8 @@ let ExportButtonComponent = {
             }
 
             downloadData = []
-            console.log(this.extraData)
-            if(this.extraData != null){
-                downloadData[i] = ''
-                console.log('inside if statement')
-                for(i=0; i<this.extraData.length; i++){
-                    let row = '"' + this.extraData[i].label + '","' + this.extraData[i].data + '"'
-                    downloadData[i] = row
-                }
-                console.log(downloadData)
+            for(i=0; i<this.extraData.length; i++){
+                downloadData[i] = '"' + this.extraData[i].label + '","' + this.extraData[i].data + '"'
             }
             
             tableString =
