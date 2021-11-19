@@ -18,7 +18,10 @@ describe('Tests for the example sub-tab', () => {
         cy.get($dropdowns[0]).contains('ALF-1', {timeout: 130000})
     })
   })
-
+  /**
+   * Exmaple of using a cypress to test typing into an input and checking 
+   * that it now has the new value that was being typed in
+   */
   it('Text field content is linked to header', () => {
     cy.get('[data-cy=comment-field]')
       .clear()
@@ -27,7 +30,10 @@ describe('Tests for the example sub-tab', () => {
     cy.get('[data-cy=comment]')
       .should('have.text','Hello Farm!')
   })
- 
+  /**
+   * Example of using cypress to click a button and checking on the desired effect
+   * of that button.
+   */
   it('API call for farm name works', () => {
     cy.get('[data-cy=get-name-button]')
       .click()
@@ -35,7 +41,9 @@ describe('Tests for the example sub-tab', () => {
     cy.get('[data-cy=farm-name]')
       .should('have.text','Sample Farm')
   })
-
+  /**
+   * Exmaple of testing that caching works sin a page
+   */
   it('caching text that was inputed works', () => {
     cy.get('[data-cy=cache-input]')
         .should('exist')
@@ -51,7 +59,10 @@ describe('Tests for the example sub-tab', () => {
         .should('exist')
         .should('have.text', 'caching some info ')
   })
-
+  /**
+   * Example of testing that the page was able to create a log
+   * It is also a good example of chaining in a cypress test
+   */
   it('testing that create planting log functionality works', () => {
     let plantingID = 0
     let token = 0
@@ -83,6 +94,7 @@ describe('Tests for the example sub-tab', () => {
   })
   //example of using a context to break tests up into sections
   context('Tests for Components', () => {
+    //examples of checking thatdropdown components work
     it('Areas dropdown component is working', () => {
         cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
             .select("All")
@@ -110,7 +122,7 @@ describe('Tests for the example sub-tab', () => {
         cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
             .should("not.contain","ZUCCHINI")
     })
-
+    //example of testing the date slection and date range selection components
     it('Date selection component is working', () => {
         cy.get('[data-cy=date-picker] > [data-cy=date-select]')
             .type('2021-06-05')
@@ -129,7 +141,7 @@ describe('Tests for the example sub-tab', () => {
             .blur()
         cy.get('[data-cy=end-date]').should('have.text', '2021-06-10')
     })
-
+    //example of testing the headers in a table component
     it('Check table headers', () => {
         cy.get('[data-cy=headers]')
             .first().should('have.text', 'cool')
