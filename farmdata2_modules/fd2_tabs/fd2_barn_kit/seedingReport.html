@@ -30,7 +30,7 @@
 
                 <br>
 
-                <export-button :rows='tableRows' :headers='headers' :visible-columns='visibleColumns' :extra-data='testData'></export-button>
+                <export-button :rows='tableRows' :headers='headers' :visible-columns='visibleColumns' :extra-data='summaryTablesData'></export-button>
             </div>
 
             <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
@@ -300,8 +300,21 @@
                 },
             },
             computed: {
-                testData() {
-                    return {data: ['sup', 'yeehaw', 'hey']}
+                summaryTablesData() {
+                    return [{label: "", data: "Direct Seeding Summary"},
+                            {label: "Total Row/bed Feet Planted:", data: this.totalRowBed},
+                            {label: "Total Row Feet Planted:", data: this.totalRowFeet},
+                            {lable: "Total Bed Feet Planted:", data: this.totalRowBed},
+                            {label: "Total Hours Worked:", data: this.totalDirectSeedingHours},
+                            {label: "Total Row Feet Per Hour:", data: this.totalRowFeetPerHour},
+                            {label: "Total Bed Feet Per Hour:", data: this.totalBedFeetPerHour},
+                            {label: "", data:""},
+                            {label: "", data: "Tray Seeding Summary"},
+                            {label: "Total Number of Tray Seeds Planted:", data: this.traySeedsPlanted},
+                            {label: "Total Number of Trays:", data: this.totalNumTrays},
+                            {label: "Total Hours Worked:", data: this.totalTraySeedingHours},
+                            {label: "Average Seeds Planted per Hour:", data: this.aveSeedsPerHour}
+                            ]
                 },
                  /**
                  * tableRows() filters though seedingLogs to get all the logs that have the correct crop, area, and/or type of seeding that has been selected by the user. Then takes the remaining logs and formats it so that the table component gets the necessary info
@@ -682,7 +695,7 @@
                 }
             },
             created() {
-                console.log(this.testData)
+                console.log(this.summaryTablesData)
                 getSessionToken().then((response) => {
                     this.sessionToken = response
                 })
