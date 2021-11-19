@@ -137,6 +137,7 @@
                         }
                     }
                     else{
+                        console.log(this.areaResponse)
                         areaArray = this.areaResponse.map((h) => h.name)
                     }
                     return areaArray
@@ -339,11 +340,28 @@
             },
             created(){
                 let fullResponse = []
-                getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
-                    this.cropArray = fullResponse.map((h) => h.name)
-                })
-                getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
-                })
+                if(localStorage.getItem('crops') == null){
+                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
+                        this.cropArray = fullResponse.map((h) => h.name)
+                        localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                    })
+                }else{
+                    this.cropArray = JSON.parse(localStorage.getItem('crops'))
+                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
+                        this.cropArray = fullResponse.map((h) => h.name)
+                        localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                    })
+                }
+                if(localStorage.getItem('areas') == null){
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
+                        localStorage.setItem('areas', JSON.stringify(this.areaResponse))
+                    })
+                }else{
+                    this.areaResponse = JSON.parse(localStorage.getItem('areas'))
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
+                        localStorage.setItem('areas', JSON.stringify(this.areaResponse))
+                    })
+                }
                 getSessionToken().then((response) => {
                     this.sessionToken = response
                 })
