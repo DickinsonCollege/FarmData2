@@ -52,7 +52,8 @@ let ExportButtonComponent = {
             tableString =
                 tableString +
                 '\n' +
-                downloadRows.join('\n') +
+                downloadRows.join('\n') + 
+                '\n\n' +
                 downloadData.join('\n');
             
             data = new Blob([tableString], {
