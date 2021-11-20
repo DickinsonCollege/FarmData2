@@ -29,8 +29,6 @@
                 <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
-
-                <export-button :rows='tableRows' :headers='headers' :visible-columns='visibleColumns' :extra-data='summaryTablesData'></export-button>
             </div>
 
             <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
@@ -65,6 +63,7 @@
                         </div>
                     </fieldset>
                 </div>
+                <export-button :rows='tableRows' :headers='headers' :visible-columns='visibleColumns' :extra-data='summaryTablesData'></export-button>
             </div>
             <div v-if="!stillLoading && seedingLogs.length == 0">
                 <div class="box" data-cy="no-logs-message" style="  
