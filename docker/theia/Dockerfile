@@ -1,4 +1,4 @@
-FROM theiaide/theia:1.7.0
+FROM farmdata2/theia:1.7.0
 
 # NOTE: If changes are made here that require a new image
 # update the tag in docker-compose.yml for force the rebuild
