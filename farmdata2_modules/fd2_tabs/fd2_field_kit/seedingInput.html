@@ -48,6 +48,21 @@
            <label style='color: #da4f3f'>* required field.</label>
        </div>
        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
+        <div v-if='alertVal' id='alert'>
+            <div class="box" data-cy="no-logs-message" style=" border: 5px solid #d62a17;
+                    background-color: white;
+                    position: fixed;
+                    padding: 20px;
+                    top: 100px;
+                    left: 25%;
+                    margin: auto;
+                    width: 50%;
+                    text-align: center;
+                    font-size: large;"
+            >
+                Report Submitted  
+            </div> 
+        </div>
     </div>
 
     <script>
@@ -83,12 +98,17 @@
                 areaToIDMap: new Map(),
                 logTypeToIDMap: new Map(),
                 plantingId: 0,
+                alertVal: false,
             },
             methods:{    
+                stopAlert(){
+                    this.alertVal = false
+                },
                 clearForm(){
                     this.sessionToken = null
                     this.selectedDate = dayjs().format('YYYY-MM-DD').toString()
                     this.selectedCrop = null
+                    document.getElementById('dropdownOptions').selectedIndex = -1;
                     this.selectedArea = null
                     this.savedArea = null
                     this.selectedSeedingType = ''
@@ -131,7 +151,8 @@
                         createRecord('/log', this.logData, this.sessionToken).then((response) => {
                         })
                     }).then(() => {
-                        alert("You have successfully submitted a log")
+                        this.alertVal = true
+                        setTimeout(this.stopAlert, 2000)
                         this.clearForm()
                     })
                     }
