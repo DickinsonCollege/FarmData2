@@ -77,3 +77,10 @@ let ExportButtonComponent = {
         },
     },
 }
+
+try {
+    module.exports = {
+        ExportButtonComponent: ExportButtonComponent
+    }
+}
+catch {}

@@ -10,7 +10,7 @@ describe('custom table component', () => {
             rows: [ {id: 10, data: [12, 3, 'answome']},
                     {id: 11, data: [19, 3, 'and'],},
                     {id: 12, data: [12, 12, 'answome12'],}, ],
-            headers: ['cool', 'works?', 'hello'],
+            headers: ['cool', 'works?', 'hello'],        
         }
 
         beforeEach(() => {
