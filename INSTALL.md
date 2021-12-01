@@ -75,7 +75,7 @@ The FarmData2 repository contains a sample database with anonymized data from se
 ./setDB.bash sample
 ```
 
-When this command completes there should be a `db` directory in the `docker` directory.  The files in this `db` directory are a mySQL database that contain the sample data.  Note that you will only need to do this step once. But the above comman can be used at any time to reset the database to its initial state.
+When this command completes there should be a `db` directory in the `docker` directory.  The files in this `db` directory are a mySQL database that contain the sample data.  Note that you will only need to do this step once. But the above command can be used at any time to reset the database to its initial state.
 
 ### Starting FarmData2 ###
 
