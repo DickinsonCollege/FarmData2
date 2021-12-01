@@ -265,6 +265,44 @@ describe('Test the seeding input page', () => {
             })
         })
     })
+            context.only('check that submit button works properly', () => {
+        beforeEach(() => {
+            cy.get('[data-cy=date-select')
+                .type('2011-05-07')
+
+            cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
+                cy.get($dropdowns[0]).select('BEAN')
+            })
+
+            cy.get('[data-cy=num-workers]')
+                .clear()
+                .type('2')
+
+             cy.get('[data-cy=time-spent]')
+                .clear()
+                .type('10')
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).select('A')
+                
+            cy.get('[data-cy=direct-seedings').check()
+
+            cy.get('[data-cy=row-bed]')
+                .clear()
+                .type('5')
+
+            cy.get('[data-cy=num-feet')
+                .clear()
+                .type('20')
+            })
+        })
+        it('submit button opens pop up', () => {
+            cy.get('[data-cy=submit-button').click()
+            cy.on("window:confirm", () => true)
+            cy.get("[data-cy=alert-box]", {timeout: 3000})
+            
+        })
+
+    })
     context('create logs in database', () => {
         let seedingLog = []
         let plantingLog = []

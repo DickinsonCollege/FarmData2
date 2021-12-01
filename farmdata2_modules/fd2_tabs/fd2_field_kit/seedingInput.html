@@ -7,9 +7,12 @@
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
                 <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
-                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="crop-selection" 
+                :default-input='selectedCrop' 
+                :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="area-selection" 
+                :default-input='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
@@ -48,7 +51,7 @@
            <label style='color: #da4f3f'>* required field.</label>
        </div>
        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
-        <div v-if='alertVal' id='alert'>
+        <div data-cy='alert-box' v-if='alertVal' id='alert'>
             <div class="box" data-cy="no-logs-message" style=" border: 5px solid #d62a17;
                     background-color: white;
                     position: fixed;
@@ -75,8 +78,8 @@
             data:{
                 sessionToken: null,
                 selectedDate: dayjs().format('YYYY-MM-DD').toString(),
-                selectedCrop: null,
-                selectedArea: null,
+                selectedCrop: '',
+                selectedArea: '',
                 savedArea: null,
                 selectedSeedingType: '',
                 selectedFeetUnit: 'bed',
@@ -105,12 +108,14 @@
                     this.alertVal = false
                 },
                 clearForm(){
-                    this.sessionToken = null
+                    this.cropArray.push('')
+                    this.areaFilter.push('')
+                    console.log(this.cropArray)
+                    console.log(this.areaFilter)
                     this.selectedDate = dayjs().format('YYYY-MM-DD').toString()
-                    this.selectedCrop = null
-                    document.getElementById('dropdownOptions').selectedIndex = -1;
-                    this.selectedArea = null
-                    this.savedArea = null
+                    this.selectedCrop = "ARUGULA"
+                    this.selectedArea = ''
+                    this.savedArea = ''
                     this.selectedSeedingType = ''
                     this.selectedFeetUnit = 'bed'
                     this.selectedTimeUnit = 'minutes'
