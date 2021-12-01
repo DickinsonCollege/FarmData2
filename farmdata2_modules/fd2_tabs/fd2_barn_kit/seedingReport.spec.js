@@ -1010,7 +1010,7 @@ describe('Testing for the seeding report page', () => {
                 .first().click()
         })
 
-        it.only('deletes a log from the database when the delete button is pressed', () => {
+        it('deletes a log from the database when the delete button is pressed', () => {
             cy.get('[data-cy=delete-button]')
                 .first().click()
 
