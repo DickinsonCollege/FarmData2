@@ -10,12 +10,17 @@ describe('Test the seeding input page', () => {
     beforeEach(() => {
         cy.login('manager1', 'farmdata2', {timeout: 60000})
 
+        cy.restoreLocalStorage()
+
         cy.visit('/farm/fd2-field-kit/seedingInput', {timeout: 120000})
 
         //makes sure that the area is loaded before continueing
         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[1]).contains('A', {timeout: 130000})
         })
+    })
+    afterEach(() => {
+        cy.saveLocalStorage()
     })
     context('test inputs and buttons', () => {
         it('button is disabled', () => {
