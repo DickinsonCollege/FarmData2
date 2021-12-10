@@ -69,6 +69,24 @@ describe('Field and Crop Dropdowns', () => {
         })
     })
 
+    context('defaultInput prop changes selection when changed', () => {
+        beforeEach(() => {
+            mount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        defaultInput: "All"
+                    },
+            }).then(myComp => {
+                cy.get('[data-cy=dropdown-input]')
+                    .should('have.value', "All")
+                setTimeout(() => myComp.defaultInput = 'Corn' , 4000)
+                cy.get('[data-cy=dropdown-input]')
+                    .should('have.value', 'Corn')
+            })
+        })
+    })
+
     context('mounting within the test', () => {
         it('emits an event when the page loads', () => {
             const spy = cy.spy()
