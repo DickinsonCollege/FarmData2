@@ -4,11 +4,23 @@ var ExpoButton = require("./ExportButtonComponent.js")
 var ExportButtonComponent = ExpoButton.ExportButtonComponent
 
 describe('export button component', () => {
+    context('props that should but dont work', () => {
+        beforeEach(() => {
+            mount(ExportButtonComponent, {
+                propsData: {
+                    headers: ['cool', 'works?', 'hello'],
+                    rows: [ {id: 10, data: [12, 3, 'answome']},
+                            {id: 11, data: [19, 3, 'and'],},
+                            {id: 12, data: [12, 12, 'answome12'],}, ],
+                }
+            }) 
+        })
+        it.only('export button exists', () =>{
+            cy.get('[data-cy=download-btn')
+                .should('exist')
+        })
+    })
     context('headers and rows display in the csv correctly', () => {
-        let prop= {
-            
-        }
-
         beforeEach(() => {
             mount(ExportButtonComponent, {
                 propsData: {
