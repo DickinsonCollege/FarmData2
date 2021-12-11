@@ -92,6 +92,7 @@ function fd2_example_preprocess_page() {
     // Include the external JS libraries that are used here so they are cached by drupal.
     drupal_add_js('https://unpkg.com/vue/dist/vue.min.js','external');
     drupal_add_js('https://unpkg.com/axios/dist/axios.min.js','external');
+    drupal_add_js('https://unpkg.com/dayjs@1.8.21/dayjs.min.js', 'external');
 
     // Define some useful variables in the JavaScript for page.
     global $user;

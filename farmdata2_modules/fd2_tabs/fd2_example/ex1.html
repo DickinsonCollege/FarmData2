@@ -13,10 +13,18 @@
     <p><button data-cy="get-name-button" @click='getFarmName'>Get Farm Name</button></p>
     <p>Farm Name: <span data-cy="farm-name">{{ farm }}</span></p>
 
+    <!--Example of cacheing-->
+    <p>Text to be Cached:<input data-cy="cache-input" type="text" v-model='inputToBeCached'></p><button data-cy="cache-button" @click='saveToCache'>Cache Input</button>
+    <p>Data Retrieved from Cache: <span data-cy="cached-info">{{ cachedData }} </span></p>
+
     <!-- Example of deleting a log -->
     <p>Log ID to delete: <input data-cy="delete-id" type='text' v-model='deleteID'>
-    <button data-cy="delete-button" :disabled='!validID' @click='deleteLog'>Delete</button></p>
+    <button data-cy="delete-log" :disabled='!validID' @click='deleteLog'>Delete</button></p>
 
+    <!--Example of Creating a log-->
+    <button data-cy="create-button" @click="createPlantingLog">Create Log</button>
+    <p>Created Log ID: <span data-cy="created-id">{{ plantingID }} </span></p>
+ 
     <!-- Exmaple of using a Vue Component -->
     <!-- Component fiels are contained in the ../resources folder. -->
     <!-- They are imported to FarmData2 pages in the modules .info file (e.g. fd2_example.info file -->
@@ -31,21 +39,27 @@
     <p>Chosen End Date: <span data-cy="end-date">{{endDate}}</span></p>
 
     <br>
+    <!--Example of fielset being used to design a page-->
+    <fieldset class="panel panel-default" style="max-width: 500px;">
+        <!--Lengend is used to create a header in the fieldset-->
+        <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Dropdowns</legend>
+        <!-- the dropdown-with-all component is defined in ../resources/DropdownWithAllComponent.js -->
 
-    <!-- the dropdown-with-all component is defined in ../resources/DropdownWithAllComponent.js -->
-    <dropdown-with-all data-cy="field-dropdown" includes-all @selection-changed='fieldChange' :dropdown-list=fieldList></dropdown-with-all>
-    <p>Chosen Field: <span data-cy="selected-field">{{selectedField}}</span></p>
-    
-    <br>
-    <dropdown-with-all data-cy="crop-dropdown" includes-all default-input="All" @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
-    <p>Chosen Field: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
+        <!--Example were no defualt is choosen-->
+        <dropdown-with-all data-cy="area-dropdown" includes-all @selection-changed='areaChange' :dropdown-list=areaList></dropdown-with-all>
+        <p>Chosen Area: <span data-cy="selected-area">{{selectedArea}}</span></p>
+        
+        <br>
+
+        <!--Example of centering components and having a dualt value-->
+        <dropdown-with-all data-cy="crop-dropdown" style="text-align:center;" includes-all default-input="All" @selection-changed='cropChange' :dropdown-list=cropList></dropdown-with-all>
+        <p style="text-align:center;">Chosen Crop: <span data-cy="selected-crop">{{selectedCrop}}</span></p>
+    </fieldset>
 
     <br>
 
     <!-- the custom-table component is defined in ../resources/CustomTableComponent.js -->
-    <custom-table data-cy="test-table":headers="testArray" :rows="testObjectArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTestObjectArray" @row-edited="updateTestObjectArray" :input-options="inputTypesArray"></custom-table>
-
-    <button @click="getCropMap">Get Crop Map</button>
+    <custom-table data-cy="test-table":headers="tableHeadersArray" :rows="tableDataArray" :visible-columns="visibleColumnsArray" can-edit can-delete @row-deleted="deleteFromTableDataArray" @row-edited="updateTableDataArray" :input-options="inputTypesArray"></custom-table>
 </div>
 
 <script>
@@ -53,6 +67,7 @@
 // el: must match the id of the <div> for the app above.
 // Note: The JS variables fd2UserID and fd2UserName are defined in fd2_example.module
 new Vue({
+    //identifer for the Vue instance, must be equal to the id in the main div above
     el: '#ex1',
     components: {
         // Register the components that are being used.
@@ -62,20 +77,33 @@ new Vue({
         'dropdown-with-all': DropdownWithAllComponent
     },
     data: {
+        //varaibles used in v-bind examples
 	    comment: null,
         farm: null,
-        selectedField: null,
-        fieldList: [],
-        selectedCrop: null,
+        //variables used in caching example
+        inputToBeCached: null,
+        cachedData: null,
+        //data recieved from api calles in the created function
+        areaList: [],
         cropList: [],
-        selectedDate: null,
+        sessionToken: null,
+        //stored inputs selected by users in the components
+        selectedArea: null,
+        selectedCrop: null,
+        selectedDate: dayjs().format('YYYY-MM-DD').toString(), //sets to today, need to add dayjs to drupal in fd2_example.module for this to work
         startDate: null,
         endDate: null,
+        //stores id of logs
         deleteID: null,
+        plantingID: null,
+        //stores the user data that appears at the top of the page
         userID: fd2UserID,
         userName: fd2UserName,
-        testArray: ['cool', 'works?', 'num', 'hello'],
-        testObjectArray: [
+        //Maps
+        cropToIDMap: new Map(),
+        //data used in the table component
+        tableHeadersArray: ['cool', 'works?', 'num', 'hello'],
+        tableDataArray: [
             {id: 10, 
             data: ['2020-09-20', 3, 5, '<p>firstline</p><br><p>secondline</p>']},
             {id: 11,
@@ -83,8 +111,6 @@ new Vue({
             {id: 12,
             data: ['2022-09-20', 12, 4, 'answome12'],},
         ],
-        testCropMap: new Map,
-        testField: [],
         visibleColumnsArray : [true, true, true, true],
         inputTypesArray: [
             {'type': 'date'},
@@ -92,7 +118,8 @@ new Vue({
             {'type': 'number'},
             {'type': 'text'}
         ],
-        testquantity: [{
+        //data for quantityLocation function example 
+        logQuantity: [{
                 "measure": "length", 
                 "value": 5,
                 "unit": {
@@ -129,48 +156,28 @@ new Vue({
                 "label": "Workers"
             }]
     },
-    created() {
-        axios
-        .get('/taxonomy_term.json?bundle=farm_areas')
-        .then(response => {
-            this.fieldList = response.data.list.map(
-                function(f) { return f.name }
-            );
-            this.testField = response
-            this.fieldList.sort();
-        })
-        .catch(error => {
-            this.fieldList = [ 'Server error' ]
-            console.log(error)
-        })
-        
-        axios.get('/farm_asset.json?type=planting')
-        .then(response => {
-            this.cropList = response.data.list.map(f => f.name).sort();
-        })
-        .catch(error => {
-        this.cropList = [ 'Server error' ]
-            console.log(error)
-        })
-        getUserToIDMap().then((response) => {
-            console.log(response)
-        })
-        getIDToLogTypeMap().then((response) => {
-            console.log(response)
-        })
-        console.log(quantityLocation(this.testquantity, 'Labor'))
-    },
     methods: {
+        /**
+         * Does a api request to get the name of the farm
+         * stores the name of the farm in the variable farm
+         */
         getFarmName() {
             axios
             .get('/farm.json')
             .then(response => (this.farm = response.data.name))
             .catch(error => console.log(error))
         },
-        fieldChange(newField) {
-            this.selectedField = newField;
+        /**
+         * Example of cacheing data using localStorage
+         */
+        saveToCache() {
+            localStorage.setItem('myInput', JSON.stringify(this.inputToBeCached))
         },
-        updateTestObjectArray(jsonObject, id){
+        /**
+         * Example of updating a row in the table after it has been saved
+         * This will not save to the database, so if the page is reloaded the changes will not be saved
+         */
+        updateTableDataArray(jsonObject, id){
             let keys = Object.keys(jsonObject)
             for(i=0; i < keys.length; i++){
                 if(keys[i] = 'cool'){
@@ -178,76 +185,155 @@ new Vue({
                     console.log('at crops')
                 }
                 else if(keys[i] = 'works?'){
-                    jsonObject['field'] = jsonObject['works?']
+                    jsonObject['area'] = jsonObject['works?']
                 }
                 else if(keys[i] = 'hello'){
                     jsonObject['date'] = jsonObject['hello']
                 }
             }
-            //this.testObjectArray = Object.assign({}, jsonObject)
         },
-        deleteFromTestObjectArray(deletedObjectID){
-            for(var i=0; i < this.testObjectArray.length; i++){
-                if(this.testObjectArray[i].id === deletedObjectID){
-                    this.testObjectArray.splice(i, 1)
+        /**
+         * Example of deleting a log from the table
+         * In the report pages, the logs are loaded into a variable from a api call, so even if they are deleted from the database they will also need to be deleted from the table as well
+         */
+        deleteFromTableDataArray(deletedObjectID){
+            for(var i=0; i < this.tableDataArray.length; i++){
+                if(this.tableDataArray[i].id === deletedObjectID){
+                    this.tableDataArray.splice(i, 1)
                 }
             }
         },
-        fieldChange(selectedOption) {
-            this.selectedField = selectedOption;
+        /**
+         * Example of deleting a log from the database
+         * deletes the log with the id stored in deleteID variable that the user entered
+         */
+        deleteLog() {
+            let id = parseInt(this.deleteID)
+            let url = 'http://localhost/log/' + id
+            this.deleteID = null
+            console.log(this.sessionToken)
+            deleteRecord(url, this.sessionToken).then((response) => {
+                console.log(response)
+            })
         },
+        createPlantingLog() {
+            let planting = {
+                "name": this.selectedDate + " BEET  ALF-1",
+                "type": "planting",
+                "crop": [{
+                    "id": this.cropToIDMap.get("BEET"),
+                    "resource": "taxonomy_term"
+                }],
+            }
+            createRecord('/farm_asset', planting, this.sessionToken).then((response) => {
+                this.plantingID = response.data.id
+            })
+        },
+        /**
+         * This method is run after the @selection-change event in the area dropdown
+         * When that event is emited, this method takes the payload and sets it equal to the selectedArea variable
+         */
+        areaChange(selectedOption) {
+            this.selectedArea = selectedOption;
+        },
+        /**
+         * This method is run after the @selection-change event in the crop dropdown
+         * When that event is emited, this method takes the payload and sets it equal to the selectedCrop variable
+         */
         cropChange(selectedOption) {
             this.selectedCrop = selectedOption;
         },
+        /**
+         * This method is run after the @date-changed event in the date selection
+         * When that event is emited, this method takes the payload and sets it equal to the selectedDate variable
+         */
         dateChange(selectedDate) {
             this.selectedDate = selectedDate;
         },
+        /**
+         * This method is run after the @start-date-changed event in the date range selection
+         * When that event is emited, this method takes the payload and sets it equal to the startDate variable
+         */
         startDateChange(startDate) {
             this.startDate = startDate;
         },
+        /**
+         * This method is run after the @end-date-changed event in the date range selection
+         * When that event is emited, this method takes the payload and sets it equal to the endDate variable
+         */
         endDateChange(endDate) {
             this.endDate = endDate;
         },
-        deleteLog() {
-            // Need to retrive the session token when logged in and
-            // use that in any requests that modify the database 
-            // (i.e. PUT, POST, DELETE).
-            axios
-                .get('/restws/session/token')
-                .then(response => response.data)
-                .then(token => {
-                    let id = parseInt(this.deleteID)
-                    let url = 'http://localhost/log/' + id
-                    return axios
-                        .delete(url, {
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'X-CSRF-TOKEN' : token,
-                            }
-                        })
-                })
-        },
-        getCropMap(){
-            getCropToIDMap().then((response) => {
-                this.testCropMap = response
-                console.log(this.testCropMap)
-            })
-            getFieldToIDMap().then((response) => {
-                console.log(response)
-            })
-            getIDToUserMap().then((response) => {
-                console.log(response)
-            })
-            //this.testCropMap = cropMap()
-            
-        }
     },
+    /**
+     * Computed functions are continously calculate while the page is open
+     */
     computed: {
+        /**
+         * Example of a computed function
+         * Checks to see if the variable deleteID is in fact an integer
+         * returns true it is and false if it is not an innteger
+         */
         validID: function () {
             return Number.isInteger(parseInt(this.deleteID))
         }
-    }
+    },
+    /**
+     * Everthing done in the created function is executed when the page loads/is created
+     */
+    created() {
+        /**
+         * Need to retrive the session token when logged in and
+         * use that in any requests that modify the database 
+         * (i.e. PUT, POST, DELETE).
+         */
+        getSessionToken().then((response) => {
+            this.sessionToken = response
+        })
+        /**
+         * Example of using an api call to get the list of all possible crops
+         * This format can be used on most any api call, although this method will only return the first hundred untries. This is because it only return the first page, which has one hundred entries
+         */
+        axios.get('/taxonomy_term.json?bundle=farm_crops')
+            .then(response => {
+                this.cropList = response.data.list.map(f => f.name).sort();
+            })
+            .catch(error => {
+            this.cropList = [ 'Server error' ]
+                console.log(error)
+            })
+        /**
+         * Example of using getAllPages function found in ../resources/FarmOSAPI.js
+         * A simular format can be used for other api links
+         * This function will get more then the first hundred entries
+         */
+        let fullResponse = []
+        getAllPages('/taxonomy_term.json?bundle=farm_areas', fullResponse)
+            .then(() => {
+                this.areaList = fullResponse.map(f=> f.name).sort();
+            })
+        /**
+         * Examples of using  get--To--Map functions found in ../resources/FarmOSAPI.js
+         */
+        getCropToIDMap().then((response) => {
+            this.cropToIDMap = response
+            console.log(response)
+        })
+        getIDToLogTypeMap().then((response) => {
+            console.log(response)
+        })
+        /**
+         * Example of using quantityLocation function found in ../resources/FarmOSAPI.js
+         */
+        console.log(quantityLocation(this.logQuantity, 'Labor'))
+        /**
+         * Example of retrieving data from the cache using localStorage
+         */
+        if(localStorage.getItem('myInput') != null){
+            this.cachedData = JSON.parse(localStorage.getItem('myInput'))
+        }
+    },
 })
-
+//Allows Vue to be accessed in Dev Tools
 Vue.config.devtools = true;
 </script>
