@@ -13,6 +13,7 @@ docker/logo/.htaccess
 
 farmdata2_modules/**/cypress/screenshots/*
 farmdata2_modules/**/cypress/videos/*
+farmdata2_modules/**/cypress/downloads/*
 
 **/__pycache__
 

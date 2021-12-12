@@ -15,7 +15,7 @@ describe('export button component', () => {
                 }
             }) 
         })
-        it.only('export button exists', () =>{
+        it('export button exists', () =>{
             cy.get('[data-cy=download-btn')
                 .should('exist')
         })
@@ -37,8 +37,9 @@ describe('export button component', () => {
                 .should('exist')
         })
 
-        it('the headers appear in the csv correctly', () => {
-
+        it.only('the headers appear in the csv correctly', () => {
+            cy.get('[data-cy=download-btn]').should('exist')
+                .click()
         })
 
         it('the rows appear in the csv correctly', () => [
