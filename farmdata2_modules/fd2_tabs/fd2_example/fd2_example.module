@@ -93,6 +93,15 @@ function fd2_example_menu() {
     'weight' => 105,
   );
 
+  $items['farm/fd2-example/api'] = array(
+    'title' => 'API',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('api.html'),
+    'access arguments' => array('view fd2 example'),
+    'weight' => 110,
+  );
+
   return $items;
 };
 

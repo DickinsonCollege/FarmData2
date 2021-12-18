@@ -1,0 +1,85 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="api" v-cloak> 
+
+    <p>The farmdata2_modules/FarmData2/fd2_tabs/resources/FarmOSAPI.js file provide a library of JavaScript convenience functions for accessing the FarmOS API.  This page gives examples of how to use these functions to interact with the farmOS databse (E.g. fetch, create, update and delete logs). The js library is included in the page by the fd2_example.info file.</p>
+
+    <b>Get Farm Info</b>
+    <p>The button below fetches information about the farm and displays a few pieces of it.
+    </p>
+    <UL>
+        <button data-cy='get-farm-info' @click='fetchFarmInfo'>Fetch Farm Info</button>
+        <button data-cy='clear-farm-info' @click='farmInfo = null'>Clear</button>
+        <p>Results:</p>
+        <UL>
+            <LI>Farm Name: <span data-cy='farm-name'>{{ farmName }}</span></LI>
+        </UL>
+    </UL>
+
+    <b>Fetching Logs</b>
+    <p>The button below fetches the harvest logs from 04/01/2020 through 04/05/2020 and displays the quantiies and names of the crops that were harvested.</p>
+    <UL>
+        <button data-cy='fetch-harvest-logs' @click='fetchFarmInfo'>Fetch Logs</button>
+        <p>Result:</p>
+        <UL>
+            <li></li>
+        </UL>
+    </UL>
+
+    <b>Creating a Log</b>
+
+    <b>Updating a Log</b>
+
+    <b>Deleting a Log</b>
+
+    <p>The api.spec.js file contains examples of how to test the content of this page.</p>
+</div>
+
+<script>
+// Define the Vue instance for the app.
+new Vue({
+    el: '#api',  // el: must match the id of the <div> for the app above.
+    data: {
+        // Provide easy access to the FarmDat2 variables in vue.
+        // Note: 
+        //   The JS variables fd2UserID and fd2UserName are defined in the fd2_example.module file.
+        //   They are also defined in the fd2_barn_kit and fd2_field_kit so are avaiable there as well. 
+        userID: fd2UserID,
+        userName: fd2UserName,
+
+        farmInfo: null,
+
+
+    },
+    methods: {
+        fetchFarmInfo() {
+            // Uses axios directly to fetch the farm info.  The object that is returned
+            // in the response.data is placed into the farmInfo variable. That variable
+            // is used by the farmName and farmURL computed properties to provide the 
+            // value that is rendered in the page.
+            axios
+            .get('/farm.json')
+            .then((response) => {
+                this.farmInfo = response.data
+            })
+            .catch((error) => {
+                this.farmInfo = error
+            })
+        },
+    },
+    computed: {
+        farmName() {
+            if (this.farmInfo == null) {
+                return "";
+            }
+            else {
+                return this.farmInfo.name;
+            }
+        },
+    },
+})
+
+//Allows Vue to be accessed in Dev Tools
+Vue.config.devtools = true;
+</script>
+    
