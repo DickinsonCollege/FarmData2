@@ -10,7 +10,7 @@
     <UL>
         <LI>The logged in user is {{ userName }}.</LI>
         <LI>That user's ID in the map is: 
-            <span data-cy="mappedId">{{ userToIDMap.get(userName) }}</span>
+            <span data-cy="mapped-id">{{ userToIDMap.get(userName) }}</span>
     </UL>
 
     <p>The IDToUserMap map can be used to go from a user id to a username:</p>
@@ -18,7 +18,7 @@
         <LI>The logged in user id is {{ userID }}.</LI>
         <LI>That user's name in the map is: 
             <!-- Need to convert userID to a string here because the map keys are strings -->
-            <span data-cy="mappedName">{{ idToUserMap.get(userID.toString()) }}</span>
+            <span data-cy="mapped-name">{{ idToUserMap.get(userID.toString()) }}</span>
     </UL>
 
     <p>The full list of users known to the sustem is:</p>
@@ -26,7 +26,10 @@
         <table border=1px>
             <tr><th>User ID</th><th>User Name</th></tr>
             <!-- Use the computed property sortedIDs here to order the output -->
-            <tr v-for='id in sortedIDs'><td>{{ id }}</td><td>{{ idToUserMap.get(id) }}</td></tr>
+            <!-- Also bind the data-cy attribute into the v-for index -->
+            <!-- That gives each element in the table a unique data-cy for testing. -->
+            <tr v-for='(id,i) in sortedIDs'>
+                <td :data-cy=i+'id'>{{ id }}</td><td :data-cy=i+'name'>{{ idToUserMap.get(id) }}</td></tr>
         </table>
     </UL>
 </div>
