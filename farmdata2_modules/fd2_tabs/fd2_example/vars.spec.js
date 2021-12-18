@@ -17,6 +17,10 @@ describe('Test the fd2 javascript variables defined by the module', () => {
         })
 
         it('check variables directly', () => {
+            // Note:  It would be better to use the username to user id map here
+            // so that this will work if the sample data changes.  It was not used
+            // to keep this example simple.  See the maps.spec.js file for an example
+            // using a map.
             cy.window().its('fd2UserID').should('equal',1);
             cy.window().its('fd2UserName').should('equal','admin');
         })
