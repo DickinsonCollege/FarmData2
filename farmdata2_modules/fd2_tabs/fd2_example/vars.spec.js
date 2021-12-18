@@ -13,7 +13,7 @@ describe('Thes the fd2 javascript variables defined by the module', () => {
                 return false
             })
 
-            cy.visit('/farm/fd2-example/fd2vars')
+            cy.visit('/farm/fd2-example/vars')
         })
 
         it('check variables directly', () => {
@@ -36,7 +36,7 @@ describe('Thes the fd2 javascript variables defined by the module', () => {
 
         beforeEach(() => {
             cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-example/fd2vars')
+            cy.visit('/farm/fd2-example/vars')
         })
 
         it('check variables directly', () => {
@@ -59,7 +59,7 @@ describe('Thes the fd2 javascript variables defined by the module', () => {
 
         beforeEach(() => {
             cy.login('worker1', 'farmdata2')
-            cy.visit('/farm/fd2-example/fd2vars')
+            cy.visit('/farm/fd2-example/vars')
         })
 
         it('check variables directly', () => {
