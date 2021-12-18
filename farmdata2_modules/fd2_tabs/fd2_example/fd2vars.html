@@ -10,6 +10,9 @@
 
     <p>The current values of these variables are:</p>
     <UL>
+        <!-- Note: data-cy attributes are used in tests to identify elements. -->
+        <!-- They should be unique within the page. -->
+        <!-- See fd2vars.spec.js for examples of testing these values. -->
         <LI>UserID: <span data-cy="user-id">{{ userID }}</span></LI>
         <LI>UserName: <span data-cy="user-name">{{ userName }}</span></LI>
     </UL>
