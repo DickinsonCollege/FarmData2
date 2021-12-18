@@ -69,6 +69,18 @@ function fd2_example_menu() {
     'page callback' => 'fd2_example_view',
     'page arguments' => array('ex1.html'),
     'access arguments' => array('view fd2 example'),
+    'weight' => 90,
+  );
+
+  // Add a sub-tab to the FD2 Example tab.
+  // Use this block as a model for each new sub-tab that is added.
+  // Note: The drupal cache must be flushed before a newly added sub-tab will appear.
+  $items['farm/fd2-example/fd2vars'] = array(
+    'title' => 'Vars',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('fd2vars.html'),
+    'access arguments' => array('view fd2 example'),
     'weight' => 100,
   );
 
