@@ -1,4 +1,4 @@
-describe('Thes the fd2 javascript variables defined by the module', () => {
+describe('Test the fd2 javascript variables defined by the module', () => {
 
     context('check vars as the admin user', () => {
         
