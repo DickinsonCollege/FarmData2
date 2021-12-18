@@ -84,6 +84,15 @@ function fd2_example_menu() {
     'weight' => 100,
   );
 
+  $items['farm/fd2-example/maps'] = array(
+    'title' => 'Maps',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('maps.html'),
+    'access arguments' => array('view fd2 example'),
+    'weight' => 105,
+  );
+
   return $items;
 };
 
