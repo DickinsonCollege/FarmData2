@@ -187,11 +187,10 @@ FarmData2 modules, sub-tabs and components are all tested using the Cypress test
 
 Cypress end-to-end tests are used to confirm that modules and sub-tabs operate correctly. They do this by interacting with the live development instance of FarmData2.  Cypress end-to-end tests will typically log into FarmData2 as a specific user, visit a specific page, interact with the elements of that page (e.g. click buttons, enter text, etc) and then make assertions about the resulting changes to the page. 
 
-Each sub-tab will have have an associated set of end-to-end tests. For example, `ex1.spec.js` file contains the end-to-end tests for the sub-tab defined by the `ex1.html` file (i.e. the _Ex1_ sub-tab on the _FD2 Example_ tab). Note that, by convention, the name of the `spec` file has the same prefix as the sub-tab's `.html` file.  If there are multiple test files for the same `html` file use additional prefixes to identify their purpose (i.e. `ex1.pqr.spec.js`, where `pqr` would provide addtional clarifying information about the tests in that file.
+Each sub-tab will have have an associated set of end-to-end tests. For example, `fd2vars.spec.js` file contains the end-to-end tests for the sub-tab defined by the `fd2vars.html` file (i.e. the _Vars_ sub-tab on the _FD2 Example_ tab). Note that, by convention, the name of the `spec` file has the same prefix as the sub-tab's `.html` file.  If there are multiple test files for the same `html` file use additional prefixes to identify their purpose (i.e. `fd2vars.pqr.spec.js`, where `pqr` would provide addtional clarifying information about the tests in that file.
 
 The `cypress` directory within a module directory (e.g.`fd2_example/cypress`) will contain _module level_ tests. These are tests that apply to the main tab rather than to individual sub-tabs.  For example, in the `fd2_example` module:
-   - `fd2vars.spec.js` tests that the Predefined Module Variables (discuessed above) exist and are accessible.
-   - `visibility.spec.js` tests that the _FD2 Example_ tab is visible for the `admin`, _manager_ and _worker_ users but not for a _guest_.
+   - `visibility.spec.js` tests that the _FD2 Example_ tab is visible for the _admin_, _manager_ and _worker_ users but not for a _guest_.
 
 Resources and references for writing Cypress end-to-end tests can be found in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md#cypress) file.  
 
