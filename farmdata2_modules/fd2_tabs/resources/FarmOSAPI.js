@@ -127,6 +127,30 @@ function getSessionToken() {
     })
 }
 
+function getRecord(url, id, sessionToken) {
+    // Get a single record with the given from the database using the url.
+    // The url can be any farmOS endpoint that can be used to fetch a record
+    // by id.
+    // Use getSessionToken prior to calling this function to get the token.
+    return new Promise((resolve, reject) => {
+        axios
+        .get(url, data, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': sessionToken,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+                resolve(response)
+        })
+        .catch((error) => {
+            reject(error)
+            console.log(error.response)
+        })
+    })
+}
+
 function createRecord(url, data, sessionToken) {
     // Create a new record in the database using the given url and data.
     // The url can be any farmOS endpoint that can be used for creating records.

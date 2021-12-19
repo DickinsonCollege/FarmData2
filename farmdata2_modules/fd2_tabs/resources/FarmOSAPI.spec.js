@@ -4,6 +4,7 @@ var getSessionToken = FarmOSAPI.getSessionToken
 var updateRecord = FarmOSAPI.updateRecord
 var createRecord = FarmOSAPI.createRecord
 var deleteRecord = FarmOSAPI.deleteRecord
+var getRecord = FarmOSAPI.getRecord
 
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
@@ -19,85 +20,62 @@ var getLogTypeToIDMap = FarmOSAPI.getLogTypeToIDMap
 
 var quantityLocation = FarmOSAPI.quantityLocation
 
-describe('API Request Function', () => {
+describe('API Request Functions', () => {
     beforeEach(() => {
+        // Login as restws1, which is a user that can make api requests.
         cy.login('restws1', 'farmdata2')
     })
 
-    afterEach(() => {
-       // cy.logout()
-    })
-
     context('getAllPages API request function', () => {
-        it('Test on a request with one page.', () => {
-            cy.intercept("GET",/log\?type=farm_seeding/).as('onlyone')
+        it('Test on a request with a one page response.', () => {
 
-            let calls=0
+            let requests=0
             let testArray = []
 
-            // This wait is a bit of a hack.  
-            // Without it the first request is not intercepted.
-            // There may be a more correct way to wait?
-            cy.wait(1)
+            cy.intercept('GET',/log\?type=farm_seeding/, (req) => {
+                requests++  // count requests made on this route.
+            })
             .then(() => {
-                cy.wait('@onlyone').then(() => {
-                    calls++
+                // wrap and alias the getAllPages here.  
+                // It returns a promise that resolves when all pages have been 
+                // fetched into the array.
+                cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray), {timeout: 10000})
+                .as('done') 
+            })
 
-                    // Need to wrap testArray here because it may 
-                    // take a moment for the array to be set after the response
-                    // is received. Wrapping lets use should which automatically
-                    // retries the assertion.
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length(50)
-                    })
-                })
-
-                cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray)).as('onePage')
-                cy.get('@onePage').should(() => {
-                    expect(calls).to.equal(1)
-                })
+            // Wait here for all pages to be fetched.
+            cy.get('@done')
+            .then(() => {
+                expect(requests).to.equal(1)
+                expect(testArray).to.have.length(50)
             })
         })
 
         it('Test on a request with multiple pages', () => {
-            cy.intercept("GET","/log?type=farm_seeding&page=5").as('first')
-            cy.intercept("GET","/log?type=farm_seeding&page=6").as('second')
-            cy.intercept("GET","/log?type=farm_seeding&page=9").as('last')
-        
             let firstCalls=0
             let secondCalls=0
             let lastCalls=0
             let testArray = []
 
-            cy.wait(1)
-            .then(function() {
-                cy.wait('@first').then(() => {
-                    firstCalls++
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length(100)
-                    })
-                })
-
-                cy.wait('@second').then(() => {
-                    secondCalls++
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length(200)
-                    })
-                })
-
-                cy.wait('@last', {requestTimeout: 20000}).then(() => {
-                    lastCalls++
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length.gt(400)
-                    })
-                })
-
-                cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray)).as('multiPage')
-                cy.get('@multiPage').should(() => {
-                    expect(firstCalls).to.equal(1)
-                    expect(secondCalls).to.equal(1)
-                    expect(lastCalls).to.equal(1)
-                })
+            cy.intercept("GET","/log?type=farm_seeding&page=5", (req) => {
+                firstCalls++
+            })
+            cy.intercept("GET","/log?type=farm_seeding&page=6", (req) => {
+                secondCalls++
+            })
+            cy.intercept("GET","/log?type=farm_seeding&page=9", (req) => {
+                lastCalls++
+            })
+            .then(() => {
+                cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray), {timeout: 30000})
+                .as('done')
+            })
+        
+            cy.get('done').should(() => {
+                expect(firstCalls).to.equal(1)
+                expect(secondCalls).to.equal(1)
+                expect(lastCalls).to.equal(1)
+                expect(testArray).to.have.length.gt(400)
             })
         })
     })
