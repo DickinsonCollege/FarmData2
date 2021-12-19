@@ -345,7 +345,7 @@ describe('API Request Functions', () => {
     })
 
     context('create API request function', () => {
-        it.only('creates a new log', () => {
+        it('creates a new log', () => {
 
             let logID = -1
             let token = null
@@ -365,28 +365,35 @@ describe('API Request Functions', () => {
                 }
 
                 cy.wrap(createRecord('/log', newLog, token)).as('create')
-                cy.get('@create').should((response) => {
-                    logID = response.data.id
-                    expect(response.status).to.equal(201)
-                })
+            })
+              
+            cy.get('@create').should((response) => {
+                logID = response.data.id
+                expect(response.status).to.equal(201)
             })
             .then(() => {
-                cy.request('/log.json?id=' + logID).as('check')
-                cy.get('@check').should((response) => {
-                    expect(response.body.list.length).to.equal(1)
-                })
+                cy.wrap(getRecord(logID)).as('exists')
+            })
+
+            cy.get('@exists').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.name).to.equal('Create Test')
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
-                cy.get('@delete').should(function(response) {
-                    expect(response.status).to.equal(200)
-                })
+            })
+           .then(() => {
+                cy.wrap(getRecord(logID)).as('gone')
+            })
+
+            cy.get('@gone').should(function(response) {
+                expect(response.status).to.equal(404) // 404 - not found
             })
         })
     })    
 
     context('update function testing', () => {
-        it('change the crop of a transplanting log', () => {
+        it('change the name of an observation log', () => {
             let logID = -1
             let token = null
 
@@ -406,10 +413,11 @@ describe('API Request Functions', () => {
                 }
 
                 cy.wrap(createRecord('/log', newLog, token)).as('create')
-                cy.get('@create').should((response) => {
-                    logID = response.data.id
-                    expect(response.status).to.equal(201)
-                })
+            })
+
+            cy.get('@create').should((response) => {
+                logID = response.data.id
+                expect(response.status).to.equal(201)
             })
             .then(() => {
                 update = {
@@ -417,25 +425,29 @@ describe('API Request Functions', () => {
                 }
 
                 cy.wrap(updateRecord('/log/' + logID, update, token)).as('update')
-                cy.get('@update').should((response) => {
-                    expect(response.status).to.equal(200)
-                })
+            })
+
+            cy.get('@update').should((response) => {
+                expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.request('/log.json?id=' + logID).as('check')
-                cy.get('@check').should((response) => {
-                    expect(response.body.list.length).to.equal(1)
-                    expect(response.body.list[0].name).to.equal("Update Test Updated")
-                })
+                cy.wrap(getRecord(logID)).as('check')
+            })
+
+            cy.get('@check').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.name).to.equal('Update Test Updated')
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
-                cy.get('@delete').should(function(response) {
-                    expect(response.status).to.equal(200)
-                })
+            })
+
+            cy.get('@delete').should(function(response) {
+                expect(response.status).to.equal(200)
             })
         })
     })
+
     context('test quantity location function', () => {
             let quantity = [{
                 "measure": "length", 
@@ -484,5 +496,4 @@ describe('API Request Functions', () => {
                 expect(quantityLocation(quantity, 'Yeehaw')).to.equal(-1)
             })
         })
-        
     })
