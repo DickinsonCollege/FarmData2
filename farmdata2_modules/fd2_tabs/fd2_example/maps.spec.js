@@ -11,9 +11,9 @@ describe('Test the use of maps between farmOS ids and values', () => {
     beforeEach(() => {
 
         // Setup to wait for the IDToUserMap and UserToIDMap in the page to load.
+        // We just need to know that the page is loading these and add this here.
         cy.server()
         cy.route('GET', 'user').as('usermap')
-
 
         cy.login('manager1', 'farmdata2')
         .then(() => {
