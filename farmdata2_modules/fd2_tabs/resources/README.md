@@ -263,12 +263,12 @@ getSessionToken().then((token) => {
 
 ---
 
-## **getRecord(id)** ##
-* **Description:** Fetches the indicated log from the database using the /log endpoint.
+## **getRecord(url)** ##
+* **Description:** Fetches the indicated a record from the specified endpoint. The endpoint should include the record number.
 
 * **Returns:** A Promise (doesn't need to be used but will return the new complete record)
     ```Javascript
-    getRecord("123").then((response) => {
+    getRecord("/log/123").then((response) => {
         console.log(response)
     })
     ```
@@ -276,7 +276,7 @@ getSessionToken().then((token) => {
 * *url:*
     * **Structure:** String  
         ```Javascript 
-        "/log?type=farm_seeding"
+        "/log/1234"
         ```
     * **Description:** Determines the type of record and the id of the record being fetched.
             

@@ -129,13 +129,12 @@ function getSessionToken() {
     })
 }
 
-function getRecord(id) {
-    // Get a single log with the given id from the database.  The
-    // log will be fetched from the URL /log/1234 where 1234 is the 
-    // provided id.
+function getRecord(url) {
+    // Get a record from the database using the provide url.  This function
+    // assumes that the response is a single page.
     return new Promise((resolve, reject) => {
         axios
-        .get('/log/' + id)
+        .get(url)
         .then((response) => {
             resolve(response)
         })

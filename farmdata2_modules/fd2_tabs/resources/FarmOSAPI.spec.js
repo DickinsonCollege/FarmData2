@@ -274,9 +274,9 @@ describe('API Request Functions', () => {
     })
 
     context('getRecord API request function', () => {
-        it('gets an existing record', () => {
+        it('gets an existing log', () => {
 
-            cy.wrap(getRecord(3377)).as('done')
+            cy.wrap(getRecord('/log/3377')).as('done')
 
             cy.get('@done').should(function(response) {
                 expect(response.status).to.equal(200)
@@ -284,8 +284,17 @@ describe('API Request Functions', () => {
             })
         })
 
+        it('gets an existing asset', () => {
+            cy.wrap(getRecord('/farm_asset/1')).as('done')
+
+            cy.get('@done').should(function(response) {
+                expect(response.status).to.equal(200)
+                expect(response.data.id).to.equal('1')
+            })
+        })
+
         it('attempt to get a non-existent record',() => {
-            cy.wrap(getRecord(999999)).as('done')
+            cy.wrap(getRecord('/log/9999999')).as('done')
 
             cy.get('@done').should(function(response) {
                 expect(response.status).to.equal(404)
@@ -335,7 +344,7 @@ describe('API Request Functions', () => {
                 expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.wrap(getRecord(logID)).as('check')
+                cy.wrap(getRecord('/log/' + logID)).as('check')
             })
 
             cy.get('@check').should(function(response) {
@@ -372,7 +381,7 @@ describe('API Request Functions', () => {
                 expect(response.status).to.equal(201)
             })
             .then(() => {
-                cy.wrap(getRecord(logID)).as('exists')
+                cy.wrap(getRecord('/log/' + logID)).as('exists')
             })
 
             cy.get('@exists').should((response) => {
@@ -383,7 +392,7 @@ describe('API Request Functions', () => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
             })
            .then(() => {
-                cy.wrap(getRecord(logID)).as('gone')
+                cy.wrap(getRecord('/log/' + logID)).as('gone')
             })
 
             cy.get('@gone').should(function(response) {
@@ -431,7 +440,7 @@ describe('API Request Functions', () => {
                 expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.wrap(getRecord(logID)).as('check')
+                cy.wrap(getRecord('/log/' + logID)).as('check')
             })
 
             cy.get('@check').should((response) => {
