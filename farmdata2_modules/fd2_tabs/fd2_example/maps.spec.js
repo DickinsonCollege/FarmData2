@@ -11,17 +11,20 @@ describe('Test the use of maps between farmOS ids and values', () => {
     beforeEach(() => {
         cy.login('manager1', 'farmdata2')
         .then(() => {
-            // This is in the then so that we are logged in before attempting
-            // to fetch the maps.
-            getUserToIDMap().then((response) => {
-                userToIDMap = response
-            })
-            getIDToUserMap().then((response) => {
-                idToUserMap = response
-            })
+            // Once we have logged in, request the maps.
+            cy.wrap(getIDToUserMap()).as('idusermap')
+            cy.wrap(getUserToIDMap()).as('useridmap')
         })
 
-        // Becaus the page loads requests the IDToUserMap and UserToIDMap in the
+        // Wait here for the maps to have load.
+        cy.get('@useridmap').should(function(map) {
+            userToIDMap = map
+        })
+        cy.get('@idusermap').should(function(map) {
+            idToUserMap = map
+        })
+
+        // Because the page requests the IDToUserMap and UserToIDMap in the
         // created() hook, we need to be sure to wait for those to complete before
         // going on with the tests. Othewise we can get intermittent 403 errors when 
         // the test ends before the map has loaded in the page.
