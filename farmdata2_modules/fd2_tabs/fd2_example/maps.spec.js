@@ -33,6 +33,7 @@ describe('Test the use of maps between farmOS ids and values', () => {
         
         cy.visit('/farm/fd2-example/maps')
 
+        // Wait here for the maps to load in the page.
         cy.wait(['@usermap', '@usermap'])
     })
 
