@@ -28,8 +28,7 @@ describe('Test the use of maps between farmOS ids and values', () => {
         // created() hook, we need to be sure to wait for those to complete before
         // going on with the tests. Othewise we can get intermittent 403 errors when 
         // the test ends before the map has loaded in the page.
-        cy.server()
-        cy.route('GET', 'user').as('usermap')
+        cy.intercept('GET', 'user').as('usermap')
         
         cy.visit('/farm/fd2-example/maps')
 
