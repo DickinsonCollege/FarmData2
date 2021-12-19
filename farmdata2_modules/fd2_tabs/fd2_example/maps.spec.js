@@ -12,11 +12,13 @@ describe('Test the use of maps between farmOS ids and values', () => {
         cy.login('manager1', 'farmdata2')
         .then(() => {
             // Once we have logged in, request the maps.
+            // wrap allows us to wait for the asynchronus API requests
+            // to complete (see cy.get just below). 
             cy.wrap(getIDToUserMap()).as('idusermap')
             cy.wrap(getUserToIDMap()).as('useridmap')
         })
 
-        // Wait here for the maps to have load.
+        // Wait here for the maps to load in the tests.
         cy.get('@useridmap').should(function(map) {
             userToIDMap = map
         })
@@ -37,7 +39,7 @@ describe('Test the use of maps between farmOS ids and values', () => {
     })
 
     it('check usermame to user id mapping', () => {
-        // Use the map here so that this works if sample data changes.
+        // Use the map here (and below) so that this works if sample data changes.
         cy.get('[data-cy=mapped-id]')
            .should('have.text', userToIDMap.get('manager1'))
     })
