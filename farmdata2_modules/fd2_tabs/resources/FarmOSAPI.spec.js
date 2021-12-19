@@ -1,4 +1,5 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
+
 var getAllPages = FarmOSAPI.getAllPages
 var getSessionToken = FarmOSAPI.getSessionToken
 var updateRecord = FarmOSAPI.updateRecord
@@ -115,6 +116,7 @@ describe('API Request Functions', () => {
                 })
             })
         })
+
         it('Crop map functions get the proper name/id for the crops', () => {
             //first and last of the first page of the response
             let arugulaID = -1
@@ -155,6 +157,7 @@ describe('API Request Functions', () => {
                 })
             })
         })
+
         it('Area map functions get the proper name/id for the areas', () => {
             let aID = -1
             let zID = -1
@@ -189,6 +192,7 @@ describe('API Request Functions', () => {
                 })
             })
         })
+
         it('Unit map functions get the proper name/id for the units',() => {
             let seedsID = -1
             let rowFeetID = -1
@@ -223,6 +227,7 @@ describe('API Request Functions', () => {
                 })
             })
         })
+
         it('Log Type map functions get the proper name/id for the log types', () => {
             let directSeedingsID = -1
             let traySeedingsID = -1
@@ -263,16 +268,32 @@ describe('API Request Functions', () => {
         it('returns a token when it resolves', () => {
             getSessionToken().then(token => {
                 expect(token).to.not.be.null
-            })
-        })
-        it('returns a token of length 43', () => {
-            getSessionToken().then(token => {
                 expect(token.length).to.equal(43)
             })
         })
     })
 
-    context('delete API request function', () => {
+    context('getRecord API request function', () => {
+        it('gets an existing record', () => {
+
+            cy.wrap(getRecord(3377)).as('done')
+
+            cy.get('@done').should(function(response) {
+                expect(response.status).to.equal(200)
+                expect(response.data.id).to.equal('3377')
+            })
+        })
+
+        it('attempt to get a non-existent record',() => {
+            cy.wrap(getRecord(999999)).as('done')
+
+            cy.get('@done').should(function(response) {
+                expect(response.status).to.equal(404)
+            })
+        })
+    })
+
+    context('deleteRecord API request function', () => {
         it('deletes a log', () => {
             let logID = -1
             let token = null
@@ -300,28 +321,31 @@ describe('API Request Functions', () => {
                 }
 
                 cy.request(req).as('create')
-                cy.get('@create').should(function(response) {
-                    expect(response.status).to.equal(201)
-                    logID = response.body.id
-                })
+            })
+
+            cy.get('@create').should(function(response) {
+                expect(response.status).to.equal(201)
+                logID = response.body.id
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
-                cy.get('@delete').should((response) => {
-                    expect(response.status).to.equal(200)
-                })
+            })
+
+            cy.get('@delete').should((response) => {
+                expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.request('/log.json?type=farm_observation&id=' + logID).as('check')
-                cy.get('@check').should(function(response) {
-                    expect(response.body.list.length).to.equal(0)
-                })
+                cy.wrap(getRecord(logID)).as('check')
+            })
+
+            cy.get('@check').should(function(response) {
+                expect(response.status).to.equal(404) // 404 - not found
             })
         })
     })
 
     context('create API request function', () => {
-        it('creates a new log', () => {
+        it.only('creates a new log', () => {
 
             let logID = -1
             let token = null

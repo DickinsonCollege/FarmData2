@@ -104,7 +104,8 @@ function getMap(url, key, value){
             )))
         })
         .catch(function(error) {
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -122,31 +123,25 @@ function getSessionToken() {
             resolve(token)
         })
         .catch(function(error){
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
         })
     })
 }
 
-function getRecord(url, id, sessionToken) {
-    // Get a single record with the given from the database using the url.
-    // The url can be any farmOS endpoint that can be used to fetch a record
-    // by id.
-    // Use getSessionToken prior to calling this function to get the token.
+function getRecord(id) {
+    // Get a single log with the given id from the database.  The
+    // log will be fetched from the URL /log/1234 where 1234 is the 
+    // provided id.
     return new Promise((resolve, reject) => {
         axios
-        .get(url, data, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': sessionToken,
-                'Content-Type': 'application/json'
-            }
-        })
+        .get('/log/' + id)
         .then((response) => {
-                resolve(response)
+            resolve(response)
         })
         .catch((error) => {
-            reject(error)
             console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -168,11 +163,11 @@ function createRecord(url, data, sessionToken) {
             }
         })
         .then((response) => {
-                resolve(response)
+            resolve(response)
         })
         .catch((error) => {
-            reject(error)
             console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -199,7 +194,8 @@ function updateRecord(url, updateData, sessionToken){
             resolve(response)
         })
         .catch(function(error) {
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
         }) 
     })
 }
@@ -223,7 +219,8 @@ function deleteRecord(url, sessionToken) {
             resolve(response)
         })
         .catch((error) => {
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -258,6 +255,7 @@ try {
         getIDToLogTypeMap: getIDToLogTypeMap,
         getLogTypeToIDMap: getLogTypeToIDMap,
         getSessionToken: getSessionToken,
+        getRecord: getRecord,
         deleteRecord: deleteRecord,
         createRecord: createRecord,
         updateRecord: updateRecord,
