@@ -1,8 +1,16 @@
 <div>
     <h3>FarmData2 Example Module</h3>
     <p data-cy='intro'>A sample module for learning about and experimenting with FarmData2 modules.</p>
-    <p data-cy='detail'>This module provides examples of how to create and use common UI elements, make API requests and also how to perform testing.  It illustrates a number of the common idioms that are used in FarmData2 modules.  It also serves as a template for other modules such as the FieldKit (fd2_field_kit) and the BarnKit (fd2_barn_kit).</p>
 
+    <p data-cy='detail'>This module provides examples of how to create and use common UI elements, make API requests and also how to perform Cypress testing.  It illustrates a number of the common idioms that are used in FarmData2 modules.  It also serves as a template for other modules such as the FieldKit (fd2_field_kit) and the BarnKit (fd2_barn_kit).</p>
 
-    <p>Examples of how to use Cypress to test the elements on this page can be found in the info.spec.js file.</p>
+    <p>Each of the provided sub-tabs is described briefly here:</p>
+    <UL>
+        <LI><b>Info:</b>: This page ;)</LI>
+        <LI><b>Vars</b>: Illustrates how to access some variables predefined by FarmData2 (e.g. the name and id of the logged in user).</LI>
+        <LI><b>Maps</b>: Gives an example of using one of the maps defined for converting between textual names for things and their id's in farmOS (e.g. usernames and user ids, or crop names and crop ids.)</LI>
+        <LI><b>API</b>: Demonstrates how to use FarmData2's convenience functions for accessing FarmData2 data through the farmOS API.</LI>
+    </UL>
+
+    <p>Each of the above tabs is defined in its own html file (e.g. info.html, vars.html...).  A Cypress test suite for each page is included in an associated spec file (e.g. info.spec.html, vars.spec.html).</p>
 </div>

@@ -61,8 +61,8 @@ new Vue({
         },
     },
     created() {
-        // Use the library functions to load the maps into the Vue variables
-        // when this page is created.
+        // Use the FarmData2 library functions to load the maps into the 
+        // Vue variables when this page is created.
         getUserToIDMap().then((response) => {
             this.userToIDMap = response
         })

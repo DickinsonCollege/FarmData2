@@ -34,10 +34,13 @@ describe('test some api calls in a page', () => {
             cropToIDMap = map
         })
 
-        // Because the page requests the CropToIDMap and the session token in the
-        // created() hook, we need to be sure to wait for those to complete before
-        // going on with the tests. Othewise we can get intermittent 403 errors when 
-        // the test ends before the map has loaded in the page.
+        // The tests make use of the CropToIDMap and the session token in the page
+        // (e.g. by clicking on buttons that use them.) Thus, we need to be sure 
+        // these resources have loaded into the page before the tests continue.
+        // These resources are requested in the created() hook in the page's Vue instance.
+        // So we setup a wait for the requests that load that content to be completed
+        // before going on with the tests.
+        // (see: https://docs.cypress.io/guides/guides/network-requests#Waiting)
         cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
         cy.intercept('GET', 'restws/session/token').as('sessiontok')
 
@@ -194,8 +197,8 @@ describe('test some api calls in a page', () => {
             let url = null
             
             cy.intercept({
-                method: '+(POST|PUT)', 
-                url: /.*farm_asset.*/,
+                method: '+(POST|PUT)',  // match both the create and the updates.
+                url: /.*farm_asset.*/,  // match any route including farm_asset
             })
             .as('asset')
             .then(() => {
@@ -204,6 +207,7 @@ describe('test some api calls in a page', () => {
                 cy.get('[data-cy=update-planting]').click() // update to BEET
             })
 
+            // Wait here for the create and both updates to complete.
             cy.wait(['@asset', '@asset', '@asset'])
 
             // Get the record to check the update.
@@ -214,7 +218,7 @@ describe('test some api calls in a page', () => {
                 cy.wrap(getRecord(url)).as('fetch')
             })
 
-            // Check that the crop has been changed from SPINACH to BEET
+            // Check that the crop has been changed from SPINACH back to BEET
             cy.get('@fetch').should((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
                 expect(response.data.crop[0].id).to.equal(cropToIDMap.get('BEET'))
@@ -232,9 +236,6 @@ describe('test some api calls in a page', () => {
         })
 
         it('asset is deleted', () => {
-            let plantingID = null
-            let url = null
-
             // Create the asset by clicking the button.
             cy.get('[data-cy=create-planting]').click()
             cy.get('[data-cy=planting-status]')
@@ -242,17 +243,11 @@ describe('test some api calls in a page', () => {
 
             // The assest has been created, so now we can
             // delete it by clicking the button
-            cy.get('[data-cy=planting-id]')
-            .then((id) => {
-                plantingID = id.text()
-                url = '/farm_asset/' + plantingID
-                cy.wrap(deleteRecord(url, sessionToken)).as('delete')
-            })
+            cy.get('[data-cy=delete-planting]').click()
 
-            // Wait here for the record to be deleted and check that it worked.
-            cy.get('@delete').should((response) => {
-                expect(response.status).to.equal(200)  // 200 - OK/success
-            })
+            // If succssfully deleted we should get a 200 status.
+            cy.get('[data-cy=planting-status]')
+            .should('have.text', '200')  // 200 - OK/success
         })
     })
 })

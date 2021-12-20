@@ -12,30 +12,22 @@ describe('Test the use of maps between farmOS ids and values', () => {
         cy.login('manager1', 'farmdata2')
         .then(() => {
             // Once we have logged in, request the maps.
-            // wrap allows us to wait for the asynchronus API requests
-            // to complete (see cy.get just below). 
+            // Using cy.wrap allows us to wait for the asynchronus API requests
+            // to complete before we continue (see cy.get just below). 
             cy.wrap(getIDToUserMap()).as('idusermap')
             cy.wrap(getUserToIDMap()).as('useridmap')
         })
 
-        // Wait here for the maps to load in the tests.
+        // Wait here for the maps to load in the tests so that they are
+        // available as the tests are run.
         cy.get('@useridmap').should(function(map) {
             userToIDMap = map
         })
         cy.get('@idusermap').should(function(map) {
             idToUserMap = map
         })
-
-        // Because the page requests the IDToUserMap and UserToIDMap in the
-        // created() hook, we need to be sure to wait for those to complete before
-        // going on with the tests. Othewise we can get intermittent 403 errors when 
-        // the test ends before the map has loaded in the page.
-        cy.intercept('GET', 'user').as('usermap')
         
         cy.visit('/farm/fd2-example/maps')
-
-        // Wait here for the maps to load in the page.
-        cy.wait(['@usermap', '@usermap'])
     })
 
     it('check usermame to user id mapping', () => {
