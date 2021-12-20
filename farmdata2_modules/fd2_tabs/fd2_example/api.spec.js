@@ -69,6 +69,29 @@ describe('test some api calls in a page', () => {
         })
     })
 
+    context('check fetching of a single asset', () => {
+        it('check planting asset is fetched', () => {
+            cy.get('[data-cy=fetch-planting]').click()
+
+            cy.get('[data-cy=planting-crop]')
+                .should('have.text','STRAWBERRY')
+            cy.get('[data-cy=planting-asset]')
+                .should('contain.text','2017-08-25 STRAWBERRY SQ10')
+        })
+
+        it('check planting asset is cleared', () => {
+            cy.get('[data-cy=fetch-planting]').click()
+            cy.get('[data-cy=planting-crop]')
+                .should('have.text','STRAWBERRY')
+
+            cy.get('[data-cy=clear-planting]').click()
+            cy.get('[data-cy=planting-crop]')
+                .should('have.text','')  
+            cy.get('[data-cy=planting-asset]')
+                .should('have.text','') 
+        })
+    })
+
     context('check fetching of seeding logs', () => {
         it('spot check first/last row of table', () => {
             cy.get('[data-cy=fetch-seedings]').click()
