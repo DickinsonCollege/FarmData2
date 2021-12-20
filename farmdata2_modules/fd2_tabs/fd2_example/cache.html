@@ -1,0 +1,70 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="ui" v-cloak> 
+
+    <p>FarmData2 modules often make use of local storage to cache commonly used information (e.g. lists of all crops or areas). It can take a few moments to retrieve this data from the server, paticularly if it is also processing other requests.  Thus, caching them in local storage allows the pages load and run more quickly.  This page gives an example of how to cache the list of crops.</p>
+
+    <p>You may notice that the first time the page loads there is a short delay before the list of crops appears.  This is because it is being requested from the server and we must wait for the response before displaying the crop list. If you then reload the page, the crop list will appear instantly because it has been cached.  Clicking the "Clear the Cache" button and reloading will cause the delay to occur again.</p>
+
+    <p><b>Crops with Caching</b></p>
+    <UL>
+        <button data-cy='clear-cache' @click='clearCache'>Clear the Cache</button>
+    </UL>
+    <OL>
+        <!-- Give each LI a data-cy attribute that matches the list numbering -->
+        <LI v-for="(crop,i) in cropNames"><span :data-cy=(i+1)+'crop'>{{ crop }}</span></LI>
+    </OL>
+</div>
+
+<script>
+// Define the Vue instance for the app.
+new Vue({
+    el: '#ui',  // el: must match the id of the <div> for the app above.
+    data: {
+        // The predefined FarmData2 variables.
+        userID: fd2UserID,
+        userName: fd2UserName,
+
+        cropsResponse: null,
+        
+    },
+    methods: {
+        clearCache() {
+            localStorage.removeItem('crops')
+        }
+    },
+    computed: {
+        cropNames() {
+            if (this.cropsResponse == null) {
+                return []
+            }
+            else {
+                return this.cropsResponse.map((h) => h.name)
+            }
+        },
+    },
+    created() {
+        // If the value we are looking for is in the cache, then use it as is to start.
+        if(localStorage.getItem('crops') != null) {
+            // Need to JSON.parse it because it was stringified when we put it in there.
+            this.cropsResponse = JSON.parse(localStorage.getItem('crops'))
+        }
+        
+        // Whether we found the value in the cache or not we now want to request it again.
+        // If we didn't find it in the cache this is the first time we've been to the page
+        // and we need the data.  If we did find it in the cache, then it may have been 
+        // updated in the database since the last visit.  So, we fetch it again and then
+        // update what we are displaying.  The old value will be displayed during the time
+        // between the page load and this update.
+        let response = []
+        getAllPages('/taxonomy_term.json?bundle=farm_crops',response).then(() => {
+            localStorage.setItem('crops', JSON.stringify(response))
+            this.cropsResponse = response
+        })
+    }
+})
+
+//Allows Vue to be accessed in Dev Tools
+Vue.config.devtools = true;
+</script>
+    

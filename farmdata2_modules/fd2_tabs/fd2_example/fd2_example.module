@@ -102,6 +102,24 @@ function fd2_example_menu() {
     'weight' => 110,
   );
 
+  $items['farm/fd2-example/cache'] = array(
+    'title' => 'Cache',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('cache.html'),
+    'access arguments' => array('view fd2 example'),
+    'weight' => 115,
+  );
+
+  $items['farm/fd2-example/ui'] = array(
+    'title' => 'UI',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_example_view',
+    'page arguments' => array('ui.html'),
+    'access arguments' => array('view fd2 example'),
+    'weight' => 120,
+  );
+
   return $items;
 };
 
