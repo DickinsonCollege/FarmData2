@@ -1,0 +1,95 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="ui" v-cloak> 
+
+    <p>FarmData2 provides a number of custom Vue components and CSS styles that are used throught out the application to give it a consistent look and feel.  This page gives examples of how the components and styles are created, used and tested.</p>
+
+    <p><b>Styles</b></p>
+
+    <p><b>FieldSet</b></p>
+
+    <p><b>DropdownWithAllComponent</b></p>
+
+    <p><b>DateSelectionComponent</b></p>
+    <ul>
+        <date-selection data-cy="date-picker" 
+            @date-changed='dateChange' 
+            @click='dateClicked' 
+            earliest-date="2021-01-15" 
+            latest-date="2021-02-15" 
+            default-date="2021-01-20">
+        </date-selection>
+        <p>Result:</p>
+        <UL>
+            <LI>Chosen Date: <span data-cy="date-chosen">{{ chosenDate }}</span>
+            <i>(changes when loses focus)</i></LI> 
+            <LI>Click Events: <span data-cy="date-clicks">{{ dateClicks }}</span>
+            <i>(happens when clicked inside)</i></LI> 
+        </UL>
+    </ul>
+    
+    <p><b>DateRangeSelectionComponent</b></p>
+    <ul>
+        <date-range-selection data-cy="date-range" 
+            @start-date-changed='startDateChange' 
+            @end-date-changed='endDateChange' 
+            @click='dateRangeClicked'
+            default-start-date="2021-01-15" 
+            :default-end-date=dateRangeMaxDate>
+        </date-range-selection>
+        <p>Result:</p>
+        <UL>
+            <LI>Chosen Start Date: <span data-cy="start-date">{{ startDate }}</span></LI>
+            <LI>Chosen End Date: <span data-cy="end-date">{{ endDate }}</span></LI>
+            <LI>Click Events: <span data-cy="date-range-clicks">{{ dateRangeClicks }}</span></LI>
+        </UL>
+    </ul>
+</div>
+
+<script>
+// Define the Vue instance for the app.
+new Vue({
+    el: '#ui',  // el: must match the id of the <div> for the app above.
+    components: {
+        // Register the components used and define the tag name to be used.
+        'date-selection': DateSelectionComponent,
+        'date-range-selection': DateRangeSelectionComponent,
+        //'dropdown-with-all': DropdownWithAllComponent,
+        //'custom-table': CustomTableComponent,
+    },
+    data: {
+        // The predefined FarmData2 variables.
+        userID: fd2UserID,
+        userName: fd2UserName,
+
+        chosenDate: null,
+        dateClicks: 0,
+
+        startDate: null,
+        endDate: null,
+        dateRangeClicks: 0,
+        dateRangeMaxDate: dayjs().format("YYYY-MM-DD")
+    },
+    methods: {
+        dateChange(newDate) {
+            this.chosenDate = newDate
+        },
+        dateClicked() {
+            this.dateClicks++   // just count clicks.
+        },
+        startDateChange(newDate) {
+            this.startDate = newDate
+        },
+        endDateChange(newDate) {
+            this.endDate = newDate
+        },
+        dateRangeClicked() {
+            this.dateRangeClicks++
+        },
+    }
+})
+
+//Allows Vue to be accessed in Dev Tools
+Vue.config.devtools = true;
+</script>
+    
