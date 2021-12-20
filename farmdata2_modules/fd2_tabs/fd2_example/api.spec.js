@@ -127,7 +127,7 @@ describe('test some api calls in a page', () => {
             })
         })
 
-        it('asset is updated', () => {
+        it('asset is updated with new crop', () => {
             let plantingID = null
             let url = null
 
@@ -166,7 +166,7 @@ describe('test some api calls in a page', () => {
             })
         })
 
-        it.only('second update switches back to BEET', () => {
+        it('second update switches toggles crop', () => {
             let plantingID = null
             let url = null
             
@@ -206,11 +206,30 @@ describe('test some api calls in a page', () => {
             cy.get('@delete').should((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
             })
-
         })
 
         it('asset is deleted', () => {
-            fail()
+            let plantingID = null
+            let url = null
+
+            // Create the asset by clicking the button.
+            cy.get('[data-cy=create-planting]').click()
+            cy.get('[data-cy=planting-status]')
+            .should('have.text', '201')  // 201 = created
+
+            // The assest has been created, so now we can
+            // delete it by clicking the button
+            cy.get('[data-cy=planting-id]')
+            .then((id) => {
+                plantingID = id.text()
+                url = '/farm_asset/' + plantingID
+                cy.wrap(deleteRecord(url, sessionToken)).as('delete')
+            })
+
+            // Wait here for the record to be deleted and check that it worked.
+            cy.get('@delete').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            })
         })
     })
 })
