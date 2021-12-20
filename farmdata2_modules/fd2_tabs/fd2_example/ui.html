@@ -9,33 +9,47 @@
     <p><b>FieldSet</b></p>
 
     <p><b>DropdownWithAllComponent</b></p>
+    <UL>
+        <dropdown-with-all data-cy="crop-dropdown" 
+            includes-all 
+            default-input="All" 
+            :dropdown-list=cropList
+            @selection-changed="cropChange">
+        </dropdown-with-all>
+        <button data-cy='choose-kale' @click='pickKaleOption'>Choose Kale</button>
+        <button data-cy='add-zucchini' @click='addZucchini'>Add Zucchini</button>
+        <p>Result:</p>
+        <UL>
+            <LI>Chosen Value: <span data-cy="picked-crop">{{ pickedCrop }}</span></LI>
+        </UL>
+    </UL>
 
     <p><b>DateSelectionComponent</b></p>
     <ul>
         <date-selection data-cy="date-picker" 
-            @date-changed='dateChange' 
-            @click='dateClicked' 
             earliest-date="2021-01-15" 
             latest-date="2021-02-15" 
-            default-date="2021-01-20">
+            default-date="2021-01-20"
+            @date-changed='dateChange' 
+            @click='dateClicked'>
         </date-selection>
         <p>Result:</p>
         <UL>
             <LI>Chosen Date: <span data-cy="date-chosen">{{ chosenDate }}</span>
             <i>(changes when loses focus)</i></LI> 
             <LI>Click Events: <span data-cy="date-clicks">{{ dateClicks }}</span>
-            <i>(happens when clicked inside)</i></LI> 
+            <i>(happens when clicked inside)</i></LI>
         </UL>
     </ul>
     
     <p><b>DateRangeSelectionComponent</b></p>
     <ul>
         <date-range-selection data-cy="date-range" 
+            default-start-date="2021-01-15" 
+            :default-end-date=dateRangeMaxDate
             @start-date-changed='startDateChange' 
             @end-date-changed='endDateChange' 
-            @click='dateRangeClicked'
-            default-start-date="2021-01-15" 
-            :default-end-date=dateRangeMaxDate>
+            @click='dateRangeClicked'>
         </date-range-selection>
         <p>Result:</p>
         <UL>
@@ -44,6 +58,8 @@
             <LI>Click Events: <span data-cy="date-range-clicks">{{ dateRangeClicks }}</span></LI>
         </UL>
     </ul>
+
+    <p><b>CustomTableComponent</b></p>
 </div>
 
 <script>
@@ -52,9 +68,9 @@ new Vue({
     el: '#ui',  // el: must match the id of the <div> for the app above.
     components: {
         // Register the components used and define the tag name to be used.
+        'dropdown-with-all': DropdownWithAllComponent,
         'date-selection': DateSelectionComponent,
         'date-range-selection': DateRangeSelectionComponent,
-        //'dropdown-with-all': DropdownWithAllComponent,
         //'custom-table': CustomTableComponent,
     },
     data: {
@@ -68,9 +84,22 @@ new Vue({
         startDate: null,
         endDate: null,
         dateRangeClicks: 0,
-        dateRangeMaxDate: dayjs().format("YYYY-MM-DD")
+        dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
+
+        cropList: ['BROCCOLI','KALE','RADISH','WATERMELLON'],
+        pickedCrop: null,
+        
     },
     methods: {
+        cropChange(newCrop) {
+            this.pickedCrop = newCrop
+        },
+        pickKaleOption() {
+            this.pickedCrop = 'KALE'
+        },
+        addZucchini() {
+            this.cropList.push('ZUCCHINI')
+        },
         dateChange(newDate) {
             this.chosenDate = newDate
         },
