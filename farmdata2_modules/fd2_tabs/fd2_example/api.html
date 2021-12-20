@@ -6,6 +6,8 @@
         
     <p>This page gives examples of how to use these functions to interact with the farmOS databse (E.g. fetch, create, update and delete logs). The FarmOSAPI.js library is included in FarmData2 pages by the associated info file for the module (e.g. fd2_example.info for this page.)</p>
 
+     <p>Examples of how to use Cypress to test the elements on this page can be found in the api.spec.js file.</p>
+
     <p><b>Get Farm Info</b></p>
     <p>The button below uses the farm.json endpoint to fetch information about the farm and display the farm's name.
     </p>
@@ -64,8 +66,6 @@
             <LI>Response: <span data-cy=planting-response>{{ plantingAssetResponse }}</span></LI>
         </UL>
     </UL>
-
-    <p>The api.spec.js file contains examples of how to test the content of this page.</p>
 </div>
 
 <script>
