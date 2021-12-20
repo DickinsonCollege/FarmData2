@@ -40,7 +40,7 @@ describe('API Request Functions', () => {
                 // wrap and alias the getAllPages here.  
                 // It returns a promise that resolves when all pages have been 
                 // fetched into the array.
-                cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray), {timeout: 10000})
+                cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray))
                 .as('done') 
             })
 
@@ -68,7 +68,7 @@ describe('API Request Functions', () => {
                 lastCalls++
             })
             .then(() => {
-                cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray), {timeout: 30000})
+                cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray))
                 .as('done')
             })
         
@@ -89,7 +89,7 @@ describe('API Request Functions', () => {
             let guestID = -1
             let restws1ID = -1
 
-            cy.wrap(getUserToIDMap(), {timeout: 15000}).as('nameMap')
+            cy.wrap(getUserToIDMap()).as('nameMap')
             cy.get('@nameMap').should(function(nameToIdMap) {
                 expect(nameToIdMap).to.not.be.null
                 expect(nameToIdMap).to.be.a('Map')
@@ -102,7 +102,7 @@ describe('API Request Functions', () => {
                 restws1ID = nameToIdMap.get('restws1')
             })
             .then(() => {
-                cy.wrap(getIDToUserMap(), {timeout: 15000}).as('idMap')
+                cy.wrap(getIDToUserMap()).as('idMap')
                 cy.get('@idMap').should(function(idToNameMap) {
                     expect(idToNameMap).to.not.be.null
                     expect(idToNameMap).to.be.a('Map')
@@ -128,7 +128,7 @@ describe('API Request Functions', () => {
             let onionSpringID = -1
             let cornSweetID = -1
 
-            cy.wrap(getCropToIDMap(), {timeout: 20000}).as('cropMap')
+            cy.wrap(getCropToIDMap()).as('cropMap')
             cy.get('@cropMap').should((cropToIdMap) => {
                 expect(cropToIdMap).to.not.be.null
                 expect(cropToIdMap).to.be.a('Map')
@@ -142,7 +142,7 @@ describe('API Request Functions', () => {
                 cornSweetID = cropToIdMap.get('CORN-SWEET')
             })
             .then(() => {
-                cy.wrap(getIDToCropMap(), {timeout: 20000}).as('idMap')
+                cy.wrap(getIDToCropMap()).as('idMap')
                 cy.get('@idMap').should((idToCropMap) => {
                     expect(idToCropMap).to.not.be.null
                     expect(idToCropMap).to.be.a('Map')
@@ -165,7 +165,7 @@ describe('API Request Functions', () => {
             let chuau1ID = -1
             let chuau5ID = -1
 
-            cy.wrap(getAreaToIDMap(), {timeout: 40000}).as('areaMap')
+            cy.wrap(getAreaToIDMap()).as('areaMap')
             cy.get('@areaMap').should(function(areaToIDMap){
                 expect(areaToIDMap).to.not.be.null
                 expect(areaToIDMap).to.be.a('Map')
@@ -178,7 +178,7 @@ describe('API Request Functions', () => {
                 chuau5ID = areaToIDMap.get('CHUAU-5')           
             })
             .then(() => {
-                cy.wrap(getIDToAreaMap(), {timeout: 40000}).as('idMap')
+                cy.wrap(getIDToAreaMap()).as('idMap')
                 cy.get('@idMap').should(function(idToAreaMap){
                     expect(idToAreaMap).to.not.be.null
                     expect(idToAreaMap).to.be.a('Map')
@@ -200,7 +200,7 @@ describe('API Request Functions', () => {
             let hoursID = -1
             let peopleID = -1
 
-            cy.wrap(getUnitToIDMap(), {timeout: 10000}).as('unitMap')
+            cy.wrap(getUnitToIDMap()).as('unitMap')
             cy.get('@unitMap').should(function(unitToIDMap){
                 expect(unitToIDMap).to.not.be.null
                 expect(unitToIDMap).to.be.a('Map')
@@ -213,7 +213,7 @@ describe('API Request Functions', () => {
                 peopleID = unitToIDMap.get('PEOPLE')
             })
             .then(() => {
-                cy.wrap(getIDToUnitMap(), {timeout: 10000}).as('idMap')
+                cy.wrap(getIDToUnitMap()).as('idMap')
                 cy.get('@idMap').should(function(idToUnitMap){
                     expect(idToUnitMap).to.not.be.null
                     expect(idToUnitMap).to.be.a('Map')
@@ -235,7 +235,7 @@ describe('API Request Functions', () => {
             let transplantingsID = -1
             let animalsID = -1
 
-            cy.wrap(getLogTypeToIDMap(), {timeout: 10000}).as('logMap')
+            cy.wrap(getLogTypeToIDMap()).as('logMap')
             cy.get('@logMap').should(function(logTypeToIDMap){
                 expect(logTypeToIDMap).to.not.be.null
                 expect(logTypeToIDMap).to.be.a('Map')
@@ -248,7 +248,7 @@ describe('API Request Functions', () => {
                 animalsID = logTypeToIDMap.get('Animals')
             })
             .then(() => {
-                cy.wrap(getIDToLogTypeMap(), {timeout: 10000}).as('idMap')
+                cy.wrap(getIDToLogTypeMap()).as('idMap')
                 cy.get('@idMap').should(function(idToLogTypeMap){
                     expect(idToLogTypeMap).to.not.be.null
                     expect(idToLogTypeMap).to.be.a('Map')
