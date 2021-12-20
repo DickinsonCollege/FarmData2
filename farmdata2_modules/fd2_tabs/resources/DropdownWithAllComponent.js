@@ -43,7 +43,7 @@ let DropdownWithAllComponent = {
     },
     computed: {
         fullDropdown: function() {
-            // Copies the prop, doesn't it.
+            // Copies the prop first then adds All.
             let newList = this.dropdownList.slice(0);
             if (this.includesAll == true) {
                 newList.splice(0,0,"All");
