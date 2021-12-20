@@ -2,6 +2,7 @@
     "baseUrl": "http://172.17.0.1/",
     "integrationFolder": "farmdata2_modules",
     "testFiles": "**/*.spec.js",
+    "responseTimeout": 30000,
     "video": false,
     "screenshotOnRunFailure": false,
     "chromeWebSecurity": false,
