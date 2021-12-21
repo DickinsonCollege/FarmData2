@@ -8,41 +8,43 @@ describe('Test the UI component', () => {
     })     
 
     context('check the dropdown with all component', () => {
-        it('check default value', () => {
-            fail()
+        it('check initial value', () => {
+            cy.get('[data-cy=picked-crop]').should('have.text','All')
         })
 
         it('check item selection event handler', () => {
-            fail()
-        })
-
-        it('check item selection event handler', () => {
-            fail()
+            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+            .select("WATERMELLON")
+            cy.get('[data-cy=picked-crop]').should('have.text','WATERMELLON')
         })
 
         it('programatically set selected item', () => {
-            fail()
+            cy.get('[data-cy=choose-kale]').click()
+            cy.get('[data-cy=picked-crop]').should('have.text','KALE')
         })
 
         it('modify the list of choices', () => {
-            fail()
+            cy.get('[data-cy=add-zucchini]').click()
+            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+            .select("ZUCCHINI")
+            cy.get('[data-cy=picked-crop]').should('have.text','ZUCCHINI')
         })
     })
 
     context('check the date input component', () => {
 
         it('test click event handler', () => {
-            cy.get('[data-cy=date-clicks').should('have.text','0')
+            cy.get('[data-cy=date-clicks]').should('have.text','0')
 
             // Need to get the element with data-cy=date-select that is
             // inside of the component with data-cy=date-picker. 
             cy.get('[data-cy=date-picker] > [data-cy=date-select]').click()
 
-            cy.get('[data-cy=date-clicks').should('have.text','1')
+            cy.get('[data-cy=date-clicks]').should('have.text','1')
             cy.get('[data-cy=date-picker] > [data-cy=date-select]').click()
-            cy.get('[data-cy=date-clicks').should('have.text', '2')
+            cy.get('[data-cy=date-clicks]').should('have.text', '2')
             cy.get('[data-cy=date-picker] > [data-cy=date-select]').click()
-            cy.get('[data-cy=date-clicks').should('have.text', '3')
+            cy.get('[data-cy=date-clicks]').should('have.text', '3')
         })
 
         it('test date change event handler', () => {
@@ -63,11 +65,11 @@ describe('Test the UI component', () => {
             // Note: We do not need to specify the full path to the element, just need to 
             // disambiguate them.
             cy.get('[data-cy=start-date-select] > [data-cy=date-select]').click()
-            cy.get('[data-cy=date-range-clicks').should('have.text','1')
+            cy.get('[data-cy=date-range-clicks]').should('have.text','1')
 
             cy.get('[data-cy=end-date-select] > [data-cy=date-select]').click()
             cy.get('[data-cy=date-picker] > [data-cy=date-select]').click()
-            cy.get('[data-cy=date-range-clicks').should('have.text', '2')
+            cy.get('[data-cy=date-range-clicks]').should('have.text', '2')
         })
 
         it('check default end date', () => {

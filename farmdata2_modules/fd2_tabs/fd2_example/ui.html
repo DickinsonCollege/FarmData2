@@ -12,7 +12,7 @@
     <UL>
         <dropdown-with-all data-cy="crop-dropdown" 
             includes-all 
-            default-input="All" 
+            :default-input=pickedCrop
             :dropdown-list=cropList
             @selection-changed="cropChange">
         </dropdown-with-all>
@@ -87,7 +87,7 @@ new Vue({
         dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
 
         cropList: ['BROCCOLI','KALE','RADISH','WATERMELLON'],
-        pickedCrop: null,
+        pickedCrop: "All",
         
     },
     methods: {
