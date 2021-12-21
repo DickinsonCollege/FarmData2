@@ -7,6 +7,28 @@ describe('Test the UI component', () => {
         cy.visit('/farm/fd2-example/ui')
     })     
 
+    context('check the dropdown with all component', () => {
+        it('check default value', () => {
+            fail()
+        })
+
+        it('check item selection event handler', () => {
+            fail()
+        })
+
+        it('check item selection event handler', () => {
+            fail()
+        })
+
+        it('programatically set selected item', () => {
+            fail()
+        })
+
+        it('modify the list of choices', () => {
+            fail()
+        })
+    })
+
     context('check the date input component', () => {
 
         it('test click event handler', () => {
