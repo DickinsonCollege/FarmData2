@@ -200,7 +200,7 @@ A dropdown selection whose options can dynamically change based of the props. Wh
     "Lettuce"
     ```
 * **Default:** null
-* **Description:** If specified, the default input will be what is initially selected before the user makes a selection.
+* **Description:** If specified, the default input will be what is initially selected before the user makes a selection.  Changing the value of the prop in the page will change the selection in the dropdown to match. If the prop is set to null or to a value not in dropdown-list (or All) then no item will be selected.
 
 ### **Emitted Events** ###
 #### *selection-changed:* ####
