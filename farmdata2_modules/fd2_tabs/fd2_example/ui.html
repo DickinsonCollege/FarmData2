@@ -2,11 +2,7 @@
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="ui" v-cloak> 
 
-    <p>FarmData2 provides a number of custom Vue components and CSS styles that are used throught out the application to give it a consistent look and feel.  This page gives examples of how the components and styles are created, used and tested.</p>
-
-    <p><b>Styles</b></p>
-
-    <p><b>FieldSet</b></p>
+    <p>FarmData2 provides a number of custom Vue components, bootstrap elements and CSS styles that are used throught the application to give it a consistent look and feel.  This page gives examples of how the components and styles are created, used and tested (see ui.spec.js).</p>
 
     <p><b>DropdownWithAllComponent</b></p>
     <UL>
@@ -15,6 +11,7 @@
             :default-input=pickedCrop
             :dropdown-list=cropList
             @selection-changed="cropChange">
+        Pick a Crop: 
         </dropdown-with-all>
         <button data-cy='choose-kale' @click='pickKaleOption'>Choose Kale</button>
         <button data-cy='add-zucchini' @click='addZucchini'>Add Zucchini</button>
@@ -32,6 +29,7 @@
             default-date="2021-01-20"
             @date-changed='dateChange' 
             @click='dateClicked'>
+        Choose a Date:
         </date-selection>
         <p>Result:</p>
         <UL>
@@ -60,6 +58,39 @@
     </ul>
 
     <p><b>CustomTableComponent</b></p>
+
+    <custom-table data-cy="test-table"
+        can-delete 
+        can-edit
+        :headers="tableHeaders" 
+        :input-options="tableinputTypes"
+        :rows="tableData" 
+        :visible-columns="tableVisibleColumns" 
+        @row-deleted="deleteTableRow"
+        @row-edited="updateTableRow">
+    </custom-table>
+
+    <p><b>Loading Spinner</b></p>
+
+    <p><b>FieldSets</b></p>
+    <!-- A fieldset groups a collection of input elements to create a form -->
+    <fieldset class="panel panel-default">
+        <!--Legend is used to create a header in the fieldset-->
+        <legend class="panel-heading fd2-legend">
+            Label for the Panel
+        </legend>
+
+        <center>
+            <p>Layout content for the panel here.</p>
+
+            <dropdown-with-all 
+                includes-all 
+                :dropdown-list=cropList>
+            Crop:
+            </dropdown-with-all>
+        </center>
+    </fieldset>
+
 </div>
 
 <script>
@@ -71,7 +102,7 @@ new Vue({
         'dropdown-with-all': DropdownWithAllComponent,
         'date-selection': DateSelectionComponent,
         'date-range-selection': DateRangeSelectionComponent,
-        //'custom-table': CustomTableComponent,
+        'custom-table': CustomTableComponent,
     },
     data: {
         // The predefined FarmData2 variables.
@@ -89,6 +120,21 @@ new Vue({
         cropList: ['BROCCOLI','KALE','RADISH','WATERMELLON'],
         pickedCrop: "All",
         
+        tableHeaders: ['ID', 'Item', 'Size', 'Color', 'Count', 'Date'],
+        tableinputTypes: [
+            {'type': 'no-input'},
+            {'type': 'text'},
+            {'type': 'dropdown', 'value': ['S', 'M', 'L']},
+            {'type': 'dropdown', 'value': ['Green', 'Blue', 'Black', 'Red']},
+            {'type': 'number'},
+            {'type': 'date'}
+        ],
+        tableData: [
+            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01']},
+            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01']},
+            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01']},
+        ],
+        tableVisibleColumns: [false, true, true, true, true, false],
     },
     methods: {
         cropChange(newCrop) {
@@ -114,6 +160,12 @@ new Vue({
         },
         dateRangeClicked() {
             this.dateRangeClicks++
+        },
+        deleteTableRow() {
+
+        },
+        updateTableRow() {
+
         },
     }
 })

@@ -3,6 +3,12 @@
  display:none;
 }
 
+fieldset legend.fd2-legend {
+    background-color: #da4f3f !important;
+    color: white !important;
+    font-size: x-large;
+}
+
 .sticky-header th {
   background: #d9230f;
   color: white;
