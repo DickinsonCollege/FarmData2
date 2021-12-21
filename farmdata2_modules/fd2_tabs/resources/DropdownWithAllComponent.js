@@ -21,12 +21,20 @@ let DropdownWithAllComponent = {
         } 
     }, 
     data() {
-        return {
-            selectedOption: this.defaultInput,
+        return { selectedOption: this.defaultInput }
+    },
+    watch: {
+        defaultInput(newVal) {
+            if(this.fullDropdown.includes(newVal)) {
+                this.selectedOption = newVal;
+            }
+            else {
+                this.selectedOption = null;
+            }
         }
     },
     mounted() {
-            this.selectionChanged();
+        this.selectionChanged();
     },
     methods: {
         selectionChanged: function() {
@@ -35,10 +43,10 @@ let DropdownWithAllComponent = {
     },
     computed: {
         fullDropdown: function() {
-            let newList = this.dropdownList;
+            // Copies the prop first then adds All.
+            let newList = this.dropdownList.slice(0);
             if (this.includesAll == true) {
                 newList.splice(0,0,"All");
-                //newList.push("All");
             }
             return newList;
         }
