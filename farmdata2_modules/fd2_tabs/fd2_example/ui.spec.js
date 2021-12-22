@@ -93,4 +93,54 @@ describe('Test the UI component', () => {
             cy.get('[data-cy=end-date]').should('have.text', '2021-01-23')
         })
      })
+
+     context('check the table component', () => {
+
+        it('table data is loaded', () => {
+            cy.get('[data-cy=r0c0]')
+                .should('have.text', '1')
+            cy.get('[data-cy=r1c1]')
+                .should('have.text', 'Pants')
+
+            // Note: There is a hidden column are counted - so r2c5
+            cy.get('[data-cy=r2c5]')
+                .should('have.text', '2020-03-01')
+        })
+
+        it('table row is deleted', () => {
+            cy.get('[data-cy=r1c0]')
+                .should('have.text', '5')
+
+            cy.get('[data-cy=delete-button-r1')
+                .click()
+            
+            cy.get('[data-cy=r1c0]')
+                .should('have.text', '9')
+        })
+
+        it('table row is edited', () => {
+            cy.get('[data-cy=edit-button-r1')
+                .click()
+
+            cy.get('[data-cy=text-input-r1c1')
+                .clear()
+                .type('Tee Shirts')
+            
+            cy.get('[data-cy=save-button-r1]')
+                .click()
+
+            cy.on("window:confirm", () => true)
+            
+            cy.get('[data-cy=r1c1]')
+                .should('have.text','Tee Shirts')
+        })
+
+        it('table row is added', () => {
+            cy.get('[data-cy=add-data')
+                .click()
+            
+            cy.get('[data-cy=r3c0]')
+                .should('have.text', '12')
+        })
+    })
 })
