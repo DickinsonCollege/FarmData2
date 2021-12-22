@@ -1,0 +1,202 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="api" v-cloak> 
+
+    <p>FarmData2 accesses, stores and manipulated its data through the farmOS system using its API.  The farmdata2_modules/FarmData2/fd2_tabs/resources/FarmOSAPI.js file provide a library of JavaScript convenience functions for accessing the <a href='https://farmos.org/development/api/'>farmOS API</a>.
+        
+    <p>This page gives examples of how to use these functions to interact with the farmOS databse (E.g. fetch, create, update and delete logs). The FarmOSAPI.js library is included in FarmData2 pages by the associated info file for the module (e.g. fd2_example.info for this page.)</p>
+
+     <p>Examples of how to use Cypress to test the elements on this page can be found in the api.spec.js file.</p>
+
+    <p><b>Get Farm Info</b></p>
+    <p>The button below uses the farm.json endpoint to fetch information about the farm and display the farm's name.
+    </p>
+    <UL>
+        <button data-cy='get-farm-info' @click='fetchFarmInfo'>Fetch Farm Info</button>
+        <button data-cy='clear-farm-info' @click='farmInfo = null'>Clear</button>
+        <p>Result:</p>
+        <UL>
+            <LI>Farm Name: <span data-cy='farm-name'>{{ farmName }}</span></LI>
+        </UL>
+    </UL>
+
+    <p><b>Get a Single Log</b></p>
+    <p>The button below fetches the planting asset with id 3 and displays some information.  Other types of logs can be fetched by changing the endpoint that is used.</p>
+    <UL>
+        <button data-cy='fetch-planting' @click='fetchPlantingAsset'>Fetch Asset</button>
+        <button data-cy='clear-planting' @click='plantingAsset = null'>Clear</button>
+        <p>Result:</p>
+        <UL>
+            <LI>Crop: <span data-cy='planting-crop'>{{ cropName }}</span></LI>
+            <LI>Full Response:</LI>
+            <UL>
+                <p data-cy='planting-asset'>{{ plantingAsset }}</p>
+            </UL>
+        </UL>
+    </UL>
+
+    <p><b>Fetching Logs</b></p>
+    <p>The button below fetches the seeding logs from May 1, 2020 through May 5, 2020 and displays the dates, crops and locations where the crops that were seeded.</p>
+    <UL>
+        <button data-cy='fetch-seedings' @click='fetchSeedingLogs'>Fetch Logs</button>
+        <button data-cy='clear-seedings' @click='seedingLogs = []'>Clear</button>
+        <p>Result:</p>
+        <UL>
+            <table border=1px>
+                <tr><th>Date</th><th>Crop</th><th>Area</th></tr>
+                <tr v-for="(log,i) in seedingLogs">
+                    <td :data-cy=i+'date'>{{ dayjs.unix(log.timestamp).format("YYYY/MM/DD") }}</td>
+                    <td :data-cy=i+'crop'>{{ idToCropMap.get(JSON.parse(log.data).crop_tid) }}</td>
+                    <td :data-cy=i+'area'>{{ log.movement.area[0].name }}</td>
+                </tr>
+            </table>
+        </UL>
+    </UL>
+
+    <p><b>Creating/Updating/Deleting an Asset</b></p>
+    <p>The buttons below illustrate how to create, update and delete assets (logs are similar just with a differnt url). The "Make New Asset" button creates a new planting asset for a BEET on today's date by manager1.  The "Update Asset" toggles the planting between BEET and SPINICH.  The "Delete Asset" removes the asset from the database.</p>
+    <UL>
+        <button data-cy='create-planting' :disabled='plantedCrop!=null' @click='makePlantingAsset'>Make New Asset</button>
+        <button data-cy='update-planting' :disabled='plantedCrop==null' @click='updatePlantingAsset'>Update Asset</button>
+        <button data-cy='delete-planting' :disabled='plantedCrop==null' @click='deletePlantingAsset'>Delete Asset</button>
+        <p>Result:</p>
+        <UL>
+            <LI>Planting Asset ID: <span data-cy=planting-id>{{ plantingID }}</span>
+            <LI>Status: <span data-cy=planting-status>{{ plantingAssetStatus }}</span></LI>
+            <LI>Response: <span data-cy=planting-response>{{ plantingAssetResponse }}</span></LI>
+        </UL>
+    </UL>
+</div>
+
+<script>
+// Define the Vue instance for the app.
+new Vue({
+    el: '#api',  // el: must match the id of the <div> for the app above.
+    data: {
+        // Provide easy access to the FarmDat2 variables in vue.
+        // Note: 
+        //   The JS variables fd2UserID and fd2UserName are defined in the fd2_example.module file.
+        //   They are also defined in the fd2_barn_kit and fd2_field_kit so are avaiable there as well. 
+        userID: fd2UserID,
+        userName: fd2UserName,
+
+        idToCropMap: new Map(),
+        cropToIDMap: new Map(),
+
+        farmInfo: null,
+        
+        plantingAsset: null,
+
+        seedingLogs: null,
+
+        sessionToken: null,
+        plantingAssetStatus: null,
+        plantingAssetResponse: null,
+        plantingID: null,
+        plantedCrop: null,
+    },
+    methods: {
+        fetchFarmInfo() {
+            getRecord('/farm.json').then((response) => {
+                this.farmInfo = response.data
+            })
+        },
+        fetchPlantingAsset() {
+            getRecord('/farm_asset/3').then((response) => {
+                this.plantingAsset = response.data
+            })
+        },
+        fetchSeedingLogs() {
+            start = dayjs("2020-05-01","YYYY-MM-DD")
+            // Add 1 day here to get to the end of May 5th.
+            end = dayjs("2020-05-05","YYYY-MM-DD").add(1,'day')
+
+            startUnix = start.unix()
+            endUnix = end.unix()
+
+            this.seedingLogs = []
+            getAllPages('/log.json?type=farm_seeding&timestamp[gt]='+startUnix+'&timestamp[lt]='+endUnix, this.seedingLogs)
+        },
+        makePlantingAsset() {
+            let planting = {
+                "name": dayjs().format("YYYY-MM-DD") + " BEET  ALF-1",
+                "type": "planting",
+                "crop": [{
+                    "id": this.cropToIDMap.get("BEET"),
+                    "resource": "taxonomy_term"
+                }],
+            }
+            createRecord('/farm_asset', planting, this.sessionToken).then((response) => {
+                this.plantingAssetStatus = response.status
+                this.plantingAssetResponse = response.data
+                this.plantedCrop = "BEET"
+                this.plantingID = this.plantingAssetResponse.id
+            })
+        },
+        updatePlantingAsset() {
+            let update = {
+                "crop": [{
+                    "id": this.cropToIDMap.get("BEET"),
+                    "resource": "taxonomy_term"
+                }],
+            }
+
+            if (this.plantedCrop == "BEET") {
+                update.crop[0].id = this.cropToIDMap.get("SPINACH")
+                this.plantedCrop = "SPINACH"
+            }
+            else {
+                this.plantedCrop = "BEET"
+            }
+            
+            let url = '/farm_asset/' + this.plantingID
+            updateRecord(url, update, this.sessionToken).then((response) => {
+                this.plantingAssetStatus = response.status
+                this.plantingAssetResponse = response
+            })
+        },
+        deletePlantingAsset() {
+            let url = '/farm_asset/' + this.plantingID
+            deleteRecord(url, this.sessionToken).then((response) => {
+                this.plantingAssetStatus = response.status
+                this.plantingAssetResponse = response
+                this.plantedCrop = null
+                this.plantingID = null
+            })
+        }
+    },
+    computed: {
+        farmName() {
+            if (this.farmInfo == null) {
+                return "";
+            }
+            else {
+                return this.farmInfo.name;
+            }
+        },
+        cropName() {
+            if (this.plantingAsset == null) {
+                return "";
+            }
+            else {
+                return this.plantingAsset.crop[0].name;
+            }
+        }
+    },
+    created() {
+        getIDToCropMap().then((response) => {
+            this.idToCropMap = response
+        })
+        getCropToIDMap().then((response) => {
+            this.cropToIDMap = response
+        })
+        getSessionToken().then((response) => {
+            this.sessionToken = response
+        })
+    }
+})
+
+//Allows Vue to be accessed in Dev Tools
+Vue.config.devtools = true;
+</script>
+    

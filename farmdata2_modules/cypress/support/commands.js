@@ -22,7 +22,13 @@ Cypress.Commands.add("logout", () => {
 });
 
 /**
- * This work around was created by @bkucera
+ * Cypress clears the local storage between tests.  This work around
+ * can be used to copy the local storge at the end of each test 
+ * (i.e. in an afterEach) and then resore it at the start of the 
+ * the next test (i.e. in a beforeEach).
+ * 
+ * This work around was created by Michal Pietraszko (pietmichal on GitHub):
+ * https://github.com/cypress-io/cypress/issues/461#issuecomment-392070888
  */
 let LOCAL_STORAGE_MEMORY = {};
 

@@ -1,9 +1,11 @@
 var FarmOSAPI = require("./FarmOSAPI.js")
+
 var getAllPages = FarmOSAPI.getAllPages
 var getSessionToken = FarmOSAPI.getSessionToken
 var updateRecord = FarmOSAPI.updateRecord
 var createRecord = FarmOSAPI.createRecord
 var deleteRecord = FarmOSAPI.deleteRecord
+var getRecord = FarmOSAPI.getRecord
 
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
@@ -19,85 +21,62 @@ var getLogTypeToIDMap = FarmOSAPI.getLogTypeToIDMap
 
 var quantityLocation = FarmOSAPI.quantityLocation
 
-describe('API Request Function', () => {
+describe('API Request Functions', () => {
     beforeEach(() => {
+        // Login as restws1, which is a user that can make api requests.
         cy.login('restws1', 'farmdata2')
     })
 
-    afterEach(() => {
-       // cy.logout()
-    })
-
     context('getAllPages API request function', () => {
-        it('Test on a request with one page.', () => {
-            cy.intercept("GET",/log\?type=farm_seeding/).as('onlyone')
+        it('Test on a request with a one page response.', () => {
 
-            let calls=0
+            let requests=0
             let testArray = []
 
-            // This wait is a bit of a hack.  
-            // Without it the first request is not intercepted.
-            // There may be a more correct way to wait?
-            cy.wait(1)
+            cy.intercept('GET',/log\?type=farm_seeding/, (req) => {
+                requests++  // count requests made on this route.
+            })
             .then(() => {
-                cy.wait('@onlyone').then(() => {
-                    calls++
+                // wrap and alias the getAllPages here.  
+                // It returns a promise that resolves when all pages have been 
+                // fetched into the array.
+                cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray))
+                .as('done') 
+            })
 
-                    // Need to wrap testArray here because it may 
-                    // take a moment for the array to be set after the response
-                    // is received. Wrapping lets use should which automatically
-                    // retries the assertion.
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length(50)
-                    })
-                })
-
-                cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray)).as('onePage')
-                cy.get('@onePage').should(() => {
-                    expect(calls).to.equal(1)
-                })
+            // Wait here for all pages to be fetched.
+            cy.get('@done')
+            .then(() => {
+                expect(requests).to.equal(1)
+                expect(testArray).to.have.length(50)
             })
         })
 
         it('Test on a request with multiple pages', () => {
-            cy.intercept("GET","/log?type=farm_seeding&page=5").as('first')
-            cy.intercept("GET","/log?type=farm_seeding&page=6").as('second')
-            cy.intercept("GET","/log?type=farm_seeding&page=9").as('last')
-        
             let firstCalls=0
             let secondCalls=0
             let lastCalls=0
             let testArray = []
 
-            cy.wait(1)
-            .then(function() {
-                cy.wait('@first').then(() => {
-                    firstCalls++
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length(100)
-                    })
-                })
-
-                cy.wait('@second').then(() => {
-                    secondCalls++
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length(200)
-                    })
-                })
-
-                cy.wait('@last', {requestTimeout: 20000}).then(() => {
-                    lastCalls++
-                    cy.wrap(testArray).should(() => {
-                        expect(testArray).to.have.length.gt(400)
-                    })
-                })
-
-                cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray)).as('multiPage')
-                cy.get('@multiPage').should(() => {
-                    expect(firstCalls).to.equal(1)
-                    expect(secondCalls).to.equal(1)
-                    expect(lastCalls).to.equal(1)
-                })
+            cy.intercept("GET","/log?type=farm_seeding&page=5", (req) => {
+                firstCalls++
+            })
+            cy.intercept("GET","/log?type=farm_seeding&page=6", (req) => {
+                secondCalls++
+            })
+            cy.intercept("GET","/log?type=farm_seeding&page=9", (req) => {
+                lastCalls++
+            })
+            .then(() => {
+                cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray))
+                .as('done')
+            })
+        
+            cy.get('done').should(() => {
+                expect(firstCalls).to.equal(1)
+                expect(secondCalls).to.equal(1)
+                expect(lastCalls).to.equal(1)
+                expect(testArray).to.have.length.gt(400)
             })
         })
     })
@@ -110,7 +89,7 @@ describe('API Request Function', () => {
             let guestID = -1
             let restws1ID = -1
 
-            cy.wrap(getUserToIDMap(), {timeout: 15000}).as('nameMap')
+            cy.wrap(getUserToIDMap()).as('nameMap')
             cy.get('@nameMap').should(function(nameToIdMap) {
                 expect(nameToIdMap).to.not.be.null
                 expect(nameToIdMap).to.be.a('Map')
@@ -123,7 +102,7 @@ describe('API Request Function', () => {
                 restws1ID = nameToIdMap.get('restws1')
             })
             .then(() => {
-                cy.wrap(getIDToUserMap(), {timeout: 15000}).as('idMap')
+                cy.wrap(getIDToUserMap()).as('idMap')
                 cy.get('@idMap').should(function(idToNameMap) {
                     expect(idToNameMap).to.not.be.null
                     expect(idToNameMap).to.be.a('Map')
@@ -137,6 +116,7 @@ describe('API Request Function', () => {
                 })
             })
         })
+
         it('Crop map functions get the proper name/id for the crops', () => {
             //first and last of the first page of the response
             let arugulaID = -1
@@ -148,7 +128,7 @@ describe('API Request Function', () => {
             let onionSpringID = -1
             let cornSweetID = -1
 
-            cy.wrap(getCropToIDMap(), {timeout: 20000}).as('cropMap')
+            cy.wrap(getCropToIDMap()).as('cropMap')
             cy.get('@cropMap').should((cropToIdMap) => {
                 expect(cropToIdMap).to.not.be.null
                 expect(cropToIdMap).to.be.a('Map')
@@ -162,7 +142,7 @@ describe('API Request Function', () => {
                 cornSweetID = cropToIdMap.get('CORN-SWEET')
             })
             .then(() => {
-                cy.wrap(getIDToCropMap(), {timeout: 20000}).as('idMap')
+                cy.wrap(getIDToCropMap()).as('idMap')
                 cy.get('@idMap').should((idToCropMap) => {
                     expect(idToCropMap).to.not.be.null
                     expect(idToCropMap).to.be.a('Map')
@@ -177,6 +157,7 @@ describe('API Request Function', () => {
                 })
             })
         })
+
         it('Area map functions get the proper name/id for the areas', () => {
             let aID = -1
             let zID = -1
@@ -184,7 +165,7 @@ describe('API Request Function', () => {
             let chuau1ID = -1
             let chuau5ID = -1
 
-            cy.wrap(getAreaToIDMap(), {timeout: 40000}).as('areaMap')
+            cy.wrap(getAreaToIDMap()).as('areaMap')
             cy.get('@areaMap').should(function(areaToIDMap){
                 expect(areaToIDMap).to.not.be.null
                 expect(areaToIDMap).to.be.a('Map')
@@ -197,7 +178,7 @@ describe('API Request Function', () => {
                 chuau5ID = areaToIDMap.get('CHUAU-5')           
             })
             .then(() => {
-                cy.wrap(getIDToAreaMap(), {timeout: 40000}).as('idMap')
+                cy.wrap(getIDToAreaMap()).as('idMap')
                 cy.get('@idMap').should(function(idToAreaMap){
                     expect(idToAreaMap).to.not.be.null
                     expect(idToAreaMap).to.be.a('Map')
@@ -211,6 +192,7 @@ describe('API Request Function', () => {
                 })
             })
         })
+
         it('Unit map functions get the proper name/id for the units',() => {
             let seedsID = -1
             let rowFeetID = -1
@@ -218,7 +200,7 @@ describe('API Request Function', () => {
             let hoursID = -1
             let peopleID = -1
 
-            cy.wrap(getUnitToIDMap(), {timeout: 10000}).as('unitMap')
+            cy.wrap(getUnitToIDMap()).as('unitMap')
             cy.get('@unitMap').should(function(unitToIDMap){
                 expect(unitToIDMap).to.not.be.null
                 expect(unitToIDMap).to.be.a('Map')
@@ -231,7 +213,7 @@ describe('API Request Function', () => {
                 peopleID = unitToIDMap.get('PEOPLE')
             })
             .then(() => {
-                cy.wrap(getIDToUnitMap(), {timeout: 10000}).as('idMap')
+                cy.wrap(getIDToUnitMap()).as('idMap')
                 cy.get('@idMap').should(function(idToUnitMap){
                     expect(idToUnitMap).to.not.be.null
                     expect(idToUnitMap).to.be.a('Map')
@@ -245,6 +227,7 @@ describe('API Request Function', () => {
                 })
             })
         })
+
         it('Log Type map functions get the proper name/id for the log types', () => {
             let directSeedingsID = -1
             let traySeedingsID = -1
@@ -252,7 +235,7 @@ describe('API Request Function', () => {
             let transplantingsID = -1
             let animalsID = -1
 
-            cy.wrap(getLogTypeToIDMap(), {timeout: 10000}).as('logMap')
+            cy.wrap(getLogTypeToIDMap()).as('logMap')
             cy.get('@logMap').should(function(logTypeToIDMap){
                 expect(logTypeToIDMap).to.not.be.null
                 expect(logTypeToIDMap).to.be.a('Map')
@@ -265,7 +248,7 @@ describe('API Request Function', () => {
                 animalsID = logTypeToIDMap.get('Animals')
             })
             .then(() => {
-                cy.wrap(getIDToLogTypeMap(), {timeout: 10000}).as('idMap')
+                cy.wrap(getIDToLogTypeMap()).as('idMap')
                 cy.get('@idMap').should(function(idToLogTypeMap){
                     expect(idToLogTypeMap).to.not.be.null
                     expect(idToLogTypeMap).to.be.a('Map')
@@ -285,16 +268,41 @@ describe('API Request Function', () => {
         it('returns a token when it resolves', () => {
             getSessionToken().then(token => {
                 expect(token).to.not.be.null
-            })
-        })
-        it('returns a token of length 43', () => {
-            getSessionToken().then(token => {
                 expect(token.length).to.equal(43)
             })
         })
     })
 
-    context('delete API request function', () => {
+    context('getRecord API request function', () => {
+        it('gets an existing log', () => {
+
+            cy.wrap(getRecord('/log/3377')).as('done')
+
+            cy.get('@done').should(function(response) {
+                expect(response.status).to.equal(200)
+                expect(response.data.id).to.equal('3377')
+            })
+        })
+
+        it('gets an existing asset', () => {
+            cy.wrap(getRecord('/farm_asset/1')).as('done')
+
+            cy.get('@done').should(function(response) {
+                expect(response.status).to.equal(200)
+                expect(response.data.id).to.equal('1')
+            })
+        })
+
+        it('attempt to get a non-existent record',() => {
+            cy.wrap(getRecord('/log/9999999')).as('done')
+
+            cy.get('@done').should(function(response) {
+                expect(response.status).to.equal(404)
+            })
+        })
+    })
+
+    context('deleteRecord API request function', () => {
         it('deletes a log', () => {
             let logID = -1
             let token = null
@@ -322,22 +330,25 @@ describe('API Request Function', () => {
                 }
 
                 cy.request(req).as('create')
-                cy.get('@create').should(function(response) {
-                    expect(response.status).to.equal(201)
-                    logID = response.body.id
-                })
+            })
+
+            cy.get('@create').should(function(response) {
+                expect(response.status).to.equal(201)
+                logID = response.body.id
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
-                cy.get('@delete').should((response) => {
-                    expect(response.status).to.equal(200)
-                })
+            })
+
+            cy.get('@delete').should((response) => {
+                expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.request('/log.json?type=farm_observation&id=' + logID).as('check')
-                cy.get('@check').should(function(response) {
-                    expect(response.body.list.length).to.equal(0)
-                })
+                cy.wrap(getRecord('/log/' + logID)).as('check')
+            })
+
+            cy.get('@check').should(function(response) {
+                expect(response.status).to.equal(404) // 404 - not found
             })
         })
     })
@@ -363,28 +374,35 @@ describe('API Request Function', () => {
                 }
 
                 cy.wrap(createRecord('/log', newLog, token)).as('create')
-                cy.get('@create').should((response) => {
-                    logID = response.data.id
-                    expect(response.status).to.equal(201)
-                })
+            })
+              
+            cy.get('@create').should((response) => {
+                logID = response.data.id
+                expect(response.status).to.equal(201)
             })
             .then(() => {
-                cy.request('/log.json?id=' + logID).as('check')
-                cy.get('@check').should((response) => {
-                    expect(response.body.list.length).to.equal(1)
-                })
+                cy.wrap(getRecord('/log/' + logID)).as('exists')
+            })
+
+            cy.get('@exists').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.name).to.equal('Create Test')
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
-                cy.get('@delete').should(function(response) {
-                    expect(response.status).to.equal(200)
-                })
+            })
+           .then(() => {
+                cy.wrap(getRecord('/log/' + logID)).as('gone')
+            })
+
+            cy.get('@gone').should(function(response) {
+                expect(response.status).to.equal(404) // 404 - not found
             })
         })
     })    
 
     context('update function testing', () => {
-        it('change the crop of a transplanting log', () => {
+        it('change the name of an observation log', () => {
             let logID = -1
             let token = null
 
@@ -404,10 +422,11 @@ describe('API Request Function', () => {
                 }
 
                 cy.wrap(createRecord('/log', newLog, token)).as('create')
-                cy.get('@create').should((response) => {
-                    logID = response.data.id
-                    expect(response.status).to.equal(201)
-                })
+            })
+
+            cy.get('@create').should((response) => {
+                logID = response.data.id
+                expect(response.status).to.equal(201)
             })
             .then(() => {
                 update = {
@@ -415,25 +434,29 @@ describe('API Request Function', () => {
                 }
 
                 cy.wrap(updateRecord('/log/' + logID, update, token)).as('update')
-                cy.get('@update').should((response) => {
-                    expect(response.status).to.equal(200)
-                })
+            })
+
+            cy.get('@update').should((response) => {
+                expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.request('/log.json?id=' + logID).as('check')
-                cy.get('@check').should((response) => {
-                    expect(response.body.list.length).to.equal(1)
-                    expect(response.body.list[0].name).to.equal("Update Test Updated")
-                })
+                cy.wrap(getRecord('/log/' + logID)).as('check')
+            })
+
+            cy.get('@check').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.name).to.equal('Update Test Updated')
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
-                cy.get('@delete').should(function(response) {
-                    expect(response.status).to.equal(200)
-                })
+            })
+
+            cy.get('@delete').should(function(response) {
+                expect(response.status).to.equal(200)
             })
         })
     })
+
     context('test quantity location function', () => {
             let quantity = [{
                 "measure": "length", 
@@ -482,5 +505,4 @@ describe('API Request Function', () => {
                 expect(quantityLocation(quantity, 'Yeehaw')).to.equal(-1)
             })
         })
-        
     })

@@ -104,7 +104,8 @@ function getMap(url, key, value){
             )))
         })
         .catch(function(error) {
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -122,7 +123,24 @@ function getSessionToken() {
             resolve(token)
         })
         .catch(function(error){
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
+        })
+    })
+}
+
+function getRecord(url) {
+    // Get a record from the database using the provide url.  This function
+    // assumes that the response is a single page.
+    return new Promise((resolve, reject) => {
+        axios
+        .get(url)
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((error) => {
+            console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -144,11 +162,11 @@ function createRecord(url, data, sessionToken) {
             }
         })
         .then((response) => {
-                resolve(response)
+            resolve(response)
         })
         .catch((error) => {
-            reject(error)
             console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -175,7 +193,8 @@ function updateRecord(url, updateData, sessionToken){
             resolve(response)
         })
         .catch(function(error) {
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
         }) 
     })
 }
@@ -199,7 +218,8 @@ function deleteRecord(url, sessionToken) {
             resolve(response)
         })
         .catch((error) => {
-            reject(error)
+            console.log(error.response)
+            resolve(error.response)
         })
     })
 }
@@ -234,6 +254,7 @@ try {
         getIDToLogTypeMap: getIDToLogTypeMap,
         getLogTypeToIDMap: getLogTypeToIDMap,
         getSessionToken: getSessionToken,
+        getRecord: getRecord,
         deleteRecord: deleteRecord,
         createRecord: createRecord,
         updateRecord: updateRecord,
