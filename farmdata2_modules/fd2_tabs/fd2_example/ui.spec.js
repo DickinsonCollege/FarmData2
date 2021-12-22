@@ -94,7 +94,33 @@ describe('Test the UI component', () => {
         })
      })
 
-     context('check the table component', () => {
+    context('check the sample buttons', () => {
+
+        it('check initial button state', () => {
+            cy.get('[data-cy=left-button]')
+                .should('not.be.disabled')
+            cy.get('[data-cy=right-button]')
+                .should('be.disabled')
+        })
+
+        it('clicking buttons toggles state', () => {
+            cy.get('[data-cy=left-button]')
+                .click()
+            cy.get('[data-cy=left-button]')
+                .should('be.disabled')
+            cy.get('[data-cy=right-button]')
+                .should('not.be.disabled')
+
+            cy.get('[data-cy=right-button]')
+                .click()
+            cy.get('[data-cy=left-button]')
+                .should('not.be.disabled')
+            cy.get('[data-cy=right-button]')
+                .should('be.disabled')    
+        })
+    })
+
+    context('check the table component', () => {
 
         it('table data is loaded', () => {
             cy.get('[data-cy=r0c0]')
