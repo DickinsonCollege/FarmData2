@@ -20,9 +20,9 @@ let CustomTableComponent = {
                     <td v-for="(item, ci) in row.data"
                     v-if="isVisible[ci]"
                     :data-cy="'td-r'+ri+'c'+ci">
-                        <div v-if="!(rowToEditIndex==ri) || inputType[ci].type == 'no input'"
+                        <div v-if="rowToEditIndex!=ri || inputType[ci].type == 'no input'"
                         :data-cy="'r'+ri+'c'+ci"
-                        v-html="item"></div>
+                        v-html='item'></div>
                                     
                         <textarea 
                         :data-cy="'text-input-r'+ri+'c'+ci"
