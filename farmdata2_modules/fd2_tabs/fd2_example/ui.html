@@ -112,7 +112,7 @@
 
     <p><b>Loading Spinner</b></p>
     <UL>
-        <button data-cy='fetch-logs'
+        <button data-cy='fetch-seeding-logs'
             :disabled='waitingOnLogs' 
             @click='fetchSeedingLogs'>Fetch All Seeding Logs</button>
         <p>Result:</p>
@@ -123,7 +123,7 @@
             <LI>Last Log Name: <span data-cy='last-log-name'>{{ lastSeedingLogName }}</span>
         </UL>
         
-        <div data-cy="loader" 
+        <div data-cy="loading-spinner" 
         class="loader center-block" 
         v-if="waitingOnLogs"></div>
     </UL>
@@ -244,7 +244,7 @@ new Vue({
             this.waitingOnLogs = true
 
             this.seedingLogs = []
-            
+
             // Then invoke one of the FarmOSAPI methods and setup
             // what to do when the API call completes.
             let start=dayjs("2019-02-01").unix()
