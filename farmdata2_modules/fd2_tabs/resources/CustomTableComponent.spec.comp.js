@@ -309,7 +309,7 @@ describe('custom table component', () => {
     context('with different input types', () => {
         let prop= {
             rows: [
-                { id: 10, data: ['static', 'edit', 3, 'Yes', '2020-01-01']}
+                { id: 10, data: ['fixed', 'edit', 3, 'Yes', '2020-01-01'] }
             ],
             headers: ['None', 'Text', 'Number', 'Dropdown', 'Date'],
             canEdit: true,
@@ -360,8 +360,6 @@ describe('custom table component', () => {
         })
 
         it('only allows you to pick numbers in a number input', () => {
-            prop.inputOptions[0] = {'type': 'number'}
-            
             cy.get('[data-cy=edit-button-r0]')
                 .click()
 
