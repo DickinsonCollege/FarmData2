@@ -1,42 +1,87 @@
 let CustomTableComponent = {
-    template:`<div class="sticky-table">
-                    <table data-cy="custom-table" style="width:100%" class="table table-bordered table-striped">
-                        <thead>
-                            <tr class="sticky-header table-text" data-cy="table-headers">
-                                <th v-if="isVisible[index]" data-cy="headers" v-for="(header, index) in headers">{{ header }}</th>
-                                <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
-                                <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
-                                <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
-                                <th data-cy="cancel-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="table-text" data-cy="object-test" v-for="(row, index) in rows">
-                                <td v-if="isVisible[itemIndex]" data-cy="table-data" v-for="(item, itemIndex) in row.data">
-                                    <div v-if="!(rowToEditIndex==index) || inputType[itemIndex].type == 'no input'" v-html="item"></div>
+    template:
+    `<div class="sticky-table">
+        <table data-cy="table" style="width:100%" class="table table-bordered table-striped">
+            <thead>
+                <tr class="sticky-header table-text" data-cy="table-headers">
+                    <th v-for="(header, hi) in headers"
+                    v-if="isVisible[hi]" 
+                    :data-cy="'h'+hi">{{ header }}</th>
+                    <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
+                    <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
+                    <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
+                    <th data-cy="cancel-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-text" 
+                v-for="(row, ri) in rows"
+                :data-cy="'r'+ri">
+                    <td v-for="(item, ci) in row.data"
+                    v-if="isVisible[ci]"
+                    :data-cy="'td-r'+ri+'c'+ci">
+                        <div v-if="!(rowToEditIndex==ri) || inputType[ci].type == 'no input'"
+                        :data-cy="'r'+ri+'c'+ci"
+                        v-html="item"></div>
                                     
-                                    <textarea data-cy="test-input" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'text'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)"></textarea>
+                        <textarea 
+                        :data-cy="'text-input-r'+ri+'c'+ci"
+                        v-if="rowToEditIndex==ri && inputType[ci].type == 'text'" 
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)"></textarea>
                                     
-                                    <select data-cy="dropdown-table-input" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'dropdown'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)">
-                                        <option v-for="option in inputType[itemIndex].value">{{ option }}</option>
-                                    </select>
+                        <select 
+                        :data-cy="'dropdown-input-r'+ri+'c'+ci"
+                        v-if="rowToEditIndex==ri && inputType[ci].type == 'dropdown'" 
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)">
+                            <option v-for="option in inputType[ci].value">{{ option }}</option>
+                        </select>
                                     
-                                    <input data-cy="date-input" type="date" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'date'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)">
+                        <input 
+                        :data-cy="'date-input-r'+ri+'c'+ci"
+                        type="date" 
+                        v-if="rowToEditIndex==ri && inputType[ci].type == 'date'" 
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)">
                                     
-                                    <input data-cy="number-input" type="number" step="0.001" style="width: 70px;" v-if="rowToEditIndex==index && inputType[itemIndex].type == 'number'" v-model="editedRowData.data[itemIndex]" @focusout="changedCell(itemIndex)">
-                                </td>
-                                <td v-if="canEdit"> 
-                                    <button class="table-button btn btn-info" data-cy="edit-button" @click="editRow(index)" v-if="!(rowToEditIndex==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-pencil"></span></button> 
-                                    <button class="table-button btn btn-success" data-cy="save-button" v-if="rowToEditIndex==index" @click="finishRowEdit(row.id, row)"><span class="glyphicon glyphicon-check"></span></button>
-                                </td>
-                                <td v-if="canDelete"> 
-                                    <button class="table-button btn btn-danger" data-cy="delete-button" @click="deleteRow(row.id)" v-if="!(rowToEditIndex==index)" :disabled="editDeleteDisabled"><span class="glyphicon glyphicon-trash"></span></button>
-                                    <button class="table-button btn btn-danger" data-cy="cancel-button" @click="cancelRowEdit(index)" v-if="(rowToEditIndex==index)"><span class="glyphicon glyphicon-remove"></span></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>`,
+                        <input 
+                        :data-cy="'number-input-r'+ri+'c'+ci" 
+                        type="number" step="0.001" style="width: 70px;" 
+                        v-if="rowToEditIndex==ri && inputType[ci].type == 'number'"
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)">
+                    </td>
+                    <td v-if="canEdit"> 
+                        <button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
+                        @click="editRow(ri)" 
+                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button> 
+                        <button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
+                        v-if="rowToEditIndex==ri" 
+                        @click="finishRowEdit(row.id, row)">
+                            <span class="glyphicon glyphicon-check"></span>
+                        </button>
+                    </td>
+                    <td v-if="canDelete"> 
+                        <button class="table-button btn btn-danger" 
+                        :data-cy="'delete-button-r'+ri" 
+                        @click="deleteRow(row.id)" 
+                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <button class="table-button btn btn-danger"
+                        :data-cy="'cancel-button-r'+ri"
+                        @click="cancelRowEdit(ri)" 
+                        v-if="(rowToEditIndex==ri)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>`,
     props: { 
         rows: {
             type: Array,
@@ -116,7 +161,6 @@ let CustomTableComponent = {
             if(confirm("Would you like ot delete this log?")){
                 this.$emit('row-deleted', id)
             }
-            
         },
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){
