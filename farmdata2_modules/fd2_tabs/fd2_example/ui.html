@@ -81,7 +81,7 @@
             @click='addDataRow'>Add Data Row</button>
     </UL>
 
-    <p><b>FieldSets</b></p>
+    <p><b>FieldSets & Buttons</b></p>
     <!-- A fieldset groups a collection of input elements to create a form -->
     <fieldset class="panel panel-default">
         <!--Legend is used to create a header in the fieldset-->
@@ -97,10 +97,25 @@
                 :dropdown-list=cropList>
             Crop:
             </dropdown-with-all>
+
+            <div class="center-block">
+                <button data-cy="left-button" 
+                class="btn fd2-red-button"  
+                :disabled='leftButtonDisabled' 
+                @click='button1Clicked'>Click Me!</button>
+
+                <button data-cy="right-button" 
+                class="btn fd2-red-button"  
+                :disabled='!leftButtonDisabled' 
+                @click='button2Clicked'>Click Me!</button>
+                
+            </div>
         </center>
     </fieldset>
 
     <p><b>Buttons</b></p>
+
+
 
     <p><b>Loading Spinner</b></p>
 </div>
@@ -132,6 +147,8 @@ new Vue({
         cropList: ['BROCCOLI','KALE','RADISH','WATERMELLON'],
         pickedCrop: "All",
         
+        leftButtonDisabled: false,
+
         tableHeaders: ['ID', 'Item', 'Size', 'Color', 'Count', 'Date'],
         tableinputTypes: [
             {'type': 'no input'},
@@ -172,6 +189,13 @@ new Vue({
         },
         dateRangeClicked() {
             this.dateRangeClicks++
+        },
+        button1Clicked() {
+            // Just toggle the buttons for a demo.
+            this.leftButtonDisabled = true
+        },
+        button2Clicked() {
+            this.leftButtonDisabled = false
         },
         deleteTableRow(rowID) {
             for(var i=0; i < this.tableData.length; i++){
