@@ -13,8 +13,10 @@
             @selection-changed="cropChange">
         Pick a Crop: 
         </dropdown-with-all>
-        <button data-cy='choose-kale' @click='pickKaleOption'>Choose Kale</button>
-        <button data-cy='add-zucchini' @click='addZucchini'>Add Zucchini</button>
+        <button data-cy='choose-kale' 
+            @click='pickKaleOption'>Choose Kale</button>
+        <button data-cy='add-zucchini' 
+            @click='addZucchini'>Add Zucchini</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Value: <span data-cy="picked-crop">{{ pickedCrop }}</span></LI>
@@ -82,31 +84,49 @@
     </UL>
 
     <p><b>FieldSets & Buttons</b></p>
+    <UL>
     <!-- A fieldset groups a collection of input elements to create a form -->
-    <fieldset class="panel panel-default">
-        <!--Legend is used to create a header in the fieldset-->
-        <legend class="panel-heading fd2-legend">
-            Label for the Panel
-        </legend>
+        <fieldset class="panel panel-default">
+            <!--Legend is used to create a header in the fieldset-->
+            <legend class="panel-heading fd2-legend">
+                Label for the Panel
+            </legend>
 
-        <center>
-            <p>Layout content for the panel here.</p>
+            <center>
+                <p>Layout content for the panel here.</p>
 
-            <div class="center-block">
-                <button data-cy="left-button" 
-                class="btn fd2-red-button"  
-                :disabled='leftButtonDisabled' 
-                @click='button1Clicked'>Click Me!</button>
+                <div class="center-block">
+                    <button data-cy="left-button" 
+                    class="btn fd2-red-button"  
+                    :disabled='leftButtonDisabled' 
+                    @click='button1Clicked'>Click Me!</button>
 
-                <button data-cy="right-button" 
-                class="btn fd2-red-button"  
-                :disabled='!leftButtonDisabled' 
-                @click='button2Clicked'>Click Me!</button>
-            </div>
-        </center>
-    </fieldset>
+                    <button data-cy="right-button" 
+                    class="btn fd2-red-button"  
+                    :disabled='!leftButtonDisabled' 
+                    @click='button2Clicked'>Click Me!</button>
+                </div>
+            </center>
+        </fieldset>
+    </UL>
 
     <p><b>Loading Spinner</b></p>
+    <UL>
+        <button data-cy='fetch-logs'
+            :disabled='waitingOnLogs' 
+            @click='fetchSeedingLogs'>Fetch All Seeding Logs</button>
+        <p>Result:</p>
+        <UL>
+            <p>Uses the API to fetch two pages of logs when the button is clicked. A spinner appears while the pages are being fetched.  The results below will be set when the first page is returned. Then when the second page is returned the Last Log Name will change based on the last log fetched.  The spinner is hidden when the API request has been completed.</p>
+
+            <LI>First Log Name: <span data-cy='first-log-name'>{{ firstSeedingLogName }}</span>
+            <LI>Last Log Name: <span data-cy='last-log-name'>{{ lastSeedingLogName }}</span>
+        </UL>
+        
+        <div data-cy="loader" 
+        class="loader center-block" 
+        v-if="waitingOnLogs"></div>
+    </UL>
 </div>
 
 <script>
@@ -153,6 +173,9 @@ new Vue({
             {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01']},
         ],
         tableVisibleColumns: [true, true, false, true, true, true],
+
+        waitingOnLogs: false,
+        seedingLogs: [],
     },
     methods: {
         cropChange(newCrop) {
@@ -215,6 +238,39 @@ new Vue({
         //},
         addDataRow() {
             this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01']})
+        },
+        fetchSeedingLogs() {
+            // To use the spinner display it
+            this.waitingOnLogs = true
+
+            this.seedingLogs = []
+            
+            // Then invoke one of the FarmOSAPI methods and setup
+            // what to do when the API call completes.
+            let start=dayjs("2019-02-01").unix()
+            let end=dayjs("2019-05-01").unix()
+            getAllPages('/log.json?type=farm_seeding&timestamp[gt]='+start+'&timestamp[lt]='+end, this.seedingLogs)
+            .then(() => {
+                this.waitingOnLogs = false
+            })
+        },
+    },
+    computed: {
+        firstSeedingLogName() {
+            if (this.seedingLogs.length == 0) {
+                return ""
+            }
+            else {
+                return this.seedingLogs[0].name
+            }
+        },
+        lastSeedingLogName() {
+            if (this.seedingLogs.length == 0) {
+                return ""
+            }
+            else {
+                return this.seedingLogs[this.seedingLogs.length-1].name
+            }
         }
     }
 })
