@@ -32,7 +32,7 @@ Most FarmData2 front-end deveopment will consist of adding a new sub-tab to one 
 
 To add a new sub-tab to the `xyz` module:
 1. Ensure that a development instance of FarmData2 is up and running. See [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) for full instructions.
-1. Edit the `fd2_xyz.module` file to add a new `array` to the `$items` array for the new sub-tab.  The `array` for the _Ex1_ tab (shown below) is a good example to work from:
+1. Edit the `fd2_xyz.module` file to add a new `array` to the `$items` array for the new sub-tab.  The `array` for the _UI_ tab (shown below) is a good example to work from:
    ```php
    <?php
    // ... omitted code ...
@@ -40,13 +40,13 @@ To add a new sub-tab to the `xyz` module:
        
        // ... omitted code ...
 
-       $items['farm/fd2-example/ex1'] = array(
-         'title' => 'Ex1',
+       $items['farm/fd2-example/ui'] = array(
+         'title' => 'UI',
          'type' => MENU_LOCAL_TASK,
          'page callback' => 'fd2_example_view',
-         'page arguments' => array('ex1.html'),
+         'page arguments' => array('ui.html'),
          'access arguments' => array('View FD2 Example'),
-         'weight' => 100,
+         'weight' => 120,
 
          // ... omitted code ...
        );
@@ -56,10 +56,10 @@ To add a new sub-tab to the `xyz` module:
    // ... omitted code ...
    ```
    - Four elements of the `array` must be customized for your new sub-tab:
-     - `farm/fd2-example/ex1`: This is the URL to directly access the _Ex1_ sub-tab. Replace `ex1` with the URL you want for your sub-tab.
-       - Note: This string also controls the placement of the _FD2 Example_ and _Ex1_ tabs. The _FD2 Example_ tab will appear on the _Farm_ menu, which is where the _Dashboard_ tab also appears. The _Ex1_ tab will appear as a sub-tab on the _FD2 Example_ tab. The value `farm` cannot be changed. But, `fd2-example` and `ex1` can.  In particular, they are not required to match the filenames. For example, `fd2-example` does not have to match the filename `fd2_example.module` and `ex1` does not have to correspond to `ex1.html`. However, it is a good convention to follow.
-     - `title`: This defines the name of the sub-tab that appears in the _Example_ module's tab.  Replace `Ex1` with the text you want to appear as the sub-tab title.
-     - `page arguments`: This is the file that provides the content for the sub-tab. Replace `ex1.html` with the name of the `.html` file that contains the code for your new sub-tab.
+     - `farm/fd2-example/ui`: This is the URL to directly access the _UI_ sub-tab. Replace `ui` with the URL you want for your sub-tab.
+       - Note: This string also controls the placement of the _FD2 Example_ and _UI_ tabs. The _FD2 Example_ tab will appear on the _Farm_ menu, which is where the _Dashboard_ tab also appears. The _UI_ tab will appear as a sub-tab on the _FD2 Example_ tab. The value `farm` cannot be changed. But, `fd2-example` and `UI` can.  In particular, they are not required to match the filenames. For example, `fd2-example` does not have to match the filename `fd2_example.module` and `UI` does not have to correspond to `ui.html`. However, it is a good convention to follow.
+     - `title`: This defines the name of the sub-tab that appears in the _Example_ module's tab.  Replace `UI` with the text you want to appear as the sub-tab title.
+     - `page arguments`: This is the file that provides the content for the sub-tab. Replace `ui.html` with the name of the `.html` file that contains the code for your new sub-tab.
      - `weight`: The weight controls the placement of the sub-tabs with respect to the others that appear.  Sub-tabs with lower weights appear further left and those with higher weights appear further right.
 1. Create the `.html` file you named in the `page arguments` above. Insert some _dummy code_ for now just to get the sub-tab up and visible. For example:
    ```html
@@ -71,7 +71,7 @@ To add a new sub-tab to the `xyz` module:
 1. Visit the FarmData2 home page when logged in as a _Farm Worker_, a _Farm Manager_ or as `admin`.  Your new sub-tab should now be visible under the _FD2 Example_ tab.  You can find the login credentials that are available in the developement environment on the [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) page.
    - If your tab does not appear, there are likely syntax errors in the `fd2_example.module` file or in your `.html` file.  You can check the Drupal error logs for helpful information: http://localhost/admin/reports
 1. Replace the _dummy code_ in your `.html` file with the code for your new sub-tab. This file can contain any valid html code including CSS, JavaScript, Vue.js, etc...
-   - Sub-tabs typically (e.g. `ex1.html`) use Vue.js, Axios and the FarmOS API to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
+   - Sub-tabs typically (e.g. `ui.html`) use Vue.js, Axios and the FarmOS API to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
 
 ### JavaScript and CSS Libraries ###
 
