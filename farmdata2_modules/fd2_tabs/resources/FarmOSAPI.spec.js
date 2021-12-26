@@ -276,11 +276,11 @@ describe('API Request Functions', () => {
     context('getRecord API request function', () => {
         it('gets an existing log', () => {
 
-            cy.wrap(getRecord('/log/3377')).as('done')
+            cy.wrap(getRecord('/log/100')).as('done')
 
             cy.get('@done').should(function(response) {
                 expect(response.status).to.equal(200)
-                expect(response.data.id).to.equal('3377')
+                expect(response.data.id).to.equal('100')
             })
         })
 
