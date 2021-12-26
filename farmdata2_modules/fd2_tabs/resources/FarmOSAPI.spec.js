@@ -72,12 +72,32 @@ describe('API Request Functions', () => {
                 .as('done')
             })
         
-            cy.get('done').should(() => {
+            cy.get('@done').should(() => {
                 expect(firstCalls).to.equal(1)
                 expect(secondCalls).to.equal(1)
                 expect(lastCalls).to.equal(1)
                 expect(testArray).to.have.length.gt(400)
             })
+        })
+
+        it('failed request', () => {
+            let testArray = []
+            cy.wrap(
+                getAllPages('/not_an_endpoint', testArray)
+                .then(
+                    (res) => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        expect(true).to.be(false)
+                    },
+                    (err) => {
+                        expect(err.message).to.contain("404")
+                    }
+                )
+            )
+            .as('fail') 
+
+            cy.get('@fail')
         })
     })
     
