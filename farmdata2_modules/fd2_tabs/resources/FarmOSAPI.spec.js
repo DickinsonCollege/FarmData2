@@ -413,7 +413,7 @@ describe('API Request Functions', () => {
         })
     })
 
-    context.only('deleteRecord API request function', () => {
+    context('deleteRecord API request function', () => {
         it('deletes a log', () => {
             let logID = -1
             let token = null
@@ -535,13 +535,37 @@ describe('API Request Functions', () => {
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
             })
-           .then(() => {
-                cy.wrap(getRecord('/log/' + logID)).as('gone')
+
+            cy.get('@delete').should(function(response) {
+                expect(response.status).to.equal(200)
+            })
+        })
+
+        it('failed create', () => {
+            cy.intercept('POST', '/log', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    createRecord('/log', { "data": "null" }, null)
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
             })
 
-            cy.get('@gone').should(function(response) {
-                expect(response.status).to.equal(404) // 404 - not found
-            })
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })    
 
