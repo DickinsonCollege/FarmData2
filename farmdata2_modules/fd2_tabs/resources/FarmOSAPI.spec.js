@@ -413,7 +413,7 @@ describe('API Request Functions', () => {
         })
     })
 
-    context('deleteRecord API request function', () => {
+    context.only('deleteRecord API request function', () => {
         it('deletes a log', () => {
             let logID = -1
             let token = null
@@ -455,12 +455,45 @@ describe('API Request Functions', () => {
                 expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.wrap(getRecord('/log/' + logID)).as('check')
+                cy.wrap(
+                    getRecord('/log/' + logID)
+                    .then(() => {
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(404) // 404 - not found
+                    })
+                ).as('check')
             })
 
-            cy.get('@check').should(function(response) {
-                expect(response.status).to.equal(404) // 404 - not found
+            cy.get('@check')
+        })
+
+        it('failed delete', () => {
+            cy.intercept('DELETE', '/log/12345', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    deleteRecord('/log/12345', null)
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
             })
+
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })
 

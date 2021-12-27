@@ -144,6 +144,30 @@ function getRecord(url) {
     })
 }
 
+function deleteRecord(url, sessionToken) {
+    // Delete a record from the database using the given url.
+    // The url can be any farmOS endpoint that can be used for deleting records.
+    // This will typically end with the id/tid/etc of the log, asset or term to
+    // be deleted.
+    //    Note: These endpoints do not include the .json.
+    // Use getSessionToken prior to calling this function to get the token.
+    return new Promise((resolve, reject) => {
+        axios
+        .delete(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((error) => {
+            reject(error)
+        })
+    })
+}
+
 function createRecord(url, data, sessionToken) {
     // Create a new record in the database using the given url and data.
     // The url can be any farmOS endpoint that can be used for creating records.
@@ -164,8 +188,7 @@ function createRecord(url, data, sessionToken) {
             resolve(response)
         })
         .catch((error) => {
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
         })
     })
 }
@@ -198,30 +221,6 @@ function updateRecord(url, updateData, sessionToken){
     })
 }
 
-function deleteRecord(url, sessionToken) {
-    // Delete a record from the database using the given url.
-    // The url can be any farmOS endpoint that can be used for deleting records.
-    // This will typically end with the id/tid/etc of the log, asset or term to
-    // be deleted.
-    //    Note: These endpoints do not include the .json.
-    // Use getSessionToken prior to calling this function to get the token.
-    return new Promise((resolve, reject) => {
-        axios
-        .delete(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
-            }
-        })
-        .then((response) => {
-            resolve(response)
-        })
-        .catch((error) => {
-            console.log(error.response)
-            resolve(error.response)
-        })
-    })
-}
 /**
  * 
  * @param {is the quantity array in the Direct/Tray Seeding log} quantity 
