@@ -100,9 +100,8 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                )
+                ).as('fail') 
             })
-            .as('fail') 
 
             // Wait for everything to finish.
             cy.get('@fail')
@@ -324,7 +323,7 @@ describe('API Request Functions', () => {
             })
         })
 
-        it.only('fail to get token', () => {
+        it('fail to get token', () => {
             cy.intercept('GET', '/restws/session/token', 
                 // stub an error response so it looks like the request failed.
                 {
@@ -344,10 +343,9 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                )
+                ).as('fail') 
             })
-            .as('fail') 
-
+            
             // Wait for everything to finish.
             cy.get('@fail')
         })
@@ -374,11 +372,44 @@ describe('API Request Functions', () => {
         })
 
         it('attempt to get a non-existent record',() => {
-            cy.wrap(getRecord('/log/9999999')).as('done')
+            cy.wrap(
+                getRecord('/log/9999999')
+                .then(() => {
+                    expect(true).to.equal(false)
+                })
+                .catch((err) => {
+                    expect(err.response.status).to.equal(404)
+                })
+            ).as('fail')
 
-            cy.get('@done').should(function(response) {
-                expect(response.status).to.equal(404)
+            cy.get('@fail')
+        })
+
+        it('fail to get a log', () => {
+            cy.intercept('GET', '/log/12345', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getRecord('/log/12345')
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
             })
+
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })
 

@@ -139,8 +139,7 @@ function getRecord(url) {
             resolve(response)
         })
         .catch((error) => {
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
         })
     })
 }
