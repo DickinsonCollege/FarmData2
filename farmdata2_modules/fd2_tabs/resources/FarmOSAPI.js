@@ -98,15 +98,16 @@ function getMap(url, key, value){
     // Utility function used by the above functions to get the appropraite maps.
     return new Promise((resolve, reject) => {
         getAllPages(url)
-        .then(function(list) {
-            resolve(new Map(list.map(h => 
-                [h[key], h[value]]
-            )))
-        })
-        .catch(function(error) {
-            console.log(error.response)
-            resolve(error.response)
-        })
+        .then(
+            (list) => {
+                resolve(new Map(list.map(h => 
+                    [h[key], h[value]]
+                )))
+            },
+            (error) => {
+                reject(error)
+            }
+        )
     })
 }
 

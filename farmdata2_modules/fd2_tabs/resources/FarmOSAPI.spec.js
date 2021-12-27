@@ -81,22 +81,30 @@ describe('API Request Functions', () => {
         })
 
         it('failed request', () => {
-            let testArray = []
-            cy.wrap(
-                getAllPages('/not_an_endpoint', testArray)
-                .then(
-                    (res) => {
+            cy.intercept('GET', '/fail', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getAllPages('/fail')
+                    .then(() => {
                         // The request should fail and be rejected
                         // so we should not get here.
-                        expect(true).to.be(false)
-                    },
-                    (err) => {
-                        expect(err.message).to.contain("404")
-                    }
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
                 )
-            )
+            })
             .as('fail') 
 
+            // Wait for everything to finish.
             cy.get('@fail')
         })
     })
@@ -135,6 +143,30 @@ describe('API Request Functions', () => {
                     expect(idToNameMap.get(restws1ID)).to.equal('restws1')
                 })
             })
+        })
+
+        it('map failure', () => {
+            // All of the get functions for maps use the same
+            // helper function so only need to test the failure once.
+            cy.intercept('GET', '/user', 
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getUserToIDMap()
+                    .then(() => {
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail')
+            })
+
+            cy.get('@fail')
         })
 
         it('Crop map functions get the proper name/id for the crops', () => {
