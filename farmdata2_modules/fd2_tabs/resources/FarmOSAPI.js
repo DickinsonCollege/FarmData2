@@ -124,8 +124,7 @@ function getSessionToken() {
             resolve(token)
         })
         .catch(function(error){
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
         })
     })
 }

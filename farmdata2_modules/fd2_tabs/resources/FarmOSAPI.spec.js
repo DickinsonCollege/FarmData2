@@ -323,6 +323,34 @@ describe('API Request Functions', () => {
                 expect(token.length).to.equal(43)
             })
         })
+
+        it.only('fail to get token', () => {
+            cy.intercept('GET', '/restws/session/token', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getSessionToken()
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                )
+            })
+            .as('fail') 
+
+            // Wait for everything to finish.
+            cy.get('@fail')
+        })
     })
 
     context('getRecord API request function', () => {
