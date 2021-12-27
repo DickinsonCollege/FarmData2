@@ -576,8 +576,8 @@ describe('API Request Functions', () => {
 
             // Creates a new log using the createRecord function (tested above)
             // Updates the log using the updateRecord function.
-            // Requests the log to ensure that it was updated
-            // Deteles the log using the deleteRecord function (tested above)
+            // Requests the log using the getLog function (tested above)
+            // Deletes the log using the deleteRecord function (tested above)
 
             cy.wrap(getSessionToken())
             .then((sessionToken) => {
@@ -622,6 +622,33 @@ describe('API Request Functions', () => {
             cy.get('@delete').should(function(response) {
                 expect(response.status).to.equal(200)
             })
+        })
+
+        it('failed update', () => {
+            cy.intercept('PUT', '/log', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    updateRecord('/log', { "data": "null" }, null)
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
+            })
+
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })
 

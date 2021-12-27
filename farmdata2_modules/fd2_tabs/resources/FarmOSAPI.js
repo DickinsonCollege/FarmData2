@@ -215,8 +215,7 @@ function updateRecord(url, updateData, sessionToken){
             resolve(response)
         })
         .catch(function(error) {
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
         }) 
     })
 }
