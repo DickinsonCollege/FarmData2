@@ -98,15 +98,16 @@ function getMap(url, key, value){
     // Utility function used by the above functions to get the appropraite maps.
     return new Promise((resolve, reject) => {
         getAllPages(url)
-        .then(function(list) {
-            resolve(new Map(list.map(h => 
-                [h[key], h[value]]
-            )))
-        })
-        .catch(function(error) {
-            console.log(error.response)
-            resolve(error.response)
-        })
+        .then(
+            (list) => {
+                resolve(new Map(list.map(h => 
+                    [h[key], h[value]]
+                )))
+            },
+            (error) => {
+                reject(error)
+            }
+        )
     })
 }
 
@@ -123,8 +124,7 @@ function getSessionToken() {
             resolve(token)
         })
         .catch(function(error){
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
         })
     })
 }
@@ -139,8 +139,31 @@ function getRecord(url) {
             resolve(response)
         })
         .catch((error) => {
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
+        })
+    })
+}
+
+function deleteRecord(url, sessionToken) {
+    // Delete a record from the database using the given url.
+    // The url can be any farmOS endpoint that can be used for deleting records.
+    // This will typically end with the id/tid/etc of the log, asset or term to
+    // be deleted.
+    //    Note: These endpoints do not include the .json.
+    // Use getSessionToken prior to calling this function to get the token.
+    return new Promise((resolve, reject) => {
+        axios
+        .delete(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : sessionToken,
+            }
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((error) => {
+            reject(error)
         })
     })
 }
@@ -165,8 +188,7 @@ function createRecord(url, data, sessionToken) {
             resolve(response)
         })
         .catch((error) => {
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
         })
     })
 }
@@ -193,36 +215,11 @@ function updateRecord(url, updateData, sessionToken){
             resolve(response)
         })
         .catch(function(error) {
-            console.log(error.response)
-            resolve(error.response)
+            reject(error)
         }) 
     })
 }
 
-function deleteRecord(url, sessionToken) {
-    // Delete a record from the database using the given url.
-    // The url can be any farmOS endpoint that can be used for deleting records.
-    // This will typically end with the id/tid/etc of the log, asset or term to
-    // be deleted.
-    //    Note: These endpoints do not include the .json.
-    // Use getSessionToken prior to calling this function to get the token.
-    return new Promise((resolve, reject) => {
-        axios
-        .delete(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : sessionToken,
-            }
-        })
-        .then((response) => {
-            resolve(response)
-        })
-        .catch((error) => {
-            console.log(error.response)
-            resolve(error.response)
-        })
-    })
-}
 /**
  * 
  * @param {is the quantity array in the Direct/Tray Seeding log} quantity 

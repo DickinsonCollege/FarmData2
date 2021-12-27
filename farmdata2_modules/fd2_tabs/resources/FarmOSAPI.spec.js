@@ -72,12 +72,39 @@ describe('API Request Functions', () => {
                 .as('done')
             })
         
-            cy.get('done').should(() => {
+            cy.get('@done').should(() => {
                 expect(firstCalls).to.equal(1)
                 expect(secondCalls).to.equal(1)
                 expect(lastCalls).to.equal(1)
                 expect(testArray).to.have.length.gt(400)
             })
+        })
+
+        it('failed request', () => {
+            cy.intercept('GET', '/fail', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getAllPages('/fail')
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
+            })
+
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })
     
@@ -115,6 +142,30 @@ describe('API Request Functions', () => {
                     expect(idToNameMap.get(restws1ID)).to.equal('restws1')
                 })
             })
+        })
+
+        it('map failure', () => {
+            // All of the get functions for maps use the same
+            // helper function so only need to test the failure once.
+            cy.intercept('GET', '/user', 
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getUserToIDMap()
+                    .then(() => {
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail')
+            })
+
+            cy.get('@fail')
         })
 
         it('Crop map functions get the proper name/id for the crops', () => {
@@ -271,16 +322,43 @@ describe('API Request Functions', () => {
                 expect(token.length).to.equal(43)
             })
         })
+
+        it('fail to get token', () => {
+            cy.intercept('GET', '/restws/session/token', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getSessionToken()
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
+            })
+            
+            // Wait for everything to finish.
+            cy.get('@fail')
+        })
     })
 
     context('getRecord API request function', () => {
         it('gets an existing log', () => {
 
-            cy.wrap(getRecord('/log/3377')).as('done')
+            cy.wrap(getRecord('/log/100')).as('done')
 
             cy.get('@done').should(function(response) {
                 expect(response.status).to.equal(200)
-                expect(response.data.id).to.equal('3377')
+                expect(response.data.id).to.equal('100')
             })
         })
 
@@ -294,11 +372,44 @@ describe('API Request Functions', () => {
         })
 
         it('attempt to get a non-existent record',() => {
-            cy.wrap(getRecord('/log/9999999')).as('done')
+            cy.wrap(
+                getRecord('/log/9999999')
+                .then(() => {
+                    expect(true).to.equal(false)
+                })
+                .catch((err) => {
+                    expect(err.response.status).to.equal(404)
+                })
+            ).as('fail')
 
-            cy.get('@done').should(function(response) {
-                expect(response.status).to.equal(404)
+            cy.get('@fail')
+        })
+
+        it('fail to get a log', () => {
+            cy.intercept('GET', '/log/12345', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    getRecord('/log/12345')
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
             })
+
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })
 
@@ -344,12 +455,45 @@ describe('API Request Functions', () => {
                 expect(response.status).to.equal(200)
             })
             .then(() => {
-                cy.wrap(getRecord('/log/' + logID)).as('check')
+                cy.wrap(
+                    getRecord('/log/' + logID)
+                    .then(() => {
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(404) // 404 - not found
+                    })
+                ).as('check')
             })
 
-            cy.get('@check').should(function(response) {
-                expect(response.status).to.equal(404) // 404 - not found
+            cy.get('@check')
+        })
+
+        it('failed delete', () => {
+            cy.intercept('DELETE', '/log/12345', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    deleteRecord('/log/12345', null)
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
             })
+
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })
 
@@ -391,13 +535,37 @@ describe('API Request Functions', () => {
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
             })
-           .then(() => {
-                cy.wrap(getRecord('/log/' + logID)).as('gone')
+
+            cy.get('@delete').should(function(response) {
+                expect(response.status).to.equal(200)
+            })
+        })
+
+        it('failed create', () => {
+            cy.intercept('POST', '/log', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    createRecord('/log', { "data": "null" }, null)
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
             })
 
-            cy.get('@gone').should(function(response) {
-                expect(response.status).to.equal(404) // 404 - not found
-            })
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })    
 
@@ -408,8 +576,8 @@ describe('API Request Functions', () => {
 
             // Creates a new log using the createRecord function (tested above)
             // Updates the log using the updateRecord function.
-            // Requests the log to ensure that it was updated
-            // Deteles the log using the deleteRecord function (tested above)
+            // Requests the log using the getLog function (tested above)
+            // Deletes the log using the deleteRecord function (tested above)
 
             cy.wrap(getSessionToken())
             .then((sessionToken) => {
@@ -454,6 +622,33 @@ describe('API Request Functions', () => {
             cy.get('@delete').should(function(response) {
                 expect(response.status).to.equal(200)
             })
+        })
+
+        it('failed update', () => {
+            cy.intercept('PUT', '/log', 
+                // stub an error response so it looks like the request failed.
+                {
+                    statusCode: 500,
+                    body: '500 Interal Server Error!',
+                }
+            )
+            .then(() => {
+                cy.wrap(
+                    updateRecord('/log', { "data": "null" }, null)
+                    .then(() => {
+                        // The request should fail and be rejected
+                        // so we should not get here.
+                        // If we do, force the test to fail,
+                        expect(true).to.equal(false)
+                    })
+                    .catch((err) => {
+                        expect(err.response.status).to.equal(500)
+                    })
+                ).as('fail') 
+            })
+
+            // Wait for everything to finish.
+            cy.get('@fail')
         })
     })
 
