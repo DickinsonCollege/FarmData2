@@ -47,8 +47,6 @@ To add a new sub-tab to the `xyz` module:
          'page arguments' => array('ui.html'),
          'access arguments' => array('View FD2 Example'),
          'weight' => 120,
-
-         // ... omitted code ...
        );
 
        // ... omitted code ...
