@@ -83,8 +83,8 @@ function fd2_field_kit_preprocess_page() {
 
   if (drupal_match_path($alias, $path)) {
     // Include the external JS libraries that are used here so they are cached by drupal.
-    drupal_add_js('https://unpkg.com/vue/dist/vue.min.js','external');
-    drupal_add_js('https://unpkg.com/axios/dist/axios.min.js','external');
+    drupal_add_js('https://unpkg.com/vue@2.6.14/dist/vue.min.js','external');
+    drupal_add_js('https://unpkg.com/axios@0.24.0/dist/axios.min.js','external');
     drupal_add_js('https://unpkg.com/dayjs@1.8.21/dayjs.min.js', 'external');
 
     // Define some useful variables in the JavaScript for page.

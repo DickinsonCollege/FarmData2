@@ -1,4 +1,32 @@
-try {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: FarmOSAPI.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: FarmOSAPI.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>try {
     FarmData2
 }
 catch {
@@ -17,7 +45,7 @@ catch {
  * 
  * @returns a Promise that when resolved yields the array with all of the records from all of the pages of the response.
  * 
- * @example <caption>Retrieve all harvest logs into the result array.</caption>
+ * @example &lt;caption>Retrieve all harvest logs into the result array.&lt;/caption>
  * let result[]
  * getAllPages('/log.json?type=farm_harvest', result)
  * .then(() => {
@@ -30,7 +58,7 @@ catch {
  * // Result will not yet contain records but will be filled as responses are received.
  * // The result will contain all records when then() is invoked.
  * 
- * @example <caption>Retrieve all planting assets into a new array.</caption>
+ * @example &lt;caption>Retrieve all planting assets into a new array.&lt;/caption>
  * getAllPages('/farm_asset.json?type=planting')
  * .then((res) => {
  *     // array res is filled with the requested records.  
@@ -69,7 +97,7 @@ function getAllPages(endpoint, arr=[]) {
  * 
  * @returns A Promise that when resolved yields a Map with user uid as the key and username as the value.
  * 
- * @example <caption>Get a Map from user uid to username.</caption>
+ * @example &lt;caption>Get a Map from user uid to username.&lt;/caption>
  * getIDToUserMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -90,7 +118,7 @@ function getIDToUserMap(){
  * 
  * @returns A Promise that when resolved yields a Map with username as the key and user uid as the value.
  * 
- * @example <caption>Get a Map from username to user uid.</caption>
+ * @example &lt;caption>Get a Map from username to user uid.&lt;/caption>
  * getUserToIDMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -111,7 +139,7 @@ function getUserToIDMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Crop ID (tid) as the key and the Crop Name as the value.
  * 
- * @example <caption>Get a Map from crop tid to crop name.</caption>
+ * @example &lt;caption>Get a Map from crop tid to crop name.&lt;/caption>
  * getIDToCropMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -132,7 +160,7 @@ function getIDToCropMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Crop Name as the key and the Crop ID (tid) as the value.
  * 
- * @example <caption>Get a Map from crop name to crop tid.</caption>
+ * @example &lt;caption>Get a Map from crop name to crop tid.&lt;/caption>
  * getCropToIDMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -153,7 +181,7 @@ function getCropToIDMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Area ID (tid) as the key and the Area Name as the value.
  * 
- * @example <caption>Get a Map from area tid to area name.</caption>
+ * @example &lt;caption>Get a Map from area tid to area name.&lt;/caption>
  * getIDToAreaMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -174,7 +202,7 @@ function getIDToAreaMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Area Name as the key and the Area ID (tid) as the value.
  * 
- * @example <caption>Get a Map from area name to area tid.</caption>
+ * @example &lt;caption>Get a Map from area name to area tid.&lt;/caption>
  * getAreaToIDMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -195,7 +223,7 @@ function getAreaToIDMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Unit ID (tid) as the key and the Unit Name as the value.
  * 
- * @example <caption>Get a Map from unit tid to unit name.</caption>
+ * @example &lt;caption>Get a Map from unit tid to unit name.&lt;/caption>
  * getIDToUnitMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -217,7 +245,7 @@ function getIDToUnitMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Unit Name as the key and the Unit ID (tid) as the value.
  * 
- * @example <caption>Get a Map from unit name to unit tid.</caption>
+ * @example &lt;caption>Get a Map from unit name to unit tid.&lt;/caption>
  * getUnitToIDMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -238,7 +266,7 @@ function getUnitToIDMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Log Type ID (tid) as the key and the Log Type Name as the value.
  * 
- * @example <caption>Get a Map from log type tid to log type name.</caption>
+ * @example &lt;caption>Get a Map from log type tid to log type name.&lt;/caption>
  * getIDToLogTypeMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -259,7 +287,7 @@ function getIDToLogTypeMap(){
  * 
  * @returns A Promise that when resolved yields a Map with Log Type Name as the key and the Log Type ID (tid) as the value.
  * 
- * @example <caption>Get a Map from log type name to log type tid.</caption>
+ * @example &lt;caption>Get a Map from log type name to log type tid.&lt;/caption>
  * getLogTypeToIDMap()
  * .then((theMap) => {
  *     // Process the map.
@@ -285,7 +313,7 @@ function getLogTypeToIDMap(){
  * 
  * @returns a Promise that when resolved yields a new Map object from the specified key to the specified value.
  * 
- * @example <caption>Get a new Map from User ID (uid) to User Name.</caption>
+ * @example &lt;caption>Get a new Map from User ID (uid) to User Name.&lt;/caption>
  * getMap('/user', 'uid', 'name')
  * .then((theMap) => {
  *     // Process the map.
@@ -319,7 +347,7 @@ function getMap(url, key, value){
  * 
  * @returns A Promise that when resolved yields a string containing the session token for the current login.
  * 
- * @example <caption>Get the session token for the currrent login.</caption>
+ * @example &lt;caption>Get the session token for the currrent login.&lt;/caption>
  * getSessonToken()
  * .then((theToken) => {
  *     // Process the token.
@@ -356,7 +384,7 @@ function getSessionToken() {
  * 
  * @returns A Promise that when resolved yields the response received from the farmOS server.
  * 
- * @example <caption>Request log 123 in json format using its id</caption>
+ * @example &lt;caption>Request log 123 in json format using its id&lt;/caption>
  * getRecord('/log.json?id=123')
  *     // Process the response.
  * })
@@ -386,7 +414,7 @@ function getRecord(url) {
  * 
  * @returns A Promise that when resolved yields the response from the server when the deletion has completed.
  * 
- * @example <caption>Delete asset 234 from the database</caption>
+ * @example &lt;caption>Delete asset 234 from the database&lt;/caption>
  * // Assume token has been set to the session token.
  * deleteRecord('/farm_asset/234', token)
  *    // The record was deleted.
@@ -423,7 +451,7 @@ function deleteRecord(url, sessionToken) {
  * 
  * @returns A Promise that when resolved yields the response from the server when the new record has been created.
  * 
- * @example <caption>Create a new log in the database</caption>
+ * @example &lt;caption>Create a new log in the database&lt;/caption>
  * // Assume logData contains the data for the new log.
  * // Assume token has been set to the session token.
  * deleteRecord('/log', logData, token)
@@ -462,7 +490,7 @@ function createRecord(url, data, sessionToken) {
  * 
  * @returns A Promise that when resolved yields the response from the server when the record has been updated.
  * 
- * @example <caption>Update an asset in the database</caption>
+ * @example &lt;caption>Update an asset in the database&lt;/caption>
  * // Assume assetUpdate contains the data to update in the asset.
  * // Assume token has been set to the session token.
  * updateRecord('/log', assetUpdate, token)
@@ -511,12 +539,12 @@ function updateRecord(url, updateData, sessionToken){
  * 
  * @returns the index of the quantity object with the specified label.  Or -1 if no such object exists.
  * 
- * @example <caption>Find the quantity object for the amount planted.</caption>
+ * @example &lt;caption>Find the quantity object for the amount planted.&lt;/caption>
  * // assume seedingLog is a seeding log from the database.
  * let index = quantityLocation(seedingLog.quantity, 'Amount planted')
  */
 function quantityLocation(quantity, label){
-    for(i=0; i < quantity.length; i++){
+    for(i=0; i &lt; quantity.length; i++){
         if(quantity[i].label == label){
             return i
         }
@@ -545,4 +573,26 @@ try {
         quantityLocation: quantityLocation
     }
 }
-catch {}
+catch {}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createRecord">createRecord</a></li><li><a href="global.html#CustomTableComponent">CustomTableComponent</a></li><li><a href="global.html#DateRangeSelectionComponent">DateRangeSelectionComponent</a></li><li><a href="global.html#DateSelectionComponent">DateSelectionComponent</a></li><li><a href="global.html#deleteRecord">deleteRecord</a></li><li><a href="global.html#DropdownWithAllComponent">DropdownWithAllComponent</a></li><li><a href="global.html#getAllPages">getAllPages</a></li><li><a href="global.html#getAreaToIDMap">getAreaToIDMap</a></li><li><a href="global.html#getCropToIDMap">getCropToIDMap</a></li><li><a href="global.html#getIDToAreaMap">getIDToAreaMap</a></li><li><a href="global.html#getIDToCropMap">getIDToCropMap</a></li><li><a href="global.html#getIDToLogTypeMap">getIDToLogTypeMap</a></li><li><a href="global.html#getIDToUnitMap">getIDToUnitMap</a></li><li><a href="global.html#getIDToUserMap">getIDToUserMap</a></li><li><a href="global.html#getLogTypeToIDMap">getLogTypeToIDMap</a></li><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#getRecord">getRecord</a></li><li><a href="global.html#getSessionToken">getSessionToken</a></li><li><a href="global.html#getUnitToIDMap">getUnitToIDMap</a></li><li><a href="global.html#getUserToIDMap">getUserToIDMap</a></li><li><a href="global.html#quantityLocation">quantityLocation</a></li><li><a href="global.html#updateRecord">updateRecord</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Dec 31 2021 15:22:15 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
