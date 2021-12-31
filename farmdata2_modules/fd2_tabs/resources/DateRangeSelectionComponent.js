@@ -9,6 +9,15 @@ catch(err) {
 /**
  * A Vue component for selecting a range of dated (i.e. start and end dates).  The component ensures that the user cannot choose a start date after the end date and vice versa.
  * 
+ * <p><b>data-cy attributes</b></p>
+ * <table>
+ * <thead><tr><th>Value</th>        <th>Descripion</th></tr></thead>
+ * <tbody>
+ * <tr><td>start-date-select</td>   <td>The date input element for the start date.</td></tr>
+ * <tr><td>end-date-select</td>   <td>The date input element for the end date.</td></tr>
+ * </tbody>
+ * </table>
+ * 
  * @vue-prop {String} defaultStartDate - the initial start date to be displayed (YYYY-MM-DD).
  * @vue-prop {String} defaultEndDate - the initial end date to be displayed (YYYY-MM-DD).
  * 
