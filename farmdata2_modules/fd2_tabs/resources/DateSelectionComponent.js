@@ -1,3 +1,13 @@
+/**
+ * A Vue component for selecting a date.
+ * 
+ * @vue-prop {String} defaultDate - the initial date to be displayed in the component (YYYY-MM-DD).
+ * @vue-prop {String} [earliestDate] - the earliest date will be able to be chosen (YYYY-MM-DD).  If not specified, there will be no limit on the earliest date that can be chosen.
+ * @vue-prop {String} [latestDate] - the latest date that will be able to be chosen (YYYY-MM-DD). If not specfied, there will be no limit (including future dates) that can be chosen.
+ * 
+ * @vue-event click - Emits an event with no payload when when the date selection element is clicked.  This event does not necessarily indicate a change in date.
+ * @vue-event {String} date-changed - Emits the selected date (YYYY-MM-DD) when a date is entered or chosen and the date selection element loses focus.
+ */ 
 let DateSelectionComponent = {
     template: `<div>
             <slot></slot>
