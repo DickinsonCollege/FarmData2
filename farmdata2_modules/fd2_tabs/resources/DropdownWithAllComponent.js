@@ -1,5 +1,5 @@
 /**
- * A dropdown menu where "All" can be included as the first option.
+ * A Vue component for a dropdown list where "All" can be included as the first option.
  * 
  * @vue-prop {Array} dropDownList - The contents of the dropdown. Changes to an array bound to this prop will appear in the list.
  * @vue-prop {Boolean} [includesAll=false] - true to include the All option at the top of the list of options. All will be omitted if includesAll is false or omitted.
