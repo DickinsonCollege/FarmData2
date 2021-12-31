@@ -9,20 +9,40 @@ catch {
 // farmOS API.  All pages should use these so that any
 // updates apply to all pages.
 
-function getAllPages(url, arr=[]) {
-    // Retrieves all pages of a multipage response.
-    // Usage:   
-    //    let result = []
-    //    getAllPages(url, result)
-    //       The result array will be filled with the elements from
-    //       response.data.list from all of the pages.  Each page of
-    //       responses is added to the array as it is retrieved.
-    // OR:
-    //    result = getAllPages(url)
-    //        A new array is created, filled and returned.
-
+/**
+ * Make a GET reqest to an API endpoint and retrieve all pages of a multipage responses.
+ *  
+ * @param {string} endpoint the API endpoint including any query parameters.  Note: This does not include http://localhost/ or other server address.
+ * @param {array} [arr] optionally an array that will be filled with the records as they are returned.  If ommitted a new array will be returned when the request completes.
+ * 
+ * @returns a Promise that when resolved yields the array with all of the records from all of the pages of the response.
+ * 
+ * @example <caption>Retrieve all harvest logs into the result array.</caption>
+ * let result[]
+ * getAllPages('/log.json?type=farm_harvest', result)
+ * .then(() => {
+ *     // result array contains all of the requested records.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the requests, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Result will not yet contain records but will be filled as responses are received.
+ * // The result will contain all records when then() is invoked.
+ * 
+ * @example <caption>Retrieve all planting assets into a new array.</caption>
+ * getAllPages('/farm_asset.json?type=planting')
+ * .then((res) => {
+ *     // array res is filled with the requested records.  
+ * })
+* .catch((err) => {
+ *     // An error occured during the requests, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ */
+function getAllPages(endpoint, arr=[]) {
     return new Promise((resolve, reject) => {
-        axios.get(url)
+        axios.get(endpoint)
         .then(function(response) {
             arr.push.apply(arr,response.data.list)
             return response.data
@@ -44,58 +64,241 @@ function getAllPages(url, arr=[]) {
     })
 }
 
+/**
+ * Get a Map from User ID (uid) to Username.  This function makes a request to the /user endpoint in the farmOS API to get the list of users and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with user uid as the key and username as the value.
+ * 
+ * @example <caption>Get a Map from user uid to username.</caption>
+ * getIDToUserMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getIDToUserMap(){
-    // Creates and returns a map from uid to username.
     return getMap('/user', 'uid', 'name')
 }
 
+/**
+ * Get a Map from Username to User ID (uid).  This function makes a request to the /user endpoint in the farmOS API to get the list of users and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with username as the key and user uid as the value.
+ * 
+ * @example <caption>Get a Map from username to user uid.</caption>
+ * getUserToIDMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getUserToIDMap(){
-    // Creates and returns a map from username to uid.
     return getMap('/user', 'name', 'uid')
 }
 
+/**
+ * Get a Map from Crop ID (tid) to Crop Name.  This function makes a request to the /taxonomy_term.json?bundle=farm_crops endpoint in the farmOS API to get the list of crops and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Crop ID (tid) as the key and the Crop Name as the value.
+ * 
+ * @example <caption>Get a Map from crop tid to crop name.</caption>
+ * getIDToCropMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getIDToCropMap(){
-    // Creates and returns a map from crop tid to crop name.
     return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
 }
 
+/**
+ * Get a Map from Crop Name to Crop ID (tid).  This function makes a request to the /taxonomy_term.json?bundle=farm_crops endpoint in the farmOS API to get the list of crops and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Crop Name as the key and the Crop ID (tid) as the value.
+ * 
+ * @example <caption>Get a Map from crop name to crop tid.</caption>
+ * getCropToIDMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getCropToIDMap(){
-    // Creates and returns a map from crop name to crop tid.
     return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
 }
 
+/**
+ * Get a Map from Area ID (tid) to Area Name.  This function makes a request to the /taxonomy_term.json?bundle=farm_areas endpoint in the farmOS API to get the list of crops and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Area ID (tid) as the key and the Area Name as the value.
+ * 
+ * @example <caption>Get a Map from area tid to area name.</caption>
+ * getIDToAreaMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getIDToAreaMap(){
-    // Creates and returns a map from area tid to area name.
     return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
 }
 
+/**
+ * Get a Map from Area ID (tid) to Area Name.  This function makes a request to the /taxonomy_term.json?bundle=farm_areas endpoint in the farmOS API to get the list of areas and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Area Name as the key and the Area ID (tid) as the value.
+ * 
+ * @example <caption>Get a Map from area name to area tid.</caption>
+ * getAreaToIDMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getAreaToIDMap(){
-    // Creates and returns a map from area name to area tid.
     return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
 }
 
-function getUnitToIDMap(){
-    //create and returns a map from unit name to unit tid.
-    return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'name', 'tid')
-}
-
+/**
+ * Get a Map from Unit ID (tid) to Unit Name.  This function makes a request to the /taxonomy_term.json?bundle=farm_quantity_units endpoint in the farmOS API to get the list of units and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Unit ID (tid) as the key and the Unit Name as the value.
+ * 
+ * @example <caption>Get a Map from unit tid to unit name.</caption>
+ * getIDToUnitMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getIDToUnitMap(){
     //create and returns a map from unit tid to unit name
     return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'tid', 'name')
 }
 
+/**
+ * Get a Map from Unit Name to Unit ID (tid).  This function makes a request to the /taxonomy_term.json?bundle=farm_quantity_units endpoint in the farmOS API to get the list of units and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Unit Name as the key and the Unit ID (tid) as the value.
+ * 
+ * @example <caption>Get a Map from unit name to unit tid.</caption>
+ * getUnitToIDMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
+function getUnitToIDMap(){
+    return getMap('/taxonomy_term.json?bundle=farm_quantity_units', 'name', 'tid')
+}
+
+/**
+ * Get a Map from Log Type ID (tid) to Lot Type Name.  This function makes a request to the /taxonomy_term.json?bundle=farm_log_categories endpoint in the farmOS API to get the list of log types and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Log Type ID (tid) as the key and the Log Type Name as the value.
+ * 
+ * @example <caption>Get a Map from log type tid to log type name.</caption>
+ * getIDToLogTypeMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getIDToLogTypeMap(){
-    //create and return a map from log type tid to log type name
     return getMap('/taxonomy_term.json?bundle=farm_log_categories', 'tid', 'name')
 }
 
+/**
+ * Get a Map from Log Type Name to Lot Type ID (tid).  This function makes a request to the /taxonomy_term.json?bundle=farm_log_categories endpoint in the farmOS API to get the list of log types and converts the result to a Map.
+ * 
+ * @returns A Promise that when resolved yields a Map with Log Type Name as the key and the Log Type ID (tid) as the value.
+ * 
+ * @example <caption>Get a Map from log type name to log type tid.</caption>
+ * getLogTypeToIDMap()
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getLogTypeToIDMap(){
     //create and return a map from log type name to log type tid
     return getMap('/taxonomy_term.json?bundle=farm_log_categories', 'name', 'tid')
 }
 
+/**
+ * General utility function for making Maps between taxonomy terms and their tids.  This function is primarily used by the convenience functions that return a specific Map.  If you plan to use this function, first check if there is already a convenience function for the Map you want.  Then if not, consider adding a convenience function instead of using this function directly.
+ * 
+ * @param {string} url the farmOS API endpoint from which to retrieve the data for the Map. 
+ * @param {string} key the name of the property to be used as the key in the Map. 
+ * @param {string} value the name fo the property to be used as the value in the Map.
+ * 
+ * @returns a Promise that when resolved yields a new Map object from the specified key to the specified value.
+ * 
+ * @example <caption>Get a new Map from User ID (uid) to User Name.</caption>
+ * getMap('/user', 'uid', 'name')
+ * .then((theMap) => {
+ *     // Process the map.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ * 
+ */
 function getMap(url, key, value){
-    // Utility function used by the above functions to get the appropraite maps.
     return new Promise((resolve, reject) => {
         getAllPages(url)
         .then(
@@ -111,6 +314,23 @@ function getMap(url, key, value){
     })
 }
 
+/**
+ * Get the session token for the current login. The session token is required as a parameter for API requests that modify data (e.g. createRecord, modifyRecord, deleteRecord, etc).
+ * 
+ * @returns A Promise that when resolved yields a string containing the session token for the current login.
+ * 
+ * @example <caption>Get the session token for the currrent login.</caption>
+ * getSessonToken()
+ * .then((theToken) => {
+ *     // Process the token.
+ *     // Typically it is stored in the Vue data for later use.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the Map will not be available until the then() executes.
+ */
 function getSessionToken() {
     // Get the session token for the current login.
     // The session token is required for API requests that modify data.
@@ -129,9 +349,24 @@ function getSessionToken() {
     })
 }
 
+/**
+ * Request a record from a farmOS API endpoint. This function should be used only to retrieve records that are known to be a single page (e.g. a single log, a single asset, etc.)  If a request might return multiple pages of records, the getAllPages function should be used instead.
+ * 
+ * @param {string} url the farmOS API endpoint from which to request the record.
+ * 
+ * @returns A Promise that when resolved yields the response received from the farmOS server.
+ * 
+ * @example <caption>Request log 123 in json format using its id</caption>
+ * getRecord('/log.json?id=123')
+ *     // Process the response.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the response will not be available until the then() executes.
+ */
 function getRecord(url) {
-    // Get a record from the database using the provide url.  This function
-    // assumes that the response is a single page.
     return new Promise((resolve, reject) => {
         axios
         .get(url)
@@ -144,13 +379,25 @@ function getRecord(url) {
     })
 }
 
+/**
+ * Delete a record from the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to delete records.  
+ * @param {string} url the farmOS API endpoint to use to delete the record.  Typically records are deleted using their id/tid/etc.
+ * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
+ * 
+ * @returns A Promise that when resolved yields the response from the server when the deletion has completed.
+ * 
+ * @example <caption>Delete asset 234 from the database</caption>
+ * // Assume token has been set to the session token.
+ * deleteRecord('/farm_asset/234', token)
+ *    // The record was deleted.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the record will not have been deleted until the then() executes.
+ */
 function deleteRecord(url, sessionToken) {
-    // Delete a record from the database using the given url.
-    // The url can be any farmOS endpoint that can be used for deleting records.
-    // This will typically end with the id/tid/etc of the log, asset or term to
-    // be deleted.
-    //    Note: These endpoints do not include the .json.
-    // Use getSessionToken prior to calling this function to get the token.
     return new Promise((resolve, reject) => {
         axios
         .delete(url, {
@@ -168,13 +415,27 @@ function deleteRecord(url, sessionToken) {
     })
 }
 
+/**
+ * Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to create records.  
+ * @param {string} url the farmOS API endpoint to use to create the record.
+ * @param {string} data a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url.
+ * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
+ * 
+ * @returns A Promise that when resolved yields the response from the server when the new record has been created.
+ * 
+ * @example <caption>Create a new log in the database</caption>
+ * // Assume logData contains the data for the new log.
+ * // Assume token has been set to the session token.
+ * deleteRecord('/log', logData, token)
+ *    // The record was created.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the record will not have been created until the then() executes.
+ */
 function createRecord(url, data, sessionToken) {
-    // Create a new record in the database using the given url and data.
-    // The url can be any farmOS endpoint that can be used for creating records.
-    //    Note: These do not include .json at the end of the endpoint.
-    // It is the caller's responsibility to ensure that the format and content
-    // of the data is appropriate for the endpoint.
-    // Use getSessionToken prior to calling this function to get the token.
     return new Promise((resolve, reject) => {
         axios
         .post(url, data, {
@@ -193,15 +454,27 @@ function createRecord(url, data, sessionToken) {
     })
 }
 
+/**
+ * Update a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to modify records.  
+ * @param {string} url the farmOS API endpoint to use to update the record.
+ * @param {string} updateData a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.
+ * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
+ * 
+ * @returns A Promise that when resolved yields the response from the server when the record has been updated.
+ * 
+ * @example <caption>Update an asset in the database</caption>
+ * // Assume assetUpdate contains the data to update in the asset.
+ * // Assume token has been set to the session token.
+ * updateRecord('/log', assetUpdate, token)
+ *    // The record has been updated.
+ * })
+ * .catch((err) => {
+ *     // An error occured during the request, process it here.
+ * })
+ * // Execution continues here immediately after the request is made.
+ * // Note that the record will not have been updated until the then() executes.
+ */
 function updateRecord(url, updateData, sessionToken){
-    // Update a record in the database using the given url and data.
-    // The url can be any farmOS endpoint that can be used for updating records.
-    // This will typically end with the id/tid/etc of the log, asset or term to
-    // be updated.
-    //    Note: These endpoints do not include the .json.
-    // It is the caller's responsibility to ensure that the format and content
-    // of the data is appropriate for the endpoint.
-    // Use getSessionToken prior to calling this function to get the token.
     return new Promise((resolve, reject) => {
         axios
         .put(url, updateData, { 
@@ -220,13 +493,27 @@ function updateRecord(url, updateData, sessionToken){
     })
 }
 
-/**
+/*
  * 
- * @param {is the quantity array in the Direct/Tray Seeding log} quantity 
- * @param {*the label of the object whose index is being returned} label 
+ * is the quantity array in the Direct/Tray Seeding log quantity 
+ * the label of the object whose index is being returned label 
  * 
- * @returns The index of the object with the input label in the quantity array 
+ * The index of the object with the input label in the quantity array 
  * otherwise returns a negative -1
+ */
+
+
+/**
+ * Gets the index of a specified quantity object from the quantity array in a log (e.g. a direct or tray seeding, transplanting or harvest log).
+ * 
+ * @param {array} quantity an array of quantity objects from a log
+ * @param {string} label the value of the label property of which to find the index.
+ * 
+ * @returns the index of the quantity object with the specified label.  Or -1 if no such object exists.
+ * 
+ * @example <caption>Find the quantity object for the amount planted.</caption>
+ * // assume seedingLog is a seeding log from the database.
+ * let index = quantityLocation(seedingLog.quantity, 'Amount planted')
  */
 function quantityLocation(quantity, label){
     for(i=0; i < quantity.length; i++){
