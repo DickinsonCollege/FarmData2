@@ -12,4 +12,4 @@ fi
 
 rm -rf doc
 
-jsdoc -c JSDoc.json * -d doc
+jsdoc -c ./JSDoc.json * -d doc
