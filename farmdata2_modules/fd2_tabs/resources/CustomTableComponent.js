@@ -1,3 +1,44 @@
+/**
+ * A Vue component for FarmData2 report tables. The table ensures a consistent styling, and provides the row-based edit/delete and export functionalities that are common to all reports.
+ * 
+ * <p><b>data-cy attributes</b></p>
+ * <table>
+ * <thead><tr><th>Value</th>         <th>Descripion</th></tr></thead>
+ * <tbody>
+ * <tr><td>table</td>                <td>The table element.</td></tr>
+ * <tr><td>table-headers</td>        <td>The tr element holding the th elements</td></tr>
+ * <tr><td>hi</td>                   <td>The ith th element, i=0,1,2...</td>
+ * <tr><td>edit-header</td>          <td>The th element for the edit button column</td>
+ * <tr><td>save-header</td>          <td>The th element for the save button column</td>
+ * <tr><td>delete-header</td>        <td>The th element for the delete button column</td>
+ * <tr><td>cancel-header</td>        <td>The th element for the cancel button column</td>
+ * <tr><td>ri</td>                   <td>The tr element for the ith table row, i=0,1,2,...</td>
+ * <tr><td>td-ricj</td>              <td>The td element in the ith row and jth column, i,j=0,1,2...</td>
+ * <tr><td>ricj</td>                 <td>The div for plain text in the ith row and jth column, i,j=0,1,2....</td>
+ * <tr><td>ricj</td>                 <td>The div for plain text in the ith row and jth column, i,j=0,1,2....</td>
+ * <tr><td>text-input-ricj</td>      <td>The text input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
+ * <tr><td>dropdown-input-ricj</td>  <td>The select input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
+ * <tr><td>date-input-ricj</td>      <td>The date input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
+ * <tr><td>number-input-ricj</td>    <td>The number input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
+* <tr><td>edit-button-ri</td>        <td>The edit button in the ith row, i=0,1,2....</td>
+* <tr><td>save-button-ri</td>        <td>The save button in the ith row, i=0,1,2....</td>
+* <tr><td>delete-button-ri</td>      <td>The delete button in the ith row, i=0,1,2....</td>
+* <tr><td>cancel-button-ri</td>      <td>The cancel button in the ith row, i=0,1,2....</td>
+ * </tbody>
+ * </table>
+ * 
+ * @vue-prop {Object[]} rows - The content to be displayed in the table. Each object in the array is a row, and each element in the data property is an individual cell in that row.  For example the following value would provide data for three rows and three columns:<br> <code>[{id: 1, data:[1, 2, 'three']}, {id: 2, data:[4, 5, 'six']}, {id: 3, data:['seven', 8, 9]}]</code><br>  Note: The ID is not displayed, but emitted as a payload with some events to communicate which row is affected.
+ * @vue-prop {String[]} headers - The column headings for the table. Must be the same length as the data arrays in the rows prop.
+ * @vue-prop {Boolean} [canEdit=false] - true if the table rows should be editable via an edit button that appears in each row.
+ * @vue-prop {Booelan} [canDelete=false] - true if the table rows should be able to be deleted via a delete button that appears in each row.
+ * @vue-prop {Boolean[]} [visibleColumns] - An array the same length as the headers prop.  Each entry indicates if the associated column is visble (true) or hidden (false).  If omitted, all columns are visible.
+ * @vue-prop {String[]} [inputOptions] - An array the same length as the headers prop.  Each entry indicates the type of edit component that will appear in edit mode.  The entries must be one of 'text', 'dropdown', 'date', 'number', or 'no input'.  If omitted, all columns are edited as 'text'.
+ * 
+ * @vue-event edit-clicked - Emitted when an edit button is clicked to indicate that the table is in edit mode.
+ * @vue-event {Object|Number} row-edited - Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be <code>{crop: 'KALE'}</code>, and if they also edited the area to Chuau it would be <code>{crop: 'KALE', area: 'CHUAU'}</code>.  The second is a Nubmer that indicates 'id' of the row that was changed. 
+ * @vue-event row-canceled - Emitted when a row was being edited and the cancel button is clicked.
+ * @vue-event {Number} row-deleted - Emitted when the delete button next to a row is clicked and the user confirms that they want to delete the row.  The payload indicates the 'id' of the row that is to be deleted.
+ */
 let CustomTableComponent = {
     template:
     `<div class="sticky-table">
