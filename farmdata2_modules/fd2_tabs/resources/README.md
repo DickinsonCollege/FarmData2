@@ -6,19 +6,14 @@ This directory contains JavaScript library functions, CSS defintions and VueJS C
 
 To see the documentation open `doc/index.html` in a browser.
 
-* [Javascript Libraries](doc/index.html)
-* Vue Comonents
-
 ### Documentation Tools
 
-The documentation for the Javascript library functions are generated using [JSDoc](https://github.com/jsdoc/jsdoc). To install JSDoc:
+The documentation for the Javascript library functions are generated using [JSDoc](https://github.com/jsdoc/jsdoc) and the documention for the VueJS components is also generated using JSDoc with the [JSDoc for VueJS Plugin](https://github.com/Kocal/jsdoc-vuejs/tree/3.x). 
+
+To install the necessary tools:
 
 1. `sudo apt install npm`
-2. `npm install -g jsdoc`
-
-The documention for the VueJS components is also generated using JSDoc with the [JSDoc for VueJS Plugin](https://github.com/Kocal/jsdoc-vuejs/tree/3.x). To install the plugin:
-
-1.
+2. `sudo npm install -g jsdoc@3.6.7 jsdoc-vuejs@3.0.9 vue-template-compiler@2.6.14`
 
 ### Generating Documentation
 
