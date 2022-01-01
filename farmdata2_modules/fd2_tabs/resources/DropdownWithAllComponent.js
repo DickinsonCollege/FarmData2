@@ -21,7 +21,7 @@ let DropdownWithAllComponent = {
     template: `<div data-cy="dropdown-component">
             <label for="dropdownOptions"><slot> </slot></label>
             <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
-                <option v-for="(singleOption,i) in fullDropdown" data-cy="'option'+i">{{ singleOption }}</option>
+                <option v-for="(singleOption,i) in fullDropdown" :data-cy="'option'+i">{{ singleOption }}</option>
             </select>
         </div>`, 
     props: {

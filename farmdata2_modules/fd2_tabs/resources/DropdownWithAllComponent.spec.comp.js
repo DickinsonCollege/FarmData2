@@ -20,10 +20,14 @@ describe('Field and Crop Dropdowns', () => {
         })
     
         it('contains the right crops and excludes all', () => {
-            cy.get('[data-cy=single-option]')
-                .first().should('have.text', 'Beans')
-                .next().should('have.text', 'Corn')
-                .next().should('have.text', 'Peas')
+            cy.get('[data-cy=option0]')
+            .should('have.text', 'Beans')
+
+            cy.get('[data-cy=option1]')
+            .should('have.text', 'Corn')
+
+            cy.get('[data-cy=option2]')
+            .should('have.text', 'Peas')
         })
 
         it('emits an event when the selection is changed', () => {
@@ -110,8 +114,8 @@ describe('Field and Crop Dropdowns', () => {
         })
 
         it('includes the all option when the attribute is included', () => {
-            cy.get('[data-cy=single-option]')
-                .first().should('have.text', 'All')
+            cy.get('[data-cy=option0]')
+            .should('have.text', 'All')
         })
 
         it('All option can be selected', () => {
