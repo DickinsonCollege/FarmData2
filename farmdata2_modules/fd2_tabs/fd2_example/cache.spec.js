@@ -49,11 +49,11 @@ describe('test caching of responses in local storage', () => {
         cy.get('[data-cy=111crop]').should('have.text','ZUCCHINI')
     })
 
-    it.only('test clearing the cache', () => {
+    it('test clearing the cache', () => {
 
-        // Crops should be cached to start.
+        // Crops should not be cached to start.
         let crops = localStorage.getItem('crops')
-        expect(crops).to.equal(null)
+        expect(crops).to.not.equal(null)
 
         // Wait here for the response to come, be cached and fill in the list.
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
@@ -70,9 +70,12 @@ describe('test caching of responses in local storage', () => {
         cy.reload(true)
 
         // Now crops should not be in the cache
+        crops = localStorage.getItem('crops')
+        expect(crops).to.not.equal(null)
+
+        // But once the response returns the crops should be cached again.
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
         .then(() => {
-            // Now crops should be in the cache.
             crops = localStorage.getItem('crops')
             expect(crops).to.not.equal(null)
         })
