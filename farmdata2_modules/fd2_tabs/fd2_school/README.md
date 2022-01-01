@@ -46,7 +46,7 @@ Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData
             'type' => MENU_LOCAL_TASK,
             'page callback' => 'fd2_school_view',
             'page arguments' => array('xyz.html'),
-            'access arguments' => array('View FD2 School'),
+            'access arguments' => array('view fd2 school'),
             'weight' => 110,
         );
 
