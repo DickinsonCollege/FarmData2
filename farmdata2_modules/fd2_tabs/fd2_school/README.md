@@ -29,7 +29,7 @@ Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData
 1. Ensure that a development instance of FarmData2 is up and running. See [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) for full instructions.
 1. Find the `fd2_school` directory in the `farmdata2_modules/fd2_tabs` directory.
 1. Open the the `fd2_school.module` file.
-1. Add the code below to the `fd2_school_menu` function:
+1. Modify the `fd2_school_menu` function by adding the code that creates the `$items` entry for the `XYZ` sub tab as shown below:
 
     ```php
     <?php
@@ -40,16 +40,15 @@ Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData
         
         // Add items blocks for new sub-tabs here.
 
+        // Add a sub-tab named XYZ with content in xyz.html.
         $items['farm/fd2-school/xyz'] = array(
             'title' => 'XYZ',
             'type' => MENU_LOCAL_TASK,
             'page callback' => 'fd2_school_view',
             'page arguments' => array('xyz.html'),
-            'access arguments' => array('View FD2 School'),
+            'access arguments' => array('view fd2 school'),
             'weight' => 110,
         );
-
-        // ... omitted code ...
 
         return $items;
     };
