@@ -18,10 +18,12 @@ catch {
  * @returns a Promise that when resolved yields the array with all of the records from all of the pages of the response.
  * 
  * @example <caption>Retrieve all harvest logs into the result array.</caption>
- * let result[]
+ * // Assumes that result is an existing array
  * getAllPages('/log.json?type=farm_harvest', result)
  * .then(() => {
- *     // result array contains all of the requested records.
+ *     // All of the requested records have now been added to result.
+ *     // Additional processing can happen here if necessary,
+ *     // or then may be omitted.
  * })
  * .catch((err) => {
  *     // An error occured during the requests, process it here.
@@ -33,7 +35,8 @@ catch {
  * @example <caption>Retrieve all planting assets into a new array.</caption>
  * getAllPages('/farm_asset.json?type=planting')
  * .then((res) => {
- *     // array res is filled with the requested records.  
+ *     // res is a newly created array that is
+ *     // filled with all of the requested records.  
  * })
 * .catch((err) => {
  *     // An error occured during the requests, process it here.
