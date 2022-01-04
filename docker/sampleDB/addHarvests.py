@@ -117,7 +117,10 @@ def addHarvest(row, plantingID):
                 "id": areaMap[row[4]],
                 "resource": "taxonomy_term",
             }
-        ]
+        ],
+        "data": json.dumps({ 
+            "crop_tid": cropMap[row[5]] 
+        })
     }
 
     return addLog(harvest)
