@@ -129,6 +129,7 @@ All Planting Assets can be accessed with the request:
 ```
 GET http://localhost/farm_asset.json?type=planting"
 ```
+The Planting Assets in the FarmData2 sample database are created primarily by the `addDirectSeeding.py` and `addTraySeeding.py` scripts when new seedings are created, as described above. However, a few are created by `addTransplanting.py` as well when a transplanting record was found without a matching seeding record.
 
 Notes:
 - The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to location given in the Seeding Log that references it. Similarly, if the Planting Asset was created by a tray seeding, then its location can also be changed by a transplanting operation.
@@ -144,6 +145,9 @@ GET http://localhost/log.json?type=farm_transplanting"
 
 The Transplanting Logs in the FarmData2 sample database are created by the `addTransplantings.py` script using the data in the `sampleData/transplantings.csv` file.
 
+Notes:
+- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was transplanted (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
+
 ## Harvest Logs ##
 
 Each _Harvest Log_ represents one harvesting event and is linked to the _Planting Asset_ from which the harvest occurred.
@@ -154,3 +158,6 @@ GET http://localhost/log.json?type=farm_harvest"
 ```
 
 The Harvest Logs in the FarmData2 sample database are created by the `addHarvests.py` script using the data in the `sampleData/harvests.csv` file.
+
+Notes:
+- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was transplanted (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
