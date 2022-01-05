@@ -390,7 +390,7 @@ function getRecord(url) {
             // So if we have a data property, parse it here so it
             // behaves just like any other property in the returned object.
             if (response.data.data != null) {
-                response.data = JSON.parse(response.data.data)
+                response.data.data = JSON.parse(response.data.data)
             }
             resolve(response)
         })

@@ -104,11 +104,15 @@ describe('API Request Functions', () => {
         it('check that data is not parsed if not present', () => {
             // Assets do not have data properties so this fails
             // if that isn't handled properly
-            cy.wrap(getAllPages('/farm_asset?type=planting&id[le]=50'))
+            cy.wrap(getAllPages('/farm_asset?type=planting&id[le]=75'))
             .as('done') 
 
             // Wait here for all pages to be fetched.
             cy.get('@done')
+            .then((array) => {
+                expect(array[0].data).to.be.null
+                expect(array[74].data).to.be.null
+            })
         })
 
         it('failed request', () => {
@@ -425,9 +429,9 @@ describe('API Request Functions', () => {
 
             // log #1 is a seeding so will have a data field.
             cy.wrap(getRecord('/log/1')).as('done')
-            cy.get('@done').should(function(response) {
+            cy.get('@done').should((response) => {
                 // Should not need to parse JSON here... so don't.
-                expect(response.data.crop_tid).to.equal(cropToIDMap.get('ASPARAGUS'))
+                expect(response.data.data.crop_tid).to.equal(cropToIDMap.get('ASPARAGUS'))
             })
         })
 
@@ -436,7 +440,9 @@ describe('API Request Functions', () => {
             // due to an error if the getRecord function did not handle
             // that condition properly.
             cy.wrap(getRecord('/farm_asset/1')).as('done')
-            cy.get('@done')
+            cy.get('@done').should((response) => {
+                expect(response.data.data).to.be.null
+            })
         })
 
         it('fail to get a log', () => {
