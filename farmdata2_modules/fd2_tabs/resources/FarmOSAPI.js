@@ -438,8 +438,9 @@ function deleteRecord(url, sessionToken) {
 
 /**
  * Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to create records.  
+ * 
  * @param {string} url the farmOS API endpoint to use to create the record.
- * @param {string} data a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url.
+ * @param {string} data a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url. If a data property if present inside this object it should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.
  * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
  * 
  * @returns A Promise that when resolved yields the response from the server when the new record has been created.
@@ -485,8 +486,9 @@ function createRecord(url, data, sessionToken) {
 
 /**
  * Update a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to modify records.  
+ * 
  * @param {string} url the farmOS API endpoint to use to update the record.
- * @param {string} updateData a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.
+ * @param {string} updateData a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.  The data property if present should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.
  * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
  * 
  * @returns A Promise that when resolved yields the response from the server when the record has been updated.
