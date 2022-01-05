@@ -307,7 +307,7 @@
                         filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
                     }
                     if(this.selectedCrop != 'All'){
-                        filterRows = filterRows.filter((x) => this.idToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                        filterRows = filterRows.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
                     }
                     if(this.selectedSeeding != 'All'){
                         filterRows = filterRows.filter((x) => x.log_category[0].name === this.selectedSeeding)
@@ -340,7 +340,7 @@
                             id: h.id,
                             data: [
                                 dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
-                                $vm.idToCropMap.get(JSON.parse(h.data).crop_tid),
+                                $vm.idToCropMap.get(h.data.crop_tid),
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
                                 rowBed,
@@ -385,12 +385,12 @@
                     if(this.selectedArea != 'All'){
                         let areaFilter = seedFilter.filter((x) => x.movement.area[0].name === this.selectedArea)
                         cropArray = areaFilter.map(h => 
-                            this.idToCropMap.get(JSON.parse(h.data).crop_tid)
+                            this.idToCropMap.get(h.data.crop_tid)
                         )
                     }
                     else{
                         cropArray = seedFilter.map(h=> 
-                            this.idToCropMap.get(JSON.parse(h.data).crop_tid)
+                            this.idToCropMap.get(h.data.crop_tid)
                         )
                     }
 
@@ -411,7 +411,7 @@
                     }
                     let areaArray = []
                     if(this.selectedCrop != 'All'){
-                        let cropFilter = seedFilter.filter((x) => this.idToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                        let cropFilter = seedFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
                          areaArray = cropFilter.map(h =>
                             h.movement.area[0].name
                         )
@@ -438,7 +438,7 @@
                     }
                     let seedingTypeArray = []
                     if(this.selectedCrop != 'All'){
-                        let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                        let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
                         seedingTypeArray = cropFilter.map(h =>
                             h.log_category[0].name
                         )
