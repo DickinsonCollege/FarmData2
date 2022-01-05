@@ -11,6 +11,8 @@ catch {
 
 /**
  * Make a GET reqest to an API endpoint and retrieve all pages of a multipage responses.
+ * 
+ * If there are data properties in the logs, they are parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
  *  
  * @param {string} endpoint the API endpoint including any query parameters.  Note: This does not include http://localhost/ or other server address.
  * @param {array} [arr] optionally an array that will be filled with the records as they are returned.  If ommitted a new array will be returned when the request completes.
@@ -47,6 +49,13 @@ function getAllPages(endpoint, arr=[]) {
     return new Promise((resolve, reject) => {
         axios.get(endpoint)
         .then(function(response) {
+
+            response.data.list.map(log => {
+                if (log.data != null) {
+                    log.data = JSON.parse(log.data)
+                }
+            })
+
             arr.push.apply(arr,response.data.list)
             return response.data
         })
@@ -355,6 +364,8 @@ function getSessionToken() {
 /**
  * Request a record from a farmOS API endpoint. This function should be used only to retrieve records that are known to be a single page (e.g. a single log, a single asset, etc.)  If a request might return multiple pages of records, the getAllPages function should be used instead.
  * 
+ * The data property of the response is parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
+ * 
  * @param {string} url the farmOS API endpoint from which to request the record.
  * 
  * @returns A Promise that when resolved yields the response received from the farmOS server.
@@ -374,6 +385,13 @@ function getRecord(url) {
         axios
         .get(url)
         .then((response) => {
+            // The data property in farmOS is always a string but
+            // FarmData2 uses it to hold JSON data. 
+            // So if we have a data property, parse it here so it
+            // behaves just like any other property in the returned object.
+            if (response.data.data != null) {
+                response.data.data = JSON.parse(response.data.data)
+            }
             resolve(response)
         })
         .catch((error) => {
@@ -420,8 +438,9 @@ function deleteRecord(url, sessionToken) {
 
 /**
  * Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to create records.  
+ * 
  * @param {string} url the farmOS API endpoint to use to create the record.
- * @param {string} data a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url.
+ * @param {string} data a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url. If a data property if present inside this object it should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.
  * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
  * 
  * @returns A Promise that when resolved yields the response from the server when the new record has been created.
@@ -439,6 +458,14 @@ function deleteRecord(url, sessionToken) {
  * // Note that the record will not have been created until the then() executes.
  */
 function createRecord(url, data, sessionToken) {
+    // If the incomming object has a data property then
+    // it should be stringified because farmOS expects 
+    // data properties to be strings not JSON objects but
+    // FarmData2 uses the data property to hold JSON.
+    if (data.data != null) {
+        data.data = JSON.stringify(data.data)
+    }
+
     return new Promise((resolve, reject) => {
         axios
         .post(url, data, {
@@ -459,8 +486,9 @@ function createRecord(url, data, sessionToken) {
 
 /**
  * Update a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to modify records.  
+ * 
  * @param {string} url the farmOS API endpoint to use to update the record.
- * @param {string} updateData a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.
+ * @param {string} updateData a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.  The data property if present should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.
  * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
  * 
  * @returns A Promise that when resolved yields the response from the server when the record has been updated.
@@ -478,6 +506,14 @@ function createRecord(url, data, sessionToken) {
  * // Note that the record will not have been updated until the then() executes.
  */
 function updateRecord(url, updateData, sessionToken){
+    // If the incomming object has a data property then
+    // it should be stringified because farmOS expects 
+    // data properties to be strings not JSON objects but
+    // FarmData2 uses the data property to hold JSON.
+    if (updateData.data != null) {
+        updateData.data = JSON.stringify(updateData.data)
+    }
+
     return new Promise((resolve, reject) => {
         axios
         .put(url, updateData, { 
