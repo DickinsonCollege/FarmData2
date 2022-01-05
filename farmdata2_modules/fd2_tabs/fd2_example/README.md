@@ -1,6 +1,6 @@
 # FarmData2 Modules #
 
-FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. The _FD2 Example_ tab is created by a sample module and can be used as a sandbox in which to learn about and experiment FarmData2 modules like those that produce the _FieldKit_ and _BarnKit_ tabs.
+FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. The _FD2 Example_ tab is created by a sample module and provides cannonical examples of many of the operations and UI elements used in the _FieldKit_ and _BarnKit_ tabs.
 
 ## FarmData2 Module Structure ##
 
@@ -47,8 +47,6 @@ To add a new sub-tab to the `xyz` module:
          'page arguments' => array('ui.html'),
          'access arguments' => array('View FD2 Example'),
          'weight' => 120,
-
-         // ... omitted code ...
        );
 
        // ... omitted code ...
