@@ -184,7 +184,7 @@
                             updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
                         }
                         else if(keys[i] == 'crop'){
-                            updateSeedingObject['data'] = JSON.stringify({"crop_tid": this.cropToIDMap.get(updateObject['crop'])})
+                            updateSeedingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
                             updatePlantObject['crop'] = [{
                                 "id": this.cropToIDMap.get(updateObject['crop']),
                                 "resource": "taxonomy_term"
