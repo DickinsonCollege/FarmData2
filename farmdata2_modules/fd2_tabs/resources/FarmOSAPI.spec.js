@@ -80,6 +80,37 @@ describe('API Request Functions', () => {
             })
         })
 
+        it('check that data property is parsed', () => {
+            let cropToIDMap
+            cy.wrap(getCropToIDMap()).as('cropMap')
+            cy.get('@cropMap').then((theMap) => {
+                cropToIDMap = theMap
+            })
+            
+            //let testArray
+            cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=150'))
+                .as('done') 
+
+            // Wait here for all pages to be fetched.
+            cy.get('@done')
+            .then((array) => {
+                // check log from first page of response.
+                expect(array[0].data.crop_tid).to.equal(cropToIDMap.get("ASPARAGUS"))
+                // check log from second page of response.
+                expect(array[149].data.crop_tid).to.equal(cropToIDMap.get("RADISH-DAIKON"))
+            })
+        })
+
+        it('check that data is not parsed if not present', () => {
+            // Assets do not have data properties so this fails
+            // if that isn't handled properly
+            cy.wrap(getAllPages('/farm_asset?type=planting&id[le]=50'))
+            .as('done') 
+
+            // Wait here for all pages to be fetched.
+            cy.get('@done')
+        })
+
         it('failed request', () => {
             cy.intercept('GET', '/fail', 
                 // stub an error response so it looks like the request failed.
@@ -383,6 +414,29 @@ describe('API Request Functions', () => {
             ).as('fail')
 
             cy.get('@fail')
+        })
+
+        it('test that JSON in data property is parsed', () => {
+            let cropToIDMap
+            cy.wrap(getCropToIDMap()).as('cropMap')
+            cy.get('@cropMap').then((theMap) => {
+                cropToIDMap = theMap
+            })
+
+            // log #1 is a seeding so will have a data field.
+            cy.wrap(getRecord('/log/1')).as('done')
+            cy.get('@done').should(function(response) {
+                // Should not need to parse JSON here... so don't.
+                expect(response.data.crop_tid).to.equal(cropToIDMap.get('ASPARAGUS'))
+            })
+        })
+
+        it('test record without a data property', () => {
+            // Assets do not have a data property.  This would fail 
+            // due to an error if the getRecord function did not handle
+            // that condition properly.
+            cy.wrap(getRecord('/farm_asset/1')).as('done')
+            cy.get('@done')
         })
 
         it('fail to get a log', () => {

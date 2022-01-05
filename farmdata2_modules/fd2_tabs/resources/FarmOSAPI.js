@@ -11,6 +11,8 @@ catch {
 
 /**
  * Make a GET reqest to an API endpoint and retrieve all pages of a multipage responses.
+ * 
+ * If there are data properties in the logs, they are parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
  *  
  * @param {string} endpoint the API endpoint including any query parameters.  Note: This does not include http://localhost/ or other server address.
  * @param {array} [arr] optionally an array that will be filled with the records as they are returned.  If ommitted a new array will be returned when the request completes.
@@ -47,6 +49,13 @@ function getAllPages(endpoint, arr=[]) {
     return new Promise((resolve, reject) => {
         axios.get(endpoint)
         .then(function(response) {
+
+            response.data.list.map(log => {
+                if (log.data != null) {
+                    log.data = JSON.parse(log.data)
+                }
+            })
+
             arr.push.apply(arr,response.data.list)
             return response.data
         })
@@ -355,6 +364,8 @@ function getSessionToken() {
 /**
  * Request a record from a farmOS API endpoint. This function should be used only to retrieve records that are known to be a single page (e.g. a single log, a single asset, etc.)  If a request might return multiple pages of records, the getAllPages function should be used instead.
  * 
+ * The data property of the response is parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
+ * 
  * @param {string} url the farmOS API endpoint from which to request the record.
  * 
  * @returns A Promise that when resolved yields the response received from the farmOS server.
@@ -374,6 +385,13 @@ function getRecord(url) {
         axios
         .get(url)
         .then((response) => {
+            // The data property in farmOS is always a string but
+            // FarmData2 uses it to hold JSON data. 
+            // So if we have a data property, parse it here so it
+            // behaves just like any other property in the returned object.
+            if (response.data.data != null) {
+                response.data = JSON.parse(response.data.data)
+            }
             resolve(response)
         })
         .catch((error) => {
