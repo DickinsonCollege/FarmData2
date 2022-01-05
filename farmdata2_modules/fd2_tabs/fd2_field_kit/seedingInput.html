@@ -137,7 +137,6 @@
                         }
                     }
                     else{
-                        console.log(this.areaResponse)
                         areaArray = this.areaResponse.map((h) => h.name)
                     }
                     return areaArray
@@ -228,9 +227,9 @@
                         "quantity": quantityUnits,
                         "created": dayjs().unix(),
                         "lot_number": "N/A (No Variety)",
-                        "data": JSON.stringify({ 
+                        "data": { 
                             "crop_tid": this.cropToIDMap.get(this.selectedCrop)
-                        })
+                        }
                     }
                     return seeding
                 },
