@@ -457,6 +457,14 @@ function deleteRecord(url, sessionToken) {
  * // Note that the record will not have been created until the then() executes.
  */
 function createRecord(url, data, sessionToken) {
+    // If the incomming object has a data property then
+    // it should be stringified because farmOS expects 
+    // data properties to be strings not JSON objects but
+    // FarmData2 uses the data property to hold JSON.
+    if (data.data != null) {
+        data.data = JSON.stringify(data.data)
+    }
+
     return new Promise((resolve, reject) => {
         axios
         .post(url, data, {

@@ -558,7 +558,7 @@ describe('API Request Functions', () => {
     })
 
     context('create API request function', () => {
-        it('creates a new log', () => {
+        it.only('creates a new log', () => {
 
             let logID = -1
             let token = null
@@ -591,6 +591,7 @@ describe('API Request Functions', () => {
             cy.get('@exists').should((response) => {
                 expect(response.status).to.equal(200)
                 expect(response.data.name).to.equal('Create Test')
+                expect(response.data.data).to.be.null
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
@@ -598,6 +599,46 @@ describe('API Request Functions', () => {
 
             cy.get('@delete').should(function(response) {
                 expect(response.status).to.equal(200)
+            })
+        })
+
+        it.only('test create log with a data property', () => {
+            let logID = -1
+            let token = null
+
+            cy.wrap(getSessionToken())
+            .then((sessionToken) => {
+                token = sessionToken
+
+                newLog = {
+                    "name": "Create Test",
+                    "type": "farm_observation",
+                    "timestamp": "123",
+                    "data" : { crop_tid: 123 }
+                }
+
+                cy.wrap(createRecord('/log', newLog, token)).as('create')
+                cy.get('@create').should((response) => {
+                    logID = response.data.id
+                    expect(response.status).to.equal(201)
+                })
+                .then(() => {
+                    cy.wrap(getRecord('/log/' + logID)).as('exists')
+                })
+
+                cy.get('@exists').should((response) => {
+                    expect(response.status).to.equal(200)
+                    expect(response.data.name).to.equal('Create Test')
+                    expect(response.data.data).to.not.be.null
+                    expect(response.data.data.crop_tid).to.equal(123)
+                })
+                .then(() => {
+                    cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
+                })
+
+                cy.get('@delete').should(function(response) {
+                    expect(response.status).to.equal(200)
+                })
             })
         })
 
