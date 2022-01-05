@@ -748,7 +748,7 @@
 
             
 
-            <td class="description last">a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url.</td>
+            <td class="description last">a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url. If a data property if present inside this object it should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.</td>
         </tr>
 
     
@@ -812,7 +812,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line439">line 439</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line460">line 460</a>
     </li></ul></dd>
     
 
@@ -998,7 +998,7 @@ deleteRecord('/log', logData, token)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line401">line 401</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line421">line 421</a>
     </li></ul></dd>
     
 
@@ -1068,6 +1068,8 @@ deleteRecord('/farm_asset/234', token)
 
 <div class="description">
     Make a GET reqest to an API endpoint and retrieve all pages of a multipage responses.
+
+If there are data properties in the logs, they are parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
 </div>
 
 
@@ -1203,7 +1205,7 @@ deleteRecord('/farm_asset/234', token)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line44">line 44</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -1249,7 +1251,9 @@ deleteRecord('/farm_asset/234', token)
     <pre class="prettyprint"><code>// Assumes that result is an existing array
 getAllPages('/log.json?type=farm_harvest', result)
 .then(() => {
-    // all of the requested records have been added to result.
+    // All of the requested records have now been added to result.
+    // Additional processing can happen here if necessary,
+    // or then may be omitted.
 })
 .catch((err) => {
     // An error occured during the requests, process it here.
@@ -1330,7 +1334,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line190">line 190</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -1444,7 +1448,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line148">line 148</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line159">line 159</a>
     </li></ul></dd>
     
 
@@ -1558,7 +1562,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line169">line 169</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line180">line 180</a>
     </li></ul></dd>
     
 
@@ -1672,7 +1676,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line127">line 127</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line138">line 138</a>
     </li></ul></dd>
     
 
@@ -1786,7 +1790,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line254">line 254</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -1900,7 +1904,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line211">line 211</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line222">line 222</a>
     </li></ul></dd>
     
 
@@ -2014,7 +2018,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line85">line 85</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line96">line 96</a>
     </li></ul></dd>
     
 
@@ -2128,7 +2132,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line275">line 275</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line286">line 286</a>
     </li></ul></dd>
     
 
@@ -2337,7 +2341,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line302">line 302</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line313">line 313</a>
     </li></ul></dd>
     
 
@@ -2408,6 +2412,8 @@ getAllPages('/log.json?type=farm_harvest', result)
 
 <div class="description">
     Request a record from a farmOS API endpoint. This function should be used only to retrieve records that are known to be a single page (e.g. a single log, a single asset, etc.)  If a request might return multiple pages of records, the getAllPages function should be used instead.
+
+The data property of the response is parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
 </div>
 
 
@@ -2500,7 +2506,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line370">line 370</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line383">line 383</a>
     </li></ul></dd>
     
 
@@ -2612,7 +2618,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line335">line 335</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line346">line 346</a>
     </li></ul></dd>
     
 
@@ -2726,7 +2732,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line233">line 233</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -2840,7 +2846,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line106">line 106</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -3026,7 +3032,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line519">line 519</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line557">line 557</a>
     </li></ul></dd>
     
 
@@ -3163,7 +3169,7 @@ let index = quantityLocation(seedingLog.quantity, 'Amount planted')</code></pre>
 
             
 
-            <td class="description last">a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.</td>
+            <td class="description last">a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.  The data property if present should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.</td>
         </tr>
 
     
@@ -3227,7 +3233,7 @@ let index = quantityLocation(seedingLog.quantity, 'Amount planted')</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line478">line 478</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line508">line 508</a>
     </li></ul></dd>
     
 
@@ -3305,7 +3311,7 @@ updateRecord('/log', assetUpdate, token)
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Jan 04 2022 14:51:04 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Jan 04 2022 21:49:18 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
