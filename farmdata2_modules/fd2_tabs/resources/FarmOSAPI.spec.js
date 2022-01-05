@@ -558,7 +558,7 @@ describe('API Request Functions', () => {
     })
 
     context('create API request function', () => {
-        it.only('creates a new log', () => {
+        it('creates a new log', () => {
 
             let logID = -1
             let token = null
@@ -602,7 +602,7 @@ describe('API Request Functions', () => {
             })
         })
 
-        it.only('test create log with a data property', () => {
+        it('test create log with a data property', () => {
             let logID = -1
             let token = null
 
@@ -715,6 +715,60 @@ describe('API Request Functions', () => {
             cy.get('@check').should((response) => {
                 expect(response.status).to.equal(200)
                 expect(response.data.name).to.equal('Update Test Updated')
+                expect(response.data.data).to.be.null
+            })
+            .then(() => {
+                cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')
+            })
+
+            cy.get('@delete').should(function(response) {
+                expect(response.status).to.equal(200)
+            })
+        })
+
+        it('updte a record that has a data property', () => {
+            let logID = -1
+            let token = null
+
+            cy.wrap(getSessionToken())
+            .then((sessionToken) => {
+                token = sessionToken
+
+                newLog = {
+                    "name": "Update Test",
+                    "type": "farm_observation",
+                    "timestamp": "123",
+                    "data" : { crop_tid: 123 }
+                }
+
+                cy.wrap(createRecord('/log', newLog, token)).as('create')
+            })
+
+            cy.get('@create').should((response) => {
+                logID = response.data.id
+                expect(response.status).to.equal(201)
+            })
+            .then(() => {
+                update = {
+                    "name": "Update Test Updated",
+                    "data": { crop_tid: 234 }
+                }
+
+                cy.wrap(updateRecord('/log/' + logID, update, token)).as('update')
+            })
+
+            cy.get('@update').should((response) => {
+                expect(response.status).to.equal(200)
+            })
+            .then(() => {
+                cy.wrap(getRecord('/log/' + logID)).as('check')
+            })
+
+            cy.get('@check').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.name).to.equal('Update Test Updated')
+                expect(response.data.data).to.not.be.null
+                expect(response.data.data.crop_tid).to.equal(234)
             })
             .then(() => {
                 cy.wrap(deleteRecord('/log/' + logID, token)).as('delete')

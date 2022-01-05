@@ -504,6 +504,14 @@ function createRecord(url, data, sessionToken) {
  * // Note that the record will not have been updated until the then() executes.
  */
 function updateRecord(url, updateData, sessionToken){
+    // If the incomming object has a data property then
+    // it should be stringified because farmOS expects 
+    // data properties to be strings not JSON objects but
+    // FarmData2 uses the data property to hold JSON.
+    if (updateData.data != null) {
+        updateData.data = JSON.stringify(updateData.data)
+    }
+
     return new Promise((resolve, reject) => {
         axios
         .put(url, updateData, { 
