@@ -158,7 +158,6 @@
                  * updates the log that the user saved
                  */
                 updateRow(updateObject, id){
-                    console.log(updateObject)
                     this.updateLog = this.seedingLogs.filter((x) => x.id === id)
                     let updateSeedingObject = {}
                     let updatePlantObject = {}
@@ -259,10 +258,6 @@
                         }    
                     }
                     
-                    console.log('seeding log')
-                    console.log(updateSeedingObject)
-                    console.log('planting log')
-                    console.log(updatePlantObject)
                     let seedingUrl = '/log/' + id
                     let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
                     //call updateRecord function to update planting log
@@ -280,9 +275,7 @@
                  */
                 deleteRowLog(logID) {
                     let url = '/log/' + logID
-                    deleteRecord(url, this.sessionToken).then(function(response) {
-                        console.log(response)
-                    })
+                    deleteRecord(url, this.sessionToken)
                     for(var i=0; i < this.seedingLogs.length; i++){
                         if(this.seedingLogs[i].id === logID){
                             this.seedingLogs.splice(i, 1)
@@ -670,8 +663,6 @@
                     for(i=0; i < this.areaToIDMap.size; i++){
                         areaNameArray.push(areaKeyIterator.next().value)
                     }
-                    //console.log(cropNameArray)
-                    //console.log(areaNameArray)
                     return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
                 }
             },
@@ -696,7 +687,6 @@
                 })
                 getUnitToIDMap().then((response) => {
                     this.unitToIDMap = new Map(response)
-                    console.log(response)
                 })
             }
         });
