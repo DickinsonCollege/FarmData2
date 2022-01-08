@@ -39,7 +39,7 @@ Under Ubuntu Linux these tools can most easily be installed using the [apt](http
 
 Full installation details for other platforms can be obtained from the projects themselves on the following sites:
 
-  * [Intallling git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+  * [Installing git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   * [Get Docker](https://docs.docker.com/get-docker/)
   * [Install Compose](https://docs.docker.com/compose/install/)
 
