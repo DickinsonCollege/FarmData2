@@ -1,20 +1,49 @@
- <h1>Harvest Report</h1>
+<h1>Harvest Report</h1>
 
- <em>mockup</em>.
-<br>
+<em>mockup</em>.
+<br />
 
- Title: <input type="text" id="title" name="title" value="title">
+<label for="myTitle">Title:</label>
+<input type="text" id="title" name="myTitle" value="enter title" />
 
- <br>
+<br />
 
- <button type="button">
-    Generate report
-</button>
- <hr>
+<label for="myCrop">Crop:</label>
+<select id="crop" name="myCrop">
+    <option>Broccoli</option>
+    <option selected>Kale</option>
+    <option>Peas</option>
+</select>
 
- <h1>My Sample Harvest Report</h1>
- Details:
- <ul>
-     <li><b>Farm:</b> sample farm</li>
-     <li><b>User:</b> manager1</li>
+<br />
+
+<label for="myField">Field:</label>
+<select id="field" name="myField">
+    <option selected>All</option>
+    <option>Chuau-1</option>
+    <option>SQ7</option>
+</select>
+
+<br />
+
+<label for="myStartDate">Start date:</label>
+<input
+    type="date"
+    id="startDate"
+    name="myStartDate"
+    value="2020-05-05"
+    min="2014-01-01"
+    max="2022-01-01"
+/>
+
+<br />
+
+<button type="button">Generate report</button>
+<hr />
+
+<h1>My Sample Harvest Report</h1>
+Details:
+<ul>
+    <li><b>Farm:</b> sample farm</li>
+    <li><b>User:</b> manager1</li>
 </ul>
