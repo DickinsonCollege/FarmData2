@@ -1,5 +1,41 @@
 <h1>Harvest Report</h1>
 <p>This page is a <i>mockup</i> of a simplified harvest report</p>
+<label for=”title”>Title:</label>
+<input placeholder=Title></input>
+<br>
+<br>
+<label for="start">Start:</label>
+
+<input type="date" id="start" name="start-date"
+       value="2020-05-05"
+       min="2014-01-01" max="2022-01-01">
+
+<label for="start">End:</label>
+<input type="date" id="end" name="end-date"
+       value="2020-05-15"
+       min="2014-05-05" max="2022-01-01">
+<br>
+<br>
+<label for=”crop”>Crop:</label>
+<select id="crop" name="crop">
+  <option>Broccoli</option>
+  <option selected>Kale</option>
+  <option>Peas</option>
+</select>
+
+<label for=”field”>Field:</label>
+<select id="field" name="field">
+  <option>Chuau-1</option>
+  <option selected>All </option>
+  <option>SQ7</option>
+</select>
+<br>
+<br>
+<button type="button">
+    <strong>anonymous button</strong>
+</button>
+
+
 <hr>
 <h1> My Sample Harvest Report</h1>
 <p>Details</p>
@@ -13,9 +49,3 @@
   <li><b>Crop:</b> Kale </li>
  
 </ul>
-<label for=”title”>Title:</label>
-<input placeholder=Title></input>
-
-<button type="button">
-    <strong>anonymous button</strong>
-</button>
