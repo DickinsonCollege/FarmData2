@@ -10,13 +10,13 @@
         id="title"
         name="myTitle"
         value="enter title"
-        v-model="header"
+        v-model="reportTitle"
     />
 
     <br />
 
     <label for="myCrop">Crop:</label>
-    <select id="crop" name="myCrop">
+    <select id="crop" name="myCrop" v-model="reportCrop">
         <option>Broccoli</option>
         <option selected>Kale</option>
         <option>Peas</option>
@@ -38,9 +38,19 @@
         type="date"
         id="startDate"
         name="myStartDate"
-        value="2020-05-05"
         min="2014-01-01"
         max="2022-01-01"
+        v-model="reportStartDate"
+    />
+
+    <label for="myEndDate">End date:</label>
+    <input
+        type="date"
+        id="endDate"
+        name="myEndDate"
+        min="2014-01-01"
+        max="2022-01-01"
+        v-model="reportEndDate"
     />
 
     <br />
@@ -48,12 +58,15 @@
     <button type="button">Generate report</button>
     <hr />
 
-    <h1>{{ header }}</h1>
+    <h1>{{ reportTitle }}</h1>
 
     Details:
     <ul>
         <li><b>Farm:</b> sample farm</li>
         <li><b>User:</b> manager1</li>
+        <li><b>Start date:</b> {{reportStartDate}}</li>
+        <li><b>End date:</b> {{reportEndDate}}</li>
+        <li><b>Crop:</b> {{reportCrop}}</li>
     </ul>
 
     <table border="1">
@@ -70,7 +83,10 @@
     var vue1Subtab = new Vue({
         el: '#vue1-subtab',
         data: {
-            header: 'My Sample Harvest Report',
+            reportTitle: 'My Sample Harvest Report',
+            reportStartDate: '2020-05-05',
+            reportEndDate: '2020-05-05',
+            reportCrop: 'Kale',
         },
     });
 </script>
