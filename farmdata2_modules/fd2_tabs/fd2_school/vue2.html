@@ -35,7 +35,7 @@
         id="startDate"
         name="myStartDate"
         min="2014-01-01"
-        max="2022-01-01"
+        :max="reportEndDate"
         v-model="reportStartDate"
     />
 
@@ -44,7 +44,7 @@
         type="date"
         id="endDate"
         name="myEndDate"
-        min="2014-01-01"
+        :min="reportStartDate"
         max="2022-01-01"
         v-model="reportEndDate"
     />
@@ -54,7 +54,7 @@
     <button type="button" @click="generateReport">Generate report</button>
     <hr />
 
-    <h1>{{ reportTitle=='' ? 'Mock Harvest Report' : reportTitle}}</h1>
+    <h1>{{ reportTitle==='' ? 'Mock Harvest Report' : reportTitle}}</h1>
 
     Details:
     <ul>
@@ -66,26 +66,32 @@
         <li><b>Field:</b> {{reportField}}</li>
     </ul>
 
-    <table border="1">
-        <tr>
-            <td><strong>Row</strong></td>
-            <td><strong>Date</strong></td>
-            <td><strong>Area</strong></td>
-            <td><strong>Crop</strong></td>
-            <td><strong>Yield</strong></td>
-            <td><strong>Units</strong></td>
-            <td><strong>Delete</strong></td>
-        </tr>
-        <tr v-for="(log, ind) in harvestLogs">
-            <td>{{ ind+1 }}</td>
-            <td>{{ log.date }}</td>
-            <td>{{ log.area }}</td>
-            <td>{{ log.crop }}</td>
-            <td>{{ log.yield }}</td>
-            <td>{{ log.units }}</td>
-            <td><button type="button" @click="deleteRow(ind)">delete</button></td>
-        </tr>
-    </table>
+    <div v-if="harvestLogs.length>0">
+        <table border="1">
+            <tr>
+                <td><strong>Row</strong></td>
+                <td><strong>Date</strong></td>
+                <td><strong>Area</strong></td>
+                <td><strong>Crop</strong></td>
+                <td><strong>Yield</strong></td>
+                <td><strong>Units</strong></td>
+                <td><strong>Delete</strong></td>
+            </tr>
+            <tr v-for="(log, ind) in harvestLogs">
+                <td>{{ ind+1 }}</td>
+                <td>{{ log.date }}</td>
+                <td>{{ log.area }}</td>
+                <td>{{ log.crop }}</td>
+                <td>{{ log.yield }}</td>
+                <td>{{ log.units }}</td>
+                <td>
+                    <button type="button" @click="deleteRow(ind)">
+                        delete
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 <script>
     var vue2Subtab = new Vue({
@@ -134,14 +140,12 @@
             generateReport: function () {
                 var len = this.harvestLogs.length;
                 if (len < this.someHarvestLogs.length) {
-                    this.harvestLogs.push(
-                        this.someHarvestLogs[len]
-                    );
+                    this.harvestLogs.push(this.someHarvestLogs[len]);
                 }
             },
-            deleteRow: function(row){
+            deleteRow: function (row) {
                 this.harvestLogs.splice(row, 1);
-            }
+            },
         },
     });
     Vue.config.devtools = true;
