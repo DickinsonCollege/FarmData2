@@ -51,7 +51,7 @@
 
     <br />
 
-    <button type="button" @click="harvestLogs.push(firstLog)">Generate report</button>
+    <button type="button" @click="generateReport">Generate report</button>
     <hr />
 
     <h1>{{ reportTitle=='' ? 'Mock Harvest Report' : reportTitle}}</h1>
@@ -68,18 +68,22 @@
 
     <table border="1">
         <tr>
+            <td><strong>Row</strong></td>
             <td><strong>Date</strong></td>
             <td><strong>Area</strong></td>
             <td><strong>Crop</strong></td>
             <td><strong>Yield</strong></td>
             <td><strong>Units</strong></td>
+            <td><strong>Delete</strong></td>
         </tr>
-        <tr v-for="log in harvestLogs">
+        <tr v-for="(log, ind) in harvestLogs">
+            <td>{{ ind+1 }}</td>
             <td>{{ log.date }}</td>
             <td>{{ log.area }}</td>
             <td>{{ log.crop }}</td>
             <td>{{ log.yield }}</td>
             <td>{{ log.units }}</td>
+            <td><button type="button" @click="deleteRow(ind)">delete</button></td>
         </tr>
     </table>
 </div>
@@ -102,7 +106,7 @@
                 yield: 12,
                 units: 'Bunches',
             },
-            prevHarvestLogs: [
+            someHarvestLogs: [
                 {
                     date: '2018-05-02',
                     area: 'Chuau-1',
@@ -117,7 +121,27 @@
                     yield: 50,
                     units: 'Boxes',
                 },
+                {
+                    date: '2018-05-01',
+                    area: 'Orion-3',
+                    crop: 'Kale',
+                    yield: 12,
+                    units: 'Bunches',
+                },
             ],
+        },
+        methods: {
+            generateReport: function () {
+                var len = this.harvestLogs.length;
+                if (len < this.someHarvestLogs.length) {
+                    this.harvestLogs.push(
+                        this.someHarvestLogs[len]
+                    );
+                }
+            },
+            deleteRow: function(row){
+                this.harvestLogs.splice(row, 1);
+            }
         },
     });
     Vue.config.devtools = true;
