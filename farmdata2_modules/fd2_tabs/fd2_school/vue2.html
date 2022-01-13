@@ -1,0 +1,119 @@
+<div id="vue2-subtab" v-cloak>
+    <h1>Harvest Report</h1>
+
+    <em>mockup</em>.
+    <br />
+
+    <label for="myTitle">Title:</label>
+    <input
+        type="text"
+        id="title"
+        name="myTitle"
+        value="enter title"
+        v-model="reportTitle"
+    />
+
+    <br />
+
+    <label for="myCrop">Crop:</label>
+    <select id="crop" name="myCrop" v-model="reportCrop">
+        <option v-for="theCrop in reportCrops">{{theCrop}}</option>
+    </select>
+
+    <br />
+
+    <label for="myField">Field:</label>
+    <select id="field" name="myField" v-model="reportField">
+        <option v-for="theField in reportFields">{{theField}}</option>
+    </select>
+
+    <br />
+
+    <label for="myStartDate">Start date:</label>
+    <input
+        type="date"
+        id="startDate"
+        name="myStartDate"
+        min="2014-01-01"
+        max="2022-01-01"
+        v-model="reportStartDate"
+    />
+
+    <label for="myEndDate">End date:</label>
+    <input
+        type="date"
+        id="endDate"
+        name="myEndDate"
+        min="2014-01-01"
+        max="2022-01-01"
+        v-model="reportEndDate"
+    />
+
+    <br />
+
+    <button type="button">Generate report</button>
+    <hr />
+
+    <h1>{{ reportTitle=='' ? 'Mock Harvest Report' : reportTitle}}</h1>
+
+    Details:
+    <ul>
+        <li><b>Farm:</b> sample farm</li>
+        <li><b>User:</b> manager1</li>
+        <li><b>Start date:</b> {{reportStartDate}}</li>
+        <li><b>End date:</b> {{reportEndDate}}</li>
+        <li><b>Crop:</b> {{reportCrop}}</li>
+        <li><b>Field:</b> {{reportField}}</li>
+    </ul>
+
+    qwer zxcv
+
+    <table border="1">
+        uiop
+        <tr>
+            <td><strong>Date</strong></td>
+            <td><strong>Area</strong></td>
+            <td><strong>Crop</strong></td>
+            <td><strong>Yield</strong></td>
+            <td><strong>Units</strong></td>
+        </tr>
+        <tr v-for="log in harvestLogs">
+            <td>{{ log.date }}</td>
+            <td>{{ log.area }}</td>
+            <td>{{ log.crop }}</td>
+            <td>{{ log.yield }}</td>
+            <td>{{ log.units }}</td>
+        </tr>
+    </table>
+</div>
+<script>
+    var vue2Subtab = new Vue({
+        el: '#vue2-subtab',
+        data: {
+            reportTitle: 'My Sample Harvest Report',
+            reportStartDate: '2020-05-05',
+            reportEndDate: '2020-05-05',
+            reportCrop: 'Kale',
+            reportCrops: ['Broccoli', 'Kale', 'Peas'],
+            reportField: 'All',
+            reportFields: ['All', 'Chuau-1', 'SQ7'],
+            harvestLogs: [
+                {
+                    date: '2018-05-02',
+                    area: 'Chuau-1',
+                    crop: 'Kale',
+                    yield: 10,
+                    units: 'Bunches',
+                },
+                {
+                    date: '2018-05-03',
+                    area: 'SQ7',
+                    crop: 'Peas',
+                    yield: 50,
+                    units: 'Boxes',
+                },
+            ],
+        },
+    });
+    Vue.config.devtools = true;
+</script>
