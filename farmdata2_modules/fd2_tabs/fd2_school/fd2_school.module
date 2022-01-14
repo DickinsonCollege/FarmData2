@@ -91,6 +91,16 @@ function fd2_school_menu() {
         'weight' => 130,
     );
 
+   // api1 spike
+    $items['farm/fd2-school/api1'] = array(
+        'title' => 'API1',
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'fd2_school_view',
+        'page arguments' => array('api1.html'),
+        'access arguments' => array('view fd2 school'),
+        'weight' => 140,
+    );
+
 
   return $items;
 };
