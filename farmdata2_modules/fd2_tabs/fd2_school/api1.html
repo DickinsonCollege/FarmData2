@@ -17,7 +17,7 @@
 
     <label for="myCrop">Crop:</label>
     <select id="crop" name="myCrop" v-model="reportCrop">
-        <option v-for="theCrop in reportCrops">{{theCrop}}</option>
+        <option v-for="theCrop in cropArray">{{theCrop}}</option>
     </select>
 
     <br />
@@ -108,6 +108,7 @@
             reportCrops: ['Broccoli', 'Kale', 'Peas'],
             reportField: 'All',
             reportFields: ['All', 'Chuau-1', 'SQ7'],
+            cropMap: [],
             harvestLogs: [],
             firstLog: {
                 date: '2018-05-01',
@@ -140,15 +141,44 @@
                 },
             ],
         },
+        created() {
+            getIDToCropMap()
+                .then((theMap) => {
+                    this.cropMap = theMap;
+                })
+                .catch((err) => {
+                    console.log('Error in response from getIDToCropMap()');
+                    console.log(err);
+                });
+        },
+        computed: {
+            cropArray() {
+                return Array.from(this.cropMap.values());
+            },
+        },
         methods: {
             generateReport: function () {
+                axios
+                    .get('/farm.json')
+                    .then((response) => {
+                        // console.log('Got Response');
+                        // console.log(response);
+                        this.reportFarm = response.data.name;
+                        this.reportUser = response.data.user.name;
+                        // this.reportLanguage = response.data.languages;
+                    })
+                    .catch((error) => {
+                        console.log('Got Error');
+                        console.log(error);
+                    });
+
                 var len = this.harvestLogs.length;
                 if (len < this.someHarvestLogs.length) {
                     this.harvestLogs.push(this.someHarvestLogs[len]);
                 }
-                this.reportFarm='asdf';
-                this.reportUser='qwer';
-                this.reportLanguage='zxcv';
+                // this.reportFarm = 'asdf';
+                // this.reportUser = 'qwer';
+                this.reportLanguage = 'Unknown';
             },
             deleteRow: function (row) {
                 this.harvestLogs.splice(row, 1);
