@@ -18,7 +18,7 @@ then
   echo "            - sample - the sample db for development"
   echo "               - see docker/sampleDB/README.md "
   echo "            - orig - the original development db"
-  echo "               - depricated and will go away."
+  echo "               - deprecated and will go away."
 else
 
   echo "Switching to the "$FILE" database..."
