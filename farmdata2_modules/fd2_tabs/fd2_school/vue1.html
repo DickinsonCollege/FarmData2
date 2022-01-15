@@ -33,9 +33,7 @@
 </select>
 <br>
 <br>
-<button type="button">
-    <strong>Generate Report</strong>
-</button>
+<button type="button" class="btn btn-primary" @click="harvestLogs.push(harvestLog)">Generate Report</button>
 <hr>
     <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
 
@@ -50,7 +48,6 @@
   <li><b>End:</b> {{endDate}}</li>
   <li><b>Crop:</b> {{reportCrop}} </li>
  <li><b>Field:</b>{{reportField}} </li>
-
 </ul>
 
 <br>
@@ -63,21 +60,13 @@
     <td>Yield</td>
     <td> Units </td>
   </tr>
-  <tr>
 
-    <td>5/2/2018</td>
-    <td>Chuau-1</td>
-    <td>Kale</td>
-    <td>10</td>
-    <td>Bunches</td>
-  </tr>
-  <tr>
-
-    <td>5/5/2018</td>
-    <td>SQ7</td>
-    <td>Kale</td>
-    <td>7</td>
-    <td>Bunches</td>
+        <tr v-for="data in harvestLogs">
+            <td>{{data.date}}</td>
+            <td>{{data.field}}</td>
+            <td>{{data.crop}}</td>
+            <td>{{data.yield}}</td>
+<td>{{data.units}}</td>
   </tr>
 
 </table>
@@ -100,7 +89,14 @@
 			'All',
 			'Chuau-1',
 			'SQ7'
-		    ]
+		    ],
+
+		    harvestLog: '',
+                    harvestLogs: [
+                        {date: '05/05/2020', field: 'SQ7', crop: 'Kale', yield: '10', units: 'bunches'},
+                        {date: '05/15/2020', field: 'Chuau', crop: 'Kale', yield: '7', units: 'bunches'},
+			{date: '05/20/2020', field: 'SQ7', crop: 'Radish', yield: '17', units: 'bunches'}
+                    ]
                 }
             });
         </script>
