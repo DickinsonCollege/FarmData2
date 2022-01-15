@@ -24,16 +24,12 @@
 <br>
 <label for=”crop”>Crop:</label>
 <select id="crop" name="crop" v-model="reportCrop"  >
-  <option>Broccoli</option>
-  <option selected>Kale</option>
-  <option>Peas</option>
+  <option v-for="selectedCrop in cropList">{{selectedCrop}}</option>
 </select>
 
 <label for=”field”>Field:</label>
 <select id="field" name="field">
-  <option>Chuau-1</option>
-  <option selected>All </option>
-  <option>SQ7</option>
+<option v-for="selectedField in fieldList">{{selectedField}}</option>
 </select>
 <br>
 <br>
@@ -53,6 +49,7 @@
 <li><b>Start:</b>{{startDate}}</li>
   <li><b>End:</b> {{endDate}}</li>
   <li><b>Crop:</b> {{reportCrop}} </li>
+ <li><b>Field:</b>{{reportField}} </li>
 
 </ul>
 
@@ -92,7 +89,18 @@
                     header: null,
 		    startDate:'2018-05-05',
 		    endDate:'2018-05-15',
-		    reportCrop:'Broccoli'
+		    reportCrop:'Broccoli',
+                       cropList: [
+                        'Broccoli',
+                        'Kale',
+                        'Peas'
+                    ],
+		      reportField:'All',	
+                      fieldList: [
+			'All',
+			'Chuau-1',
+			'SQ7'
+		    ]
                 }
             });
         </script>
