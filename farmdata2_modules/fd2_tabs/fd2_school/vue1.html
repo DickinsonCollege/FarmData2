@@ -1,7 +1,12 @@
+
+<!DOCTYPE html>
+<html>
+<body>
 <h1>Harvest Report</h1>
 <p>This page is a <i>mockup</i> of a simplified harvest report</p>
-<label for=”title”>Title:</label>
-<input placeholder=Title></input>
+ <div id="header" v-cloak>
+<input type="text" v-model="header">
+
 <br>
 <br>
 <label for="start">Start:</label>
@@ -32,12 +37,12 @@
 <br>
 <br>
 <button type="button">
-    <strong>anonymous button</strong>
+    <strong>Generate Report</strong>
 </button>
-
-
 <hr>
-<h1> My Sample Harvest Report</h1>
+    <h1>{{ header }}</h1>
+
+
 <p>Details</p>
 <ul>
   <li><b>Farm:</b> Sample Farm </li>
@@ -51,7 +56,6 @@
 </ul>
 
 <br>
-<html>
 <table border=1>
   <tr>
 
@@ -79,6 +83,14 @@
   </tr>
 
 </table>
-
-
+</div>
+        <script>
+            var reportHeader = new Vue({
+                el: '#header',
+                data: {
+                    header: 'My Sample Harvest Report'
+                }
+            });
+        </script>
+</body>
 </html>
