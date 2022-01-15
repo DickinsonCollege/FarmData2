@@ -41,7 +41,7 @@
     <strong>Generate Report</strong>
 </button>
 <hr>
-    <h1>{{ header }}</h1>
+    <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
 
 
 <p>Details</p>
@@ -89,7 +89,7 @@
             var reportHeader = new Vue({
                 el: '#header',
                 data: {
-                    header: 'My Sample Harvest Report',
+                    header: null,
 		    startDate:'2018-05-05',
 		    endDate:'2018-05-15',
 		    reportCrop:'Broccoli'
