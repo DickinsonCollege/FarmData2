@@ -67,7 +67,7 @@
         <li><b>Field:</b> {{reportField}}</li>
     </ul>
 
-    <div v-if="harvestLogs.length>0">
+    <div v-if="harvestReportRows.length>0">
         <table border="1">
             <tr>
                 <td><strong>Row</strong></td>
@@ -78,7 +78,7 @@
                 <td><strong>Units</strong></td>
                 <td><strong>Delete</strong></td>
             </tr>
-            <tr v-for="(log, ind) in harvestLogs">
+            <tr v-for="(log, ind) in harvestReportRows">
                 <td>{{ ind+1 }}</td>
                 <td>{{ log.date }}</td>
                 <td>{{ log.area }}</td>
@@ -110,37 +110,37 @@
             reportFields: ['All', 'Chuau-1', 'SQ7'],
             cropMap: [],
             harvestLogs: [],
-            harvestLogs2: [],
-            firstLog: {
-                date: '2018-05-01',
-                area: 'Orion-3',
-                crop: 'Kale',
-                yield: 12,
-                units: 'Bunches',
-            },
-            someHarvestLogs: [
-                {
-                    date: '2018-05-02',
-                    area: 'Chuau-1',
-                    crop: 'Kale',
-                    yield: 10,
-                    units: 'Bunches',
-                },
-                {
-                    date: '2018-05-03',
-                    area: 'SQ7',
-                    crop: 'Peas',
-                    yield: 50,
-                    units: 'Boxes',
-                },
-                {
-                    date: '2018-05-01',
-                    area: 'Orion-3',
-                    crop: 'Kale',
-                    yield: 12,
-                    units: 'Bunches',
-                },
-            ],
+            // harvestLogs2: [],
+            // firstLog: {
+            //     date: '2018-05-01',
+            //     area: 'Orion-3',
+            //     crop: 'Kale',
+            //     yield: 12,
+            //     units: 'Bunches',
+            // },
+            // someHarvestLogs: [
+            //     {
+            //         date: '2018-05-02',
+            //         area: 'Chuau-1',
+            //         crop: 'Kale',
+            //         yield: 10,
+            //         units: 'Bunches',
+            //     },
+            //     {
+            //         date: '2018-05-03',
+            //         area: 'SQ7',
+            //         crop: 'Peas',
+            //         yield: 50,
+            //         units: 'Boxes',
+            //     },
+            //     {
+            //         date: '2018-05-01',
+            //         area: 'Orion-3',
+            //         crop: 'Kale',
+            //         yield: 12,
+            //         units: 'Bunches',
+            //     },
+            // ],
         },
         created() {
             getIDToCropMap()
@@ -156,9 +156,46 @@
             cropArray() {
                 return Array.from(this.cropMap.values());
             },
+            harvestReportRows() {
+                let tableRows = [];
+                for (let log of this.harvestLogs) {
+                    // let cropID = log.data.crop_tid
+                    let tableRow = {
+                        date: log.timestamp,
+                        area: log.area[0].name,
+                        yield: log.quantity[0].value,
+                        units: log.quantity[0].unit.name,
+                        crop: this.cropMap.get(log.data.crop_tid),
+                    };
+                    console.log('added crop ' + tableRow.crop);
+                    tableRows.push(tableRow);
+                }
+                return tableRows;
+            },
         },
         methods: {
             generateReport: function () {
+                //////////////////////////////////////////////////
+                // get general farm data
+                //////////////////////////////////////////////////
+                axios
+                    .get('/farm.json')
+                    .then((response) => {
+                        // console.log('Got Response');
+                        // console.log(response);
+                        this.reportFarm = response.data.name;
+                        this.reportUser = response.data.user.name;
+                        // this.reportLanguage = response.data.languages;
+                        this.reportLanguage = 'Unknown';
+                    })
+                    .catch((error) => {
+                        console.log('error retrieving farm info');
+                        console.log(error);
+                    });
+
+                //////////////////////////////////////////////////
+                // get harvest log data
+                //////////////////////////////////////////////////
                 let unixStartTime = dayjs(this.reportStartDate).unix();
                 let unixEndTime = dayjs(this.reportEndDate).unix();
                 let requestUrl =
@@ -169,36 +206,21 @@
                 console.log(unixStartTime);
                 console.log(unixEndTime);
                 console.log(requestUrl);
-                axios
-                    .get('/farm.json')
-                    .then((response) => {
-                        // console.log('Got Response');
-                        // console.log(response);
-                        this.reportFarm = response.data.name;
-                        this.reportUser = response.data.user.name;
-                        // this.reportLanguage = response.data.languages;
-                    })
-                    .catch((error) => {
-                        console.log('error retrieving farm info');
-                        console.log(error);
-                    });
+
                 let result = [];
                 getAllPages(requestUrl, result)
                     .then(() => {
-                        this.harvestLogs2 = result;
+                        this.harvestLogs = result;
                     })
                     .catch((err) => {
                         console.log('error retrieving harvest logs');
                         console.log(error);
                     });
 
-                var len = this.harvestLogs.length;
-                if (len < this.someHarvestLogs.length) {
-                    this.harvestLogs.push(this.someHarvestLogs[len]);
-                }
-                // this.reportFarm = 'asdf';
-                // this.reportUser = 'qwer';
-                this.reportLanguage = 'Unknown';
+                // var len = this.harvestLogs.length;
+                // if (len < this.someHarvestLogs.length) {
+                //     this.harvestLogs.push(this.someHarvestLogs[len]);
+                // }
             },
             deleteRow: function (row) {
                 this.harvestLogs.splice(row, 1);
