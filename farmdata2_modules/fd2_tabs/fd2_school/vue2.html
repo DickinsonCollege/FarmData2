@@ -33,7 +33,8 @@
 </select>
 <br>
 <br>
-<button type="button" class="btn btn-primary" @click="harvestLogs.push(harvestLog)">Generate Report</button>
+<button type="button" @click="reportHarvestLogs.push({date: '05/01/2018', field: 'Orion-3', crop: 'Kale', yield: '12',units:' bunches'} )">Generate Report</button>
+
 <hr>
     <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
 
@@ -60,8 +61,7 @@
     <td>Yield</td>
     <td> Units </td>
   </tr>
-
-        <tr v-for="data in harvestLogs">
+<tr v-for="data in reportHarvestLogs">
             <td>{{data.date}}</td>
             <td>{{data.field}}</td>
             <td>{{data.crop}}</td>
@@ -90,13 +90,8 @@
 			'Chuau-1',
 			'SQ7'
 		    ],
-
-		    harvestLog: '',
-                    harvestLogs: [
-                        {date: '05/05/2020', field: 'SQ7', crop: 'Kale', yield: '10', units: 'bunches'},
-                        {date: '05/15/2020', field: 'Chuau', crop: 'Kale', yield: '7', units: 'bunches'},
-			{date: '05/20/2020', field: 'SQ7', crop: 'Radish', yield: '17', units: 'bunches'}
-                    ]
+		                reportHarvestLogs: [],
+logIndex:0
                 }
             });
         Vue.config.devtools = true;
