@@ -1,0 +1,209 @@
+<div id="vue2-subtab" v-cloak>
+    <h1>Harvest Report</h1>
+
+    <em>mockup</em>.
+    <br />
+
+    <label for="myTitle">Title:</label>
+    <input
+        type="text"
+        id="title"
+        name="myTitle"
+        value="enter title"
+        v-model="reportTitle"
+    />
+
+    <br />
+
+    <label for="myCrop">Crop:</label>
+    <select id="crop" name="myCrop" v-model="reportCrop">
+        <option v-for="theCrop in cropArray">{{theCrop}}</option>
+    </select>
+
+    <br />
+
+    <label for="myField">Field:</label>
+    <select id="field" name="myField" v-model="reportField">
+        <option v-for="theField in reportFields">{{theField}}</option>
+    </select>
+
+    <br />
+
+    <label for="myStartDate">Start date:</label>
+    <input
+        type="date"
+        id="startDate"
+        name="myStartDate"
+        min="2014-01-01"
+        :max="reportEndDate"
+        v-model="reportStartDate"
+    />
+
+    <label for="myEndDate">End date:</label>
+    <input
+        type="date"
+        id="endDate"
+        name="myEndDate"
+        :min="reportStartDate"
+        max="2022-01-01"
+        v-model="reportEndDate"
+    />
+
+    <br />
+
+    <button type="button" @click="generateReport">Generate report</button>
+    <hr />
+
+    <h1>{{ reportTitle==='' ? 'Mock Harvest Report' : reportTitle}}</h1>
+
+    Details:
+    <ul>
+        <li><b>Farm:</b> {{reportFarm}}</li>
+        <li><b>User:</b> {{reportUser}}</li>
+        <li><b>Language:</b> {{reportLanguage}}</li>
+        <li><b>Start date:</b> {{reportStartDate}}</li>
+        <li><b>End date:</b> {{reportEndDate}}</li>
+        <li><b>Crop:</b> {{reportCrop}}</li>
+        <li><b>Field:</b> {{reportField}}</li>
+    </ul>
+
+    <div v-if="harvestLogs.length>0">
+        <table border="1">
+            <tr>
+                <td><strong>Row</strong></td>
+                <td><strong>Date</strong></td>
+                <td><strong>Area</strong></td>
+                <td><strong>Crop</strong></td>
+                <td><strong>Yield</strong></td>
+                <td><strong>Units</strong></td>
+                <td><strong>Delete</strong></td>
+            </tr>
+            <tr v-for="(log, ind) in harvestLogs">
+                <td>{{ ind+1 }}</td>
+                <td>{{ log.date }}</td>
+                <td>{{ log.area }}</td>
+                <td>{{ log.crop }}</td>
+                <td>{{ log.yield }}</td>
+                <td>{{ log.units }}</td>
+                <td>
+                    <button type="button" @click="deleteRow(ind)">
+                        delete
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    var vue2Subtab = new Vue({
+        el: '#vue2-subtab',
+        data: {
+            reportFarm: '',
+            reportUser: '',
+            reportLanguage: '',
+            reportTitle: 'My Sample Harvest Report',
+            reportStartDate: '2020-05-05',
+            reportEndDate: '2020-05-05',
+            reportCrop: 'Kale',
+            reportCrops: ['Broccoli', 'Kale', 'Peas'],
+            reportField: 'All',
+            reportFields: ['All', 'Chuau-1', 'SQ7'],
+            cropMap: [],
+            harvestLogs: [],
+            harvestLogs2: [],
+            firstLog: {
+                date: '2018-05-01',
+                area: 'Orion-3',
+                crop: 'Kale',
+                yield: 12,
+                units: 'Bunches',
+            },
+            someHarvestLogs: [
+                {
+                    date: '2018-05-02',
+                    area: 'Chuau-1',
+                    crop: 'Kale',
+                    yield: 10,
+                    units: 'Bunches',
+                },
+                {
+                    date: '2018-05-03',
+                    area: 'SQ7',
+                    crop: 'Peas',
+                    yield: 50,
+                    units: 'Boxes',
+                },
+                {
+                    date: '2018-05-01',
+                    area: 'Orion-3',
+                    crop: 'Kale',
+                    yield: 12,
+                    units: 'Bunches',
+                },
+            ],
+        },
+        created() {
+            getIDToCropMap()
+                .then((theMap) => {
+                    this.cropMap = theMap;
+                })
+                .catch((err) => {
+                    console.log('Error in response from getIDToCropMap()');
+                    console.log(err);
+                });
+        },
+        computed: {
+            cropArray() {
+                return Array.from(this.cropMap.values());
+            },
+        },
+        methods: {
+            generateReport: function () {
+                let unixStartTime = dayjs(this.reportStartDate).unix();
+                let unixEndTime = dayjs(this.reportEndDate).unix();
+                let requestUrl =
+                    '/log.json?type=farm_harvest&timestamp[ge]=' +
+                    unixStartTime +
+                    '&timestamp[le]=' +
+                    unixEndTime;
+                console.log(unixStartTime);
+                console.log(unixEndTime);
+                console.log(requestUrl);
+                axios
+                    .get('/farm.json')
+                    .then((response) => {
+                        // console.log('Got Response');
+                        // console.log(response);
+                        this.reportFarm = response.data.name;
+                        this.reportUser = response.data.user.name;
+                        // this.reportLanguage = response.data.languages;
+                    })
+                    .catch((error) => {
+                        console.log('error retrieving farm info');
+                        console.log(error);
+                    });
+                let result = [];
+                getAllPages(requestUrl, result)
+                    .then(() => {
+                        this.harvestLogs2 = result;
+                    })
+                    .catch((err) => {
+                        console.log('error retrieving harvest logs');
+                        console.log(error);
+                    });
+
+                var len = this.harvestLogs.length;
+                if (len < this.someHarvestLogs.length) {
+                    this.harvestLogs.push(this.someHarvestLogs[len]);
+                }
+                // this.reportFarm = 'asdf';
+                // this.reportUser = 'qwer';
+                this.reportLanguage = 'Unknown';
+            },
+            deleteRow: function (row) {
+                this.harvestLogs.splice(row, 1);
+            },
+        },
+    });
+    Vue.config.devtools = true;
+</script>
