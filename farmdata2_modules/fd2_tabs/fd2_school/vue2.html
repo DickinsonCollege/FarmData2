@@ -60,12 +60,13 @@
     <td>Yield</td>
     <td> Units </td>
   </tr>
-<tr v-for="data in reportHarvestLogs">
+<tr v-for="(data, dataIndex) in reportHarvestLogs">
+
             <td>{{data.date}}</td>
             <td>{{data.field}}</td>
             <td>{{data.crop}}</td>
             <td>{{data.yield}}</td>
-<td>{{data.units}}</td>
+<td><button @click="deleteHarvestLog(dataIndex)">Delete</button></td>
   </tr>
 
 </table>
@@ -105,8 +106,12 @@ logIndex:0
                         }
 			else {
 			}
+                    
+                },
+	                    deleteHarvestLog: function(dataIndex) {
+                        this.reportHarvestLogs.splice(dataIndex,1);
                     }
-                }
+		}
             });
         Vue.config.devtools = true;
         </script>
