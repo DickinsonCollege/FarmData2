@@ -53,7 +53,8 @@
 <br>
 <table border=1>
   <tr>
-
+        <p v-if="reportHarvestLogs.length === 0">No matching records currently.</p>
+        <tr v-if="reportHarvestLogs.length !== 0">
     <td>Date</td>
     <td>Area</td>
     <td>Crop</td>
