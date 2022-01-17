@@ -33,8 +33,7 @@
 </select>
 <br>
 <br>
-<button type="button" @click="reportHarvestLogs.push({date: '05/01/2018', field: 'Orion-3', crop: 'Kale', yield: '12',units:' bunches'} )">Generate Report</button>
-
+            <button class="btn btn-primary" @click="generateReport">Generate Report Now</button>
 <hr>
     <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
 
@@ -92,6 +91,21 @@
 		    ],
 		                reportHarvestLogs: [],
 logIndex:0
+                },
+	methods: {
+                    generateReport: function() {
+                        if(this.reportHarvestLogs.length == 0) {
+                            this.reportHarvestLogs.push({date: '05/02/2018', field: 'SQ7', crop: 'Kale', yield: '7 bunches'});
+                        }
+                        else if(this.reportHarvestLogs.length == 1) {
+                            this.reportHarvestLogs.push({date: '05/03/2018', field: 'Chuau', crop: 'Kale', yield: '10 bunches'});
+                        }
+                        else if(this.reportHarvestLogs.length == 2) {
+                           this.reportHarvestLogs.push({date: '05/03/2018', field: 'Chuau', crop: 'Kale', yield: '10 bunches'});
+                        }
+			else {
+			}
+                    }
                 }
             });
         Vue.config.devtools = true;
