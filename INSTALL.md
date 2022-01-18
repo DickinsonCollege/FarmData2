@@ -43,18 +43,11 @@ Full installation details for other platforms can be obtained from the projects 
   * [Get Docker](https://docs.docker.com/get-docker/)
   * [Install Compose](https://docs.docker.com/compose/install/)
 
->**Note :** In MacOS, start docker and increase its memory resource to 4GB.
 
 ### Linux Docker Configuration ###
 
 If you are developing under Linux you will need to be able to [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).  To do so you need to add your user to the `docker` group. Use the following commands:
 
-**For MacOS:**
-```
-sudo dscl . -create /Groups/docker GroupMembership $user
-
-```
-**For other OS:**
 ```
 sudo groupadd docker
 sudo usermod -aG docker $USER
