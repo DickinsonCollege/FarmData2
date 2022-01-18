@@ -43,15 +43,18 @@ Full installation details for other platforms can be obtained from the projects 
   * [Get Docker](https://docs.docker.com/get-docker/)
   * [Install Compose](https://docs.docker.com/compose/install/)
 
+
 ### Linux Docker Configuration ###
 
 If you are developing under Linux you will need to be able to [Manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).  To do so you need to add your user to the `docker` group. Use the following commands:
+
 ```
 sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
 
 Then log out and back into the system. When you log back in your user will have the permissions needed in order to use docker commands.  Note that if you are developing on a virtual machine you will need to restart the virtual machine for the changes to take effect.
+
 
 ### Getting FarmData2 ###
 
@@ -66,6 +69,7 @@ To get started:
      - You will also probably want to [Store your GitHub Credentials with the Git Credential Helper](https://techexpertise.medium.com/storing-git-credentials-with-git-credential-helper-33d22a6b5ce7) to avoid retyping the token for every operation.
   1. [Fork the FarmData2 repository](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) into your own GitHub account.
   1. [Clone your fork](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) of FarmData2 to your development machine.
+  1. Change your directory to where you have cloned using `cd`.
   1. [Set your upstream remote](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork) to point to the main [FarmData2 repository](https://github.com/DickinsonCollege/FarmData2) at https://github.com/DickinsonCollege/FarmData2.
 
 ### Install the Sample Database Image ###
@@ -79,7 +83,7 @@ When this command completes there should be a `db` directory in the `docker` dir
 
 ### Starting FarmData2 ###
 
-To start FarmData2 ensure that you are in the `docker` directory in the repository and use the command below:
+To start FarmData2, ensure that docker is running and you are in the `docker` directory of the repository. Then, use the command below:
 ```
 ./fd2-up.bash
 ```
