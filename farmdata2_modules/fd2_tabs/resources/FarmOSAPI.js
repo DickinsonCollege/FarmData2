@@ -15,7 +15,7 @@ catch {
  * If there are data properties in the logs, they are parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
  *  
  * @param {string} endpoint the API endpoint including any query parameters.  Note: This does not include http://localhost/ or other server address.
- * @param {array} [arr] optionally an array that will be filled with the records as they are returned.  If ommitted a new array will be returned when the request completes.
+ * @param {array} [arr] optionally an array that will be filled with the records as they are returned.  If omitted a new array will be returned when the request completes.
  * 
  * @returns a Promise that when resolved yields the array with all of the records from all of the pages of the response.
  * 

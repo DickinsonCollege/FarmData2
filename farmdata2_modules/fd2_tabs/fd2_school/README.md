@@ -22,7 +22,7 @@ FarmData2 is built using Drupal modules that run within FarmOS. For example, the
 
 ### Adding a Sub-Tab to the FD2 School Tab ###
 
-Most FarmData2 front-end deveopment will consist of adding a new sub-tab to one of the FarmData2 tabs (i.e. the _Field Kit_ or the _Barn Kit_).  This section discusses how to add such a sub-tab to the FarmData2 School tab.
+Most FarmData2 front-end development will consist of adding a new sub-tab to one of the FarmData2 tabs (i.e. the _Field Kit_ or the _Barn Kit_).  This section discusses how to add such a sub-tab to the FarmData2 School tab.
 
 Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData2 School Tab. To do this you will need to edit the `fd2_school` module. The following steps will guide you through that process.
 
