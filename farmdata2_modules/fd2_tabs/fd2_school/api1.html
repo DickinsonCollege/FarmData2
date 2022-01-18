@@ -40,9 +40,9 @@
 
 <p>Details</p>
 <ul>
-  <li><b>Farm:</b> Sample Farm </li>
-  <li><b>User:</b> manager1 </li>
-  <li><b>Language:</b> English </li>
+  <li><b>Farm:</b> {{reportFarm}} </li>
+  <li><b>User:</b> {{reportUser}} </li>
+  <li><b>Language:</b> {{reportLanguage}} </li>
 <br>
 <li><b>Start:</b>{{startDate}}</li>
   <li><b>End:</b> {{endDate}}</li>
@@ -77,6 +77,9 @@
                 el: '#header',
                 data: {
                     header: null,
+		    reportFarm:'',
+		    reportUser:'',
+		    reportLanguage:'',
 		    startDate:'2018-05-05',
 		    endDate:'2018-05-15',
 		    reportCrop:'Broccoli',
@@ -107,7 +110,10 @@ logIndex:0
                         }
 			else {
 			}
-                    
+
+			this.reportFarm='Sample Farm';
+			this.reportUser='manager1';
+			this.reportLanguage='English';                    
                 },
 	                    deleteHarvestLog: function(dataIndex) {
                         this.reportHarvestLogs.splice(dataIndex,1);
