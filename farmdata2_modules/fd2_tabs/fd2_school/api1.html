@@ -99,6 +99,20 @@ logIndex:0
                 },
 	methods: {
                     generateReport: function() {
+			                axios
+                    .get('/farm.json')
+                    .then((response) => {
+                         console.log('Got Response');
+                        console.log(response);
+                        this.reportFarm = response.data.name;
+                        this.reportUser = response.data.user.name;
+                        this.reportLanguage = response.data.user.language;
+                    })
+                    .catch((error) => {
+                        console.log('Got Error');
+                        console.log(error);
+                    })
+
                         if(this.reportHarvestLogs.length == 0) {
                             this.reportHarvestLogs.push({date: '05/02/2018', field: 'SQ7', crop: 'Kale', yield: '7 bunches'});
                         }
@@ -113,7 +127,7 @@ logIndex:0
 
 			this.reportFarm='Sample Farm';
 			this.reportUser='manager1';
-			this.reportLanguage='English';                    
+			this.reportLanguage='Englisia';                    
                 },
 	                    deleteHarvestLog: function(dataIndex) {
                         this.reportHarvestLogs.splice(dataIndex,1);
