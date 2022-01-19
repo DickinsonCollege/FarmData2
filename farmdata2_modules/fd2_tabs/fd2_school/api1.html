@@ -24,7 +24,8 @@
 <br>
 <label for=”crop”>Crop:</label>
 <select id="crop" name="crop" v-model="reportCrop"  >
-  <option v-for="selectedCrop in cropList">{{selectedCrop}}</option>
+<option v-for="theCrop in createCropArray">{{theCrop}}</option>
+
 </select>
 
 <label for=”field”>Field:</label>
@@ -83,23 +84,39 @@
 		    startDate:'2018-05-05',
 		    endDate:'2018-05-15',
 		    reportCrop:'Broccoli',
-                       cropList: [
-                        'Broccoli',
-                        'Kale',
-                        'Peas'
-                    ],
 		      reportField:'All',	
                       fieldList: [
 			'All',
 			'Chuau-1',
 			'SQ7'
 		    ],
-		                reportHarvestLogs: [],
-logIndex:0
+			idToCropMap: [],
+		        reportHarvestLogs: [],
+			logIndex:0
                 },
+
+		created() {
+
+			console.log("HarvestReport created!")
+			getIDToCropMap()
+                		.then((theMap) => {
+                    			this.idToCropMap = theMap;
+                	})
+                	.catch((err) => {
+                    		console.log('Error in response from getIDToCropMap()');
+                    		console.log(err);
+                });
+
+		},
+	computed: {
+            createCropArray() {
+                return Array.from(this.idToCropMap.values());
+            },
+        },
+
 	methods: {
                     generateReport: function() {
-			                axios
+		   axios
                     .get('/farm.json')
                     .then((response) => {
                          console.log('Got Response');
