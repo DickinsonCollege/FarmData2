@@ -30,7 +30,7 @@
 
 <label for=”field”>Field:</label>
 <select id="field" name="field">
-<option v-for="selectedField in fieldList">{{selectedField}}</option>
+<option v-for="selectedField in createFieldArray">{{selectedField}}</option>
 </select>
 <br>
 <br>
@@ -91,6 +91,7 @@
 			'SQ7'
 		    ],
 			idToCropMap: [],
+			idToAreaMap: [],
 		        reportHarvestLogs: [],
 			logIndex:0
                 },
@@ -107,11 +108,27 @@
                     		console.log(err);
                 });
 
+
+		getIDToAreaMap()
+                                .then((theMap2) => {
+                                        this.idToAreaMap = theMap2;
+                        })
+                        .catch((err) => {
+                                console.log('Error in response from getIDToFieldMap()');
+                                console.log(err);
+                });
+
+
 		},
 	computed: {
             createCropArray() {
                 return Array.from(this.idToCropMap.values());
             },
+
+	createFieldArray() {
+                return Array.from(this.idToAreaMap.values());
+            },
+
         },
 
 	methods: {
@@ -142,9 +159,9 @@
 			else {
 			}
 
-			this.reportFarm='Sample Farm';
-			this.reportUser='manager1';
-			this.reportLanguage='Englisia';                    
+		//	this.reportFarm='Sample Farm';
+		//	this.reportUser='manager1';
+		//	this.reportLanguage='Englisia';                    
                 },
 	                    deleteHarvestLog: function(dataIndex) {
                         this.reportHarvestLogs.splice(dataIndex,1);
