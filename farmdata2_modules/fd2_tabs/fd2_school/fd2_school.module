@@ -89,7 +89,7 @@ function fd2_school_menu() {
         'access arguments' => array('view fd2 school'),
         'weight' => 310,
     );
-  // Add a sub-tab named API1 with content in api.html.
+  // Add a sub-tab named API1 with content in api1.html.
     $items['farm/fd2-school/api1'] = array(
         'title' => 'API1',
         'type' => MENU_LOCAL_TASK,
@@ -97,6 +97,15 @@ function fd2_school_menu() {
         'page arguments' => array('api1.html'),
         'access arguments' => array('view fd2 school'),
         'weight' => 410,
+    );
+  // Add a sub-tab named API2 with content in api2.html.
+    $items['farm/fd2-school/api2'] = array(
+        'title' => 'API2',
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'fd2_school_view',
+        'page arguments' => array('api2.html'),
+        'access arguments' => array('view fd2 school'),
+        'weight' => 510,
     );
 
   
