@@ -1,36 +1,74 @@
-<h1>The Harvest Report</h1>
-This page is a <em>mockup</em> of a simplified harvers report. 
-<hr>
-<h1>My Mock Report</h1>
-Details:<br>
-<ul>
-    <li><strong>Farm</strong>: Sample Farm</li>
-    <li><strong>User</strong>: Sample Farm</li>
-    <li><strong>Language</strong>: English</li>
-    <p></p>
-    <li><strong>Start</strong>: 05/01/2018</li>
-    <li><strong>End</strong>: 05/15/2018</li>
-    <li><strong>Crop</strong>: Cale</li>
-</ul>
-<input type="text" value="Title">
- <button type="submit">Generate Report </button>
- <br>
- <label for="Crop">Crop:</label>
- <select name="Crop">
-    <option>Broccoli</option>
-    <option selected>Kale</option>
-    <option>Peas</option>
-  </select>
-<label for="Field">Field:</label>
-<select name="Field">
-    <option selected>All</option>
-    <option>Chuau-1</option>
-    <option>SQ7</option>
-  </select>
-<br>
-<label for="Start">Start:</label>
-<input type="date" value="2020-05-05"
-min="2014-01-01" max="2022-01-01">
-<label for="End">End:</label>
-<input type="date" value="2020-05-15"
-min="2014-01-01" max="2022-01-01">
+<!DOCTYPE html>
+<html>
+    <body><h1>The Harvest Report</h1>
+        This page is a <em>mockup</em> of a simplified harvers report. 
+        <br><br>
+        Title: <input type="text" value="Title">
+        
+        <br><br>
+        <label for="Crop">Crop:</label>
+        <select name="Crop">
+            <option>Broccoli</option>
+            <option selected>Kale</option>
+            <option>Peas</option>
+        </select>
+        <label for="Field">Field:</label>
+        <select name="Field">
+            <option selected>All</option>
+            <option>Chuau-1</option>
+            <option>SQ7</option>
+        </select>
+
+        <br><br>
+
+        <label for="Start">Start:</label>
+        <input type="date" value="2020-05-05"
+        min="2014-01-01" max="2022-01-01">
+        <label for="End">End:</label>
+        <input type="date" value="2020-05-15"
+        min="2014-01-01" max="2022-01-01">
+        <br><br>
+
+        <button type="submit">Generate Report </button>
+        
+        <hr>
+
+        <h1>My Mock Report</h1>
+
+        Details:<br>
+        <ul>
+            <li><strong>Farm</strong>: Sample Farm</li>
+            <li><strong>User</strong>: Sample Farm</li>
+            <li><strong>Language</strong>: English</li>
+            <p></p>
+            <li><strong>Start</strong>: 05/01/2018</li>
+            <li><strong>End</strong>: 05/15/2018</li>
+            <li><strong>Crop</strong>: Cale</li>
+        </ul>
+
+        <table border=1>
+            <tr>
+                <th><strong>Date</strong></th>
+                <th><strong>Area</strong></th> 
+                <th><strong>Crop</strong></th>
+                <th><strong>Yield</strong></th>
+                <th><strong>Units</strong></th>   
+            </tr>
+            <tr>
+                <td>05/02/2018 </td>
+                <td>Chuau-1</td>
+                <td>Kale</td>
+                <td>10</td>
+                <td>Bunches</td>
+            </tr>
+            <tr>
+                <td>05/05/2018</td>
+
+                <td>SQ7</td>
+                <td>Kale</td>
+                <td>7</td>
+                <td>Bunches</td>
+            </tr>
+        </table>
+    </body>
+</html>
