@@ -62,6 +62,15 @@ function fd2_school_menu() {
 
   // Add items blocks for new sub-tabs here.
 
+  $items['farm/fd2-school/html'] = array(                 // Put the school in the farm menu
+    'title' => 'HTML',                         // Put FD2 School on the tab
+    'page callback' => 'fd2_school_view',            // The function that will provide the content
+    'page arguments' => array('html.html'),           // The html file with the default content for the tab
+    'access arguments' => array('view fd2 school'),  // permissions required to view the tab
+    'type' => MENU_LOCAL_TASK,                        // Put it on the menu
+    'weight' => -30,                                  // larger weights appear further right.
+  );
+
   return $items;
 };
 
