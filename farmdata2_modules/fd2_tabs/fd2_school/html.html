@@ -7,12 +7,30 @@
   <li><strong>Farm:</strong>Sample Farm</li>
   <li><strong>User:</strong>manager1</li>
   <li><strong>Language:</strong>English</li>
-  <br>   
-  <li><strong>Start:</strong>05/01/2018</li>
-  <li><strong>End:</strong>05/15/2018</li>
-  <li><strong>Crop:</strong>Kale</li>
+  <br>  
+  <li><label for='Crop'>Crop:</label>
+      <select id='Crop' name='Crop'>
+      <option>Broccoli</option>
+      <option selected>Kale</option>
+      <option>Peas</option>
+  </select></li>
+  <li><label for='Field'>Field:</label>
+      <select id='Field' name='Field'>
+      <option selected>All</option>
+      <option>Chuau-1</option>
+      <option>SQ7</option>
+  </select></li>
+  <li><label for='Start'>Start:</label>
+      <input type='date' id='start' name='start'
+          value='2020-05-05'
+          min='2014-01-01' max='2022-01-01'></li>
+  <li><label for='End'>End:</label>
+      <input type='date' id='end' name='end'
+          value='2020-05-15'
+          min='2020-05-05' max='2022-01-01'></li> 
 <hr>
 <label for='Title'>Title</label>
 <input type='text' id='Title' placeholder='Enter title here.'>
+<br>
 <br>
 <input type='button' value='Generate Report'>
