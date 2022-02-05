@@ -4,7 +4,45 @@
     <h1>Harvest Report</h1>
     
     <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
-    
+
+    <label for= "title"> Title: </label>
+    <input type="text", id = "title" value="My Sample Harvest Report">
+    <br><br>
+
+    <!--Date boxes-->
+    <label for="start">Start:</label>
+
+    <input type="date" id="start" name="start"
+       value="2020-05-05"
+       min="2014-01-01" max="2022-01-01">
+
+        <label for="end">End:</label>
+
+    <input type="date" id="end" name="end"
+       value="2020-05-15"
+       min="2020-05-05" max="2022-01-01">
+
+    <br><br>
+
+    <!--Crop and Field Entry-->
+    <label for="Crop">Crop: </label>
+    <select id="Crop" name="Crop">
+        <option>Broccoli</option>
+        <option selected>Kale</option>
+        <option>Peas</option>
+    </select>
+
+    <label for="field">Field: </label>
+    <select id="field" name="field">
+        <option selected>All</option>
+        <option>Chuau-1</option>
+        <option>SQ7</option>
+    </select><br><br>
+
+    <!--Generate Report-->
+    <input type="button" value="Generate Report">
+    <br><br>
+
     <!--Horizonal Line-->
     <hr>
     
@@ -24,40 +62,34 @@
         <li><b>Crop: </b>Kale</li>
     </ul>
 
-    <label for= "title"> Title: </label>
-    <input type="text", id = "title">
-    <br><br>
-    <input type="button" value="Generate Report">
-    <br><br>
+    <!--Table-->
+    <table border = 1>
+        <tr>
+            <th>Date</th>
+            <th>Area</th>
+            <th>Crop</th>
+            <th>Yield</th>
+            <th>Units</th>
+        </tr>
+        
+        <tr>
+            <td>05/02/2018</td>
+            <td>Chuau-1</td>
+            <td>Kale</td>
+            <td>10</td>
+            <td>Bunches</td>
+        </tr>
 
-    <!--Crop Element-->
-    <label for="Crop">Crop: </label>
-    <select id="Crop" name="Crop">
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
-    </select> <br><br>
+         <tr>
+            <td>05/05/2018</td>
+            <td>SQ7</td>
+            <td>Kale</td>
+            <td>7</td>
+            <td>Bunches</td>
+        </tr>
 
-    <label for="field">Field: </label>
-    <select id="field" name="field">
-        <option selected>All</option>
-        <option>Chuau-1</option>
-        <option>SQ7</option>
-    </select><br><br>
+    </table>
 
-    <!--Date boxes-->
-    <label for="start">Start date:</label>
-
-    <input type="date" id="start" name="start"
-       value="2020-05-05"
-       min="2014-01-01" max="2022-01-01">
-
-    <br><br>
-
-    <label for="end">End date:</label>
-
-    <input type="date" id="end" name="end"
-       value="2020-05-15"
-       min="2020-05-05" max="2022-01-01">
+    
 
 </html>
