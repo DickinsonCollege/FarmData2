@@ -3,9 +3,39 @@
     <p>This page is a <i>mockup</i> of a simplified harverst report.</p>
     <label for="title">Title:</label>
     <input type=”text” id="title" name="title" value="title">
+    <br></br>
+    <label for="start">Start:</label>
+
+    <input type="date" id="start" name="start"
+       value="2020-05-05"
+       min="2014-01-01" max="2022-01-01">
+
+    <label for="end">End</label>
+
+    <input type="date" id="end" name="end"
+       value="2020-05-15"
+       min="2020-05-05" max="2022-01-01">
+    <br></br>
+    <label for="crop">Crop:</label>
+    <select id="crop" name="crop">
+        <option>Broccoli</option>
+        <option selected>Kale</option>
+        <option>Peas</option>
+        </select>
+    <br></br>     
+    <label for="field">Field:</label>
+    <select id="field" name="field">
+        <option selected>All</option>
+        <option>Chuau-1</option>
+        <option>SQ7</option>
+    </select>
+
     <br> </br>
     <input type="button" value="Generate Report">
+
     <hr> </hr>
+
+
     <h1>My Sample Harvest Report </h1>
     <p>Details:</p>
     <ul>
