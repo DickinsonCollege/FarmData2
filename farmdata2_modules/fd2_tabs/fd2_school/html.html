@@ -8,6 +8,42 @@
     <h1>Harvest Report</h1>
     <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
 
+    <label for="title">Title:</label>
+
+    <input type="text" id="title">
+    <br>
+
+    <label for="start">Start:</label>
+    <input id="start" 
+            type="date"
+            value="2020-05-05"
+            min="2014-01-01"
+            max="2022-01-01">
+    
+    <label for="end">End:</label>
+    <input id="end" 
+            type="date"
+            value="2020-05-15"
+            min="2020-05-05"
+            max="2022-01-01">
+    <br>
+
+    <label for="crop">Crop:</label>
+    <select id="crop">
+        <option>Broccoli</option>
+        <option selected>Kale</option>
+        <option>Peas</option>
+    </select>    
+
+    <label for="field">Field:</label>
+    <select id="crop">
+        <option selected>All</option>
+        <option>Chuau-1</option>
+        <option>SQ7</option>
+    </select> 
+    <br>
+
+    <button type="submit">Generate Report</button>
     <hr/>
 
     <h1>My Sample Harvest Report</h1>
@@ -21,26 +57,5 @@
         <li><strong>End:</strong>05/15/2018</li>
         <li><strong>Crop:</strong>Kale</li>
     </ul>
-    <label for="title">Title</label>
-    <input type="text" id="title">
-    <button type="submit">Generate Report</button>
-
-    
-    <!-- <fieldset>
-        <lengend>What type of bean?</lengend>
-        <ul>
-            <li>
-		        <label for="green">Green</label> 
-                <input type="radio" id="green" checked> 
-            </li> 
-            <li>
-                <label for="yellow">Yellow</label> 
-                <input type="radio" id="yellow">
-		    </li>
-        </ul>
-    </fieldset> -->
-
-    <!-- <label for="comment">Comment</label>
-    <input type="text" id="comment"> -->
   </body>
 </html>
