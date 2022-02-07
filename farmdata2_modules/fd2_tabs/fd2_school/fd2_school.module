@@ -61,9 +61,21 @@ function fd2_school_menu() {
   );
 
   // Add items blocks for new sub-tabs here.
+$items['farm/fd2-school/HTML'] = array(
+            'title' => 'HTML',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('html.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
 
-  return $items;
-};
+        return $items;
+    };
+
+
+
+  
 
 // This function Loads the content for the sub-tab from the html file specified in the arguemnt.
 // It must be renamed in each module.
