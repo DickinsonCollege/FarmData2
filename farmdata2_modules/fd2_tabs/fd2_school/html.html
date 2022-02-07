@@ -3,6 +3,48 @@
 
 <hr>
 
+<label for="title"> Title: </label>
+<input type="text" id="title" name="title" value="">
+
+<br>
+<br>
+
+<label for="start">Start: </label>
+<input type="date" id="start" name="start-date"
+         value="05/05/2020"
+         min="01/01/2014 " max="01/01/2022 ">
+
+<label for="end">End: </label>
+<input type="date" id="end" name="end-date"
+         value="05/15/2020"
+         min="05/05/2020" max="01/01/2022">
+
+<br>
+<br>
+
+<label for="crop"> Crop: </label>
+<select id="crop" name="crop">
+    <option> Broccoli </option>
+    <option selected> Kale </option>
+    <option> Peas </option>
+</select>
+
+<label for="field"> Field: </label>
+<select id="field" name="field">
+    <option selected> All </option>
+    <option> Chuau-1 </option>
+    <option> SQ7 </option>
+</select>
+
+<br>
+<br>
+
+<button type="button">
+    Generate Report
+</button>
+
+<hr>
+
 <h1>My Sample harvest Report</h1>
 <p>Details:</p>
 
@@ -16,14 +58,6 @@
     <li><strong>Crop: </strong> Kale</li>
 </ul>
 
-<hr>
-
-<label for="title"> Title: </label>
-<input type="text" id="title" name="title" value="">
-
-<button type="button">
-    Generate Report
-</button>
 
 
 
