@@ -1,0 +1,78 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="maps" v-cloak> 
+
+    <p>The farmdata2_modules/FarmData2/fd2_tabs/resources/FarmOSAPI.js file provide a library of JavaScript convenience functions for accessing the FarmOS API.  This page gives examples of how to use these functions for loading maps from farmOS id numbers to textual names and vice versa (E.g. from user id to user name or crop id to crop name). The js library is include in the page by the fd2_example.info file.</p>
+
+    <p>This page specifcially demonstrates the maps for going from user id to username and vice versa. The use of other maps (see FarmOSAPI.js for a full list) are used in similar ways.</p>
+        
+    <p>Examples of how to use Cypress to test the elements on this page can be found in the maps.spec.js file.</p>
+
+    <p>The userToIDMap map can be used to go from a username to a user id:</p>
+    <UL>
+        <LI>The logged in user is {{ userName }}.</LI>
+        <LI>That user's ID in the map is: 
+            <span data-cy="mapped-id">{{ userToIDMap.get(userName) }}</span>
+    </UL>
+
+    <p>The IDToUserMap map can be used to go from a user id to a username:</p>
+    <UL>
+        <LI>The logged in user id is {{ userID }}.</LI>
+        <LI>That user's name in the map is: 
+            <!-- Need to convert userID to a string here because the map keys are strings -->
+            <span data-cy="mapped-name">{{ idToUserMap.get(userID.toString()) }}</span>
+    </UL>
+
+    <p>The full list of users known to the sustem is:</p>
+    <UL>
+        <table border=1px>
+            <tr><th>User ID</th><th>User Name</th></tr>
+            <!-- Use the computed property sortedIDs here to order the output -->
+            <!-- Also bind the data-cy attribute into the v-for index -->
+            <!-- That gives each element in the table a unique data-cy for testing. -->
+            <tr v-for='(id,i) in sortedIDs'>
+                <td :data-cy=i+'id'>{{ id }}</td><td :data-cy=i+'name'>{{ idToUserMap.get(id) }}</td></tr>
+        </table>
+    </UL>
+</div>
+
+<script>
+// Define the Vue instance for the app.
+new Vue({
+    el: '#maps',  // el: must match the id of the <div> for the app above.
+    data: {
+        // Provide easy access to the FarmDat2 variables in vue.
+        userID: fd2UserID,
+        userName: fd2UserName,
+
+        // Vue variables to hold the maps that are loaded from farmOS
+        // Note: Making a new map here prevents null reference exceptions if the
+        //       map has not been retrieved yet when the page is rendered.
+        userToIDMap: new Map(),
+        idToUserMap: new Map(),
+    },
+    computed: {
+        sortedIDs() {
+            keys = Array.from(this.idToUserMap.keys());
+            keys.sort(function(a,b) { 
+                return Number(a) - Number(b);
+            })
+            return keys
+        },
+    },
+    created() {
+        // Use the FarmData2 library functions to load the maps into the 
+        // Vue variables when this page is created.
+        getUserToIDMap().then((response) => {
+            this.userToIDMap = response
+        })
+        getIDToUserMap().then((response) => {
+            this.idToUserMap = response
+        })
+    }
+})
+
+//Allows Vue to be accessed in Dev Tools
+Vue.config.devtools = true;
+</script>
+    

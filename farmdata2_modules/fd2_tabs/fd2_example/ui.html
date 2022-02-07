@@ -1,0 +1,281 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="ui" v-cloak> 
+
+    <p>FarmData2 provides a number of custom Vue components, bootstrap elements and CSS styles that are used throught the application to give it a consistent look and feel.  This page gives examples of how the components and styles are created, used and tested (see ui.spec.js).</p>
+
+    <p><b>DropdownWithAllComponent</b></p>
+    <UL>
+        <dropdown-with-all data-cy="crop-dropdown" 
+            includes-all 
+            :default-input=pickedCrop
+            :dropdown-list=cropList
+            @selection-changed="cropChange">
+        Pick a Crop: 
+        </dropdown-with-all>
+        <button data-cy='choose-kale' 
+            @click='pickKaleOption'>Choose Kale</button>
+        <button data-cy='add-zucchini' 
+            @click='addZucchini'>Add Zucchini</button>
+        <p>Result:</p>
+        <UL>
+            <LI>Chosen Value: <span data-cy="picked-crop">{{ pickedCrop }}</span></LI>
+        </UL>
+    </UL>
+
+    <p><b>DateSelectionComponent</b></p>
+    <ul>
+        <date-selection data-cy="date-picker" 
+            earliest-date="2021-01-15" 
+            latest-date="2021-02-15" 
+            default-date="2021-01-20"
+            @date-changed='dateChange' 
+            @click='dateClicked'>
+        Choose a Date:
+        </date-selection>
+        <p>Result:</p>
+        <UL>
+            <LI>Chosen Date: <span data-cy="date-chosen">{{ chosenDate }}</span>
+            <i>(changes when loses focus)</i></LI> 
+            <LI>Click Events: <span data-cy="date-clicks">{{ dateClicks }}</span>
+            <i>(happens when clicked inside)</i></LI>
+        </UL>
+    </ul>
+    
+    <p><b>DateRangeSelectionComponent</b></p>
+    <ul>
+        <date-range-selection data-cy="date-range" 
+            default-start-date="2021-01-15" 
+            :default-end-date=dateRangeMaxDate
+            @start-date-changed='startDateChange' 
+            @end-date-changed='endDateChange' 
+            @click='dateRangeClicked'>
+        </date-range-selection>
+        <p>Result:</p>
+        <UL>
+            <LI>Chosen Start Date: <span data-cy="start-date">{{ startDate }}</span></LI>
+            <LI>Chosen End Date: <span data-cy="end-date">{{ endDate }}</span></LI>
+            <LI>Click Events: <span data-cy="date-range-clicks">{{ dateRangeClicks }}</span></LI>
+        </UL>
+    </ul>
+
+    <p><b>CustomTableComponent</b></p>
+    <UL>
+        <custom-table data-cy="test-table"
+            can-delete 
+            can-edit
+            :headers="tableHeaders" 
+            :input-options="tableinputTypes"
+            :rows="tableData" 
+            :visible-columns="tableVisibleColumns" 
+            @row-deleted="deleteTableRow"
+            @row-edited="updateTableRow">
+        </custom-table>
+        <!-- Does not work at present See Issue #357.
+        <button data-cy='show-column' 
+            :disabled=tableVisibleColumns[2]
+            @click='showColumn'>Show Column</button>
+        <button data-cy='hide-column' 
+            :disabled=!tableVisibleColumns[2]
+            @click='hideColumn'>Hide Column</button>
+        -->
+        <button data-cy='add-data' 
+            @click='addDataRow'>Add Data Row</button>
+    </UL>
+
+    <p><b>FieldSets & Buttons</b></p>
+    <UL>
+    <!-- A fieldset groups a collection of input elements to create a form -->
+        <fieldset class="panel panel-default">
+            <!--Legend is used to create a header in the fieldset-->
+            <legend class="panel-heading fd2-legend">
+                Label for the Panel
+            </legend>
+
+            <center>
+                <p>Layout content for the panel here.</p>
+
+                <div class="center-block">
+                    <button data-cy="left-button" 
+                    class="btn fd2-red-button"  
+                    :disabled='leftButtonDisabled' 
+                    @click='button1Clicked'>Click Me!</button>
+
+                    <button data-cy="right-button" 
+                    class="btn fd2-red-button"  
+                    :disabled='!leftButtonDisabled' 
+                    @click='button2Clicked'>Click Me!</button>
+                </div>
+            </center>
+        </fieldset>
+    </UL>
+
+    <p><b>Loading Spinner</b></p>
+    <UL>
+        <button data-cy='fetch-seeding-logs'
+            :disabled='waitingOnLogs' 
+            @click='fetchSeedingLogs'>Fetch All Seeding Logs</button>
+        <p>Result:</p>
+        <UL>
+            <p>Uses the API to fetch two pages of logs when the button is clicked. A spinner appears while the pages are being fetched.  The results below will be set when the first page is returned. Then when the second page is returned the Last Log Name will change based on the last log fetched.  The spinner is hidden when the API request has been completed.</p>
+
+            <LI>First Log Name: <span data-cy='first-log-name'>{{ firstSeedingLogName }}</span>
+            <LI>Last Log Name: <span data-cy='last-log-name'>{{ lastSeedingLogName }}</span>
+        </UL>
+        
+        <div data-cy="loading-spinner" 
+        class="loader center-block" 
+        v-if="waitingOnLogs"></div>
+    </UL>
+</div>
+
+<script>
+// Define the Vue instance for the app.
+new Vue({
+    el: '#ui',  // el: must match the id of the <div> for the app above.
+    components: {
+        // Register the components used and define the tag name to be used.
+        'dropdown-with-all': DropdownWithAllComponent,
+        'date-selection': DateSelectionComponent,
+        'date-range-selection': DateRangeSelectionComponent,
+        'custom-table': CustomTableComponent,
+    },
+    data: {
+        // The predefined FarmData2 variables.
+        userID: fd2UserID,
+        userName: fd2UserName,
+
+        chosenDate: null,
+        dateClicks: 0,
+
+        startDate: null,
+        endDate: null,
+        dateRangeClicks: 0,
+        dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
+
+        cropList: ['BROCCOLI','KALE','RADISH','WATERMELLON'],
+        pickedCrop: "All",
+        
+        leftButtonDisabled: false,
+
+        tableHeaders: ['ID', 'Item', 'Size', 'Color', 'Count', 'Date'],
+        tableinputTypes: [
+            {'type': 'no input'},
+            {'type': 'text'},
+            {'type': 'dropdown', 'value': ['S', 'M', 'L']},
+            {'type': 'dropdown', 'value': ['Green', 'Blue', 'Black', 'Red']},
+            {'type': 'number'},
+            {'type': 'date'}
+        ],
+        tableData: [
+            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01']},
+            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01']},
+            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01']},
+        ],
+        tableVisibleColumns: [true, true, false, true, true, true],
+
+        waitingOnLogs: false,
+        seedingLogs: [],
+    },
+    methods: {
+        cropChange(newCrop) {
+            this.pickedCrop = newCrop
+        },
+        pickKaleOption() {
+            this.pickedCrop = 'KALE'
+        },
+        addZucchini() {
+            this.cropList.push('ZUCCHINI')
+        },
+        dateChange(newDate) {
+            this.chosenDate = newDate
+        },
+        dateClicked() {
+            this.dateClicks++   // just count clicks.
+        },
+        startDateChange(newDate) {
+            this.startDate = newDate
+        },
+        endDateChange(newDate) {
+            this.endDate = newDate
+        },
+        dateRangeClicked() {
+            this.dateRangeClicks++
+        },
+        button1Clicked() {
+            // Just toggle the buttons for a demo.
+            this.leftButtonDisabled = true
+        },
+        button2Clicked() {
+            this.leftButtonDisabled = false
+        },
+        deleteTableRow(rowID) {
+            for(var i=0; i < this.tableData.length; i++){
+                if(this.tableData[i].id == rowID){
+                    this.tableData.splice(i, 1)
+                }
+            }
+
+            // Would also need to delete data from the db via API here.
+        },
+        updateTableRow(edits, rowID) {
+            for(var i=0; i < this.tableData.length; i++){
+                if(this.tableData[i].id == rowID){
+                    for( const [key, value] of Object.entries(edits)) {
+                        this.tableData[key] = value
+                    }
+                }
+            }
+
+            // Would also need to update data in the db via API here.
+        },
+        //Does not work at present See Issue #357.
+        //showColumn() {
+        //    this.tableVisibleColumns[2] = true
+        //},
+        //hideColumn() {
+        //    this.tableVisibleColumns[2] = false
+        //},
+        addDataRow() {
+            this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01']})
+        },
+        fetchSeedingLogs() {
+            // To use the spinner display it
+            this.waitingOnLogs = true
+
+            this.seedingLogs = []
+
+            // Then invoke one of the FarmOSAPI methods and setup
+            // what to do when the API call completes.
+            let start=dayjs("2019-02-01").unix()
+            let end=dayjs("2019-05-01").unix()
+            getAllPages('/log.json?type=farm_seeding&timestamp[gt]='+start+'&timestamp[lt]='+end, this.seedingLogs)
+            .then(() => {
+                this.waitingOnLogs = false
+            })
+        },
+    },
+    computed: {
+        firstSeedingLogName() {
+            if (this.seedingLogs.length == 0) {
+                return ""
+            }
+            else {
+                return this.seedingLogs[0].name
+            }
+        },
+        lastSeedingLogName() {
+            if (this.seedingLogs.length == 0) {
+                return ""
+            }
+            else {
+                return this.seedingLogs[this.seedingLogs.length-1].name
+            }
+        }
+    }
+})
+
+//Allows Vue to be accessed in Dev Tools
+Vue.config.devtools = true;
+</script>
+    

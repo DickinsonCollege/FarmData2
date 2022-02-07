@@ -9,9 +9,9 @@ it('Info tab of the example exists and has content', () => {
   cy.get('p').should('have.length.greaterThan', 1)
 
   // Check that first paragraph likely describes the sample module.
-  cy.get('p').eq(0).should('contain.text', 'sample module')
-  cy.get('p').eq(0).invoke('text').should('have.length.greaterThan',25)
+  cy.get('[data-cy=intro]').should('contain.text', 'sample module')
+  cy.get('[data-cy=intro]').invoke('text').should('have.length.greaterThan',25)
 
   // Check that there is also some content in the second paragraph.
-  cy.get('p').eq(1).invoke('text').should('have.length.greaterThan',25)
+  cy.get('[data-cy=detail').invoke('text').should('have.length.greaterThan',25)
 })

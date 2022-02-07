@@ -1,4 +1,5 @@
-FROM farmos/farmos:dev
+FROM farmdata2/farmos
+#FROM farmos/farmos:dev
 
 # Builds a custom farmos image that includes the patch to the
 # restws module that allows for query parameters to use relational

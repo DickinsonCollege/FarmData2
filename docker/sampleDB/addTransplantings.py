@@ -192,6 +192,9 @@ def addTransplanting(row, plantingID):
             "id": userMap[row[1]],
             "resource": "user"
         }],
+        "data": json.dumps({ 
+            "crop_tid": cropMap[row[3]] 
+        })
     }
 
     return addLog(transplanting)
