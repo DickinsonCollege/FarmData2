@@ -62,7 +62,7 @@ function fd2_school_menu() {
 
   // Add items blocks for new sub-tabs here.
     php
-    <?php
+    <php
     // ... omitted code ...
     function fd2_school_menu() {
        
