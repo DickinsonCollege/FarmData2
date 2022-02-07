@@ -61,29 +61,7 @@ function fd2_school_menu() {
   );
 
   // Add items blocks for new sub-tabs here.
-    php
-    <php
-    // ... omitted code ...
-    function fd2_school_menu() {
-       
-        // ... omitted code ...
-        
-        // Add items blocks for new sub-tabs here.
 
-        // Add a sub-tab named HTML with content in html.html.
-        $items['farm/fd2-school/HTML'] = array(
-            'title' => 'HTML',
-            'type' => MENU_LOCAL_TASK,
-            'page callback' => 'fd2_school_view',
-            'page arguments' => array('html.html'),
-            'access arguments' => array('view fd2 school'),
-            'weight' => 110,
-        );
-
-        return $items;
-    }
-    // ... omitted code ...
-    
   return $items;
 };
 
@@ -112,3 +90,23 @@ function fd2_school_preprocess_page() {
     drupal_add_js($cmd,'inline');
   }
 };
+
+function fd2_school_menu() {
+       
+        // ... omitted code ...
+        
+        // Add items blocks for new sub-tabs here.
+
+        // Add a sub-tab named XYZ with content in xyz.html.
+        $items['farm/fd2-school/xyz'] = array(
+            'title' => 'XYZ',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('xyz.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
+
+        return $items;
+    };
+   
