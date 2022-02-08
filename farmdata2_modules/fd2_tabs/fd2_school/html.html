@@ -2,8 +2,26 @@
     <p>
         <h1>Harvest Report</h1>
         This page is a <i>mockup</i> of a simplified harvest report.<br><br>
-        <label for="title">Title:</label>
+        <label for="title">Title: </label>
         <input type="text" id="title" name="title" value="My Mock Report">
+        <br><br>
+        <label for="date">Start: </label>
+        <input type="date" name="date" min="2014-01-01" max="2022-01-01" id="date" value="2020-05-05">
+        <label for="date">End: </label>
+        <input type="date" name="date" min="2020-05-05" max="2022-01-01" id="date" value="2020-05-15">
+        <br><br>
+        <label for="crop">Crop: </label>
+        <select id="simple" name="simple">
+            <option>Broccoli</option>
+            <option selected>Kale</option>
+            <option>Peas</option>
+        </select>
+        <label for="field">Field: </label>
+        <select id="simple" name="simple">
+            <option selected>All</option>
+            <option>Chuau-1</option>
+            <option>SQ7</option>
+        </select>
         <br><br>
         <input type="button" value="Generate Report">
         <hr>
