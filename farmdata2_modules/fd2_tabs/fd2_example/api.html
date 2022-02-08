@@ -2,7 +2,7 @@
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="api" v-cloak> 
 
-    <p>FarmData2 accesses, stores and manipulated its data through the farmOS system using its API.  The farmdata2_modules/FarmData2/fd2_tabs/resources/FarmOSAPI.js file provide a library of JavaScript convenience functions for accessing the <a href='https://farmos.org/development/api/'>farmOS API</a>.
+    <p>FarmData2 accesses, stores and manipulated its data through the farmOS system using its API.  The farmdata2_modules/FarmData2/fd2_tabs/resources/FarmOSAPI.js file provide a library of JavaScript convenience functions for accessing the <a href='https://v1.farmos.org/development/api/'>farmOS API</a>.
         
     <p>This page gives examples of how to use these functions to interact with the farmOS databse (E.g. fetch, create, update and delete logs). The FarmOSAPI.js library is included in FarmData2 pages by the associated info file for the module (e.g. fd2_example.info for this page.)</p>
 
@@ -61,9 +61,9 @@
         <button data-cy='delete-planting' :disabled='plantedCrop==null' @click='deletePlantingAsset'>Delete Asset</button>
         <p>Result:</p>
         <UL>
-            <LI>Planting Asset ID: <span data-cy=planting-id>{{ plantingID }}</span>
-            <LI>Status: <span data-cy=planting-status>{{ plantingAssetStatus }}</span></LI>
-            <LI>Response: <span data-cy=planting-response>{{ plantingAssetResponse }}</span></LI>
+            <LI>Planting Asset ID: <span data-cy='planting-id'>{{ plantingID }}</span>
+            <LI>Status: <span data-cy='planting-status'>{{ plantingAssetStatus }}</span></LI>
+            <LI>Response: <span data-cy='planting-response'>{{ plantingAssetResponse }}</span></LI>
         </UL>
     </UL>
 </div>
