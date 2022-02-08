@@ -1,16 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+    
+    <body>
         <h1>
             Harvest Report
         </h1>
         <p>
-            This page is a <i>mockup</i> of a simpliefied harvest report.
+            This page is a <i>mockup</i> of a simplified harvest report.
         </p>
-    </head>
-    <hr/> 
-    <body>
+        <p>
+            <br/>
+            <label for="Comment">Title:</label>
+            <input type="text" id="Title" name="Title"value="My Sample Harvest Report ">
+            <br/>
+            <label for="StartDate">Start date:</label>
+            <input type="date" id="start" name="plant start" value="2020-05-05" min="2014-01-01" max="2022-01-01">
+
+            <label for="EndDate">End date:</label>
+            <input type="date" id="start" name="plant end" value="2020-05-15" min="2020-05-05" max="2022-01-01">
+
+            <br/>
+            <label for="CropType">Crop:</label>
+            <select id="groups" name="Crop">
+                <optgroup label="possible crops"> 
+                    <option>Broccoli</option>
+                    <option selected>Kale</option>
+                    <option>Peas</option>
+                </optgroup> <br/>
+            </select>
+            <label for="CropType">Field:</label>
+            <select id="groups" name="Field">
+                <optgroup label="possible field"> 
+                    <option>Chuau-1</option>
+                    <option selected>All</option>
+                    <option>SQ7</option>
+                </optgroup>
+            </select>
+            <br/>
+            <input type="button" value="Generate Report">
+        </p>
+        <hr/> 
+        
         <h1>My Sample Harvest Report </h1>
+        
         <p> 
             Details:
             <ul>
@@ -38,11 +70,11 @@
                     
             </fieldset>
         </form> -->
-        <label for="Comment">Title:</label>
+        <!-- <label for="Comment">Title:</label>
         <input type="text" id="Title" name="Title"value="Title">
 
         
-        <input type="button" value="Generate Report">
+        <input type="button" value="Generate Report"> -->
     </body>
   
 </html>
