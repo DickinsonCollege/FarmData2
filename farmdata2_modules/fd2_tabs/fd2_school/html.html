@@ -3,16 +3,8 @@
 <head>
 <title>Page Title</title>
 <style>
-#harvest-report{
-    padding-bottom: 5px;
-    border-bottom: 1px solid gray;
-
-    }
-   
-   
-   
     span{
-    font-weight: bold
+        font-weight: bold
     }
 </style>
 
@@ -20,10 +12,39 @@
 <body>
 <br/>
 <div id = "harvest-report">
+
 <h2>Harvest Report</h2>
-<br/>
+
 <p>This page is a <i>mocked up</i> of a simplified harvest report.</p>
+<div id = "container #2">
+<label for="title">Title: </label>
+        <input type="text" id="title" name="title" value="My Sample Harvest Report">
+        <br/><br/>
+        <label for="date">Start: </label>
+        <input type="date" id ="date01" class ="date" name="date01" value="2020-05-05">
+        <label for="date">End: </label>
+        <input type="date" id="date02" class = "date" name="date02" value="2020-05-15">
+        <br/><br/>
+        <label for="crop">Crop: </label>
+        <select id="crop-01" class = "crop" name="crop">
+            <option>Broccoli</option>
+            <option selected>Kale</option>
+            <option>Peas</option>
+        </select>
+        <label for="field">Area: </label>
+        <select id="crop-02" class = "crop" name="crop">
+            <option selected>All</option>
+            <option>Chuau-1</option>
+            <option>SQ7</option>
+        </select>
+        <br/>
+        <br/>
+        
+        <input type="button" value="Generate Report">
 </div>
+</div>
+
+<hr>
 
 <div id = "sample-report">
 <h1>My Sample Harvest Report</h1>
@@ -42,5 +63,4 @@ Details:
 
 </body>
 </html>
-
 
