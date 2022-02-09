@@ -6,5 +6,6 @@
     "prettier.tabWidth": 4,
     "prettier.vueIndentScriptAndStyle": true,
     "prettier.withNodeModules": true,
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "workbench.colorTheme": "Default Dark+"
 }
