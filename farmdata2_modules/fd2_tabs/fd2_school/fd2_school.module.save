@@ -52,6 +52,10 @@ function fd2_school_menu() {
     'weight' => -30,                                  // larger weights appear further right.
   );
 
+
+
+
+
   // Define the name and URL for the default sub-tab that appears when the tab is opened.
   // Content for this default sub-tab is provided by the 'page arguments' above.
   $items['farm/fd2-school/info'] = array(
@@ -61,14 +65,7 @@ function fd2_school_menu() {
   );
 
   // Add items blocks for new sub-tabs here.
-    $items['farm/fd2-school/html.html'] = array(
-        'title' => 'HTML',
-        'type' => MENU_LOCAL_TASK,
-        'page callback' => 'fd2_school_view',
-        'page arguments' => array('html.html'),
-        'access arguments' => array('view fd2 school'),
-        'weight' => 110,
-    );
+
   return $items;
 };
 
