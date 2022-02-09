@@ -18,7 +18,7 @@ services:
       - db
     # If there are changes to the Dockerfile update the tag
     # here to force a new build when main is updated.
-    image: farmos:fd2.4
+    image: farmos:fd2.5
     build:
      context: ./farmOS
      dockerfile: Dockerfile

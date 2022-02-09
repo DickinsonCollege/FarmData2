@@ -13,12 +13,12 @@ FILE="db.$1.tar.bz2"
 if [ ! -e $FILE ]
 then
   echo "Usage: setDB.bash <db>"
-  echo "    <db>: The uniuque part of the database image filename to use."
+  echo "    <db>: The unique part of the database image filename to use."
   echo "            - empty - a db with no data"
   echo "            - sample - the sample db for development"
   echo "               - see docker/sampleDB/README.md "
   echo "            - orig - the original development db"
-  echo "               - depricated and will go away."
+  echo "               - deprecated and will go away."
 else
 
   echo "Switching to the "$FILE" database..."

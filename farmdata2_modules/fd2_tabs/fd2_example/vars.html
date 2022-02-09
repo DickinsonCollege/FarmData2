@@ -1,0 +1,44 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="vars" v-cloak> 
+
+    <p>FarmData2 defines a few useful variables in every page.  This page demonstrates how those variables can be brought into the Vue instance and used in scripts.</p>
+
+    <p>Examples of how to use Cypress to test the elements on this page can be found in the vars.spec.js file.</p>
+
+    <p>The vaiables defined are:</p>
+    <UL>
+        <LI>UserID: Contains the id number of the logged in user.</LI>
+        <LI>UserName: Contains the text username of the logged in user.</LI>
+    </UL>
+
+    <p>The current values of these variables are:</p>
+    <UL>
+        <!-- Note: data-cy attributes are used in tests to identify elements. -->
+        <!-- They should be unique within the page. -->
+        <!-- See fd2vars.spec.js for examples of testing these values. -->
+        <LI>UserID: <span data-cy="user-id">{{ userID }}</span></LI>
+        <LI>UserName: <span data-cy="user-name">{{ userName }}</span></LI>
+    </UL>
+</div>
+
+<script>
+// Define the Vue instance for the app.
+new Vue({
+    el: '#vars',  // el: must match the id of the <div> for the app above.
+    data: {
+        // Provide easy access to the FarmDat2 variables in vue.
+        // Note: 
+        //   The JS variables fd2UserID and fd2UserName are defined in the 
+        //   fd2_example.module file.
+        //   They are also defined in the module files for the fd2_barn_kit and fd2_field_kit
+        //   tabs so are avaiable there as well. 
+        userID: fd2UserID,
+        userName: fd2UserName,
+    },
+})
+
+//Allows Vue to be accessed in Dev Tools
+Vue.config.devtools = true;
+</script>
+    

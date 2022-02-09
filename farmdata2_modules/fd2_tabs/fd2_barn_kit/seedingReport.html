@@ -4,7 +4,9 @@
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
-                <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+                <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
+                @click='hide'
+                :default-start-date=startDate :default-end-date=endDate></date-range-selection>
 
                 <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
             </div>
@@ -24,7 +26,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' can-edit can-delete></custom-table>
+                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
             </div>
@@ -111,15 +113,19 @@
                 rowBeingEdited: false
             },
             methods: {
-                startDateChange(selectedDate){
-                    this.startDate = selectedDate
+                hide(){
                     this.reportVisible = false
                     this.seedingLogs = []
                 },
+                startDateChange(selectedDate){
+                    this.startDate = selectedDate
+                    //this.reportVisible = false
+                    //this.seedingLogs = []
+                },
                 endDateChange(selectedDate){
                     this.endDate = selectedDate
-                    this.reportVisible = false
-                    this.seedingLogs = []
+                    //this.reportVisible = false
+                    //this.seedingLogs = []
                 },
                 seedingLogRequestWithDates(){
                     this.reportVisible = true
@@ -152,7 +158,6 @@
                  * updates the log that the user saved
                  */
                 updateRow(updateObject, id){
-                    console.log(updateObject)
                     this.updateLog = this.seedingLogs.filter((x) => x.id === id)
                     let updateSeedingObject = {}
                     let updatePlantObject = {}
@@ -179,7 +184,7 @@
                             updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
                         }
                         else if(keys[i] == 'crop'){
-                            updateSeedingObject['data'] = JSON.stringify({"crop_tid": this.cropToIDMap.get(updateObject['crop'])})
+                            updateSeedingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
                             updatePlantObject['crop'] = [{
                                 "id": this.cropToIDMap.get(updateObject['crop']),
                                 "resource": "taxonomy_term"
@@ -253,10 +258,6 @@
                         }    
                     }
                     
-                    console.log('seeding log')
-                    console.log(updateSeedingObject)
-                    console.log('planting log')
-                    console.log(updatePlantObject)
                     let seedingUrl = '/log/' + id
                     let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
                     //call updateRecord function to update planting log
@@ -274,9 +275,7 @@
                  */
                 deleteRowLog(logID) {
                     let url = '/log/' + logID
-                    deleteRecord(url, this.sessionToken).then(function(response) {
-                        console.log(response)
-                    })
+                    deleteRecord(url, this.sessionToken)
                     for(var i=0; i < this.seedingLogs.length; i++){
                         if(this.seedingLogs[i].id === logID){
                             this.seedingLogs.splice(i, 1)
@@ -285,7 +284,10 @@
                 },
                 disableFilters() {
                     this.rowBeingEdited = true
-                }
+                },
+                enableFilters(){
+                    this.rowBeingEdited = false
+                },
             },
             computed: {
                 /**
@@ -298,7 +300,7 @@
                         filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
                     }
                     if(this.selectedCrop != 'All'){
-                        filterRows = filterRows.filter((x) => this.idToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                        filterRows = filterRows.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
                     }
                     if(this.selectedSeeding != 'All'){
                         filterRows = filterRows.filter((x) => x.log_category[0].name === this.selectedSeeding)
@@ -331,7 +333,7 @@
                             id: h.id,
                             data: [
                                 dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
-                                $vm.idToCropMap.get(JSON.parse(h.data).crop_tid),
+                                $vm.idToCropMap.get(h.data.crop_tid),
                                 h.movement.area[0].name, 
                                 h.log_category[0].name, 
                                 rowBed,
@@ -376,12 +378,12 @@
                     if(this.selectedArea != 'All'){
                         let areaFilter = seedFilter.filter((x) => x.movement.area[0].name === this.selectedArea)
                         cropArray = areaFilter.map(h => 
-                            this.idToCropMap.get(JSON.parse(h.data).crop_tid)
+                            this.idToCropMap.get(h.data.crop_tid)
                         )
                     }
                     else{
                         cropArray = seedFilter.map(h=> 
-                            this.idToCropMap.get(JSON.parse(h.data).crop_tid)
+                            this.idToCropMap.get(h.data.crop_tid)
                         )
                     }
 
@@ -402,7 +404,7 @@
                     }
                     let areaArray = []
                     if(this.selectedCrop != 'All'){
-                        let cropFilter = seedFilter.filter((x) => this.idToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                        let cropFilter = seedFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
                          areaArray = cropFilter.map(h =>
                             h.movement.area[0].name
                         )
@@ -429,7 +431,7 @@
                     }
                     let seedingTypeArray = []
                     if(this.selectedCrop != 'All'){
-                        let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(JSON.parse(x.data).crop_tid) === this.selectedCrop)
+                        let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
                         seedingTypeArray = cropFilter.map(h =>
                             h.log_category[0].name
                         )
@@ -661,8 +663,6 @@
                     for(i=0; i < this.areaToIDMap.size; i++){
                         areaNameArray.push(areaKeyIterator.next().value)
                     }
-                    //console.log(cropNameArray)
-                    //console.log(areaNameArray)
                     return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
                 }
             },
@@ -687,7 +687,6 @@
                 })
                 getUnitToIDMap().then((response) => {
                     this.unitToIDMap = new Map(response)
-                    console.log(response)
                 })
             }
         });
