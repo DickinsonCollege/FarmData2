@@ -50,17 +50,27 @@ function fd2_school_menu() {
     'access arguments' => array('view fd2 school'),  // permissions required to view the tab
     'type' => MENU_LOCAL_TASK,                        // Put it on the menu
     'weight' => -30,                                  // larger weights appear further right.
+     
   );
 
-  // Define the name and URL for the default sub-tab that appears when the tab is opened.
+// Define the name and URL for the default sub-tab that appears when the tab is opened.
   // Content for this default sub-tab is provided by the 'page arguments' above.
   $items['farm/fd2-school/info'] = array(
-    'title' => 'Info',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -100,
+      'title' => 'Info',
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'weight' => -100,
   );
 
   // Add items blocks for new sub-tabs here.
+
+  $items['farm/fd2-school/html'] = array(
+    'title' => 'HTML',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_school_view',
+    'page arguments' => array('html.html'), 
+    'access arguments' => array('view fd2 school'),
+    'weight' => 110,
+  );
 
   return $items;
 };
