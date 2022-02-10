@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <body>
+        <h1>
+            Harvest Report
+        </h1>
+        <p>
+            This page is a <i>mockup</i> of a simplified harvest report.
+        </p>
+        <p>
+            <br/>
+            <label for="Comment">Title:</label>
+            <input type="text" id="Title" name="Title"value="My Sample Harvest Report ">
+            <br/>
+            <label for="StartDate">Start date:</label>
+            <input type="date" id="start" name="plant start" value="2020-05-05" min="2014-01-01" max="2022-01-01">
+
+            <label for="EndDate">End date:</label>
+            <input type="date" id="start" name="plant end" value="2020-05-15" min="2020-05-05" max="2022-01-01">
+
+            <br/>
+            <label for="CropType">Crop:</label>
+            <select id="groups" name="Crop">
+                <optgroup label="possible crops"> 
+                    <option>Broccoli</option>
+                    <option selected>Kale</option>
+                    <option>Peas</option>
+                </optgroup> <br/>
+            </select>
+            <label for="CropType">Field:</label>
+            <select id="groups" name="Field">
+                <optgroup label="possible field"> 
+                    <option>Chuau-1</option>
+                    <option selected>All</option>
+                    <option>SQ7</option>
+                </optgroup>
+            </select>
+            <br/>
+            <input type="button" value="Generate Report">
+        </p>
+        <hr/> 
+        
+        <h1>My Sample Harvest Report </h1>
+        
+        <p> 
+            Details:
+            <ul>
+                <li> <strong>Farm</strong>:Sample Farm</li>
+                <li> <strong>User</strong>:manager1</li>
+                <li> <strong>Language</strong>:English</li>
+            </ul>
+            <br/>
+            <ul>
+                <li><strong> Start</strong>:05/01/2018</li>
+                <li><strong> End</strong>:05/15/2018</li>
+                <li><strong> Crop</strong>:Kale</li>
+            </ul>
+            <table border = 1>
+                <tr>
+                    <td><strong>Date</strong></td>
+                    <td><strong>Area</strong></td>
+                    <td><strong>Crop</strong></td>
+                    <td><strong>Yield</strong></td>
+                    <td><strong>Unit</strong></td>
+                </tr>
+                <tr>
+                    <td>05/02/2018</td>
+                    <td>Chuau-1</td>
+                    <td>Kale</td>
+                    <td>10</td>
+                    <td>Bunches</td>
+                </tr>
+                <tr>
+                    <td>05/05/2018</td>
+                    <td>SQ7</td>
+                    <td>Kale</td>
+                    <td>7</td>
+                    <td>Bunches</td>
+                </tr>
+            </table>
+        </p>
+        <!-- <input type="text" id="comment" name="comment"value="Comment"> -->
+        <!-- <form>
+            <fieldset>
+                <legend>What type of bean?</legend>
+
+                    <label for = "Green"> Green</label>
+                    <input type="text" id="Green" name="color"><br/>
+                    
+                    <label for = "Yellow"> Yellow</label>
+                    <input type="radio" id="Yellow" name="color"><br/>
+                    
+            </fieldset>
+        </form> -->
+        <!-- <label for="Comment">Title:</label>
+        <input type="text" id="Title" name="Title"value="Title">
+
+        
+        <input type="button" value="Generate Report"> -->
+    </body>
+  
+</html>
