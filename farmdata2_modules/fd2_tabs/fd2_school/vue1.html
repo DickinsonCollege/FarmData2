@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-    
+    <head>
+
+    </head>
+
     <body>
         <h1>
             Harvest Report
@@ -11,7 +14,11 @@
         <p>
             <br/>
             <label for="Comment">Title:</label>
-            <input type="text" id="Title" name="Title"value="My Sample Harvest Report ">
+
+            <div id="rpt-title" class='v-cloak'>
+            <input type="text" id="Title" name="Title" v-model="header" >
+            
+
             <br/>
             <label for="StartDate">Start date:</label>
             <input type="date" id="start" name="plant start" value="2020-05-05" min="2014-01-01" max="2022-01-01">
@@ -41,9 +48,12 @@
         </p>
         <hr/> 
         
-        <h1>My Sample Harvest Report </h1>
+       
         
         <p> 
+            
+                <h1>{{header}}</h1>
+            </div>
             Details:
             <ul>
                 <li> <strong>Farm</strong>:Sample Farm</li>
@@ -80,24 +90,15 @@
                 </tr>
             </table>
         </p>
-        <!-- <input type="text" id="comment" name="comment"value="Comment"> -->
-        <!-- <form>
-            <fieldset>
-                <legend>What type of bean?</legend>
 
-                    <label for = "Green"> Green</label>
-                    <input type="text" id="Green" name="color"><br/>
-                    
-                    <label for = "Yellow"> Yellow</label>
-                    <input type="radio" id="Yellow" name="color"><br/>
-                    
-            </fieldset>
-        </form> -->
-        <!-- <label for="Comment">Title:</label>
-        <input type="text" id="Title" name="Title"value="Title">
-
-        
-        <input type="button" value="Generate Report"> -->
+       <script>
+           var reportTitle = new Vue({
+                el:"#rpt-title",
+                data:{
+                    header:'My Sample Harvest Report',
+                },
+           });
+       </script>
     </body>
   
 </html>
