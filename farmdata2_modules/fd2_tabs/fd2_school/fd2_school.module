@@ -62,7 +62,7 @@ function fd2_school_menu() {
 
   // Add items blocks for new sub-tabs here.
  
-  // Add a sub-tab named XYZ with content in xyz.html.
+  // Add a sub-tab named HTML with content in html.html.
         $items['farm/fd2-school/html'] = array(
             'title' => 'HTML',
             'type' => MENU_LOCAL_TASK,
@@ -70,6 +70,16 @@ function fd2_school_menu() {
             'page arguments' => array('html.html'),
             'access arguments' => array('view fd2 school'),
             'weight' => 110,
+        );
+
+  // Add a sub-tab named Vue1 with content in vue1.html.
+        $items['farm/fd2-school/vue1'] = array(
+            'title' => 'VUE1',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('vue1.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 111,
         );
 
   return $items;
