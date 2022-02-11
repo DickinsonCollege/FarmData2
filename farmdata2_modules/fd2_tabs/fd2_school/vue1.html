@@ -26,17 +26,13 @@
         <label for="crop">Crop</label>
 
         <select id="crop" name="crop">
-            <option>Broccoli</option>
-            <option selected>Kale</option>
-            <option>Peas</option>
+            <option v-for="crop in crops">{{crop}}</option>
         </select>
         
         <label for="field">Field</label>
 
         <select id="field" name="field">
-            <option selected>All</option>
-            <option>Chuau-1</option>
-            <option>SQ7</option>
+            <option v-for="field in fields">{{field}}</option>
         </select>
         
         <br />
@@ -93,13 +89,15 @@
 </div>
 
 <script>
-            new Vue({
+            var data = new Vue({
                 el: "#vue-tab",
                 data: {
                     reportTitle: "My Sample Harvest Report",
                     reportStartDate: "05/01/2018",
                     reportEndDate: "05/18/2018",
-                    reportCrop: "Kale"
+                    reportCrop: "Kale",
+                    fields: ["All", "Chuau-1", "SQ7"],
+                    crops: ["Broccoli", "Kale", "Peas"]
                 }
             });
 </script>
