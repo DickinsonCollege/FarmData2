@@ -55,9 +55,9 @@
         </ul>
         <br>
         <ul>
-            <li><strong>Start</strong>:05/01/2018</li>
-            <li><strong>End</strong>:05/18/2018</li>
-            <li><strong>Crop</strong>:Kale</li>
+            <li v-model="reportStartDate"><strong>Start</strong>:{{reportStartDate}}</li>
+            <li v-model="reportEndDate"><strong>End</strong>:{{reportEndDate}}</li>
+            <li v-model="reportCrop"><strong>Crop</strong>:{{reportCrop}}</li>
         </ul>
         
 
@@ -97,6 +97,9 @@
                 el: "#vue-tab",
                 data: {
                     reportTitle: "My Sample Harvest Report",
+                    reportStartDate: "05/01/2018",
+                    reportEndDate: "05/18/2018",
+                    reportCrop: "Kale"
                 }
             });
 </script>
