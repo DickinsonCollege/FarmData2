@@ -36,8 +36,7 @@
             <button type="submit">Generate Report </button>
             
             <hr>
-            <h1>{{ header }}</h1>
-
+            <h1>{{header=="" ? "Mock Harvest Report": header}}</h1>
             Details:<br>
             <ul>
                 <li><strong>Farm</strong>: Sample Farm</li>
