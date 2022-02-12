@@ -15,15 +15,12 @@
             <br><br>
             <label for="Crop">Crop:</label>
             <select name="Crop" v-model ="cropSelected" >
-                <option v-for ="crops in dropdown">{{ crops }}</option>
+                <option v-for ="crop in crops">{{ crop }}</option>
             </select>
             <label for="Field">Field:</label>
-            <select name="Field">
-                <option selected>All</option>
-                <option>Chuau-1</option>
-                <option>SQ7</option>
+            <select name="Field" v-model = "fieldSelected">
+                <option v-for = "field in fields">{{ field }}</option>
             </select>
-
             <br><br>
                 <label for="Start">Start:</label>
                 <input v-model='startdate' type="date"
@@ -81,8 +78,10 @@
                     header: 'My Sample Harvest Report',
                     startdate : "2018-05-01",
                     enddate : "2018-05-15",
-                    dropdown: ['Kale' , 'Broccoli','random',],
-                    cropSelected: ''
+                    crops: ['Kale' , 'Broccoli','random',],
+                    fields: ['All','Chau-1','no'],
+                    cropSelected: '',
+                    fieldSelected: '',
                 },
             });
             
