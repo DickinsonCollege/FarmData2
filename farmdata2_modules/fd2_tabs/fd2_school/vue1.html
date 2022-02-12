@@ -53,20 +53,12 @@
                     <th><strong>Yield</strong></th>
                     <th><strong>Units</strong></th>   
                 </tr>
-                <tr>
-                    <td>05/02/2018 </td>
-                    <td>Chuau-1</td>
-                    <td>Kale</td>
-                    <td>10</td>
-                    <td>Bunches</td>
-                </tr>
-                <tr>
-                    <td>05/05/2018</td>
-
-                    <td>SQ7</td>
-                    <td>Kale</td>
-                    <td>7</td>
-                    <td>Bunches</td>
+                <tr td v-for = "log in harvestlog">
+                    <td>{{log.date}} </td>
+                    <td>{{log.area}}</td>
+                    <td>{{log.crop}}</td>
+                    <td>{{log.yield}}</td>
+                    <td>{{log.units}}</td>
                 </tr>
             </table>
         </div>
@@ -79,9 +71,11 @@
                     startdate : "2018-05-01",
                     enddate : "2018-05-15",
                     crops: ['Kale' , 'Broccoli','random',],
-                    fields: ['All','Chau-1','no'],
+                    fields: ['a','b','c'],
                     cropSelected: '',
                     fieldSelected: '',
+                    harvestlog: [{date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'},
+                    {date: '2018-05-05', area: 'Chuau-2', crop: 'Berry', 'yield': 15, units: 'Bushes'}],
                 },
             });
             
