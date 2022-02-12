@@ -5,48 +5,62 @@
     <title>My test page</title>
   </head>
   <body>
-    <h1>Harvest Report</h1>
-    <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
-
-    <label for="title">Title:</label>
-
-    <input type="text" id="title" value="My sample harvest report">
-    <br>
-
-    <label for="start">Start:</label>
-    <input id="start" 
-            type="date"
-            value="2020-05-05"
-            min="2014-01-01"
-            max="2022-01-01">
+    <div id="report" v-cloak>
+        <input type="text" v-model="reportTitle">
     
-    <label for="end">End:</label>
-    <input id="end" 
-            type="date"
-            value="2020-05-15"
-            min="2020-05-05"
-            max="2022-01-01">
-    <br>
+        <h1>Harvest Report</h1>
+        <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
 
-    <label for="crop">Crop:</label>
-    <select id="crop">
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
-    </select>    
+        <label for="title">Title:</label>
 
-    <label for="field">Field:</label>
-    <select id="crop">
-        <option selected>All</option>
-        <option>Chuau-1</option>
-        <option>SQ7</option>
-    </select> 
-    <br>
+        <input type="text" id="title" value="My sample harvest report">
+        <br>
 
-    <button type="submit">Generate Report</button>
-    <hr/>
+        <label for="start">Start:</label>
+        <input id="start" 
+                type="date"
+                value="2020-05-05"
+                min="2014-01-01"
+                max="2022-01-01">
+        
+        <label for="end">End:</label>
+        <input id="end" 
+                type="date"
+                value="2020-05-15"
+                min="2020-05-05"
+                max="2022-01-01">
+        <br>
 
-    <h1>My Sample Harvest Report</h1>
+        <label for="crop">Crop:</label>
+        <select id="crop">
+            <option>Broccoli</option>
+            <option selected>Kale</option>
+            <option>Peas</option>
+        </select>    
+
+        <label for="field">Field:</label>
+        <select id="crop">
+            <option selected>All</option>
+            <option>Chuau-1</option>
+            <option>SQ7</option>
+        </select> 
+        <br>
+
+        <button type="submit">Generate Report</button>
+        <hr/>
+
+        <h1>{{ reportTitle }}</h1>
+
+    </div>
+    <script>
+        var report = new Vue ({
+            el: '#report',
+            data: {
+                reportTitle: 'My Sample Harvest Report'
+            }
+        });
+    </script> 
+    
     <p>Details:</p>
     <ul>
         <li><strong>Farm:</strong>Sample Farm</li>
