@@ -13,9 +13,9 @@
         type="date"
         id="start"
         name="start"
-        value="2020-05-05"
         min="2014-01-01"
         max="2022-01-01"
+        v-model="startDate"
     />
 
     <label for="end">End: </label>
@@ -23,15 +23,15 @@
         type="date"
         id="end"
         name="end"
-        value="2020-05-15"
-        min="2020-05-05"
+        v-bind:min="startDate"
         max="2022-01-01"
+        v-model="endDate"
     />
 
     <br /><br />
 
     <label for="crop">Crop: </label>
-    <select id="crop" name="crop">
+    <select id="crop" name="crop" v-model="crop">
         <option>Broccoli</option>
         <option selected>Kale</option>
         <option>Peas</option>
@@ -59,9 +59,9 @@
         <li><strong>User:</strong>manager1</li>
         <li><strong>Language:</strong>English</li>
         <br />
-        <li><strong>Start:</strong>05/01/2018</li>
-        <li><strong>End:</strong>05/15/2018</li>
-        <li><strong>Crop:</strong>Kale</li>
+        <li><strong>Start:</strong>{{ startDate }}</li>
+        <li><strong>End:</strong>{{ endDate }}</li>
+        <li><strong>Crop:</strong>{{ crop }}</li>
     </ul>
 
     <table border="1">
@@ -73,14 +73,14 @@
             <th>Units</th>
         </tr>
         <tr>
-            <td>05/02/2018</td>
+            <td>05/01/2018</td>
             <td>Chuau-1</td>
             <td>Kale</td>
             <td>10</td>
             <td>Bunches</td>
         </tr>
         <tr>
-            <td>05/05/2018</td>
+            <td>05/15/2018</td>
             <td>SQ7</td>
             <td>Kale</td>
             <td>7</td>
@@ -94,6 +94,9 @@
         el: '#harvestReport',
         data: {
             title: 'My Sample Harvest Report',
+            startDate: '2020-05-05',
+            endDate: '2020-05-15',
+            crop: 'Kale',
         },
     });
 </script>
