@@ -73,19 +73,27 @@
         </tr>
         
         <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10</td>
-            <td>Bunches</td>
+            <td v-for='property in harvestLog1'>{{property.date}}</td>
+            <td v-for='property in harvestLog1'>{{property.area}}</td>
+            <td v-for='property in harvestLog1'>{{property.crop}}</td>
+            <td v-for='property in harvestLog1'>{{property.yield}}</td>
+            <td v-for='property in harvestLog1'>{{property.units}}</td>
         </tr>
 
          <tr>
-            <td>05/05/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7</td>
-            <td>Bunches</td>
+            <td v-for='property in harvestLog2'>{{property.date}}</td>
+            <td v-for='property in harvestLog2'>{{property.area}}</td>
+            <td v-for='property in harvestLog2'>{{property.crop}}</td>
+            <td v-for='property in harvestLog2'>{{property.yield}}</td>
+            <td v-for='property in harvestLog2'>{{property.units}}</td>
+        </tr>
+
+         <tr>
+            <td v-for='property in harvestLog3'>{{property.date}}</td>
+            <td v-for='property in harvestLog3'>{{property.area}}</td>
+            <td v-for='property in harvestLog3'>{{property.crop}}</td>
+            <td v-for='property in harvestLog3'>{{property.yield}}</td>
+            <td v-for='property in harvestLog3'>{{property.units}}</td>
         </tr>
 
     </table>
@@ -102,7 +110,19 @@
             reportEndDate:'2018-05-15',
             reportCrop:'Kale',
             reportCropList:['Broccoli', 'Kale','Peas'],
-            reportFieldList:['All','Chuau-1','SQ7']
+            reportFieldList:['All','Chuau-1','SQ7'],
+
+            harvestLog1:[
+                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'}
+            ],
+
+            harvestLog2:[
+                {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'}
+            ],
+
+             harvestLog3:[
+                {date: '2018-05-27', area: 'SQ7', crop: 'Broccoli', 'yield': 9, units: 'Bunches'}
+            ],
         }
     });
     </script>
