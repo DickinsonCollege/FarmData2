@@ -58,19 +58,9 @@
             <th>Yeild</th>
             <th>Units</th>
         </tr>
-        <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10</td>
-            <td>Bunches</td>
-        </tr>
-        <tr>
-            <td>05/05/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7</td>
-            <td>Bunches</td>
+        <tr v-for="row in rows">
+            <td v-for="item in row">{{item}}</td>
+            
         </tr>
     </table>
     	<script src="https://unpkg.com/vue@2"></script>
@@ -91,6 +81,10 @@
                     'All', 
                     'Chuau-1', 
                     'SQ7',
+                ], 
+                rows:[
+                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: 10, units: 'Bunches'}, 
+                {date: '2019-06-01', area: 'All', crop: 'Kale', yield: 2, units: 'Bunches'}
                 ]
 			}
 		})
