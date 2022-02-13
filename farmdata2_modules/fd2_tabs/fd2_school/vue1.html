@@ -32,16 +32,12 @@
 
     <label for="crop">Crop: </label>
     <select id="crop" name="crop" v-model="crop">
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
+        <option v-for="selCrop in crops">{{ selCrop }}</option>
     </select>
 
     <label for="field">Field: </label>
     <select id="field" name="field">
-        <option selected>All</option>
-        <option>Chuau-1</option>
-        <option>SQ7</option>
+        <option v-for="field in fields">{{ field }}</option>
     </select>
 
     <br /><br />
@@ -97,6 +93,16 @@
             startDate: '2020-05-05',
             endDate: '2020-05-15',
             crop: 'Kale',
+            crops: [
+                'Kale',
+                'Broccoli',
+                'Peas'
+            ],
+            fields: [
+                'All',
+                'Chuau-1',
+                'SQ7'
+            ]
         },
     });
 </script>
