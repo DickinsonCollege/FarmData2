@@ -60,7 +60,6 @@
         </tr>
         <tr v-for="row in rows">
             <td v-for="item in row">{{item}}</td>
-            
         </tr>
     </table>
     	<script src="https://unpkg.com/vue@2"></script>
@@ -86,7 +85,8 @@
                 {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: 10, units: 'Bunches'}, 
                 {date: '2019-06-01', area: 'All', crop: 'Kale', yield: 2, units: 'Bunches'}
                 ]
-			}
+            }
 		})
+        Vue.config.devtools = true;
 	</script>
 </div>
