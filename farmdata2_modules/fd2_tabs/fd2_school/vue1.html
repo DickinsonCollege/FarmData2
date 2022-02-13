@@ -30,16 +30,12 @@
     <!--Crop and Field Entry-->
     <label for="Crop">Crop: </label>
     <select id="Crop" v-model = 'reportCrop' name="Crop">
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
+        <option v-for = "reportCropList in reportCropList">{{reportCropList}}</option>
     </select>
 
     <label for="field">Field: </label>
     <select id="field" name="field">
-        <option selected>All</option>
-        <option>Chuau-1</option>
-        <option>SQ7</option>
+        <option v-for = "reportFieldList in reportFieldList">{{reportFieldList}}</option>
     </select><br><br>
 
     <!--Generate Report-->
@@ -104,7 +100,9 @@
             reportTitle: 'My Sample Harvest Report',
             reportStartDate:'2018-05-05',
             reportEndDate:'2018-05-15',
-            reportCrop:'Kale'
+            reportCrop:'Kale',
+            reportCropList:['Broccoli', 'Kale','Peas'],
+            reportFieldList:['All','Chuau-1','SQ7']
         }
     });
     </script>
