@@ -16,16 +16,18 @@
     <br></br>
     <label for="crop">Crop:</label>
     <select id="crop" name="crop" v-model="crop">
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
-        </select>
+        <option 
+        v-for="crop in crops" 
+        :selected="option == 'Kale'"
+        >{{ crop }}</option>
+    </select>
          
     <label for="field">Field:</label>
     <select id="field" name="field">
-        <option selected>All</option>
-        <option>Chuau-1</option>
-        <option>SQ7</option>
+          <option 
+        v-for="field in fields" 
+        :selected="option == 'All'"
+        >{{ field }}</option>
     </select>
 
     <br> </br>
@@ -79,7 +81,17 @@
                 title:"My Sample Harvest Report", 
                 end:"2020-05-15",
                 start:"2020-05-05", 
-                crop:"Kale"
+                crop:"Kale",
+                crops:[
+                    'Broccoli', 
+                    'Kale', 
+                    'Peas',
+                ], 
+                fields:[
+                    'All', 
+                    'Chuau-1', 
+                    'SQ7',
+                ]
 			}
 		})
 	</script>
