@@ -1,0 +1,117 @@
+<html>
+ 
+
+<body>
+
+  <h1>Harvest Report</h1>
+    <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+
+    <!-- Start div -->
+    <div id='title1' v-cloak>
+      <label for="title">Title:</label>
+      <input type="text" v-model="header" id='title1' name='title1'>
+
+
+      <br>
+      <br>
+      <label for="start">Start:</label>
+      <input type="date" id="startdate" name="startdate"
+      min="2014-01-01" max="2022-01-01" v-model="startdateinput">
+
+      <label for="end">End:</label>
+
+      <input type="date" id="enddate" name="enddate"
+      value="2020-05-15"
+      min="2020-05-05" max="2022-01-01" v-model="enddateinput">
+
+
+
+      <br>
+      <br>
+      <label for="crop">Crop:</label>
+      <select id="crop" name="crop" v-model="crop">
+        <option
+          v-for="crop in crops":selected="option == 'Kale'">
+          {{crop}}
+        </option>
+      </select>
+
+      <label for="Area">Area:</label>
+      <select id="area" name="area" v-model="area">
+
+      <option v-for="area in areas":selected="option == 'All'">
+          {{area}}</option>
+      </select>
+
+      <br>
+      <br>
+      <input type="button" value="Generate Report">
+      <hr>
+      <h1>{{ header==('') ? "Mock Harvest Report": header}}</h1>
+   
+      <p>Details:
+      <ul>
+      <li><strong>Farm</strong>:Sample Farm</li>
+      <li><strong>User</strong>:Manager1</li>
+      <li><strong>Language</strong>:English</li>
+      <br>
+      <li><strong>Start: </strong>{{ startdateinput }}</li>
+      <li><strong>End: </strong>{{enddateinput}}</li>
+      <li><strong>Crop:</strong>{{crop}}</li>
+      <li><strong>Area:</strong>{{area}}</li></ul>
+
+      <table border="1">
+      <tr>
+      <th>Date</th>
+      <th>Area</th>
+      <th>Crop</th>
+      <th>Yield</th>
+      <th>Units</th>
+      </tr>
+      <tr>
+      <td v-for="card in cards">{{card.date }}</td>
+      <td v-for="card in cards">{{card.area }}</td>
+      <td v-for="card in cards">{{card.crop }}</td>
+      <td v-for="card in cards">{{card.yield }}</td>
+      <td v-for="card in cards">{{card.unit }}</td>
+      </tr>
+      <tr>
+      <td v-for="card in cards2">{{card.date }}</td>
+      <td v-for="card in cards2">{{card.area }}</td>
+      <td v-for="card in cards2">{{card.crop }}</td>
+      <td v-for="card in cards2">{{card.yield }}</td>
+      <td v-for="card in cards2">{{card.unit }}</td>
+      </tr>
+      </table>
+      </div>
+      </p>
+   
+  <script src="https://unpkg.com/vue@2"></script>
+  <script>
+      var spikeTest = new Vue({
+        el: '#title1',
+        data:{
+          header:'My Sample Harvest Report',
+          startdateinput: "05-01-2018",
+          enddateinput:"05-15-2018",
+          crop:"Kale",
+          crops:[
+            'Broccoli','Kale','Peas',
+          ],
+          area:"All",
+          areas:[
+            'All', 'Chuau-1','SQ7',
+          ],
+          cards: [
+            {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: 11, unit: 'Bunches'},],
+
+          cards2:[
+            {date: '2018-05-05', area: 'SQ7', crop: 'Kale', yield: 9, unit: 'Bunches'},
+          ]
+
+        }
+      });
+      Vue.config.devtools = true;
+    </script>
+</body>
+</html>
