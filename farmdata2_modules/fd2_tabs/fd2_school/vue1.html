@@ -49,7 +49,7 @@
     <!--Horizonal Line-->
     <hr>
     
-    <h1>{{reportTitle}}</h1>
+    <h1>{{reportTitle == '' ? 'Mock Harvest Report':reportTitle}}</h1>
     
 
     <p>Details:</p>
@@ -108,7 +108,5 @@
         }
     });
     </script>
-
-    
 
 </html>
