@@ -12,90 +12,104 @@
             This page is a <i>mockup</i> of a simplified harvest report.
         </p>
         <p>
-            <br/>
-            <label for="Comment">Title:</label>
+            <div id="rpt-title" class = "v-cloak">
+                <br/>
+                <label for="Comment">Title:</label>
+                    
+                    <input type="text" id="rpt-title" name="Title" v-model="header" value = "My Sample Harvest Report">
+                    <br/>
 
-            <div id="rpt-title" class='v-cloak'>
-            <input type="text" id="Title" name="Title" v-model="header" >
-            
+                        <label for="StartDate">Start date:</label>
+                        <input type="date" id="start" name="plant start" v-model="startDay" min="2014-01-01" max="2022-01-01">
+                    
 
-            <br/>
-            <label for="StartDate">Start date:</label>
-            <input type="date" id="start" name="plant start" value="2020-05-05" min="2014-01-01" max="2022-01-01">
+                        <label for="EndDate">End date:</label>
+                        <input type="date" id="end" name="plant end" v-model="endDay" min="2020-05-05" max="2022-01-01">
+                    
 
-            <label for="EndDate">End date:</label>
-            <input type="date" id="start" name="plant end" value="2020-05-15" min="2020-05-05" max="2022-01-01">
+                    <br/>
+                        <label for="CropType">Crop:</label>
 
-            <br/>
-            <label for="CropType">Crop:</label>
-            <select id="groups" name="Crop">
-                <optgroup label="possible crops"> 
-                    <option>Broccoli</option>
-                    <option selected>Kale</option>
-                    <option>Peas</option>
-                </optgroup> <br/>
-            </select>
-            <label for="CropType">Field:</label>
-            <select id="groups" name="Field">
-                <optgroup label="possible field"> 
-                    <option>Chuau-1</option>
-                    <option selected>All</option>
-                    <option>SQ7</option>
-                </optgroup>
-            </select>
-            <br/>
-            <input type="button" value="Generate Report">
+                        
+                            <select id="groups" name="Crop" v-model="chosenCrop">
+                                <optgroup label="possible crops"> 
+                                    
+                                    <option selected>Kale</option>
+
+                                    <option>Broccoli</option>
+                                    
+                                    <option>Peas</option>
+
+                                </optgroup> <br/>
+                            </select>
+                        
+
+                        <label for="CropType">Field:</label>
+                            
+                            <select id="groups" name="Field">
+                                <optgroup label="possible field"> 
+                                    <option>Chuau-1</option>
+                                    <option selected>All</optio.n>
+                                    <option>SQ7</option>
+                                </optgroup>
+                        </select>
+                    <br/>
+                    <input type="button" value="Generate Report">
         </p>
+
         <hr/> 
         
-       
-        
         <p> 
-            
-                <h1>{{header}}</h1>
+                
+                    <h1>{{header}}</h1>
+                    Details:
+                <ul>
+                    <li> <strong>Farm</strong>:Sample Farm</li>
+                    <li> <strong>User</strong>:manager1</li>
+                    <li> <strong>Language</strong>:English</li>
+                </ul>
+                <br/>
+                <ul>
+                    <li><strong> Start</strong>:05/01/2018</li>
+                    <li><strong> End</strong>:05/15/2018</li>
+                    <li><strong> Crop</strong>:{{chosenCrop}}</li>
+                </ul>
+                <table border = 1>
+                    <tr>
+                        <td><strong>Date</strong></td>
+                        <td><strong>Area</strong></td>
+                        <td><strong>Crop</strong></td>
+                        <td><strong>Yield</strong></td>
+                        <td><strong>Unit</strong></td>
+                    </tr>
+                    <tr>
+                        <td>05/02/2018</td>
+                        <td>Chuau-1</td>
+                        <td>Kale</td>
+                        <td>10</td>
+                        <td>Bunches</td>
+                    </tr>
+                    <tr>
+                        <td>05/05/2018</td>
+                        <td>SQ7</td>
+                        <td>Kale</td>
+                        <td>7</td>
+                        <td>Bunches</td>
+                    </tr>
+                </table>
             </div>
-            Details:
-            <ul>
-                <li> <strong>Farm</strong>:Sample Farm</li>
-                <li> <strong>User</strong>:manager1</li>
-                <li> <strong>Language</strong>:English</li>
-            </ul>
-            <br/>
-            <ul>
-                <li><strong> Start</strong>:05/01/2018</li>
-                <li><strong> End</strong>:05/15/2018</li>
-                <li><strong> Crop</strong>:Kale</li>
-            </ul>
-            <table border = 1>
-                <tr>
-                    <td><strong>Date</strong></td>
-                    <td><strong>Area</strong></td>
-                    <td><strong>Crop</strong></td>
-                    <td><strong>Yield</strong></td>
-                    <td><strong>Unit</strong></td>
-                </tr>
-                <tr>
-                    <td>05/02/2018</td>
-                    <td>Chuau-1</td>
-                    <td>Kale</td>
-                    <td>10</td>
-                    <td>Bunches</td>
-                </tr>
-                <tr>
-                    <td>05/05/2018</td>
-                    <td>SQ7</td>
-                    <td>Kale</td>
-                    <td>7</td>
-                    <td>Bunches</td>
-                </tr>
-            </table>
         </p>
-
+        
        <script>
            var reportTitle = new Vue({
                 el:"#rpt-title",
                 data:{
                     header:'My Sample Harvest Report',
+
+                    startDay: "2018-05-01",
+                    endDay: "2018-05-15",
+                
+                    chosenCrop:"Kale"
                 },
            });
        </script>
