@@ -12,11 +12,11 @@
             This page is a <i>mockup</i> of a simplified harvest report.
         </p>
         <p>
-            <div id="rpt-title" class = "v-cloak">
+            <div id="rpt" class = "v-cloak">
                 <br/>
                 <label for="Comment">Title:</label>
                     
-                    <input type="text" id="rpt-title" name="Title" v-model="header">
+                    <input type="text" id="Title" name="Title" v-model="header">
                     <br/>
 
                         <label for="StartDate">Start date:</label>
@@ -34,11 +34,7 @@
                             <select id="groups" name="Crop" v-model="chosenCrop">
                                 <optgroup label="possible crops"> 
 
-                                    <option selected>Kale</option>
-
-                                    <option>Broccoli</option>
-                                    
-                                    <option>Peas</option>
+                                    <option v-for="item in cropList">{{item}}</option>
 
                                 </optgroup> <br/>
                             </select>
@@ -48,9 +44,7 @@
                             
                             <select id="groups" name="Field">
                                 <optgroup label="possible field"> 
-                                    <option>Chuau-1</option>
-                                    <option selected>All</optio.n>
-                                    <option>SQ7</option>
+                                    <option v-for="item in fieldList">{{item}}</option>
                                 </optgroup>
                         </select>
                     <br/>
@@ -101,15 +95,25 @@
         </p>
         
        <script>
-           var reportTitle = new Vue({
-                el:"#rpt-title",
+           var ReportVue= new Vue({
+                el:"#rpt",
                 data:{
                     header:'My Sample Harvest Report',
 
                     startDay: "2018-05-01",
                     endDay: "2018-05-15",
                 
-                    chosenCrop:"Kale"
+                    chosenCrop:"Kale",
+                    cropList:[
+                    "Kale",
+                    "Broccoli",
+                    "Peas",
+                    ],
+                    fieldList:[
+                    "All",
+                    "SQ7",
+                    "Chuau-1",
+                    ],
                 },
            });
        </script>
