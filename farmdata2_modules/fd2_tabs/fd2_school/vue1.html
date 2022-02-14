@@ -16,7 +16,7 @@
                 <br/>
                 <label for="Comment">Title:</label>
                     
-                    <input type="text" id="rpt-title" name="Title" v-model="header" value = "My Sample Harvest Report">
+                    <input type="text" id="rpt-title" name="Title" v-model="header">
                     <br/>
 
                         <label for="StartDate">Start date:</label>
@@ -33,7 +33,7 @@
                         
                             <select id="groups" name="Crop" v-model="chosenCrop">
                                 <optgroup label="possible crops"> 
-                                    
+
                                     <option selected>Kale</option>
 
                                     <option>Broccoli</option>
@@ -61,7 +61,7 @@
         
         <p> 
                 
-                    <h1>{{header}}</h1>
+                    <h1>{{header ? header:"Mock Harvest Report"}}</h1>
                     Details:
                 <ul>
                     <li> <strong>Farm</strong>:Sample Farm</li>
