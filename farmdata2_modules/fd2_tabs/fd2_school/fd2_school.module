@@ -68,11 +68,21 @@ function fd2_school_menu() {
     'page arguments' => array('html.html'),           // The html file with the default content for the tab
     'access arguments' => array('view fd2 school'),  // permissions required to view the tab
     'type' => MENU_LOCAL_TASK,                        // Put it on the menu
-    'weight' => -30,                                  // larger weights appear further right.
+    'weight' => 110,                                  // larger weights appear further right.
   );
 
-  return $items;
-};
+  $items['farm/fd2-school/vue1'] = array(               
+    'title' => 'Vue 1',
+    'type' => MENU_LOCAL_TASK,                         
+    'page callback' => 'fd2_school_view',         
+    'page arguments' => array('vue1.html'),          
+    'access arguments' => array('view fd2 school'),
+    'weight' => 110,                                 
+  );
+
+
+    return $items;
+    };
 
 // This function Loads the content for the sub-tab from the html file specified in the arguemnt.
 // It must be renamed in each module.
