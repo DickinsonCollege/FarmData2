@@ -64,11 +64,12 @@
                 </ul>
                 <br/>
                 <ul>
-                    <li><strong> Start</strong>:05/01/2018</li>
-                    <li><strong> End</strong>:05/15/2018</li>
+                    <li><strong> Start</strong>:{{startDay}}</li>
+                    <li><strong> End</strong>:{{endDay}}</li>
                     <li><strong> Crop</strong>:{{chosenCrop}}</li>
                 </ul>
                 <table border = 1>
+                    
                     <tr>
                         <td><strong>Date</strong></td>
                         <td><strong>Area</strong></td>
@@ -77,18 +78,10 @@
                         <td><strong>Unit</strong></td>
                     </tr>
                     <tr>
-                        <td>05/02/2018</td>
-                        <td>Chuau-1</td>
-                        <td>Kale</td>
-                        <td>10</td>
-                        <td>Bunches</td>
+                        <td v-for="item in sampleLog[0]">{{item}}</td>
                     </tr>
                     <tr>
-                        <td>05/05/2018</td>
-                        <td>SQ7</td>
-                        <td>Kale</td>
-                        <td>7</td>
-                        <td>Bunches</td>
+                        <td v-for="item in sampleLog[1]">{{item}}</td>
                     </tr>
                 </table>
             </div>
@@ -113,6 +106,10 @@
                     "All",
                     "SQ7",
                     "Chuau-1",
+                    ],
+                    sampleLog:[
+                        {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
+                        {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
                     ],
                 },
            });
