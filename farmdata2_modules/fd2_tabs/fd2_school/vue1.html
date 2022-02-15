@@ -1,79 +1,60 @@
-<div>
-    <head>
-        <h1> Harvest Report </h1>
-        <style>
-            [v-cloak] {
-                display:none;
-            }
-        </style>
-    </head>
+<head>
+    <h1> Harvest Report </h1>
+    <style>
+        [v-cloak] {
+            display:none;
+        }
+    </style>
+</head>
 
-    <br></br>
-    <p> This page is a <i> mockup </i> of a simplified harvest report. </p>
-    <button type="submit">Generate Report</button>
+<body>
+    <div id="report" v-cloak>
+        <br></br>
+        <p> This page is a <i> mockup </i> of a simplified harvest report. </p>
+        <button type="submit">Generate Report</button>
+        <br>
+        <input type="text" v-model="rptTitle">
+        <br>
+        <br>
 
-    <body>
-        <div id = "test">
+        <ul>
+            <li><strong>Start: </strong><input type="date" v-model="startD" min="01-01-2014" max="01-01-2022"> </li> </input>
             <br>
-            <input type="text" v-model = "rptTitle">
+            <li><strong>End: </strong><input type="date" v-model="endD" min="05-05-2020" max="01-01-2022"> </li> </input>
             <br>
+            <li><label><strong>Crop: </strong><select id="Crop" name="Crop" v-model="selected"></li></label>
+                <option v-for = "crop in cropSelection">{{ crop }}</option>
+            </select>
             <br>
-            <ul>
-            <li><strong>Start: </strong><input type="date" value="05-05-2020"
-                    min="01-01-2014" max="01-01-2022"> </li> </input>
-            <br>
-            <li><strong>End: </strong><input type="date" value="05-15-2020"
-                    min="05-05-2020" max="01-01-2022"> </li> </input>
-            <br>
-            <li><label><strong>Crop: </strong><select id="Crop" name="Crop"></li>
-                <option>Broccoli</option>
-                <option selected>Kale</option>
-                <option>Peas</option>
-            </select></label>
-            <br>
-            <label><li><strong>Field: </strong><select id="Field" name="Field"></li> </label>
+            <li><label><strong>Field: </strong><select id="Field" name="Field"></li></label>
                 <option>Chuau-1</option>
                 <option selected>All</option>
                 <option>SQ7</option>
-                </select>
-                <br>
+            </select>
+            <br>
         </ul>
         <br><br>
-            <h1>{{rptTitle}}</h1>
-        </div>
         
-        <script>
-            var titleName = new Vue ({
-                el: '#test',
-                data: {
-                    rptTitle: 'My Sample Harvest Report'
-                }
-            });
-        </script>
-        </div>
+        <h1>{{ rptTitle }}</h1>  
+    
         <hr></hr>
 
-        
+        <br></br>
+        <p>Details:</p>
+        <ul>
+            <li><strong>Farm:</strong>Sample Farm</li>        
+            <li><strong>User:</strong>manager1</li>
+            <li><strong>Language:</strong>English</li>
 
-        <p>
             <br></br>
-            Details:
-            <ul>
-                <li><strong>Farm:</strong>Sample Farm</li>        
-                <li><strong>User:</strong>manager1</li>
-                <li><strong>Language:</strong>English</li>
 
-                <br></br>
-
-                <li><strong>Start:</strong>05/01/2018</li>
-                <li><strong>End:</strong>05/15/2018</li>
-                <li><strong>Crop:</strong>Kale</li>
-                
-            </ul>
-        </p>
+            <li><strong>Start:</strong>{{ startD }}</li>
+            <li><strong>End:</strong>{{ endD }}</li>
+            <li><strong>Crop:</strong>{{ selected }}</li>
+            
+        </ul>
 
         <br></br>
-
         <table border=1>
         <tr>
             <th>Date</th>
@@ -96,6 +77,21 @@
             <td>7</td>
             <td>Bunches</td>
         </tr>
-        </table>    
-    </body>
-</div>
+        </table>
+    </div>
+
+
+    <!-- <script src="https://unpkg.com/vue@2"></script> -->
+    <script>
+        var harvestReport = new Vue ({
+            el: "#report",
+            data: {
+                rptTitle: 'My Sample Harvest Report',
+                startD: '05-05-2020',
+                endD: '05-15-2020',
+                cropSelection: ["Brocolli", "Kale", "Peas"],
+                selected: "Kale",
+            }
+        });
+    </script>
+</body>
