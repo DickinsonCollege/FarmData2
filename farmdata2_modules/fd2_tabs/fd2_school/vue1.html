@@ -57,7 +57,14 @@
         <th>Yield</th>
         <th>Unit</th>
       </tr>
-      <tr>
+      <tr v-for="item in rpLogs">
+        <td>{{item.date}}</td>
+        <td>{{item.area}}</td>
+        <td>{{item.crop}}</td>
+        <td>{{item.yield}}</td>
+        <td>{{item.units}}</td>
+      </tr>
+      <!--<tr>
         <td>05-02-2018</td>
         <td>Chuau-1</td>
         <td>Kale</td>
@@ -70,7 +77,7 @@
         <td>Kale</td>
         <td>7</td>
         <td>Bunches</td>
-      </tr>
+      </tr>-->
     </table>
     </div>
 
@@ -83,7 +90,19 @@
           rpEndDate: '2020-05-15',
           rpCrop: 'Kale',
           rpCrops: ['Kale', 'Broccoli', 'Peas'],
-          rpFields: ['All', 'Chuau-1', 'SQ7']
+          rpFields: ['All', 'Chuau-1', 'SQ7'],
+          rpLogs: [ 
+            {date: '2018-05-02', 
+              area: 'Chuau-1', 
+              crop: 'Kale',
+              yield: 10,
+              units: 'Bunches'}, 
+            {date: '2018-05-05', 
+              area: 'SQ7', 
+              crop: 'Kale',
+              yield: 7,
+              units: 'Bunches'}
+          ]
         }
       });
     </script>
