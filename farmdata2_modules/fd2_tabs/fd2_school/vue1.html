@@ -61,19 +61,12 @@
             <th>Yield</th>
             <th>Units</th>
         </tr>
-        <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10</td>
-            <td>Bunches</td>
-        </tr>
-        <tr>
-            <td>05/08/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7</td>
-            <td>Bunches</td>
+        <tr v-for="row in tableInfo">
+            <td>{{ row.date }}</td>
+            <td>{{ row.field }}</td>
+            <td>{{ row.crop }}</td>
+            <td>{{ row.yield }}</td>
+            <td>{{ row.units }}</td>
         </tr>
         </table>
     </div>
@@ -89,7 +82,11 @@
                 endD: '05-15-2020',
                 cropSelection: ["Brocolli", "Kale", "Peas"],
                 selectedCrop: "Kale",
-                fieldSelection: ["Chuau-1", "All", "SQ7"]
+                fieldSelection: ["Chuau-1", "All", "SQ7"],
+                tableInfo: [
+                    {date: "05/02/2018", field: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"},
+                    {date: "05/08/2018", field: "SQ7", crop: "Kale", yield: 7, units: "Bunches"}
+                ]
             }
         });
     </script>
