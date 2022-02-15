@@ -61,19 +61,12 @@
             <th>Yield</th>
             <th>Units</th>
         </tr>
-        <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10</td>
-            <td>Bunches</td>
-        </tr>
-        <tr>
-            <td>05/05/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7</td>
-            <td>Bunches</td>
+        <tr v-for="log in log_list">
+            <td>{{log.date}}</td>
+            <td>{{log.area}}</td>
+            <td>{{log.crop}}</td>
+            <td>{{log.yield}}</td>
+            <td>{{log.units}}</td>
         </tr>
         
     </table>
@@ -88,7 +81,12 @@
             end_date: "2020-05-15",
             crop: "Kale",
             crop_list: ["Broccoli", "Kale", "Peas"],
-            field_list: ["All", "Chuau-1", "SQ7"]
+            field_list: ["All", "Chuau-1", "SQ7"],
+            log_list: [
+                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'}, 
+                {date: '2018-06-02', area: 'SQ7', crop: 'Peas', 'yield': 15, units: 'Bunches'},
+                {date: '2018-08-02', area: 'SQ7', crop: 'Broccoli', 'yield': 7, units: 'Bunches'}
+            ]
         }
     });
     </script>
