@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+    span{
+        font-weight: bold
+    }
+</style>
+
+</head>
+<body>
+<br/>
+<div id = "harvest-report">
+
+<h1>Harvest Report</h1>
+
+<p>This page is a <i>mocked up</i> of a simplified harvest report.</p>
+
+<div id = "container #2">
+<label for="title">Title: </label>
+        <input type="text" id="title" name="title" value="My Sample Harvest Report">
+        <br/><br/>
+        <label for="date">Start: </label>
+        <input type="date" id ="date01" class ="date" name="date01" value="2020-05-05">
+        <label for="date">End: </label>
+        <input type="date" id="date02" class = "date" name="date02" value="2020-05-15">
+        <br/><br/>
+        <label for="crop">Crop: </label>
+        <select id="crop-01" class = "crop" name="crop">
+            <option>Broccoli</option>
+            <option selected>Kale</option>
+            <option>Peas</option>
+        </select>
+        <label for="area">Area: </label>
+        <select id="crop-02" class = "crop" name="crop">
+            <option selected>All</option>
+            <option>Chuau-1</option>
+            <option>SQ7</option>
+        </select>
+        <br/>
+        <br/>
+        
+        <input type="button" value="Generate Report">
+</div>
+</div>
+
+<hr>
+
+<div id = "sample-report">
+<h1>My Sample Harvest Report</h1>
+Details:
+<ul>
+<li><span>Farm</span>: Sample Farm</li>
+    <li><span>User</span>: manager1</li>
+    <li><span>Language</span>: English</li>
+    <br/>
+    <li><span>Start</span>:05/01/2018</li>
+    <li><span>End</span>:05/15/2018</li>
+    <li><span>Crop</span>:Kale</li>
+</ul>
+
+<table border = "1|0";> <!--Alternatively, table style = "border-collapse: collapse;" along with 
+table, tr, td, border : 1px is posible-->
+    <tr>
+        <th>Date</th>
+        <th>Area</th>
+        <th>Crop</th>
+        <th>Yield</th>
+        <th>Units</th>
+    </tr>
+
+    <tr>
+        <td>05/02/2018</td>
+        <td>Chuau-1</td>
+        <td>Kale</td>
+        <td>10</td>
+        <td>Bunches</td>
+    </tr>
+
+    <tr>
+        <td>05/05/2018</td>
+        <td>SQ7</td>
+        <td>Kale</td>
+        <td>7</td>
+        <td>Bunches</td>
+    </tr>
+</table>
+
+</div>
+
+</body>
+</html>
+
