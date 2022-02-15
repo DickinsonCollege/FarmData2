@@ -15,18 +15,22 @@
     <input type="date" id="end" name="end" v-model="rpEndDate" min="2020-05-05" max="2022-01-01">
     <br>
 
-    <label for="crop">Crop:</label>
+    <!--<label for="crop">Crop:</label>
     <select id="crop" name="crop" v-model="rpCrop">
       <option>Kale</option>
       <option>Broccoli</option>
       <option>Peas</option>
+    </select>-->
+
+    <label for="crop">Crop:</label>
+    <select id="crop" name="crop" v-model="rpCrop">
+      <option v-for="item in rpCrops">{{item}}</option>
     </select>
+
 
     <label for="field">Field:</label>
     <select id="field" name="crop">
-      <option selected>All</option>
-      <option>Chuau-1</option>
-      <option>SQ7</option>
+      <option v-for="item in rpFields">{{item}}</option>
     </select>
     <br>
 
@@ -71,13 +75,15 @@
     </div>
 
     <script>
-      var report = new Vue({
+      var vreport = new Vue({
         el: '#report',
         data: {
           rpTitle: 'My Sample Harvest Report',
           rpStartDate: '2020-05-05',
           rpEndDate: '2020-05-15',
-          rpCrop: 'Kale'
+          rpCrop: 'Kale',
+          rpCrops: ['Kale', 'Broccoli', 'Peas'],
+          rpFields: ['All', 'Chuau-1', 'SQ7']
         }
       });
     </script>
