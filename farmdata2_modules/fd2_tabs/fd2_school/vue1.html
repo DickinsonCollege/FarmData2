@@ -53,9 +53,9 @@
 <hr>
 
 Details:
-  <h1>{{ title==('')? "Mock Harvest Report": title }}</h1>
+  <h1>{{ title ==('')? "Mock Harvest Report": title }}</h1>
   <ul>
-  <li><span>Farm</span>: Sample Farm</li>
+    <li><span>Farm</span>: Sample Farm</li>
       <li><span>User</span>: manager1</li>
       <li><span>Language</span>: English</li>
       <br>
@@ -94,7 +94,7 @@ Details:
 
 
 
-
+<script src="https://unpkg.com/vue@2"></script> <!--necessary needed as stated from our document Q02. -->
 <script>
 
 var harvestReport = new Vue({
@@ -119,6 +119,8 @@ var harvestReport = new Vue({
         ]
     }
 });
+
+Vue.config.devtools = true;
 </script>
 </body>
 </html>
