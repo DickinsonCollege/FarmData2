@@ -2,7 +2,7 @@
 <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
 <label for='Title'>Title:</label>
 <div id='repInputID' v-cloak>
-    <input type='text' placeholder='My Sample Harvest Report' v-model='header'>
+    <input type='text' v-model='header'>
     <br><br>
     <label for='Start'>Start:</label>
     <input type='date' id='start' name='start'
@@ -29,7 +29,7 @@
     <input type='button' value='Generate Report'>
     <hr>
 
-    <h1>{{ header }}</h1>
+    <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
 
     <p>Details:</p>
     <ul>
@@ -70,7 +70,7 @@
     var repTitle = new Vue ({
         el: '#repInputID',
         data: {
-            header:'My Sample Harvest Report', 
+            header: null, 
             startDate: '2018-05-05', 
             endDate: '2018-05-15',
             crop: 'Kale'  
