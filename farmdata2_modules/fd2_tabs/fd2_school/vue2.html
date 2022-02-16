@@ -1,0 +1,132 @@
+<!--Mockup of harvest report--> 
+<html>
+   
+    <h1>Harvest Report</h1>
+    
+    <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+
+    <!--div element start-->
+     <div id = "report" v-cloak>
+        <label for= "title"> Title: </label>
+        <input type="text" v-model ='reportTitle' id = "title">
+    
+    <br><br>
+
+    <!--Date boxes-->
+    <label for="start">Start:</label>
+
+    <input type="date" v-model = 'reportStartDate'
+        id="start" name="start"
+        min="2014-01-01" max="2022-01-01">
+
+    <label for="end">End:</label>
+
+    <input type="date" v-model = 'reportEndDate'
+        id="end" name="end" 
+        min="2020-05-05" max="2022-01-01">
+
+    <br><br>
+
+    <!--Crop and Field Entry-->
+    <label for="Crop">Crop: </label>
+    <select id="Crop" v-model = 'reportCrop' name="Crop">
+        <option v-for = "reportCropList in reportCropList">{{reportCropList}}</option>
+    </select>
+
+    <label for="field">Field: </label>
+    <select id="field" name="field">
+        <option v-for = "reportFieldList in reportFieldList">{{reportFieldList}}</option>
+    </select><br><br>
+
+    <!--Generate Report-->
+    <input type="button" value="Generate Report">
+    <br><br>
+
+    <!--Horizonal Line-->
+    <hr>
+    
+    <h1>{{reportTitle == '' ? 'Mock Harvest Report':reportTitle}}</h1>
+    
+
+    <p>Details:</p>
+    
+    <ul>
+        <li><b>Farm: </b>Sample Farm</li>
+        <li><b>User: </b>manager1</li>
+        <li><b>Language: </b>English</li>
+    </ul>
+
+    <ul>
+        <li><b>Start: </b>{{reportStartDate}}</li>
+        <li><b>End: </b>{{reportEndDate}}</li>
+        <li><b>Crop: </b>{{reportCrop}}</li>
+    </ul>
+
+    <!--Table-->
+    <table border = 1>
+        <tr>
+            <th>Date</th>
+            <th>Area</th>
+            <th>Crop</th>
+            <th>Yield</th>
+            <th>Units</th>
+        </tr>
+        
+        <tr>
+            <td v-for='property in harvestLog1'>{{property.date}}</td>
+            <td v-for='property in harvestLog1'>{{property.area}}</td>
+            <td v-for='property in harvestLog1'>{{property.crop}}</td>
+            <td v-for='property in harvestLog1'>{{property.yield}}</td>
+            <td v-for='property in harvestLog1'>{{property.units}}</td>
+        </tr>
+
+         <tr>
+            <td v-for='property in harvestLog2'>{{property.date}}</td>
+            <td v-for='property in harvestLog2'>{{property.area}}</td>
+            <td v-for='property in harvestLog2'>{{property.crop}}</td>
+            <td v-for='property in harvestLog2'>{{property.yield}}</td>
+            <td v-for='property in harvestLog2'>{{property.units}}</td>
+        </tr>
+
+         <tr>
+            <td v-for='property in harvestLog3'>{{property.date}}</td>
+            <td v-for='property in harvestLog3'>{{property.area}}</td>
+            <td v-for='property in harvestLog3'>{{property.crop}}</td>
+            <td v-for='property in harvestLog3'>{{property.yield}}</td>
+            <td v-for='property in harvestLog3'>{{property.units}}</td>
+        </tr>
+
+    </table>
+
+    </div>
+    
+    <!--Vue instance-->
+    <script>
+    var report = new Vue({
+        el: '#report',
+        data:{
+            reportTitle: 'My Sample Harvest Report',
+            reportStartDate:'2018-05-05',
+            reportEndDate:'2018-05-15',
+            reportCrop:'Kale',
+            reportCropList:['Broccoli', 'Kale','Peas'],
+            reportFieldList:['All','Chuau-1','SQ7'],
+
+            harvestLog1:[
+                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'}
+            ],
+
+            harvestLog2:[
+                {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'}
+            ],
+
+             harvestLog3:[
+                {date: '2018-05-27', area: 'SQ7', crop: 'Broccoli', 'yield': 9, units: 'Bunches'}
+            ],
+        }
+    });
+
+    Vue.config.devtools = true;
+    </script>
+
+</html>
