@@ -71,11 +71,22 @@ $items['farm/fd2-school/HTML'] = array(
         'weight' => 110,
     );
 
+$items['farm/fd2-school/vue1'] = array(
+        'title' => 'vue1',
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'fd2_school_view',
+        'page arguments' => array('vue1.html'),
+        'access arguments' => array('view fd2 school'),
+        'weight' => 110,
+    );
+
+    
+
 
   return $items;
 };
 
-// This function Loads the content for the sub-tab from the html file specified in the arguemnt.
+// This function loads the content for the sub-tab from the html file specified in the arguemnt.
 // It must be renamed in each module.
 function fd2_school_view($subtab_content) {
   $dir=dirname(__FILE__);
