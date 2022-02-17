@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
 	<head>
-        <div id="setReportTitle">
+        <div id="harvestReport">
         <meta charset="utf-8">
         <body>
 		<h1>Harvest Report</h1>
 			<p>This page is a <i>mockup</i> of a simplified harvest report.</p>
             <label for="title">Title:</label>
             <input type="text" v-model="header" placeholder="My Sample Harvest Report"><br><br>
-			<label for="startDate">Start: </label>
-			<input type="date" id="start" name="startDate" value="2020-05-05" min="2014-01-01" max="2022-01-01" >
-                    <label for="endDate">End: </label>
-                    <input type="date" id="end" name="endDate" value="2020-05-15" min="2020-05-05" max="2022-01-01"><br><br>
+            <label for="startDate">Start: </label>
+            <input v-model="startDate" type="date" min="2014-01-01" max="2022-01-01">
+			<!--<input type="date" id="start" name="startDate" value="2020-05-05" min="2014-01-01" max="2022-01-01">-->
+            <label for="endDate">    End: </label>
+            <input v-model="endDate" type="date" min="2014-01-01" max="2022-01-01"><br><br>
+            
 			<label for="cropSelectBox">Crop: </label>
-			<select id="simple" name="crops">
+			<select v-model="cropSelection" name="crops">
 				<option selected>Kale</option>
 				<option>Broccoli</option>
 				<option>Pease</option>
@@ -31,9 +33,9 @@
 						<li><strong>Farm: </strong>Sample Farm</li>
 						<li><strong>User: </strong>manager1</li>
 						<li><strong>Language: </strong>English</li><br>
-						<li><strong>Start: </strong>05/01/2018</li>
-                                                <li><strong>End: </strong>05/15/2018</li>
-                                                <li><strong>Crop: </strong>Kale</li>
+						<li><strong>Start: </strong>{{ startDate }}</li>
+                                                <li><strong>End: </strong>{{ endDate }}</li>
+                                                <li><strong>Crop: </strong>{{ cropSelection }}</li>
 			<table border=1>
 				<tr>
 					<td><strong> Date </strong></td>
@@ -62,9 +64,13 @@
 
               <script>
                   var setReportTitle = new Vue ({
-                    el: '#setReportTitle',
+                    el: '#harvestReport',
                     data: {
-                    header: 'My Sample Harvest Report'
+                    header: 'My Sample Harvest Report',
+                    startDate: '2020-05-05',
+                    endDate: '2020-05-15',
+                    cropSelection: 'Kale',
+
                   }
                   });
               </script>
