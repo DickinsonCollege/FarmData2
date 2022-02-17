@@ -30,7 +30,7 @@
                 <input v-model='enddate' type="date" min="2014-01-01" max="2022-01-01">
             <br><br>
             
-            <button type="submit" v-on:click='harvestlog.push({date: "05/01/2018", area: "Orion-3", crop: "Kale", yield: 10, units: "bunches"})'>Generate Report </button>
+            <button type="submit" @click='harvestlog.push({date: "05/01/2018", area: "Orion-3", crop: "Kale", yield: 10, units: "bunches"})'>Generate Report </button>
             
             <hr>
             <h1>{{header=="" ? "Mock Harvest Report": header}}</h1>
@@ -47,13 +47,15 @@
 
             <table border=1>
                 <tr>
+                    <th><strong>Row</strong></th>
                     <th><strong>Date</strong></th>
                     <th><strong>Area</strong></th> 
                     <th><strong>Crop</strong></th>
                     <th><strong>Yield</strong></th>
                     <th><strong>Units</strong></th>   
                 </tr>
-                <tr td v-for = "log in harvestlog">
+                <tr td v-for ='(log, row) in harvestlog'>
+                    <td>{{row}}</td>
                     <td>{{log.date}} </td>
                     <td>{{log.area}}</td>
                     <td>{{log.crop}}</td>
@@ -74,8 +76,7 @@
                     fields: ['a','b','c'],
                     cropSelected: '',
                     fieldSelected: '',
-                    harvestlog: [{date: '', area: '', crop: '', yield: '', units: ''},
-                    ],
+                    harvestlog: [],
                 },
             });
             Vue.config.devtools = true;
