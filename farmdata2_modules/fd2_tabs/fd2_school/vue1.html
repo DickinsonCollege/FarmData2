@@ -16,15 +16,17 @@
             
 			<label for="cropSelectBox">Crop: </label>
 			<select v-model="cropSelection" name="crops">
-				<option selected>Kale</option>
+                <option v-for="crops in crop"> {{ crops }} </option>
+				<!--<option selected>Kale</option>
 				<option>Broccoli</option>
-				<option>Pease</option>
+				<option>Pease</option>-->
 			</select>  
-                        <label for="areaSelectBox">Area: </label>
-                        <select id="simple" name="crops">
-                                <option selected>All</option>
-                                <option>Chuau-1</option>
-                                <option>SQ7</option>
+            <label for="fieldSelectBox">Area: </label>
+            <select v-model="fieldSelection" name="fields">
+                <option v-for="fields in field"> {{ fields }} </option>
+            <!--<option selected>All</option>
+            <option>Chuau-1</option>
+            <option>SQ7</option>-->
 			</select><br><br>
 			<input type="button" value="Generate Report"><hr>
 			<h1>{{ header.length == 0 ? "Mock Harvest Report" : header }}</h1>
@@ -59,17 +61,24 @@
 					<td> Bunches </td>
 				</tr>
               </table>
+
+              <li v-for="names in names">{{ names }}</li>
+
               </body>
               </div>
 
               <script>
-                  var setReportTitle = new Vue ({
+                  var harvest_Report = new Vue ({
                     el: '#harvestReport',
                     data: {
                     header: '',
                     startDate: '2020-05-05',
                     endDate: '2020-05-15',
                     cropSelection: 'Kale',
+                    fieldSelection: 'All',
+                    names: ['Joe', 'Arun', 'Ouwen', 'Anh', 'Sue'],
+                    crop: ['Kale', 'Broccoli', 'Pease'],
+                    field: ['All', 'Chuau-1', 'SQ7'],
 
                   }
                   });
