@@ -42,7 +42,7 @@
 			
 		<hr>
 
-		<h1 v-cloak>{{ rptTitle }}</h1>
+		<h1 v-cloak>{{ rptTitle.length == 0 ? 'Mock Harvest Report' : rptTitle }}</h1>
 
 
 	<p> Details: </p>
@@ -50,7 +50,6 @@
 			<li><strong>Farm:</strong> Sample farm </li>
 			<li><strong>User:</strong> worker1 </li>
 			<li><strong>Language:</strong> English </li>
-
 
 			<li><strong>Start:</strong> {{ rptStartDate }} </li>
 			<li><strong>End: </strong> {{ rptEndDate }} </li>
