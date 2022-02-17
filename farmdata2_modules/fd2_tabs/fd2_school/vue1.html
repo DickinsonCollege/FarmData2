@@ -15,15 +15,11 @@
     <br><br>
     <label for='Crop'>Crop:</label>
     <select id='Crop' name='Crop' v-model='crop'>
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
+        <option v-for='cropOpt in crops'>{{ cropOpt }}</option> 
     </select>
     <label for='Field'>Field:</label>
     <select id='Field' name='Field'>
-        <option selected>All</option>
-        <option>Chuau-1</option>
-        <option>SQ7</option>
+        <option v-for='fieldOpt in fields'>{{ fieldOpt }}</option> 
     </select>
     <br><br>
     <input type='button' value='Generate Report'>
@@ -67,13 +63,24 @@
     </table>
 </div>
 <script>
-    var repTitle = new Vue ({
+    var repInput = new Vue ({
         el: '#repInputID',
         data: {
             header: null, 
             startDate: '2018-05-05', 
             endDate: '2018-05-15',
-            crop: 'Kale'  
+            crop: 'Kale', 
+            crops: [
+                'Peas',
+                'Kale',
+                'Broccoli'
+            ],
+            fields: [
+                'All',
+                'Chuau-1',
+                'SQ7'
+            ]  
         }
     });
 </script>
+
