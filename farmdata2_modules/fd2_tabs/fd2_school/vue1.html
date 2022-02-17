@@ -46,23 +46,23 @@
 					<td><strong> Yield </strong></td>
 					<td><string> Units </storng></td>
 				</tr>
-					<tr>
-					<td> 05/02/2018 </td>
-					<td> Chuau-1 </td>
-					<td> Kale </td>
-					<td> 10 </td>
-					<td> Bunches </td>
+					<tr v-for="firstRows in firstRow">
+					<td> {{ firstRows.date }} </td>
+					<td> {{ firstRows.field }} </td>
+					<td> {{ firstRows.crop }} </td>
+					<td> {{ firstRows.yield }} </td>
+					<td> {{ firstRows.units }} </td>
 				</tr>
-				<tr>
-					<td> 05/05/2018 </td>
-					<td> SQ7 </td>
-					<td> Kale </td>
-					<td> 7 </td>
-					<td> Bunches </td>
+				<tr v-for="secondRows in secondRow">
+					<td> {{ secondRows.date }} </td>
+					<td> {{ secondRows.field }} </td>
+					<td> {{ secondRows.crop }} </td>
+					<td> {{ secondRows.yield }} </td>
+					<td> {{ secondRows.units }} </td>
 				</tr>
               </table>
 
-              <li v-for="names in names">{{ names }}</li>
+              <!--<li v-for="names in names">{{ names }}</li>-->
 
               </body>
               </div>
@@ -79,7 +79,12 @@
                     names: ['Joe', 'Arun', 'Ouwen', 'Anh', 'Sue'],
                     crop: ['Kale', 'Broccoli', 'Pease'],
                     field: ['All', 'Chuau-1', 'SQ7'],
-
+                    firstRow: [
+                        {date: '2018-05-02', field: 'Chuau-1', crop: 'Kale', yield: '10', units: 'bundles'}
+                    ],
+                    secondRow: [
+                        {date: '2019-10-16', field: 'SQ7', crop: 'Broccoli', yield: '15', units: 'pounds'}
+                    ],
                   }
                   });
               </script>
