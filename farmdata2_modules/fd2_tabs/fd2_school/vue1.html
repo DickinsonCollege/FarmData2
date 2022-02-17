@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8">
+        <div id="setReportTitle">
+        <meta charset="utf-8">
+        <body>
 		<h1>Harvest Report</h1>
 			<p>This page is a <i>mockup</i> of a simplified harvest report.</p>
-			<label for="title">Title:</label>
-			<input type="text" id="title" name="titlebox" value="My Sample Harvest Report"><br><br>
+            <label for="title">Title:</label>
+            <input type="text" v-model="header" placeholder="My Sample Harvest Report"><br><br>
 			<label for="startDate">Start: </label>
 			<input type="date" id="start" name="startDate" value="2020-05-05" min="2014-01-01" max="2022-01-01" >
-                        <label for="endDate">End: </label>
-                        <input type="date" id="end" name="endDate" value="2020-05-15" min="2020-05-05" max="2022-01-01"><br><br>
+                    <label for="endDate">End: </label>
+                    <input type="date" id="end" name="endDate" value="2020-05-15" min="2020-05-05" max="2022-01-01"><br><br>
 			<label for="cropSelectBox">Crop: </label>
 			<select id="simple" name="crops">
 				<option selected>Kale</option>
@@ -23,7 +25,7 @@
                                 <option>SQ7</option>
 			</select><br><br>
 			<input type="button" value="Generate Report"><hr>
-			<h1>My Sample Harvest Report</h1>
+			<h1>{{header}}</h1>
 				<p>Details:</p>
 					<ul>
 						<li><strong>Farm: </strong>Sample Farm</li>
@@ -54,6 +56,17 @@
 					<td> 7 </td>
 					<td> Bunches </td>
 				</tr>
-		      </table>
+              </table>
+              </body>
+              </div>
+
+              <script>
+                  var setReportTitle = new Vue ({
+                    el: '#setReportTitle',
+                    data: {
+                    header: 'My Sample Harvest Report'
+                  }
+                  });
+              </script>
 	</head>
 </html>
