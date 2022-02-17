@@ -22,16 +22,12 @@
 	
 		<label for="crop">Crop:</label>
 		<select id="crop" name="crop" v-model="rptSelectCrop">
-			<option>Broccoli</option>
- 			<option selected>Kale</option>
- 			<option>Peas</option>
+			<option v-for="crop in cropDrop">{{ crop }}</option>
 		</select>
 
 		<label for="field">Field:</label>
      		<select id="field" name="field">
-                	<option>Chuau-1</option>
-                	<option selected>All</option>
-                	<option>SQ7</option>
+                	<option v-for="field in fieldDrop">{{ field }}</option>
         	</select>
 
 		<br>	
@@ -83,6 +79,10 @@
                         <td>Bunches</td>
 
                 </tr>
+		<ul>
+			<li v-for="name in names">{{ name }} </li>
+
+		</ul>
 
        	   </table>
         </div>
@@ -93,7 +93,26 @@
                         rptTitle: 'My sample harvest report',
 			rptStartDate: '2020-6-07', 
 			rptEndDate: '2020-5-13',
-			rptSelectCrop: 'Kale'
+			rptSelectCrop: 'Kale',
+			names : [
+				'Joe',
+				'Arun',
+				'Ouwen',
+				'Anh',
+				'Sue'
+				],
+
+			cropDrop : [
+					'Broccoli',
+					'Peas',
+					'Kale'
+					],
+			fieldDrop : [
+					'CHUAU-1',
+					'All', 
+					'SQ7'
+					]
+
                 }
         });
       </script>
