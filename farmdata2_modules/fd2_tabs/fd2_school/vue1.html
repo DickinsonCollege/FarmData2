@@ -55,36 +55,19 @@
 		<br>
 
 	<table border="1">
-		<tr>
-			<th>Date</th>
-			<th>Area</th>
-			<th>Crop</th>
-			<th>Yield</th>
-			<th>Units</th>
+		<tr v-for="x in table1">
+			<th> {{ x.date }}</th>
+			<th> {{ x.area }}</th>
+			<th> {{ x.crop }}</th>
+			<th> {{ x.yield }}</th>
+			<th> {{ x.units }}</th>
 		</tr>
-
-		<tr>
-			<td>05/02/2018</td>
-			<td>Chuau-1</td>
-			<td>Kale</td>
-                        <td>10</td>
-			<td>Bunches</td>
-		</tr>
-
-		<tr>
-			<td>05/05/2018</td>
-                        <td>SQ7</td>
-                        <td>Kale</td>
-                        <td>7</td>
-                        <td>Bunches</td>
-
-                </tr>
-		<ul>
-			<li v-for="name in names">{{ name }} </li>
-
-		</ul>
-
        	   </table>
+		<ul> Cards:
+                        <li v-for="card in cards">{{ card.rank + ' of ' + card.suit }} </li>
+
+                </ul>
+
         </div>
       <script>
         var VueTime = new Vue({
@@ -111,7 +94,36 @@
 					'CHUAU-1',
 					'All', 
 					'SQ7'
-					]
+					],
+			cards: [
+
+				{suit: 'H', rank: '3'},
+
+				{suit: 'S', rank: 'K'},
+
+				{suit: 'D', rank: '7'}
+				],
+			table1: [
+				
+				{date: '2020-05-05',
+				area: 'SQ7',
+				crop: 'Kale',
+				yield: '11', 
+				units: 'Bunches'},
+
+				{date: '2020-06-12',
+                                area: 'SQ7',
+                                crop: 'Peas',
+                                yield: '4',
+                                units: 'Bunches'}
+
+
+				]
+			
+
+
+
+
 
                 }
         });
