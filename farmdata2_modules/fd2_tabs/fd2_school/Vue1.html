@@ -1,3 +1,23 @@
+<html>
+    <head>
+        <title>My Sample Harvest Report</title>
+    </head>
+    <body>
+        <div id="reportTitle">
+            <h1>{{ header }}</h1>
+            <input type= 'text' v-model='header'>
+        </div>
+        <script>
+            let spike = new Vue ({
+                el: '#reportTitle',
+                data: {
+                    header: 'My Sample Harvest Report',
+                },
+            })
+        </script>
+    </body>
+</html>
+
 <h1>Harvest Report</h1>
 <p>This page is a <i>mockup</i> of a simplified harvest report</p>
 
