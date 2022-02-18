@@ -32,7 +32,7 @@
     <br>
     <br>
 
-    <button type="button">
+    <button type="button" @click="log_list.push({date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'})">
         Generate Report
     </button>
 
@@ -82,11 +82,7 @@
             crop: "Kale",
             crop_list: ["Broccoli", "Kale", "Peas"],
             field_list: ["All", "Chuau-1", "SQ7"],
-            log_list: [
-                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'}, 
-                {date: '2018-06-02', area: 'SQ7', crop: 'Peas', 'yield': 15, units: 'Bunches'},
-                {date: '2018-08-02', area: 'SQ7', crop: 'Broccoli', 'yield': 7, units: 'Bunches'}
-            ]
+            log_list: []
         }
     });
 
