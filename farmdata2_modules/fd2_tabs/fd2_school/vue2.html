@@ -1,0 +1,91 @@
+<div id="test" v-cloak>
+    <h1>Harvest Report</h1>
+    <p>This page is a <i>mockup</i> of a simplified harverst report.</p>
+    <label for="title">Title:</label>
+    <input type=”text” v-model="title">
+    <br></br>
+    <label for="start">Start:</label>
+    
+    <input type="date" id="start" name="start"
+    min="2014-01-01" max="2022-01-01" v-model="start">
+    
+    <label for="end">End</label>
+
+    <input type="date" id="end" name="end"
+       min="2020-05-05" max="2022-01-01" v-model="end">
+    <br></br>
+    <label for="crop">Crop:</label>
+    <select id="crop" name="crop" v-model="crop">
+        <option 
+        v-for="crop in crops" 
+        :selected="option == 'Kale'"
+        >{{ crop }}</option>
+    </select>
+         
+    <label for="field">Field:</label>
+    <select id="field" name="field" v-model="field">
+          <option 
+        v-for="field in fields" 
+        :selected="option == 'All'"
+        >{{ field }}</option>
+    </select>
+
+    <br> </br>
+<button class="btn btn-primary" v-on:click="rows.push({'date': start, 'area': field, 'crop': crop, 'yield': '10', 'units': 'Bunches'})"> Generate Report </button>
+    <hr> </hr>
+
+    <h1>{{title ? title : 'Mock Harvest Report'}}</h1>
+    <p>Details:</p>
+    <ul>
+    <li><strong>Farm</strong>:Sample Farm</li>
+    <li><strong>User</strong>:manager1</li>
+    <li><strong>Language</strong>:English</li>
+    </ul>
+
+    <ul>
+    <li><strong>Start</strong>:{{start}}</li>
+    <li><strong>End</strong>:{{end}}</li>
+    <li><strong>Crop</strong>:{{crop}}</li>
+    </ul>
+
+    <br></br>
+    <table border="1">
+        <tr>
+            <th>Date</th>
+            <th>Area</th>
+            <th>Crop</th>
+            <th>Yeild</th>
+            <th>Units</th>
+        </tr>
+        <tr v-for="row in rows">
+            <td v-for="item in row">{{item}}</td>
+        </tr>
+    </table>
+    	<script src="https://unpkg.com/vue@2"></script>
+	<script>
+		var test =new Vue({
+			el: "#test", 
+			data: {
+                title:"My Sample Harvest Report", 
+                end:'2020-05-15',
+                start:'2020-05-05', 
+                field:'All',
+                crop:'Kale',
+                crops:[
+                    'Broccoli', 
+                    'Kale', 
+                    'Peas',
+                ], 
+                fields:[
+                    'All', 
+                    'Chuau-1', 
+                    'SQ7',
+                ], 
+                rows:[
+                
+                ]
+            }
+		})
+        Vue.config.devtools = true;
+	</script>
+</div>
