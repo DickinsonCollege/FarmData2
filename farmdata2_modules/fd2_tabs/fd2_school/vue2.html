@@ -120,9 +120,13 @@
         methods:{
 
             addHarvest: function(){
-                this.state = "edit";
+                
 
-                if (this.harvestLogs.length == 0){
+                if (this.harvestLogs.length == 0 && this.state=='default'){
+                    this.state = "edit";
+                }
+
+                else if (this.harvestLogs.length == 0){
                     this.harvestLogs.push({date: '05/01/2018', area: 'Orion-3', crop: 'Kale', 'yield': 12, units: 'Bunches'});
                 }
 
