@@ -45,6 +45,8 @@
     
     <br><br>
 
+    <p v-if="this.state === 'default'"></p>
+    <div v-else = "this.state==='edit'">
     <!--Horizonal Line-->
     <hr>
     
@@ -66,7 +68,7 @@
     </ul>
 
     <!--Table-->
-    <p v-if="this.state === 'default'">No matching records</p>
+    <p v-if="this.state === 'default' || harvestLogs.length===0">No matching records</p>
     <div v-else = "this.state==='edit'">
     <table border = 1>
         <tr>
@@ -93,6 +95,8 @@
     </div>
 
     </div>
+
+    </div>
     
     <!--Vue instance-->
     <script>
@@ -114,7 +118,7 @@
         },
 
         methods:{
-            
+
             addHarvest: function(){
                 this.state = "edit";
 
