@@ -66,6 +66,8 @@
     </ul>
 
     <!--Table-->
+    <p v-if="this.state === 'default'">No matching records</p>
+    <div v-else = "this.state==='edit'">
     <table border = 1>
         <tr>
             <th>Row</th>
@@ -88,6 +90,7 @@
         </tr>
 
     </table>
+    </div>
 
     </div>
     
@@ -96,6 +99,9 @@
     var report = new Vue({
         el: '#report',
         data:{
+
+            state: 'default',
+            
             reportTitle: 'My Sample Harvest Report',
             reportStartDate:'2018-05-05',
             reportEndDate:'2018-05-15',
@@ -108,8 +114,9 @@
         },
 
         methods:{
+            
             addHarvest: function(){
-
+                this.state = "edit";
 
                 if (this.harvestLogs.length == 0){
                     this.harvestLogs.push({date: '05/01/2018', area: 'Orion-3', crop: 'Kale', 'yield': 12, units: 'Bunches'});
@@ -123,6 +130,8 @@
                     this.harvestLogs.push({date: '05/05/2018', area: 'Orion-3', crop: 'Kale', 'yield': 16, units: 'Bunches'});
                 }
             },
+
+           
         }
     });
 
