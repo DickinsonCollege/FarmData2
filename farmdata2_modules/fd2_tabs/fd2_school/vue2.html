@@ -31,7 +31,7 @@
     </select>
 
     <br> </br>
-<button class="btn btn-primary" v-on:click="rows.push({'date': start, 'area': field, 'crop': crop, 'yield': '10', 'units': 'Bunches'})"> Generate Report </button>
+<button class="btn btn-primary" v-on:click="generateReport"> Generate Report </button>
     <hr> </hr>
 
     <h1>{{title ? title : 'Mock Harvest Report'}}</h1>
@@ -84,7 +84,12 @@
                 rows:[
                 
                 ]
-            }
+            }, 
+      methods: {
+        generateReport: function() {
+          this.rows.push({'date': this.start, 'area': this.field, 'crop': this.crop, 'yield': '10', 'units': 'Bunches'})
+        }
+      }
 		})
         Vue.config.devtools = true;
 	</script>
