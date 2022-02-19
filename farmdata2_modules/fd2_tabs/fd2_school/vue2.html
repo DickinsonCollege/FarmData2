@@ -40,7 +40,7 @@
 
     <!--Generate Report-->
     <div class = "div.add-harvest">
-        <button class = "btn btn-primary" @click="harvestLog1.push({date: '05/01/2018', area: 'Orion-3', crop: 'Kale', 'yield': 12, units: 'Bunches'})">Generate Report</button>
+        <button class = "btn btn-primary" @click="addHarvest">Generate Report</button>
     </div>
     
     <br><br>
@@ -75,12 +75,12 @@
             <th>Units</th>
         </tr>
         
-        <tr>
-            <td v-for='property in harvestLog1'>{{property.date}}</td>
-            <td v-for='property in harvestLog1'>{{property.area}}</td>
-            <td v-for='property in harvestLog1'>{{property.crop}}</td>
-            <td v-for='property in harvestLog1'>{{property.yield}}</td>
-            <td v-for='property in harvestLog1'>{{property.units}}</td>
+        <tr v-for = "log in harvestLogs">
+            <td>{{log.date}}</td>
+            <td>{{log.area}}</td>
+            <td>{{log.crop}}</td>
+            <td>{{log.yield}}</td>
+            <td>{{log.units}}</td>
         </tr>
 
     </table>
@@ -99,9 +99,26 @@
             reportCropList:['Broccoli', 'Kale','Peas'],
             reportFieldList:['All','Chuau-1','SQ7'],
 
-            harvestLog1:[
-            ],
+            harvestLogs:[],
             newHarvest:'',
+        },
+
+        methods:{
+            addHarvest: function(){
+
+
+                if (this.harvestLogs.length == 0){
+                    this.harvestLogs.push({date: '05/01/2018', area: 'Orion-3', crop: 'Kale', 'yield': 12, units: 'Bunches'});
+                }
+
+                else if (this.harvestLogs.length == 1){
+                    this.harvestLogs.push({date: '05/03/2018', area: 'Orion-2', crop: 'Kale', 'yield': 7, units: 'Bunches'});
+                }
+
+                else if (this.harvestLogs.length == 2){
+                    this.harvestLogs.push({date: '05/05/2018', area: 'Orion-3', crop: 'Kale', 'yield': 16, units: 'Bunches'});
+                }
+            }
         }
     });
 

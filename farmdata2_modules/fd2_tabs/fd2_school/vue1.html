@@ -72,28 +72,12 @@
             <th>Units</th>
         </tr>
         
-        <tr>
-            <td v-for='property in harvestLog1'>{{property.date}}</td>
-            <td v-for='property in harvestLog1'>{{property.area}}</td>
-            <td v-for='property in harvestLog1'>{{property.crop}}</td>
-            <td v-for='property in harvestLog1'>{{property.yield}}</td>
-            <td v-for='property in harvestLog1'>{{property.units}}</td>
-        </tr>
-
-         <tr>
-            <td v-for='property in harvestLog2'>{{property.date}}</td>
-            <td v-for='property in harvestLog2'>{{property.area}}</td>
-            <td v-for='property in harvestLog2'>{{property.crop}}</td>
-            <td v-for='property in harvestLog2'>{{property.yield}}</td>
-            <td v-for='property in harvestLog2'>{{property.units}}</td>
-        </tr>
-
-         <tr>
-            <td v-for='property in harvestLog3'>{{property.date}}</td>
-            <td v-for='property in harvestLog3'>{{property.area}}</td>
-            <td v-for='property in harvestLog3'>{{property.crop}}</td>
-            <td v-for='property in harvestLog3'>{{property.yield}}</td>
-            <td v-for='property in harvestLog3'>{{property.units}}</td>
+        <tr v-for = "log in harvestLogs">
+            <td>{{log.date}}</td>
+            <td>{{log.area}}</td>
+            <td>{{log.crop}}</td>
+            <td>{{log.yield}}</td>
+            <td>{{log.units}}</td>
         </tr>
 
     </table>
@@ -112,18 +96,15 @@
             reportCropList:['Broccoli', 'Kale','Peas'],
             reportFieldList:['All','Chuau-1','SQ7'],
 
-            harvestLog1:[
-                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'}
-            ],
-
-            harvestLog2:[
-                {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'}
-            ],
-
-             harvestLog3:[
-                {date: '2018-05-27', area: 'SQ7', crop: 'Broccoli', 'yield': 9, units: 'Bunches'}
-            ],
-        }
+            harvestLogs:[
+                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'},
+        
+                {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'},
+        
+                {date: '2018-05-27', area: 'SQ7', crop: 'Broccoli', 'yield': 9, units: 'Bunches'},
+        ]
+           
+        },
     });
 
     Vue.config.devtools = true;
