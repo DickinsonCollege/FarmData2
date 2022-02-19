@@ -51,6 +51,7 @@
     <br></br>
     <table border="1">
         <tr>
+            <th>Row</th>
             <th>Date</th>
             <th>Area</th>
             <th>Crop</th>
@@ -71,6 +72,7 @@
                 start:'2020-05-05', 
                 field:'All',
                 crop:'Kale',
+                rowNum:1,
                 crops:[
                     'Broccoli', 
                     'Kale', 
@@ -87,7 +89,10 @@
             }, 
       methods: {
         generateReport: function() {
-          this.rows.push({'date': this.start, 'area': this.field, 'crop': this.crop, 'yield': '10', 'units': 'Bunches'})
+          this.rows.push(
+            { 'rowNum': this.rowNum,
+              'date': this.start, 'area': this.field, 'crop': this.crop, 'yield': '10', 'units': 'Bunches'});
+          this.rowNum += 1;
         }
       }
 		})
