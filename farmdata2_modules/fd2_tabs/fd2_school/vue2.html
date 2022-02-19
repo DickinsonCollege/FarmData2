@@ -33,8 +33,9 @@
     <br> </br>
 <button class="btn btn-primary" v-on:click="generateReport"> Generate Report </button>
     <hr> </hr>
+    <h1 v-if="rows.length === 0">Empty Report</h1>
 
-    <h1>{{title ? title : 'Mock Harvest Report'}}</h1>
+    <h1 v-if="rows.length != 0">{{title ? title : 'Mock Harvest Report'}}</h1>
     <p>Details:</p>
     <ul>
     <li><strong>Farm</strong>:Sample Farm</li>
