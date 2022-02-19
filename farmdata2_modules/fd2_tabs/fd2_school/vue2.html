@@ -84,7 +84,7 @@
             <td>{{log.crop}}</td>
             <td>{{log.yield}}</td>
             <td>{{log.units}}</td>
-            <td><button type='button' @click='deleteRow'>Delete</button></td>
+            <td><button type='button' @click='harvestLogs.splice(index, 1)'>Delete</button></td>
         </tr>
 
     </table>
@@ -123,11 +123,6 @@
                     this.harvestLogs.push({date: '05/05/2018', area: 'Orion-3', crop: 'Kale', 'yield': 16, units: 'Bunches'});
                 }
             },
-
-            deleteRow: function(rowIndex){
-                this.harvestLogs.splice(rowIndex, 1);
-                
-            }
         }
     });
 
