@@ -15,6 +15,7 @@
         name="start"
         min="2014-01-01"
         max="2022-01-01"
+        :max="endDate"
         v-model="startDate"
     />
 
@@ -23,7 +24,8 @@
         type="date"
         id="end"
         name="end"
-        v-bind:min="startDate"
+        min="2014-01-01"
+        :min="startDate"
         max="2022-01-01"
         v-model="endDate"
     />
