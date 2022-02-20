@@ -42,7 +42,7 @@
 
     <br /><br />
 
-    <button type="button" @click="logs.push(newLog)">Generate Report</button>
+    <button type="button" @click="generateReport">Generate Report</button>
 
     <hr />
 
@@ -95,6 +95,14 @@
                 crop: 'Kale',
                 yield: 12,
                 units: 'Bunches',
+            },
+        },
+        methods: {
+            generateReport: function () {
+                if (this.newLog != '') {
+                    this.logs.push(this.newLog);
+                }
+                this.newLog = '';
             },
         },
     });
