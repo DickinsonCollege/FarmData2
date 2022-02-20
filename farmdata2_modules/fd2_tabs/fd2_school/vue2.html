@@ -38,7 +38,7 @@
         <br />
         <br />
 
-        <button @click="harvestLogs.push(newItem)">Generate Report</button>
+        <button @click="addHarvestLog">Generate Report</button>
         <hr>
         <div id="report-Title">
             <h1>{{ reportTitle ? reportTitle : "Mock Harvest Report"}}</h1>
@@ -92,6 +92,12 @@
                     crops: ["Broccoli", "Kale", "Peas"],
                     newItem: {date: '05/01/2018', area: 'Orion-3', crop: 'Kale', yield: '12', units: 'bunches'},
                     harvestLogs: []
+                },
+                methods: {
+                    addHarvestLog: function() {
+                        this.harvestLogs.push(this.newItem)
+                        this.newItem = {}                        
+                    }
                 }
             });
             Vue.config.devtools = true;
