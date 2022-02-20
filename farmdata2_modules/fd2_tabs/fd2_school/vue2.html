@@ -17,13 +17,13 @@
 
     <input type="date" v-model = 'reportStartDate'
         id="start" name="start"
-        min="2014-01-01" max="2022-01-01">
+        :min="2014-01-01" :max="reportEndDate">
 
     <label for="end">End:</label>
 
     <input type="date" v-model = 'reportEndDate'
         id="end" name="end" 
-        min="2020-05-05" max="2022-01-01">
+        :min="reportStartDate" :max="2022-01-01">
 
     <br><br>
 
