@@ -55,13 +55,15 @@
 
     <table border=1>
         <tr>
+            <th>Row</th>
             <th>Date</th>
             <th>Area</th>
             <th>Crop</th>
             <th>Yield</th>
             <th>Units</th>
         </tr>
-        <tr v-for="log in log_list">
+        <tr v-for="(log, index) in log_list">
+            <td>{{index+1}}</td>
             <td>{{log.date}}</td>
             <td>{{log.area}}</td>
             <td>{{log.crop}}</td>
