@@ -10,9 +10,13 @@
     <br>
 
     <label for="start">Start:</label>
-    <input type="date" id="start" name="start" v-model="rpStartDate"  min="2014-01-01" max="2022-01-01">
+    <input type="date" id="start" name="start" 
+	v-model="rpStartDate"  v-bind:disabled='rpStartDate>rpEndDate'
+	min="2014-01-01" max="2022-01-01">
     <label for="end">End:</label>
-    <input type="date" id="end" name="end" v-model="rpEndDate" min="2020-05-05" max="2022-01-01">
+    <input type="date" id="end" name="end" 
+	v-model="rpEndDate" v-bind:disabled='rpEndDate<rpStartDate'
+	min="2020-05-05" max="2022-01-01">
     <br>
 
     <label for="crop">Crop:</label>
