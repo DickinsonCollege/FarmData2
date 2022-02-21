@@ -49,7 +49,7 @@
                                 </optgroup>
                         </select>
                     <br/>
-                    <input type="button" value="Generate Report" @click="sampleLog.push(newLog)">
+                    <button type="btn btn-primary" @click="saveLog">Generate Report</button>
                     </div>
         </p>
 
@@ -71,7 +71,6 @@
                     <li><strong> Crop</strong>:{{chosenCrop}}</li>
                 </ul>
                 <table border = 1>
-                    
                     <tr>
                         <td><strong>Date</strong></td>
                         <td><strong>Area</strong></td>
@@ -106,21 +105,23 @@
                     "SQ7",
                     "Chuau-1",
                     ],
-                    newLog:{Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
+                    ANewLog:{Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
                     sampleLog:[
-                        
                         // {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
                         // {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
                     ],
                 },
-                method: {
-                    saveItem: function() {
-                        if (this.newLog !== "") {
-                            this.sampleLog.push(this.newLog);
-                            this.newLog = "";
-                        }
-                    }
-                }
+                
+                methods: {
+                    saveLog: function () {
+                        if(this.ANewLog !== {}){
+                            if(sampleLog.indexOf(this.ANewLog) === -1){
+                                this.sampleLog.push(this.ANewLog);
+                                this.ANewLog = {};
+                            }
+                        } 
+                    },
+                },
            });
            Vue.config.devtools = true;
        </script>
