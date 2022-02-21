@@ -27,9 +27,7 @@
     </select>
     <br>
 
-    <button type="button" v-on:click="rpLogs.push(
-	{date: '2018-05-01', area: 'Orion-3', 
-	crop: 'Kale', yield: 12, units: 'Bunches'})"> Generate Report </button>        
+    <button type="button" v-on:click="addLog"> Generate Report </button>        
 
     <hr>
     
@@ -73,7 +71,14 @@
           rpCrops: ['Kale', 'Broccoli', 'Peas'],
           rpFields: ['All', 'Chuau-1', 'SQ7'],
           rpLogs: []
-        }
+        },
+        methods: {
+	  addLog: function() {
+	    this.rpLogs.push(
+		{date: '2018-05-01', area: 'Orion-3',
+		crop: 'Kale', yield: 12, units: 'Bunches'});
+	  }
+	}
       });
      
       Vue.config.devtools = true;
