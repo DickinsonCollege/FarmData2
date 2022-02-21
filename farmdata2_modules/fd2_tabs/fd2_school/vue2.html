@@ -113,6 +113,14 @@
                         // {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
                     ],
                 },
+                method: {
+                    saveItem: function() {
+                        if (this.newLog !== "") {
+                            this.sampleLog.push(this.newLog);
+                            this.newLog = "";
+                        }
+                    }
+                }
            });
            Vue.config.devtools = true;
        </script>
