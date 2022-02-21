@@ -69,6 +69,7 @@
             <td>{{log.crop}}</td>
             <td>{{log.yield}}</td>
             <td>{{log.units}}</td>
+            <td><button type="button" @click="deleteItem">Delete</button></td>
         </tr>
         
     </table>
@@ -97,6 +98,9 @@
                 else if (this.log_list.length == 2){
                     this.log_list.push({date: '2020-08-02', area: 'All', crop: 'Broccoli', 'yield': 100, units: 'Bunches'})
                 }
+            },
+            deleteItem: function(index){
+                this.log_list.splice(index, 1)
             }
         }
     });
