@@ -15,13 +15,6 @@
     <input type="date" id="end" name="end" v-model="rpEndDate" min="2020-05-05" max="2022-01-01">
     <br>
 
-    <!--<label for="crop">Crop:</label>
-    <select id="crop" name="crop" v-model="rpCrop">
-      <option>Kale</option>
-      <option>Broccoli</option>
-      <option>Peas</option>
-    </select>-->
-
     <label for="crop">Crop:</label>
     <select id="crop" name="crop" v-model="rpCrop">
       <option v-for="item in rpCrops">{{item}}</option>
@@ -34,7 +27,9 @@
     </select>
     <br>
 
-    <button type="button">Generate Report </button>        
+    <button type="button" v-on:click="rpLogs.push(
+	{date: '2018-05-01', area: 'Orion-3', 
+	crop: 'Kale', yield: 12, units: 'Bunches'})"> Generate Report </button>        
 
     <hr>
     
@@ -64,20 +59,6 @@
         <td>{{item.yield}}</td>
         <td>{{item.units}}</td>
       </tr>
-      <!--<tr>
-        <td>05-02-2018</td>
-        <td>Chuau-1</td>
-        <td>Kale</td>
-        <td>10</td>
-        <td>Bunches</td>
-      </tr>
-      <tr>
-        <td>05-05-2018</td>
-        <td>SQ7</td>
-        <td>Kale</td>
-        <td>7</td>
-        <td>Bunches</td>
-      </tr>-->
     </table>
     </div>
 
@@ -91,18 +72,7 @@
           rpCrop: 'Kale',
           rpCrops: ['Kale', 'Broccoli', 'Peas'],
           rpFields: ['All', 'Chuau-1', 'SQ7'],
-          rpLogs: [ 
-            {date: '2018-05-02', 
-              area: 'Chuau-1', 
-              crop: 'Kale',
-              yield: 10,
-              units: 'Bunches'}, 
-            {date: '2018-05-05', 
-              area: 'SQ7', 
-              crop: 'Kale',
-              yield: 7,
-              units: 'Bunches'}
-          ]
+          rpLogs: []
         }
       });
      
