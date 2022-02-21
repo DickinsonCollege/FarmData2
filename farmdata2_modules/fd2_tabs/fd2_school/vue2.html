@@ -27,7 +27,7 @@
     </select>
     <br>
 
-    <button type="button" v-on:click="addLog"> Generate Report </button>
+    <button type="button" v-on:click='changeState("data"); addLog()'> Generate Report </button>
 
     <hr>
     
@@ -42,8 +42,9 @@
       <li><b>End:</b>{{rpEndDate}}</li>
       <li><b>Crop:</b>{{rpCrop}}</li>
     </ul>
+    <p v-if='state==="nodata"'> There is no data to display.</p>
     <table border="1">
-      <tr>
+      <tr v-if='state!=="nodata"'>
 	<th>Row</th>
         <th>Date</th>
         <th>Area</th>
@@ -66,6 +67,7 @@
       var vreport = new Vue({
         el: '#report',
         data: {
+	  state: 'nodata',
           rpTitle: 'My Sample Harvest Report',
           rpStartDate: '2020-05-05',
           rpEndDate: '2020-05-15',
@@ -79,6 +81,9 @@
 	    this.rpLogs.push(
 		{date: '2018-05-01', area: 'Orion-3',
 		crop: 'Kale', yield: 12, units: 'Bunches'});
+	  },
+	  changeState: function(newState) {
+	  	this.state = newState;
 	  }
 	}
       });
