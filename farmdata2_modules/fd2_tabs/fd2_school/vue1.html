@@ -39,10 +39,23 @@
   <hr style="width:50%;text-align:left;margin-left:0">
   <body>
     This page is a <em>mockup</em> of a simplified harvest report
-  </body>
+    
 
-  <h1>My Sample Harvest Report</h1>
-  <body>
+    
+    <div id ="harvest-report">
+	
+	<h1 v-cloak > {{header}} </h1>
+	<input type="text" v-model="header">
+	</div>
+	<script>
+	var harvestReport = new Vue({
+	el: '#harvest-report',
+	data: {
+		header: 'Harvest Report'
+	}
+	}
+	);
+	</script>
     Details:
     <ul>
   <li><strong>Farm</strong>:Sample </li>
