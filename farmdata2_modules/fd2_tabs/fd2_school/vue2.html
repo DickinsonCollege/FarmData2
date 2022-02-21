@@ -51,8 +51,8 @@
         </ul>
         <br>
         <ul>
-            <li v-model="reportStartDate"><strong>Start</strong>:{{reportStartDate}}</li>
-            <li v-model="reportEndDate"><strong>End</strong>:{{reportEndDate}}</li>
+            <li v-bind:max="reportEndDate" v-model="reportStartDate"><strong>Start</strong>:{{reportStartDate}}</li>
+            <li v-bind:min="reportStartDate" v-model="reportEndDate"><strong>End</strong>:{{reportEndDate}}</li>
             <li v-model="reportCrop"><strong>Crop</strong>:{{reportCrop}}</li>
         </ul>
         
