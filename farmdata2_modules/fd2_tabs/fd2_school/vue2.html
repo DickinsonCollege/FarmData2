@@ -10,25 +10,19 @@
             <input type="text" v-model="header" placeholder="My Sample Harvest Report"><br><br>
             <label for="startDate">Start: </label>
             <input v-model="startDate" type="date" min="2014-01-01" max="2022-01-01">
-			<!--<input type="date" id="start" name="startDate" value="2020-05-05" min="2014-01-01" max="2022-01-01">-->
             <label for="endDate">    End: </label>
             <input v-model="endDate" type="date" min="2014-01-01" max="2022-01-01"><br><br>
             
 			<label for="cropSelectBox">Crop: </label>
 			<select v-model="cropSelection" name="crops">
                 <option v-for="crops in crop"> {{ crops }} </option>
-				<!--<option selected>Kale</option>
-				<option>Broccoli</option>
-				<option>Pease</option>-->
 			</select>  
             <label for="fieldSelectBox">Area: </label>
             <select v-model="fieldSelection" name="fields">
                 <option v-for="fields in field"> {{ fields }} </option>
-            <!--<option selected>All</option>
-            <option>Chuau-1</option>
-            <option>SQ7</option>-->
-			</select><br><br>
-			<input type="button" value="Generate Report"><hr>
+            </select><br><br>
+            
+            <button class="btn btn-primary" v-on:click="">Generate Report</button>
 			<h1>{{ header.length == 0 ? "Mock Harvest Report" : header }}</h1>
 				<p>Details:</p>
 					<ul>
@@ -36,15 +30,16 @@
 						<li><strong>User: </strong>manager1</li>
 						<li><strong>Language: </strong>English</li><br>
 						<li><strong>Start: </strong>{{ startDate }}</li>
-                                                <li><strong>End: </strong>{{ endDate }}</li>
-                                                <li><strong>Crop: </strong>{{ cropSelection }}</li>
+                        <li><strong>End: </strong>{{ endDate }}</li>
+                        <li><strong>Crop: </strong>{{ cropSelection }}</li>
+                        
 			<table border=1>
 				<tr>
 					<td><strong> Date </strong></td>
 					<td><strong> Area </strong></td>
 					<td><strong> Crop </strong></td>
 					<td><strong> Yield </strong></td>
-					<td><string> Units </storng></td>
+					<td><strong> Units </storng></td>
 				</tr>
 					<tr v-for="firstRows in firstRow">
 					<td> {{ firstRows.date }} </td>
@@ -62,7 +57,6 @@
 				</tr>
               </table>
 
-              <!--<li v-for="names in names">{{ names }}</li>-->
 
               </body>
               </div>
@@ -76,9 +70,14 @@
                     endDate: '2020-05-15',
                     cropSelection: 'Kale',
                     fieldSelection: 'All',
-                    names: ['Joe', 'Arun', 'Ouwen', 'Anh', 'Sue'],
                     crop: ['Kale', 'Broccoli', 'Pease'],
                     field: ['All', 'Chuau-1', 'SQ7'],
+                    harvestLog: [
+                        { 
+                        date: '05/01/2018', field: 'Orion-3', crop: 'Kale',
+                        yield: '12', units: 'bunches'
+                    }
+                ],
                     firstRow: [
                         {date: '2018-05-02', field: 'Chuau-1', crop: 'Kale', yield: '10', units: 'bundles'}
                     ],
