@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My test page</title>
+  </head>
+  <body>
+    <div id="report" v-cloak>
+        <input type="text" v-model="reportTitle">
+    
+        <h1>Harvest Report</h1>
+        <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+
+        <label for="title">Title:</label>
+
+        <input type="text" id="title" value="My sample harvest report">
+        <br>
+
+        <!-- value="2020-05-05" -->
+        <label for="start">Start:</label>
+        <input id="start" 
+                type="date"
+                v-model="reportStartDate"
+                min="2014-01-01"
+                max="2022-01-01">
+        
+        <!-- value="2020-05-15" -->
+        <label for="end">End:</label>
+        <input id="end" 
+                type="date"
+                v-model="reportEndDate"
+                min="2020-05-05"
+                max="2022-01-01">
+        <br>
+
+        <label for="crop">Crop:</label>
+        <select id="crop" v-model="reportCrop">
+            <!-- <option v-for="crop in crops">{{ crop }}</option> -->
+            <option v-for="crop in crops">{{ crop }}</option> 
+            <!-- <option v-model="reportCrop">Broccoli</option>
+            <option v-model="reportCrop">Peas</option> -->
+        </select>    
+
+        <label for="field">Field:</label>
+        <select id="field" v-model="reportField">
+            <option v-for="field in fields">{{ field }}</option>
+        </select> 
+        <br>
+
+        <button type="submit">Generate Report</button>
+        <hr/>
+
+        <h1>{{ reportTitle ? reportTitle : 'Mock Harvest Report' }}</h1>
+    
+        <p>Details:</p>
+        <ul>
+            <li><strong>Farm:</strong>Sample Farm</li>
+            <li><strong>User:</strong>manager1</li>
+            <li><strong>Language:</strong>English</li>
+            <br/>
+            <li><strong>Start:</strong>{{ reportStartDate }}</li>
+            <li><strong>End:</strong>{{ reportEndDate }}</li>
+            <li><strong>Crop:</strong>{{ reportCrop }}</li>
+        </ul>
+
+        <table border=1>
+            <tr>
+                <th>Date</th>
+                <th>Area</th>
+                <th>Crop</th>
+                <th>Yield</th>
+                <th>Unit</th>
+            </tr>
+            <tr v-for="log in logs">
+                <td>{{ log.date }}</td>
+                <td>{{ log.area }}</td>
+                <td>{{ log.crop }}</td>
+                <td>{{ log.yield }}</td>
+                <td>{{ log.units }}</td>
+            </tr>
+            <!-- <tr>
+                <td>05/05/2018</td>
+                <td>SQ7</td>
+                <td>Kale</td>
+                <td>7</td>
+                <td>Bunches</td> -->
+            </tr>
+        </table>
+    </div>
+    <script>
+        Vue.config.devtools = true;
+        var report = new Vue ({
+            el: '#report',
+            data: {
+                reportTitle: 'My Sample Harvest Report',
+                reportStartDate: '2020-05-05',
+                reportEndDate: '2020-05-15',
+                reportCrop: 'Kale',
+                reportField: 'All',
+                crops: ['Kale', 'Broccoli', 'Peas'],
+                fields: ['All', 'Chuau-1', 'SQ7'],
+                logs: [
+                    {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'},
+                    {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'}
+                ]
+            },
+        });
+    </script> 
+  </body>
+</html>

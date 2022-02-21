@@ -107,7 +107,7 @@ function fd2_example_menu() {
     'access arguments' => array('view fd2 example'),
     'weight' => 120,
   );
-
+  
   return $items;
 };
 
