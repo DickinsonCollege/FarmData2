@@ -71,8 +71,9 @@
       <th>Crop</th>
       <th>Yield</th>
       <th>Units</th>
+      <th>Delete</th>
       </tr>
-      <tr v-for="log in harvestLog">
+      <tr v-for="(log,index) in harvestLog">
 		<td>{{log.Row}}</td>
         <td>{{log.Date}}</td>
 		
@@ -82,6 +83,8 @@
 		
         <td>{{log.Yield}}</td>
         <td>{{log.Unit}} </td>
+    
+        <td><button type="button"  @click="deleteRow(index)">Delete </button></td>
 		
   </tr>
 
@@ -121,6 +124,9 @@
                     this.harvestLog.push(this.HLog[1])
                     this.harvestLog.push(this.HLog[2])
                 }
+            },
+            deleteRow: function(index){
+                this.harvestLog.splice(index,1);
             }
         }
       });
