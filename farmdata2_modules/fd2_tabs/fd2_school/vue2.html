@@ -14,9 +14,10 @@
         <p>
             <div id="rpt" class = "v-cloak">
                 <br/>
-                <label for="Comment">Title:</label>
-                    
+                <div class = "add-item">
+                    <label for="Title">Title:</label>
                     <input type="text" id="Title" name="Title" v-model="header">
+                    
                     <br/>
 
                         <label for="StartDate">Start date:</label>
@@ -48,7 +49,8 @@
                                 </optgroup>
                         </select>
                     <br/>
-                    <input type="button" value="Generate Report">
+                    <input type="button" value="Generate Report" @click="sampleLog.push(newLog)">
+                    </div>
         </p>
 
         <hr/> 
@@ -77,11 +79,8 @@
                         <td><strong>Yield</strong></td>
                         <td><strong>Unit</strong></td>
                     </tr>
-                    <tr>
-                        <td v-for="item in sampleLog[0]">{{item}}</td>
-                    </tr>
-                    <tr>
-                        <td v-for="item in sampleLog[1]">{{item}}</td>
+                    <tr v-for="item in sampleLog">
+                        <td v-for="items in item">{{items}}</td>
                     </tr>
                 </table>
             </div>
@@ -107,9 +106,11 @@
                     "SQ7",
                     "Chuau-1",
                     ],
+                    newLog:{Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
                     sampleLog:[
-                        {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
-                        {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
+                        
+                        // {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
+                        // {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
                     ],
                 },
            });
