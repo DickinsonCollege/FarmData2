@@ -14,15 +14,16 @@
 
       <br>
       <br>
+      <!-- Start date and end date starts here -->
       <label for="start">Start:</label>
       <input type="date" id="startdate" name="startdate"
-      min="2014-01-01" max="2022-01-01" v-model="startdateinput">
+      min="2014-01-01" :max="enddateinput" v-model="startdateinput">
 
       <label for="end">End:</label>
 
       <input type="date" id="enddate" name="enddate"
       value="2020-05-15"
-      min="2020-05-05" max="2022-01-01" v-model="enddateinput">
+      min="startdateinput" max="2022-01-01" v-model="enddateinput">
 
 
 
