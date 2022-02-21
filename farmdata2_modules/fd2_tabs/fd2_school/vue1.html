@@ -64,12 +64,50 @@
   <br>
   
 <br>
-  <li><strong>Start</strong>:05/01/2018 </li>
-  <li><strong>End</strong>:05/15/20181</li>
-  <li><strong>Crop</strong>:Kale</li>
 
-
-</ul>
+<div id ="harvest-report">
+	
+	<li><strong>Start</strong><h1 v-cloak > {{date}} </h1>
+	<input type="text" v-model="date">
+	</div>
+	<script>
+	var harvestReport = new Vue({
+	el: '#start-date',
+	data: {
+		date: '05/01/2018'
+	}
+	}
+	);
+    </script> 
+    </li>
+    <li><strong>End</strong><h1 v-cloak > {{date}} </h1>
+	<input type="text" v-model="date">
+	</div>
+	<script>
+	var harvestReport = new Vue({
+	el: '#end-date',
+	data: {
+		date: '05/15/2018'
+	}
+	}
+	);
+    </script> 
+    </li>
+    </li>
+    <li><strong>Crop</strong><h1 v-cloak > {{crop}} </h1>
+	<input type="text" v-model="crop">
+	</div>
+	<script>
+	var harvestReport = new Vue({
+	el: '#crop-name',
+	data: {
+		crop: 'Kale'
+	}
+	}
+	);
+    </script> 
+    </li>
+    </ul>
 
 <style>
       table,
@@ -91,7 +129,7 @@
     <th><strong>Units</strong></th>
   </tr>
   <tr>
-    <td>05/02/2018</td>
+    <td >05/01/2018</td>
     <td >Chuau-1</td>
     <td >Kale</td>
     <td >10</td>
