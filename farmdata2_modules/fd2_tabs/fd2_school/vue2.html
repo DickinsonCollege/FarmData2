@@ -65,6 +65,7 @@
             <th>Crop</th>
             <th>Yield</th>
             <th>Units</th>
+            <th>Delete</th>
         </tr>
         <tr v-for="(row, index) in tableInfo">
             <td>{{ index + 1}}</td>
@@ -73,6 +74,7 @@
             <td>{{ row.crop }}</td>
             <td>{{ row.yield }}</td>
             <td>{{ row.units }}</td>
+            <td><button class = "btn btn-primary" @click="deleteRow">Delete</button></td>
         </tr>
         </table>
     </div>
@@ -96,11 +98,14 @@
                     // {date: "05/02/2018", field: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"},
                     // {date: "05/08/2018", field: "SQ7", crop: "Kale", yield: 7, units: "Bunches"}
                 ],
-                newRow: {row: 1, date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"}
+                newRow: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"}
             },
             methods: {
                 saveRow: function(index) {
                     this.tableInfo.push(this.newRow);
+                },
+                deleteRow: function(index) {
+                    this.tableInfo.splice(index, 1)
                 }
             }
         });
