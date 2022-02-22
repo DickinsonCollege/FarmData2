@@ -32,13 +32,13 @@
 
 		<label for="field">Field:</label>
      		<select id="field" name="field">
-                	<option v-for="field in fieldDrop">{{ field }}</option>
+                	<option  v-for="field in fieldDrop">{{ field }}</option>
         	</select>
 
 		<br>	
 		<br>
 
-		<input type="button" value="Generate Report">
+		<button v-model="table1" class="btn btn-primary" @click="table1.push(date='2018-05-01',area='Orion-3',crop='Kale',yield='12',units='Bunches')" >Generate Report</button>
 
 			
 		<hr>
@@ -64,6 +64,14 @@
 		<br>
 
 	<table border="1">
+		<tr>
+			<th>Date</th>
+			<th>Area</th>
+			<th>Crop</th>
+			<th>Yield</th>
+			<th>Units</th>
+		</tr>
+
 		<tr v-for="x in table1">
 			<th> {{ x.date }}</th>
 			<th> {{ x.area }}</th>
@@ -105,18 +113,7 @@
 
 			table1: [
 				
-				{date: '2020-05-05',
-				area: 'SQ7',
-				crop: 'Kale',
-				yield: '11', 
-				units: 'Bunches'},
-
-				{date: '2020-06-12',
-                                area: 'SQ7',
-                                crop: 'Peas',
-                                yield: '4',
-                                units: 'Bunches'}
-
+				
 
 				]
 
