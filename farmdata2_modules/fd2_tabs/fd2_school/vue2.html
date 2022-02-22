@@ -31,17 +31,19 @@
 						<li><strong>Language: </strong>English</li><br>
 						<li><strong>Start: </strong>{{ startDate }}</li>
                         <li><strong>End: </strong>{{ endDate }}</li>
-                        <li><strong>Crop: </strong>{{ cropSelection }}</li>
+                        <li><strong>Crop: </strong>{{ cropSelection }}</li><br><br>
                         
 			<table border=2>
 				<tr>
+                    <td><strong> Row </strong></td>
 					<td><strong> Date </strong></td>
 					<td><strong> Area </strong></td>
 					<td><strong> Crop </strong></td>
 					<td><strong> Yield </strong></td>
 					<td><strong> Units </storng></td>
 				</tr>
-					<tr v-for="harvestLogs in harvestLog">
+					<tr v-for="(harvestLogs, index) in harvestLog" v-if=>
+                    <td v-if="index > 0"> {{ index }}</td>
 					<td> {{ harvestLogs.date }} </td>
 					<td> {{ harvestLogs.field }} </td>
 					<td> {{ harvestLogs.crop }} </td>
@@ -81,6 +83,8 @@
                   methods: {
                       addHarvestLog: function() {
                         this.harvestLog.push(this.row);
+
+
                       }
                   }
                 
