@@ -59,13 +59,15 @@
         <br></br>
         <table border=1>
         <tr>
+            <th>Row</th>
             <th>Date</th>
             <th>Area</th>
             <th>Crop</th>
             <th>Yield</th>
             <th>Units</th>
         </tr>
-        <tr v-for="row in tableInfo">
+        <tr v-for="(row, index) in tableInfo">
+            <td>{{ index + 1}}</td>
             <td>{{ row.date }}</td>
             <td>{{ row.field }}</td>
             <td>{{ row.crop }}</td>
@@ -94,10 +96,10 @@
                     // {date: "05/02/2018", field: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"},
                     // {date: "05/08/2018", field: "SQ7", crop: "Kale", yield: 7, units: "Bunches"}
                 ],
-                newRow: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"}
+                newRow: {row: 1, date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"}
             },
             methods: {
-                saveRow: function() {
+                saveRow: function(index) {
                     this.tableInfo.push(this.newRow);
                 }
             }
