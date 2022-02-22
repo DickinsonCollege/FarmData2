@@ -98,10 +98,19 @@
 	<input type="text" v-model="crop">
 	</div>
 	<script>
+    <select v-model="selected">
+  <option v-for="crop in crops" {{crop}} >
+  </option>
+</select>
 	var harvestReport = new Vue({
 	el: '#crop-name',
 	data: {
-		crop: 'Kale'
+		crops: [
+            'Kale',
+            'Peas',
+            'Brocolli'
+    ]
+
 	}
 	}
 	);
