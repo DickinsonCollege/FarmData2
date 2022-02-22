@@ -22,7 +22,7 @@
                 <option v-for="fields in field"> {{ fields }} </option>
             </select><br><br>
             
-            <button class="btn btn-primary" @click="harvestLog.push(row)">Generate Report</button>
+            <button class="btn btn-primary" @click="addHarvestLog">Generate Report</button>
 			<h1>{{ header.length == 0 ? "Mock Harvest Report" : header }}</h1>
 				<p>Details:</p>
 					<ul>
@@ -76,7 +76,14 @@
                         {date: '2018-05-02', field: 'Chuau-1', crop: 'Kale', yield: '10', units: 'bundles'}
                     ], 
 
+                  },
+
+                  methods: {
+                      addHarvestLog: function() {
+                        this.harvestLog.push(this.row);
+                      }
                   }
+                
                   });
 
                   Vue.config.devtools = true;
