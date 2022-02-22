@@ -72,14 +72,16 @@
                 </ul>
                 <table border = 1>
                     <tr>
+                        <td><strong>Row</strong></td>
                         <td><strong>Date</strong></td>
                         <td><strong>Area</strong></td>
                         <td><strong>Crop</strong></td>
                         <td><strong>Yield</strong></td>
                         <td><strong>Unit</strong></td>
                     </tr>
-                    <tr v-for="item in sampleLog">
-                        <td v-for="items in item">{{items}}</td>
+                    <tr v-for="(item,index) in sampleLog">
+                        <td>{{index + 1}}</td>
+                        <td v-for="(items in item">{{items}}</td>
                     </tr>
                 </table>
             </div>
@@ -105,7 +107,7 @@
                     "SQ7",
                     "Chuau-1",
                     ],
-                    ANewLog:{Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
+                    ANewLog:{ Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
                     sampleLog:[
                         // {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
                         // {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
@@ -115,10 +117,10 @@
                 methods: {
                     saveLog: function () {
                         if(this.ANewLog !== {}){
-                            if(sampleLog.indexOf(this.ANewLog) === -1){
+                            // if(sampleLog.indexOf(this.ANewLog) === -1){
                                 this.sampleLog.push(this.ANewLog);
-                                this.ANewLog = {};
-                            }
+                                // this.ANewLog = {};
+                            // }
                         } 
                     },
                 },
