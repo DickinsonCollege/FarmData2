@@ -1,0 +1,95 @@
+
+    
+    <h1>Harvest Report</h1>
+    <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+    <input type="text" id="comment" name="comment" value="Title">
+    <p> </p>
+    <label>
+    Start
+    <input type="date" id="start" name="trip-start"
+       value="2020-05-05"
+       min="2014-01-14" max="2022-01-01">>
+  </label>
+  <label>
+  End
+  <input type="date" id="end" name="trip-end"
+       value="2020-05-15"
+       min="2020-05-05" max="2022-01-01">>
+  </label>
+  <p> </p>
+  <label for="crop">Crop:</label>
+<select name="crop" id="crop">
+  <option value="broccoli">Broccoli</option>
+  <option value="peas">Peas</option>
+  <option value="kale" selected>Kale</option>
+</select>
+ <label for="field">Field:</label>
+<select name="field" id="field">
+  <option value="sq7">SQ7</option>
+  <option value="chuau-1">Chuau-1</option>
+  <option value="all" selected>All</option>
+</select>
+  <p> </p>
+     <button type="button">
+   	Generate Report
+   </button>
+    <hr>
+    <body>
+    <div id="reportTitle" v-cloak> 
+      <h1>{{ header }}</h1>
+      <input type="text" v-model="header">
+    </div>
+    <script>
+    	var reportTitle = new Vue({
+    	   el: '#reportTitle', 
+    	   data: {
+    	       header: 'My Sample Harvest Report'
+    	   }
+    	});
+    </script>
+  </body>
+   <p>Details:</p>
+   <ul>
+   <li><b>Farm:</b>Sample Farm</li>
+   <li><b>User:</b>manager1</li>
+   <li><b>Language:</b>English</li>
+   <p> </p>
+   <li><b>Start:</b>05/01/2018</li>
+   <li><b>End:</b>05/15/2018</li>
+   <li><b>Crop:</b>Kale</li>
+   </ul>
+   <p> </p>
+     <head>
+      <title>HTML Table Header</title>
+   </head>
+	
+   <body>
+      <div v-cloak> 
+      
+    </div>
+      <table border = "1">
+         <tr>
+            <th>Date</th>
+            <th>Area</th>
+            <th>Crop</th>
+            <th>Yield</th>
+            <th>Units</th>
+         </tr>
+         <tr>
+            <td>05/02/2018</td>
+            <td>Chuau-1</td>
+            <td>Kale</td>
+            <td>10</td>
+            <td>Bunches</td>
+         </tr>
+         
+         <tr>
+            <td>05/05/2018</td>
+            <td>SQ7</td>
+            <td>Kale</td>
+            <td>7</td>
+            <td>Bunches</td>
+         </tr>
+      </table>
+   </body>
+ 
