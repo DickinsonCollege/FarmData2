@@ -82,6 +82,16 @@ function fd2_school_menu() {
         'weight' => 110,
     );
 
+    // Add items blocks for new sub-tabs here.
+    // Add a sub-tab named vue1 with content in vue1.html.
+    $items['farm/fd2-school/vue2'] = array(
+        'title' => 'VUE2',
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'fd2_school_view',
+        'page arguments' => array('vue2.html'),
+        'access arguments' => array('view fd2 school'),
+        'weight' => 110,
+    );
   return $items;
 };
 
