@@ -44,7 +44,8 @@
         </select> 
         <br>
 
-        <button type="submit" v-on:click="logs.push({date: '05/01/2018', area: 'Orion-3', crop: 'Kale', 'yield': 12, units: 'Bunches'})">Generate Report</button>
+        <button v-on:click='this.addLog'>Generate Report</button>
+
         <hr/>
 
         <h1>{{ reportTitle ? reportTitle : 'Mock Harvest Report' }}</h1>
@@ -75,12 +76,6 @@
                 <td>{{ log.yield }}</td>
                 <td>{{ log.units }}</td>
             </tr>
-            <!-- <tr>
-                <td>05/05/2018</td>
-                <td>SQ7</td>
-                <td>Kale</td>
-                <td>7</td>
-                <td>Bunches</td> -->
             </tr>
         </table>
     </div>
@@ -101,6 +96,20 @@
                     // {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'}
                 ]
             },
+            methods: {
+                addLog: function() {
+                    const n = this.logs.length;
+                    if (n == 0){
+                      this.logs.push({date: '05/05/2018', area: 'Orion-1', crop: 'Kale', yield: 12, units: 'Bunches'});
+                    }
+                    else if (n == 1){
+                      this.logs.push({date: '06/01/2019', area: 'Orion-2', crop: 'Pea', yield: 120, units: 'Bunches'});
+                    }
+                    else if (n == 2) {
+                      this.logs.push({date: '05/07/2021', area: 'Orion-3', crop: 'Carrot', yield: 10, units: 'Bunches'});
+                    }
+                }
+            }
         });
     </script> 
   </body>
