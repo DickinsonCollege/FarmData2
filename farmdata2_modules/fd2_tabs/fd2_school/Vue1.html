@@ -38,9 +38,7 @@
         <label for="crop">Crop:</label>
 
         <select name="crops" id="crop-select" v-model="cropSelected">
-            <option value="Kale"><selected>Kale</selected></option>
-            <option value="Broccoli">Broccoli</option>
-            <option value="Peas">Peas</option>
+            <option v-for="crop in crops">{{ crop }}</option>
         </select>
 
         <br>
@@ -48,9 +46,7 @@
         <label for="field">Field:</label>
 
         <select name="fields" id="field-select">
-            <option value="All"><selected>All</selected></option>
-            <option value="Chuau-1">Chuau-1</option>
-            <option value="SQ7">SQ7</option>
+            <option v-for="field in fields">{{ field }}</option>
         </select>
 
         <br>
@@ -69,6 +65,10 @@
             min="2020-05-05" max="2022-01-01">
 
         </input>
+
+        <ul>
+            <li v-for="name in names">{{ name }}</li>
+        </ul>
 
         <table>
             <tr>
@@ -102,7 +102,10 @@
             rptTitle: 'My Sample Harvest Report',
             rptStartDate:'',
             rptEndDate:'',
-            cropSelected: ''
+            cropSelected: '',
+            names: [ 'Joe', 'Arun', 'Ouwen', 'Anh', 'Sue' ],
+            crops: [ 'Kale', 'Broccoli', 'Peas' ],
+            fields: [ 'All', 'Chuau-1', 'SQ7' ]
             }
         });
         </script>
