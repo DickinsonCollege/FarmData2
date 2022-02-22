@@ -11,7 +11,7 @@
     <div id="report" v-cloak>
         <br></br>
         <p> This page is a <i> mockup </i> of a simplified harvest report. </p>
-        <button class = "btn btn-primary" @click="saveRow" type="submit">Generate Report</button>
+        <button class = "btn btn-primary" v-bind:disabled = "startD > endD" @click="saveRow" type="submit">Generate Report</button>
         <br>
         <input type="text" v-model="rptTitle">
         <br>
