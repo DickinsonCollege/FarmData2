@@ -98,28 +98,6 @@
             </tr>
         </table>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Area</th>
-                    <th>Crop</th>
-                    <th>Yield</th>
-                    <th>Units</th>
-                </tr>
-        
-            </thead>
-        
-            <tbody>
-        
-                <tr v-for="(row, rindex) in logObj">
-                    <td>{{ rindex }}</td>
-                    <template>
-                        <cell v-for="(value, vindex) in row" : value="value" : vindex="vindex" : rindex="rindex"></cell>
-                    </template>
-                </tr>
-            </tbody>
-        </table>
 
         </div>
         <script>
@@ -153,7 +131,7 @@
 
             }
         });
-
+        Vue.config.devtools = true;
         </script>
 
         
