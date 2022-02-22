@@ -11,7 +11,7 @@
     <div id="report" v-cloak>
         <br></br>
         <p> This page is a <i> mockup </i> of a simplified harvest report. </p>
-        <button class = "btn btn-primary" @click="tableInfo.push(newRow)" type="submit">Generate Report</button>
+        <button class = "btn btn-primary" @click="saveRow" type="submit">Generate Report</button>
         <br>
         <input type="text" v-model="rptTitle">
         <br>
@@ -95,6 +95,11 @@
                     // {date: "05/08/2018", field: "SQ7", crop: "Kale", yield: 7, units: "Bunches"}
                 ],
                 newRow: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"}
+            },
+            methods: {
+                saveRow: function() {
+                    this.tableInfo.push(this.newRow);
+                }
             }
         });
         Vue.config.devtools = true;
