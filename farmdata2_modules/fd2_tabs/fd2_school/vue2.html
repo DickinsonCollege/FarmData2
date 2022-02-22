@@ -25,7 +25,8 @@
                     
 
                         <label for="EndDate">End date:</label>
-                        <input type="date" id="end" name="plant end" v-model="endDay" min="2020-05-05" max="2022-01-01">
+                        <input type="date" id="end" name="plant end" v-model="endDay" min="2020-05-05" max="2022-01-01" 
+                        :disabled= "endDay <= startDay">
                     
 
                     <br/>
