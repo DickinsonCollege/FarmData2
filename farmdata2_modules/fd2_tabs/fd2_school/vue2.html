@@ -37,6 +37,7 @@
         </ul>
         <br><br>
         
+        <div v-if = "state == 'show'">
         <h1>{{ rptTitle ? rptTitle : "Mock Harvest Report"}}</h1>  
     
         <hr></hr>
@@ -80,7 +81,7 @@
             </tr>
         </table>
         </div>
-        
+    </div>
 
     </div>
 
@@ -103,11 +104,13 @@
                     // {date: "05/02/2018", field: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"},
                     // {date: "05/08/2018", field: "SQ7", crop: "Kale", yield: 7, units: "Bunches"}
                 ],
-                newRow: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"}
+                newRow: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"},
+                state: 'hide'
             },
             methods: {
                 saveRow: function(index) {
                     this.tableInfo.push(this.newRow);
+                    this.state = 'show';
                 },
                 deleteRow: function(index) {
                     this.tableInfo.splice(index, 1)
