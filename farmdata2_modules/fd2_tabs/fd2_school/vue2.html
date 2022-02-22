@@ -22,15 +22,18 @@
                 type="date"
                 v-model="reportStartDate"
                 min="2014-01-01"
-                max="2022-01-01">
+                v-bind:max="reportEndDate"
+                >
+                <!-- max="2022-01-01" -->
         
         <!-- value="2020-05-15" -->
         <label for="end">End:</label>
         <input id="end" 
                 type="date"
                 v-model="reportEndDate"
-                min="2020-05-05"
+                v-bind:min="reportStartDate"
                 max="2022-01-01">
+        <!-- min="2020-05-05" -->
         <br>
 
         <label for="crop">Crop:</label>
