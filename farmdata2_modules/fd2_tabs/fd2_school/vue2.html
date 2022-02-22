@@ -70,7 +70,9 @@
                     <li><strong> End</strong>:{{endDay}}</li>
                     <li><strong> Crop</strong>:{{chosenCrop}}</li>
                 </ul>
-                <table border = 1>
+                <div class = "Sample_Log">
+                <p v-if="sampleLog.length === 0">There are no matching records</p> 
+                <table border = 1 v-else>
                     <tr>
                         <td><strong>Row</strong></td>
                         <td><strong>Date</strong></td>
@@ -84,6 +86,7 @@
                         <td v-for="(items in item">{{items}}</td>
                     </tr>
                 </table>
+                </div>
             </div>
         </p>
         
