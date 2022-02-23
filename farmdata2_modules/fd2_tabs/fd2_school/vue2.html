@@ -38,6 +38,7 @@
         <li><strong>Crop:</strong>{{ crop }}</li>
     </ul>
     <br><br>
+    <div v-if='harvestLogs.length !== 0'>
     <table border=1>
       <tr>
         <td><strong>Row</strong></td>
@@ -56,6 +57,7 @@
         <td>{{ log.units }}</td> 
       </tr> 
     </table>
+    </div>
 </div>
 <script>
     var repInput = new Vue ({
