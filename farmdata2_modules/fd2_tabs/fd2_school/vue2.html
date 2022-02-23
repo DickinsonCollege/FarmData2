@@ -46,7 +46,7 @@
           <br>
           <br>
         
-            <button type="button" class="btn btn-primary" @click="harvestLog.push(HLog)" id="generate-report">Generate Report</button>
+            <button type="button" class="btn btn-primary" @click="generateButton" id="generate-report">Generate Report</button>
 
 
 
@@ -102,10 +102,22 @@ var harvestReport = new Vue({
         area: 'ALL',
         areas:['ALL', 'Chuau-1', 'SQ7'],
         harvestLog:[],
-        
-        HLog: {Date: '05/01/2018', Field: 'SQ11', Crop:'Kale', Yield: '10', Unit:"Bunches"}
-    }
-});
+        HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10', Unit:'Bunches'},
+        {Date: '05/17/2019', Field: 'All', Crop:'Broccoli', Yield: '7', Unit:'Bunches'},
+        {Date: '04/06/1998', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
+        ]
+        },
+
+        methods:{
+            generateButton: function(){
+                if(this.harvestLog.length < 50){
+                    this.harvestLog.push(this.HLog[0])
+                    this.harvestLog.push(this.HLog[1])
+                    this.harvestLog.push(this.HLog[2])
+                }
+            }
+        }
+    });
 
 Vue.config.devtools = true;
 </script>
