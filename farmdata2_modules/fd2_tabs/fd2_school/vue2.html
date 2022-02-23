@@ -10,11 +10,11 @@
 
     <label for="start">Start: </label>
     <input type="date" id="start" name="start-date"
-            min="2014-01-01" max="2022-01-01" v-model="start_date">
+            min="2014-01-01" :max="end_date" v-model="start_date">
 
     <label for="end">End: </label>
     <input type="date" id="end" name="end-date"  
-            min="2020-05-05" max="2022-01-01" v-model="end_date">
+            :min="start_date" max="2022-01-01" v-model="end_date">
 
     <br>
     <br>
@@ -38,43 +38,45 @@
 
     <hr>
 
-    <h1>{{header=="" ? "Mock Harvest Report" : header}}</h1>
-    <p>Details:</p>
-
-    <ul>
-        <li><strong>Farm: </strong> Sample Farm</li>
-        <li><strong>User: </strong> manager1</li>
-        <li> <strong>Language: </strong> English</li>
-        <p></p>
-        <li><strong>Start: </strong> {{start_date}}</li>
-        <li><strong>End: </strong> {{end_date}}</li>
-        <li><strong>Crop: </strong> {{crop}}</li>
-    </ul>
-
-    <br>
-
-    <p v-if="!log_display">There are no matching harvest logs.</p>
     <div v-if="log_display">
-        <table border=1>
-            <tr>
-                <th>Row</th>
-                <th>Date</th>
-                <th>Area</th>
-                <th>Crop</th>
-                <th>Yield</th>
-                <th>Units</th>
-            </tr>
-            <tr v-for="(log, index) in log_list">
-                <td>{{index+1}}</td>
-                <td>{{log.date}}</td>
-                <td>{{log.area}}</td>
-                <td>{{log.crop}}</td>
-                <td>{{log.yield}}</td>
-                <td>{{log.units}}</td>
-                <td><button type="button" @click="deleteItem">Delete</button></td>
-            </tr>
-            
-        </table>
+        <h1>{{header=="" ? "Mock Harvest Report" : header}}</h1>
+        <p>Details:</p>
+
+        <ul>
+            <li><strong>Farm: </strong> Sample Farm</li>
+            <li><strong>User: </strong> manager1</li>
+            <li> <strong>Language: </strong> English</li>
+            <p></p>
+            <li><strong>Start: </strong> {{start_date}}</li>
+            <li><strong>End: </strong> {{end_date}}</li>
+            <li><strong>Crop: </strong> {{crop}}</li>
+        </ul>
+
+        <br>
+
+        <p v-if="!log_display">There are no matching harvest logs.</p>
+        <div v-if="log_display">
+            <table border=1>
+                <tr>
+                    <th>Row</th>
+                    <th>Date</th>
+                    <th>Area</th>
+                    <th>Crop</th>
+                    <th>Yield</th>
+                    <th>Units</th>
+                </tr>
+                <tr v-for="(log, index) in log_list">
+                    <td>{{index+1}}</td>
+                    <td>{{log.date}}</td>
+                    <td>{{log.area}}</td>
+                    <td>{{log.crop}}</td>
+                    <td>{{log.yield}}</td>
+                    <td>{{log.units}}</td>
+                    <td><button type="button" @click="deleteItem">Delete</button></td>
+                </tr>
+                
+            </table>
+        </div>
     </div>
 
 </div>
@@ -89,7 +91,7 @@
             crop_list: ["Broccoli", "Kale", "Peas"],
             field_list: ["All", "Chuau-1", "SQ7"],
             log_list: [],
-            log_display: false
+            log_display: false,
         },
         methods:{
             newLog: function(){
