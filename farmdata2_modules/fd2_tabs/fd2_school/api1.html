@@ -31,16 +31,16 @@
     </select>
     <br>
 
-    <button type="button" v-on:click='changeState("data"); addLog()'> Generate Report </button>
+    <button type="button" v-on:click='changeState("data"); addLog(); setDetails()'> Generate Report </button>
 
     <hr>
     
     <h1> {{ rpTitle ? rpTitle : "Mock Harvest Report"}} </h1>
     <p> Details: </p>
     <ul>
-      <li><b>Farm:</b>Sample Farm</li>
-      <li><b>User:</b>manager1</li>
-      <li><b>Language:</b>English</li>
+      <li><b>Farm:</b>{{farm}}</li>
+      <li><b>User:</b>{{user}}</li>
+      <li><b>Language:</b>{{language}}</li>
       <br>
       <li><b>Start:</b>{{rpStartDate}}</li>
       <li><b>End:</b>{{rpEndDate}}</li>
@@ -71,6 +71,9 @@
       var vreport = new Vue({
         el: '#report',
         data: {
+	  farm: '',
+	  user: '',
+	  language: '',
 	  state: 'nodata',
           rpTitle: 'My Sample Harvest Report',
           rpStartDate: '2020-05-05',
@@ -88,6 +91,11 @@
 	  },
 	  changeState: function(newState) {
 	  	this.state = newState;
+	  },
+	  setDetails: function(){
+		this.farm = 'Sample Farm';
+		this.user = 'manager1';
+		this.language = 'English';
 	  }
 	}
       });
