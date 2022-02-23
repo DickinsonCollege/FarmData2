@@ -54,10 +54,10 @@
         <h1>{{ reportTitle ? reportTitle : 'Mock Harvest Report' }}</h1>
     
         <p>Details:</p>
-        <ul>
-            <li><strong>Farm:</strong>Sample Farm</li>
-            <li><strong>User:</strong>manager1</li>
-            <li><strong>Language:</strong>English</li>
+        <ul> 
+            <li v-model="farm"><strong>Farm: </strong>{{ farm }}</li>
+            <li v-model="user"><strong>User: </strong>{{ user }}</li>
+            <li v-model="language"><strong>Language: </strong>{{ language }}</li>
             <br/>
             <li><strong>Start:</strong>{{ reportStartDate }}</li>
             <li><strong>End:</strong>{{ reportEndDate }}</li>
@@ -100,10 +100,17 @@
                 logs: [
                     // {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'},
                     // {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'}
-                ]
+                ],
+                farm: '',
+                user: '',
+                language: ''
             },
             methods: {
                 addLog: function() {
+                    this.farm = "Sample Farm"
+                    this.user = "manager1"
+                    this.language = "English"
+
                     const n = this.logs.length;
                     if (n == 0){
                       this.logs.push({date: '05/05/2018', area: 'Orion-1', crop: 'Kale', yield: 12, units: 'Bunches'});
