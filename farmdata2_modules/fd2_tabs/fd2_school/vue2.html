@@ -7,11 +7,11 @@
     <label for='Start'>Start:</label>
     <input type='date' id='start' name='start'
         min='2014-01-01' max='2022-01-01'
-        v-model='startDate'>
+        v-model='startDate' :disabled='startDate < min' :disabled='startDate > max'>
     <label for='End'>End:</label>
     <input type='date' id='end' name='end'
         min='2020-05-05' max='2022-01-01'
-        v-model='endDate'>
+        v-model='endDate' :disabled='endDate < min' :disabled='endDate > max'>
     <br><br>
     <label for='Crop'>Crop:</label>
     <select id='Crop' name='Crop' v-model='crop'>
