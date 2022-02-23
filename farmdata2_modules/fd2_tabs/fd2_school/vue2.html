@@ -22,9 +22,7 @@
         <option v-for='fieldOpt in fields'>{{ fieldOpt }}</option> 
     </select>
     <br><br>
-    <div class='generate-report-form'>
-        <button class='btn btn-primary' @click='repInput.harvestLogs.push({date: "2018-05-01", area: "Orion-3", crop: "Kale", yield: 12, units: "Bunches" })'>Generate Report</button>
-    </div>
+    <button class='btn btn-primary' @click='generateReport'>Generate Report</button>
     <hr>
 
     <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
@@ -76,8 +74,14 @@
                 'SQ7'
             ],  
             harvestLogs: [
-            ] 
-        }
+            ], 
+        },
+        methods: {
+	    generateReport: function() {
+		this.harvestLogs.push({date: "2018-05-01", area: "Orion-3", crop: "Kale", yield: "12", units: "Bunches"});
+	    },
+	},
+
     });
     Vue.config.devtools = true;
 </script>
