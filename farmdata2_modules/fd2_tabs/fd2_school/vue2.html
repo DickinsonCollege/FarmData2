@@ -8,10 +8,10 @@
 			<p>This page is a <i>mockup</i> of a simplified harvest report.</p>
             <label for="title">Title:</label>
             <input type="text" v-model="header" placeholder="My Mock Harvest Report"><br><br>
-            <label for="startDate">Start: </label>
-            <input v-model="startDate" type="date" min="2014-01-01" max="2022-01-01">
-            <label for="endDate">    End: </label>
-            <input v-model="endDate" type="date" min="2014-01-01" max="2022-01-01"><br><br>
+            <label for="StartDate">Start: </label>
+            <input v-model="startDate" type="date" min="2014-01-01" max="2022-01-01" :max="endDate">
+            <label for="EndDate">    End: </label>
+            <input v-model="endDate" type="date" min="2014-01-01" max="2022-01-01" :min="startDate"><br><br>
             
 			<label for="cropSelectBox">Crop: </label>
 			<select v-model="cropSelection" name="crops">
