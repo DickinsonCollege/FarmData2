@@ -25,11 +25,13 @@
 <label for="title">Title: </label>
         <input type="text" id="title" name="title" v-model = "title">
         <br><br>
+        <!-- date starts here -->
         <label for="date">Start: </label>
-        <input type="date" id ="start" class ="date" name="start" min="2000-01-01" max="2025-12-31" v-model="start">
+        <input type="date" id ="start" class ="date" name="start" min="2000-01-01" :max="end" v-model="start">
         <label for="date">End: </label>
-        <input type="date" id="end" class = "date" name="end" min="2000-01-01" max="2025-12-31" v-model="end">
+        <input type="date" id="end" class = "date" name="end" :min="start" max="2025-12-31" v-model="end">
         <br><br>
+
         <label for="crop">Crop: </label>
             <select id="crop-01" name="crop-01" v-model="crop">
                 <option
