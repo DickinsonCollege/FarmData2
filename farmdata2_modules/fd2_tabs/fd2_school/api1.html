@@ -43,9 +43,9 @@
         <p>Details:</p>
 
         <ul>
-            <li><strong>Farm: </strong> Sample Farm</li>
-            <li><strong>User: </strong> manager1</li>
-            <li> <strong>Language: </strong> English</li>
+            <li><strong>Farm: </strong> {{farm}}</li>
+            <li><strong>User: </strong> {{user}}</li>
+            <li> <strong>Language: </strong> {{language}}</li>
             <p></p>
             <li><strong>Start: </strong> {{start_date}}</li>
             <li><strong>End: </strong> {{end_date}}</li>
@@ -92,10 +92,17 @@
             field_list: ["All", "Chuau-1", "SQ7"],
             log_list: [],
             log_display: false,
+            farm: "",
+            user: "",
+            language: ""
         },
         methods:{
             newLog: function(){
-                this.log_display=true
+                this.log_display=true;
+                this.farm="Sample Farm";
+                this.user="manager1";
+                this.language="English";
+
                 if (this.log_list.length == 0){
                     this.log_list.push({date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'})
                 }
