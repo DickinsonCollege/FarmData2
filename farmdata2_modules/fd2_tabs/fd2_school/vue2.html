@@ -22,7 +22,7 @@
         <option v-for='fieldOpt in fields'>{{ fieldOpt }}</option> 
     </select>
     <br><br>
-    <button class='btn btn-primary' @click='generateReport'>Generate Report</button>
+    <button class='btn btn-primary' @click='generateReport' v-bind:disabled='startDate > endDate' :disabled='endDate < startDate'>Generate Report</button>
     <hr>
 
     <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
