@@ -46,7 +46,7 @@
           <br>
           <br>
         
-        <input type="button" value="Generate Report">
+            <button type="button" class="btn btn-primary" @click="harvestLog.push(HLog)" id="generate-report">Generate Report</button>
 
 
 
@@ -75,20 +75,14 @@ Details:
     </tr>
 
     <tr>
-        <td v-for="card in cards1">{{card.date}}</td>
-        <td v-for="card in cards1">{{card.area}}</td>
-        <td v-for="card in cards1">{{card.crop}}</td>
-        <td v-for="card in cards1">{{card.yield}}</td>
-        <td v-for="card in cards1">{{card.units}}</td>
+          <tr v-for="log in harvestLog">
+    <td>{{log.Date}}</td>
+    <td>{{log.Field}}</td>
+    <td>{{log.Crop}}</td>
+    <td>{{log.Yield}}</td>
+    <td>{{log.Unit}}</td>
     </tr>
 
-    <tr>
-        <td v-for="card in cards2">{{card.date}}</td>
-        <td v-for="card in cards2">{{card.area}}</td>
-        <td v-for="card in cards2">{{card.crop}}</td>
-        <td v-for="card in cards2">{{card.yield}}</td>
-        <td v-for="card in cards2">{{card.units}}</td>
-    </tr>
 </table>
 </div>
 
@@ -107,16 +101,9 @@ var harvestReport = new Vue({
         crops:['Kale','Broccoli','Peas'],
         area: 'ALL',
         areas:['ALL', 'Chuau-1', 'SQ7'],
-        cards1:[
-            {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yield': 10, units: 'Bunches'},
-
-
-        ],
-        cards2:[
-            {date: '2018-05-05', area: 'SQ7', crop: 'Kale', 'yield': 7, units: 'Bunches'},
-
-
-        ]
+        harvestLog:[],
+        
+        HLog: {Date: '05/01/2018', Field: 'SQ11', Crop:'Kale', Yield: '10', Unit:"Bunches"}
     }
 });
 
