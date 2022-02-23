@@ -12,16 +12,16 @@
 		<br>
 
 		<label for="start date">Start date:</label>
-		<input type="date" id="start date" name="start date" min="2014-01-01" max="2022-01-01"  v-model="rptStartDate">
+		<input type="date" id="start date" name="start date"  min="2014-01-01" :max="rptEndDate" v-model="rptStartDate" >
 
 		<label for="end date">End date:</label>
-		<input type="date" id="end date" name="end date" min="2020-05-05" max="2022-01-01" v-model="rptEndDate" >
+		<input type="date" id="end date" name="end date"  :min="rptStartDate" max="2022-01-01" v-model="rptEndDate" >
 
 		<br>
 
 		<label for="name">Name:</label>
 		<input v-model="newItem" type="text" placeholder="Enter Your Name" id="name"  @keyup.enter="saveName">
-		<button class="btn btn-primary" @click="saveName">Add Name</button> 
+		<button class="btn btn-primary" :disabled="newItem.length ==0" @click="saveName">Add Name</button> 
 
 		<br>
 	
