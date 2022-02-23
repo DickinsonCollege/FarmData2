@@ -36,9 +36,9 @@
             <h1>{{header=="" ? "Mock Harvest Report": header}}</h1>
             <br>Details:<br>
             <ul>
-                <li><strong>Farm</strong>: Sample Farm</li>
-                <li><strong>User</strong>: Sample Farm</li>
-                <li><strong>Language</strong>: English</li>
+                <li v-model ="farm"><strong>Farm</strong>: {{ farm }}</li>
+                <li v-model ="user"><strong>User</strong>: {{ user }}</li>
+                <li v-model ="language"><strong>Language</strong>: {{ language }}</li>
                 <p></p>
                 <li><strong>Start</strong>: {{ startdate }}</li>
                 <li><strong>End</strong>: {{ enddate }}</li>
@@ -81,6 +81,9 @@
                     fieldSelected: '',
                     harvestlog: [],
                     state: "default",
+                    farm: "",
+                    user: "",
+                    language: "",
                 },
                 methods: {
                     changeState: function(newState) {
@@ -89,6 +92,9 @@
 
                     updateLog: function() {
                         this.harvestlog.push({date: "05/01/2018", area: "Orion-3", crop: "Kale", yield: 10, units: "bunches"});
+                        this.farm = "Sample Farm";
+                        this.user = "manager1";
+                        this.language = "English";
                     },
 
                 },
