@@ -107,9 +107,19 @@
             },
             methods: {
                 addLog: function() {
-                    this.farm = "Sample Farm"
-                    this.user = "manager1"
-                    this.language = "English"
+                    axios.get('http://localhost/farm.json')
+                        .then((response) => {
+                            console.log("Got Response");
+                            console.log(response);
+                            res = response.data;
+                            this.farm = res.name;
+                            this.user = res.user.name;
+                            this.language = res.languages.en.name; 
+                        })
+                        .catch((error) => {
+                            console.log("Error Occurred");
+                            console.log(error);
+                        }) 
 
                     const n = this.logs.length;
                     if (n == 0){
