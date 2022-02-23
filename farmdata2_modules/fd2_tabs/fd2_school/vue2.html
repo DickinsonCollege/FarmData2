@@ -38,7 +38,7 @@
 		<br>	
 		<br>
 
-		<button v-model="table1" class="btn btn-primary" @click="generateReport">Generate Report</button>
+		<button  class="btn btn-primary" @click="generateReport">Generate Report</button>
 
 			
 		<hr>
@@ -114,7 +114,10 @@
 			table1: [
 
 								
-				]
+				],
+			row: {
+				date: '2018-05-01', field: 'Orion', crop: 'Kale', yield: '12', units: 'Bunches'
+				}
 
                 },
 		methods: {
@@ -124,12 +127,13 @@
 				this.newItem = '';
 				}
 			},
-				
-			generateReport: function() {
-				this.table1.push(this.date:'2018-05-01', this.area:'Orion-3',this.crop:'Kale',this.yield:'12',this.units:'Bunches');
+
+			 generateReport: function() {
+                                this.table1.push(this.row);
 
 
-			}
+                        }
+		}
         });
 	Vue.config.devtools = true;
 
