@@ -20,8 +20,8 @@
 		<br>
 
 		<label for="name">Name:</label>
-		<input v-model="newItem" type="text" placeholder="Enter Your Name" id="name"  @keyup.enter="names.push(newItem)">
-		<button class="btn btn-primary" @click="names.push(newItem)">Add Name</button> 
+		<input v-model="newItem" type="text" placeholder="Enter Your Name" id="name"  @keyup.enter="saveName">
+		<button class="btn btn-primary" @click="saveName">Add Name</button> 
 
 		<br>
 	
@@ -38,7 +38,7 @@
 		<br>	
 		<br>
 
-		<button v-model="table1" class="btn btn-primary" @click="table1.push(date='2018-05-01',area='Orion-3',crop='Kale',yield='12',units='Bunches')" >Generate Report</button>
+		<button v-model="table1" class="btn btn-primary" @click="generateReport">Generate Report</button>
 
 			
 		<hr>
@@ -112,12 +112,24 @@
 					],
 
 			table1: [
-				
-				
 
+								
 				]
 
-                }
+                },
+		methods: {
+			saveName: function() {
+			    if (this.newItem != '') {
+				this.names.push(this.newItem);
+				this.newItem = '';
+				}
+			},
+				
+			generateReport: function() {
+				this.table1.push(this.date:'2018-05-01', this.area:'Orion-3',this.crop:'Kale',this.yield:'12',this.units:'Bunches');
+
+
+			}
         });
 	Vue.config.devtools = true;
 
@@ -125,5 +137,6 @@
 
     </body>
 </html>
+
 
 
