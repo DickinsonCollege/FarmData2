@@ -22,7 +22,9 @@
         <option v-for='fieldOpt in fields'>{{ fieldOpt }}</option> 
     </select>
     <br><br>
-    <input type='button' value='Generate Report'>
+    <div class='generate-report-form'>
+        <button class='btn btn-primary' @click='repInput.harvestLogs.push({date: "2018-05-01", area: "Orion-3", crop: "Kale", yield: 12, units: "Bunches" })'>Generate Report</button>
+    </div>
     <hr>
 
     <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
@@ -74,8 +76,6 @@
                 'SQ7'
             ],  
             harvestLogs: [
-                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: 10, units: 'Bunches'},
-                {date: '2018-05-05', area: 'SQ7', crop: 'Kale', yield: 7, units: 'Bunches'}
             ] 
         }
     });
