@@ -40,13 +40,15 @@
     <br><br>
     <table border=1>
       <tr>
+        <td><strong>Row</strong></td>
         <td><strong>Date</strong></td>
         <td><strong>Area</strong></td>
         <td><strong>Crop</strong></td>
         <td><strong>Yield</strong></td>
         <td><strong>Units</strong></td>
       </tr>
-      <tr v-for='log in harvestLogs'>
+      <tr v-for='(log,index) in harvestLogs'>
+        <td>{{ index }}</td>
         <td>{{ log.date }}</td>
         <td>{{ log.area }}</td>
         <td>{{ log.crop }}</td>
