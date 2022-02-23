@@ -1,0 +1,84 @@
+<h1>Harvest Report</h1>
+<p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+<label for='Title'>Title:</label>
+<div id='repInputID' v-cloak>
+    <input type='text' v-model='header'>
+    <br><br>
+    <label for='Start'>Start:</label>
+    <input type='date' id='start' name='start'
+        min='2014-01-01' max='2022-01-01'
+        v-model='startDate'>
+    <label for='End'>End:</label>
+    <input type='date' id='end' name='end'
+        min='2020-05-05' max='2022-01-01'
+        v-model='endDate'>
+    <br><br>
+    <label for='Crop'>Crop:</label>
+    <select id='Crop' name='Crop' v-model='crop'>
+        <option v-for='cropOpt in crops'>{{ cropOpt }}</option> 
+    </select>
+    <label for='Field'>Field:</label>
+    <select id='Field' name='Field'>
+        <option v-for='fieldOpt in fields'>{{ fieldOpt }}</option> 
+    </select>
+    <br><br>
+    <input type='button' value='Generate Report'>
+    <hr>
+
+    <h1>{{ header ? header : 'Mock Harvest Report' }}</h1>
+
+    <p>Details:</p>
+    <ul>
+        <li><strong>Farm:</strong>Sample Farm</li>
+        <li><strong>User:</strong>manager1</li>
+        <li><strong>Language:</strong>English</li>
+        <br>
+        <li><strong>Start:</strong>{{ startDate }}</li>
+        <li><strong>End:</strong>{{ endDate }}</li>
+        <li><strong>Crop:</strong>{{ crop }}</li>
+    </ul>
+    <br><br>
+    <table border=1>
+      <tr>
+        <td><strong>Date</strong></td>
+        <td><strong>Area</strong></td>
+        <td><strong>Crop</strong></td>
+        <td><strong>Yield</strong></td>
+        <td><strong>Units</strong></td>
+      </tr>
+      <tr v-for='log in harvestLogs'>
+        <td>{{ log.date }}</td>
+        <td>{{ log.area }}</td>
+        <td>{{ log.crop }}</td>
+        <td>{{ log.yield }}</td>
+        <td>{{ log.units }}</td> 
+      </tr> 
+    </table>
+</div>
+<script>
+    var repInput = new Vue ({
+        el: '#repInputID',
+        data: {
+            header: null, 
+            startDate: '2018-05-05', 
+            endDate: '2018-05-15',
+            crop: 'Kale', 
+            crops: [
+                'Peas',
+                'Kale',
+                'Broccoli'
+            ],
+            fields: [
+                'All',
+                'Chuau-1',
+                'SQ7'
+            ],  
+            harvestLogs: [
+                {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: 10, units: 'Bunches'},
+                {date: '2018-05-05', area: 'SQ7', crop: 'Kale', yield: 7, units: 'Bunches'}
+            ] 
+        }
+    });
+    Vue.config.devtools = true;
+</script>
+
