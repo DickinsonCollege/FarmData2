@@ -1,120 +1,120 @@
-<html>
-    <head>
-        <title>My Sample Harvest Report</title>
-    </head>
-    <body>
-        <div id="reportTitle" v-cloak>
+<body>
+    <div id="reportTitle" v-cloak>
+    
+
+        <h1>Harvest Report</h1>
+        <p>This page is a <i>mockup</i> of a simplified harvest report</p>
+
+        <label>Title:<input type= 'text' v-model='header'></label>
+
+        
+
+        <br>
+
+        <form>
+         <label>Start:
+                <input type="date" name="date" min="2014-01-01" max="2022-01-01">
+            </label>
+
+
+
+            <label>End:
+            <input type="date" name="date" min="2020-05-05"        max="2022-01-01">
+            </label>
+        </form>
+
+        <br>
+
+        <label>Crop:<select id="Crop" name="Crop">
+        <option>Broccoli</option>
+        <option selected>Kale</option>
+        <option>Peas</option>
+        </select></label>
+
+        <label>Field:<select id="Field" name="Field">
+        <option>Chuau-1</option>
+        <option selected>All</option>
+        <option>SQ7</option>
+        </select>
+        </label>
+
+        <br>
+
+
+        <button type="button">
+        Generate Report
+        </button>
+
+        <hr>
+
             <h1>{{ header }}</h1>
-            <input type= 'text' v-model='header'>
-        </div>
+            
+
+        <p>Details:</p>
+        <ul>
+        <li><strong>Farm:</strong> Sample Farm</li>
+        <li><strong>User:</strong> manager1</li>
+        <li><strong>Language:</strong> English</li>
+        </ul>
+
+        <br>
+        <ul>
+        <li><strong>Start:</strong> 05/01/2018</li>
+        <li><strong>End:</strong> 05/15/2018</li>
+        <li><strong>Crop:</strong> Kale</li>
+        </ul>
+
+        <br>
+
+        <table border=1>
+            <tr>
+                <th>Date</th>
+                <th>Area</th>
+                <th>Crop</th>
+                <th>Yield</th>
+                <th>Unit</th>
+            </tr>
+
+            <tr>
+                <td>05/02/2018</td>
+                <td>Chuau-1</td>
+                <td>Kale</td>
+                <td>10</td>
+                <td>Bunches</td>
+            </tr>
+
+            <tr>
+                <td>05/03/2018</td>
+                <td>SO7</td>
+                <td>Kale</td>
+                <td>7</td>
+                <td>Bunches</td>
+            </tr>
+
+            <tr>
+                <td>05/04/2018</td>
+                <td>B</td>
+                <td>Kale</td>
+                <td>5</td>
+                <td>Bunches</td>
+            </tr>
+        
+            <tr>
+                <td>05/05/2018</td>
+                <td>A</td>
+                <td>Kale</td>
+                <td>15</td>
+                <td>Bunches</td>
+            </tr>
+        </table>
+
         <script>
-            let spike = new Vue ({
+            var reportTitle = new Vue ({
                 el: '#reportTitle',
                 data: {
                     header: 'My Sample Harvest Report',
                 },
             })
         </script>
-    </body>
-</html>
-
-<h1>Harvest Report</h1>
-<p>This page is a <i>mockup</i> of a simplified harvest report</p>
-
-<label>Title:<input type="text" id="Title" name="comment" value="My Sample Harvest Report"></label>
-
-<br>
-
-<form>
-  <label>Start:
-    <input type="date" name="date" min="2014-01-01" max="2022-01-01">
-  </label>
-
-
-
-  <label>End:
-    <input type="date" name="date" min="2020-05-05" max="2022-01-01">
-  </label>
-</form>
-
-<br>
-
-<label>Crop:<select id="Crop" name="Crop">
-  <option>Broccoli</option>
-  <option selected>Kale</option>
-  <option>Peas</option>
-</select></label>
-
-<label>Field:<select id="Field" name="Field">
-  <option>Chuau-1</option>
-  <option selected>All</option>
-  <option>SQ7</option>
-</select>
-</label>
-
-<br>
-
-
-<button type="button">
-    Generate Report
-</button>
-
-<hr>
-
-<h1>My Sample Harvest Report</h1>
-
-<p>Details:</p>
-<ul>
-  <li><strong>Farm:</strong> Sample Farm</li>
-  <li><strong>User:</strong> manager1</li>
-  <li><strong>Language:</strong> English</li>
-</ul>
-
-<br>
-<ul>
-  <li><strong>Start:</strong> 05/01/2018</li>
-  <li><strong>End:</strong> 05/15/2018</li>
-  <li><strong>Crop:</strong> Kale</li>
-</ul>
-
-<br>
-
-<table border=1>
-  <tr>
-    <th>Date</th>
-    <th>Area</th>
-    <th>Crop</th>
-    <th>Yield</th>
-    <th>Unit</th>
-  </tr>
-  <tr>
-    <td>05/02/2018</td>
-    <td>Chuau-1</td>
-    <td>Kale</td>
-    <td>10</td>
-    <td>Bunches</td>
-  </tr>
-  <tr>
-    <td>05/03/2018</td>
-    <td>SO7</td>
-    <td>Kale</td>
-    <td>7</td>
-    <td>Bunches</td>
-  </tr>
-  <tr>
-    <td>05/04/2018</td>
-    <td>B</td>
-    <td>Kale</td>
-    <td>5</td>
-    <td>Bunches</td>
-  </tr>
-  <tr>
-    <td>05/05/2018</td>
-    <td>A</td>
-    <td>Kale</td>
-    <td>15</td>
-    <td>Bunches</td>
-  </tr>
-</table>
-
-
+    </div>
+</body>
