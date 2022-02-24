@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<div id="vue-tab">
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>My test page</title>
+    </head>
+    <body>
+        <h1>Harvest Report</h1>
+        <p>This page is a <i>mockup</i> of a simplified harvest report</p>
+        <label for="title">Title:</label>
+        <input type="text" v-model="reportTitle" value=""/>
+        
+        <br/>
+        <br/>
+        <label for="start">Start Date</label>
+        <input type="date" id="start" value="2020-05-05" min="2014-01-01" max="2022-01-01">
+        <label for="end">End Date</label>
+        <input type="date" id="end" value="2020-05-15" min="2020-05-05" max="2022-01-01">
+
+        <br/>
+        <br/>
+                
+        <label for="crop">Crop</label>
+
+        <select id="crop" name="crop">
+            <option v-for="crop in crops">{{crop}}</option>
+        </select>
+        
+        <label for="field">Field</label>
+
+        <select id="field" name="field">
+            <option v-for="field in fields">{{field}}</option>
+        </select>
+        
+        <br />
+        <br />
+
+        <button @click="addHarvestLog">Generate Report</button>
+        <hr>
+        <div id="report-Title">
+            <h1>{{ reportTitle ? reportTitle : "Mock Harvest Report"}}</h1>
+        </div>
+        <p>Details:</p>
+        <ul>
+            <li><strong>Farm</strong>:Sample Farm</li>
+            <li><strong>User</strong>:manager1</li>
+            <li><strong>Language</strong>:English</li>
+        </ul>
+        <br>
+        <ul>
+            <li v-bind:max="reportEndDate" v-model="reportStartDate"><strong>Start</strong>:{{reportStartDate}}</li>
+            <li v-bind:min="reportStartDate" v-model="reportEndDate"><strong>End</strong>:{{reportEndDate}}</li>
+            <li v-model="reportCrop"><strong>Crop</strong>:{{reportCrop}}</li>
+        </ul>
+        
+
+        <table border=1>
+            <tr v-if="harvestLogs.length !== 0">
+                <th>Row</th>
+                <th>Date</th>
+                <th>Area</th>
+                <th>Crop</th>
+                <th>Yield</th>
+                <th>Units</th>
+            </tr>
+            <tr v-for="(log, index) in harvestLogs">
+                <td>{{index + 1}}</td>
+                <td>{{log.date}}</td>
+                <td>{{log.area}}</td>
+                <td>{{log.crop}}</td>
+                <td>{{log.yield}}</td>
+                <td>{{log.units}}</td>
+
+            </tr>
+        </table>
+        <h1 v-if="harvestLogs.length === 0">No matching records</h1>
+
+    </body>
+</html>
+</div>
+
+<script>
+            var data = new Vue({
+                el: "#vue-tab",
+                data: {
+                    reportTitle: "My Sample Harvest Report",
+                    reportStartDate: "05/01/2018",
+                    reportEndDate: "05/18/2018",
+                    reportCrop: "Kale",
+                    fields: ["All", "Chuau-1", "SQ7"],
+                    crops: ["Broccoli", "Kale", "Peas"],
+                    newItem: {date: '05/01/2018', area: 'Orion-3', crop: 'Kale', yield: '12', units: 'bunches'},
+                    harvestLogs: []
+                },
+                methods: {
+                    addHarvestLog: function() {
+                        this.harvestLogs.push(this.newItem)
+                    }
+                }
+            });
+            Vue.config.devtools = true;
+</script>
