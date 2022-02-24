@@ -32,7 +32,7 @@
         <label for="field">Field</label>
 
         <select id="field" name="field">
-            <option v-for="field in fields">{{field}}</option>
+            <option v-for="field in areasData">{{field}}</option>
         </select>
         
         <br />
@@ -92,6 +92,15 @@
                     getIDToCropMap()
                     .then((theMap) => {
                         this.idToCropMap = theMap
+                        console.log("Worl")
+                    })
+                    .catch((err) => {
+                        console.log("Error occurred")
+                    }),
+
+                    getIDToAreaMap()
+                    .then((theMap) => {
+                        this.idToAreaMap = theMap
                     })
                     .catch((err) => {
                         console.log("Error occurred")
@@ -109,12 +118,16 @@
                     farm: "",
                     user: "",
                     language: "",
-                    idToCropMap: []
+                    idToCropMap: [],
+                    idToAreaMap: []
                 },
 
                 computed: {
                     cropsData() {
                         return this.idToCropMap.values()
+                    },
+                    areasData() {
+                        return this.idToAreaMap.values()
                     }
                 },
 
