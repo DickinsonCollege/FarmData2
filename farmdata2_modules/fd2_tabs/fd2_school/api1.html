@@ -38,16 +38,17 @@
         <br />
         <br />
 
-        <button @click="addHarvestLog">Generate Report</button>
+        <button @click="changeValue">Generate Report</button>
+
         <hr>
         <div id="report-Title">
             <h1>{{ reportTitle ? reportTitle : "Mock Harvest Report"}}</h1>
         </div>
         <p>Details:</p>
         <ul>
-            <li><strong>Farm</strong>:Sample Farm</li>
-            <li><strong>User</strong>:manager1</li>
-            <li><strong>Language</strong>:English</li>
+            <li v-model="farm"><strong>Farm</strong>:{{farm}}</li>
+            <li v-model="user"><strong>User</strong>:{{user}}</li>
+            <li v-model="language"><strong>Language</strong>:{{language}}</li>
         </ul>
         <br>
         <ul>
@@ -93,11 +94,19 @@
                     fields: ["All", "Chuau-1", "SQ7"],
                     crops: ["Broccoli", "Kale", "Peas"],
                     newItem: {date: '05/01/2018', area: 'Orion-3', crop: 'Kale', yield: '12', units: 'bunches'},
-                    harvestLogs: []
+                    harvestLogs: [],
+                    farm: "",
+                    user: "",
+                    language: ""
                 },
                 methods: {
                     addHarvestLog: function() {
                         this.harvestLogs.push(this.newItem)
+                    },
+                    changeValue: function() {
+                        this.farm = "Sample Farm",
+                        this.user = "manager1",
+                        this.language = "English"
                     }
                 }
             });
