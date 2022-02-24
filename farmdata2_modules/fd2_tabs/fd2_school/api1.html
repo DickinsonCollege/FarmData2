@@ -38,7 +38,7 @@
         <br />
         <br />
 
-        <button @click="changeValue">Generate Report</button>
+        <button @click="makeRequest">Generate Report</button>
 
         <hr>
         <div id="report-Title">
@@ -107,6 +107,20 @@
                         this.farm = "Sample Farm",
                         this.user = "manager1",
                         this.language = "English"
+                    },
+                    makeRequest: function() {
+                        axios.get('/farm.json ')  // this line sends the request.
+                            .then((response) => {
+                                console.log(response)
+                                this.farm = response.data.name
+                                this.user = response.data.user.name
+                                this.language = response.data.languages.en.name
+                            })
+                        .catch((error) => {
+                            console.log("Error Occurred")
+                            console.log(error)
+                        })
+                        
                     }
                 }
             });
