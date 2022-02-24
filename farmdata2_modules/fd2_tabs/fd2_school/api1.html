@@ -135,10 +135,32 @@
           // Bound to Generate Report Button. Displays no results at first
           // and then adds one new harvest log row with each click for 3 clicks
 
-          //Details of report
-          this.reportFarm ="Sample Farm"
-          this.reportUser ="manager1"
-          this.reportLanguage ="English"
+          // Call to axios.get function
+          axios.get('/farm.json')  // this line sends the request.
+         .then((response) => {
+	     // A:
+	     // Code here executes when the response is received.
+         // response is an Object created from the “Response Body JSON.
+         console.log("Got Response")
+         console.log(response)
+         //Details of report
+         this.reportFarm = response.data.name
+         this.reportUser = response.data.user.name
+         this.reportLanguage = response.data.languages.en.name
+         })
+         .catch((error) => {
+	     // B: 
+	     // Code here executes if an error occurs processing the request.
+         // error is an Object describing the error that occurred.
+         console.log("Error Occurred")
+         console.log(error)
+
+         })
+         // C: 
+	     // Code here runs immediately after the request is sent,
+         // which will be before the code in the then() or catch() methods.
+         
+         
 
           // First click of Generate Report Button
           if (this.harvestLogs.length == 0 && this.state=='default'){
