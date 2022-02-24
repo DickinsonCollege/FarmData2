@@ -58,9 +58,9 @@
         <p>Details:</p>
         <!--List displaying farm, user, language-->
         <ul>
-          <li><b>Farm: </b>Sample Farm</li>
-          <li><b>User: </b>manager1</li>
-          <li><b>Language: </b>English</li>
+          <li v-model = 'reportFarm'><b>Farm: </b>{{reportFarm}}</li>
+          <li v-model = 'reportUser'><b>User: </b>{{reportUser}}</li>
+          <li v-model = 'reportLanguage'><b>Language: </b>{{reportLanguage}}</li>
         </ul>
         <!--List displaying start/end date and crop-->
         <!--Text display is bound to choices made above-->
@@ -121,6 +121,9 @@
         reportCrop:'Kale',
         reportCropList:['Broccoli', 'Kale','Peas'],
         reportFieldList:['All','Chuau-1','SQ7'],
+        reportFarm:'',
+        reportUser:'',
+        reportLanguage:'',
         // Harvest log table
         harvestLogs:[],
         newHarvest:'',
@@ -131,6 +134,11 @@
         addHarvest: function(){
           // Bound to Generate Report Button. Displays no results at first
           // and then adds one new harvest log row with each click for 3 clicks
+
+          //Details of report
+          this.reportFarm ="Sample Farm"
+          this.reportUser ="manager1"
+          this.reportLanguage ="English"
 
           // First click of Generate Report Button
           if (this.harvestLogs.length == 0 && this.state=='default'){
