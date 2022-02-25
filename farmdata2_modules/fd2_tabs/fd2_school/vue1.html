@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
-  
+  <div id="harvestReport" style="[v-cloak] {display:none;}">
   <h1>Harvest Report</h1>
   <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
 
-  <label for = "title"> Title:</label>
-  <input type ="text" id = "title" name = "title" value = "My Sample Harvest Report">
-  
-  <br></br>
+  <label for = "reportTitle"> Title:</label>
+  <input type ="text" id = "reportTitle" name = "reportTitle" v-model="header">
 
-  <label for="StartDate">Start:</label>
-  <input type = "Date" id = "StartDate" name = "StartDate" value = "2020-05-05" min="2014-01-01" max="2020-01-01">
-  <label for"EndDate">End:</label>
-  <input type = "Date" id = "EndDate" name = "EndDate" value = "2020-05-15" min="2020-05-05" max="2022-01-01">
+
+
+<br></br>
+
+  <label for="reportStartDate">Start:</label>
+  <input type = "Date" id = "reportStartDate" name = "reportStartDate" value = "2020-05-05" min="2014-01-01" max="2020-01-01">
+  <label for="reportEndDate">End:</label>
+  <input type = "Date" id = "reportEndDate" name = "reportte" value = "2020-05-15" min="2020-05-05" max="2022-01-01">
   
   <br></br>
   
@@ -36,8 +38,8 @@
   <input type="button" value="Generate Report">
 	 
   <hr></hr>
-  
-  <h1>My Sample Harvest Report</h1>
+ 
+  <h1>{{header}}</h1>
 
   <p>Details:</p>
   <ul>
@@ -75,5 +77,16 @@
       <td>Bunches</td>
   </tr>
   </table>
-  
+
+ </div>
+
+<script>
+var title = new Vue({
+	el: '#harvestReport  ',
+	data:{
+	header: 'My Sample Harvest Report'
+}
+});
+</script>
+
 </html>
