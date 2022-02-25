@@ -38,9 +38,9 @@
     <h1 v-if="rows.length != 0">{{title ? title : 'Mock Harvest Report'}}</h1>
     <p>Details:</p>
     <ul>
-    <li><strong>Farm</strong>:Sample Farm</li>
-    <li><strong>User</strong>:manager1</li>
-    <li><strong>Language</strong>:English</li>
+    <li><strong>Farm</strong>:{{Farm}}</li>
+    <li><strong>User</strong>:{{User}}</li>
+    <li><strong>Language</strong>:{{Language}}</li>
     </ul>
 
     <ul>
@@ -68,6 +68,9 @@
 		var test =new Vue({
 			el: "#test", 
 			data: {
+                Farm:"", 
+                User:"", 
+                Language:"",
                 title:"My Sample Harvest Report", 
                 end:'2020-05-15',
                 start:'2020-05-05', 
@@ -90,13 +93,27 @@
             }, 
       methods: {
         generateReport: function() {
+          axios.get('http://localhost/farm.json').then((response) => {
+	console.log("Got Response");
+  console.log(response);
+  this.Farm=response.data.name;
+          this.User=response.data.user.name;
+          this.Language=response.data.languages.en.name;
+
+})
+.catch((error) => {
+	console.log("Error Occurred");
+  console.log(error)
+
+})
           this.rows.push(
             { 'rowNum': this.rowNum,
               'date': this.start, 'area': this.field, 'crop': this.crop, 'yield': '10', 'units': 'Bunches'});
           this.rowNum += 1;
+
         }
       }
 		})
         Vue.config.devtools = true;
 	</script>
-</div>vvvvvv
+</div>
