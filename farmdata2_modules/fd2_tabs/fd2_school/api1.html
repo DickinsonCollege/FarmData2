@@ -31,7 +31,7 @@
     <!--Crop label and dropdown-->
     <label for="Crop">Crop: </label>
     <select id="Crop" v-model = 'reportCrop' name="Crop">
-      <option v-for = "reportCropList in reportCropList">{{reportCropList}}</option>
+      <option v-for = "crop in mapToCropArray">{{crop}}</option>
     </select>
 
     <!--Field label and dropdown -->
@@ -111,6 +111,25 @@
   // New Vue instance named report
   var report = new Vue({
       el: '#report',
+
+      // Created - activates when page is loaded
+      created(){
+        console.log("HarvestReport created!");
+        getIDToCropMap()
+        .then((theMap) => {
+        // Process the map.
+        // Typically it is stored in the Vue data for later use.
+        this.idToCropMap = theMap
+        console.log(theMap)
+        })
+        .catch((err) => {
+        // An error occured during the request, process it here.
+        console.log("An error has occured while mapping ID to crop")
+        })
+        // Execution continues here immediately after the request is made.
+        // Note that the Map will not be available until the then() executes.
+        },
+
       // Setting variable default values
       data:{
         state: 'default',
@@ -119,7 +138,6 @@
         reportStartDate:'2018-05-05',
         reportEndDate:'2018-05-15',
         reportCrop:'Kale',
-        reportCropList:['Broccoli', 'Kale','Peas'],
         reportFieldList:['All','Chuau-1','SQ7'],
         reportFarm:'',
         reportUser:'',
@@ -127,6 +145,13 @@
         // Harvest log table
         harvestLogs:[],
         newHarvest:'',
+        idToCropMap: [],
+      },
+      //Computed Property
+      computed: {
+        mapToCropArray(){
+            return Array.from(this.idToCropMap.values());
+        },
       },
       // Methods
       methods:{
