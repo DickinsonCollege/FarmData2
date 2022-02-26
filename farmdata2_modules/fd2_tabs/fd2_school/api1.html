@@ -17,7 +17,7 @@
     <label for="crop">Crop:</label>
     <select id="crop" name="crop" v-model="crop">
         <option 
-        v-for="crop in crops" 
+        v-for="crop in getCropNames" 
         :selected="option == 'Kale'"
         >{{ crop }}</option>
     </select>
@@ -77,11 +77,6 @@
                 field:'All',
                 crop:'Kale',
                 rowNum:1,
-                crops:[
-                    'Broccoli', 
-                    'Kale', 
-                    'Peas',
-                ], 
                 fields:[
                     'All', 
                     'Chuau-1', 
@@ -89,8 +84,25 @@
                 ], 
                 rows:[
                 
-                ]
+                ], 
+                idToCropMap: []
             }, 
+      computed: {
+        getCropNames(){ 
+          return this.idToCropMap.values();
+      }
+      },
+      created() {
+	console.log("HarvestReport created!"); 
+        getIDToCropMap()
+        .then((theMap) => {
+            this.idToCropMap = theMap;
+        })
+        .catch((err) => {
+            // An error occured during the request, process it here.
+        })
+    },
+
       methods: {
         generateReport: function() {
           axios.get('http://localhost/farm.json').then((response) => {
@@ -111,9 +123,13 @@
               'date': this.start, 'area': this.field, 'crop': this.crop, 'yield': '10', 'units': 'Bunches'});
           this.rowNum += 1;
 
-        }
+        } 
+       
       }
-		})
+    }
+      
+)
+
         Vue.config.devtools = true;
 	</script>
 </div>
