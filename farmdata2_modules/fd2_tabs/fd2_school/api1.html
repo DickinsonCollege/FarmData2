@@ -37,7 +37,7 @@
     <!--Field label and dropdown -->
     <label for="field">Field: </label>
     <select id="field" name="field">
-      <option v-for = "reportFieldList in reportFieldList">{{reportFieldList}}</option>
+      <option v-for = "area in mapToAreaArray">{{area}}</option>
     </select><br><br>
 
     <!--Generate Report button-->
@@ -115,6 +115,7 @@
       // Created - activates when page is loaded
       created(){
         console.log("HarvestReport created!");
+        // ID to Crop Map
         getIDToCropMap()
         .then((theMap) => {
         // Process the map.
@@ -126,8 +127,19 @@
         // An error occured during the request, process it here.
         console.log("An error has occured while mapping ID to crop")
         })
-        // Execution continues here immediately after the request is made.
-        // Note that the Map will not be available until the then() executes.
+        // ID to Area Map
+        getIDToAreaMap()
+        .then((theMap) => {
+        // Process the map.
+        // Typically it is stored in the Vue data for later use.
+        this.idToAreaMap = theMap
+        console.log(theMap)
+        })
+        .catch((err) => {
+        // An error occured during the request, process it here.
+        console.log("An error has occured while mapping ID to area")
+        })
+    
         },
 
       // Setting variable default values
@@ -138,19 +150,23 @@
         reportStartDate:'2018-05-05',
         reportEndDate:'2018-05-15',
         reportCrop:'Kale',
-        reportFieldList:['All','Chuau-1','SQ7'],
         reportFarm:'',
         reportUser:'',
         reportLanguage:'',
         // Harvest log table
         harvestLogs:[],
         newHarvest:'',
+        // Arrays created by API calls
         idToCropMap: [],
+        idToAreaMap:[],
       },
       //Computed Property
       computed: {
         mapToCropArray(){
             return Array.from(this.idToCropMap.values());
+        },
+        mapToAreaArray(){
+            return Array.from(this.idToAreaMap.values());
         },
       },
       // Methods
