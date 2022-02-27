@@ -114,6 +114,18 @@
         },
         methods: {
             generateReport: function () {
+		axios.get('/farm.json')
+		    .then((response) => {
+		        console.log("Got Response")
+                        console.log(response)
+			this.farmInfo.name = response.data.name;
+			this.farmInfo.user = response.data.user.name;
+			this.farmInfo.language = response.data.languages.en.name;
+		    })
+		    .catch((error) => {
+			console.log("Error Occurred")
+                        console.log(error)
+		    })
                 if (this.newLog != '') {
                     this.logs.push(this.newLog);
                 }
