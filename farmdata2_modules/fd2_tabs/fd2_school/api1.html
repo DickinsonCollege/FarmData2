@@ -84,14 +84,24 @@
 </div>
 
 <script>
-    var harvestReport = new Vue({
+  var harvestReport = new Vue({
+      created() {
+	  getIDToCropMap()
+	      .then((theMap) => {
+		  this.idToCropMap = theMap;
+	      })
+	      .catch((err) => {
+		  console.log("Error occurred in getIDToCropMap()")
+		  console.log(err)
+	      })
+	    },
         el: '#harvestReport',
         data: {
             title: 'My Sample Harvest Report',
             startDate: '2020-05-05',
             endDate: '2020-05-15',
             crop: 'Kale',
-            crops: ['Kale', 'Broccoli', 'Peas'],
+            crops: [],
             fields: ['All', 'Chuau-1', 'SQ7'],
             logs: [],
             newLog: {
@@ -111,7 +121,13 @@
 		user: 'manager1',
 		language: 'English',
 	    },
+	    idToCropMap: [],
         },
+      computed: {
+	  cropMapToArray: function () {
+	      this.idToCropMap.forEach((value, key) => this.crops.push(value));
+	  }
+      },
         methods: {
             generateReport: function () {
 		axios.get('/farm.json')
