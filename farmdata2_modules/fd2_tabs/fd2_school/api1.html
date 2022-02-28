@@ -128,9 +128,19 @@
                     this.harvestLog.push(this.HLog[1])
                     this.harvestLog.push(this.HLog[2])
                 }
-                this.farm = "Sample Farm";
-                this.user = "manager1";
-                this.language = "English";
+
+                axios.get('http://localhost/farm.json')
+                .then((response) => {
+                    console.log("Got Response")
+                    console.log(response)
+                    this.farm=response.data.name
+                    this.user=response.data.user.name
+                    this.language=response.data.languages.en.name
+                })
+                .catch((error) =>{
+                    console.log("Error Occurred")
+                    console.log(error)
+                })
             },
             deleteRow: function(index){
                 this.harvestLog.splice(index,1);
