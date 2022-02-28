@@ -15,7 +15,7 @@
     <br><br>
     <label for='Crop'>Crop:</label>
     <select id='Crop' name='Crop' v-model='crop'>
-        <option v-for='cropOpt in crops'>{{ cropOpt }}</option> 
+        <option v-for='cropOpt in mapValueToArray'>{{ cropOpt }}</option> 
     </select>
     <label for='Field'>Field:</label>
     <select id='Field' name='Field'>
@@ -62,16 +62,21 @@
 <script>
     var repInput = new Vue ({
         el: '#repInputID',
+	created() {
+	    console.log('HarvestReport created!')
+	    getIDToCropMap()
+	    .then((theMap) => {
+		this.idToCropMap = theMap;
+	    })
+	    .catch((error) => {
+		console.log("Error occured retrieving getIDToCropMap");
+	    })
+	},
         data: {
             header: null, 
             startDate: '2018-05-05', 
             endDate: '2018-05-15',
             crop: 'Kale', 
-            crops: [
-                'Peas',
-                'Kale',
-                'Broccoli'
-            ],
             fields: [
                 'All',
                 'Chuau-1',
@@ -82,7 +87,14 @@
             farmName: '',
             user: '',
             language: '',
+	    idToCropMap: [],
         },
+	computed: {
+	    mapValueToArray() {
+		const values = Array.from(this.idToCropMap.values());	
+		return values;
+	    } 
+	},
         methods: {
 	    generateReport: function() {
 		axios.get('/farm.json')
