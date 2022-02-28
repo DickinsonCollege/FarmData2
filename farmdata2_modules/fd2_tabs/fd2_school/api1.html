@@ -15,11 +15,11 @@
     <br><br>
     <label for='Crop'>Crop:</label>
     <select id='Crop' name='Crop' v-model='crop'>
-        <option v-for='cropOpt in mapValueToArray'>{{ cropOpt }}</option> 
+        <option v-for='cropOpt in cropMapValueToArray'>{{ cropOpt }}</option> 
     </select>
     <label for='Field'>Field:</label>
     <select id='Field' name='Field'>
-        <option v-for='fieldOpt in fields'>{{ fieldOpt }}</option> 
+        <option v-for='fieldOpt in areaMapValueToArray'>{{ fieldOpt }}</option> 
     </select>
     <br><br>
     <button class='btn btn-primary' @click='generateReport' v-bind:disabled='startDate > endDate' :disabled='endDate < startDate'>Generate Report</button>
@@ -69,8 +69,15 @@
 		this.idToCropMap = theMap;
 	    })
 	    .catch((error) => {
-		console.log("Error occured retrieving getIDToCropMap");
+		console.log("Error occurred retrieving getIDToCropMap");
 	    })
+	    getIDToAreaMap()
+	    .then((theMap2) => {
+		this.idToAreaMap = theMap2;
+	    })
+	    .catch((error) => {
+		console.log("Error occurred retrieving getIDToAreaMap");
+	    }) 
 	},
         data: {
             header: null, 
@@ -88,12 +95,16 @@
             user: '',
             language: '',
 	    idToCropMap: [],
+	    idToAreaMap: [],
         },
 	computed: {
-	    mapValueToArray() {
+	    cropMapValueToArray() {
 		const values = Array.from(this.idToCropMap.values());	
 		return values;
-	    } 
+	    },
+	    areaMapValueToArray() {
+		return Array.from(this.idToAreaMap.values()); 
+	    }
 	},
         methods: {
 	    generateReport: function() {
