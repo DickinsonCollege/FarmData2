@@ -31,10 +31,12 @@
       <br>
       <label for="crop">Crop:</label>
       <select id="crop" name="crop" v-model="crop">
-        <option
+        <!-- <option
           v-for="crop in crops":selected="option == 'Kale'">
           {{crop}}
-        </option>
+        </option> -->
+    
+      <option v-for="item in mapToCrop"> {{item}}</option>
       </select>
 
       <label for="Area">Area:</label>
@@ -49,7 +51,10 @@
       <!-- Generate Button starts -->
       <button type="button" class="btn btn-primary" @click="generateButton" id="generate-report">Generate Report</button>
 
-      <!-- Here is the second h -->
+      <!-- Here is the second half
+    
+        SECOND HALF
+    -->
       <hr>
       <h1>{{ header==('') ? "Mock Harvest Report": header}}</h1>
    
@@ -103,9 +108,12 @@
           startdateinput: "05-01-2018",
           enddateinput:"05-15-2018",
           crop:"Kale",
-          crops:[
-            'Broccoli','Kale','Peas',
-          ],
+        //   crops:[
+        //     'Broccoli','Kale','Peas',
+        //   ],
+          idToCropMap: [],
+          
+        
           area:"All",
           areas:[
             'All', 'Chuau-1','SQ7',
@@ -120,6 +128,12 @@
         {Row:"3",Date: '11/02/2018', Area: 'SQ7', Crop:'Peas', Yield: '11', Unit: 'Bunches'}
         ]
         },
+
+        computed: {
+              mapToCrop: function(){
+                  return this.idToCropMap.values()
+              }
+          },
         
         methods:{
             generateButton: function(){
@@ -128,7 +142,7 @@
                     this.harvestLog.push(this.HLog[1])
                     this.harvestLog.push(this.HLog[2])
                 }
-
+                //make the button reponse for API
                 axios.get('http://localhost/farm.json') 
                 .then((response) => {
                     console.log("Got Response")
@@ -145,7 +159,22 @@
             deleteRow: function(index){
                 this.harvestLog.splice(index,1);
             }
-        }
+        },
+        
+        created() {
+            //Make a dropdown for crop
+             getIDToCropMap()
+                .then((theMap) => {
+                    // Process the map.
+                    this.idToCropMap=theMap
+                })
+                .catch((err) => {
+                    // An error occured during the request, process it here.
+                    console.log("An error occurred -- IDToCropMap.")
+                    console.log(err)
+                })
+            console.log("HarvestReport created!")
+        }    
       });
       Vue.config.devtools = true;
     </script>
