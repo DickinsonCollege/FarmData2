@@ -29,9 +29,9 @@
 
     <p>Details:</p>
     <ul>
-        <li><strong>Farm:</strong>Sample Farm</li>
-        <li><strong>User:</strong>manager1</li>
-        <li><strong>Language:</strong>English</li>
+        <li><strong>Farm:</strong>{{ farmName }}</li>
+        <li><strong>User:</strong>{{ user }}</li>
+        <li><strong>Language:</strong>{{ language }}</li>
         <br>
         <li><strong>Start:</strong>{{ startDate }}</li>
         <li><strong>End:</strong>{{ endDate }}</li>
@@ -79,10 +79,16 @@
             ],  
             harvestLogs: [
             ], 
+            farmName: '',
+            user: '',
+            language: '',
         },
         methods: {
 	    generateReport: function() {
 		this.harvestLogs.push({date: "2018-05-01", area: "Orion-3", crop: "Kale", yield: "12", units: "Bunches"});
+		this.farmName = 'Sample Farm';
+		this.user = 'manager1';
+		this.language = 'English';
 	    },
 	},
 
