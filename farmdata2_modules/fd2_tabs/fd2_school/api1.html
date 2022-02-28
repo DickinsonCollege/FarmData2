@@ -85,10 +85,20 @@
         },
         methods: {
 	    generateReport: function() {
+		axios.get('/farm.json')
+		.then((response) => {
+			console.log('Got response');
+			console.log(response);
+			this.farmName = response.data.name;
+			this.user = response.data.user.name;
+			this.language = response.data.languages.en.name;	
+		})
+		.catch((error) => {
+			console.log('Error occured');
+			console.log(error);
+		})
+
 		this.harvestLogs.push({date: "2018-05-01", area: "Orion-3", crop: "Kale", yield: "12", units: "Bunches"});
-		this.farmName = 'Sample Farm';
-		this.user = 'manager1';
-		this.language = 'English';
 	    },
 	},
 
