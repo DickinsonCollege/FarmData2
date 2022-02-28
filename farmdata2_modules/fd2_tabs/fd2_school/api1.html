@@ -55,9 +55,9 @@
    
       <p>Details:
       <ul>
-      <li><strong>Farm</strong>:Sample Farm</li>
-      <li><strong>User</strong>:Manager1</li>
-      <li><strong>Language</strong>:English</li>
+      <li><strong>Farm: </strong> {{farm}}</li>
+      <li><strong>User: </strong> {{user}}</li>
+      <li> <strong>Language: </strong> {{language}}</li>
       <br>
       <li><strong>Start: </strong>{{ startdateinput }}</li>
       <li><strong>End: </strong>{{enddateinput}}</li>
@@ -111,7 +111,9 @@
             'All', 'Chuau-1','SQ7',
           ],
           harvestLog:[],
-		
+          farm: "",
+          user: "",
+          language: "",
           
           HLog:[ {Row:"1",Date: '05/01/2018', Area: 'Orion-3', Crop:'Kale', Yield: '12', Unit: 'Bunches'},
         {Row:"2",Date: '09/02/2018', Area: 'All', Crop:'Broccoli', Yield: '5', Unit: 'Bunches'},
@@ -126,6 +128,9 @@
                     this.harvestLog.push(this.HLog[1])
                     this.harvestLog.push(this.HLog[2])
                 }
+                this.farm = "Sample Farm";
+                this.user = "manager1";
+                this.language = "English";
             },
             deleteRow: function(index){
                 this.harvestLog.splice(index,1);
