@@ -1,0 +1,138 @@
+<html>
+ 
+
+<body>
+
+  <h1>Harvest Report</h1>
+    <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+
+    <!-- Start div -->
+    <div id='title1' v-cloak>
+      <label for="title">Title:</label>
+      <input type="text" v-model="header" id='title1' name='title1'>
+
+
+      <br>
+      <br>
+      <!-- Start date and end date starts here -->
+      <label for="start">Start:</label>
+      <input type="date" id="startdate" name="startdate"
+      min="2014-01-01" :max="enddateinput" v-model="startdateinput">
+
+      <label for="end">End:</label>
+
+      <input type="date" id="enddate" name="enddate"
+      value="2020-05-15"
+      min="startdateinput" max="2022-01-01" v-model="enddateinput">
+
+
+
+      <br>
+      <br>
+      <label for="crop">Crop:</label>
+      <select id="crop" name="crop" v-model="crop">
+        <option
+          v-for="crop in crops":selected="option == 'Kale'">
+          {{crop}}
+        </option>
+      </select>
+
+      <label for="Area">Area:</label>
+      <select id="area" name="area" v-model="area">
+
+      <option v-for="area in areas":selected="option == 'All'">
+          {{area}}</option>
+      </select>
+
+      <br>
+      <br>
+      <!-- Generate Button starts -->
+      <button type="button" class="btn btn-primary" @click="generateButton" id="generate-report">Generate Report</button>
+
+      <!-- Here is the second h -->
+      <hr>
+      <h1>{{ header==('') ? "Mock Harvest Report": header}}</h1>
+   
+      <p>Details:
+      <ul>
+      <li><strong>Farm</strong>:Sample Farm</li>
+      <li><strong>User</strong>:Manager1</li>
+      <li><strong>Language</strong>:English</li>
+      <br>
+      <li><strong>Start: </strong>{{ startdateinput }}</li>
+      <li><strong>End: </strong>{{enddateinput}}</li>
+      <li><strong>Crop:</strong>{{crop}}</li>
+      <li><strong>Area:</strong>{{area}}</li></ul>
+
+      <p v-if="harvestLog.length == 0">No matching records</p>
+      <table border="1" v-else>
+      <tr>
+      <th>Row</th>
+      <th>Date</th>
+      <th>Area</th>
+      <th>Crop</th>
+      <th>Yield</th>
+      <th>Units</th>
+      <th>Delete</th>
+      </tr>
+      <tr v-for="(log,index) in harvestLog">
+		<td>{{log.Row}}</td>
+        <td>{{log.Date}}</td>
+		
+        <td>{{log.Area}}</td>
+		
+        <td>{{log.Crop}}</td>
+		
+        <td>{{log.Yield}}</td>
+        <td>{{log.Unit}} </td>
+    
+        <td><button type="button"  @click="deleteRow(index)">Delete </button></td>
+		
+  </tr>
+
+      </table>
+      </div>
+      </p>
+   
+  <script src="https://unpkg.com/vue@2"></script>
+  <script>
+      var spikeTest = new Vue({
+        el: '#title1',
+        data:{
+          header:'My Sample Harvest Report',
+          startdateinput: "05-01-2018",
+          enddateinput:"05-15-2018",
+          crop:"Kale",
+          crops:[
+            'Broccoli','Kale','Peas',
+          ],
+          area:"All",
+          areas:[
+            'All', 'Chuau-1','SQ7',
+          ],
+          harvestLog:[],
+		
+          
+          HLog:[ {Row:"1",Date: '05/01/2018', Area: 'Orion-3', Crop:'Kale', Yield: '12', Unit: 'Bunches'},
+        {Row:"2",Date: '09/02/2018', Area: 'All', Crop:'Broccoli', Yield: '5', Unit: 'Bunches'},
+        {Row:"3",Date: '11/02/2018', Area: 'SQ7', Crop:'Peas', Yield: '11', Unit: 'Bunches'}
+        ]
+        },
+        
+        methods:{
+            generateButton: function(){
+                if(this.harvestLog.length < 100){
+                    this.harvestLog.push(this.HLog[0])
+                    this.harvestLog.push(this.HLog[1])
+                    this.harvestLog.push(this.HLog[2])
+                }
+            },
+            deleteRow: function(index){
+                this.harvestLog.splice(index,1);
+            }
+        }
+      });
+      Vue.config.devtools = true;
+    </script>
+</body>
+</html>
