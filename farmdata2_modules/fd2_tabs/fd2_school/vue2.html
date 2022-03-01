@@ -11,17 +11,17 @@
     <br>
 
     </br>
-    <label for= "start-date">Start:</label>
-    <input v-model="start-date" type = "date" min="2014-01-01" max="2022-01-01">
+    <label for= "startDate">Start:</label>
+    <input v-model="startDate" type = "date" min="2014-01-01" max="2022-01-01">
 
-    <label for = "end-date"> End: </label>
-    <input v-model="end-date" type = "date" min ="2014-01-01" max ="2022-01-02">
+    <label for = "endDate"> End: </label>
+    <input v-model="endDate" type = "date" min ="2014-01-01" max ="2022-01-02">
     <br>
 
     </br>
 
         <label for ="crops"> Crop:</label>
-        <select v-model= "crops-select" name = "crops">
+        <select v-model= "cropSelect" name = "crops">
             <option v-for = "crops"></option>
             <option> Broccoli</option>
             <option> Peas</option>
@@ -29,7 +29,7 @@
         </select>
 
         <label for ="fields"> Area:</label>
-        <select v-model= "fields-select" name = "fields">
+        <select v-model= "fieldSelect" name = "fields">
             <option v-for = "fields"></option>
             <option> Chuau-1</option>
             <option> SQ7</option>
@@ -49,5 +49,17 @@
     </ul>
 
 </div>
+    <script>
+    var harvest-report = new Vue ({
+        el: '#harvestReport',
+        data: {
+        header: '',
+        startDate: '2020-05-05',
+        endDate: '2020-05-15',
+        cropSelect: 'Kale',
+        fieldSelect: 'All',
+        }}
+    );
+</script>
 </body>
 </html>
