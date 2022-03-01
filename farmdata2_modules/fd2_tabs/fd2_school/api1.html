@@ -95,6 +95,7 @@
            var ReportVue= new Vue({
                 el:"#rpt",
                 data:{
+                    Response:null,
                     header:'My Sample Harvest Report',
 
                     startDay: "2018-05-01",
@@ -118,20 +119,28 @@
                     ],
                     Farm:"",
                     User:"",
-                    Language:"",
+                    Language:""
+                    
                 },
                 
                 methods: {
                     saveLog: function () {
+                        axios
+                            .get('http://localhost/farm.json')
+                            .then(response => {
+                                    console.log("Got Response")
+                                    console.log(response)
+                                    this.Farm = response.data.name;
+                                    this.User = response.data.user.name;
+                                    this.Language = response.data.languages.en.name;
+                                })
+                            .catch(error => {
+                                	console.log("Error Occurred")
+	                                // console.log(error)
+                                })
                         if(this.ANewLog !== {}){
-                            // if(sampleLog.indexOf(this.ANewLog) === -1){
-                                this.sampleLog.push(this.ANewLog);
-                                // this.ANewLog = {};
-                            // }
+                            this.sampleLog.push(this.ANewLog);
                         } 
-                        this.Farm = "Sample Farm";
-                        this.User = "manager1";
-                        this.Language = "English";
                         
                     },
                 },
