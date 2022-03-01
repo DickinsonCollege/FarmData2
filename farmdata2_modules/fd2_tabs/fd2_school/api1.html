@@ -31,14 +31,14 @@
         <label for="date">End: </label>
         <input type="date" id="end" class = "date" name="end" :min="start" max="2025-12-31" v-model="end">
         <br><br>
-
+        <!-- crop starts here-->
         <label for="crop">Crop: </label>
             <select id="crop-01" name="crop-01" v-model="crop">
-                <option
-                v-for="crop in crops":selected="option == 'Kale'">
-                {{crop}}
-                </option>
+                <option v-for="item in apiCrop"> {{item}}</option>
+
             </select>
+
+        <!--area starts here-->
         <label for="area">Area: </label>
           <select id="area" name="area" v-model="area">
 
@@ -92,7 +92,7 @@ Details:
 
 
 
-<script src="https://unpkg.com/vue@2"></script> <!--necessary needed as stated from our document Q02. -->
+<script src="https://unpkg.com/vue@2"></script> <!--necessarily needed as stated from our document Q02. -->
 <script>
 
 var harvestReport = new Vue({
@@ -102,7 +102,9 @@ var harvestReport = new Vue({
         start:"2018-05-01",
         end:"2018-05-015",
         crop: "Kale",
-        crops:['Kale','Broccoli','Peas'],
+        //crops:['Kale','Broccoli','Peas'],
+        idToCropMap: [],
+
         area: 'ALL',
         areas:['ALL', 'Chuau-1', 'SQ7'],
         harvestLog:[],
@@ -115,6 +117,12 @@ var harvestReport = new Vue({
         {Date: '04/06/2001', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
         ]
         },
+        
+        computed: {
+            apiCrop: function(){
+                return this.idToCropMap.values()
+              }
+          },
 
         methods:{
             generateButton: function(){
@@ -145,7 +153,22 @@ var harvestReport = new Vue({
             deleteTuple: function(index){
                 this.harvestLog.splice(index,1);
             }
-        }
+        }, 
+
+        created() {
+             getIDToCropMap()
+                .then((theMap) => {
+                
+                    this.idToCropMap=theMap
+                })
+                .catch((err) => {
+                    console.log("mapping ID to crop failed!.")
+                    console.log(err)
+                })
+            console.log("HarvestReport created!")
+        }    
+
+        
     });
 
 Vue.config.devtools = true;
