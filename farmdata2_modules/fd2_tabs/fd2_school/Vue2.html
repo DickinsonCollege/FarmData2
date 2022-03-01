@@ -70,7 +70,7 @@
             <li v-for="card in cards">{{ card.rank + ' of ' + card.suit }}</li>
         </ul>
 
-        <button type="button" v-on:click="logObj.push(logObj1)">
+        <button type="button" v-on:click="generate">
             Generate
         </button>
 
@@ -125,6 +125,11 @@
 
             logObj: [ ]
 
+            },
+            methods: {
+                generate: function() {
+                    this.logObj.push(this.logObj1)
+                }
             }
         });
         Vue.config.devtools = true;
