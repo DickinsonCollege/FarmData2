@@ -57,26 +57,26 @@
             <table border=1>
                 <tr>
                     <th>Date</th>
-                    <th>Area</th>
+                    <th>Field</th>
                     <th>Crop</th>
                     <th>Yield</th>
                     <th>Unit</th>
                 </tr>
 
                 <tr>
-                    <td>05/02/2018</td>
-                    <td>Chuau-1</td>
-                    <td>Kale</td>
-                    <td>10</td>
-                    <td>Bunches</td>
+                    <td v-for='harvestlog in harvestlogs'> {{ harvestlog.date }} </td>
+                    <td v-for='harvestlog in harvestlogs'> {{ harvestlog.field }}</td>
+                    <td v-for='harvestlog in harvestlogs'> {{ harvestlog.crop }}</td>
+                    <td v-for='harvestlog in harvestlogs'> {{ harvestlog.yield }}</td>
+                    <td v-for='harvestlog in harvestlogs'> {{ harvestlog.units }}</td>
                 </tr>
 
                 <tr>
-                    <td>05/03/2018</td>
-                    <td>SO7</td>
-                    <td>Kale</td>
-                    <td>7</td>
-                    <td>Bunches</td>
+                    <td v-for='harvestlog in harvestlogs1'> {{ harvestlog.date1 }} </td>
+                    <td v-for='harvestlog in harvestlogs1'> {{ harvestlog.field1 }}</td>
+                    <td v-for='harvestlog in harvestlogs1'> {{ harvestlog.crop1 }}</td>
+                    <td v-for='harvestlog in harvestlogs1'> {{ harvestlog.yield1 }}</td>
+                    <td v-for='harvestlog in harvestlogs1'> {{ harvestlog.units1 }}</td>
                 </tr>
 
                 <tr>
@@ -113,6 +113,14 @@
                             'CHAU-1',
                             'ALL',
                             'SQ7',
+                        ],
+                        harvestlogs: [
+                            {date: '05/02/2018', field: 'CHAU-1', crop: 'kale', yield: 10, units: 'Bunches'},
+                        ],
+
+                        harvestlogs1: [
+                            {date1: '05/03/2018', field1: 'SQ7', crop1: 'peas', yield1: 8, units1: 'each'},
+
                         ]
                     },
                 })
