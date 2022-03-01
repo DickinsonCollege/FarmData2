@@ -29,10 +29,6 @@
 
         </ul>
 
-        <button type="button">
-            Generate
-        </button>
-
         <br>
 
         <label for="crop">Crop:</label>
@@ -74,29 +70,33 @@
             <li v-for="card in cards">{{ card.rank + ' of ' + card.suit }}</li>
         </ul>
 
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Area</th>
-                <th>Crop</th>
-                <th>Yield</th>
-                <th>Units</th>
-            </tr>
-            <tr>
-                <td>05/02/2018</td>
-                <td>Chuau-1</td>
-                <td>Kale</td>
-                <td>10</td>
-                <td>Bunches</td>
-            </tr>
-            <tr>
-                <td>05/05/2018</td>
-                <td>SQ7</td>
-                <td>Kale</td>
-                <td>7</td>
-                <td>Bunches</td>
-            </tr>
+        <button type="button" v-on:click="logObj.push(logObj1)">
+            Generate
+        </button>
+
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date<th>
+                <th scope="col">Area</th>
+                <th scope="col">Crop</th>
+                <th scope="col">Yield</th>
+                <th scope="col">Units</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(log, i) in logObj" :key="i">
+                <th scope="row">{{ ++i }}</th>
+                <td>{{ log.date }}</td>
+                <td>{{ log.area }}</td>
+                <td>{{ log.crop }}</td>
+                <td>{{ log.yield }}</td>
+                <td>{{ log.units }}</td>
+                </tr>
+            </tbody>
         </table>
+
 
 
         </div>
@@ -111,7 +111,9 @@
             names: [ 'Joe', 'Arun', 'Ouwen', 'Anh', 'Sue' ],
             crops: [ 'Kale', 'Broccoli', 'Peas' ],
             fields: [ 'All', 'Chuau-1', 'SQ7' ],
-
+            logObj1: { date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: '10', units: 'Bunches' },
+            logObj2: {date: '2019-06-05', area: 'MudBrook', crop: 'Corn', yield: '20', units: 'Bushels' },
+               
             cards: [
 
 		        {suit: 'H', rank: '3'},
@@ -121,13 +123,7 @@
                 {suit: 'D', rank: '7'}
             ],
 
-            logObj: [
-
-                { date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: '10', units: 'Bunches' },
-
-                {date: '2019-06-05', area: 'MudBrook', crop: 'Corn', yield: '20', units: 'Bushels' }
-
-            ]
+            logObj: [ ]
 
             }
         });
