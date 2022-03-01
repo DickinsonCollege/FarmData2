@@ -21,7 +21,8 @@
                     <br/>
 
                         <label for="StartDate">Start date:</label>
-                        <input type="date" id="start" name="plant start" v-model="startDay" min="2014-01-01" max="2022-01-01">
+                        <input type="date" id="start" name="plant start" v-model="startDay" min="2014-01-01" max="2022-01-01"
+                        :disabled= "startDay >= endDay">
                     
 
                         <label for="EndDate">End date:</label>
@@ -57,7 +58,6 @@
         <hr/> 
         
         <p> 
-                
                     <h1>{{header ? header:"Mock Harvest Report"}}</h1>
                     Details:
                 <ul>
