@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+     <body>
+         <div id= "harvest-report">
+             <h1> Harvest Report</h1>
+         <meta charset= "utf-8">
+         <p> This page is a <i>mockup</i> of a simplified harvest report.</p>
+
+    <label for= "title"> Title:</label>
+    <input type="text" v-model="header" placeholder="My Sample Harvest Report">
+    <br>
+
+    </br>
+    <label for= "start-date">Start:</label>
+    <input v-model="start-date" type = "date" min="2014-01-01" max="2022-01-01">
+
+    <label for = "end-date"> End: </label>
+    <input v-model="end-date" type = "date" min ="2014-01-01" max ="2022-01-02">
+    <br>
+
+    </br>
+
+        <label for ="crops"> Crop:</label>
+        <select v-model= "crops-select" name = "crops">
+            <option v-for = "crops"></option>
+            <option> Broccoli</option>
+            <option> Peas</option>
+            <option selected> Kale</option>
+        </select>
+
+        <label for ="fields"> Area:</label>
+        <select v-model= "fields-select" name = "fields">
+            <option v-for = "fields"></option>
+            <option> Chuau-1</option>
+            <option> SQ7</option>
+            <option selected> All</option>
+        </select>
+
+        <br>
+    </br>
+
+
+
+  <li><strong>Farm</strong>:Sample </li>
+  <li><strong>User</strong>:manager1</li>
+  <li><strong>Language</strong>:English</li>
+    </script> 
+    </li>
+    </ul>
+
+</div>
+</body>
+</html>
