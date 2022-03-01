@@ -37,7 +37,7 @@
                             <select id="groups" name="Crop" v-model="chosenCrop">
                                 <optgroup label="possible crops"> 
 
-                                    <option v-for="item in cropList">{{item}}</option>
+                                    <option v-for="item in mapToArray">{{item}}</option>
 
                                 </optgroup> <br/>
                             </select>
@@ -119,10 +119,24 @@
                     ],
                     Farm:"",
                     User:"",
-                    Language:""
-                    
+                    Language:"",
+                    idToCropMap: []
                 },
-                
+                created() {
+                        console.log("HarvestReport created!")
+                        getIDToCropMap()
+                            .then((theMap) => {
+                                    this.idToCropMap= theMap
+                            })
+                            .catch((err) => {
+
+                            })
+                    },
+                computed:{
+                    mapToArray(){
+                        return Array.from(this.idToCropMap.values())
+                    }
+                },
                 methods: {
                     saveLog: function () {
                         axios
@@ -130,9 +144,9 @@
                             .then(response => {
                                     console.log("Got Response")
                                     console.log(response)
-                                    this.Farm = response.data.name;
-                                    this.User = response.data.user.name;
-                                    this.Language = response.data.languages.en.name;
+                                    this.Farm = response.data.name
+                                    this.User = response.data.user.name
+                                    this.Language = response.data.languages.en.name
                                 })
                             .catch(error => {
                                 	console.log("Error Occurred")
