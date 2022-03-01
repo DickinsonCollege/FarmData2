@@ -1,106 +1,112 @@
 <!DOCTYPE html>
 <html>
-     <body>
-    <div>
-  <h1> Harvest Report </h1>
-<ul>
-  <li><label for="Title">Title:</label>
-    <input type="Title" 
-       id="Title"
-       placeholder="My Sample Harvest Report">
-    </li>
+	<head>
+        <div id="harvest-report">
+        <meta charset="utf-8">
+        <body>
+		<h1>Harvest Report</h1>
+			<p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+            <label for="title">Title:</label>
+            <input type="text" v-model="header" placeholder="My Sample Harvest Report"><br><br>
+            
+            
+            <label for="startDate">Start: </label>
+            <input v-model="startDate" type="date" min="2014-01-01" max="2022-01-01">
+			
+            <label for="endDate">    End: </label>
+            <input v-model="endDate" type="date" min="2014-01-01" max="2022-01-01">
+            
+            <br>
+            
+            
+            <br>
+            
+			<label for="cropDropDown">Crop: </label>
+			<select v-model="cropSelect" name="crops">
+                <option v-for="crops in crop"> {{ crops }} </option>
+				<!--
+                <option>Broccoli</option>
+                <option selected>Kale</option>
+				<option>Peas</option>-->
+			</select>  
+            
+            <label for="fieldDropDown">Area: </label>
+            <select v-model="fieldSelect" name="fields">
+                <option v-for="fields in field"> {{ fields }} </option>
+            <!--
+            <option>Chuau-1</option>
+            <option>SQ7</option>
+        
+        <option selected>All</option>-->
+            </select>
+            
+            <br>
+            
+            
+            <br>
+            
+            <input type="button" value="Generate Report"><hr>
+			<h1>{{ header.length == 0 ? "Mock Harvest Report" : header }}</h1>
+				<p>Details:</p>
+					<ul>
+						<li><strong>Farm: </strong>Sample Farm</li>
+						<li><strong>User: </strong>manager1</li>
+						<li><strong>Language: </strong>English</li><br>
+						<li><strong>Start: </strong>{{ startDate }}</li>
+                                                <li><strong>End: </strong>{{ endDate }}</li>
+                                                <li><strong>Crop: </strong>{{ cropSelect }}</li>
+                                            </ul>
+			<table border=1>
+				<tr>
+					<td><strong> Date </strong></td>
+					<td><strong> Area </strong></td>
+					<td><strong> Crop </strong></td>
+					<td><strong> Yield </strong></td>
+					<td><strong> Units </strong></td>
+				</tr>
+					<tr v-for="firstRows in firstRow">
+					<td> {{ firstRows.date }} </td>
+					<td> {{ firstRows.field }} </td>
+					<td> {{ firstRows.crop }} </td>
+					<td> {{ firstRows.yield }} </td>
+					<td> {{ firstRows.units }} </td>
+				</tr>
+				<tr v-for="secondRows in secondRow">
+					<td> {{ secondRows.date }} </td>
+					<td> {{ secondRows.field }} </td>
+					<td> {{ secondRows.crop }} </td>
+					<td> {{ secondRows.yield }} </td>
+					<td> {{ secondRows.units }} </td>
+				</tr>
+              </table>
 
-  <li><label for="Start">Start:</label>
-    <input type="date" id="Start"
-       value="05-05-2020"
-       min="2014-01-01" max="2022-12-31">
+             
 
-       <label for="End">End:</label>
-    <input type="date" id="Start"
-       value="2018-15-01"
-       min="2020-05-05" max="2022-01-01">
-       </li>
+              </body>
+              </div>
 
-       <li>
-           <label for="Crop">End:</label>
-           <select id="Crop" name="Crop">
-        <option>Broccoli</option>
-        <option selected>Kale</option>
-        <option>Peas</option>
-    </select>
-     
-    
-           <label for="Area">   Area:</label>
-           <select id="Area" name="Area">
-        <option>Chuau-1</option>
-        <option selected>All</option>
-        <option>SQ7</option>
-</select>
-         </li>
+              <script>
+                  var harvest_Report = new Vue ({
+                    el: '#harvest-report',
+                    data: {
+                    header: '',
+                    startDate: '2020-05-05',
+                    endDate: '2020-05-15',
+                    cropSelect: 'Kale',
+                    fieldSelect: 'All',
+                    
+                    crop: ['Kale', 'Broccoli', 'Pease'],
+                    field: ['All', 'Chuau-1', 'SQ7'],
+                    firstRow: [
+                        {date: '2018-05-02', field: 'Chuau-1', crop: 'Kale', yield: '10', units: 'bundles'}
+                    ],
+                    secondRow: [
+                        {date: '2019-10-16', field: 'SQ7', crop: 'Broccoli', yield: '15', units: 'pounds'}
+                    ],
+                  }
+                  });
 
-</ul>
-  <hr style="width:50%;text-align:left;margin-left:0">
- 
-    This page is a <em>mockup</em> of a simplified harvest report
-    
-    <div id ="harvest-report">
-	
-	<h1 v-cloak > {{header}} </h1>
-	<input type="text" v-model="header">
-	<script>
-	var harvestReport = new Vue({
-	el: '#harvest-report',
-	data: {
-		header: 'Harvest Reporrt'
-	}
-	}
-	);
-	</script>
-    
-    
-    Details:
-    <ul>
-  <li><strong>Farm</strong>:Sample </li>
-  <li><strong>User</strong>:manager1</li>
-  <li><strong>Language</strong>:English</li>
-    </script> 
-    </li>
-    </ul>
-
-<style>
-      table,
-      th,
-      td {
-        padding: 10px;
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-    </style>
-
- 
-<table>
-  <tr>
-    <th><strong>Date</strong></th>
-    <th><strong>Area</strong></th>
-    <th><strong>Crop</strong></th>
-    <th><strong>Yield</strong></th>
-    <th><strong>Units</strong></th>
-  </tr>
-  <tr>
-    <td >05/01/2018</td>
-    <td >Chuau-1</td>
-    <td >Kale</td>
-    <td >10</td>
-    <td >Bunches</td>
-  </tr>
-  <tr>
-    <td>05/05/2018</td>
-    <td >SQ7</td>
-    <td >Kale</td>
-    <td >7</td>
-    <td >Bunches</td>
-  </tr>
-</table>
-</div>
-</body>
+                  Vue.config.devtools = true;
+              </script>
+	</head>
 </html>
