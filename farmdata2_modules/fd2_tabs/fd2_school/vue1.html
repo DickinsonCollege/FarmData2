@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
-  <h1>Harvest Report</h1>
+     <body>
+    <div>
+  <h1> Harvest Report </h1>
 <ul>
   <li><label for="Title">Title:</label>
     <input type="Title" 
        id="Title"
        placeholder="My Sample Harvest Report">
     </li>
+
   <li><label for="Start">Start:</label>
     <input type="date" id="Start"
        value="05-05-2020"
@@ -37,83 +40,29 @@
 
 </ul>
   <hr style="width:50%;text-align:left;margin-left:0">
-  <body>
+ 
     This page is a <em>mockup</em> of a simplified harvest report
-    
-
     
     <div id ="harvest-report">
 	
 	<h1 v-cloak > {{header}} </h1>
 	<input type="text" v-model="header">
-	</div>
 	<script>
 	var harvestReport = new Vue({
 	el: '#harvest-report',
 	data: {
-		header: 'Harvest Report'
+		header: 'Harvest Reporrt'
 	}
 	}
 	);
 	</script>
+    
+    
     Details:
     <ul>
   <li><strong>Farm</strong>:Sample </li>
   <li><strong>User</strong>:manager1</li>
   <li><strong>Language</strong>:English</li>
-  <br>
-  
-<br>
-
-<div id ="harvest-report">
-	
-	<li><strong>Start</strong><h1 v-cloak > {{date}} </h1>
-	<input type="text" v-model="date">
-	</div>
-	<script>
-	var harvestReport = new Vue({
-	el: '#start-date',
-	data: {
-		date: '05/01/2018'
-	}
-	}
-	);
-    </script> 
-    </li>
-    <li><strong>End</strong><h1 v-cloak > {{date}} </h1>
-	<input type="text" v-model="date">
-	</div>
-	<script>
-	var harvestReport = new Vue({
-	el: '#end-date',
-	data: {
-		date: '05/15/2018'
-	}
-	}
-	);
-    </script> 
-    </li>
-    </li>
-    <li><strong>Crop</strong><h1 v-cloak > {{crop}} </h1>
-	<input type="text" v-model="crop">
-	</div>
-	<script>
-    <select v-model="selected">
-  <option v-for="crop in crops" {{crop}} >
-  </option>
-</select>
-	var harvestReport = new Vue({
-	el: '#crop-name',
-	data: {
-		crops: [
-            'Kale',
-            'Peas',
-            'Brocolli'
-    ]
-
-	}
-	}
-	);
     </script> 
     </li>
     </ul>
@@ -152,5 +101,6 @@
     <td >Bunches</td>
   </tr>
 </table>
-</body> 
+</div>
+</body>
 </html>
