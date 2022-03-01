@@ -42,8 +42,7 @@
       <label for="Area">Area:</label>
       <select id="area" name="area" v-model="area">
 
-      <option v-for="area in areas":selected="option == 'All'">
-          {{area}}</option>
+      <option v-for="area in mapToArea">{{area}}</option>
       </select>
 
       <br>
@@ -112,12 +111,12 @@
         //     'Broccoli','Kale','Peas',
         //   ],
           idToCropMap: [],
-          
+          idToAreaMap: [],
         
           area:"All",
-          areas:[
-            'All', 'Chuau-1','SQ7',
-          ],
+        //   areas:[
+        //     'All', 'Chuau-1','SQ7',
+        //   ],
           harvestLog:[],
           farm: "",
           user: "",
@@ -132,7 +131,10 @@
         computed: {
               mapToCrop: function(){
                   return this.idToCropMap.values()
-              }
+              },
+              mapToArea: function(){
+                  return this.idToAreaMap.values()
+              },
           },
         
         methods:{
@@ -173,6 +175,17 @@
                     console.log("An error occurred -- IDToCropMap.")
                     console.log(err)
                 })
+            getIDToAreaMap()
+                .then((theMap) => {
+                    // Process the map.
+                    this.idToAreaMap=theMap
+                })
+                .catch((err) => {
+                    // An error occured during the request, process it here.
+                    console.log("An error occurred -- IDToAreapMap.")
+                    console.log(err)
+                })
+
             console.log("HarvestReport created!")
         }    
       });
