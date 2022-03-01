@@ -19,7 +19,7 @@
             <br>
 
             <label>Crop:<select id="Crop" name="Crop" v-model= 'reportCrop'>
-            <option>Broccoli</option>
+            <option>broccoli</option>
             <option selected>Kale</option>
             <option>Peas</option>
             </select></label>
@@ -40,7 +40,7 @@
 
             <hr>
 
-            <h1>{{ reportTitle }}</h1>
+            <h1>{{ reportTitle ? reportTitle : 'Mock Harvest Report' }}</h1>
             
 
             <p>Details:</p>
@@ -95,7 +95,7 @@
                 <tr>
                     <td>05/05/2018</td>
                     <td>A</td>
-                    <td>Kale</td>
+                    <td>kale</td>
                     <td>15</td>
                     <td>Bunches</td>
                 </tr>
@@ -105,7 +105,7 @@
                 var report = new Vue ({
                     el: '#report',
                     data: {
-                        reportTitle: 'My Sample Harvest Report',
+                        reportTitle: null,
                         reportStartDate: 'mm/dd/yyyy',
                         reportEndDate: 'mm/dd/yyyy',
                         reportCrop: 'Crop'
