@@ -57,9 +57,9 @@
 Details:
   <h1>{{ title ==('')? "Mock Harvest Report": title }}</h1>
   <ul>
-    <li><span>Farm</span>: Sample Farm</li>
-      <li><span>User</span>: manager1</li>
-      <li><span>Language</span>: English</li>
+    <li><strong>Farm: </strong> {{farm}}</li>
+      <li><strong>User: </strong> {{user}}</li>
+      <li> <strong>Language: </strong> {{language}}</li>
       <br>
       <li><span>Start:</span>{{start}}</li>
       <li><span>End:</span>{{end}}</li>
@@ -106,6 +106,10 @@ var harvestReport = new Vue({
         area: 'ALL',
         areas:['ALL', 'Chuau-1', 'SQ7'],
         harvestLog:[],
+        farm: "",
+        user: "",
+        language: "",
+
         HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10', Unit:'Bunches'},
         {Date: '05/17/2019', Field: 'All', Crop:'Broccoli', Yield: '7', Unit:'Bunches'},
         {Date: '04/06/2001', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
@@ -119,6 +123,10 @@ var harvestReport = new Vue({
                     this.harvestLog.push(this.HLog[1])
                     this.harvestLog.push(this.HLog[2])
                 }
+                
+                this.farm = "Sample Farm";
+                this.user = "manager1";
+                this.language = "English";
             },
             deleteTuple: function(index){
                 this.harvestLog.splice(index,1);
