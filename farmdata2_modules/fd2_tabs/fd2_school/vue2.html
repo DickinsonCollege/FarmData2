@@ -21,12 +21,12 @@
 
     <label for="crop"> Crop: </label>
     <select id="crop" name="crop" v-model="crop">
-        <option v-for="item in mapToArray"> {{item}}</option>
+        <option v-for="item in cropMapToArray"> {{item}}</option>
     </select>
 
     <label for="field"> Field: </label>
     <select id="field" name="field">
-        <option v-for="item in field_list"> {{item}}</option>
+        <option v-for="area in areaMapToArray"> {{area}}</option>
     </select>
 
     <br>
@@ -87,16 +87,27 @@
             header: "My Sample Harvest Report",
             start_date: "2020-05-05",
             end_date: "2020-05-15",
-            crop: "Kale",
+            crop: "",
+            field: "",
             // crop_list: ["Broccoli", "Kale", "Peas"],
-            field_list: ["All", "Chuau-1", "SQ7"],
+            // field_list: ["All", "Chuau-1", "SQ7"],
             log_list: [],
             log_display: false,
-            idToCropMap: []
+            idToCropMap: [],
+            idToAreaMap: []
+            // cropArray: [],
+            // areaArray: []
         },
         computed: {
-            mapToArray: function(){
-                return this.idToCropMap.values()
+            cropMapToArray(){
+                // subMap = this.idToCropMap
+                // return subMap.values()
+                return Array.from(this.idToCropMap.values())
+            },
+            areaMapToArray(){
+                // subMap = this.idToAreaMap
+                // return subMap.values()
+                return Array.from(this.idToAreaMap.values())
             }
         },
         methods:{
@@ -119,16 +130,25 @@
         created() {
             getIDToCropMap()
                 .then((theMap) => {
-                    // Process the map.
                     this.idToCropMap=theMap
+                    console.log("crop map created")
                 })
                 .catch((err) => {
-                    // An error occured during the request, process it here.
                     console.log("An error occurred in getting the IDToCropMap.")
                     console.log(err)
                 })
-                // Execution continues here immediately after the request is made.
-                // Note that the Map will not be available until the then() executes.
+
+            getIDToAreaMap()
+                .then((theMap) => {
+                    this.idToAreaMap = theMap
+                    console.log("area map created")
+                })
+                .catch((err) => {
+                    console.log("An error occurred in getting the IDToAreaMap")
+                    console.log(err)
+                })
+            
+
 	        console.log("HarvestReport created!")
         }
     });
