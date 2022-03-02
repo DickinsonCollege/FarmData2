@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <body>
+	<h1> Harvest Report </h1>
+	<p> This page is a <i> mockup </i> of a simplified harvest report </p>
+
+	<div id="thisDiv" v-cloak>
+		<label for="title">Title:</label>
+		<input type="text" id="title" name="title"  v-model="rptTitle">
+ 
+		<br>	
+		<br>
+
+		<label for="start date">Start date:</label>
+		<input type="date" id="start date" name="start date"  min="2014-01-01" :max="rptEndDate" v-model="rptStartDate" >
+
+		<label for="end date">End date:</label>
+		<input type="date" id="end date" name="end date"  :min="rptStartDate" max="2022-01-01" v-model="rptEndDate" >
+
+		<br>
+
+		<label for="name">Name:</label>
+		<input v-model="newItem" type="text" placeholder="Enter Your Name" id="name"  @keyup.enter="saveName">
+		<button class="btn btn-primary" :disabled="newItem.length ==0" @click="saveName">Add Name</button> 
+
+		<br>
+	
+		<label for="crop">Crop:</label>
+		<select id="crop" name="crop" v-model="rptSelectCrop">
+			<option v-for="crop in cropDrop">{{ crop }}</option>
+		</select>
+
+		<label for="field">Field:</label>
+     		<select id="field" name="field">
+                	<option  v-for="field in fieldDrop">{{ field }}</option>
+        	</select>
+
+		<br>	
+		<br>
+
+		<button  class="btn btn-primary" @click="generateReport('yes')">Generate Report</button>
+
+			
+		<hr>
+
+		<h1 v-cloak>{{ rptTitle.length == 0 ? 'Mock Harvest Report' : rptTitle }}</h1>
+
+
+
+		<div v-if="state=='default'">
+			<button class="btn btn-primary" @click="changeState('hide')">Show cards</button>
+		</div>
+
+		<br>	
+
+		<div v-if="state=='hide'">
+			<button class="btn btn-primary" @click="changeState('default')">Hide cards</button>
+		</div>
+		
+
+
+
+		<ul>
+			<li v-if="names == ''"> No names yet! </li>
+			<li v-for="(name,index) in names"> {{ name + ' (' + index + ')' }} </li>
+		</ul>
+
+	<p> Details: </p>
+		<ul>
+			<li><strong>Farm:</strong> Sample farm </li>
+			<li><strong>User:</strong> worker1 </li>
+			<li><strong>Language:</strong> English </li>
+
+			<li><strong>Start:</strong> {{ rptStartDate }} </li>
+			<li><strong>End: </strong> {{ rptEndDate }} </li>
+			<li><strong>Crop: </strong> {{ rptSelectCrop }} </li>
+		</ul>
+
+		<br>
+
+	<div v-if="recordExist == 'no'">
+		<p> No records! </p>
+	</div>
+
+
+	<div v-if="recordExist == 'yes'">
+	<table border="1">
+		<tr>
+			<th>Row</th>
+			<th>Date</th>
+			<th>Area</th>
+			<th>Crop</th>
+			<th>Yield</th>
+			<th>Units</th>
+		</tr>
+
+		<tr v-for="(x,index) in table1">
+			<th> {{ index + 1 }} </th>
+			<th> {{ x.date }}</th>
+			<th> {{ x.area }}</th>
+			<th> {{ x.crop }}</th>
+			<th> {{ x.yield }}</th>
+			<th> {{ x.units }}</th>
+		</tr>
+       	   </table>
+	</div>	
+
+        </div>
+      <script>
+        var VueTime = new Vue({
+                el: '#thisDiv',
+                data: {
+                        rptTitle: 'My sample harvest report',
+			rptStartDate: '2020-6-07', 
+			rptEndDate: '2020-5-13',
+			rptSelectCrop: 'Kale',
+			names : [
+					'jack',
+					'sarah'		
+				],
+
+			newItem : '',
+			state: 'default',
+			
+			recordExist: 'no',
+
+			cropDrop : [
+					'Broccoli',
+					'Peas',
+					'Kale'
+					],
+			fieldDrop : [
+					'CHUAU-1',
+					'All', 
+					'SQ7'
+					],
+
+			table1: [
+
+								
+				],
+			row: {
+				date: '2018-05-01', area: 'Orion', crop: 'Kale', yield: '12', units: 'Bunches'
+				}
+
+                },
+		methods: {
+			saveName: function() {
+			    if (this.newItem != '') {
+				this.names.push(this.newItem);
+				this.newItem = '';
+				}
+			},
+
+			 generateReport: function(newState) {
+                                this.table1.push(this.row);
+				this.recordExist = newState;
+
+                        },
+			changeState: function(newState) {
+				this.state = newState;
+				this.newItem = '';
+			},
+			recordDeterminer: function(state) {
+				this.recordExist = state;
+			}
+		}
+        });
+	Vue.config.devtools = true;
+
+      </script>
+
+    </body>
+</html>
+
