@@ -12,16 +12,18 @@
 <br></br>
 
   <label for="reportStartDate">Start:</label>
-  <input type = "Date" id = "reportStartDate" name = "reportStartDate" value = "2020-05-05" min="2014-01-01" max="2020-01-01">
+  <input type="Date" name="reportStartDate" id="reportStartDate" min="2014-01-01" max="2020-01-01" v-model="reportStartDate">
+
+
   <label for="reportEndDate">End:</label>
-  <input type = "Date" id = "reportEndDate" name = "reportte" value = "2020-05-15" min="2020-05-05" max="2022-01-01">
+  <input type = "Date" id = "reportEndDate" name = "reportEndDate" min="2020-05-05" max="2022-01-01" v-model = "reportEndDate">
   
   <br></br>
   
-  <label for = "Crop">Crop:</label>
-  <select id="Crop" name = "Crop">
+  <label for = "crop">Crop:</label>
+  <select id="crop" name = "crop" v-model="crop">
     <option>Broccoli</option>
-    <option selected>Kale</option>
+    <option>Kale</option>
     <option>Peas</option>
   </select>
 
@@ -49,9 +51,9 @@
   </ul>
   
   <ul>
-    <li><strong>Start</strong>:05/01/2018</li>
-    <li><strong>End</strong>:05/15/2018</li>
-    <li><strong>Crop</strong>:Kale</li>
+    <li><strong>Start</strong>:{{reportStartDate}}</li>
+    <li><strong>End</strong>:{{reportEndDate}}</li>
+    <li><strong>Crop</strong>:{{crop}}</li>
   </ul>
 
   <table border="1">
@@ -81,10 +83,13 @@
  </div>
 
 <script>
-var title = new Vue({
+var harvestReport = new Vue({
 	el: '#harvestReport  ',
 	data:{
-	header: 'My Sample Harvest Report'
+	header: 'My Sample Harvest Report',
+  reportStartDate: '2020-05-05',
+  reportEndDate: '2022-05-15',
+  crop: 'Kale',
 }
 });
 </script>
