@@ -109,8 +109,8 @@
 
                 data: {
                     reportTitle: "My Sample Harvest Report",
-                    reportStartDate: "05/01/2018",
-                    reportEndDate: "05/18/2018",
+                    reportStartDate: "05/05/2020",
+                    reportEndDate: "05/15/2020",
                     reportCrop: "Kale",
                     fields: ["All", "Chuau-1", "SQ7"],
                     newItem: {date: '05/01/2018', area: 'Orion-3', crop: 'Kale', yield: '12', units: 'bunches'},
@@ -119,7 +119,8 @@
                     user: "",
                     language: "",
                     idToCropMap: [],
-                    idToAreaMap: []
+                    idToAreaMap: [],
+                    result: []
                 },
 
                 computed: {
@@ -141,9 +142,25 @@
                         this.language = "English"
                     },
                     makeRequest: function() {
-                        axios.get('/farm.json ')  // this line sends the request.
+                        let start_timestamp = dayjs(this.reportStartDate).unix()
+                        let end_timestamp = dayjs(this.reportEndDate).unix()
+                        console.log(start_timestamp, end_timestamp)
+                        
+                        let query = "/log.json?type=farm_harvest&timestamp[ge]=" + start_timestamp + "&timestamp[le]=" + end_timestamp
+
+                        getAllPages(query, this.result)
+                                .then(() => {
+                                })
+                                .catch((err) => {
+                                    // An error occured during the requests, process it here.
+                                })
+                        axios.get('/farm.json')  // this line sends the request.
                             .then((response) => {
+                                
+                                
+                                console.log(query)
                                 console.log(response)
+                                
                                 this.farm = response.data.name
                                 this.user = response.data.user.name
                                 this.language = response.data.languages.en.name
