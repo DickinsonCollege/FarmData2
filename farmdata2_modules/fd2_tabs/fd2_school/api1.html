@@ -23,14 +23,14 @@
             </select>
             <br><br>
                 <label for="Start">Start:</label>
-                <input v-model='startdate' :disabled='startdate>enddate' type="date"
-                min="2014-01-01" max="enddate">
+                <input v-model='startdate' type="date"
+                min="2014-01-01" :max="enddate">
             <br>
                 <label for="End">End:</label>
-                <input v-model='enddate' :disabled='enddate<startdate' type="date" min="startdate" max="2022-01-01">
+                <input v-model='enddate' type="date" :min="startdate" max="2022-01-01">
             <br><br>
             
-            <button type="submit"  @click = 'changeState("edit"); updateLog()'>Generate Report </button>
+            <button type="submit"  @click = 'generateReport'>Generate Report </button>
             
             <hr>
             <h1>{{header=="" ? "Mock Harvest Report": header}}</h1>
@@ -89,17 +89,30 @@
                     changeState: function(newState) {
                         this.state = newState;
                     },
-
-                    updateLog: function() {
+                    updateLog: function () {
                         this.harvestlog.push({date: "05/01/2018", area: "Orion-3", crop: "Kale", yield: 10, units: "bunches"});
                         this.farm = "Sample Farm";
                         this.user = "manager1";
                         this.language = "English";
                     },
 
+                    generate: function() {
+                        axios
+                            .get('/farm.json')
+                            .then((response) => {
+                                console.log("Got Response");
+                                console.log(response);
+                            })
+                            .catch((error) => {
+                                console.log("Error Occured");
+                                console.log(error);
+                            })
+                    }
+ 
                 },
             
             });
+           
             Vue.config.devtools = true;
         </script>
         
