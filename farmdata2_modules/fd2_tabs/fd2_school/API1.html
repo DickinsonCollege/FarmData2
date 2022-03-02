@@ -30,7 +30,7 @@
 			<option v-for="crop in cropDrop">{{ crop }}</option>
 		</select>
 
-		<label for="field">Field:</label>
+		<label for="field">Field:</label> 
      		<select id="field" name="field">
                 	<option  v-for="field in fieldDrop">{{ field }}</option>
         	</select>
@@ -39,7 +39,6 @@
 		<br>
 
 		<button  class="btn btn-primary" @click="generateReport('yes')">Generate Report</button>
-
 			
 		<hr>
 
@@ -67,9 +66,9 @@
 
 	<p> Details: </p>
 		<ul>
-			<li><strong>Farm:</strong> Sample farm </li>
-			<li><strong>User:</strong> worker1 </li>
-			<li><strong>Language:</strong> English </li>
+			<li><strong>Farm:</strong> {{ farm }}  </li>
+			<li><strong>User:</strong> {{ user }} </li>
+			<li><strong>Language:</strong> {{ language }}  </li>
 
 			<li><strong>Start:</strong> {{ rptStartDate }} </li>
 			<li><strong>End: </strong> {{ rptEndDate }} </li>
@@ -110,6 +109,9 @@
         var VueTime = new Vue({
                 el: '#thisDiv',
                 data: {
+			farm: 'x',
+			user: 'x',
+			language: 'x',
                         rptTitle: 'My sample harvest report',
 			rptStartDate: '2020-6-07', 
 			rptEndDate: '2020-5-13',
@@ -155,8 +157,11 @@
 			 generateReport: function(newState) {
                                 this.table1.push(this.row);
 				this.recordExist = newState;
-
+				this.farm = 'Sample Farm';
+				this.user = 'manager1';
+				this.language = 'English';
                         },
+
 			changeState: function(newState) {
 				this.state = newState;
 				this.newItem = '';
