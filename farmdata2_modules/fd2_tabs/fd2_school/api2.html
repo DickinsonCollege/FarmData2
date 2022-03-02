@@ -59,7 +59,7 @@
         
 
         <table border=1>
-            <tr v-if="harvestLogs.length !== 0">
+            <tr v-if="harvestReportRows.length !== 0">
                 <th>Row</th>
                 <th>Date</th>
                 <th>Area</th>
@@ -67,7 +67,7 @@
                 <th>Yield</th>
                 <th>Units</th>
             </tr>
-            <tr v-for="(log, index) in harvestLogs">
+            <tr v-for="(log, index) in harvestReportRows">
                 <td>{{index + 1}}</td>
                 <td>{{log.date}}</td>
                 <td>{{log.area}}</td>
@@ -77,7 +77,7 @@
 
             </tr>
         </table>
-        <h1 v-if="harvestLogs.length === 0">No matching records</h1>
+        <h1 v-if="harvestReportRows.length === 0">No matching records</h1>
 
     </body>
 </html>
@@ -120,7 +120,7 @@
                     language: "",
                     idToCropMap: [],
                     idToAreaMap: [],
-                    result: []
+                    result: [],
                 },
 
                 computed: {
@@ -129,6 +129,20 @@
                     },
                     areasData() {
                         return this.idToAreaMap.values()
+                    },
+                    harvestReportRows() {
+                        let tableRows = []
+                        for(let log of this.result) {
+                            let tableRow = {
+                                date: dayjs(log.timestamp),
+                                area: log.area[0].name,
+                                yield: log.quantity[0].value,
+                                units: log.quantity[0].unit.name,
+                                crop: this.idToCropMap.get(log.data.crop_tid)
+                            }
+                            tableRows.push(tableRow)
+                        }
+                        return tableRows
                     }
                 },
 
@@ -156,10 +170,6 @@
                                 })
                         axios.get('/farm.json')  // this line sends the request.
                             .then((response) => {
-                                
-                                
-                                console.log(query)
-                                console.log(response)
                                 
                                 this.farm = response.data.name
                                 this.user = response.data.user.name
