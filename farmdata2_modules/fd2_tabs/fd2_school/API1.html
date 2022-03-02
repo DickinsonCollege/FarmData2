@@ -68,13 +68,37 @@
                     endDate: '2020-05-15',
                     cropSelection: 'Kale',
                     fieldSelection: 'All',
-                    crop: ['Kale', 'Broccoli', 'Pease'],
+                    crop: [],
                     field: ['All', 'Chuau-1', 'SQ7'],
+                    
+                    cropMap: {},
                     harvestLog: [
                 ],
                     row: 
                         {date: '05/01/2018', field: 'Orion-3', crop: 'Kale', yield: '12', units: 'Bunches'},
                   },
+
+                  created() {
+                    console.log("HarvestReport created!");
+                    getIDToCropMap()
+                    .then((theMap) => {
+                            A:  console.log("Got Response: getIDToCropMap success");
+                                console.log(theMap);
+                                this.cropMap = theMap;
+
+                    })
+                    .catch((err) => {
+                            B:  console.log("Error Occurred: getIDToCropMap failed");
+                                console.log(err);
+                    })
+                  },
+
+                computed: {
+                    addCropsNames(){
+                        tmp = Array.from(this.cropMap.values());
+                        this.crop = tmp;
+                    }
+                },
 
                   methods: {
                       addHarvestLog: function() {
