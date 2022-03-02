@@ -74,29 +74,33 @@
             Generate
         </button>
 
-        <table class="table mt-5">
-            <thead>
-                <tr>
-                <th scope="col">Row</th>
-                <th scope="col">Date<th>
-                <th scope="col">Area</th>
-                <th scope="col">Crop</th>
-                <th scope="col">Yield</th>
-                <th scope="col">Units</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(log, i) in logObj" :key="i">
-                <th scope="row">{{ ++i }}</th>
-                <td>{{ log.date }}</td>
-                <td>{{ log.area }}</td>
-                <td>{{ log.crop }}</td>
-                <td>{{ log.yield }}</td>
-                <td>{{ log.units }}</td>
-                </tr>
-            </tbody>
-        </table>
-
+        <div v-if="this.logObj.length === 0">
+        <p><b>There are no logs yet!</b></p>
+        </div>
+        <div v-if="this.logObj.length !== 0"></div>
+            <table v-if="this.logObj.length !== 0" class="table mt-5">
+                <thead>
+                    <tr>
+                    <th scope="col">Row</th>
+                    <th scope="col">Date<th>
+                    <th scope="col">Area</th>
+                    <th scope="col">Crop</th>
+                    <th scope="col">Yield</th>
+                    <th scope="col">Units</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(log, i) in logObj" :key="i">
+                    <th scope="row">{{ ++i }}</th>
+                    <td>{{ log.date }}</td>
+                    <td>{{ log.area }}</td>
+                    <td>{{ log.crop }}</td>
+                    <td>{{ log.yield }}</td>
+                    <td>{{ log.units }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
 
         </div>
