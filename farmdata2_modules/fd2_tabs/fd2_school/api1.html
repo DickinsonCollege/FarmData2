@@ -11,7 +11,7 @@
     <div id="report" v-cloak>
         <br></br>
         <p> This page is a <i> mockup </i> of a simplified harvest report. </p>
-        <button class = "btn btn-primary" v-bind:disabled = "startD > endD" @click="saveRow" type="submit">Generate Report</button>
+        <button class = "btn btn-primary" v-bind:disabled = "startD > endD" @click="saveRow" @click = "get" type="submit">Generate Report</button>
         <br>
         <input type="text" v-model="rptTitle">
         <br>
@@ -22,6 +22,7 @@
             <br>
             <li><strong>End: </strong><input type="date" v-model="endD" min="05-05-2020" max="01-01-2022"> </li> </input>
             <br>
+
             <li><label><strong>Crop: </strong><select id="Crop" name="Crop" v-model="selectedCrop"></li></label>
                 <option v-for = "crop in cropSelection">{{ crop }}</option>
             </select>
@@ -108,10 +109,22 @@
                 state: 'hide',
                 farm: 'Sample Farm',
                 user: 'manager1',
-                language: 'English'
+                language: ''
             },
             methods: {
                 saveRow: function(index) {
+                    axios.get ('http://localhost/farm.json')
+                    .then ((response) => {
+                        this.farm = response.data.name
+                        this.user = response.data.user.name
+                        this.language = response.data.user.language 
+                        console.log ("Got Response")
+                        console.log (response)
+                    })
+                    .catch ((error) => {
+                        console.log ("Error Occured")
+                        console.log (error)
+                    })
                     this.tableInfo.push(this.newRow);
                     this.state = 'show';
                 },
