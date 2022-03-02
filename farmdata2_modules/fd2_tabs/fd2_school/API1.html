@@ -15,11 +15,11 @@
             
 			<label for="cropSelectBox">Crop: </label>
 			<select v-model="cropSelection" name="crops">
-                <option v-for="crops in crop"> {{ crops }} </option>
+                <option v-for="cropNameArrs in cropNameArr"> {{ cropNameArrs }} </option>
 			</select>  
             <label for="fieldSelectBox">Area: </label>
             <select v-model="fieldSelection" name="fields">
-                <option v-for="fields in field"> {{ fields }} </option>
+                <option v-for="areaNameArrs in areaNameArr"> {{ areaNameArrs }} </option>
             </select><br><br>
             
             <button class="btn btn-primary" @click="addHarvestLog">Generate Report</button>
@@ -71,7 +71,8 @@
                     crop: [],
                     field: ['All', 'Chuau-1', 'SQ7'],
                     
-                    cropMap: {},
+                    cropMap: [],
+                    areaMap: [],
                     harvestLog: [
                 ],
                     row: 
@@ -85,18 +86,31 @@
                             A:  console.log("Got Response: getIDToCropMap success");
                                 console.log(theMap);
                                 this.cropMap = theMap;
-
                     })
                     .catch((err) => {
                             B:  console.log("Error Occurred: getIDToCropMap failed");
+                                console.log(err);
+                    }),
+
+                    getIDToAreaMap()
+                    .then((getAreaMap) => {
+                            A:  console.log("Got Response: getIDToAreaMap success");
+                                console.log(getAreaMap);
+                                this.areaMap = getAreaMap;
+                    })
+                    .catch((err) => {
+                            B:  console.log("Error Occurred: getIDToAreapMap failed");
                                 console.log(err);
                     })
                   },
 
                 computed: {
-                    addCropsNames(){
-                        tmp = Array.from(this.cropMap.values());
-                        this.crop = tmp;
+                    cropNameArr(){
+                        return Array.from(this.cropMap.values());
+                    },
+
+                    areaNameArr(){
+                        return Array.from(this.areaMap.values());
                     }
                 },
 
