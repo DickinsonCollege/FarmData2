@@ -45,9 +45,9 @@
         <br></br>
         <p>Details:</p>
         <ul>
-            <li><strong>Farm:</strong>Sample Farm</li>        
-            <li><strong>User:</strong>manager1</li>
-            <li><strong>Language:</strong>English</li>
+            <li v-mode='farm'><strong>Farm:</strong>{{farm}}</li>        
+            <li v-mode='user'><strong>User:</strong>{{user}}</li>
+            <li v-mode='language'><strong>Language:</strong>{{language}}</li>
 
             <br></br>
 
@@ -105,7 +105,10 @@
                     // {date: "05/08/2018", field: "SQ7", crop: "Kale", yield: 7, units: "Bunches"}
                 ],
                 newRow: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"},
-                state: 'hide'
+                state: 'hide',
+                farm: 'Sample Farm',
+                user: 'manager1',
+                language: 'English'
             },
             methods: {
                 saveRow: function(index) {
