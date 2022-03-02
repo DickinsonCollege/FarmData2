@@ -63,7 +63,7 @@
         </input>
 
         <ul>
-            <li v-for="name in names">{{ name }}</li>
+            <li v-for='(name,index) in names'>{{ name + ' (' + index + ')' }}</li>
         </ul>
 
         <ul>
@@ -77,7 +77,7 @@
         <table class="table mt-5">
             <thead>
                 <tr>
-                <th scope="col">#</th>
+                <th scope="col">Row</th>
                 <th scope="col">Date<th>
                 <th scope="col">Area</th>
                 <th scope="col">Crop</th>
