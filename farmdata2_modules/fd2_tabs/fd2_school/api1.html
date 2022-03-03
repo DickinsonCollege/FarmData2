@@ -15,7 +15,7 @@
             <br><br>
             <label for="Crop">Crop:</label>
             <select name="Crop" v-model ="cropSelected" >
-                <option v-for ="crop in crops">{{ crop }}</option>
+                <option v-for ="crop in cropMaptoArray">{{ crop }}</option>
             </select>
             <label for="Field">Field:</label>
             <select name="Field" v-model = "fieldSelected">
@@ -84,7 +84,26 @@
                     farm: "",
                     user: "",
                     language: "",
+                    idToCropMap: [],
                 },
+                computed: {
+                    cropMaptoArray() {
+                        return Array.from(this.idToCropMap.values())
+                    },
+                },
+
+                created() {
+                    getIDToCropMap()
+                        .then((theMap) => {
+                            this.idToCropMap = theMap;
+                        })
+                        .catch((err) => {
+                            console.log('Error getting cropmap');
+                            console.log(err);
+                        });
+                            //console.log("HarvestReport created!")
+                },
+
                 methods: {
                     changeState: function(newState) {
                         this.state = newState;
