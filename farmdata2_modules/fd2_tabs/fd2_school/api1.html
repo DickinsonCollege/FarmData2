@@ -24,7 +24,7 @@
             <br>
 
             <li><label><strong>Crop: </strong><select id="Crop" name="Crop" v-model="selectedCrop"></li></label>
-                <option v-for = "crop in cropSelection">{{ crop }}</option>
+                <option v-for = "crop in mapToArrCrop">{{ crop }}</option>
             </select>
             <br>
             <li><label><strong>Field: </strong><select id="Field" name="Field" v-model ="selectedField"></li></label>
@@ -91,11 +91,21 @@
     <script>
         var harvestReport = new Vue ({
             el: "#report",
+            created() {
+                console.log ("HarvestReport Created!")
+                getIDToCropMap () 
+                .then ((theMap) => {
+                    this.idToCropMap = theMap
+                })
+                .catch((err) => {
+                    console.log ("Error occured!")
+                    console.log (error)
+                })
+            },
             data: {
                 rptTitle: 'My Sample Harvest Report',
                 startD: '05-05-2020',
                 endD: '05-15-2020',
-                cropSelection: ["Brocolli", "Kale", "Peas"],
                 selectedCrop: "Kale",
                 fieldSelection: ["Chuau-1", "All", "SQ7"],
                 selectedField: "Chuau-1",
@@ -109,7 +119,13 @@
                 state: 'hide',
                 farm: 'Sample Farm',
                 user: 'manager1',
-                language: ''
+                language: 'Chinese',
+                idToCropMap: []
+            },
+            computed: {
+                mapToArrCrop () {
+                    return (Array.from (this.idToCropMap.values()));
+                }
             },
             methods: {
                 saveRow: function(index) {
