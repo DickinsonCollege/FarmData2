@@ -99,6 +99,16 @@ function fd2_school_menu() {
         'access arguments' => array('view fd2 school'),
         'weight' => 110,
     );
+
+        // Add items blocks for new sub-tabs here.
+    $items['farm/fd2-school/API2.html'] = array(
+        'title' => 'API2',
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'fd2_school_view',
+        'page arguments' => array('API2.html'),
+        'access arguments' => array('view fd2 school'),
+        'weight' => 110,
+    );
   return $items;
 };
 
