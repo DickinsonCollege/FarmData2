@@ -44,27 +44,26 @@
                 <li><strong>End</strong>: {{ enddate }}</li>
                 <li ><strong>Crop</strong>: {{ cropSelected }}</li>
             </ul>
-            <p v-if="this.state === 'default'">no report has been generated</p>
-            <div id="table" v-else="this.state === 'edit'">
-            
-            <table border=1 >
-                <tr>
-                    <th><strong>Row</strong></th>
-                    <th><strong>Date</strong></th>
-                    <th><strong>Area</strong></th> 
-                    <th><strong>Crop</strong></th>
-                    <th><strong>Yield</strong></th>
-                    <th><strong>Units</strong></th>   
-                </tr>
-                <tr td v-for ='(log, row) in this.harvestlog'>
-                    <td>{{row}}</td>
-                    <td>{{log.date}} </td>
-                    <td>{{log.area}}</td>
-                    <td>{{log.crop}}</td>
-                    <td>{{log.yield}}</td>
-                    <td>{{log.units}}</td>
-                </tr>
-            </table>
+            <!-- <p v-if="this.state === 'default'">no report has been generated</p> -->
+            <div id="table" v-if="harvestReportRows.length>0">
+                <table border=1 >
+                    <tr>
+                        <th><strong>Row</strong></th>
+                        <th><strong>Date</strong></th>
+                        <th><strong>Area</strong></th> 
+                        <th><strong>Crop</strong></th>
+                        <th><strong>Yield</strong></th>
+                        <th><strong>Units</strong></th>   
+                    </tr>
+                    <tr td v-for ='(log, row) in harvestReportRows'>
+                        <td>{{row+1}}</td>
+                        <td>{{log.date}} </td>
+                        <td>{{log.area}}</td>
+                        <td>{{log.crop}}</td>
+                        <td>{{log.yield}}</td>
+                        <td>{{log.units}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
         <script src="https://unpkg.com/vue@2"></script>
@@ -90,6 +89,21 @@
                     cropMaptoArray() {
                         return Array.from(this.idToCropMap.values())
                     },
+                    harvestReportRows() {
+                        let tableRows = []
+                        for(let log of this.harvestlog) {
+                            let tableRow = {
+                                date: log.timestamp,
+                                area: log.area[0].name,
+                                yield: log.quantity[0].value,
+                                units: log.quantity[0].unit.name,
+                                crop: this.idToCropMap.get(log.data.crop_tid),
+                            }
+                            tableRows.push(tableRow)
+                        }
+                        return tableRows
+                    }
+
                 },
 
                 created() {
