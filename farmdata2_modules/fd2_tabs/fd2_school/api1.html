@@ -30,15 +30,15 @@
                 <input v-model='enddate' type="date" :min="startdate" max="2022-01-01">
             <br><br>
             
-            <button type="submit"  @click = 'generateReport'>Generate Report </button>
+            <button type="submit"  @click = 'generate'>Generate Report </button>
             
             <hr>
             <h1>{{header=="" ? "Mock Harvest Report": header}}</h1>
             <br>Details:<br>
             <ul>
-                <li v-model ="farm"><strong>Farm</strong>: {{ farm }}</li>
-                <li v-model ="user"><strong>User</strong>: {{ user }}</li>
-                <li v-model ="language"><strong>Language</strong>: {{ language }}</li>
+                <li><strong>Farm</strong>: {{ farm }}</li>
+                <li><strong>User</strong>: {{ user }}</li>
+                <li><strong>Language</strong>: {{ language }}</li>
                 <p></p>
                 <li><strong>Start</strong>: {{ startdate }}</li>
                 <li><strong>End</strong>: {{ enddate }}</li>
@@ -98,16 +98,19 @@
 
                     generate: function() {
                         axios
-                            .get('/farm.json')
+                            .get('/farm.json ')
                             .then((response) => {
-                                console.log("Got Response");
-                                console.log(response);
+                                //console.log("Got Response");
+                                //console.log(response);
+                                this.farm = response.data.name;
+                                this.user = response.data.user.name;
+                                this.language = response.data.user.language;
                             })
                             .catch((error) => {
                                 console.log("Error Occured");
                                 console.log(error);
                             })
-                    }
+                        }
  
                 },
             
