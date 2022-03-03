@@ -27,12 +27,12 @@
 	
 		<label for="crop">Crop:</label>
 		<select id="crop" name="crop" v-model="rptSelectCrop">
-			<option v-for="crop in transformMap">{{ crop }}</option>
+			<option v-for="x in transformCropMap">{{ x }}</option>
 		</select>
 
 		<label for="field">Field:</label> 
      		<select id="field" name="field">
-                	<option  v-for="field in fieldDrop">{{ field }}</option>
+                	<option  v-for="y in transformAreaMap">{{ y }}</option>
         	</select>
 
 		<br>	
@@ -111,7 +111,10 @@
 		created() {
 			console.log("Harvest Report created!")
 			getIDToCropMap().then((theMap) => {
-				this.idToCropMap.push(theMap);
+				this.idToCropMap=theMap;
+			}),
+			getIDToAreaMap().then((theMap) => {
+				this.idToAreaMap=theMap;
 			})
 			},
                 data: {
@@ -136,6 +139,10 @@
 
 					], 
 			
+			idToAreaMap: [
+
+					],
+			
 			cropDrop : [
 					'Broccoli',
 					'Peas',
@@ -159,10 +166,14 @@
 
 		computed: {
 			
-			transformMap() {
-				let keys = Array.from(idToCropMap.keys());
-				return this.keys;
-			}
+			transformCropMap() {
+				return Array.from(this.idToCropMap.values());
+			},
+
+			transformAreaMap() {
+                                return Array.from(this.idToAreaMap.values());
+                        }
+
 		},
 
 		methods: {
