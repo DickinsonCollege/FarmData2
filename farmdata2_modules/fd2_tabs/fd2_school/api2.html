@@ -47,7 +47,7 @@
         </select> 
         <br>
 
-        <button v-on:click='this.addLog'>Generate Report</button>
+        <button v-on:click='this.getPages'>Generate Report</button>
 
         <hr/>
 
@@ -125,6 +125,7 @@
                 language: '',
                 idToCropMap: [],
                 idToAreaMap: [],
+                pageResult: [],
             },
             computed: {
                 mapCropToArray() {
@@ -135,6 +136,28 @@
                 }
             },
             methods: {
+                getPages: function() {
+                    let t1 = dayjs(this.reportStartDate).unix();
+                    let t2 = dayjs(this.reportEndDate).unix();
+
+                    getAllPages('/log.json?type=farm_harvest&timestamp[ge]=' + t1 + '&timestamp[le]=' + t2, this.pageResult)
+                    .then(() => {
+                        console.log('success')
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+                    console.log(this.pageResult);
+                },
+                // convertTimestamp: function() {
+                    // let t1 = dayjs(this.reportStartDate).unix();
+                    // let t2 = dayjs(this.reportEndDate).unix();
+                    // console.log(t1);
+                    // console.log(t2);
+
+                    // const request = "/log.json?type=farm_harvest&timestamp[ge]=" + t1 + "&timestamp[le]=" + t2;
+                    // console.log(request);
+                // },
                 addLog: function() {
                     axios.get('http://localhost/farm.json')
                         .then((response) => {
