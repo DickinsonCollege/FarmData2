@@ -73,9 +73,9 @@
                 el: '#report',
                 data: {
                     header: 'My Sample Harvest Report',
-                    startdate : "2018-05-01",
-                    enddate : "2018-05-15",
-                    crops: ['Kale' , 'Broccoli','random',],
+                    startdate : "2020-05-01",
+                    enddate : "2020-05-15",
+                    //crops: ['Kale' , 'Broccoli','random',],
                     fields: ['a','b','c'],
                     cropSelected: '',
                     fieldSelected: '',
@@ -108,12 +108,12 @@
                     changeState: function(newState) {
                         this.state = newState;
                     },
-                    updateLog: function () {
-                        this.harvestlog.push({date: "05/01/2018", area: "Orion-3", crop: "Kale", yield: 10, units: "bunches"});
-                        this.farm = "Sample Farm";
-                        this.user = "manager1";
-                        this.language = "English";
-                    },
+                    //updateLog: function () {
+                        // this.harvestlog.push({date: "05/01/2018", area: "Orion-3", crop: "Kale", yield: 10, units: "bunches"});
+                        // this.farm = "Sample Farm";
+                        // this.user = "manager1";
+                        // this.language = "English";
+                    //},
 
                     generate: function() {
                         axios
@@ -128,8 +128,26 @@
                             .catch((error) => {
                                 console.log("Error Occured");
                                 console.log(error);
+                            });
+                        
+                        let starttime = dayjs(this.startdate).unix();
+                        let endtime = dayjs(this.enddate).unix();
+                        let requestlog = '/log.json?type=farm_harvest&timestamp[ge]=' + starttime + '&timestamp[le]=' + endtime;
+                        console.log(requestlog);
+                        console.log(starttime);
+                        console.log(endtime); 
+                        
+                        let result = [];
+                        getAllPages(requestlog, result)
+                            .then(() => {
+                                this.harvestlog = result;
                             })
-                        }
+                            .catch((error) => {
+                                console.log("cannot get harvest log");
+                                console.log(error);
+                            });
+                        
+                    },
  
                 },
             
