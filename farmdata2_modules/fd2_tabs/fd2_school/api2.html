@@ -1,0 +1,228 @@
+<!--Mockup of harvest report-->
+<html>
+
+  <!--Title of page-->
+  <h1>Harvest Report</h1>
+  <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+
+  <!--Report div element start-->
+  <div id = "report" v-cloak>
+    <!--Title of report label and text input-->
+    <label for= "title"> Title: </label>
+    <input type="text" v-model ='reportTitle' id = "title">
+    <br><br>
+
+    <!--Start date box selection-->
+    <label for="start">Start:</label>
+
+    <input type="date" v-model = 'reportStartDate'
+        id="start" name="start"
+        :min="2014-01-01" :max="reportEndDate">
+
+    <!--End date box selection-->
+    <label for="end">End:</label>
+
+    <input type="date" v-model = 'reportEndDate'
+        id="end" name="end"
+        :min="reportStartDate" :max="2022-01-01">
+
+    <br><br>
+
+    <!--Crop label and dropdown-->
+    <label for="Crop">Crop: </label>
+    <select id="Crop" v-model = 'reportCrop' name="Crop">
+      <option v-for = "crop in mapToCropArray">{{crop}}</option>
+    </select>
+
+    <!--Field label and dropdown -->
+    <label for="field">Field: </label>
+    <select id="field" name="field">
+      <option v-for = "area in mapToAreaArray">{{area}}</option>
+    </select><br><br>
+
+    <!--Generate Report button-->
+    <div class = "div.add-harvest" v-cloak>
+        <button class = "btn btn-primary" @click="addHarvest">Generate Report</button>
+    </div>
+    <br><br>
+
+    <!--Checking state to show harvest report results-->
+    <p v-if="this.state === 'default'"></p>
+      <!--Div showing harvest results-->
+      <div v-else = "this.state==='edit'" v-cloak>
+        <!--Horizonal Line-->
+        <hr>
+        <!--Report title bound to text box above-->
+        <h1>{{reportTitle == '' ? 'Mock Harvest Report':reportTitle}}</h1>
+        <!--Details-->
+        <p>Details:</p>
+        <!--List displaying farm, user, language-->
+        <ul>
+          <li v-model = 'reportFarm'><b>Farm: </b>{{reportFarm}}</li>
+          <li v-model = 'reportUser'><b>User: </b>{{reportUser}}</li>
+          <li v-model = 'reportLanguage'><b>Language: </b>{{reportLanguage}}</li>
+        </ul>
+        <!--List displaying start/end date and crop-->
+        <!--Text display is bound to choices made above-->
+        <ul>
+          <li><b>Start: </b>{{reportStartDate}}</li>
+          <li><b>End: </b>{{reportEndDate}}</li>
+          <li><b>Crop: </b>{{reportCrop}}</li>
+        </ul>
+        <!--Search results Harvest Log Table-->
+        <!--If there are no larvest logs or state is default, display no matching records-->
+        <p v-if="this.state === 'default' || harvestLogs.length===0">No matching records</p>
+        <!--div to hide to show this table depending on the state-->
+        <div v-else = "this.state==='edit'" v-cloak>
+          <table border = 1>
+            <!--Table row with table headings-->
+            <tr>
+              <th>Row</th>
+              <th>Date</th>
+              <th>Area</th>
+              <th>Crop</th>
+              <th>Yield</th>
+              <th>Units</th>
+              <th>Delete</th>
+            </tr>
+            <!--Table rows bound to data in Vue instance-->
+            <tr v-for = "(log,index) in harvestLogs">
+              <td>{{index + 1}}</td>
+              <td>{{log.date}}</td>
+              <td>{{log.area}}</td>
+              <td>{{log.crop}}</td>
+              <td>{{log.yield}}</td>
+              <td>{{log.units}}</td>
+              <!--Alllows row to be deleted-->
+              <td><button type='button' @click='harvestLogs.splice(index, 1)'>Delete</button></td>
+            </tr>
+
+          </table>
+        <!--div to check state and show table END-->
+        </div>
+      <!--div to check state and show harvest report results END-->
+      </div>
+
+  <!--Report div element END-->
+  </div>
+
+  <!--Vue instance-->
+  <script>
+  // New Vue instance named report
+  var report = new Vue({
+      el: '#report',
+
+      // Created - activates when page is loaded
+      created(){
+        console.log("HarvestReport created!");
+        // ID to Crop Map
+        getIDToCropMap()
+        .then((theMap) => {
+        // Process the map.
+        // Typically it is stored in the Vue data for later use.
+        this.idToCropMap = theMap
+        console.log(theMap)
+        })
+        .catch((err) => {
+        // An error occured during the request, process it here.
+        console.log("An error has occured while mapping ID to crop")
+        })
+        // ID to Area Map
+        getIDToAreaMap()
+        .then((theMap) => {
+        // Process the map.
+        // Typically it is stored in the Vue data for later use.
+        this.idToAreaMap = theMap
+        console.log(theMap)
+        })
+        .catch((err) => {
+        // An error occured during the request, process it here.
+        console.log("An error has occured while mapping ID to area")
+        })
+    
+        },
+
+      // Setting variable default values
+      data:{
+        state: 'default',
+        // Report Info
+        reportTitle: 'My Sample Harvest Report',
+        reportStartDate:'2018-05-05',
+        reportEndDate:'2018-05-15',
+        reportCrop:'Kale',
+        reportFarm:'',
+        reportUser:'',
+        reportLanguage:'',
+        // Harvest log table
+        harvestLogs:[],
+        newHarvest:'',
+        // Arrays created by API calls
+        idToCropMap: [],
+        idToAreaMap:[],
+      },
+      //Computed Property
+      computed: {
+        mapToCropArray(){
+            return Array.from(this.idToCropMap.values());
+        },
+        mapToAreaArray(){
+            return Array.from(this.idToAreaMap.values());
+        },
+      },
+      // Methods
+      methods:{
+        //addHarvest function
+        addHarvest: function(){
+          // Bound to Generate Report Button. Displays no results at first
+          // and then adds one new harvest log row with each click for 3 clicks
+
+          // Call to axios.get function
+          axios.get('/farm.json')  // this line sends the request.
+         .then((response) => {
+	     // A:
+	     // Code here executes when the response is received.
+         // response is an Object created from the “Response Body JSON.
+         console.log("Got Response")
+         console.log(response)
+         //Details of report
+         this.reportFarm = response.data.name
+         this.reportUser = response.data.user.name
+         this.reportLanguage = response.data.languages.en.name
+         })
+         .catch((error) => {
+	     // B: 
+	     // Code here executes if an error occurs processing the request.
+         // error is an Object describing the error that occurred.
+         console.log("Error Occurred")
+         console.log(error)
+
+         })
+         // C: 
+	     // Code here runs immediately after the request is sent,
+         // which will be before the code in the then() or catch() methods.
+         
+         
+
+          // First click of Generate Report Button
+          if (this.harvestLogs.length == 0 && this.state=='default'){
+              this.state = "edit";
+          }
+          // New harvest log row 1
+          else if (this.harvestLogs.length == 0){
+              this.harvestLogs.push({date: '05/01/2018', area: 'Orion-3', crop: 'Kale', 'yield': 12, units: 'Bunches'});
+          }
+          // New harvest log row 2
+          else if (this.harvestLogs.length == 1){
+              this.harvestLogs.push({date: '05/03/2018', area: 'Orion-2', crop: 'Kale', 'yield': 7, units: 'Bunches'});
+          }
+          // New harvest log row 3
+          else if (this.harvestLogs.length == 2){
+              this.harvestLogs.push({date: '05/05/2018', area: 'Orion-3', crop: 'Kale', 'yield': 16, units: 'Bunches'});
+          }
+        },
+      }
+  });
+  // Allows for Vue devtools
+  Vue.config.devtools = true;
+  </script>
+</html>
