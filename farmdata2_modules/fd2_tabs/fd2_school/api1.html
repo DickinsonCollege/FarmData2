@@ -28,7 +28,7 @@
             </select>
             <br>
             <li><label><strong>Field: </strong><select id="Field" name="Field" v-model ="selectedField"></li></label>
-                <option v-for = "field in fieldSelection">{{ field }}</option>
+                <option v-for = "field in mapToArrArea">{{ field }}</option>
             </select>
             <!--  -->
             <br>
@@ -100,6 +100,15 @@
                 .catch((err) => {
                     console.log ("Error occured!")
                     console.log (error)
+                }),
+
+                getIDToAreaMap ()
+                .then ((theMap) => {
+                    this.idToAreaMap = theMap
+                })
+                .catch((err) => {
+                    console.log ("Error occured!")
+                    console.log (error)
                 })
             },
             data: {
@@ -107,7 +116,6 @@
                 startD: '05-05-2020',
                 endD: '05-15-2020',
                 selectedCrop: "Kale",
-                fieldSelection: ["Chuau-1", "All", "SQ7"],
                 selectedField: "Chuau-1",
                 yieldNum: 0,
                 unitType: "Bunches",
@@ -120,11 +128,15 @@
                 farm: 'Sample Farm',
                 user: 'manager1',
                 language: 'Chinese',
-                idToCropMap: []
+                idToCropMap: [],
+                idToAreaMap: []
             },
             computed: {
                 mapToArrCrop () {
                     return (Array.from (this.idToCropMap.values()));
+                },
+                mapToArrArea () {
+                    return (Array.from (this.idToAreaMap.values()));
                 }
             },
             methods: {
