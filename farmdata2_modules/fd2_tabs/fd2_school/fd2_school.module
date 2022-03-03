@@ -92,6 +92,16 @@ function fd2_school_menu() {
             'weight' => 110,
         );
 
+        // Add a sub-tab named XYZ with content in xyz.html.
+        $items['farm/fd2-school/API1'] = array(
+            'title' => 'API1',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('api1.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
+
   return $items;
 };
 
