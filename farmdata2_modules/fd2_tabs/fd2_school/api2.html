@@ -64,7 +64,7 @@
             <li><strong>Crop:</strong>{{ reportCrop }}</li>
         </ul>
 
-        <p v-if="logs.length === 0">No matching records found</p>
+        <p v-if="harvestReportRows.length === 0">No matching records found</p>
         <table v-else border=1>
             <tr>
                 <th>Row</th>
@@ -74,13 +74,13 @@
                 <th>Yield</th>
                 <th>Unit</th>
             </tr>
-            <tr v-for="(log, index) in logs">
-                <td>{{ index + 1}}</td>
+            <tr v-for="(log, index) in harvestReportRows">
+                <td>{{ index + 1 }}</td>
                 <td>{{ log.date }}</td>
                 <td>{{ log.area }}</td>
                 <td>{{ log.crop }}</td>
                 <td>{{ log.yield }}</td>
-                <td>{{ log.units }}</td>
+                <td>{{ log.unit }}</td>
             </tr>
             </tr>
         </table>
@@ -133,6 +133,21 @@
                 },
                 mapAreaToArray() {
                     return Array.from(this.idToAreaMap.values());
+                },
+                harvestReportRows() {
+                    let tableRows = []
+                    for(let log of this.pageResult) {
+                        let tableRow = {
+                            date: dayjs(log.timestamp),
+                            area: log.area[0].name,
+                            yield: log.quantity[0].value,
+                            unit: log.quantity[0].unit.name,
+                            crop: this.idToCropMap.get(log.data.crop_tid)
+                        }
+		                tableRows.push(tableRow)
+                    }
+                    console.log(this.pageResult);
+                    return tableRows;
                 }
             },
             methods: {
@@ -142,22 +157,13 @@
 
                     getAllPages('/log.json?type=farm_harvest&timestamp[ge]=' + t1 + '&timestamp[le]=' + t2, this.pageResult)
                     .then(() => {
-                        console.log('success')
+                        console.log('success');
+                        // console.log(this.pageResult);
                     })
                     .catch((err) => {
                         console.log(err);
                     })
-                    console.log(this.pageResult);
                 },
-                // convertTimestamp: function() {
-                    // let t1 = dayjs(this.reportStartDate).unix();
-                    // let t2 = dayjs(this.reportEndDate).unix();
-                    // console.log(t1);
-                    // console.log(t2);
-
-                    // const request = "/log.json?type=farm_harvest&timestamp[ge]=" + t1 + "&timestamp[le]=" + t2;
-                    // console.log(request);
-                // },
                 addLog: function() {
                     axios.get('http://localhost/farm.json')
                         .then((response) => {
