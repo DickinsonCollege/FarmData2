@@ -71,9 +71,9 @@
         </ul>
         <!--Search results Harvest Log Table-->
         <!--If there are no larvest logs or state is default, display no matching records-->
-        <p v-if="this.state === 'default' || harvestLogs.length===0">No matching records</p>
+        <p v-if="harvestReportRows.length===0">No matching records</p>
         <!--div to hide to show this table depending on the state-->
-        <div v-else = "this.state==='edit'" v-cloak>
+        <div v-else = "this.state ==='edit'">
           <table border = 1>
             <!--Table row with table headings-->
             <tr>
@@ -86,7 +86,7 @@
               <th>Delete</th>
             </tr>
             <!--Table rows bound to data in Vue instance-->
-            <tr v-for = "(log,index) in harvestLogs">
+            <tr v-for = "(log,index) in harvestReportRows">
               <td>{{index + 1}}</td>
               <td>{{log.date}}</td>
               <td>{{log.area}}</td>
@@ -154,13 +154,13 @@
         reportUser:'',
         reportLanguage:'',
         // Harvest log table
-        harvestLogs:[],
         newHarvest:'',
         // Arrays created by API calls
         idToCropMap:[],
         idToAreaMap:[],
         // array for results
-        result:[],
+        harvestLogs:[],
+        
       },
       //Computed Property
       computed: {
@@ -170,6 +170,21 @@
         mapToAreaArray(){
             return Array.from(this.idToAreaMap.values());
         },
+        harvestReportRows() {
+            let tableRows = []
+            for(let log of this.harvestLogs) {
+                let tableRow = {
+                    date: dayjs.unix(log.timestamp),
+                    area: log.area[0].name,
+                    crop: this.idToCropMap.get(log.data.crop_tid),
+                    yield: log.quantity[0].value,
+                    units: log.quantity[0].unit.name,
+                }
+                tableRows.push(tableRow)
+            }
+            return tableRows
+        },
+
       },
       // Methods
       methods:{
@@ -177,7 +192,8 @@
         // generateReport function
         generateReport: function(){
           // Bound to Generate Report Button.
-
+          this.state = "edit";
+            
           // Call to axios.get function
           axios.get('/farm.json')  // this line sends the request.
             .then((response) => {
@@ -209,7 +225,7 @@
         dateRequest = '/log.json?type=farm_harvest&timestamp[ge]='+startDate+'&timestamp[le]='+endDate
         console.log(dateRequest)
 
-        getAllPages(dateRequest,this.result)
+        getAllPages(dateRequest,this.harvestLogs)
             .then(() => {
                 // All of the requested records have now been added to      result.
                 // Additional processing can happen here if necessary,
@@ -223,8 +239,6 @@
             // Execution continues here immediately after the request is made.
             // Result will not yet contain records but will be filled as responses are received.
             // The result will contain all records when then() is invoked.
-
-         
          
         },
       }
