@@ -42,7 +42,7 @@
 
     <!--Generate Report button-->
     <div class = "div.add-harvest" v-cloak>
-        <button class = "btn btn-primary" @click="addHarvest">Generate Report</button>
+        <button class = "btn btn-primary" @click="generateReport">Generate Report</button>
     </div>
     <br><br>
 
@@ -118,26 +118,26 @@
         // ID to Crop Map
         getIDToCropMap()
         .then((theMap) => {
-        // Process the map.
-        // Typically it is stored in the Vue data for later use.
-        this.idToCropMap = theMap
-        console.log(theMap)
+            // Process the map.
+            // Typically it is stored in the Vue data for later use.
+            this.idToCropMap = theMap
+            //console.log(theMap)
         })
         .catch((err) => {
-        // An error occured during the request, process it here.
-        console.log("An error has occured while mapping ID to crop")
+            // An error occured during the request, process it here.
+            console.log("An error has occured while mapping ID to crop")
         })
         // ID to Area Map
         getIDToAreaMap()
         .then((theMap) => {
-        // Process the map.
-        // Typically it is stored in the Vue data for later use.
-        this.idToAreaMap = theMap
-        console.log(theMap)
+            // Process the map.
+            // Typically it is stored in the Vue data for later use.
+            this.idToAreaMap = theMap
+            //console.log(theMap)
         })
         .catch((err) => {
-        // An error occured during the request, process it here.
-        console.log("An error has occured while mapping ID to area")
+            // An error occured during the request, process it here.
+            console.log("An error has occured while mapping ID to area")
         })
     
         },
@@ -147,8 +147,8 @@
         state: 'default',
         // Report Info
         reportTitle: 'My Sample Harvest Report',
-        reportStartDate:'2018-05-05',
-        reportEndDate:'2018-05-15',
+        reportStartDate:'2020-05-05',
+        reportEndDate:'2020-05-15',
         reportCrop:'Kale',
         reportFarm:'',
         reportUser:'',
@@ -157,8 +157,10 @@
         harvestLogs:[],
         newHarvest:'',
         // Arrays created by API calls
-        idToCropMap: [],
+        idToCropMap:[],
         idToAreaMap:[],
+        // array for results
+        result:[],
       },
       //Computed Property
       computed: {
@@ -171,54 +173,59 @@
       },
       // Methods
       methods:{
-        //addHarvest function
-        addHarvest: function(){
-          // Bound to Generate Report Button. Displays no results at first
-          // and then adds one new harvest log row with each click for 3 clicks
+          
+        // generateReport function
+        generateReport: function(){
+          // Bound to Generate Report Button.
 
           // Call to axios.get function
           axios.get('/farm.json')  // this line sends the request.
-         .then((response) => {
-	     // A:
-	     // Code here executes when the response is received.
-         // response is an Object created from the “Response Body JSON.
-         console.log("Got Response")
-         console.log(response)
-         //Details of report
-         this.reportFarm = response.data.name
-         this.reportUser = response.data.user.name
-         this.reportLanguage = response.data.languages.en.name
-         })
-         .catch((error) => {
-	     // B: 
-	     // Code here executes if an error occurs processing the request.
-         // error is an Object describing the error that occurred.
-         console.log("Error Occurred")
-         console.log(error)
+            .then((response) => {
+                // A:
+                // Code here executes when the response is received.
+                // response is an Object created from the “Response Body JSON.
+                console.log("Got Response from axios.get")
+                console.log(response)
+                //Details of report
+                this.reportFarm = response.data.name
+                this.reportUser = response.data.user.name
+                this.reportLanguage = response.data.languages.en.name
+            })
+            .catch((error) => {
+                // B: 
+                // Code here executes if an error occurs processing the request.
+                // error is an Object describing the error that occurred.
+                console.log("Error Occurred in axios.get")
+            })
+            // C: 
+            // Code here runs immediately after the request is sent,
+            // which will be before the code in the then() or catch() methods.
 
-         })
-         // C: 
-	     // Code here runs immediately after the request is sent,
-         // which will be before the code in the then() or catch() methods.
+        let startDate = dayjs(this.reportStartDate).unix()
+        let endDate = dayjs(this.reportEndDate).unix()
+        console.log(startDate)
+        console.log(endDate)
+
+        dateRequest = '/log.json?type=farm_harvest&timestamp[ge]='+startDate+'&timestamp[le]='+endDate
+        console.log(dateRequest)
+
+        getAllPages(dateRequest,this.result)
+            .then(() => {
+                // All of the requested records have now been added to      result.
+                // Additional processing can happen here if necessary,
+                // or then may be omitted.
+                console.log("Got Response from getAllPages")
+            })
+            .catch((err) => {
+                // An error occured during the requests, process it here.
+                console.log("Error occured in getAllPages")
+            })
+            // Execution continues here immediately after the request is made.
+            // Result will not yet contain records but will be filled as responses are received.
+            // The result will contain all records when then() is invoked.
+
          
          
-
-          // First click of Generate Report Button
-          if (this.harvestLogs.length == 0 && this.state=='default'){
-              this.state = "edit";
-          }
-          // New harvest log row 1
-          else if (this.harvestLogs.length == 0){
-              this.harvestLogs.push({date: '05/01/2018', area: 'Orion-3', crop: 'Kale', 'yield': 12, units: 'Bunches'});
-          }
-          // New harvest log row 2
-          else if (this.harvestLogs.length == 1){
-              this.harvestLogs.push({date: '05/03/2018', area: 'Orion-2', crop: 'Kale', 'yield': 7, units: 'Bunches'});
-          }
-          // New harvest log row 3
-          else if (this.harvestLogs.length == 2){
-              this.harvestLogs.push({date: '05/05/2018', area: 'Orion-3', crop: 'Kale', 'yield': 16, units: 'Bunches'});
-          }
         },
       }
   });
