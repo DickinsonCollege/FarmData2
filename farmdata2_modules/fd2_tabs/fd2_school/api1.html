@@ -3,7 +3,6 @@
     <head>
         <meta charset="utf-8">
         <title>Vue Data Binding Spike</title>
-        <link rel="stylesheet" href="main.css">
     </head>
     <body>
         <div id="vue-spike" v-cloak>
@@ -70,7 +69,7 @@
             <li v-for="card in cards">{{ card.rank + ' of ' + card.suit }}</li>
         </ul>
 
-        <button type="button" v-on:click="generate">
+        <button type="button" v-on:click="generate" @click="">
             Generate
         </button>
 
@@ -133,11 +132,28 @@
             user: '',
             language: '',
 
-
+        
 
             },
             methods: {
                 generate: function() {
+                    
+
+                    axios.get('api/endpoint/goes/here')  // this line sends the request.
+                        .then((response) => {
+                            console.log("Got Response")
+                            console.log(response)
+
+                            this.farm=response.data.name
+                            this.user=response.data.user.name
+                            this.language=response.data.languages.en.name
+
+                        })
+                        .catch((error) => {
+                            console.log("Error Occurred")
+                            console.log(error)
+                        })
+                    
                     this.logObj.push(this.logObj1);
                     this.farm = 'Sample Farm';
                     this.user = 'manager1';
