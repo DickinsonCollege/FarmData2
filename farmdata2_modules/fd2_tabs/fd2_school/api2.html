@@ -193,6 +193,7 @@
         generateReport: function(){
           // Bound to Generate Report Button.
           this.state = "edit";
+          this.harvestLogs.splice(0);
             
           // Call to axios.get function
           axios.get('/farm.json')  // this line sends the request.
