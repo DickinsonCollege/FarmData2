@@ -73,6 +73,8 @@
                     
                     cropMap: [],
                     areaMap: [],
+                    harLogsArr: [],
+
                     harvestLog: [
                 ],
                     row: 
@@ -131,6 +133,23 @@
                                 console.log(response);
                         })
                         C:  this.harvestLog.push(this.row);
+                            let stDate_timestamp = dayjs(this.startDate).unix();
+                            let endDate_timestamp = dayjs(this.endDate).unix();
+                            console.log(stDate_timestamp);
+                            console.log(endDate_timestamp);
+                            dateAPIStr = '/log.json?type=farm_harvest&timestamp[ge]=' + stDate_timestamp + '&timestamp[le]=' + endDate_timestamp;
+                            console.log(dateAPIStr);
+
+                        // Assumes that result is an existing array
+                        getAllPages(dateAPIStr, this.harLogsArr)
+                        .then(() => {
+                        console.log('getAllPages request completed successfully')
+                        })
+                        .catch((err) => {
+                        console.log('getAllPages request failed');
+                        console.log(err);
+                        })
+
                       },
                   }
                 
