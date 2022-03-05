@@ -59,7 +59,7 @@
             <th>Yeild</th>
             <th>Units</th>
         </tr>
-        <tr v-for="row in rows">
+        <tr v-for="row in harvestReportRows">
             <td v-for="item in row">{{item}}</td>
         </tr>
     </table>
@@ -92,7 +92,21 @@
       computed: {
         getCropNames(){ 
           return this.idToCropMap.values();
-      }
+      }, 
+            harvestReportRows() {
+    	let tableRows = []
+    	for(let log of this.result) {
+    		let tableRow = {
+    			date: log.timestamp,
+          area: log.area.name,
+          yeild: log.quantity[0].resource,
+          units: log.quantity[0].name,
+    		}
+    		tableRows.push(tableRow)
+    	}
+    	return tableRows
+    }
+
       },
       created() {
 	console.log("HarvestReport created!"); 
