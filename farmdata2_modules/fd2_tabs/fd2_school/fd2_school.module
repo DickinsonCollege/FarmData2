@@ -85,7 +85,7 @@ function fd2_school_menu() {
     'access arguments' => array('view fd2 school'), 
     'weight' => 110,
   ); 
- $items['farm/fd2-school/api1'] = array(
+$items['farm/fd2-school/api1'] = array(
     'title' => 'api1',
     'type' => MENU_LOCAL_TASK ,
     'page callback' => 'fd2_school_view',
@@ -93,6 +93,15 @@ function fd2_school_menu() {
     'access arguments' => array('view fd2 school'), 
     'weight' => 110,
   ); 
+  $items['farm/fd2-school/api2'] = array(
+    'title' => 'api2',
+    'type' => MENU_LOCAL_TASK ,
+    'page callback' => 'fd2_school_view',
+    'page arguments' => array('api2.html'),
+    'access arguments' => array('view fd2 school'), 
+    'weight' => 110,
+  ); 
+
   return $items;
 };
 
