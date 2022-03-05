@@ -1,0 +1,148 @@
+<div id="test" v-cloak>
+    <h1>Harvest Report</h1>
+    <p>This page is a <i>mockup</i> of a simplified harverst report.</p>
+    <label for="title">Title:</label>
+    <input type=”text” v-model="title">
+    <br></br>
+    <label for="start">Start:</label>
+    
+    <input type="date" id="start" name="start"
+    min="2014-01-01" max="2022-01-01" v-model="start">
+    
+    <label for="end">End</label>
+
+    <input type="date" id="end" name="end"
+       min="2020-05-05" max="2022-01-01" v-model="end">
+    <br></br>
+    <label for="crop">Crop:</label>
+    <select id="crop" name="crop" v-model="crop">
+        <option 
+        v-for="crop in getCropNames" 
+        :selected="option == 'Kale'"
+        >{{ crop }}</option>
+    </select>
+         
+    <label for="field">Field:</label>
+    <select id="field" name="field" v-model="field">
+          <option 
+        v-for="field in fields" 
+        :selected="option == 'All'"
+        >{{ field }}</option>
+    </select>
+
+    <br> </br>
+<button class="btn btn-primary" v-on:click="generateReport" :disabled="start > end"> Generate Report </button>
+    <hr> </hr>
+    <h1 v-if="rows.length === 0">Empty Report</h1>
+
+    <h1 v-if="rows.length != 0">{{title ? title : 'Mock Harvest Report'}}</h1>
+    <p>Details:</p>
+    <ul>
+    <li><strong>Farm</strong>:{{Farm}}</li>
+    <li><strong>User</strong>:{{User}}</li>
+    <li><strong>Language</strong>:{{Language}}</li>
+    </ul>
+
+    <ul>
+    <li><strong>Start</strong>:{{start}}</li>
+    <li><strong>End</strong>:{{end}}</li>
+    <li><strong>Crop</strong>:{{crop}}</li>
+    </ul>
+
+    <br></br>
+    <table border="1">
+        <tr>
+            <th>Row</th>
+            <th>Date</th>
+            <th>Area</th>
+            <th>Crop</th>
+            <th>Yeild</th>
+            <th>Units</th>
+        </tr>
+        <tr v-for="row in rows">
+            <td v-for="item in row">{{item}}</td>
+        </tr>
+    </table>
+    	<script src="https://unpkg.com/vue@2"></script>
+	<script>
+		var test =new Vue({
+			el: "#test", 
+			data: {    
+                result:[],
+                myDate:1,
+                Farm:"", 
+                User:"", 
+                Language:"",
+                title:"My Sample Harvest Report", 
+                end:'2020-05-15',
+                start:'2020-05-05', 
+                field:'All',
+                crop:'Kale',
+                rowNum:1,
+                fields:[
+                    'All', 
+                    'Chuau-1', 
+                    'SQ7',
+                ], 
+                rows:[
+                
+                ], 
+                idToCropMap: []
+            }, 
+      computed: {
+        getCropNames(){ 
+          return this.idToCropMap.values();
+      }
+      },
+      created() {
+	console.log("HarvestReport created!"); 
+        getIDToCropMap()
+        .then((theMap) => {
+            this.idToCropMap = theMap;
+        })
+        .catch((err) => {
+            // An error occured during the request, process it here.
+        })
+    },
+
+      methods: {
+        generateReport: function() {
+          axios.get('http://localhost/farm.json').then((response) => {
+	console.log("Got Response");
+  console.log(response);
+  this.Farm=response.data.name;
+  this.User=response.data.user.name;
+  this.Language=response.data.languages.en.name;
+  let start = dayjs(this.start).unix();
+  let end = dayjs(this.end).unix();
+  let endpoint = '/log.json?type=farm_harvest&timestamp[ge]='+start + '&timestamp[le]=' +end;
+  console.log(start);
+  console.log(end);
+  console.log(endpoint)
+})
+.catch((error) => {
+	console.log("Error Occurred");
+  console.log(error);
+
+})
+
+getAllPages('/log.json?type=farm_harvest', result)
+.then(() => {
+})
+.catch((err) => {
+})
+          this.rows.push(
+            { 'rowNum': this.rowNum,
+              'date': this.start, 'area': this.field, 'crop': this.crop, 'yield': '10', 'units': 'Bunches'});
+          this.rowNum += 1;
+
+        } 
+       
+      }
+    }
+      
+)
+
+        Vue.config.devtools = true;
+	</script>
+</div>
