@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+    </head>
+
+    <body>
+        <h1>
+            Harvest Report
+        </h1>
+        <p>
+            This page is a <i>mockup</i> of a simplified harvest report.
+        </p>
+        <p>
+            <div id="rpt" class = "v-cloak">
+                <br/>
+                <div class = "add-item">
+                    <label for="Title">Title:</label>
+                    <input type="text" id="Title" name="Title" v-model="header">
+                    
+                    <br/>
+
+                        <label for="StartDate">Start date:</label>
+                        <input type="date" id="start" name="plant start" v-model="startDay" min="2014-01-01" max="2022-01-01"
+                        :disabled= "startDay >= endDay">
+                    
+
+                        <label for="EndDate">End date:</label>
+                        <input type="date" id="end" name="plant end" v-model="endDay" min="2020-05-05" max="2022-01-01" 
+                        :disabled= "endDay <= startDay">
+                    
+
+                    <br/>
+                        <label for="CropType">Crop:</label>
+
+                        
+                            <select id="groups" name="Crop" v-model="chosenCrop">
+                                <optgroup label="possible crops"> 
+
+                                    <option v-for="item in mapToArray">{{item}}</option>
+
+                                </optgroup> <br/>
+                            </select>
+                        
+
+                        <label for="CropType">Field:</label>
+                            
+                            <select id="groups" name="Field">
+                                <optgroup label="possible field"> 
+                                    <option v-for="item in fieldList">{{item}}</option>
+                                </optgroup>
+                        </select>
+                    <br/>
+                    <button type="btn btn-primary" @click="saveLog">Generate Report</button>
+                    </div>
+        </p>
+
+        <hr/> 
+        
+        <p> 
+                    <h1>{{header ? header:"Mock Harvest Report"}}</h1>
+                    Details:
+                <ul>
+                    <li> <strong>Farm</strong>:Sample Farm</li>
+                    <li> <strong>User</strong>:manager1</li>
+                    <li> <strong>Language</strong>:English</li>
+                </ul>
+                <br/>
+                <ul>
+                    <li><strong> Start</strong>:{{startDay}}</li>
+                    <li><strong> End</strong>:{{endDay}}</li>
+                    <li><strong> Crop</strong>:{{chosenCrop}}</li>
+                </ul>
+                <div class = "Sample_Log">
+                <p v-if="sampleLog.length === 0">There are no matching records</p> 
+                <table border = 1 v-else>
+                    <tr>
+                        <td><strong>Row</strong></td>
+                        <td><strong>Date</strong></td>
+                        <td><strong>Area</strong></td>
+                        <td><strong>Crop</strong></td>
+                        <td><strong>Yield</strong></td>
+                        <td><strong>Unit</strong></td>
+                    </tr>
+                    <tr v-for="(item,index) in sampleLog">
+                        <td>{{index + 1}}</td>
+                        <td v-for="(items in item">{{items}}</td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+        </p>
+        
+       <script>
+           var ReportVue= new Vue({
+                el:"#rpt",
+                data:{
+                    Response:null,
+                    header:'My Sample Harvest Report',
+
+                    startDay: "2018-05-01",
+                    endDay: "2018-05-15",
+                
+                    chosenCrop:"Kale",
+                    cropList:[
+                    "Kale",
+                    "Broccoli",
+                    "Peas",
+                    ],
+                    fieldList:[
+                    "All",
+                    "SQ7",
+                    "Chuau-1",
+                    ],
+                    ANewLog:{ Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
+                    sampleLog:[
+                        // {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
+                        // {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
+                    ],
+                    Farm:"",
+                    User:"",
+                    Language:"",
+                    idToCropMap: []
+                },
+                created() {
+                        console.log("HarvestReport created!")
+                        getIDToCropMap()
+                            .then((theMap) => {
+                                    this.idToCropMap= theMap
+                            })
+                            .catch((err) => {
+
+                            })
+                    },
+                computed:{
+                    mapToArray(){
+                        return Array.from(this.idToCropMap.values())
+                    }
+                },
+                methods: {
+                    saveLog: function () {
+                        axios
+                            .get('http://localhost/farm.json')
+                            .then(response => {
+                                    console.log("Got Response")
+                                    console.log(response)
+                                    this.Farm = response.data.name
+                                    this.User = response.data.user.name
+                                    this.Language = response.data.languages.en.name
+                                })
+                            .catch(error => {
+                                	console.log("Error Occurred")
+	                                // console.log(error)
+                                })
+                        if(this.ANewLog !== {}){
+                            this.sampleLog.push(this.ANewLog);
+                        } 
+                        
+                    },
+                },
+           });
+           Vue.config.devtools = true;
+       </script>
+    </body>
+</html>
+
+    
