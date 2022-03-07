@@ -94,7 +94,8 @@
             log_display: false,
             farm: "",
             user: "",
-            language: ""
+            language: "",
+            results: []
         },
         methods:{
             newLog: function(){
@@ -102,6 +103,29 @@
                 // this.farm="Sample Farm";
                 // this.user="manager1";
                 // this.language="English";
+                
+                start_date = this.start_date
+                end_date = this.end_date
+                let timestamp_start = dayjs(start_date).unix()
+                let timestamp_end= dayjs(end_date).unix()
+
+                console.log(timestamp_start)
+                console.log(timestamp_end)
+
+                request_string = "/log.json?type=farm_harvest&timestamp[ge]=" + String(timestamp_start) + "&timestamp[le]=" + String(timestamp_end)
+
+                console.log(request_string)
+
+                getAllPages(request_string, this.results)
+                .then(() => {
+                    console.log("Results processed correctly")
+                    // All of the requested records have now been added to result.
+                    // Additional processing can happen here if necessary,
+                    // or then may be omitted.
+                })
+                .catch((err) => {
+                    console.log("An error has occurred: " + String(err))
+                })
 
                 axios.get('/farm.json')
                 .then((response) => {
