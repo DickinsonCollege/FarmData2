@@ -82,9 +82,9 @@
                         <td><strong>Yield</strong></td>
                         <td><strong>Unit</strong></td>
                     </tr>
-                    <tr v-for="(item,index) in sampleLog">
+                    <tr v-for="(item,index) in LogListRetrieved">
                         <td>{{index + 1}}</td>
-                        <td v-for="(items in item">{{items}}</td>
+                        <td v-for="items in item">{{items}}</td>
                     </tr>
                 </table>
                 </div>
@@ -98,8 +98,8 @@
                     Response:null,
                     header:'My Sample Harvest Report',
 
-                    startDay: "2018-05-01",
-                    endDay: "2018-05-15",
+                    startDay: "2020-05-01",
+                    endDay: "2020-05-15",
                 
                     chosenCrop:"Kale",
                     cropList:[
@@ -112,16 +112,15 @@
                     "SQ7",
                     "Chuau-1",
                     ],
-                    ANewLog:{ Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
+                    ANewLog:{Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
                     sampleLog:[
-                        // {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
-                        // {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
                     ],
                     Farm:"",
                     User:"",
                     Language:"",
                     idToCropMap: [],
-                    pagesResult:[],
+                    LogListRetrieved:[],
+                    LogList:[],
                 },
                 created() {
                         console.log("HarvestReport created!")
@@ -140,14 +139,11 @@
                 },
                 methods: {
                     saveLog: function () {
-                        let timestampStart = dayjs(this.startDay).unix();
-                        let timestampEnd = dayjs(this.endDay).unix();
-                        let logString = "";
                         axios
                             .get('http://localhost/farm.json')
                             .then(response => {
                                     console.log("Got Response")
-                                    console.log(response)
+                                    // console.log(response)
                                     this.Farm = response.data.name
                                     this.User = response.data.user.name
                                     this.Language = response.data.languages.en.name
@@ -156,20 +152,41 @@
                                 	console.log("Error Occurred")
 	                                // console.log(error)
                                 })
+                                
+                        let timestampStart = dayjs(this.startDay).unix();
+                        let timestampEnd = dayjs(this.endDay).unix();
+                        let logString = "";
+                        
+
                         if(this.ANewLog !== {}){
                             this.sampleLog.push(this.ANewLog);
                         } 
-                        console.log(timestampStart);
-                        console.log(timestampEnd);
-                        
-                        logString = "/log.json?type=farm_harvest&timestamp[ge]=" +timestampStart +"&timestamp[le]=" + timestampEnd;
-                        console.log(logString);
-                        getAllPages(logString, this.pagesResult)
+                        // console.log(timestampStart);
+                        // console.log(timestampEnd);
+                        // console.log(logString);
+                        getAllPages("/log.json?type=farm_harvest&timestamp[ge]=" +timestampStart +"&timestamp[le]=" + timestampEnd, this.LogList)
                         .then(() => {
-                            console.log("It ran!")
+                            console.log("It ran!");
+                            // console.log(this.LogList);
+                            let tableRows = [];
+                            for(let log of this.LogList) {
+                                let tableRow = {
+                                    date: log.timestamp,
+                                    area: log.area[0].name,
+                                    crop: this.idToCropMap.get(log.data.crop_tid),
+                                    yield: log.quantity[0].value,
+                                    unit: log.quantity[0].unit.name,
+                                }
+                                tableRows.push(tableRow);
+                            }
+                            this.LogListRetrieved = tableRows;
                         })
                         .catch((err) => {
+                            console.log("An error has occurred");
                         })
+                        
+                        // console.log(this.LogListRetrieved);
+                        
                     },
                 },
            });
