@@ -120,7 +120,8 @@
                     Farm:"",
                     User:"",
                     Language:"",
-                    idToCropMap: []
+                    idToCropMap: [],
+                    pagesResult:[],
                 },
                 created() {
                         console.log("HarvestReport created!")
@@ -139,6 +140,9 @@
                 },
                 methods: {
                     saveLog: function () {
+                        let timestampStart = dayjs(this.startDay).unix();
+                        let timestampEnd = dayjs(this.endDay).unix();
+                        let logString = "";
                         axios
                             .get('http://localhost/farm.json')
                             .then(response => {
@@ -155,7 +159,17 @@
                         if(this.ANewLog !== {}){
                             this.sampleLog.push(this.ANewLog);
                         } 
+                        console.log(timestampStart);
+                        console.log(timestampEnd);
                         
+                        logString = "/log.json?type=farm_harvest&timestamp[ge]=" +timestampStart +"&timestamp[le]=" + timestampEnd;
+                        console.log(logString);
+                        getAllPages(logString, this.pagesResult)
+                        .then(() => {
+                            console.log("It ran!")
+                        })
+                        .catch((err) => {
+                        })
                     },
                 },
            });
