@@ -84,25 +84,25 @@
 </div>
 
 <script>
-  var harvestReport = new Vue({
-      created() {
-	  getIDToCropMap()
-	      .then((theMap) => {
-		  this.idToCropMap = theMap;
-	      })
-	      .catch((err) => {
-		  console.log("Error occurred in getIDToCropMap()")
-		  console.log(err)
-	      });
-	  getIDToAreaMap()
-	      .then((theMap2) => {
-		  this.idToFieldMap = theMap2;
-	      })
-	      .catch((err) => {
-		  console.log("Error occured in getIDToAreaMap()")
-		  console.log(err)
-	      });
-	    },
+    var harvestReport = new Vue({
+        created() {
+            getIDToCropMap()
+                .then((theMap) => {
+                    this.idToCropMap = theMap;
+                })
+                .catch((err) => {
+                    console.log('Error occurred in getIDToCropMap()');
+                    console.log(err);
+                });
+            getIDToAreaMap()
+                .then((theMap2) => {
+                    this.idToFieldMap = theMap2;
+                })
+                .catch((err) => {
+                    console.log('Error occured in getIDToAreaMap()');
+                    console.log(err);
+                });
+        },
         el: '#harvestReport',
         data: {
             title: 'My Sample Harvest Report',
@@ -117,46 +117,69 @@
                 yield: 12,
                 units: 'Bunches',
             },
-	    farmInfo : {
-		name: '',
-		user: '',
-		language: '',
-	    },
-	    defFarmInfo : {
-		name: 'Sample Farm',
-		user: 'manager1',
-		language: 'English',
-	    },
-	    idToCropMap: [],
-	    idToFieldMap: [],
+            farmInfo: {
+                name: '',
+                user: '',
+                language: '',
+            },
+            defFarmInfo: {
+                name: 'Sample Farm',
+                user: 'manager1',
+                language: 'English',
+            },
+            idToCropMap: [],
+            idToFieldMap: [],
+            startDateUnix: '',
+            endDateUnix: '',
+            dateRequest: '',
+            datePages: [],
         },
-      computed: {
-	  cropMapToArray: function () {
-	      return Array.from(this.idToCropMap.values());
-	  },
-	  fieldMapToArray: function () {
-	      return Array.from(this.idToFieldMap.values());
-	  },
-      },
+        computed: {
+            cropMapToArray: function () {
+                return Array.from(this.idToCropMap.values());
+            },
+            fieldMapToArray: function () {
+                return Array.from(this.idToFieldMap.values());
+            },
+        },
         methods: {
             generateReport: function () {
-		axios.get('/farm.json')
-		    .then((response) => {
-		        console.log("Got Response")
-                        console.log(response)
-			this.farmInfo.name = response.data.name;
-			this.farmInfo.user = response.data.user.name;
-			this.farmInfo.language = response.data.languages.en.name;
-		    })
-		    .catch((error) => {
-			console.log("Error Occurred")
-                        console.log(error)
-		    })
+                axios
+                    .get('/farm.json')
+                    .then((response) => {
+                        console.log('Got Response');
+                        console.log(response);
+                        this.farmInfo.name = response.data.name;
+                        this.farmInfo.user = response.data.user.name;
+                        this.farmInfo.language =
+                            response.data.languages.en.name;
+                    })
+                    .catch((error) => {
+                        console.log('Error Occurred');
+                        console.log(error);
+                    });
                 if (this.newLog != '') {
                     this.logs.push(this.newLog);
                 }
                 this.newLog = '';
-		this.farmInfo = this.defFarmInfo;
+                this.farmInfo = this.defFarmInfo;
+                this.startDateUnix = dayjs(this.startDate).unix();
+                this.endDateUnix = dayjs(this.endDate).unix();
+                this.dateRequest =
+                    '/log.json?type=farm_harvest&timestamp[ge]=' +
+                    this.startDateUnix +
+                    '&timestamp[le]=' +
+                    this.endDateUnix;
+                getAllPages('' + this.dateRequest + '')
+                    .then((res) => {
+                        this.datePages = res;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        console.log(
+                            'Error in getAllPages.'
+                        );
+                    });
             },
         },
     });
