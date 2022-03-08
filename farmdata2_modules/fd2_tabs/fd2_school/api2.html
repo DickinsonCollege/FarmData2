@@ -62,7 +62,7 @@
         <li><strong>Crop: </strong>{{ crop }}</li>
     </ul>
 
-    <table v-if="logs != ''" border="1">
+    <table v-if="harvestReportRows != ''" border="1">
         <tr>
             <th>Row</th>
             <th>Date</th>
@@ -71,7 +71,7 @@
             <th>Yield</th>
             <th>Units</th>
         </tr>
-        <tr v-for="(log,index) in logs">
+        <tr v-for="(log,index) in harvestReportRows">
             <td>{{index + 1}}</td>
             <td>{{log.date}}</td>
             <td>{{log.area}}</td>
@@ -141,6 +141,20 @@
             fieldMapToArray: function () {
                 return Array.from(this.idToFieldMap.values());
             },
+            harvestReportRows() {
+                let tableRows = []
+                for(let log of this.datePages) {
+                    let tableRow = {
+                        date: dayjs.unix('' + log.timestamp + '').format('YYYY-MM-DD'),
+                        area: log.area[0].name,
+                        crop: this.idToCropMap.get(log.data.crop_tid),
+                        yield: log.quantity[0].value,
+                        units: log.quantity[0].unit.name,
+                    }
+                    tableRows.push(tableRow)
+                }
+                return tableRows
+            }
         },
         methods: {
             generateReport: function () {
