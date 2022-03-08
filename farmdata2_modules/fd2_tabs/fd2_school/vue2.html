@@ -50,7 +50,7 @@
                                                 <li><strong>Crop: </strong>{{ cropSelect }}</li>
                                             </ul>
 			<table border=2>
-				<tr>
+				<tr v-if= "harvestLog.length > 0"></tr>
                     <td><strong> Row </strong></td>
 					<td><strong> Date </strong></td>
 					<td><strong> Area </strong></td>
@@ -58,7 +58,11 @@
 					<td><strong> Yield </strong></td>
 					<td><strong> Units </strong></td>
 				</tr>
-					<tr v-for="harvestLogs in harvestLog">
+					<tr v-for="(harvestLogs, index) in harvestLog" v-if=>
+                     
+                        
+                        <td> {{ index + 1 }}</td>
+
 					<td> {{ harvestLogs.date }} </td>
 					<td> {{ harvestLogs.field }} </td>
 					<td> {{ harvestLogs.crop }} </td>
@@ -84,7 +88,7 @@
                     crop: ['Kale', 'Broccoli', 'Pease'],
                     field: ['All', 'Chuau-1', 'SQ7'],
                     harvestLog:[
-                      {}  
+                       
                     ],
                         row: 
                         {date: '05/01/2018', field: 'Orion-3', crop: 'Kale', yield: '12', units: 'Bunches'}
