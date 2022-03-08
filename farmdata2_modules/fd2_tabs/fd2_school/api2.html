@@ -38,7 +38,7 @@
         <li><strong>Crop:</strong>{{ crop }}</li>
     </ul>
     <br><br>
-    <div v-if='harvestLogs.length !== 0'>
+    <div v-if='harvestReportRows.length !== 0'>
     <table border=1>
       <tr>
         <td><strong>Row</strong></td>
@@ -48,7 +48,7 @@
         <td><strong>Yield</strong></td>
         <td><strong>Units</strong></td>
       </tr>
-      <tr v-for='(log,index) in harvestLogs'>
+      <tr v-for='(log,index) in harvestReportRows'>
         <td>{{ index }}</td>
         <td>{{ log.date }}</td>
         <td>{{ log.area }}</td>
@@ -105,7 +105,21 @@
 	    },
 	    areaMapValueToArray() {
 		return Array.from(this.idToAreaMap.values()); 
-	    }
+	    },
+	    harvestReportRows() {
+		let tableRows = []
+		for(let log of this.harvestLogArr) {
+		    let tableRow = {
+			date: log.timestamp,
+			area: log.area[0].name,
+			yield: log.quantity[0].value,
+			units: log.quantity[0].unit.name, 
+			crop: this.idToCropMap.get(log.data.crop_tid)
+		    }
+		    tableRows.push(tableRow)
+		}
+		return tableRows
+	    }	
 	},
         methods: {
 	    generateReport: function() {
