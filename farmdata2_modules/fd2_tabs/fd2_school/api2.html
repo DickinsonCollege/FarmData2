@@ -33,7 +33,7 @@
     <br /><br />
 
     <label for="crop">Crop: </label>
-    <select id="crop" name="crop" v-model="crop">
+    <select id="crop" name="crop">
         <option v-for="selCrop in cropMapToArray">{{ selCrop }}</option>
     </select>
 
@@ -136,10 +136,10 @@
         },
         computed: {
             cropMapToArray: function () {
-                return Array.from(this.idToCropMap.values());
+                return ['All'].concat(Array.from(this.idToCropMap.values()));
             },
             fieldMapToArray: function () {
-                return Array.from(this.idToFieldMap.values());
+                return ['All'].concat(Array.from(this.idToFieldMap.values()));
             },
             harvestReportRows() {
                 let tableRows = []
@@ -184,6 +184,7 @@
                     this.startDateUnix +
                     '&timestamp[le]=' +
                     this.endDateUnix;
+                this.datePages = '',
                 getAllPages('' + this.dateRequest + '')
                     .then((res) => {
                         this.datePages = res;
