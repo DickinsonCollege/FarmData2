@@ -11,10 +11,10 @@
             
             
             <label for="startDate">Start: </label>
-            <input v-model="startDate" type="date" min="2014-01-01" max="2022-01-01">
+            <input v-model="startDate" type="date" min="2014-01-01" max="2022-01-01" :max="endDate">
 			
             <label for="endDate">    End: </label>
-            <input v-model="endDate" type="date" min="2014-01-01" max="2022-01-01">
+            <input v-model="endDate" type="date" min="2014-01-01" max="2022-01-01" :min="startDate">
             
             <br>
             
@@ -46,8 +46,8 @@
 						<li><strong>User: </strong>manager1</li>
 						<li><strong>Language: </strong>English</li><br>
 						<li><strong>Start: </strong>{{ startDate }}</li>
-                                                <li><strong>End: </strong>{{ endDate }}</li>
-                                                <li><strong>Crop: </strong>{{ cropSelect }}</li>
+                        <li><strong>End: </strong>{{ endDate }}</li>
+                        <li><strong>Crop: </strong>{{ cropSelect }}</li>
                                             </ul>
 			<table border=2>
 				<tr v-if= "harvestLog.length > 0"></tr>
