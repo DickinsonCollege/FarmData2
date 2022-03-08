@@ -65,7 +65,7 @@
                     <th>Yield</th>
                     <th>Units</th>
                 </tr>
-                <tr v-for="(log, index) in log_list">
+                <tr v-for="(log, index) in harvestReportRows">
                     <td>{{index+1}}</td>
                     <td>{{log.date}}</td>
                     <td>{{log.area}}</td>
@@ -95,7 +95,24 @@
             farm: "",
             user: "",
             language: "",
-            results: []
+            results: [],
+            idToCropMap: []
+        },
+        computed: {           
+            harvestReportRows() {
+                let tableRows = []
+                for(let log of this.results) {
+                    let tableRow = {
+                        date: dayjs.unix(log.timestamp),
+                        area: log.area[0].name,
+                        yield: log.quantity[0].unit.id,
+                        units: log.quantity[0].unit.name,
+                        crop: this.idToCropMap.get(log.data.crop_tid)
+                    }
+                    tableRows.push(tableRow)
+                }
+                return tableRows
+            }
         },
         methods:{
             newLog: function(){
@@ -153,6 +170,17 @@
             deleteItem: function(index){
                 this.log_list.splice(index, 1)
             }
+        },
+        created(){
+            getIDToCropMap()
+                .then((theMap) => {
+                    this.idToCropMap=theMap
+                    console.log("crop map created")
+                })
+                .catch((err) => {
+                    console.log("An error occurred in getting the IDToCropMap.")
+                    console.log(err)
+                })
         }
     });
 
