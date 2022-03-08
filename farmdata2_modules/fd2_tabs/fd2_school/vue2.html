@@ -38,7 +38,7 @@
             
             <br>
             
-            <button class="btn btn-primary" @click="harvestLog.push(row)">Generate Report</button>
+            <button class="btn btn-primary" @click="addLog">Generate Report</button>
 			<h1>{{ header.length == 0 ? "Mock Harvest Report" : header }}</h1>
 				<p>Details:</p>
 					<ul>
@@ -58,11 +58,11 @@
 					<td><strong> Units </strong></td>
 				</tr>
 					<tr v-for="harvestLogs in harvestLog">
-					<td> {{ row.date }} </td>
-					<td> {{ row.field }} </td>
-					<td> {{ row.crop }} </td>
-					<td> {{ row.yield }} </td>
-					<td> {{ row.units }} </td>
+					<td> {{ harvestLogs.date }} </td>
+					<td> {{ harvestLogs.field }} </td>
+					<td> {{ harvestLogs.crop }} </td>
+					<td> {{ harvestLogs.yield }} </td>
+					<td> {{ harvestLogs.units }} </td>
               </table>
 
              
@@ -90,7 +90,13 @@
                     ,
                      row2: [
                         {date: '2018-05-02', field: 'Chuau-1', crop: 'Kale', yield: '10', units: 'bundles'}
-                    ]
+                    ],
+                    },
+                    methods: {
+                        addLog:function(){
+                            harvestLog.push(this.row)
+                        
+                    }
                   }
                   });
 
