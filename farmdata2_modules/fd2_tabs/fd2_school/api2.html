@@ -96,6 +96,7 @@
             language: '',
 	    idToCropMap: [],
 	    idToAreaMap: [],
+	    harvestLogArr: [],
         },
 	computed: {
 	    cropMapValueToArray() {
@@ -122,6 +123,20 @@
 		})
 
 		this.harvestLogs.push({date: "2018-05-01", area: "Orion-3", crop: "Kale", yield: "12", units: "Bunches"});
+		let timestampStart = dayjs(this.startDate).unix();
+		let timestampEnd = dayjs(this.endDate).unix();
+		console.log('Start date: ' + timestampStart);
+		console.log('End date: ' + timestampEnd); 
+		apiString = '/log.json?type=farm_harvest&timestamp[ge]=' + timestampStart + '&timestamp[le]=' + timestampEnd
+		console.log(apiString)	
+		getAllPages(apiString, this.harvestLogArr)
+		.then(() => {
+			console.log('api request fulfilled')
+		})
+		.catch((err) => {
+			console.log('An error occured retrieving harvest log with apiString')
+			console.log(err)
+		})
 	    },
 	},
 
