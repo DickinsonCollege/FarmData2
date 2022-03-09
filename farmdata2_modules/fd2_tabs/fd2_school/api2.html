@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="report">
+    <h1> Harvest Report </h1>
+    <p> This page is a <i>mockup</i> of a simplified harvest report </p>
+    
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" v-model="rpTitle" value="My Sample Harvest Report">
+    <br>
+
+    <label for="start">Start:</label>
+    <input type="date" id="start" name="start" 
+	v-model="rpStartDate"  v-bind:disabled='rpStartDate>rpEndDate'
+	min="2014-01-01" max="2022-01-01">
+    <label for="end">End:</label>
+    <input type="date" id="end" name="end" 
+	v-model="rpEndDate" v-bind:disabled='rpEndDate<rpStartDate'
+	min="2020-05-05" max="2022-01-01">
+    <br>
+
+    <label for="crop">Crop:</label>
+    <select id="crop" name="crop" v-model="rpCrop">
+      <option v-for="item in cropMap">{{item}}</option>
+    </select>
+
+
+    <label for="field">Field:</label>
+    <select id="field" name="crop">
+      <option v-for="item in rpFields">{{item}}</option>
+    </select>
+    <br>
+
+    <button type="button" v-on:click='changeState("data"); addLog(); setDetails()'> Generate Report </button>
+
+    <hr>
+    
+    <h1> {{ rpTitle ? rpTitle : "Mock Harvest Report"}} </h1>
+    <p> Details: </p>
+    <ul>
+      <li><b>Farm:</b>{{farm}}</li>
+      <li><b>User:</b>{{user}}</li>
+      <li><b>Language:</b>{{language}}</li>
+      <br>
+      <li><b>Start:</b>{{rpStartDate}}</li>
+      <li><b>End:</b>{{rpEndDate}}</li>
+      <li><b>Crop:</b>{{rpCrop}}</li>
+    </ul>
+    <p v-if='state==="nodata"'> There is no data to display.</p>
+    <table border="1">
+      <tr v-if='state!=="nodata"'>
+	<th>Row</th>
+        <th>Date</th>
+        <th>Area</th>
+        <th>Crop</th>
+        <th>Yield</th>
+        <th>Unit</th>
+      </tr>
+      <tr v-for="(item,index) in rpLogs">
+	<td>{{index + 1}}</td>
+        <td>{{item.date}}</td>
+        <td>{{item.area}}</td>
+        <td>{{item.crop}}</td>
+        <td>{{item.yield}}</td>
+        <td>{{item.units}}</td>
+      </tr>
+    </table>
+    </div>
+
+    <script>
+//      Vue.config.devtools = true;
+      var vreport = new Vue({
+        el: '#report',
+
+	created() {
+	  console.log("HarvestReport created!")
+	  getIDToCropMap()
+	  .then( (theMap) => {
+		this.idToCropMap = theMap;
+		console.log(theMap);
+	  })
+	  .catch( (error) => {
+		console.log(error);
+	  })
+	},
+
+        data: {
+	  farm: '',
+	  user: '',
+	  language: '',
+	  state: 'nodata',
+          rpTitle: 'My Sample Harvest Report',
+          rpStartDate: '2020-05-05',
+          rpEndDate: '2020-05-15',
+          rpCrop: 'Kale',
+          rpCrops: ['Kale', 'Broccoli', 'Peas'],
+          rpFields: ['All', 'Chuau-1', 'SQ7'],
+          rpLogs: [],
+	  idToCropMap: [],
+        },
+
+	computed: {
+	  cropMap() {
+		return Array.from(this.idToCropMap.values());
+	  }
+	},
+
+        methods: {
+	  addLog: function() {
+	    this.rpLogs.push(
+		{date: '2018-05-01', area: 'Orion-3',
+		crop: 'Kale', yield: 12, units: 'Bunches'});
+	  },
+	  changeState: function(newState) {
+	  	this.state = newState;
+	  },
+	  setDetails: function(){
+		axios.get('/farm.json')
+		.then( (response) => {
+			console.log("Got Response");
+			console.log(response);
+			this.farm = response.data.name;
+	                this.language = response.data.languages.en.name;
+        	        this.user = response.data.user.name;
+		})
+		.catch( (error) => {
+			console.log("Error Occurred");
+			console.log(error);
+		})
+	  }
+	}
+      });
+     
+      Vue.config.devtools = true;
+    </script>
+  </body>
+</html>
