@@ -93,7 +93,7 @@
 			<th>Units</th>
 		</tr>
 
-		<tr v-for="(x,index) in table1">
+		<tr v-for="(x,index) in harvestReportRows">
 			<th> {{ index + 1 }} </th>
 			<th> {{ x.date }}</th>
 			<th> {{ x.area }}</th>
@@ -176,7 +176,22 @@
 
 			transformAreaMap() {
                                 return Array.from(this.idToAreaMap.values());
-                        }
+                        },
+
+			harvestReportRows() {
+				let tableRows = []
+				for(let log of this.pageArr) {
+					let tableRow = {
+						date:log.timestamp,
+						area:log.area[0].name,
+						yield:log.quantity[0].label,
+						units:log.quantity[0].unit.name,
+						crop: crop = this.idToCropMap.get(log.data.crop_tid),
+					}
+					tableRows.push(tableRow)
+				}
+				return tableRows
+			}
 
 		},
 
