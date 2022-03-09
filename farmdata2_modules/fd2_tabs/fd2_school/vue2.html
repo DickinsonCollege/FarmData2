@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <div id="harvestReport" style="[v-cloak] {display:none;}">
+    <!-- PAGE HEADER -->
     <h1>Harvest Report</h1>
     <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+    <!-- REPORT TITLE INPUT -->
     <label for="reportTitle"> Title:</label>
     <input type="text" id="reportTitle" name="reportTitle" v-model="header">
     <br></br>
+    <!-- REPORT START DATE INPUT -->
     <label for="reportStartDate">Start:</label>
-    <input type="Date" name="reportStartDate" id="reportStartDate" min="2014-01-01" max="2020-01-01" v-model="reportStartDate">
+    <input type="Date" name="reportStartDate" id="reportStartDate" min="2014-01-01" max="2022-01-01" v-model="reportStartDate">
+    <!-- REPORT END DATE INPUT -->
     <label for="reportEndDate">End:</label>
     <input type="Date" id="reportEndDate" name="reportEndDate" min="2020-05-05" max="2022-01-01" v-model="reportEndDate">
     <br></br>
+    <!-- CROP INPUT -->
     <label for="crop">Crop:</label>
-    <select id="crop" name="crop" v-model="SelectedCrop">
+    <select id="crop" name="crop" v-model="selectedCrop">
         <option v-for="crop in crops">{{ crop }}</option>
     </select>
+    <!-- FIELD INPUT -->
     <label for="Field">Field:</label>
-    <select id="Field" name="Field">
+    <select id="Field" name="Field" v-model="selectedField">
         <option v-for="field in fields">{{ field }}</option>
     </select>
     <br></br>
-    <input type="button" value="Generate Report">
+    <!-- GENERATE REPORT BUTTON -->
+    <input type="button" value="Generate Report" @click="harvestLog.push(someHarvestLogs.firstLog)">
     <hr>
     </hr>
+    <!-- REPORT TITLE -->
     <h1>{{header ? header : "Mock Harvest Report"}}</h1>
+    <!-- REPORT DETAILS -->
     <p>Details:</p>
     <ul>
         <li><strong>Farm</strong>:Sample Farm</li>
@@ -33,8 +43,9 @@
     <ul>
         <li><strong>Start</strong>:{{reportStartDate}}</li>
         <li><strong>End</strong>:{{reportEndDate}}</li>
-        <li><strong>Crop</strong>:{{ SelectedCrop }}</li>
+        <li><strong>Crop</strong>:{{ selectedCrop }}</li>
     </ul>
+    <!-- HARVEST LOG TABLE -->
     <table border="1">
         <tr>
             <th>Date</th>
@@ -44,11 +55,11 @@
             <th>Units</th>
         </tr>
         <tr v-for="log in harvestLog">
-          <td>{{ log.date }}</td>
-          <td>{{ log.area }}</td>
-          <td>{{ log.crop }}</td>
-          <td>{{ log.yeild }}</td>
-          <td>{{ log.units }}</td>
+            <td>{{ log.date }}</td>
+            <td>{{ log.area }}</td>
+            <td>{{ log.crop }}</td>
+            <td>{{ log.yeild }}</td>
+            <td>{{ log.units }}</td>
         </tr>
     </table>
 </div>
@@ -59,19 +70,29 @@ var harvestReport = new Vue({
         header: 'My Sample Harvest Report',
         reportStartDate: '2020-05-05',
         reportEndDate: '2022-05-15',
-        SelectedCrop: 'Kale',
+        selectedCrop: 'Kale',
         crops: ['Broccoli', 'Kale', 'Peas'],
-        SelectedField: 'All',
+        selectedField: 'All',
         fields: ['All', 'Chuau-1', 'SQ7'],
-        harvestLog: [{ date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', 'yeild': 10, units: 'Bunches' }, {date: '2020-08-01', area: 'SQ7', crop: 'Broccoli', 'yeild': 15, units: 'Pounds'}]
+        harvestLog: [],
+        someHarvestLogs: {
+            firstLog: {
+                date: '2018-05-02',
+                area: 'Chuau-1',
+                crop: 'Kale',
+                'yeild': 10,
+                units: 'Bunches'
+            },
+            secondLog: {
+                date: '2020-08-01',
+                area: 'SQ7',
+                crop: 'Broccoli',
+                'yeild': 15,
+                units: 'Pounds' }
+        }
     }
-
 });
 Vue.config.devtools = true
 </script>
-
-
-
-
-
 </html>
+
