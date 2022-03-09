@@ -160,7 +160,11 @@
 				],
 			row: {
 				date: '2018-05-01', area: 'Orion', crop: 'Kale', yield: '12', units: 'Bunches'
-				}
+				},
+
+			pageArr: [
+
+				]
 
                 },
 
@@ -197,6 +201,23 @@
 				this.farm = 'Sample Farm';
 				this.user = 'manager1';
 				this.language = 'English';
+				let timestampStart = dayjs(this.rptStartDate).unix()
+				console.log(timestampStart);
+				let timestampEnd = dayjs(this.rptEndDate).unix()
+				console.log(timestampEnd);
+
+				let requestString = "/log.json?type=farm_harvest&timestamp[ge]=" + timestampStart + "&timestamp[le]=" + timestampEnd
+				console.log(requestString);
+
+				getAllPages(requestString, this. pageArr).then(() => {
+					
+					console.log("All pages added")
+
+				}).catch((err) => {
+
+					console.log("error:" + err)
+				})
+					
                         },
 
 			changeState: function(newState) {
