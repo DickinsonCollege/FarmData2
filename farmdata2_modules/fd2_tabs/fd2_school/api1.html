@@ -21,7 +21,7 @@
 
     <label for="crop">Crop:</label>
     <select id="crop" name="crop" v-model="rpCrop">
-      <option v-for="item in rpCrops">{{item}}</option>
+      <option v-for="item in cropMap">{{item}}</option>
     </select>
 
 
@@ -71,6 +71,19 @@
 //      Vue.config.devtools = true;
       var vreport = new Vue({
         el: '#report',
+
+	created() {
+	  console.log("HarvestReport created!")
+	  getIDToCropMap()
+	  .then( (theMap) => {
+		this.idToCropMap = theMap;
+		console.log(theMap);
+	  })
+	  .catch( (error) => {
+		console.log(error);
+	  })
+	},
+
         data: {
 	  farm: '',
 	  user: '',
@@ -82,8 +95,16 @@
           rpCrop: 'Kale',
           rpCrops: ['Kale', 'Broccoli', 'Peas'],
           rpFields: ['All', 'Chuau-1', 'SQ7'],
-          rpLogs: []
+          rpLogs: [],
+	  idToCropMap: [],
         },
+
+	computed: {
+	  cropMap() {
+		return Array.from(this.idToCropMap.values());
+	  }
+	},
+
         methods: {
 	  addLog: function() {
 	    this.rpLogs.push(
