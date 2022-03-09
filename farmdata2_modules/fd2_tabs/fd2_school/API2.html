@@ -34,7 +34,7 @@
                         <li><strong>Crop: </strong>{{ cropSelection }}</li><br><br>
                         
 			<table border=2>
-				<tr v-if= "harvestLog.length > 0">
+				<tr v-if= "harLogsArr.length > 0">
                     <td><strong> Row </strong></td>
 					<td><strong> Date </strong></td>
 					<td><strong> Area </strong></td>
@@ -42,13 +42,13 @@
 					<td><strong> Yield </strong></td>
 					<td><strong> Units </storng></td>
 				</tr>
-					<tr v-for="(harvestLogs, index) in harvestLog" v-if=>
+					<tr v-for="(log, index) in harvestReportRows">
                     <td> {{ index + 1 }}</td>
-					<td> {{ harvestLogs.date }} </td>
-					<td> {{ harvestLogs.field }} </td>
-					<td> {{ harvestLogs.crop }} </td>
-					<td> {{ harvestLogs.yield }} </td>
-					<td> {{ harvestLogs.units }} </td>
+					<td> {{ log.date }} </td>
+					<td> {{ log.area }} </td>
+					<td> {{ log.crop }} </td>
+					<td> {{ log.yield }} </td>
+					<td> {{ log.units }} </td>
 				</tr>
               </table>
 
@@ -70,10 +70,12 @@
                     fieldSelection: 'All',
                     crop: [],
                     field: ['All', 'Chuau-1', 'SQ7'],
+                    datePages: [],
                     
                     cropMap: [],
                     areaMap: [],
                     harLogsArr: [],
+
 
                     harvestLog: [
                 ],
@@ -113,7 +115,25 @@
 
                     areaNameArr(){
                         return Array.from(this.areaMap.values());
+                    },
+
+
+                    harvestReportRows() {
+	                let tableRows = []
+	                for(let log of this.datePages) {
+		            let tableRow = {
+                        date: log.timestamp,
+                        area: log.area[0].name,
+                        crop: this.cropMap.get(log.data.crop_tid),
+                        yield: log.quantity[0].value,
+                        units: log.quantity[0].unit.name,
+
+		            }
+                        tableRows.push(tableRow)
                     }
+	                return tableRows
+                }
+
                 },
 
                   methods: {
@@ -140,10 +160,12 @@
                             dateAPIStr = '/log.json?type=farm_harvest&timestamp[ge]=' + stDate_timestamp + '&timestamp[le]=' + endDate_timestamp;
                             console.log(dateAPIStr);
 
+                        this.datePages = '',
                         // Assumes that result is an existing array
                         getAllPages(dateAPIStr, this.harLogsArr)
-                        .then(() => {
+                        .then((result) => {
                         console.log('getAllPages request completed successfully')
+                        this.datePages = result;
                         })
                         .catch((err) => {
                         console.log('getAllPages request failed');
