@@ -31,7 +31,7 @@
     </select>
     <br>
 
-    <button type="button" v-on:click='changeState("data"); addLog(); setDetails()'> Generate Report </button>
+    <button type="button" v-on:click='changeState("data"); addLog(); generateRp()'> Generate Report </button>
 
     <hr>
     
@@ -127,6 +127,38 @@
 			console.log("Error Occurred");
 			console.log(error);
 		})
+		
+	  },
+	  generateRp: function() {
+		let cvStartDate = dayjs(this.rpStartDate).unix();
+		let cvEndDate = dayjs(this.rpEndDate).unix();
+		console.log(cvStartDate);
+		console.log(cvEndDate);
+		let request = "/log.json?type=farm_harvest&timestamp[ge]=" + cvStartDate + "&timestamp[le]=" + cvEndDate;
+		console.log(request);
+		let result = [];
+		
+		getAllPages(request, this.rpLogs)
+			.then( () => {
+				
+				console.log("Success");
+			})
+			.catch( (error) => {
+				console.log(error);
+			})
+		
+		axios.get('/farm.json')
+                .then( (response) => {
+                        console.log("Got Response");
+                        console.log(response);
+                        this.farm = response.data.name;
+                        this.language = response.data.languages.en.name;
+                        this.user = response.data.user.name;
+                })
+                .catch( (error) => {
+                        console.log("Error Occurred");
+                        console.log(error);
+                })
 	  }
 	}
       });
