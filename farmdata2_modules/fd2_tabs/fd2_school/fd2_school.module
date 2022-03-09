@@ -90,6 +90,23 @@ $items['farm/fd2-school/vue2'] = array(
         'weight' => 110,
     );
 
+$items['farm/fd2-school/API1'] = array(
+        'title' => 'API1',
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'fd2_school_view',
+        'page arguments' => array('API1.html'),
+        'access arguments' => array('view fd2 school'),
+        'weight' => 110,
+    );
+
+$items['farm/fd2-school/API2'] = array(
+        'title' => 'API2',
+        'type' => MENU_LOCAL_TASK,
+        'page callback' => 'fd2_school_view',
+        'page arguments' => array('API2.html'),
+        'access arguments' => array('view fd2 school'),
+        'weight' => 110,
+    );
 
 
 
