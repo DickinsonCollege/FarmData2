@@ -68,6 +68,7 @@
     </div>
 
     <script>
+//      Vue.config.devtools = true;
       var vreport = new Vue({
         el: '#report',
         data: {
@@ -93,9 +94,18 @@
 	  	this.state = newState;
 	  },
 	  setDetails: function(){
-		this.farm = 'Sample Farm';
-		this.user = 'manager1';
-		this.language = 'English';
+		axios.get('/farm.json')
+		.then( (response) => {
+			console.log("Got Response");
+			console.log(response);
+			this.farm = response.data.name;
+	                this.language = response.data.languages.en.name;
+        	        this.user = response.data.user.name;
+		})
+		.catch( (error) => {
+			console.log("Error Occurred");
+			console.log(error);
+		})
 	  }
 	}
       });
