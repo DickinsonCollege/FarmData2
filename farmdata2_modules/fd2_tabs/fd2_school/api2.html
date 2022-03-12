@@ -71,7 +71,7 @@
                 <th>Units</th>
                 <th>Delete</th>
             </tr>
-            <tr v-for="(row, index) in tableInfo">
+            <tr v-for="(row, index) in harvestReportRows">
                 <td>{{ index + 1}}</td>
                 <td>{{ row.date }}</td>
                 <td>{{ row.field }}</td>
@@ -139,6 +139,20 @@
                 },
                 mapToArrArea () {
                     return (Array.from (this.idToAreaMap.values()));
+                },
+                harvestReportRows() {
+                    let tableRows = []
+                    for(let log of this.queryResult) {
+                        let tableRow = {
+                            date: new Date (log.timestamp * 1000),
+                            field: log.area[0].name,
+                            yield: log.quantity[0].value,
+                            units: log.quantity[0].unit.name,
+                            crop: this.idToCropMap.get(log.data.crop_tid)
+                        }
+                        tableRows.push(tableRow)
+                    }
+                    return tableRows
                 }
             },
             methods: {
