@@ -11,7 +11,7 @@
     <div id="report" v-cloak>
         <br></br>
         <p> This page is a <i> mockup </i> of a simplified harvest report. </p>
-        <button class = "btn btn-primary" v-bind:disabled = "startD > endD" @click="saveRow" @click = "get" type="submit">Generate Report</button>
+        <button class = "btn btn-primary" v-bind:disabled = "startD > endD" @click="saveRow" type="submit">Generate Report</button>
         <br>
         <input type="text" v-model="rptTitle">
         <br>
@@ -113,8 +113,8 @@
             },
             data: {
                 rptTitle: 'My Sample Harvest Report',
-                startD: '05-05-2020',
-                endD: '05-15-2020',
+                startD: '2020-05-05',
+                endD: '2020-05-15',
                 selectedCrop: "Kale",
                 selectedField: "Chuau-1",
                 yieldNum: 0,
@@ -129,7 +129,9 @@
                 user: 'manager1',
                 language: 'Chinese',
                 idToCropMap: [],
-                idToAreaMap: []
+                idToAreaMap: [],
+                query: "",
+                queryResult: []
             },
             computed: {
                 mapToArrCrop () {
@@ -141,6 +143,19 @@
             },
             methods: {
                 saveRow: function(index) {
+                    let startDTS = dayjs(this.startD).unix()
+                    let endDTS = dayjs(this.endD).unix()
+                    this.query = ("/log.json?type=farm_harvest&timestamp[ge]="+startDTS+"&timestamp[le]="+endDTS)
+
+                    getAllPages(this.query)
+                    .then((result) => {
+                        this.queryResult = result
+                        console.log("Success")
+                    })
+                    .catch((err) => {
+                        console.log("Fail")
+                    })
+
                     axios.get ('http://localhost/farm.json')
                     .then ((response) => {
                         this.farm = response.data.name
