@@ -28,7 +28,7 @@
     </select>
     <br></br>
     <!-- GENERATE REPORT BUTTON -->
-    <input type="button" value="Generate Report" @click="harvestLog.push(someHarvestLogs.firstLog)">
+    <input type="button" value="Generate Report" @click="saveLog">
     <hr>
     </hr>
     <!-- REPORT TITLE -->
@@ -89,6 +89,11 @@ var harvestReport = new Vue({
                 crop: 'Broccoli',
                 'yeild': 15,
                 units: 'Pounds' }
+        }
+    },
+    methods: {
+        saveLog: function(){
+            this.harvestLog.push(this.someHarvestLogs.firstLog);
         }
     }
 });
