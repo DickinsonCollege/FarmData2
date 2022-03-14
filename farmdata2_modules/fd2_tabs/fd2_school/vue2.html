@@ -54,6 +54,7 @@
             <th>Crop</th>
             <th>Yeild</th>
             <th>Units</th>
+            <th>Delete</th>
         </tr>
         <tr v-for="(log, index) in harvestLog">
             <td>{{ index }}</td>
@@ -62,6 +63,7 @@
             <td>{{ log.crop }}</td>
             <td>{{ log.yeild }}</td>
             <td>{{ log.units }}</td>
+            <td><button type="button" @click='deleteLog'>Delete</button></td>
         </tr>
     </table>
 </div>
@@ -96,6 +98,9 @@ var harvestReport = new Vue({
     methods: {
         saveLog: function(){
             this.harvestLog.push(this.someHarvestLogs.firstLog);
+        },
+        deleteLog: function(logIndex){
+            this.harvestLog.splice(this.logIndex, 1);
         }
     }
 });
