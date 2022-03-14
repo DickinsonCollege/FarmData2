@@ -48,13 +48,15 @@
     <!-- HARVEST LOG TABLE -->
     <table border="1">
         <tr>
+            <th>Row</th>
             <th>Date</th>
             <th>Area</th>
             <th>Crop</th>
             <th>Yeild</th>
             <th>Units</th>
         </tr>
-        <tr v-for="log in harvestLog">
+        <tr v-for="(log, index) in harvestLog">
+            <td>{{ index }}</td>
             <td>{{ log.date }}</td>
             <td>{{ log.area }}</td>
             <td>{{ log.crop }}</td>
