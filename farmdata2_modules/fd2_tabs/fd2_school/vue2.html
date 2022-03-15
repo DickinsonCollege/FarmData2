@@ -46,7 +46,8 @@
         <li><strong>Crop</strong>:{{ selectedCrop }}</li>
     </ul>
     <!-- HARVEST LOG TABLE -->
-    <table border="1">
+    <table border="1" v-if="harvestLog.length != 0">
+        <p v-if="harvestLog.length == 0">No matching records</p>
         <tr>
             <th>Row</th>
             <th>Date</th>
