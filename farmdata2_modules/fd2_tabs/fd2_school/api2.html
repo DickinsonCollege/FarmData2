@@ -121,7 +121,8 @@
           farm: "",
           user: "",
           language: "",
-          
+          results: [],
+
           HLog:[ {Row:"1",Date: '05/01/2018', Area: 'Orion-3', Crop:'Kale', Yield: '12', Unit: 'Bunches'},
         {Row:"2",Date: '09/02/2018', Area: 'All', Crop:'Broccoli', Yield: '5', Unit: 'Bunches'},
         {Row:"3",Date: '11/02/2018', Area: 'SQ7', Crop:'Peas', Yield: '11', Unit: 'Bunches'}
@@ -138,12 +139,32 @@
           },
         
         methods:{
+
+
             generateButton: function(){
-                if(this.harvestLog.length < 100){
-                    this.harvestLog.push(this.HLog[0])
-                    this.harvestLog.push(this.HLog[1])
-                    this.harvestLog.push(this.HLog[2])
-                }
+
+                startdateinput = this.startdateinput
+                enddateinput = this.enddateinput
+                let timestampStart = dayjs(startdateinput).unix()
+                let timestampEnd= dayjs(enddateinput).unix()
+
+                console.log(timestampStart)
+                console.log(timestampEnd)
+
+                requestString = "/log.json?type=farm_harvest&timestamp[ge]=" + String(timestampStart) + "&timestamp[le]=" + String(timestampEnd)
+
+                console.log(requestString)
+
+                getAllPages(requestString, this.results)
+                .then(() => {
+                    console.log("Correctly passed")
+                    
+                })
+                .catch((err) => {
+                    console.log("Occurred: " + String(err)+" occured")
+                })
+
+                
                 //make the button reponse for API
                 axios.get('http://localhost/farm.json') 
                 .then((response) => {
@@ -157,6 +178,12 @@
                     console.log("Error Occurred")
                     console.log(error)
                 })
+
+                if(this.harvestLog.length < 100){
+                    this.harvestLog.push(this.HLog[0])
+                    this.harvestLog.push(this.HLog[1])
+                    this.harvestLog.push(this.HLog[2])
+                }
             },
             deleteRow: function(index){
                 this.harvestLog.splice(index,1);
