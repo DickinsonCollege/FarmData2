@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="utf=8">
+<head>
+<title>Page Title</title>
+<style>
+    span{
+        font-weight: bold
+    }
+</style>
+
+
+</head>
+<body>
+<br/>
+
+
+
+<div id = "title" v-cloak>
+
+<h1>Harvest Report</h1>
+
+<p>This page is a <i>mocked up</i> of a simplified harvest report.</p>
+
+
+<label for="title">Title: </label>
+        <input type="text" id="title" name="title" v-model = "title">
+        <br><br>
+        <!-- date starts here -->
+        <label for="date">Start: </label>
+        <input type="date" id ="start" class ="date" name="start" min="2000-01-01" :max="end" v-model="start">
+        <label for="date">End: </label>
+        <input type="date" id="end" class = "date" name="end" :min="start" max="2025-12-31" v-model="end">
+        <br><br>
+
+        <label for="crop">Crop: </label>
+            <select id="crop-01" name="crop-01" v-model="crop">
+                <option
+                v-for="crop in crops":selected="option == 'Kale'">
+                {{crop}}
+                </option>
+            </select>
+        <label for="area">Area: </label>
+          <select id="area" name="area" v-model="area">
+
+      <option v-for="area in areas":selected="option == 'All'">
+          {{area}}</option>
+      </select>
+          <br>
+          <br>
+        
+            <button type="button" class="btn btn-primary" @click="generateButton" id="generate-report">Generate Report</button>
+
+
+
+<hr>
+
+Details:
+  <h1>{{ title ==('')? "Mock Harvest Report": title }}</h1>
+  <ul>
+    <li><span>Farm</span>: Sample Farm</li>
+      <li><span>User</span>: manager1</li>
+      <li><span>Language</span>: English</li>
+      <br>
+      <li><span>Start:</span>{{start}}</li>
+      <li><span>End:</span>{{end}}</li>
+      <li><span>Crop:</span>{{crop}}</li>
+      <li><span></Area:>Area:</span>{{area}}</li>
+    </ul>
+<p v-if="harvestLog.length == 0">No matching records</p>
+<table border = "1"> 
+    <tr>
+        <th>Date</th>
+        <th>Area</th>
+        <th>Crop</th>
+        <th>Yield</th>
+        <th>Units</th>
+        <th>Delete</th>
+    </tr>
+
+    
+    <tr v-for="(log,index) in harvestLog">
+    <td>{{log.Date}}</td>
+    <td>{{log.Field}}</td>
+    <td>{{log.Crop}}</td>
+    <td>{{log.Yield}}</td>
+    <td>{{log.Unit}}</td>
+    <td><button type="button"  @click="deleteTuple">Delete </button></td>
+    </tr>
+
+</table>
+</div>
+
+
+
+<script src="https://unpkg.com/vue@2"></script> <!--necessary needed as stated from our document Q02. -->
+<script>
+
+var harvestReport = new Vue({
+    el: '#title',
+    data:{
+        title: 'title',
+        start:"2018-05-01",
+        end:"2018-05-015",
+        crop: "Kale",
+        crops:['Kale','Broccoli','Peas'],
+        area: 'ALL',
+        areas:['ALL', 'Chuau-1', 'SQ7'],
+        harvestLog:[],
+        HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10', Unit:'Bunches'},
+        {Date: '05/17/2019', Field: 'All', Crop:'Broccoli', Yield: '7', Unit:'Bunches'},
+        {Date: '04/06/2001', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
+        ]
+        },
+
+        methods:{
+            generateButton: function(){
+                if(this.harvestLog.length < 50){
+                    this.harvestLog.push(this.HLog[0])
+                    this.harvestLog.push(this.HLog[1])
+                    this.harvestLog.push(this.HLog[2])
+                }
+            },
+            deleteTuple: function(index){
+                this.harvestLog.splice(index,1);
+            }
+        }
+    });
+
+Vue.config.devtools = true;
+</script>
+</body>
+</html>
+
