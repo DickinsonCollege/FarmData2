@@ -31,14 +31,14 @@
         <label for="date">End: </label>
         <input type="date" id="end" class = "date" name="end" :min="start" max="2025-12-31" v-model="end">
         <br><br>
-
+        <!-- crop starts here-->
         <label for="crop">Crop: </label>
             <select id="crop-01" name="crop-01" v-model="crop">
-                <option
-                v-for="crop in crops":selected="option == 'Kale'">
-                {{crop}}
-                </option>
+                <option v-for="item in apiCrop"> {{item}}</option>
+
             </select>
+
+        <!--area starts here-->
         <label for="area">Area: </label>
           <select id="area" name="area" v-model="area">
 
@@ -57,9 +57,9 @@
 Details:
   <h1>{{ title ==('')? "Mock Harvest Report": title }}</h1>
   <ul>
-    <li><span>Farm</span>: Sample Farm</li>
-      <li><span>User</span>: manager1</li>
-      <li><span>Language</span>: English</li>
+    <li><strong>Farm: </strong> {{farm}}</li>
+      <li><strong>User: </strong> {{user}}</li>
+      <li> <strong>Language: </strong> {{language}}</li>
       <br>
       <li><span>Start:</span>{{start}}</li>
       <li><span>End:</span>{{end}}</li>
@@ -92,38 +92,109 @@ Details:
 
 
 
-<script src="https://unpkg.com/vue@2"></script> <!--necessary needed as stated from our document Q02. -->
+<script src="https://unpkg.com/vue@2"></script> <!--necessarily needed as stated from our document Q02. -->
 <script>
 
 var harvestReport = new Vue({
     el: '#title',
     data:{
         title: 'title',
-        start:"2018-05-01",
-        end:"2018-05-015",
+        start:"2020-05-01",
+        end:"2020-05-015",
         crop: "Kale",
-        crops:['Kale','Broccoli','Peas'],
+        //crops:['Kale','Broccoli','Peas'],
+        idToCropMap: [],
+
         area: 'ALL',
         areas:['ALL', 'Chuau-1', 'SQ7'],
         harvestLog:[],
+        farm: "",
+        user: "",
+        language: "",
+
         HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10', Unit:'Bunches'},
         {Date: '05/17/2019', Field: 'All', Crop:'Broccoli', Yield: '7', Unit:'Bunches'},
         {Date: '04/06/2001', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
         ]
         },
+        
+        computed: {
+            apiCrop: function(){
+                return this.idToCropMap.values()
+              }
+          },
 
         methods:{
             generateButton: function(){
-                if(this.harvestLog.length < 50){
-                    this.harvestLog.push(this.HLog[0])
-                    this.harvestLog.push(this.HLog[1])
-                    this.harvestLog.push(this.HLog[2])
-                }
+                
+
+                this.farm = "Sample Farm";
+                this.user = "manager1";
+                this.language = "English";
+
+                axios.get('http://localhost/farm.json')
+                .then((response) => {
+                    console.log("Got Response")
+                    console.log(response)
+                    this.farm=response.data.name
+                    this.user=response.data.user.name
+                    this.language=response.data.languages.en.name
+                })
+
+                //if(this.harvestLog.length < 50){
+                //    this.harvestLog.push(this.HLog[0])
+                 //   this.harvestLog.push(this.HLog[1])
+                 //   this.harvestLog.push(this.HLog[2])
+                //}
+                .catch((error) =>{
+                    console.log("Error Occurred")
+                    console.log(error)
+                });
+
+                let start = dayjs(this.start).unix();
+                let end = dayjs(this.end).unix();
+                let requestEndPoint = '/log.json?type=farm_harvest&timestamp[ge]=' + start + 
+                '&timestamp[le]='+end;
+                
+                //check the timestamp values for start,end and the endpoint URL
+                console.log(start);
+                console.log(end);
+                console.log(requestEndPoint);
+
+                var res = [];
+
+                getAllPages(requestEndPoint, res)
+                    .then( () => {
+                        console.log("Passed");
+                        this.harvestLog.push(this.HLog[0])
+                        this.harvestLog.push(this.HLog[1])
+                        this.harvestLog.push(this.HLog[2])
+                    })
+
+                    .catch((err)=>{
+                        console.log("Error!! " + String(err));
+                    })
+
             },
             deleteTuple: function(index){
                 this.harvestLog.splice(index,1);
             }
-        }
+        }, 
+
+        created() {
+             getIDToCropMap()
+                .then((theMap) => {
+                
+                    this.idToCropMap=theMap
+                })
+                .catch((err) => {
+                    console.log("mapping ID to crop failed!.")
+                    console.log(err)
+                })
+            console.log("HarvestReport created!")
+        }    
+
+        
     });
 
 Vue.config.devtools = true;
