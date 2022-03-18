@@ -67,8 +67,11 @@ Details:
       <li><span></Area:>Area:</span>{{area}}</li>
     </ul>
 <p v-if="harvestLog.length == 0">No matching records</p>
+
+<div id="rogerHarvest" v-if="harvestReportRows.length > 0"></div>
 <table border = "1"> 
     <tr>
+        <th>Idx</th>
         <th>Date</th>
         <th>Area</th>
         <th>Crop</th>
@@ -78,7 +81,8 @@ Details:
     </tr>
 
     
-    <tr v-for="(log,index) in harvestLog">
+    <tr v-for="(log,idx) in harvestReportRows">
+    <td>{{idx+1}}</td>
     <td>{{log.Date}}</td>
     <td>{{log.Field}}</td>
     <td>{{log.Crop}}</td>
@@ -92,7 +96,7 @@ Details:
 
 
 
-<script src="https://unpkg.com/vue@2"></script> <!--necessarily needed as stated from our document Q02. -->
+<script src="https://unpkg.com/vue@2"></script> 
 <script>
 
 var harvestReport = new Vue({
@@ -100,11 +104,11 @@ var harvestReport = new Vue({
     data:{
         title: 'title',
         start:"2020-05-01",
-        end:"2020-05-015",
+        end:"2020-05-15",
         crop: "Kale",
         //crops:['Kale','Broccoli','Peas'],
         idToCropMap: [],
-
+        idToAreaMap: [],
         area: 'ALL',
         areas:['ALL', 'Chuau-1', 'SQ7'],
         harvestLog:[],
@@ -112,17 +116,41 @@ var harvestReport = new Vue({
         user: "",
         language: "",
 
-        HLog:[ {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10', Unit:'Bunches'},
-        {Date: '05/17/2019', Field: 'All', Crop:'Broccoli', Yield: '7', Unit:'Bunches'},
-        {Date: '04/06/2001', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
+        HLog:[ 
+            {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10', Unit:'Bunches'},
+            {Date: '05/17/2019', Field: 'All', Crop:'Broccoli', Yield: '7', Unit:'Bunches'},
+            {Date: '04/06/2001', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
         ]
         },
         
+        
+
         computed: {
             apiCrop: function(){
                 return this.idToCropMap.values()
+            },
+
+            apiArea: function(){
+                return this.idToAreaMap.values()
+            },
+          
+
+          harvestReportRows(){
+              let tableRows = []
+              for(let log of this.harvestLog){
+                  let tableRow = {
+                      date:log.timestamp,
+                      area: log.area[0].name,
+                      yield: log.quantity[0].value,
+                      units: log.quantity[0].unit.name,
+                      crop: this.idToCropMap.get(log.data.crop_tid),
+                  }
+                  tableRows.push(tableRow)
               }
-          },
+              return tableRows
+        },
+    },
+        
 
         methods:{
             generateButton: function(){
@@ -147,8 +175,8 @@ var harvestReport = new Vue({
                  //   this.harvestLog.push(this.HLog[2])
                 //}
                 .catch((error) =>{
-                    console.log("Error Occurred")
-                    console.log(error)
+                    console.log("Error!");
+                    console.log(error);
                 });
 
                 let start = dayjs(this.start).unix();
@@ -161,19 +189,27 @@ var harvestReport = new Vue({
                 console.log(end);
                 console.log(requestEndPoint);
 
-                var res = [];
+                let res = [];
 
                 getAllPages(requestEndPoint, res)
-                    .then( () => {
+                    .then(() => {
                         console.log("Passed");
                         this.harvestLog.push(this.HLog[0])
                         this.harvestLog.push(this.HLog[1])
                         this.harvestLog.push(this.HLog[2])
+                        this.harvestLog = res;
                     })
 
                     .catch((err)=>{
-                        console.log("Error!! " + String(err));
-                    })
+                        console.log("Error!! ");
+                        console.log(err);
+                    });
+
+                    if(this.harvestLog.length < 50){
+                        this.harvestLog.push(this.HLog[0])
+                        this.harvestLog.push(this.HLog[1])
+                        this.harvestLog.push(this.HLog[2])
+                    }
 
             },
             deleteTuple: function(index){
@@ -185,12 +221,24 @@ var harvestReport = new Vue({
              getIDToCropMap()
                 .then((theMap) => {
                 
-                    this.idToCropMap=theMap
+                    this.idToCropMap=theMap;
                 })
                 .catch((err) => {
-                    console.log("mapping ID to crop failed!.")
-                    console.log(err)
+                    console.log("mapping ID to crop failed!");
+                    console.log(err);
                 })
+
+             getIDToAreaMap()
+                 .then((theMap) =>{
+                    this.idToAreaMap = theMap;
+                 })
+
+                 .catch((err) => {
+                    console.log("Error!");
+                    console.log(err);
+                 })
+                 
+             
             console.log("HarvestReport created!")
         }    
 
