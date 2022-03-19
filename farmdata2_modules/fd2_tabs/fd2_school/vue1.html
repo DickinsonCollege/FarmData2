@@ -34,20 +34,7 @@
    	Generate Report
    </button>
     <hr>
-    <body>
-    <div id="reportTitle" v-cloak> 
-      <h1>{{ header }}</h1>
-      <input type="text" v-model="header">
-    </div>
-    <script>
-    	var reportTitle = new Vue({
-    	   el: '#reportTitle', 
-    	   data: {
-    	       header: 'My Sample Harvest Report'
-    	   }
-    	});
-    </script>
-  </body>
+    <h1>My Sample Harvest Report</h1>
    <p>Details:</p>
    <ul>
    <li><b>Farm:</b>Sample Farm</li>
@@ -64,9 +51,6 @@
    </head>
 	
    <body>
-      <div v-cloak> 
-      
-    </div>
       <table border = "1">
          <tr>
             <th>Date</th>
@@ -92,4 +76,5 @@
          </tr>
       </table>
    </body>
+ 
  
