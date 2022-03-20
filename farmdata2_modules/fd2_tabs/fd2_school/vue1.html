@@ -6,22 +6,20 @@
     <p> </p>
     <label>
     Start
-    <input type="date" id="start" name="trip-start"
-       value="2020-05-05"
-       min="2014-01-14" max="2022-01-01">>
+    <input type="date" id="FarmData2" name="trip-start" v-model="startDate"
+       min="2014-01-14" max="2022-01-01">
   </label>
   <label>
   End
-  <input type="date" id="end" name="trip-end"
-       value="2020-05-15"
-       min="2020-05-05" max="2022-01-01">>
+  <input type="date" id="FarmData2" name="trip-end" v-model="endDate"
+       min="2020-05-05" max="2022-01-01">
   </label>
   <p> </p>
   <label for="crop">Crop:</label>
-<select name="crop" id="crop">
+<select name="crop" id="FarmData2" v-model="reportCrop">
   <option value="broccoli">Broccoli</option>
   <option value="peas">Peas</option>
-  <option value="kale" selected>Kale</option>
+  <option value="kale" selected>Kale</option> 
 </select>
  <label for="field">Field:</label>
 <select name="field" id="field">
@@ -37,15 +35,8 @@
    
       <h1>{{ header }}</h1>
       
-    </div> 
-    <script>
-    	var FarmData2 = new Vue({
-    	   el: '#FarmData2', 
-    	   data: {
-    	       header: 'My Sample Harvest Report'
-    	   }
-    	});
-    </script>
+    
+    
   </body>
    <p>Details:</p>
    <ul>
@@ -53,10 +44,11 @@
    <li><b>User:</b>manager1</li>
    <li><b>Language:</b>English</li>
    <p> </p>
-   <li><b>Start:</b>05/01/2018</li>
-   <li><b>End:</b>05/15/2018</li>
-   <li><b>Crop:</b>Kale</li>
+   <li><b>Start:</b>{{ startDate }}</li>
+   <li><b>End:</b>{{ endDate }}</li>
+   <li><b>Crop:</b>{{ reportCrop }}</li>
    </ul>
+</div> 
    <p> </p>
      <head>
       <title>HTML Table Header</title>
@@ -90,5 +82,16 @@
    </body>
   
    
+   <script>
+    	var FarmData2 = new Vue({
+    	   el: '#FarmData2', 
+    	   data: {
+    	       header: 'My Sample Harvest Report',
+    	       startDate: '2020-05-05',
+    	       endDate: '2020-05-15' ,
+    	       reportCrop: 'Kale' 
+    	   }
+    	});
+    </script>
  
  
