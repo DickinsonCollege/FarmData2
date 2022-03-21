@@ -51,29 +51,10 @@
    </head>
 	
    <body>
-      <table border = "1">
-         <tr>
-            <th>Date</th>
-            <th>Area</th>
-            <th>Crop</th>
-            <th>Yield</th>
-            <th>Units</th>
-         </tr>
-         <tr>
-            <td>05/02/2018</td>
-            <td>Chuau-1</td>
-            <td>Kale</td>
-            <td>10</td>
-            <td>Bunches</td>
-         </tr>
-         
-         <tr>
-            <td>05/05/2018</td>
-            <td>SQ7</td>
-            <td>Kale</td>
-            <td>7</td>
-            <td>Bunches</td>
-         </tr>
+      <table border = "1" id='FarmData2'>
+         <tr v-for='row1 in harvestLog1'><td>{{ row1 }}</td></tr>
+         <tr v-for='row2 in harvestLog2'><td>{{ row2 }}</td></tr>
+        
       </table>
    </body>
   
@@ -96,6 +77,13 @@
     	           'Chuau-1',
     	           'All',
     	           
+    	       ] ,
+    	       harvestLog1: [
+    	           {date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', Yield: 10, units: 'Bunches'} 
+    	        ]   ,
+    	           
+    	       harvestLog2: [
+    	           {date: '2018-05-05', area: 'SQ7', crop: 'Kale', Yield: 7, units: 'Bunches'}
     	       ]
     	   }
     	});
