@@ -16,16 +16,12 @@
   </label>
   <p> </p>
   <label for="crop">Crop:</label>
-<select name="crop" id="FarmData2" v-model="reportCrop">
-  <option value="broccoli">Broccoli</option>
-  <option value="peas">Peas</option>
-  <option value="kale" selected>Kale</option> 
+<select name="crop" id="FarmData2" v-model="reportCrop" v-for="crop in crops">{{ crop }}
+ 
 </select>
  <label for="field">Field:</label>
-<select name="field" id="field">
-  <option value="sq7">SQ7</option>
-  <option value="chuau-1">Chuau-1</option>
-  <option value="all" selected>All</option>
+<select name="field" id="field"  v-for="field in fields">{{ field }}
+  
 </select>
   <p> </p>
      <button type="button">
@@ -89,7 +85,18 @@
     	       header: 'My Sample Harvest Report',
     	       startDate: '2020-05-05',
     	       endDate: '2020-05-15' ,
-    	       reportCrop: 'Kale' 
+    	       reportCrop: 'Kale' ,
+    	       crops: [
+    	           'Broccoli',
+    	           'Peas',
+    	           'Kale',
+    	       ] ,
+    	       fields: [
+    	           'SQ7',
+    	           'Chuau-1',
+    	           'All',
+    	           
+    	       ]
     	   }
     	});
     </script>
