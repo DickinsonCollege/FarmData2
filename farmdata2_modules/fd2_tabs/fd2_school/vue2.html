@@ -11,10 +11,10 @@
     <br></br>
     <!-- REPORT START DATE INPUT -->
     <label for="reportStartDate">Start:</label>
-    <input type="Date" name="reportStartDate" id="reportStartDate" min="2014-01-01" max="2022-01-01" v-model="reportStartDate">
+    <input type="Date" name="reportStartDate" id="reportStartDate" min="2014-01-01" :max="reportEndDate" v-model="reportStartDate">
     <!-- REPORT END DATE INPUT -->
     <label for="reportEndDate">End:</label>
-    <input type="Date" id="reportEndDate" name="reportEndDate" min="2020-05-05" max="2022-01-01" v-model="reportEndDate">
+    <input type="Date" id="reportEndDate" name="reportEndDate" :min="reportStartDate" max="2022-01-01" v-model="reportEndDate">
     <br></br>
     <!-- CROP INPUT -->
     <label for="crop">Crop:</label>
