@@ -30,20 +30,21 @@
 
                         <label for="cropDropDown">Crop: </label>
                         <select id="Crop" name="Crop" v-model= 'reportCrop'>
-                    <option v-for="crops in crops"> {{ crops }} </option>
+                        <option v-for="crops in crops"> {{ crops }} </option>
 
                         </select>
 
-                    <label for="fieldDropDown">Field: </label>
-                    <select id="Field" name="Field" v-model= 'feildSelect'>
-                <option v-for="fields in fields"> {{ fields }} </option>
+                        <label for="fieldDropDown">Field: </label>
+                        <select id="Field" name="Field" v-model= 'feildSelect'>
+                        <option v-for="fields in fields"> {{ fields }} </option>
 
-                     </select>
+                        </select>
 
 
                 <br>
                 <br>
-            <button class="btn btn-primary" @click="addLog" type= "submit" >Generate Report</button>
+            
+            <button class="btn btn-primary" v-bind:disabled = "reportStartDate > reportEndDate" @click="addLog" type= "submit" >Generate Report</button>
 
                 <hr></hr>
                 <br> 
@@ -112,7 +113,6 @@
                             harvestLog: [
 
                             ],
-                            row: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"},
                             row: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"},
                             state: 'hide'
                         },
