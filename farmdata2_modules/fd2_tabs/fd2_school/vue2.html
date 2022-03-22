@@ -43,7 +43,7 @@
 
                 <br>
 
-
+                
                 <button class="btn btn-primary" @click="addLog" type= "submit" >Generate Report</button>
                         <h1>{{ reportTitle.length==0 ? "Mock Harvest Report" : reportTitle }}</h1>
                             <p>Details:</p>
@@ -62,14 +62,16 @@
                                     <td><strong>Crop</strong></td>
                                     <td><strong>Yield</strong></td>
                                     <td><strong>Unit</strong></td>
+                                    <td><strong>Delete</strong></td>
                             </tr>
-                            <tr v-for="row in harvestLog">
-                                    <td> {{ row.row }}</td>
+                            <tr v-for= "(row, index) in harvestLog">
+                                    <td>{{ index + 1 }}</td>
                                     <td> {{ row.date }}</td>
                                     <td> {{ row.field }}</td>
                                     <td> {{ row.crop }}</td>
                                     <td> {{ row.yield }}</td>
                                     <td> {{ row.units }}</td>
+                                    <td><button class= "btn btn-primary" @click="deleteR">delete</button></td>
                             </tr>
 
                 </table>
@@ -101,10 +103,13 @@
                         },
                             methods: {
                                 addLog: function (index) {
-                                    if(this.row !== {}){
-                                        this.harvestLog.push(this.row)
-                                    }
-                                }
+                                    this.harvestLog.push(this.row)
+                                    
+                                },
+                                deleteR: function(index) {
+                                    this.harvestLog.splice(index, 1)
+                }
+                                
                             }
                         });
                         Vue.config.devtools = true;
