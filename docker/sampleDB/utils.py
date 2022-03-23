@@ -215,6 +215,7 @@ def translateCrop(line, crop):
         "PEPPERS, BELL": "PEPPERS-BELL",
         "PEPPERS, HOT": "PEPPERS-HOT",
         "RADISH DAIKON": "RADISH-DAIKON",
+        "RADDICHIO": "RADICCHIO",
         "SQUASH - BUTTERNUT": "SQUASH-BUTTERNUT",
         "SQUASH, WINTER": "SQUASH-WINTER",
         "SUMMER SQUASH": "SQUASH-SUMMER",
