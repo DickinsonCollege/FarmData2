@@ -44,7 +44,7 @@
                 <br>
                 <br>
             
-            <button class="btn btn-primary" v-bind:disabled = "reportStartDate > reportEndDate" @click="addLog" type= "submit" >Generate Report</button>
+            <button class="btn btn-primary" v-bind:disabled = "reportStartDate > reportEndDate" @click="addLog" @click="addD" type= "submit" >Generate Report</button>
 
                 <hr></hr>
                 <br> 
@@ -56,8 +56,8 @@
 
                 <p>Details:</p>
                 <ul>
-                    <li><strong>Farm:</strong> Sample Farm</li>                        <li><strong>User:</strong> manager1</li>
-                    <li><strong>Language:</strong> English</li>
+                    <li><strong>Farm:</strong> {{ ftext.farm }}</li>                        <li><strong>User:</strong> {{ ftext.user }}</li>
+                    <li><strong>Language:</strong> {{ ftext.language }}</li>
                     <br>
                     <li><strong>Start:</strong> {{ reportStartDate }} </li>
                     <li><strong>End:</strong> {{ reportEndDate }}</li>
@@ -96,6 +96,9 @@
                         el: '#report',
                         data: {
                             reportTitle: '',
+                            farm: '',
+                            user: '',
+                            language: '',
                             reportStartDate: '2020/05/05',
                             reportEndDate: '2020/05/15',
                             reportCrop: 'Kale',
@@ -114,12 +117,17 @@
 
                             ],
                             row: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"},
-                            state: 'hide'
+                            state: 'hide',
+                            ftext: {farm: "My Sample Report", user: "manager1", language:"English"},
+
                         },
                             methods: {
                                 addLog: function (index) {
                                     this.harvestLog.push(this.row);
                                     this.state = 'show';
+                                },
+                                addD: function() {
+                                    this.farm.push(this.ftext)
                                 },
                                 deleteR: function(index) {
                                     this.harvestLog.splice(index, 1)
