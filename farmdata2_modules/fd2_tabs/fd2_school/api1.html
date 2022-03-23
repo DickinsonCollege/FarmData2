@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <div id="report" v-cloak>
+    <meta charset="utf-8">
+    <body>     
+                <h1>Harvest Report</h1>
+                <p>This page is a <i>mockup</i> of a simplified harvest report</p>
+                
+                <br>
+                <label for="title"> Title: </label>
+                <input type= 'text' v-model='reportTitle' placeholder="My Sample Harvest Report">
+
+                <br>
+
+                <br>
+
+            
+                <label for="reportStartDate"> Start: </label>
+                <input type= "Date"  v-model='reportStartDate' placeholder="dd-mm-yyyy" value="" min="2020-05-05" max="2022-01-01">
+                
+
+                <label for="reportEndDate"> End: </label>
+                <input type="Date" v-model='reportEndDate' placeholder="dd-mm-yyyy" name="reportEndDate" value="" min="2020-05-05" max="2022-01-01" >
+                
+                <br>
+
+                <br>
+
+                        <label for="cropDropDown">Crop: </label>
+                        <select id="Crop" name="Crop" v-model= 'reportCrop'>
+                        <option v-for="crops in crops"> {{ crops }} </option>
+
+                        </select>
+
+                        <label for="fieldDropDown">Field: </label>
+                        <select id="Field" name="Field" v-model= 'feildSelect'>
+                        <option v-for="fields in fields"> {{ fields }} </option>
+
+                        </select>
+
+
+                <br>
+                <br>
+            
+            <button class="btn btn-primary" v-bind:disabled = "reportStartDate > reportEndDate" @click="addLog" type= "submit" >Generate Report</button>
+
+                <hr></hr>
+                <br> 
+
+                <div v-if = "state == 'show'">
+                <h1>{{ reportTitle ? reportTitle : "Mock Harvest Report"}}</h1>
+
+                <br></br>
+
+                <p>Details:</p>
+                <ul>
+                    <li><strong>Farm:</strong> Sample Farm</li>                        <li><strong>User:</strong> manager1</li>
+                    <li><strong>Language:</strong> English</li>
+                    <br>
+                    <li><strong>Start:</strong> {{ reportStartDate }} </li>
+                    <li><strong>End:</strong> {{ reportEndDate }}</li>
+                    <li><strong>Crop:</strong> {{ reportCrop }}</li>
+                </ul> 
+
+                <br></br>
+
+                <p v-if="harvestLog.length == 0">No matching record</p>
+                <div v-else>     
+                    <table border=1>
+                    <tr>
+                            <th><strong>Row</strong></th>
+                            <th><strong>Date</strong></th>
+                            <th><strong>Field</strong></th>
+                            <th><strong>Crop</strong></th>
+                            <th><strong>Yield</strong></th>
+                            <th><strong>Units</strong></th>                               <th><strong>Delete</strong></th>
+                    </tr>
+                    <tr v-for= "(row, index) in harvestLog">
+                        <td>{{ index + 1 }}</td>
+                        <td> {{ row.date }}</td>
+                        <td> {{ row.field }}</td>
+                        <td> {{ row.crop }}</td>
+                        <td> {{ row.yield }}</td>
+                        <td> {{ row.units }}</td>
+                        <td><button class= "btn btn-primary" @click="deleteR">delete</button></td>
+                    </tr>   
+                </table>
+                </div>
+            </div>
+
+     </div>          
+                <script>
+                    var report = new Vue ({
+                        el: '#report',
+                        data: {
+                            reportTitle: '',
+                            reportStartDate: '2020/05/05',
+                            reportEndDate: '2020/05/15',
+                            reportCrop: 'Kale',
+                            feildSelect: 'All',       
+                            crops: [
+                                'broccoli',
+                                'kale',
+                                'peas',
+                            ],
+                            fields: [
+                                'CHAU-1',
+                                'ALL',
+                                'SQ7',
+                            ],
+                            harvestLog: [
+
+                            ],
+                            row: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"},
+                            state: 'hide'
+                        },
+                            methods: {
+                                addLog: function (index) {
+                                    this.harvestLog.push(this.row);
+                                    this.state = 'show';
+                                },
+                                deleteR: function(index) {
+                                    this.harvestLog.splice(index, 1)
+                }
+                                
+                            }
+                        });
+                        Vue.config.devtools = true;
+                
+          </script>
+</body>
+
+
+
+
+
+
+       
