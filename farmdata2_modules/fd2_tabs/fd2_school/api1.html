@@ -28,7 +28,7 @@
     </select>
     <br></br>
     <!-- GENERATE REPORT BUTTON -->
-    <input type="button" value="Generate Report" @click="saveLog">
+    <input type="button" value="Generate Report" @click="saveLog(); addDetails();">
     <hr>
     </hr>
     <!-- REPORT TITLE -->
@@ -36,14 +36,14 @@
     <!-- REPORT DETAILS -->
     <p>Details:</p>
     <ul>
-        <li><strong>Farm</strong>:Sample Farm</li>
-        <li><strong>User</strong>:manager1</li>
-        <li><strong>Language</strong>:English</li>
+        <li><strong>Farm</strong>: {{ farm }}</li>
+        <li><strong>User</strong>: {{ user }}</li>
+        <li><strong>Language</strong>: {{ language }}</li>
     </ul>
     <ul>
-        <li><strong>Start</strong>:{{reportStartDate}}</li>
-        <li><strong>End</strong>:{{reportEndDate}}</li>
-        <li><strong>Crop</strong>:{{ selectedCrop }}</li>
+        <li><strong>Start</strong>: {{reportStartDate}}</li>
+        <li><strong>End</strong>: {{reportEndDate}}</li>
+        <li><strong>Crop</strong>: {{ selectedCrop }}</li>
     </ul>
     <!-- HARVEST LOG TABLE -->
     <table border="1" v-if="harvestLog.length != 0">
@@ -72,6 +72,9 @@
 var harvestReport = new Vue({
     el: '#harvestReport  ',
     data: {
+        farm: '',
+        user:'',
+        language:'',
         header: 'My Sample Harvest Report',
         reportStartDate: '2020-05-05',
         reportEndDate: '2022-05-15',
@@ -102,6 +105,11 @@ var harvestReport = new Vue({
         },
         deleteLog: function(logIndex){
             this.harvestLog.splice(this.logIndex, 1);
+        },
+        addDetails: function(){
+            this.farm = "Sample Farm";
+            this.user = "manager1";
+            this.language = "English";
         }
     }
 });
