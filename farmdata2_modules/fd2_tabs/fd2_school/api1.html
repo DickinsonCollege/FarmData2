@@ -19,7 +19,7 @@
         <br><br>
         <label for="crop">Crop: </label>
         <select id="crop" name="crop" v-model="crop">
-            <option v-for="item in crop_list"> {{item}}</option>
+            <option v-for="item in mapToArray"> {{item}}</option>
         </select>
         <label for="field">Field: </label>
         <select id="field" name="field">
@@ -60,6 +60,7 @@
             </table>
         </div>
         </div>
+    </div>
         <script>
             var vuespike = new Vue({
             el: '#vuespike',
@@ -68,34 +69,21 @@
                 names: ["Adam"],
                 start_date: "2016-06-05",
                 end_date: "2020-05-06",
-                crop: "Peas",
-                crop_list: ["Broccoli", "Kale", "Peas"],
+                crop:"Peas",
+                //crop_list: ["Broccoli", "Kale", "Peas"],
                 field_list: ["All", "Chuau-1", "SQ7"],
                 log_list: [],
                 log_display: false,
-                farm:"",
-                user:"",
-                language:"",
+                idToCropMap: []
+            },
+            computed: {
+                mapToArray: function(){
+                    return this.idToCropMap.values()
+                }
             },
             methods:{
                 newLog: function(){
                     this.log_display=true
-                    //this.farm="Sample Farm";
-                    //this.user="manager1";
-                    //this.language="English";
-
-                    axios.get('/farm.json')
-                    .then((response) => {
-                        console.log("Got Response")
-                        console.log(response)
-                        this.farm=response.data.name
-                        this.user=response.data.user.name
-                        this.language=response.data.languages.en.name
-                    })
-                    .catch((error) => {
-                        console.log("Error Occurred")
-                        console.log(error)
-                    })
                     if (this.log_list.length == 0) {
                         this.log_list.push({date: '2018-05-01', area: 'SQ7', crop: 'Broccoli', yield: 28, units: 'Bunches'})
                     }
@@ -106,6 +94,17 @@
                         this.log_list.push({date: '2018-04-01', area: 'SQ7', crop: 'Peas', yield: 13, units: 'Bunches'})
                     }
                 }
+            },
+            created () {
+                getIDToCropMap()
+                .then((theMap) => {
+                    this.idToCropMap=theMap
+                })
+                .catch((err) => {
+                    console.log("Error occurred")
+                    console.log(err)
+                })
+                console.log("Report created")
             }
         });
         Vue.config.devtools = true;
