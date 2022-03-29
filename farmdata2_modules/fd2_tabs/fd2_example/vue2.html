@@ -26,7 +26,7 @@
             <option v-for="item in field_list"> {{item}}</option>
         </select>
         <br><br>
-        <button type="button" @click="log_list.push({date: '2018-05-01', area: 'SQ7', crop: 'Broccoli', yield: 28, units: 'Bunches'})">Generate Report</button>
+        <button type="button" @click="newLog">Generate Report</button>
         <hr>
         <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
         Details:<br><br>
@@ -74,6 +74,19 @@
                 crop_list: ["Broccoli", "Kale", "Peas"],
                 field_list: ["All", "Chuau-1", "SQ7"],
                 log_list: []
+            },
+            methods:{
+                newLog: function(){
+                    if (this.log_list.length == 0) {
+                        this.log_list.push({date: '2018-05-01', area: 'SQ7', crop: 'Broccoli', yield: 28, units: 'Bunches'})
+                    }
+                    else if (this.log_list.length == 1) {
+                        this.log_list.push({date: '2018-02-01', area: 'Chuau-1', crop: 'Kale', yield: 4, units: 'Bunches'})
+                    }
+                    else if (this.log_list.length == 2) {
+                        this.log_list.push({date: '2018-04-01', area: 'SQ7', crop: 'Peas', yield: 13, units: 'Bunches'})
+                    }
+                }
             }
         });
         Vue.config.devtools = true;
