@@ -46,7 +46,7 @@
                     <th>Yield</th>
                     <th>Units</th>
                 </tr>
-                <tr v-for="(log, index) in log_list">
+                <tr v-for="(log, index) in harvestReportRows">
                     <td>{{index+1}}</td>
                     <td>{{log.date}}</td>
                     <td>{{log.area}}</td>
@@ -72,9 +72,25 @@
                 farm:"",
                 user:"",
                 language:"",
-                results:[]
+                results:[],
+                idToCropMap: []
             },
-            
+            computed: {
+                harvestReportRows(){
+                    let tableRows = []
+                    for(let log of this.results) {
+                        let tableRows = {
+                            date: dayjs.unix(log.timestamp),
+                            aread: log.area[0].name,
+                            yield: log.quantity[0].unit.id,
+                            units: log.quantity[0].unit.name,
+                            crop: this.idToCropMap.get(log.data.crop_tid)
+                        }
+                        tableRows.push(tableRow)
+                    }
+                    return tableRows
+                }
+            },
             methods:{
                 newLog: function(){
                     this.log_display=true
@@ -120,12 +136,12 @@
                 getIDToCropMap()
                 .then((theMap) => {
                     this.idToCropMap=theMap
+                    console.log("crop map has been created")
                 })
                 .catch((err) => {
                     console.log("Error occurred")
                     console.log(err)
                 })
-                console.log("Report created")
             }
         });
         Vue.config.devtools = true;
