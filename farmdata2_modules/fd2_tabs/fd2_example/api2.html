@@ -72,11 +72,27 @@
                 farm:"",
                 user:"",
                 language:"",
+                results:[]
             },
             
             methods:{
                 newLog: function(){
                     this.log_display=true
+                    start_date =this.start_date
+                    end_date = this.end_date
+                    let timestamp_start = dayjs(start_date).unix()
+                    let timestamp_end = dayjs(end_date).unix()
+                    console.log(timestamp_start)
+                    console.log(timestamp_end)
+                    request_string="/log.json?type=farm_harvest&timestamp[ge]=" + String(timestamp_start) + "&timestamp[le]=" + String(timestamp_end)
+                    console.log(request_string)
+                    getAllPages(request_string, this.results)
+                    .then(() => {
+                        console.log("Results processed correctly")
+                    })
+                    .catch((err) => {
+                        console.log("An error occured: "+String(err))
+                    })
                     axios.get('/farm.json')
                     .then((response) => {
                         console.log("Got Response")
