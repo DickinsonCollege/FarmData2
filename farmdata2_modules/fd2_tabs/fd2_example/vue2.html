@@ -13,9 +13,9 @@
         <input type="text" v-model="names" @keyup.enter="names.push(names)"><button v-on:click="names.push(names)">Add Name</button>
         <br><br>
         <label for="date">Start: </label>
-        <input type="date" name="date" min="2014-01-01" max="2022-01-01" id="date" v-model="start_date">
+        <input type="date" name="date" min="2014-01-01" :max="end_date" id="date" v-model="start_date">
         <label for="date">End: </label>
-        <input type="date" name="date" min="2020-05-05" max="2022-01-01" id="date" v-model="end_date">
+        <input type="date" name="date" :min="start_date" max="2022-01-01" id="date" v-model="end_date">
         <br><br>
         <label for="crop">Crop: </label>
         <select id="crop" name="crop" v-model="crop">
