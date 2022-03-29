@@ -80,9 +80,22 @@
             methods:{
                 newLog: function(){
                     this.log_display=true
-                    this.farm="Sample Farm";
-                    this.user="manager1";
-                    this.language="English";
+                    //this.farm="Sample Farm";
+                    //this.user="manager1";
+                    //this.language="English";
+
+                    axios.get('/farm.json')
+                    .then((response) => {
+                        console.log("Got Response")
+                        console.log(response)
+                        this.farm=response.data.name
+                        this.user=response.data.user.name
+                        this.language=response.data.languages.en.name
+                    })
+                    .catch((error) => {
+                        console.log("Error Occurred")
+                        console.log(error)
+                    })
                     if (this.log_list.length == 0) {
                         this.log_list.push({date: '2018-05-01', area: 'SQ7', crop: 'Broccoli', yield: 28, units: 'Bunches'})
                     }
