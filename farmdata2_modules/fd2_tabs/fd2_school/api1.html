@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <title>Vue Tab</title>
+    </head>
+    <p>
+        <h1>Harvest Report</h1>
+        This page is a <i>mockup</i> of a simplified harvest report.<br><br>
+        <div id="vuespike" v-cloak>
+        <label for="title">Title: </label>
+        <input type="text" id="title" name="title" value="My Sample Harvest Report" v-model="header">
+        <br><br>
+        <label for="Name">Name: </label>
+        <input type="text" v-model="names" @keyup.enter="names.push(names)"><button v-on:click="names.push(names)">Add Name</button>
+        <br><br>
+        <label for="date">Start: </label>
+        <input type="date" name="date" min="2014-01-01" :max="end_date" id="date" v-model="start_date">
+        <label for="date">End: </label>
+        <input type="date" name="date" :min="start_date" max="2022-01-01" id="date" v-model="end_date">
+        <br><br>
+        <label for="crop">Crop: </label>
+        <select id="crop" name="crop" v-model="crop">
+            <option v-for="item in crop_list"> {{item}}</option>
+        </select>
+        <label for="field">Field: </label>
+        <select id="field" name="field">
+            <option v-for="item in field_list"> {{item}}</option>
+        </select>
+        <br><br>
+        <button type="button" @click="newLog">Generate Report</button>
+        <hr>
+        <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
+        Details:<br><br>
+        <ul>
+            <li><b>Farm:</b> Sample Farm</li>
+            <li><b>User:</b> manager1</li>
+            <li><b>Language:</b> English</li><br>
+            <li><b>Start:</b> {{start_date}}</li>
+            <li><b>End:</b> {{end_date}}</li>
+            <li><b>Crop:</b> {{crop}}</li>
+        </ul>
+        <p v-if="!log_display">There are no such logs.</p>
+        <div v-if="log_display">
+            <table border=1>
+                <tr>
+                    <th>Row</th>
+                    <th>Date</th>
+                    <th>Area</th>
+                    <th>Crop</th>
+                    <th>Yield</th>
+                    <th>Units</th>
+                </tr>
+                <tr v-for="(log, index) in log_list">
+                    <td>{{index+1}}</td>
+                    <td>{{log.date}}</td>
+                    <td>{{log.area}}</td>
+                    <td>{{log.crop}}</td>
+                    <td>{{log.yield}}</td>
+                    <td>{{log.units}}</td>
+                </tr>
+            </table>
+        </div>
+        </div>
+        <script>
+            var vuespike = new Vue({
+            el: '#vuespike',
+            data: {
+                header: 'My Sample Harvest Report',
+                names: ["Adam"],
+                start_date: "2016-06-05",
+                end_date: "2020-05-06",
+                crop: "Peas",
+                crop_list: ["Broccoli", "Kale", "Peas"],
+                field_list: ["All", "Chuau-1", "SQ7"],
+                log_list: [],
+                log_display: false
+            },
+            methods:{
+                newLog: function(){
+                    this.log_display=true
+                    if (this.log_list.length == 0) {
+                        this.log_list.push({date: '2018-05-01', area: 'SQ7', crop: 'Broccoli', yield: 28, units: 'Bunches'})
+                    }
+                    else if (this.log_list.length == 1) {
+                        this.log_list.push({date: '2018-02-01', area: 'Chuau-1', crop: 'Kale', yield: 4, units: 'Bunches'})
+                    }
+                    else if (this.log_list.length == 2) {
+                        this.log_list.push({date: '2018-04-01', area: 'SQ7', crop: 'Peas', yield: 13, units: 'Bunches'})
+                    }
+                }
+            }
+        });
+        Vue.config.devtools = true;
+        </script>
+    </p>
+</html>
