@@ -31,9 +31,9 @@
         <h1>{{ header=="" ? "Mock Harvest Report" : header }}</h1>
         Details:<br><br>
         <ul>
-            <li><b>Farm:</b> Sample Farm</li>
-            <li><b>User:</b> manager1</li>
-            <li><b>Language:</b> English</li><br>
+            <li><b>Farm:</b>{{farm}}</li>
+            <li><b>User:</b>{{user}}</li>
+            <li><b>Language:</b>{{language}}</li><br>
             <li><b>Start:</b> {{start_date}}</li>
             <li><b>End:</b> {{end_date}}</li>
             <li><b>Crop:</b> {{crop}}</li>
@@ -72,11 +72,17 @@
                 crop_list: ["Broccoli", "Kale", "Peas"],
                 field_list: ["All", "Chuau-1", "SQ7"],
                 log_list: [],
-                log_display: false
+                log_display: false,
+                farm:"",
+                user:"",
+                language:"",
             },
             methods:{
                 newLog: function(){
                     this.log_display=true
+                    this.farm="Sample Farm";
+                    this.user="manager1";
+                    this.language="English";
                     if (this.log_list.length == 0) {
                         this.log_list.push({date: '2018-05-01', area: 'SQ7', crop: 'Broccoli', yield: 28, units: 'Bunches'})
                     }
