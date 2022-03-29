@@ -38,24 +38,27 @@
             <li><b>End:</b> {{end_date}}</li>
             <li><b>Crop:</b> {{crop}}</li>
         </ul>
-        <table border="1|0">
-            <tr>
-                <th>Row</th>
-                <th>Date</th>
-                <th>Area</th>
-                <th>Crop</th>
-                <th>Yield</th>
-                <th>Units</th>
-            </tr>
-            <tr v-for="(log, index) in log_list">
-                <td>{{index+1}}</td>
-                <td>{{log.date}}</td>
-                <td>{{log.area}}</td>
-                <td>{{log.crop}}</td>
-                <td>{{log.yield}}</td>
-                <td>{{log.units}}</td>
-            </tr>
-        </table>
+        <p v-if="!log_display">There are no such logs.</p>
+        <div v-if="log_display">
+            <table border=1>
+                <tr>
+                    <th>Row</th>
+                    <th>Date</th>
+                    <th>Area</th>
+                    <th>Crop</th>
+                    <th>Yield</th>
+                    <th>Units</th>
+                </tr>
+                <tr v-for="(log, index) in log_list">
+                    <td>{{index+1}}</td>
+                    <td>{{log.date}}</td>
+                    <td>{{log.area}}</td>
+                    <td>{{log.crop}}</td>
+                    <td>{{log.yield}}</td>
+                    <td>{{log.units}}</td>
+                </tr>
+            </table>
+        </div>
         </div>
         <script>
             var vuespike = new Vue({
@@ -68,10 +71,12 @@
                 crop: "Peas",
                 crop_list: ["Broccoli", "Kale", "Peas"],
                 field_list: ["All", "Chuau-1", "SQ7"],
-                log_list: []
+                log_list: [],
+                log_display: false
             },
             methods:{
                 newLog: function(){
+                    this.log_display=true
                     if (this.log_list.length == 0) {
                         this.log_list.push({date: '2018-05-01', area: 'SQ7', crop: 'Broccoli', yield: 28, units: 'Bunches'})
                     }
