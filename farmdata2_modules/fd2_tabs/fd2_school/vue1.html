@@ -1,27 +1,13 @@
 <html>
     <head>
-        <title>Vue Spike</title>
+        <title>Vue Tab</title>
     </head>
-    <body>
-        <div id="vuespike" v-cloak>
-        <input type="text" v-model="header">
-        <h1>{{ header }}</h1>
-        </div>
-        <script src="https://unpkg.com/vue@2"></script>
-        <script>
-        var vuespike = new Vue({
-            el: '#vuespike',
-            data: {
-                header: 'My Sample Harvest Report'
-            }
-        });
-        </script>
-    </body>
     <p>
         <h1>Harvest Report</h1>
         This page is a <i>mockup</i> of a simplified harvest report.<br><br>
+        <div id="vuespike" v-cloak>
         <label for="title">Title: </label>
-        <input type="text" id="title" name="title" value="My Mock Report">
+        <input type="text" id="title" name="title" value="My Sample Harvest Report" v-model="header">
         <br><br>
         <label for="date">Start: </label>
         <input type="date" name="date" min="2014-01-01" max="2022-01-01" id="date" value="2020-05-05">
@@ -43,7 +29,7 @@
         <br><br>
         <input type="button" value="Generate Report">
         <hr>
-        <h1>My Mock Report</h1>
+        <h1>{{ header }}</h1>
         Details:<br><br>
         <ul>
             <li><b>Farm:</b> Sample Farm</li>
@@ -76,5 +62,14 @@
                 <td>Bunches</td>
             </tr>
         </table>
+        </div>
+        <script>
+            var vuespike = new Vue({
+            el: '#vuespike',
+            data: {
+                header: 'My Sample Harvest Report'
+            }
+        });
+        </script>
     </p>
 </html>
