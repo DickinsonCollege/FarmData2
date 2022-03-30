@@ -65,6 +65,15 @@ function fd2_field_kit_menu() {
     'weight' => 100,
   );
 
+   $items['farm/fd2-field-kit/harvestInput'] = array(
+    'title' => 'Harvest Input',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'fd2_field_kit_view',
+    'page arguments' => array('harvestInput.html'),
+    'access arguments' => array('view fd2 field kit'),
+    'weight' => 200,
+  );
+
   return $items;
 };
 
