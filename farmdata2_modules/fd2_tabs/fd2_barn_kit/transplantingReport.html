@@ -1,20 +1,43 @@
-<body>
-<p>This is the new Transplanting Report Page</p>
-</body>
+<div id="transplantUI" v-cloak> 
 
-<label for="start">Start: </label>
-<input type="date" id="start" name="start-date"
-        value="2020-05-05" 
-        min="2014-01-01" max="2022-01-01">
+    <body>
+    <p>This is the new Transplanting Report Page</p>
+    </body>
 
-<label for="end">End: </label>
-<input type="date" id="end" name="end-date" 
-        value="2020-05-15" 
-        min="2020-05-05" max="2022-01-01">
+    <label for="start">Start: </label>
+    <input type="date" id="start" name="start-date"
+            value="2020-05-05" 
+            min="2014-01-01" max="2022-01-01">
+
+    <label for="end">End: </label>
+    <input type="date" id="end" name="end-date" 
+            value="2020-05-15" 
+            min="2020-05-05" max="2022-01-01">
+
 
 <br>
 <br>
 
-<button type="button">
-    Generate Report
-</button>
+    <button type="button">
+        Generate Report
+    </button>
+
+
+
+</div>
+
+<script>
+    new Vue({
+        el: '#transplantUI',
+        data: {
+            
+        },
+        methods: {
+
+        },
+        computed: {
+
+        }
+    })
+    Vue.config.devtools = true;
+</script>
