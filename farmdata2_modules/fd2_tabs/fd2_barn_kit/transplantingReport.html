@@ -13,7 +13,57 @@
             </date-range-selection>
 
             <!--Generate Report Button - uses the standard FD2 button style.-->
-            <button data-cy="generate-rpt-btn" class="btn center-block btn-primary">Generate Report</button>
+            <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" @click="reportButtonClicked">Generate Report</button>
+        </div>
+     </fieldset>
+
+     <fieldset>
+       <!-- <p v-if="!reportDisplay">No transplanting logs were found for the selected date range.</p>-->
+        <div v-if="reportDisplay">
+            <table border=1>
+                <tr>
+                    <!--<th>{{item}}</th>-->
+                    <th>Crop</th>
+                    <th>Field</th>
+                    <th>Tray Seeding Date</th>
+                    <th>Transpanting Date</th>
+                    <th>Days in Tray</th>
+                    <th>Bed Feet</th>
+                    <th>Rows/Bed</th>
+                    <th>Row Feet</th>
+                    <th>Trays</th>
+                    <th>Hours</th>
+                    <th>Comments</th>
+                    <th>User</th>
+                </tr>
+                <tr v-for="item in rows">
+                    <td>{{item.crop}}</td>
+                    <td>{{item.field}}</td>
+                    <td>{{item.tray_date}}</td>
+                    <td>{{item.transplant_date}}</td>
+                    <td>{{item.days}}</td>
+                    <td>{{item.bed_feet}}</td>
+                    <td>{{item.rows_bed}}</td>
+                    <td>{{item.row_feet}}</td>
+                    <td>{{item.trays}}</td>
+                    <td>{{item.hours}}</td>
+                    <td>{{item.comments}}</td>
+                    <td>{{item.user}}</td>
+                    <td><button type="button" @click="deleteItem">Delete</button></td>
+                </tr>
+                <!--
+                <tr v-for="(log, index) in log_list">
+                    <td>{{index+1}}</td>
+                    <td>{{log.date}}</td>
+                    <td>{{log.area}}</td>
+                    <td>{{log.crop}}</td>
+                    <td>{{log.yield}}</td>
+                    <td>{{log.units}}</td>
+                    <td><button type="button" @click="deleteItem">Delete</button></td>
+                </tr>
+                -->
+                
+            </table>
         </div>
      </fieldset>
 </div> 
@@ -28,18 +78,30 @@
             startDate: null,
             endDate: null,
             dateRangeClicks: 0,
-            dateRangeMaxDate: dayjs().format("YYYY-MM-DD")
+            dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
+            //display variables
+            reportDisplay: false,
+            //report table variables
+            columns : ["Crop", "Field", "Tray Seeding Date", "Transpanting Date", "Days in Tray", "Bed Feet", "Rows/Bed", "Row Feet", "Trays", "Hours", "Comments", "User"],
+            rows : []
         },
         methods: {
             //methods for date range selection
-            startDateChange(newDate) {
+            startDateChange: function(newDate) {
                 this.startDate = newDate
                 console.log(this.startDate)
             },
-            endDateChange(newDate) {
+            endDateChange: function(newDate) {
                 this.endDate = newDate
                 console.log(this.startDate)
-            }           
+            },
+            reportButtonClicked: function(){
+                this.reportDisplay = true
+                this.rows.push({crop: "BROCCOLI", field: "C", tray_date: "2022-03-08", transplant_date: "2022-04-05", days: '28', bed_feet: "400.0", rows_bed: "2", row_feet: "800.0", trays: "5", hours: ".02", comments: "", user: "nelsonw"})
+            },   
+            deleteItem: function(index){
+                this.rows.splice(index, 1)
+            }     
         },
         computed: {
 
