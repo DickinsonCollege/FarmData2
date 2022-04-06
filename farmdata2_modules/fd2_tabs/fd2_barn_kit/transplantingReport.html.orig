@@ -13,6 +13,7 @@
             </date-range-selection>
 
             <!--Generate Report Button - uses the standard FD2 button style.-->
+<<<<<<< HEAD
             <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" @click="reportButtonClicked">Generate Report</button>
         </div>
      </fieldset>
@@ -64,6 +65,9 @@
                 -->
                 
             </table>
+=======
+            <button data-cy="generate-rpt-btn" class="btn center-block btn-primary">Generate Report</button>
+>>>>>>> a913d62... Merge pull request #1 from mollerup23/input_form_task
         </div>
      </fieldset>
 </div> 
@@ -78,6 +82,7 @@
             startDate: null,
             endDate: null,
             dateRangeClicks: 0,
+<<<<<<< HEAD
             dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
             //display variables
             reportDisplay: false,
@@ -102,6 +107,20 @@
             deleteItem: function(index){
                 this.rows.splice(index, 1)
             }     
+=======
+            dateRangeMaxDate: dayjs().format("YYYY-MM-DD")
+        },
+        methods: {
+            //methods for date range selection
+            startDateChange(newDate) {
+                this.startDate = newDate
+                console.log(this.startDate)
+            },
+            endDateChange(newDate) {
+                this.endDate = newDate
+                console.log(this.startDate)
+            }           
+>>>>>>> a913d62... Merge pull request #1 from mollerup23/input_form_task
         },
         computed: {
 
