@@ -1,6 +1,6 @@
 <body>
     <div id='seedingInput'>
-       <h1 style='text-align:center;'>Seeding Input Log</h1> 
+       <h1 style='text-align:center;'>Transplanting Input Log</h1> 
        <br>
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
@@ -14,7 +14,7 @@
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
-       <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+<!--       <fieldset class="panel panel-default center-block" style="max-width: 500px;">
            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
                 <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
@@ -35,7 +35,7 @@
                     <label>Number of Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type=number v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
                 </div>
             </div>
-       </fieldset>   
+       </fieldset>   --!>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
