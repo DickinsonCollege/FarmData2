@@ -1,0 +1,49 @@
+<div id="transplantUI" v-cloak> 
+
+<!--fieldset groups together the heading, date input, and generate report button (styles are duplicated from the Seeding Report tab)-->
+    <fieldset class="panel panel-default center-block" style="width: 50%;">
+        <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
+        <div style="display: flex;width: 100%; padding: 7px">
+
+        <!--This uses the dateRangeSelectionComponent defined in the FD2 Resources file - it defines the date input forms together.-->
+            <date-range-selection data-cy="date-range-selection"
+            class="center-block"  
+            default-start-date="2021-01-15" :default-end-date=dateRangeMaxDate @start-date-changed="startDateChange" @end-date-changed="endDateChange" 
+            >
+            </date-range-selection>
+
+            <!--Generate Report Button - uses the standard FD2 button style.-->
+            <button data-cy="generate-rpt-btn" class="btn center-block btn-primary">Generate Report</button>
+        </div>
+     </fieldset>
+</div> 
+<script>
+    new Vue({
+        el: '#transplantUI',
+        components: {
+            'date-range-selection': DateRangeSelectionComponent            
+        },
+        data: {
+            //variables for date range selection
+            startDate: null,
+            endDate: null,
+            dateRangeClicks: 0,
+            dateRangeMaxDate: dayjs().format("YYYY-MM-DD")
+        },
+        methods: {
+            //methods for date range selection
+            startDateChange(newDate) {
+                this.startDate = newDate
+                console.log(this.startDate)
+            },
+            endDateChange(newDate) {
+                this.endDate = newDate
+                console.log(this.startDate)
+            }           
+        },
+        computed: {
+
+        }
+    })
+    Vue.config.devtools = true;
+</script>
