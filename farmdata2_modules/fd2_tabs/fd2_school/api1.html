@@ -28,7 +28,7 @@
     </select>
     <br></br>
     <!-- GENERATE REPORT BUTTON -->
-    <input type="button" value="Generate Report" @click="saveLog(); addDetails();">
+    <input type="button" value="Generate Report" @click="saveLog(); generateData();"                      >
     <hr>
     </hr>
     <!-- REPORT TITLE -->
@@ -106,10 +106,26 @@ var harvestReport = new Vue({
         deleteLog: function(logIndex){
             this.harvestLog.splice(this.logIndex, 1);
         },
-        addDetails: function(){
-            this.farm = "Sample Farm";
-            this.user = "manager1";
-            this.language = "English";
+        generateData: function(){
+            
+            axios
+                .get('/farm.json')
+                .then((response)=>{
+                    console.log("Got Response");
+                    console.log(response);
+
+                    this.farm = response.data.name;
+                    this.user = response.data.user.name;
+                    this.language = response.data.user.language
+
+                })
+                .catch((error) => {
+                    console.log("Error Occured");
+                    console.log(error);
+                })
+
+                
+
         }
     }
 });
