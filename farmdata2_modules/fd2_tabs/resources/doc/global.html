@@ -130,97 +130,7 @@
 <tr><td>delete-button-ri</td>      <td>The delete button in the ith row, i=0,1,2....</td>
 <tr><td>cancel-button-ri</td>      <td>The cancel button in the ith row, i=0,1,2....</td>
 </tbody>
-</table></p></div></div> 
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>rows</code></td>
-        <td>Array.&lt;Object></td>
-        <td>-</td>
-        <td><b>Yes</b></td>
-        <td>The content to be displayed in the table. Each object in the array is a row, and each element in the data property is an individual cell in that row.  For example the following value would provide data for three rows and three columns:<br> <code>[{id: 1, data:[1, 2, 'three']}, {id: 2, data:[4, 5, 'six']}, {id: 3, data:['seven', 8, 9]}]</code><br>  Note: The ID is not displayed, but emitted as a payload with some events to communicate which row is affected.</td>
-    </tr><tr>
-        <td><code>headers</code></td>
-        <td>Array.&lt;String></td>
-        <td>-</td>
-        <td><b>Yes</b></td>
-        <td>The column headings for the table. Must be the same length as the data arrays in the rows prop.</td>
-    </tr><tr>
-        <td><code>canEdit</code></td>
-        <td>Boolean</td>
-        <td><code>false</code></td>
-        <td>No</td>
-        <td>true if the table rows should be editable via an edit button that appears in each row.</td>
-    </tr><tr>
-        <td><code>canDelete</code></td>
-        <td>Booelan</td>
-        <td><code>false</code></td>
-        <td>No</td>
-        <td>true if the table rows should be able to be deleted via a delete button that appears in each row.</td>
-    </tr><tr>
-        <td><code>visibleColumns</code></td>
-        <td>Array.&lt;Boolean></td>
-        <td>-</td>
-        <td>No</td>
-        <td>An array the same length as the headers prop.  Each entry indicates if the associated column is visble (true) or hidden (false).  If omitted, all columns are visible.</td>
-    </tr><tr>
-        <td><code>inputOptions</code></td>
-        <td>Array.&lt;String></td>
-        <td>-</td>
-        <td>No</td>
-        <td>An array the same length as the headers prop.  Each entry indicates the type of edit component that will appear in edit mode.  The entries must be one of 'text', 'dropdown', 'date', 'number', or 'no input'.  If omitted, all columns are edited as 'text'.</td>
-    </tr></tbody>
 </table>
-
-
-
-
-
-
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-event">Events</h3>
-<table data-jsdoc-vuejs="table-event">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Payload Type</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>edit-clicked</code></td>
-        <td></td>
-        <td>Emitted when an edit button is clicked to indicate that the table is in edit mode.</td>
-    </tr><tr>
-        <td><code>row-edited</code></td>
-        <td>Object|Number</td>
-        <td>Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be <code>{crop: 'KALE'}</code>, and if they also edited the area to Chuau it would be <code>{crop: 'KALE', area: 'CHUAU'}</code>.  The second is a Nubmer that indicates 'id' of the row that was changed.</td>
-    </tr><tr>
-        <td><code>row-canceled</code></td>
-        <td></td>
-        <td>Emitted when a row was being edited and the cancel button is clicked.</td>
-    </tr><tr>
-        <td><code>row-deleted</code></td>
-        <td>Number</td>
-        <td>Emitted when the delete button next to a row is clicked and the user confirms that they want to delete the row.  The payload indicates the 'id' of the row that is to be deleted.</td>
-    </tr></tbody>
-</table>
-
-
-<div class="container-overview"><div><p> 
-
 </div>
 
 
@@ -255,6 +165,11 @@
 
     
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="CustomTableComponent.js.html">CustomTableComponent.js</a>, <a href="CustomTableComponent.js.html#line42">line 42</a>
+    </li></ul></dd>
     
 
     
@@ -286,69 +201,7 @@
 <tr><td>start-date-select</td>   <td>The date input element for the start date.</td></tr>
 <tr><td>end-date-select</td>   <td>The date input element for the end date.</td></tr>
 </tbody>
-</table></p></div></div> 
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>defaultStartDate</code></td>
-        <td>String</td>
-        <td>-</td>
-        <td><b>Yes</b></td>
-        <td>the initial start date to be displayed (YYYY-MM-DD).</td>
-    </tr><tr>
-        <td><code>defaultEndDate</code></td>
-        <td>String</td>
-        <td>-</td>
-        <td><b>Yes</b></td>
-        <td>the initial end date to be displayed (YYYY-MM-DD).</td>
-    </tr></tbody>
 </table>
-
-
-
-
-
-
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-event">Events</h3>
-<table data-jsdoc-vuejs="table-event">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Payload Type</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>click</code></td>
-        <td></td>
-        <td>Emits an event with no payload when when one of the date selection elements is clicked.  This event does not necessarily indicate a change in date.</td>
-    </tr><tr>
-        <td><code>start-date-changed</code></td>
-        <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when a start date is entered or chosen and the start date selection element loses focus.</td>
-    </tr><tr>
-        <td><code>end-date-changed</code></td>
-        <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when an end date is entered or chosen and the end date selection element loses focus.</td>
-    </tr></tbody>
-</table>
-
-
-<div class="container-overview"><div><p> 
-
 </div>
 
 
@@ -383,6 +236,11 @@
 
     
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="DateRangeSelectionComponent.js.html">DateRangeSelectionComponent.js</a>, <a href="DateRangeSelectionComponent.js.html#line28">line 28</a>
+    </li></ul></dd>
     
 
     
@@ -413,71 +271,7 @@
 <tbody>
 <tr><td>date-select</td>  <td>The date input element.</td></tr>
 </tbody>
-</table></p></div></div> 
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>defaultDate</code></td>
-        <td>String</td>
-        <td>-</td>
-        <td><b>Yes</b></td>
-        <td>the initial date to be displayed in the component (YYYY-MM-DD).</td>
-    </tr><tr>
-        <td><code>earliestDate</code></td>
-        <td>String</td>
-        <td>-</td>
-        <td>No</td>
-        <td>the earliest date will be able to be chosen (YYYY-MM-DD).  If not specified, there will be no limit on the earliest date that can be chosen.</td>
-    </tr><tr>
-        <td><code>latestDate</code></td>
-        <td>String</td>
-        <td>-</td>
-        <td>No</td>
-        <td>the latest date that will be able to be chosen (YYYY-MM-DD). If not specfied, there will be no limit (including future dates) that can be chosen.</td>
-    </tr></tbody>
 </table>
-
-
-
-
-
-
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-event">Events</h3>
-<table data-jsdoc-vuejs="table-event">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Payload Type</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>click</code></td>
-        <td></td>
-        <td>Emits an event with no payload when when the date input element is clicked.  This event does not necessarily indicate a change in date.</td>
-    </tr><tr>
-        <td><code>date-changed</code></td>
-        <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when a date is entered or chosen and the date input element loses focus.</td>
-    </tr></tbody>
-</table>
-
-
-<div class="container-overview"><div><p> 
-
 </div>
 
 
@@ -512,6 +306,11 @@
 
     
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="DateSelectionComponent.js.html">DateSelectionComponent.js</a>, <a href="DateSelectionComponent.js.html#line19">line 19</a>
+    </li></ul></dd>
     
 
     
@@ -544,67 +343,7 @@
 <tr><td>dropdown-input</td>      <td>The select element.</td></tr>
 <tr><td>optioni</td>             <td>The ith option element, i=0,1,2...</td></tr>
 </tbody>
-</table></p></div></div> 
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>dropDownList</code></td>
-        <td>Array</td>
-        <td>-</td>
-        <td><b>Yes</b></td>
-        <td>The contents of the dropdown. Changes to an array bound to this prop will appear in the list.</td>
-    </tr><tr>
-        <td><code>includesAll</code></td>
-        <td>Boolean</td>
-        <td><code>false</code></td>
-        <td>No</td>
-        <td>true to include the All option at the top of the list of options. All will be omitted if includesAll is false or omitted.</td>
-    </tr><tr>
-        <td><code>defaultInput</code></td>
-        <td>String</td>
-        <td>-</td>
-        <td>No</td>
-        <td>the option to be selected in the component. Changes to a value bound to this prop will change the selected option.</td>
-    </tr></tbody>
 </table>
-
-
-
-
-
-
-
-
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-event">Events</h3>
-<table data-jsdoc-vuejs="table-event">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Payload Type</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>selection-changed</code></td>
-        <td>String</td>
-        <td>Emits the selected option when the option is changed. Note: This event is also emitted in the mounted lifecycle hook to signal the setting of the initial value.</td>
-    </tr></tbody>
-</table>
-
-
-<div class="container-overview"><div><p> 
-
 </div>
 
 
@@ -639,6 +378,11 @@
 
     
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="DropdownWithAllComponent.js.html">DropdownWithAllComponent.js</a>, <a href="DropdownWithAllComponent.js.html#line20">line 20</a>
+    </li></ul></dd>
     
 
     
@@ -1164,7 +908,7 @@ If there are data properties in the logs, they are parsed into JSON before the r
 
             
 
-            <td class="description last">optionally an array that will be filled with the records as they are returned.  If ommitted a new array will be returned when the request completes.</td>
+            <td class="description last">optionally an array that will be filled with the records as they are returned.  If omitted a new array will be returned when the request completes.</td>
         </tr>
 
     
@@ -3311,7 +3055,7 @@ updateRecord('/log', assetUpdate, token)
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Jan 04 2022 21:49:18 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Apr 08 2022 18:35:49 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

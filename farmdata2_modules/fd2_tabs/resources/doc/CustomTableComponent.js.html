@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: CustomTableComponent.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: CustomTableComponent.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * A Vue component for FarmData2 report tables. The table ensures a consistent styling, and provides the row-based edit/delete and export functionalities that are common to all reports.
+ * 
+ * &lt;p>&lt;b>data-cy attributes&lt;/b>&lt;/p>
+ * &lt;table>
+ * &lt;thead>&lt;tr>&lt;th>Value&lt;/th>         &lt;th>Descripion&lt;/th>&lt;/tr>&lt;/thead>
+ * &lt;tbody>
+ * &lt;tr>&lt;td>table&lt;/td>                &lt;td>The table element.&lt;/td>&lt;/tr>
+ * &lt;tr>&lt;td>table-headers&lt;/td>        &lt;td>The tr element holding the th elements&lt;/td>&lt;/tr>
+ * &lt;tr>&lt;td>hi&lt;/td>                   &lt;td>The ith th element, i=0,1,2...&lt;/td>
+ * &lt;tr>&lt;td>edit-header&lt;/td>          &lt;td>The th element for the edit button column&lt;/td>
+ * &lt;tr>&lt;td>save-header&lt;/td>          &lt;td>The th element for the save button column&lt;/td>
+ * &lt;tr>&lt;td>delete-header&lt;/td>        &lt;td>The th element for the delete button column&lt;/td>
+ * &lt;tr>&lt;td>cancel-header&lt;/td>        &lt;td>The th element for the cancel button column&lt;/td>
+ * &lt;tr>&lt;td>ri&lt;/td>                   &lt;td>The tr element for the ith table row, i=0,1,2,...&lt;/td>
+ * &lt;tr>&lt;td>td-ricj&lt;/td>              &lt;td>The td element in the ith row and jth column, i,j=0,1,2...&lt;/td>
+ * &lt;tr>&lt;td>ricj&lt;/td>                 &lt;td>The div for plain text in the ith row and jth column, i,j=0,1,2....&lt;/td>
+ * &lt;tr>&lt;td>ricj&lt;/td>                 &lt;td>The div for plain text in the ith row and jth column, i,j=0,1,2....&lt;/td>
+ * &lt;tr>&lt;td>text-input-ricj&lt;/td>      &lt;td>The text input in the ith row and jth column in edit mode, i,j=0,1,2....&lt;/td>
+ * &lt;tr>&lt;td>dropdown-input-ricj&lt;/td>  &lt;td>The select input in the ith row and jth column in edit mode, i,j=0,1,2....&lt;/td>
+ * &lt;tr>&lt;td>date-input-ricj&lt;/td>      &lt;td>The date input in the ith row and jth column in edit mode, i,j=0,1,2....&lt;/td>
+ * &lt;tr>&lt;td>number-input-ricj&lt;/td>    &lt;td>The number input in the ith row and jth column in edit mode, i,j=0,1,2....&lt;/td>
+* &lt;tr>&lt;td>edit-button-ri&lt;/td>        &lt;td>The edit button in the ith row, i=0,1,2....&lt;/td>
+* &lt;tr>&lt;td>save-button-ri&lt;/td>        &lt;td>The save button in the ith row, i=0,1,2....&lt;/td>
+* &lt;tr>&lt;td>delete-button-ri&lt;/td>      &lt;td>The delete button in the ith row, i=0,1,2....&lt;/td>
+* &lt;tr>&lt;td>cancel-button-ri&lt;/td>      &lt;td>The cancel button in the ith row, i=0,1,2....&lt;/td>
+ * &lt;/tbody>
+ * &lt;/table>
+ * 
+ * @vue-prop {Object[]} rows - The content to be displayed in the table. Each object in the array is a row, and each element in the data property is an individual cell in that row.  For example the following value would provide data for three rows and three columns:&lt;br> &lt;code>[{id: 1, data:[1, 2, 'three']}, {id: 2, data:[4, 5, 'six']}, {id: 3, data:['seven', 8, 9]}]&lt;/code>&lt;br>  Note: The ID is not displayed, but emitted as a payload with some events to communicate which row is affected.
+ * @vue-prop {String[]} headers - The column headings for the table. Must be the same length as the data arrays in the rows prop.
+ * @vue-prop {Boolean} [canEdit=false] - true if the table rows should be editable via an edit button that appears in each row.
+ * @vue-prop {Booelan} [canDelete=false] - true if the table rows should be able to be deleted via a delete button that appears in each row.
+ * @vue-prop {Boolean[]} [visibleColumns] - An array the same length as the headers prop.  Each entry indicates if the associated column is visble (true) or hidden (false).  If omitted, all columns are visible.
+ * @vue-prop {String[]} [inputOptions] - An array the same length as the headers prop.  Each entry indicates the type of edit component that will appear in edit mode.  The entries must be one of 'text', 'dropdown', 'date', 'number', or 'no input'.  If omitted, all columns are edited as 'text'.
+ * 
+ * @vue-event edit-clicked - Emitted when an edit button is clicked to indicate that the table is in edit mode.
+ * @vue-event {Object|Number} row-edited - Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be &lt;code>{crop: 'KALE'}&lt;/code>, and if they also edited the area to Chuau it would be &lt;code>{crop: 'KALE', area: 'CHUAU'}&lt;/code>.  The second is a Nubmer that indicates 'id' of the row that was changed. 
+ * @vue-event row-canceled - Emitted when a row was being edited and the cancel button is clicked.
+ * @vue-event {Number} row-deleted - Emitted when the delete button next to a row is clicked and the user confirms that they want to delete the row.  The payload indicates the 'id' of the row that is to be deleted.
+ */
+let CustomTableComponent = {
+    template:
+    `&lt;div class="sticky-table">
+        &lt;table data-cy="table" style="width:100%" class="table table-bordered table-striped">
+            &lt;thead>
+                &lt;tr class="sticky-header table-text" data-cy="table-headers">
+                    &lt;th v-for="(header, hi) in headers"
+                    v-if="isVisible[hi]" 
+                    :data-cy="'h'+hi">{{ header }}&lt;/th>
+                    &lt;th data-cy="edit-header" width=55 v-if="canEdit &amp;&amp; !currentlyEditing">Edit&lt;/th>
+                    &lt;th data-cy="save-header" width=55 v-if="canEdit &amp;&amp; currentlyEditing">Save&lt;/th>
+                    &lt;th data-cy="delete-header" width=55 v-if="canDelete &amp;&amp; !currentlyEditing">Delete&lt;/th>
+                    &lt;th data-cy="cancel-header" width=55 v-if="canDelete &amp;&amp; currentlyEditing">Cancel&lt;/th>
+                &lt;/tr>
+            &lt;/thead>
+            &lt;tbody>
+                &lt;tr class="table-text" 
+                v-for="(row, ri) in rows"
+                :data-cy="'r'+ri">
+                    &lt;td v-for="(item, ci) in row.data"
+                    v-if="isVisible[ci]"
+                    :data-cy="'td-r'+ri+'c'+ci">
+                        &lt;div v-if="rowToEditIndex!=ri || inputType[ci].type == 'no input'"
+                        :data-cy="'r'+ri+'c'+ci"
+                        v-html='item'>&lt;/div>
+                                    
+                        &lt;textarea 
+                        :data-cy="'text-input-r'+ri+'c'+ci"
+                        v-if="rowToEditIndex==ri &amp;&amp; inputType[ci].type == 'text'" 
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)">&lt;/textarea>
+                                    
+                        &lt;select 
+                        :data-cy="'dropdown-input-r'+ri+'c'+ci"
+                        v-if="rowToEditIndex==ri &amp;&amp; inputType[ci].type == 'dropdown'" 
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)">
+                            &lt;option v-for="option in inputType[ci].value">{{ option }}&lt;/option>
+                        &lt;/select>
+                                    
+                        &lt;input 
+                        :data-cy="'date-input-r'+ri+'c'+ci"
+                        type="date" 
+                        v-if="rowToEditIndex==ri &amp;&amp; inputType[ci].type == 'date'" 
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)">
+                                    
+                        &lt;input 
+                        :data-cy="'number-input-r'+ri+'c'+ci" 
+                        type="number" step="0.001" style="width: 70px;" 
+                        v-if="rowToEditIndex==ri &amp;&amp; inputType[ci].type == 'number'"
+                        v-model="editedRowData.data[ci]" 
+                        @focusout="changedCell(ci)">
+                    &lt;/td>
+                    &lt;td v-if="canEdit"> 
+                        &lt;button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
+                        @click="editRow(ri)" 
+                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                            &lt;span class="glyphicon glyphicon-pencil">&lt;/span>
+                        &lt;/button> 
+                        &lt;button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
+                        v-if="rowToEditIndex==ri" 
+                        @click="finishRowEdit(row.id, row)">
+                            &lt;span class="glyphicon glyphicon-check">&lt;/span>
+                        &lt;/button>
+                    &lt;/td>
+                    &lt;td v-if="canDelete"> 
+                        &lt;button class="table-button btn btn-danger" 
+                        :data-cy="'delete-button-r'+ri" 
+                        @click="deleteRow(row.id)" 
+                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                            &lt;span class="glyphicon glyphicon-trash">&lt;/span>
+                        &lt;/button>
+                        &lt;button class="table-button btn btn-danger"
+                        :data-cy="'cancel-button-r'+ri"
+                        @click="cancelRowEdit(ri)" 
+                        v-if="(rowToEditIndex==ri)">
+                            &lt;span class="glyphicon glyphicon-remove">&lt;/span>
+                        &lt;/button>
+                    &lt;/td>
+                &lt;/tr>
+            &lt;/tbody>
+        &lt;/table>
+    &lt;/div>`,
+    props: { 
+        rows: {
+            type: Array,
+            required: true
+        },
+        headers: {
+            type: Array,
+            required: true
+        },
+        canEdit: {
+            type: Boolean,
+            default: false
+        },
+        canDelete: {
+            type: Boolean,
+            default: false
+        },
+        visibleColumns: {
+            type: Array,
+            default: null
+        },
+        inputOptions: {
+            type: Array,
+            default: null
+        }
+    },
+    data() {
+        return {
+            rowToEditIndex: null,
+            indexesToChange: [],
+            editedRowData: {},
+            originalRow: {},
+            currentlyEditing: false,
+        }
+    },
+    methods: {
+        editRow: function(index){
+            this.rowToEditIndex = index
+            this.currentlyEditing = true
+            this.originalRow = JSON.parse(JSON.stringify({ 
+                'id': this.rows[index].id,
+                'data': this.rows[index].data
+            }))
+            this.editedRowData = { 
+                'id': this.rows[index].id,
+                'data': this.rows[index].data
+            }
+            this.$emit('edit-clicked')
+        },
+        finishRowEdit: function(id){
+            this.rowToEditIndex = null
+            this.currentlyEditing = false
+            
+            let jsonObject = {}
+            for(i=0; i &lt; this.indexesToChange.length; i ++){
+                let key = this.headers[this.indexesToChange[i]]
+                jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
+            }
+
+            this.indexesToChange = []
+            this.editedRowData = {}
+
+            this.$emit('row-edited', jsonObject, id)
+        },
+        cancelRowEdit: function(index){
+            this.rowToEditIndex = null
+            this.currentlyEditing = false
+            
+            this.rows[index].data = this.originalRow.data
+            
+            this.indexesToChange = []
+            this.editedRowData = {}
+
+            this.$emit('row-canceled')
+        },
+        deleteRow: function(id){
+            if(confirm("Would you like ot delete this log?")){
+                this.$emit('row-deleted', id)
+            }
+        },
+        changedCell: function(itemIndex){
+            if(!this.indexesToChange.includes(itemIndex)){
+                if(this.editedRowData.data[itemIndex] != this.originalRow.data[itemIndex]) {
+                    this.indexesToChange.push(itemIndex)
+                }
+            }
+            else if (this.indexesToChange.includes(itemIndex) &amp;&amp; (this.editedRowData.data[itemIndex] == this.originalRow.data[itemIndex])){
+                for (i = 0; i &lt; this.indexesToChange.length; i++) {
+                    if (this.indexesToChange[i] == itemIndex) {
+                        this.indexesToChange.splice(i, 1)
+                    }
+                }
+            }
+        }
+    },
+    computed: {
+        editDeleteDisabled() {
+            if (this.rowToEditIndex != null){
+                return true
+            }else{
+                return false
+            }
+        },
+        isVisible() {
+            let updatedVis = []
+            if (this.visibleColumns == null) {
+                for (i = 0; i &lt; this.headers.length; i++) {
+                    updatedVis.push(true);
+                }
+            }
+            else {
+                updatedVis = this.visibleColumns
+            }
+            return updatedVis;
+        },
+        inputType() {
+            let typeArray = []
+            if (this.inputOptions == null) {
+                for (i = 0; i &lt; this.headers.length; i++) {
+                    typeArray.push({'type': 'text'});
+                }
+            }
+            else {
+                typeArray = this.inputOptions
+            }
+            return typeArray;
+        }
+    }
+}
+
+try {
+    module.exports = {
+        CustomTableComponent: CustomTableComponent
+    }
+}
+catch {}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createRecord">createRecord</a></li><li><a href="global.html#CustomTableComponent">CustomTableComponent</a></li><li><a href="global.html#DateRangeSelectionComponent">DateRangeSelectionComponent</a></li><li><a href="global.html#DateSelectionComponent">DateSelectionComponent</a></li><li><a href="global.html#deleteRecord">deleteRecord</a></li><li><a href="global.html#DropdownWithAllComponent">DropdownWithAllComponent</a></li><li><a href="global.html#getAllPages">getAllPages</a></li><li><a href="global.html#getAreaToIDMap">getAreaToIDMap</a></li><li><a href="global.html#getCropToIDMap">getCropToIDMap</a></li><li><a href="global.html#getIDToAreaMap">getIDToAreaMap</a></li><li><a href="global.html#getIDToCropMap">getIDToCropMap</a></li><li><a href="global.html#getIDToLogTypeMap">getIDToLogTypeMap</a></li><li><a href="global.html#getIDToUnitMap">getIDToUnitMap</a></li><li><a href="global.html#getIDToUserMap">getIDToUserMap</a></li><li><a href="global.html#getLogTypeToIDMap">getLogTypeToIDMap</a></li><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#getRecord">getRecord</a></li><li><a href="global.html#getSessionToken">getSessionToken</a></li><li><a href="global.html#getUnitToIDMap">getUnitToIDMap</a></li><li><a href="global.html#getUserToIDMap">getUserToIDMap</a></li><li><a href="global.html#quantityLocation">quantityLocation</a></li><li><a href="global.html#updateRecord">updateRecord</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Apr 08 2022 18:35:49 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

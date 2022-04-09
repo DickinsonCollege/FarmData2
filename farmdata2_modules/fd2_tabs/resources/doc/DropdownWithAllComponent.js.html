@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: DropdownWithAllComponent.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: DropdownWithAllComponent.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * A Vue component for a dropdown list where "All" can be included as the first option.
+ * 
+ * &lt;p>&lt;b>data-cy attributes&lt;/b>&lt;/p>
+ * &lt;table>
+ * &lt;thead>&lt;tr>&lt;th>Value&lt;/th>        &lt;th>Descripion&lt;/th>&lt;/tr>&lt;/thead>
+ * &lt;tbody>
+ * &lt;tr>&lt;td>dropdown-component&lt;/td>  &lt;td>div containing the label and select elements.&lt;/td>&lt;/tr>
+ * &lt;tr>&lt;td>dropdown-input&lt;/td>      &lt;td>The select element.&lt;/td>&lt;/tr>
+ * &lt;tr>&lt;td>optioni&lt;/td>             &lt;td>The ith option element, i=0,1,2...&lt;/td>&lt;/tr>
+ * &lt;/tbody>
+ * &lt;/table>
+ * 
+ * @vue-prop {Array} dropDownList - The contents of the dropdown. Changes to an array bound to this prop will appear in the list.
+ * @vue-prop {Boolean} [includesAll=false] - true to include the All option at the top of the list of options. All will be omitted if includesAll is false or omitted.
+ * @vue-prop {String} [defaultInput] - the option to be selected in the component. Changes to a value bound to this prop will change the selected option.
+ *
+ * @vue-event {String} selection-changed - Emits the selected option when the option is changed. Note: This event is also emitted in the mounted lifecycle hook to signal the setting of the initial value.
+ */ 
+let DropdownWithAllComponent = {
+    template: `&lt;div data-cy="dropdown-component">
+            &lt;label for="dropdownOptions">&lt;slot> &lt;/slot>&lt;/label>
+            &lt;select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
+                &lt;option v-for="(singleOption,i) in fullDropdown" :data-cy="'option'+i">{{ singleOption }}&lt;/option>
+            &lt;/select>
+        &lt;/div>`, 
+    props: {
+        dropdownList: {
+            type: Array,
+            required: true
+        },
+        includesAll: {
+            type: Boolean,
+        },
+        defaultInput: {
+            type: String
+        } 
+    }, 
+    data() {
+        return { selectedOption: this.defaultInput }
+    },
+    watch: {
+        defaultInput(newVal) {
+            if(this.fullDropdown.includes(newVal)) {
+                this.selectedOption = newVal;
+            }
+            else {
+                this.selectedOption = null;
+            }
+        }
+    },
+    mounted() {
+        this.selectionChanged();
+    },
+    methods: {
+        selectionChanged: function() {
+            this.$emit('selection-changed', this.selectedOption)
+        },
+    },
+    computed: {
+        fullDropdown: function() {
+            // Copies the prop first then adds All.
+            let newList = this.dropdownList.slice(0);
+            if (this.includesAll == true) {
+                newList.splice(0,0,"All");
+            }
+            return newList;
+        }
+    }
+}
+/*
+ * Export the DropdownWithAllComponent object as a CommonJS component
+ * so that it can be required bythe component test.
+ */
+try {
+    module.exports = {
+        DropdownWithAllComponent: DropdownWithAllComponent
+    }
+}
+catch {}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createRecord">createRecord</a></li><li><a href="global.html#CustomTableComponent">CustomTableComponent</a></li><li><a href="global.html#DateRangeSelectionComponent">DateRangeSelectionComponent</a></li><li><a href="global.html#DateSelectionComponent">DateSelectionComponent</a></li><li><a href="global.html#deleteRecord">deleteRecord</a></li><li><a href="global.html#DropdownWithAllComponent">DropdownWithAllComponent</a></li><li><a href="global.html#getAllPages">getAllPages</a></li><li><a href="global.html#getAreaToIDMap">getAreaToIDMap</a></li><li><a href="global.html#getCropToIDMap">getCropToIDMap</a></li><li><a href="global.html#getIDToAreaMap">getIDToAreaMap</a></li><li><a href="global.html#getIDToCropMap">getIDToCropMap</a></li><li><a href="global.html#getIDToLogTypeMap">getIDToLogTypeMap</a></li><li><a href="global.html#getIDToUnitMap">getIDToUnitMap</a></li><li><a href="global.html#getIDToUserMap">getIDToUserMap</a></li><li><a href="global.html#getLogTypeToIDMap">getLogTypeToIDMap</a></li><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#getRecord">getRecord</a></li><li><a href="global.html#getSessionToken">getSessionToken</a></li><li><a href="global.html#getUnitToIDMap">getUnitToIDMap</a></li><li><a href="global.html#getUserToIDMap">getUserToIDMap</a></li><li><a href="global.html#quantityLocation">quantityLocation</a></li><li><a href="global.html#updateRecord">updateRecord</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Apr 08 2022 18:35:49 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

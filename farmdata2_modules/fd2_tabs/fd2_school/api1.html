@@ -19,7 +19,7 @@
     <!-- CROP INPUT -->
     <label for="crop">Crop:</label>
     <select id="crop" name="crop" v-model="selectedCrop">
-        <option v-for="crop in crops">{{ crop }}</option>
+        <option v-for="crop in cropMapToArray">{{ crop }}</option>
     </select>
     <!-- FIELD INPUT -->
     <label for="Field">Field:</label>
@@ -71,6 +71,22 @@
 <script>
 var harvestReport = new Vue({
     el: '#harvestReport  ',
+    computed: {
+        cropMapToArray(){
+            return Array.from(this.idToCropMap.values());
+        }
+
+    },
+    created(){
+        getIDToCropMap()
+            .then((theMap) => {
+                this.idToCropMap = theMap;
+            })
+            .catch((err) => {
+                console.log("Error getting CropMap");
+            })
+
+    },
     data: {
         farm: '',
         user:'',
@@ -79,7 +95,6 @@ var harvestReport = new Vue({
         reportStartDate: '2020-05-05',
         reportEndDate: '2022-05-15',
         selectedCrop: 'Kale',
-        crops: ['Broccoli', 'Kale', 'Peas'],
         selectedField: 'All',
         fields: ['All', 'Chuau-1', 'SQ7'],
         harvestLog: [],
@@ -97,7 +112,8 @@ var harvestReport = new Vue({
                 crop: 'Broccoli',
                 'yeild': 15,
                 units: 'Pounds' }
-        }
+        },
+        idToCropMap: [],
     },
     methods: {
         saveLog: function(){

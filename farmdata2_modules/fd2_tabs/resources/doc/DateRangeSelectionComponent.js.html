@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: DateRangeSelectionComponent.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: DateRangeSelectionComponent.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>try {
+    FarmData2
+}
+catch(err) {
+    var DateComps = require("./DateSelectionComponent.js")
+    DateSelectionComponent = DateComps.DateSelectionComponent
+}
+
+/**
+ * A Vue component for selecting a range of dated (i.e. start and end dates).  The component ensures that the user cannot choose a start date after the end date and vice versa.
+ * 
+ * &lt;p>&lt;b>data-cy attributes&lt;/b>&lt;/p>
+ * &lt;table>
+ * &lt;thead>&lt;tr>&lt;th>Value&lt;/th>        &lt;th>Descripion&lt;/th>&lt;/tr>&lt;/thead>
+ * &lt;tbody>
+ * &lt;tr>&lt;td>start-date-select&lt;/td>   &lt;td>The date input element for the start date.&lt;/td>&lt;/tr>
+ * &lt;tr>&lt;td>end-date-select&lt;/td>   &lt;td>The date input element for the end date.&lt;/td>&lt;/tr>
+ * &lt;/tbody>
+ * &lt;/table>
+ * 
+ * @vue-prop {String} defaultStartDate - the initial start date to be displayed (YYYY-MM-DD).
+ * @vue-prop {String} defaultEndDate - the initial end date to be displayed (YYYY-MM-DD).
+ * 
+ * @vue-event click - Emits an event with no payload when when one of the date selection elements is clicked.  This event does not necessarily indicate a change in date.
+ * @vue-event {String} start-date-changed - Emits the selected date (YYYY-MM-DD) when a start date is entered or chosen and the start date selection element loses focus.
+ * @vue-event {String} end-date-changed - Emits the selected date (YYYY-MM-DD) when an end date is entered or chosen and the end date selection element loses focus.
+ */
+let DateRangeSelectionComponent = {
+    template: `&lt;div>
+                &lt;date-selection data-cy="start-date-select" :defaultDate="defaultStartDate" :latestDate="latestStartDate" @date-changed="startDateChange" 
+                @click="click">
+                    Start Date:
+                &lt;/date-selection>
+                &lt;date-selection data-cy="end-date-select" :defaultDate="defaultEndDate" :earliestDate="earliestEndDate" @date-changed="endDateChange"
+                @click="click">
+                    End Date:
+                &lt;/date-selection>
+            &lt;/div>
+            `,
+    props: { 
+        defaultStartDate:{
+            type: String,
+            required: true
+        },
+        defaultEndDate:{
+            type: String,
+            required: true
+        }
+    },
+    components: {
+        'date-selection': DateSelectionComponent,
+    },
+    data(){
+        return{
+            earliestEndDate: this.defaultStartDate,
+            latestStartDate: this.defaultEndDate,
+        }
+    },
+    methods: {
+        click(){
+            this.$emit('click')
+        },
+        startDateChange(selectedDate){
+            this.earliestEndDate = selectedDate
+            this.$emit('start-date-changed', selectedDate)
+        },
+        endDateChange(selectedDate){
+            this.latestStartDate=selectedDate
+            this.$emit('end-date-changed', selectedDate)
+        },
+    },
+}
+
+try {
+    module.exports = {
+        DateRangeSelectionComponent: DateRangeSelectionComponent
+    }
+}
+catch {}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createRecord">createRecord</a></li><li><a href="global.html#CustomTableComponent">CustomTableComponent</a></li><li><a href="global.html#DateRangeSelectionComponent">DateRangeSelectionComponent</a></li><li><a href="global.html#DateSelectionComponent">DateSelectionComponent</a></li><li><a href="global.html#deleteRecord">deleteRecord</a></li><li><a href="global.html#DropdownWithAllComponent">DropdownWithAllComponent</a></li><li><a href="global.html#getAllPages">getAllPages</a></li><li><a href="global.html#getAreaToIDMap">getAreaToIDMap</a></li><li><a href="global.html#getCropToIDMap">getCropToIDMap</a></li><li><a href="global.html#getIDToAreaMap">getIDToAreaMap</a></li><li><a href="global.html#getIDToCropMap">getIDToCropMap</a></li><li><a href="global.html#getIDToLogTypeMap">getIDToLogTypeMap</a></li><li><a href="global.html#getIDToUnitMap">getIDToUnitMap</a></li><li><a href="global.html#getIDToUserMap">getIDToUserMap</a></li><li><a href="global.html#getLogTypeToIDMap">getLogTypeToIDMap</a></li><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#getRecord">getRecord</a></li><li><a href="global.html#getSessionToken">getSessionToken</a></li><li><a href="global.html#getUnitToIDMap">getUnitToIDMap</a></li><li><a href="global.html#getUserToIDMap">getUserToIDMap</a></li><li><a href="global.html#quantityLocation">quantityLocation</a></li><li><a href="global.html#updateRecord">updateRecord</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Apr 08 2022 18:35:49 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
