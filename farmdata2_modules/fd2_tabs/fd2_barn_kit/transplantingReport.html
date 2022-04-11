@@ -16,13 +16,10 @@
             <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" @click="reportButtonClicked">Generate Report</button>
         </div>
      </fieldset>
-
-     <fieldset>
        <!-- <p v-if="!reportDisplay">No transplanting logs were found for the selected date range.</p>-->
         <div v-if="reportDisplay">
             <table border=1>
                 <tr>
-                    <!--<th>{{item}}</th>-->
                     <th>Crop</th>
                     <th>Field</th>
                     <th>Tray Seeding Date</th>
@@ -50,28 +47,25 @@
                     <td>{{item.comments}}</td>
                     <td>{{item.user}}</td>
                     <td><button type="button" @click="deleteItem">Delete</button></td>
-                </tr>
-                <!--
-                <tr v-for="(log, index) in log_list">
-                    <td>{{index+1}}</td>
-                    <td>{{log.date}}</td>
-                    <td>{{log.area}}</td>
-                    <td>{{log.crop}}</td>
-                    <td>{{log.yield}}</td>
-                    <td>{{log.units}}</td>
-                    <td><button type="button" @click="deleteItem">Delete</button></td>
-                </tr>
-                -->
-                
+                </tr>    
             </table>
         </div>
+     </fieldset>
+     <!--Report table filters UI (uses the DropdownWithAllComponent defined in the fd2_tabs/resources directory) and the styles from the Seeding Report-->
+     <fieldset class="center-block panel panel-default" style="width: 75%;">
+        <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
+         <div style="display: flex; width: 100%;">
+            <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
+            <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed="areaChange">Area:</dropdown-with-all>
+         </div>         
      </fieldset>
 </div> 
 <script>
     new Vue({
         el: '#transplantUI',
         components: {
-            'date-range-selection': DateRangeSelectionComponent            
+            'date-range-selection': DateRangeSelectionComponent, 
+            'dropdown-with-all': DropdownWithAllComponent               
         },
         data: {
             //variables for date range selection
@@ -83,7 +77,10 @@
             reportDisplay: false,
             //report table variables
             columns : ["Crop", "Field", "Tray Seeding Date", "Transpanting Date", "Days in Tray", "Bed Feet", "Rows/Bed", "Row Feet", "Trays", "Hours", "Comments", "User"],
-            rows : []
+            rows : [],
+            //filter dropdown variables
+            selectedCrop: "All",
+            selectedArea: "All"
         },
         methods: {
             //methods for date range selection
@@ -101,10 +98,28 @@
             },   
             deleteItem: function(index){
                 this.rows.splice(index, 1)
-            }     
+            },
+            //methods for dropdown filters
+            cropChange(selectedCrop){
+                this.selectedCrop = selectedCrop
+            },
+            areaChange(selectedArea){
+                this.selectedArea = selectedArea   
+            }
+        
+
         },
         computed: {
-
+            //This should be replaced with a function that returns a sorted list of all of the available crops in the logs - this function is already written in seedingReport.html
+            cropList(){
+                //Sample list
+                return ["BOKCHOY", "BROCCOLI", "CABBAGE"]
+            }
+            //This should be replaced with a function that returns a sorted list of all of the available fields in the logs - this function is already written in seedingReport.html
+            fieldList(){
+                //Sample list
+                return ["GHANA-1", "CHUAU-4", "CHUAH-4"]
+            }            
         }
     })
     Vue.config.devtools = true;
