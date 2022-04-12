@@ -11,6 +11,8 @@
                 <br>
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
+                <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedDateArray' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
@@ -41,6 +43,7 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
+                selectedSeedDate: null,
                 selectedSeedingType: '',
                 selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
@@ -53,6 +56,7 @@
                 numRowBed: 0,
                 numFeet: 0,
                 cropArray: [],
+                seedDateArray: ['N/A'],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
                 feetUnits: ['row', 'bed'],
@@ -72,6 +76,9 @@
                 setNewArea(newArea){
                     this.selectedArea = newArea
                     this.savedArea = newArea
+                },
+                setNewSeedDate(newSeedDate){
+                    this.selectedSeedDate = newSeedDate;
                 },
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
@@ -124,6 +131,9 @@
                         return true
                     }
                     if(this.selectedArea == null){
+                        return true
+                    }
+                    if(this.selectedSeedDate == null){
                         return true
                     }
                     if(this.selectedSeedingType == ''){
@@ -316,6 +326,7 @@
                 }
             },
             created(){
+                //Create one if/else for seedDate
                 let fullResponse = []
                 if(localStorage.getItem('crops') == null){
                     getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
