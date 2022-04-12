@@ -16,6 +16,14 @@
             <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" @click="reportButtonClicked">Generate Report</button>
         </div>
      </fieldset>
+     <!--Report table filters UI (uses the DropdownWithAllComponent defined in the fd2_tabs/resources directory) and the styles from the Seeding Report-->
+     <fieldset class="center-block panel panel-default" style="width: 75%;">
+        <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
+         <div style="display: flex; width: 100%;">
+            <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
+            <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed="areaChange">Area:</dropdown-with-all>
+         </div>         
+     </fieldset>
        <!-- <p v-if="!reportDisplay">No transplanting logs were found for the selected date range.</p>-->
         <div v-if="reportDisplay">
             <table border=1>
@@ -50,15 +58,7 @@
                 </tr>    
             </table>
         </div>
-     </fieldset>
-     <!--Report table filters UI (uses the DropdownWithAllComponent defined in the fd2_tabs/resources directory) and the styles from the Seeding Report-->
-     <fieldset class="center-block panel panel-default" style="width: 75%;">
-        <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
-         <div style="display: flex; width: 100%;">
-            <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
-            <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed="areaChange">Area:</dropdown-with-all>
-         </div>         
-     </fieldset>
+    </fieldset>
 </div> 
 <script>
     new Vue({
