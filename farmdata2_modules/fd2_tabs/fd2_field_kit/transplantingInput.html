@@ -12,6 +12,19 @@
                 <br>
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
+                <!-- Date of Seeding here -->
+                <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedDateArray' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <br>
+                <!-- Inserting rows per bed input here -->
+       		<label for='BedRows'>Number of beds per row:</label>
+		<input type='number' id='BedRows' name='BedRows' value='1' min='1'>
+		<br>
+
+		<!-- Inserting bedfeet input here -->
+		<label for='BedFeet'>Bed feet:</label>
+		<input type='number' id='BedFeet' name='BedFeet' value='1' min='1'>
+		<br>
+		<br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
@@ -42,12 +55,13 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
-                selectedSeedingType: '',
+                selectedSeedDate: null, //some transplant crops won't have tray seeding date (N/A ->0000-00-00) bc they arrived in trays
                 selectedTimeUnit: 'minutes',
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
                 cropArray: [],
+                seedDateArray: ['N/A'],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
                 //feetUnits: ['row', 'bed'],
@@ -67,6 +81,9 @@
                 setNewArea(newArea){
                     this.selectedArea = newArea
                     this.savedArea = newArea
+                },
+                setNewSeedDate(newSeedDate){
+                    this.selectedSeedDate = newSeedDate;
                 },
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
@@ -117,6 +134,9 @@
                         return true
                     }
                     if(this.selectedArea == null){
+                        return true
+                    }
+                    if(this.selectedSeedDate == null){
                         return true
                     }
                     if(this.time == 0){
@@ -286,6 +306,7 @@
                 }
             },
             created(){
+                //Create one if/else for seedDate
                 let fullResponse = []
                 if(localStorage.getItem('crops') == null){
                     getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
