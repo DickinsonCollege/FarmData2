@@ -82,7 +82,7 @@
     </table>
     <p v-else>No logs found.</p>
 
-    <button type="button" @click="dowloadCSVFile">Export CSV</button>
+    <button type="button" @click="generateCSV()">Export CSV</button>
 </div>
 
 <script>
@@ -196,6 +196,8 @@
                         console.log(
                             'Error in getAllPages.'
                         );
+
+                    
                     });
             },
             generateCSV: function(){
@@ -219,12 +221,12 @@
             csv_data.push(csvrow.join(","));
     }
         // combine each row data with new line character
-        csv_data = csv_data.join('\n');
- 
-    /* We will use this function later to download
-    the data in a csv file downloadCSVFile(csv_data);
-    */
-    },
+        csv_data = csv_data.join('\n');\
+        // for debugging purposes
+        //console.log(csv_data);
+        this.dowloadCSVFile(csv_data);
+        },
+
     dowloadCSVFile: function(csv_data){
         // Create CSV file object and feed our
         // csv_data into it
@@ -235,7 +237,7 @@
         var temp_link = document.createElement('a');
  
         // Download csv file
-        temp_link.download = "GfG.csv";
+        temp_link.download = "report.csv";
         var url = window.URL.createObjectURL(CSVFile);
         temp_link.href = url;
  
