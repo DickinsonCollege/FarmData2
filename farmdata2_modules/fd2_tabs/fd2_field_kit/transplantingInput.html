@@ -1,11 +1,12 @@
+
 <body>
-    <div id='seedingInput'>
+    <div id='transplantingInput'>
        <h1 style='text-align:center;'>Transplanting Input Log</h1> 
        <br>
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
+                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Transplanting:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
@@ -41,21 +42,14 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
-                selectedSeedingType: '',
-                selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
-                numOfTrays: 0,
-                numCellsPerTray: 0,
-                numSeedsPlanted: 0,
-                numRowBed: 0,
-                numFeet: 0,
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
-                feetUnits: ['row', 'bed'],
+                //feetUnits: ['row', 'bed'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -76,9 +70,6 @@
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
                 },
-                setNewFeetUnit(newFeetUnit){
-                    this.selectedFeetUnit = newFeetUnit
-                },
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
@@ -87,7 +78,8 @@
                         })
                     })
                     if(confirm("You have saved a log! Would you like to go the seeding report page?")){
-                        window.location.replace('/farm/fd2-barn-kit/seedingReport')
+                        //Modify later after checking the endpoint
+                        //window.location.replace('/farm/fd2-barn-kit/seedingReport')
                     }
                 }
             },
@@ -126,31 +118,8 @@
                     if(this.selectedArea == null){
                         return true
                     }
-                    if(this.selectedSeedingType == ''){
-                        return true
-                    }
                     if(this.time == 0){
                         return true
-                    }
-                    if(this.selectedSeedingType == 'Direct Seedings'){
-                        if(this.numFeet == 0){
-                            return true
-                        }
-                        if(this.numRowBed == 0){
-                            return true
-                        }
-                    }
-                    if(this.selectedSeedingType == 'Tray Seedings'){
-                        if(this.numCellsPerTray == 0){
-                            return true
-                        }
-                        if(this.numOfTrays == 0){
-                            return true
-                        }
-                        
-                        if(this.numSeedsPlanted == 0){
-                            return true
-                        }
                     }
                     if(this.numWorkers == 0){
                         return true
