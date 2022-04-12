@@ -1,16 +1,3 @@
-<script>
-    //Katie's comments
-    // 1) Change "Date of Seeding" => "Date of Transplant"
-    // 2) Delete field "selectedSeedingType" inside "data" property
-    // 3) Delete field "selectedFeetUnit" inside "data" property
-    // 4) Delete fields "numOfTrays", "numCellsPerTray", "numSeedsPlanted", "numRowBed", "numFeet" from "data" property
-    // 5) Delete field "feetUnits: ['row', 'bed']" from "data" 
-    // 6) Delete setNewFeetUnit(newFeetUnit) from "methods"
-    // 7) Edit the saveLog() method so that it saves the logs to transplanting (change all "seeding" keywords to "transplant")
-    // 8) Delete statementa if(this.selectedSeedingType == ''), if(this.selectedSeedingType == 'Direct Seedings'), if(this.selectedSeedingType == 'Tray Seedings') inside "formNotCompleted()"
-    
-</script>
-
 
 <body>
     <div id='transplantingInput'>
@@ -55,16 +42,10 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
-                //selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
-                //numOfTrays: 0,
-                //numCellsPerTray: 0,
-                //numSeedsPlanted: 0,
-                //numRowBed: 0,
-                //numFeet: 0,
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
@@ -89,9 +70,6 @@
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
                 },
-                /*setNewFeetUnit(newFeetUnit){
-                    this.selectedFeetUnit = newFeetUnit
-                },*/
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
@@ -140,32 +118,9 @@
                     if(this.selectedArea == null){
                         return true
                     }
-                    /*if(this.selectedSeedingType == ''){
-                        return true
-                    }*/
                     if(this.time == 0){
                         return true
                     }
-                    /*if(this.selectedSeedingType == 'Direct Seedings'){
-                        if(this.numFeet == 0){
-                            return true
-                        }
-                        if(this.numRowBed == 0){
-                            return true
-                        }
-                    }*/
-                    /*if(this.selectedSeedingType == 'Tray Seedings'){
-                        if(this.numCellsPerTray == 0){
-                            return true
-                        }
-                        if(this.numOfTrays == 0){
-                            return true
-                        }
-                        
-                        if(this.numSeedsPlanted == 0){
-                            return true
-                        }
-                    }*/
                     if(this.numWorkers == 0){
                         return true
                     }
