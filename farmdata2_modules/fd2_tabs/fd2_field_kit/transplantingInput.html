@@ -1,11 +1,11 @@
 <body>
-    <div id='seedingInput'>
+    <div id='transplantingInput'>
        <h1 style='text-align:center;'>Transplanting Input Log</h1> 
        <br>
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
+                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Transplanting:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
