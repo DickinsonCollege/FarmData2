@@ -106,20 +106,22 @@
             areaChange(selectedArea){
                 this.selectedArea = selectedArea   
             }
-        
 
         },
         computed: {
             //This should be replaced with a function that returns a sorted list of all of the available crops in the logs - this function is already written in seedingReport.html
+            
             cropList(){
                 //Sample list
                 return ["BOKCHOY", "BROCCOLI", "CABBAGE"]
-            }
+            },
+            
             //This should be replaced with a function that returns a sorted list of all of the available fields in the logs - this function is already written in seedingReport.html
+            
             fieldList(){
                 //Sample list
                 return ["GHANA-1", "CHUAU-4", "CHUAH-4"]
-            }            
+            }         
         }
     })
     Vue.config.devtools = true;
