@@ -31,7 +31,7 @@
 
     <script>
         new Vue({
-            el: '#seedingInput',
+            el: '#transplantingInput',
             components:{
                 'date-selection': DateSelectionComponent,
                 'dropdown-with-all': DropdownWithAllComponent
@@ -42,6 +42,7 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
+                selectedSeedingType: '',
                 selectedTimeUnit: 'minutes',
                 comments: '',
                 numWorkers: 0,
