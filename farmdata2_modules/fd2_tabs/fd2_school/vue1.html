@@ -26,11 +26,15 @@
 			<br>
 			
 			<label for=”crop”>Crop:</label>
-			<select id="crop" name="crop" v-model="selectCrop">
-	  			<option>Broccoli</option>
-	  			<option selected>Kale</option>
-	  			<option>Peas</option>
+			<select id="crop" name="crop" v-model="selectedCrop">
+	  			<option v-for="cropOption in cropOptions">{{ cropOption }}</option>
+            </select>
+            
+            <label for=”field”>Field:</label>
+			<select id="field" name="field" v-model="selectedField">
+	  			<option v-for="fieldOption in fieldOptions">{{ fieldOption }}</option>
 			</select>
+            
 			<br>
 			<input type="button" value="Generate Report">
 
@@ -39,14 +43,14 @@
 		<h1>{{ harvestTitle == '' ? 'Mock Harvest Report' : harvestTitle }}</h1>
 		
 			<p>Details:</p>
-				<ul>
+			<ul>
 					<li><b>Farm</b>:Sample Farm</li>
 					<li><b>User</b>:manager1</li>
 					<li><b>Language</b>:English</li>
 					<br>
 					<li><b>Start</b>:{{ startDate }}</li>
 					<li><b>End</b>:{{ endDate }}</li>
-					<li><b>Crop</b>:{{ selectCrop }}</li>
+					<li><b>Crop</b>:{{ selectedCrop }}</li>
 				</ul>
 
 		<table border=1>
@@ -77,13 +81,16 @@
 
 		<script src="https://unpkg.com/vue@2"></script>
 		<script>
-		var sampleVue = new Vue({
+		var harvestReport = new Vue({
 			el: '#sample-report',
 			data: {
 				harvestTitle: 'My Sample Harvest Report',
 				startDate: '2020-05-05',
 				endDate: '2020-05-15',
-				selectCrop: 'Kale'
+				selectedCrop: 'Kale',
+                cropOptions: [ 'Broccoli', 'Kale', 'Peas' ],
+                selectedField: 'All',
+                fieldOptions: [ 'All', 'Chuau-1', 'SQ7' ]
 			}
 		});
 		</script>		
