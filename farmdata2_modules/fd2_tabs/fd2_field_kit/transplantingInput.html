@@ -16,15 +16,14 @@
                 <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedDateArray' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <!-- Inserting rows per bed input here -->
-       		<label for='BedRows'>Number of beds per row:<label style='color: #da4f3f'>*</label>
-		<input type='number' id='BedRows' name='BedRows' value='1' min='1'>
-		<br>
-
-		<!-- Inserting bedfeet input here -->
-		<label for='BedFeet'>Bed feet:<label style='color: #da4f3f'>*</label>
-		<input type='number' id='BedFeet' name='BedFeet' value='1' min='1'>
-		<br>
-		<br>
+                <label for='BedRows'>Number of beds per row:<label style='color: #da4f3f'>*</label>
+                <input type='number' id='BedRows' name='BedRows' value='1' min='1'>
+                <br>
+        		<!-- Inserting bedfeet input here -->
+        		<label for='BedFeet'>Bed feet:<label style='color: #da4f3f'>*</label>
+        		<input type='number' id='BedFeet' name='BedFeet' value='1' min='1'>
+        		<br>
+        		<br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
@@ -33,15 +32,14 @@
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
                  <label>Number of Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type=number value='1' min='1' v-model='numWorkers'>
                 <label> Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 60px;' type=number value='1' min='1' v-model='time'>
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
+                <!--<dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> -->
 
-		<!-- Inserting time units here -->
-		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
-		<select id='TimeUnit' name='TimeUnit' v-model='timeUnit'>
-			<option selected>Hours</option>
-			<option>Minutes</option>
-		</select>
-
+        		<!-- Inserting time units here -->
+        		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
+        		<select id='TimeUnit' name='TimeUnit' v-model='timeUnits'>
+        			<option selected>Hours</option>
+        			<option>Minutes</option>
+        		</select>
             </div>
        </fieldset>
        <div style='text-align:center;'>
