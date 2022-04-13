@@ -14,6 +14,12 @@
                 <br>
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
+                <label for="unitDropDown">Units: <select id="Unit" name="Unit" v-model= 'selectedUnit'><option v-for="units in units"> {{ units }} </option>
+                </label>
+                </select>            
+                <br>
+                <br>
+                
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
@@ -54,6 +60,7 @@
                 selectedSeedingType: '',
                 selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
+                selectedUnit: '',
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
@@ -64,6 +71,10 @@
                 numFeet: 0,
                 cropArray: [],
                 areaResponse: [],
+                units: [
+                    'bunches',
+                    'pounds',
+                ],
                 timeUnits: ['minutes', 'hours'],
                 feetUnits: ['row', 'bed'],
                 cropToIDMap: new Map(),
