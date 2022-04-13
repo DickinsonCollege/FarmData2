@@ -12,21 +12,56 @@
                 <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
             </div>
         </fieldset>
+
+        <div v-if='reportVisible'>
+
+            <div v-if="seedingLogs.length != 0">
+                <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
+                    <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
+                    <div style="display: flex; width: 100%;">
+                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list=seedingTypeList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
+                    
+                        <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
+
+                        <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
+                    </div>
+                </fieldset>
+        </div>
     </div>
-        
     <script src="https://unpkg.com/vue@2"></script>
-   <script>
+    <script>
         var seedingReport = new Vue ({
             el: '#seedingReport',
             components: {
                 
                 'date-range-selection': DateRangeSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
                
             },
             data: {
                 startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
+                stillLoading: true,
+                reportVisible: false,
+                seedingLogs: [],
+                updateLog: [],
 
+                sessionToken: null,
+                selectedCrop: 'All',
+                selectedArea: 'All',
+                selectedSeeding: 'All',
+
+                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num Workers','Varieties', 'Comments','User'],
+                visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
+
+                idToCropMap: new Map(),
+                cropToIDMap: new Map(),
+                idToUserMap: new Map(),
+                userToIDMap: new Map(),
+                areaToIDMap: new Map(),
+                unitToIDMap: new Map(),
+
+                rowBeingEdited: false
                 
             },
             methods: {
@@ -44,7 +79,7 @@
                     //this.reportVisible = false
                     //this.seedingLogs = []
                 },
-              seedingLogRequestWithDates(){
+                seedingLogRequestWithDates(){
                     this.reportVisible = true
                     let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
 
@@ -53,11 +88,134 @@
                     })
                     this.stillLoading = true
                 },
-               
+                cropChange(selectedCrop){
+                    this.selectedCrop = selectedCrop
+                },
+                areaChange(selectedArea){
+                    this.selectedArea = selectedArea
+                },
+                seedingChange(selectedSeeding){
+                    this.selectedSeeding = selectedSeeding
+                    if(selectedSeeding == 'All'){
+                        this.visibleColumns = [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true]
+                    }
+                    else if(selectedSeeding == 'Direct Seedings'){
+                        this.visibleColumns = [true, true, true, true, true, true, true, false, false, false, true, true, true, true, true]
+                    }
+                    else if(selectedSeeding == 'Tray Seedings'){
+                        this.visibleColumns = [true, true, true, true,false, false, false, true, true, true,  true, true, true, true, true]
+                    }
+                disableFilters() {
+                    this.rowBeingEdited = true
+                },
+                enableFilters(){
+                    this.rowBeingEdited = false
+                },
             },
-             
-           
-            
+            computed: {
+               cropList(){
+                    let seedFilter = []
+                    if(this.selectedSeeding != 'All'){
+                        seedFilter = this.seedingLogs.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+                    else{
+                        seedFilter = this.seedingLogs.filter((x) => x)
+                    }
+                    let cropArray = []
+                    if(this.selectedArea != 'All'){
+                        let areaFilter = seedFilter.filter((x) => x.movement.area[0].name === this.selectedArea)
+                        cropArray = areaFilter.map(h => 
+                            this.idToCropMap.get(h.data.crop_tid)
+                        )
+                    }
+                    else{
+                        cropArray = seedFilter.map(h=> 
+                            this.idToCropMap.get(h.data.crop_tid)
+                        )
+                    }
+
+                    let crops = new Set(cropArray)
+                    let newCropArray = Array.from(crops)
+                    return newCropArray.sort()
+                },
+                /**
+                 * returns a sorted array of all the areas in the current logs. If a crop or type of seeding does not equal 'All' then the array will only contain areas that have the selected crop and/or type of seeding
+                 */ 
+                areaList(){
+                    let seedFilter = []
+                    if(this.selectedSeeding != 'All'){
+                        seedFilter = this.seedingLogs.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+                    else{
+                        seedFilter = this.seedingLogs.filter((x) => x)
+                    }
+                    let areaArray = []
+                    if(this.selectedCrop != 'All'){
+                        let cropFilter = seedFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
+                         areaArray = cropFilter.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    else{
+                        areaArray = seedFilter.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    let areas = new Set(areaArray)
+                    let newAreaArray = Array.from(areas)
+                    return newAreaArray.sort()
+                },
+                /**
+                 * returns a sorted array of all the types of seeding in the current logs. If the area or crop does not equal 'All' then the array will only contain types of seeding that have the selected area and/or crop
+                 */ 
+                seedingTypeList(){
+                    let areaFilter = []
+                    if(this.selectedArea != 'All'){
+                        areaFilter = this.seedingLogs.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    }
+                    else{
+                        areaFilter = this.seedingLogs.filter((x) => x)
+                    }
+                    let seedingTypeArray = []
+                    if(this.selectedCrop != 'All'){
+                        let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
+                        seedingTypeArray = cropFilter.map(h =>
+                            h.log_category[0].name
+                        )
+                    }
+                    else{
+                        seedingTypeArray = areaFilter.map(h => 
+                            h.log_category[0].name
+                        )
+                    }
+                    let seedingsType = new Set(seedingTypeArray)
+                    let newSeedingTypeArray = Array.from(seedingsType)
+                    return newSeedingTypeArray.sort()
+                }
+            },
+            created() {
+                getSessionToken().then((response) => {
+                    this.sessionToken = response
+                })
+                getIDToCropMap().then((response) => {
+                    this.idToCropMap = new Map(response)
+                })
+                getCropToIDMap().then((response) => {
+                    this.cropToIDMap = new Map(response)
+                })
+                getIDToUserMap().then((response) => {
+                    this.idToUserMap = new Map (response)
+                })
+                getUserToIDMap().then((response) => {
+                    this.userToIDMap = new Map (response)
+                })
+                getAreaToIDMap().then((response) => {
+                    this.areaToIDMap = new Map(response)
+                })
+                getUnitToIDMap().then((response) => {
+                    this.unitToIDMap = new Map(response)
+                })
+            }
         });
         Vue.config.devtools = true;
     </script>

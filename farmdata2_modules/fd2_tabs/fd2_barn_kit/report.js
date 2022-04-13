@@ -4,7 +4,7 @@ var getSessionToken = FarmOSAPI.getSessionToken
 var createRecord = FarmOSAPI.createRecord
 var deleteRecord = FarmOSAPI.deleteRecord
 
-describe('Testing for the Active report page', () => {
+describe('Testing for the seeding report page', () => {
     beforeEach(() => {
         cy.login('manager1', 'farmdata2')
     })
