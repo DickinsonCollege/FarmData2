@@ -19,6 +19,7 @@
                 <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedDateArray' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <!-- Inserting rows per bed input here -->
+<<<<<<< HEAD
                 <label for='BedRows'>Number of rows per bed:<label style='color: #da4f3f'>*</label>
                 <input type='number' id='BedRows' name='BedRows' value='1' min='1'>
                 <br>
@@ -27,6 +28,18 @@
         		<input type='number' id='BedFeet' name='BedFeet' value='1' min='1'>
         		<br>
         		<br>
+=======
+       		<label for='BedRows'>Number of beds per row:<label style='color: #da4f3f'>*</label>
+		<input type='number' id='BedRows' name='BedRows' value='1' min='1'>
+		<br>
+
+		<!-- Inserting bedfeet input here -->
+		<label for='BedFeet'>Bed feet:<label style='color: #da4f3f'>*</label>
+		<input type='number' id='BedFeet' name='BedFeet' value='1' min='1'>
+		<br>
+		<br>
+
+>>>>>>> 5fcd697c6202c5bf00d4eed6d2ec9894623a76e3
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
