@@ -57,7 +57,7 @@ describe('Testing for the seeding report page', () => {
     })
     context('can see spinner at appropriate times', () => {
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
         })
 
@@ -168,7 +168,7 @@ describe('Testing for the seeding report page', () => {
     })
     context('can see summary tables at appropriate times', () => {
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
 
         })
@@ -195,7 +195,7 @@ describe('Testing for the seeding report page', () => {
 
     context('shows message when only one type', () => {
         beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
             cy.get('[data-cy=start-date-select]')
                 .type('2020-05-01')
             cy.get('[data-cy=end-date-select]')
@@ -240,7 +240,7 @@ describe('Testing for the seeding report page', () => {
     context('displays the right information in the table', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
@@ -353,7 +353,7 @@ describe('Testing for the seeding report page', () => {
 
         before(() => {
             cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
@@ -425,7 +425,7 @@ describe('Testing for the seeding report page', () => {
 
         before(() => {
             cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
@@ -487,7 +487,7 @@ describe('Testing for the seeding report page', () => {
     context('changing the type of seeding changes the visible columns', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
@@ -644,7 +644,7 @@ describe('Testing for the seeding report page', () => {
     context('date picker and filter behavior', () => {
         before(() => {
             cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-02-13')
@@ -961,7 +961,7 @@ describe('Testing for the seeding report page', () => {
                 })
             })
 
-            cy.visit('/farm/fd2-barn-kit/report')
+            cy.visit('/farm/fd2-barn-kit/activePlantingReport')
 
             cy.get('[data-cy=start-date-select]')
                 .should('exist')
