@@ -60,7 +60,7 @@
                 savedArea: null,
                 selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
-                selectedUnit: '',
+                selectedUnit: null,
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
@@ -145,6 +145,9 @@
                         return true
                     }
                     if(this.selectedArea == null){
+                        return true
+                    }
+                    if(this.selectedUnit == null){
                         return true
                     }
                     if(this.time == 0){
