@@ -1,8 +1,8 @@
 # The FarmData2 Data Model #
 
-This document describes the details of the FarmDat2 data model.  Note that FarmData2 is built on top of farmOS and largely makes use of the standard farmOS data model.
+This document describes the details of the FarmData2 data model.  Note that FarmData2 is built on top of farmOS and largely makes use of the standard farmOS data model.
 
-The sections below describe each part of the sample database provided with FarmData2 for development and testing. Several pieces of information are provide for each part of the sample database:
+The sections below describe each part of the sample database provided with FarmData2 for development and testing. Several pieces of information are provided for each part of the sample database:
 - The scripts that create each part of the sample data are indicated and provide a good reference for how to create new records in the database.
 - An API request is given for each type of data as well. Accessing these APIs using a tool like Hoppscotch or Postman is a good way to understand the structure of the data returned by API calls in FarmData2. 
 
@@ -20,10 +20,10 @@ More details are included in the table below:
 
 Asset/Log Type | 2017 | 2019 | 2020 | Total | Notes
 ---------------|------|------|------|-------|-------|
-Direct Seeing  |    3 |  182 |  101 |  286  | 2017 seedings were harvested in 2019.
+Direct Seeding  |    3 |  182 |  101 |  286  | 2017 seedings were harvested in 2019.
 Tray Seeding   |    - |  378 |  313 |  691  |
 Total Seedings |    3 |  560 |  414 |  977  |
-Planting       |    3 |  347 |  248 |  595  | A planting may have multiple sedings. A few plantings have no seedings.
+Planting       |    3 |  347 |  248 |  595  | A planting may have multiple seedings. A few plantings have no seedings.
 Transplanting  |    - |  171 |  117 |  288  | Plantings are transplanted and thus may include multiple tray seedings. A few transplantings do not have a tray seeding.
 Harvest        |    - | 1592 |  487 | 2079  |
 
@@ -49,11 +49,11 @@ The users in the FarmData2 sample database are created by the `addPeople.bash` s
 
 ## Vocabularies ##
 
-A vocabulary consists of a list of term and the relationships between them. There are a number of vocabularies that play important roles in FarmData2.
+A vocabulary consists of a list of terms and the relationships between them. There are a number of vocabularies that play important roles in FarmData2.
 
 ### Farm Areas ###
 
-The Farm Areas vocabulary defines each of the areas (fields, greenhouses, beds) on the farm. This vocabulary allows areas to have sub-areas. For example, an area that is a greenhouse can have beds that aree sub-types.
+The Farm Areas vocabulary defines each of the areas (fields, greenhouses, beds) on the farm. This vocabulary allows areas to have sub-areas. For example, an area that is a greenhouse can have beds that are sub-types.
 
 The terms for the Farm Areas vocabulary can be accessed using the API request:
 ```
@@ -68,25 +68,25 @@ The Farm Crop Families vocabulary defines the _crop category_ names from the [US
 
 The terms for the Farm Crop Families vocabulary can be accessed with the request:
 ```
-GET http://localhost/taxonomy_term.json?bundle=farm_crop_families"
+GET http://localhost/taxonomy_term.json?bundle=farm_crop_families
 ```
 
-The Farm Crops/Varities Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulay.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE.  In addition, each crop has a default unit from the Farm Quantity Units vocabulary (see below) and also a list of conversion factors for converting from the default units to any other unit that may be used for the crop.
+The Farm Crops/Varieties Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulary.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE.  In addition, each crop has a default unit from the Farm Quantity Units vocabulary (see below) and also a list of conversion factors for converting from the default units to any other unit that may be used for the crop.
 
 The terms for the Farm Crops vocabulary can be accessed with the request:
 ```
-GET http://localhost/taxonomy_term.json?bundle=farm_crops"
+GET http://localhost/taxonomy_term.json?bundle=farm_crops
 ```
 
 The crop families and varieties in the FarmData2 sample database are created by the `addCrops.py` script using the data in the `sampleData/crops.csv` file.
 
 ### Farm Log Categories ###
 
-The Farm Log Categories vocabulary is used to categorize the log entries by what they pertain to (e.g. Equipment, Animals, Plantings, etc.). Of particular interest are the categories of Direct Seeding and Tray Seeding that are added to the standard farmOS vocabulary. These are sub-terms of the Planting term and are used to categorize the differnt types of seeding.
+The Farm Log Categories vocabulary is used to categorize the log entries by what they pertain to (e.g. Equipment, Animals, Plantings, etc.). Of particular interest are the categories of Direct Seeding and Tray Seeding that are added to the standard farmOS vocabulary. These are sub-terms of the Planting term and are used to categorize the different types of seeding.
 
 The terms for the Farm Log Categories vocabulary can be accessed with the request: 
 ```
-GET http://localhost/taxonomy_term.json?bundle=farm_log_categories"
+GET http://localhost/taxonomy_term.json?bundle=farm_log_categories
 ```
 
 The Direct Seeding and Tray Seeding categories in the FarmData2 sample database are created by the `addSeedings.py` script.
@@ -97,7 +97,7 @@ The Farm Quantity Units vocabulary defines the units that can be assigned to log
 
 The terms for the Farm Quantity Units vocabulary can be accessed with the request:
 ```
-GET http://localhost/taxonomy_term.json?bundle=farm_quantity_units"
+GET http://localhost/taxonomy_term.json?bundle=farm_quantity_units
 ```
 
 The quantity units in the FarmData2 sample database are created by the `addUnits.py` script using the data in the `sampleData/units.csv` file.
@@ -116,37 +116,37 @@ The Seeding Logs and associated Planting Assets in the FarmData2 sample database
 
 All Seeding Logs can be accessed with the request:
 ```
-GET http://localhost/log.json?type=farm_seeding"
+GET http://localhost/log.json?type=farm_seeding
 ```
 
 Notes:
 - The `log_category` attribute can be used to distinguish between logs for Direct Seedings and logs for Tray Seedings.
-- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was seeded (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
+- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was seeded (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name without retrieving the Planting Asset.
 
 ### Planting Assets ###
 
 All Planting Assets can be accessed with the request:
 ```
-GET http://localhost/farm_asset.json?type=planting"
+GET http://localhost/farm_asset.json?type=planting
 ```
 The Planting Assets in the FarmData2 sample database are created primarily by the `addDirectSeeding.py` and `addTraySeeding.py` scripts when new seedings are created, as described above. However, a few are created by `addTransplanting.py` as well when a transplanting record was found without a matching seeding record.
 
 Notes:
-- The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to location given in the Seeding Log that references it. Similarly, if the Planting Asset was created by a tray seeding, then its location can also be changed by a transplanting operation.
+- The Planting Asset does not itself have a location. The location of a Planting Asset is assigned to the location given in the Seeding Log that references it. Similarly, if the Planting Asset was created by a tray seeding, then its location can also be changed by a transplanting operation.
 
 ## Transplanting Logs ##
 
-Each _Transplanting Log_ corresponsds to the transplanting of a _Planting Asset_ created by one or more _Tray Seedings_ from a greenhouse to a field or bed. When a Transplanting Log is created it includes a _Movement_ attribute that indicates the new location of the planting.  The farmOS system uses the Movement Attribute to automatically creates a _Movement Log_ indicating the new location of the Planting Asset.  Future requests for the Planting Asset will then show it in the updated location.
+Each _Transplanting Log_ corresponds to the transplanting of a _Planting Asset_ created by one or more _Tray Seedings_ from a greenhouse to a field or bed. When a Transplanting Log is created it includes a _Movement_ attribute that indicates the new location of the planting.  The farmOS system uses the Movement attribute to automatically create a _Movement Log_ indicating the new location of the Planting Asset.  Future requests for the Planting Asset will then show it in the updated location.
 
 All Transplanting Logs can be accessed with the request:
 ```
-GET http://localhost/log.json?type=farm_transplanting"
+GET http://localhost/log.json?type=farm_transplanting
 ```
 
 The Transplanting Logs in the FarmData2 sample database are created by the `addTransplantings.py` script using the data in the `sampleData/transplantings.csv` file.
 
 Notes:
-- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was transplanted (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
+- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was transplanted (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name without retrieving the Planting Asset.
 
 ## Harvest Logs ##
 
@@ -154,10 +154,10 @@ Each _Harvest Log_ represents one harvesting event and is linked to the _Plantin
 
 All Harvest Logs can be accessed with the request:
 ```
-GET http://localhost/log.json?type=farm_harvest"
+GET http://localhost/log.json?type=farm_harvest
 ```
 
 The Harvest Logs in the FarmData2 sample database are created by the `addHarvests.py` script using the data in the `sampleData/harvests.csv` file.
 
 Notes:
-- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was transplanted (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name wihtout retrieving the Planting Asset.
+- The `data` attribute will contain an object that provides the `crop_tid` of the crop that was transplanted (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name without retrieving the Planting Asset.
