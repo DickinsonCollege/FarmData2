@@ -8,7 +8,7 @@
         <!--This uses the dateRangeSelectionComponent defined in the FD2 Resources file - it defines the date input forms together.-->
             <date-range-selection data-cy="date-range-selection"
             class="center-block"  
-            default-start-date="2021-01-15" :default-end-date=dateRangeMaxDate @start-date-changed="startDateChange" @end-date-changed="endDateChange" 
+            default-start-date="2020-05-05" :default-end-date=dateRangeMaxDate @start-date-changed="startDateChange" @end-date-changed="endDateChange" 
             >
             </date-range-selection>
 
@@ -22,65 +22,48 @@
          <div style="display: flex; width: 100%;">
             <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
             <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed="areaChange">Area:</dropdown-with-all>
-         </div>         
-     </fieldset>
-       <!-- <p v-if="!reportDisplay">No transplanting logs were found for the selected date range.</p>-->
-        <div v-if="reportDisplay">
-            <table border=1>
-                <tr>
-                    <th>Crop</th>
-                    <th>Field</th>
-                    <th>Tray Seeding Date</th>
-                    <th>Transpanting Date</th>
-                    <th>Days in Tray</th>
-                    <th>Bed Feet</th>
-                    <th>Rows/Bed</th>
-                    <th>Row Feet</th>
-                    <th>Trays</th>
-                    <th>Hours</th>
-                    <th>Comments</th>
-                    <th>User</th>
-                </tr>
-                <tr v-for="item in rows">
-                    <td>{{item.crop}}</td>
-                    <td>{{item.field}}</td>
-                    <td>{{item.tray_date}}</td>
-                    <td>{{item.transplant_date}}</td>
-                    <td>{{item.days}}</td>
-                    <td>{{item.bed_feet}}</td>
-                    <td>{{item.rows_bed}}</td>
-                    <td>{{item.row_feet}}</td>
-                    <td>{{item.trays}}</td>
-                    <td>{{item.hours}}</td>
-                    <td>{{item.comments}}</td>
-                    <td>{{item.user}}</td>
-                    <td><button type="button" @click="deleteItem">Delete</button></td>
-                </tr>    
-            </table>
-        </div>
-    </fieldset>
-</div> 
+         </div>   
+     </fieldset>  
+
+    <br>
+    <br>
+
+    <div v-if="reportDisplay">
+        <custom-table data-cy="report-table"
+                can-delete
+                can-edit
+                :headers="columns"
+                :rows="harvestReportRows"
+                :visible-columns="tableVisibleColumns">
+        </custom-table>        
+    </div>
+</div>
 <script>
     new Vue({
         el: '#transplantUI',
         components: {
             'date-range-selection': DateRangeSelectionComponent, 
-            'dropdown-with-all': DropdownWithAllComponent               
+            'dropdown-with-all': DropdownWithAllComponent,
+            'custom-table': CustomTableComponent               
         },
         data: {
             //variables for date range selection
-            startDate: null,
-            endDate: null,
+            startDate: "2020-05-05",
+            // endDate: dayjs().format("YYYY-MM-DD"),
+            endDate: "2020-05-15",
             dateRangeClicks: 0,
-            dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
+            // dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
+            dateRangeMaxDate: "2020-05-15",
             //display variables
             reportDisplay: false,
             //report table variables
-            columns : ["Crop", "Field", "Tray Seeding Date", "Transpanting Date", "Days in Tray", "Bed Feet", "Rows/Bed", "Row Feet", "Trays", "Hours", "Comments", "User"],
-            rows : [],
+            columns : ["Crop", "Area", "Tray Seeding Date", "Transplanting Date", "Days in Tray", "Rows/Bed", "Row Feet", "Trays", "Hours", "Comments", "User"],
+            tableVisibleColumns : [true, true,true,true,true,true,true,true,true,true,true,true],
             //filter dropdown variables
             selectedCrop: "All",
-            selectedArea: "All"
+            selectedArea: "All",
+            results: [],
+            idToCropMap: new Map()
         },
         methods: {
             //methods for date range selection
@@ -94,7 +77,44 @@
             },
             reportButtonClicked: function(){
                 this.reportDisplay = true
-                this.rows.push({crop: "BROCCOLI", field: "C", tray_date: "2022-03-08", transplant_date: "2022-04-05", days: '28', bed_feet: "400.0", rows_bed: "2", row_feet: "800.0", trays: "5", hours: ".02", comments: "", user: "nelsonw"})
+                //Converts selected date-times into unix date format
+                let timestampStart = dayjs(this.startDate).unix()
+                let timestampEnd= dayjs(this.endDate).unix()
+
+                //Sets string for API request with correct start and end date
+                requestString = "/log.json?type=farm_transplanting&timestamp[ge]=" + String(timestampStart) + "&timestamp[le]=" + String(timestampEnd)
+
+                console.log(requestString)
+
+                //getAllPages function in FarmOS returns the logs that the API request string fetches
+                getAllPages(requestString, this.results)
+                .then(() => {
+                    console.log("Results processed correctly")
+                    // All of the requested records have now been added to result.
+                    // Additional processing can happen here if necessary,
+                    // or then may be omitted.
+                })
+                .catch((err) => {
+                    console.log("An error has occurred: " + String(err))
+                })
+
+                axios.get('/farm.json')
+                .then((response) => {
+                    console.log("Got Response")
+                    console.log(response)
+
+                })
+                .catch((error) =>{
+                    console.log("Error Occurred")
+                    console.log(error)
+                })
+                
+                if(this.results.length == 0){
+                    this.reportDisplay = false
+                }
+
+                //Code out here will run after the API call
+
             },   
             deleteItem: function(index){
                 this.rows.splice(index, 1)
@@ -105,8 +125,8 @@
             },
             areaChange(selectedArea){
                 this.selectedArea = selectedArea   
-            }
-
+            },
+            //parses a string for integer
         },
         computed: {
             //This should be replaced with a function that returns a sorted list of all of the available crops in the logs - this function is already written in seedingReport.html
@@ -121,7 +141,46 @@
             fieldList(){
                 //Sample list
                 return ["GHANA-1", "CHUAU-4", "CHUAH-4"]
-            }         
+            },
+            
+            //This is currently copied from the API 2 activity form the earlier part of the semester - some of it should be replaced to parse the returned JSON string correctly.
+            harvestReportRows() {
+                let tableRows = []
+
+                //For calculating days elapse
+                const DAY = 1000 * 60 * 60 * 24
+
+                for(let log of this.results) {
+                    let tableRow = {
+                        crop: this.idToCropMap.get(log.data.crop_tid),
+                        // crop: this.parseString(log.data),
+                        area: log.movement.area[0].name,
+                        tray_date: log.created,
+                        transplant_date: log.changed,
+                        days: Math.round((log.changed-log.created)/DAY),
+                        row_feet: log.quantity[0].value,
+                        rows_bed: log.quantity[1].value,
+                        trays: log.quantity[2].value,
+                        hours: log.quantity[3].value,
+                        comments: log.notes.value,
+                        user: log.uid.id
+                    }
+                    tableRows.push(tableRow)
+                }
+                return tableRows
+            }
+        },
+        created(){
+            //Creates a map that is able to convert crop ids to the crop name from the JSON string.
+            getIDToCropMap()
+                .then((theMap) => {
+                    this.idToCropMap=theMap
+                    console.log("crop map created")
+                })
+                .catch((err) => {
+                    console.log("An error occurred in getting the IDToCropMap.")
+                    console.log(err)
+                })
         }
     })
     Vue.config.devtools = true;
