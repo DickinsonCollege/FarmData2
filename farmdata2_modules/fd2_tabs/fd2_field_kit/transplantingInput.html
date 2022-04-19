@@ -16,7 +16,7 @@
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <!-- Date of Seeding here -->
-                <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedDateArray' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedingDateFilter' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <!-- Inserting rows per bed input here -->
                 <label for='BedRows'>Number of rows per bed:<label style='color: #da4f3f'>*</label>
@@ -72,14 +72,13 @@
                 numWorkers: 0,
                 time: 0, 
                 cropArray: [],
-                seedDateArray: ['N/A'],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
                 //feetUnits: ['row', 'bed'],
                 //Story 1 
                 idToCropMap: new Map(),
                 cropToSeedDate: new Object(),
-                traySeedingLogs: [],
+                traySeedingLogs: new Array(),
 
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
@@ -118,19 +117,14 @@
                 }
             },
             computed: {
-                mapCropSeedingDate(){
-                    for (let log of this.traySeedingLogs) {
-                        let cropName = this.idToCropMap.get(log.data.crop_tid)
-                        console.log("crop name: ", cropName)
-                        let seedingDate = dayjs(log.timestamp)
-                        console.log("crop seeding date: ", seedingDate)
-                        if (!(cropName in this.cropToSeedDate.keys())) {
-                            this.cropToSeedDate.cropName = new Array()
-                        }
-                        this.cropToSeedDate.get(cropName).push(seedingDate)
+                seedingDateFilter() {
+                    let seedingDateArray = []
+
+                    if (this.selectedCrop !== null) {
+                        seedingDateArray = this.cropToSeedDate[this.selectedCrop]
                     }
-                    console.log(this.cropToSeedDate)
-                }
+                    return seedingDateArray
+                },
                 areaFilter(){
                     let areaArray = []
                     if(this.selectedSeedingType == 'Tray Seedings'){
@@ -335,18 +329,8 @@
                 }
 
             },
-            created(){
-                //Create one if/else for seedDate
-                // see activity spike axisos
-
-                //#1: Query all tray seeding logs
-                getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs)..then(() => {
-                        console.log("success: get tray seeding logs")
-                        console.log(this.traySeedingLogs)
-                        // localStorage.setItem('seedingLogs', JSON.stringify(this.seedingLogs))
-                        mapCropSeedingDate()
-                    })
-
+            created() {
+                //Get all crop names
                 let fullResponse = []
                 if(localStorage.getItem('crops') == null){
                     getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
@@ -360,6 +344,29 @@
                         localStorage.setItem('crops', JSON.stringify(this.cropArray))
                     })
                 }
+                
+                //Get all tray seeding logs
+                getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs).then(() => {
+                        console.log("success: get tray seeding logs")
+                        // localStorage.setItem('seedingLogs', JSON.stringify(this.seedingLogs)
+
+                        for (let i = 0; i < this.cropArray.length; i++){
+                            this.cropToSeedDate[this.cropArray[i]] = new Array()
+                            this.cropToSeedDate[this.cropArray[i]].push("N/A")
+                        }  
+                        for (let log of this.traySeedingLogs) {
+                            let cropName = this.idToCropMap.get(log.data.crop_tid)
+                            let seedingDate = new Date(log.timestamp*1000).toLocaleDateString("en-US")
+                            if (!(cropName in this.cropToSeedDate)) {
+                                this.cropToSeedDate[cropName] = new Array()
+                                this.cropToSeedDate[cropName].push("N/A")
+                            }
+                            this.cropToSeedDate[cropName].push(seedingDate)
+                        }
+                        console.log(this.cropToSeedDate)
+                    })
+                
+                //Get all area/field names
                 if(localStorage.getItem('areas') == null){
                     getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
                         localStorage.setItem('areas', JSON.stringify(this.areaResponse))
