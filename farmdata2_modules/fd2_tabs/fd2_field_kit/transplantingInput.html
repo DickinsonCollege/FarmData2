@@ -156,6 +156,14 @@
                     if(this.numWorkers == 0){
                         return true
                     }
+		    <!-- Inserting new verification (Story8) -->
+		    if(this.rowsPerBed == 0){
+			return true
+		    }
+		    if(this.bedFeet == 0){
+			return true
+		    } 
+
                     return false
                 },
                 plantingLogData(){
