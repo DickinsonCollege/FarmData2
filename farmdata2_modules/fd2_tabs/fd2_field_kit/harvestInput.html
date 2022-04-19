@@ -64,8 +64,6 @@
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
-                numOfTrays: 0,
-                numCellsPerTray: 0,
                 numSeedsPlanted: 0,
                 numRowBed: 0,
                 numFeet: 0,
@@ -115,29 +113,9 @@
             computed: {
                 areaFilter(){
                     let areaArray = []
-                    if(this.selectedSeedingType == 'Tray Seedings'){
-                        let trayAreaOnly = this.areaResponse.filter((x) => x.area_type === 'greenhouse')
-                        areaArray = trayAreaOnly.map((h) => h.name)
-                        if(!areaArray.includes(this.selectedArea)){
-                            this.selectedArea = null
-                        }
-                        if(areaArray.includes(this.savedArea)){
-                            this.selectedArea = this.savedArea
-                        }
-                    }
-                    else if(this.selectedSeedingType == 'Direct Seedings'){
-                        let directAreaOnly = this.areaResponse.filter((x) => x.area_type === 'field' || x.area_type === 'bed')
-                        areaArray = directAreaOnly.map((h) => h.name)
-                        if(!areaArray.includes(this.selectedArea)){
-                            this.selectedArea = null
-                        }
-                        if(areaArray.includes(this.savedArea)){
-                            this.selectedArea = this.savedArea
-                        }
-                    }
-                    else{
-                        areaArray = this.areaResponse.map((h) => h.name)
-                    }
+                    let harvestArea = this.areaResponse
+                    areaArray = harvestArea.map((h) => h.name)
+                    this.selectedArea = this.savedArea
                     return areaArray
                 },
                 formNotCompleted(){
@@ -172,14 +150,9 @@
                 logData(){
                     let quantityUnits = []
                     let harvestID = 0
-                    if(this.selectedSeedingType == "Direct Seedings"){
-                        quantityUnits = this.quantityDirectSeeding
-                        harvestID = this.logTypeToIDMap.get('Direct Seedings')
-                    }
-                    else if (this.selectedSeedingType == "Tray Seedings"){
-                        quantityUnits = this.quantityTraySeeding
-                        harvestID = this.logTypeToIDMap.get('Tray Seedings')
-                    }
+                    quantityUnits = this.quantityHarvest
+                    harvestID = this.logTypeToIDMap
+                   
                     harvest = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
                         "type": "farm_harvest",
@@ -212,88 +185,13 @@
                     }
                     return harvest
                 },
-                quantityDirectSeeding(){
-                    let time = this.time
-                    let feet = this.numFeet
-                    if(this.selectedTimeUnit == 'minutes'){
-                        time = (Math.round((time / 60)*100))/100
-                    }
-                    if(this.selectedFeetUnit == 'bed'){
-                        feet = feet * this.numRowBed
-                    }
-                    quantity = [
-                        {
-                            "measure": "length", 
-                            "value": feet,  //total row feet
-                            "unit": {
-                                "id": this.unitToIDMap.get('ROW FEET'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Amount planted"
-                        },
-                        {
-                            "measure": "ratio", 
-                            "value": this.numRowBed,
-                            "unit": {
-                                "id": this.unitToIDMap.get('ROWS/BED'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Rows/Bed"
-                        },
-                        {
-                            "measure": "time", 
-                            "value": time, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('HOURS'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Labor"
-                        },
-                        {
-                            "measure": "count", 
-                            "value": this.numWorkers, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('PEOPLE'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Workers"
-                        },
-                    ]
-                    return quantity
-                },
-                quantityTraySeeding(){
+                quantityHarvest(){
                     let time = this.time
                     if(this.selectedTimeUnit == 'minutes'){
                         time = (Math.round((time / 60)*100))/100
                     }
                     quantity = [
-                        {
-                            "measure": "count", 
-                            "value": this.numSeedsPlanted,  //number of seed planted
-                            "unit": {
-                                "id": this.unitToIDMap.get('SEEDS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Seeds planted"
-                        },
-                        {
-                            "measure": "count", 
-                            "value": this.numOfTrays,  //number of flats(trays)
-                            "unit": {
-                                "id": this.unitToIDMap.get('FLATS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Flats used"
-                        },
-                        {
-                            "measure": "ratio", 
-                            "value": this.numCellsPerTray,  //cells per flat
-                            "unit": {
-                                "id": this.unitToIDMap.get('CELLS/FLAT'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Cells/Flat"
-                        },
+                        
                         {
                             "measure": "time", 
                             "value": time,  //hours worked
