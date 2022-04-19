@@ -6,34 +6,45 @@
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Transplanting:<label style='color: #da4f3f'>*</label></date-selection>
+                <label for='date-selection'>Date of Transplanting:</label><label style='color:  #da4f3f'>*</label>
+                <input type='date' id='date-selection' name='date-selection' v-model='selectedDate'>
+                <!--Note: method setNewDate-->
+                <br> 
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <!-- Date of Seeding here -->
-                <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedDateArray' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedingDateFilter' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <!-- Inserting rows per bed input here -->
-       		<label for='BedRows'>Number of beds per row:</label>
-		<input type='number' id='BedRows' name='BedRows' value='1' min='1'>
-		<br>
+                <label for='BedRows'>Number of rows per bed:<label style='color: #da4f3f'>*</label>
+                <input type='number' id='BedRows' name='BedRows' value='1' min='1'>
+                <br>
 
 		<!-- Inserting bedfeet input here -->
-		<label for='BedFeet'>Bed feet:</label>
+		<label for='BedFeet'>Bed feet:<label style='color: #da4f3f'>*</label>
 		<input type='number' id='BedFeet' name='BedFeet' value='1' min='1'>
 		<br>
 		<br>
+
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
-                 <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type=number v-model='numWorkers'>
-                <label>Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
+                 <label>Number of Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type=number value='1' min='1' v-model='numWorkers'>
+                <label> Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 60px;' type=number value='1' min='1' v-model='time'>
+                <!--<dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> -->
+
+        		<!-- Inserting time units here -->
+        		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
+        		<select id='TimeUnit' name='TimeUnit' v-model='timeUnits'>
+        			<option selected>Hours</option>
+        			<option>Minutes</option>
+        		</select>
             </div>
        </fieldset>
        <div style='text-align:center;'>
@@ -44,7 +55,7 @@
 
     <script>
         new Vue({
-            el: '#seedingInput',
+            el: '#transplantingInput',
             components:{
                 'date-selection': DateSelectionComponent,
                 'dropdown-with-all': DropdownWithAllComponent
@@ -61,10 +72,14 @@
                 numWorkers: 0,
                 time: 0, 
                 cropArray: [],
-                seedDateArray: ['N/A'],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
                 //feetUnits: ['row', 'bed'],
+                //Story 1 
+                idToCropMap: new Map(),
+                cropToSeedDate: new Object(),
+                traySeedingLogs: new Array(),
+
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -102,6 +117,14 @@
                 }
             },
             computed: {
+                seedingDateFilter() {
+                    let seedingDateArray = []
+
+                    if (this.selectedCrop !== null) {
+                        seedingDateArray = this.cropToSeedDate[this.selectedCrop]
+                    }
+                    return seedingDateArray
+                },
                 areaFilter(){
                     let areaArray = []
                     if(this.selectedSeedingType == 'Tray Seedings'){
@@ -304,9 +327,10 @@
                     ]
                     return quantity
                 }
+
             },
-            created(){
-                //Create one if/else for seedDate
+            created() {
+                //Get all crop names
                 let fullResponse = []
                 if(localStorage.getItem('crops') == null){
                     getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
@@ -320,6 +344,29 @@
                         localStorage.setItem('crops', JSON.stringify(this.cropArray))
                     })
                 }
+                
+                //Get all tray seeding logs
+                getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs).then(() => {
+                        console.log("success: get tray seeding logs")
+                        // localStorage.setItem('seedingLogs', JSON.stringify(this.seedingLogs)
+
+                        for (let i = 0; i < this.cropArray.length; i++){
+                            this.cropToSeedDate[this.cropArray[i]] = new Array()
+                            this.cropToSeedDate[this.cropArray[i]].push("N/A")
+                        }  
+                        for (let log of this.traySeedingLogs) {
+                            let cropName = this.idToCropMap.get(log.data.crop_tid)
+                            let seedingDate = new Date(log.timestamp*1000).toLocaleDateString("en-US")
+                            if (!(cropName in this.cropToSeedDate)) {
+                                this.cropToSeedDate[cropName] = new Array()
+                                this.cropToSeedDate[cropName].push("N/A")
+                            }
+                            this.cropToSeedDate[cropName].push(seedingDate)
+                        }
+                        console.log(this.cropToSeedDate)
+                    })
+                
+                //Get all area/field names
                 if(localStorage.getItem('areas') == null){
                     getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
                         localStorage.setItem('areas', JSON.stringify(this.areaResponse))
@@ -336,6 +383,11 @@
                 getCropToIDMap().then((response) => {
                     this.cropToIDMap = response
                 })
+                //#4 get ID to crop for Date of Tray Seeding matching
+                getIDToCropMap().then((response) => {
+                    this.idToCropMap = response
+                })
+
                 getUserToIDMap().then((response) => {
                     this.userToIDMap = response
                 })
