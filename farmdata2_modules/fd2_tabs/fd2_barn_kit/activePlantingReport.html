@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<body>
+	<div id="activePlantingReport">
+		<h1 class="text-center"> Active Planting Report </h1>
+		<fieldset class="panel panel-default center-block" style="width: 50%;">
+			<legend class="panel-heading" style="background-color: #d62a17; color: white;"> Filters </legend>
+			
+			<label for="field">Field:</label> 
+     				<select id="field" name="field">
+					<option value="All" selected> All </option>
+                			<option default-input="All"  v-for="y in transformAreaMap">{{ y }}</option>
+        			</select>
+			<br>
+			
+			<label for="crop">Crop:</label>
+				<select id="crop" name="crop">
+					<option value="All" selected> All </option>
+					<option  v-for="x in transformCropMap">{{ x }}</option>
+				</select>
+							
+			<br>
+		
+		
+
+			<label for="log">Log Type:</label>
+                                <select id="log" name="log">
+                                        <option value="All" selected> All </option>
+                                        <option default-input="All"  v-for="x in transformLogMap">{{ x }}</option>
+                                </select>
+
+			<br>			
+
+			<label for="unit">Unit Type:</label>
+                                <select id="unit" name="unit">
+                                        <option value="All" selected> All </option>
+                                        <option default-input="All"  v-for="x in transformUnitMap">{{ x }}</option>
+                                </select>
+
+			
+			<div style="display: flex;width:100%; padding: 7px">
+
+				<button @click="generateReport('yes')"> Generate Report </button>
+			</div>
+		</fieldset>
+	<br>
+
+
+	<div v-if="recordExist == 'yes'">
+    <table style="width:400px" border="1">
+    <legend class="panel-heading" style="background-color: #d62a17; color: white;">date, crop, area, tray/direct, etc </legend>
+		<tr>
+			<th>Row</th>
+			<th>Date</th>
+			<th>Area</th>
+			<th>Crop</th>
+			<th>Yield</th>
+            <th>Units</th>
+            <th>Harvest Status</th>
+		</tr>
+
+		<tr v-for="(x,index) in plantTable">
+			<th> {{ index + 1 }} </th>
+			<th> {{ x.date }}</th>
+			<th> {{ x.area }}</th>
+			<th> {{ x.crop }}</th>
+			<th> {{ x.yield }}</th>
+            <th> {{ x.units }}</th>
+            <th><input type="checkbox" id="harvStat" value="checked"></input></th>
+		</tr>
+       	   </table>
+	</div>	
+	</div>
+	<script>
+        var VueTime = new Vue({
+                el: '#activePlantingReport',
+		created() {
+			console.log("Report created!")
+			getIDToCropMap().then((theMap) => {
+				this.idToCropMap=theMap;
+			}),
+			getIDToAreaMap().then((theMap) => {
+				this.idToAreaMap=theMap;
+			}),
+			getIDToLogTypeMap().then((theMap) => {
+				this.idToLogMap=theMap;
+			}),
+			getIDToUnitMap().then((theMap) => {
+				this.idToUnitMap=theMap;
+			})
+			},
+                data: {
+		
+			state: 'default',
+			
+			recordExist: 'yes',
+			
+			idToCropMap : [
+
+					], 
+			
+			idToAreaMap: [
+
+					],
+			idToUnitMap: [
+
+					],
+
+			idToLogMap:  [
+				
+					],
+		
+
+			plantTable: [
+
+				{
+				date: '2018-05-01', area: 'Orion', crop: 'Kale', yield: '12', units: 'Bunches'
+				},
+
+				{
+                                date: 'N/A', area: 'N/A', crop: 'N/A', yield: 'N/A', units: 'N/A'
+                                }				
+				],
+			row: {
+				date: 'N/A', area: 'N/A', crop: 'N/A', yield: 'N/A', units: 'N/A'
+				},
+
+			pageArr: [
+
+				]
+
+                },
+
+            newLog: {
+                date: '2018-05-01',
+                area: 'Orion-3',
+                crop: 'Kale',
+                yield: 12,
+                units: 'Bunches',
+            },
+            farmInfo: {
+                name: '',
+                user: '',
+                language: '',
+            },
+            defFarmInfo: {
+                name: 'Sample Farm',
+                user: 'manager1',
+                language: 'English',
+            },
+            startDateUnix: '',
+            endDateUnix: '',
+            dateRequest: '',
+            datePages: [],
+            logs: [],
+
+		computed: {
+			
+			transformCropMap() {
+				return Array.from(this.idToCropMap.values());
+			},
+
+			transformAreaMap() {
+                                return Array.from(this.idToAreaMap.values());
+                        },
+			
+			transformUnitMap() {
+				return Array.from(this.idToUnitMap.values());
+			},
+
+			transformLogMap() {
+				return Array.from(this.idToLogMap.values());
+            },
+            
+		},
+
+		methods: {
+            harvestReportRows() {
+                let tableRows = []
+                for(let log of this.datePages) {
+                    let tableRow = {
+                        date: dayjs.unix('' + log.timestamp + '').format('YYYY-MM-DD'),
+                        area: log.area[0].name,
+                        crop: this.idToCropMap.get(log.data.crop_tid),
+                        yield: log.quantity[0].value,
+                        units: log.quantity[0].unit.name,
+                    }
+                    tableRows.push(tableRow)
+                }
+                return tableRows
+            },
+
+            generateReport: function () {
+                axios
+                    .get('/farm.json')
+                    .then((response) => {
+                        console.log('Got Response');
+                        console.log(response);
+                        this.farmInfo.name = response.data.name;
+                        this.farmInfo.user = response.data.user.name;
+                        this.farmInfo.language =
+                            response.data.languages.en.name;
+                    })
+                    .catch((error) => {
+                        console.log('Error Occurred');
+                        console.log(error);
+                    });
+                if (this.newLog != '') {
+                    this.logs.push(this.newLog);
+                }
+                this.newLog = '';
+                this.farmInfo = this.defFarmInfo;
+                this.startDateUnix = dayjs(this.startDate).unix();
+                this.endDateUnix = dayjs(this.endDate).unix();
+                this.dateRequest =
+                    '/log.json?type=farm_harvest&timestamp[ge]=' +
+                    this.startDateUnix +
+                    '&timestamp[le]=' +
+                    this.endDateUnix;
+                this.datePages = '',
+                getAllPages('' + this.dateRequest + '')
+                    .then((res) => {
+                        this.datePages = res;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        console.log(
+                            'Error in getAllPages.'
+                        );
+
+                    
+                    });
+            }, 
+        },
+        beforeMount(){
+            this.harvestReportRows()
+            this.generateReport()
+            
+        },
+    });
+	Vue.config.devtools = true;
+
+	</script>
+</body>
