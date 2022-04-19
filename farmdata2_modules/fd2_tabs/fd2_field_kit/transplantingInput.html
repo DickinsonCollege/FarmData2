@@ -76,6 +76,11 @@
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
                 //feetUnits: ['row', 'bed'],
+                //Story 1 
+                idToCropMap: new Map(),
+                cropToSeedDate: new Object(),
+                traySeedingLogs: [],
+
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -113,6 +118,19 @@
                 }
             },
             computed: {
+                mapCropSeedingDate(){
+                    for (let log of this.traySeedingLogs) {
+                        let cropName = this.idToCropMap.get(log.data.crop_tid)
+                        console.log("crop name: ", cropName)
+                        let seedingDate = dayjs(log.timestamp)
+                        console.log("crop seeding date: ", seedingDate)
+                        if (!(cropName in this.cropToSeedDate.keys())) {
+                            this.cropToSeedDate.cropName = new Array()
+                        }
+                        this.cropToSeedDate.get(cropName).push(seedingDate)
+                    }
+                    console.log(this.cropToSeedDate)
+                }
                 areaFilter(){
                     let areaArray = []
                     if(this.selectedSeedingType == 'Tray Seedings'){
@@ -315,11 +333,19 @@
                     ]
                     return quantity
                 }
+
             },
             created(){
                 //Create one if/else for seedDate
-                // see activity spike axios
-                // endpoint: /log.json?type=farm_transplanting
+                // see activity spike axisos
+
+                //#1: Query all tray seeding logs
+                getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs)..then(() => {
+                        console.log("success: get tray seeding logs")
+                        console.log(this.traySeedingLogs)
+                        // localStorage.setItem('seedingLogs', JSON.stringify(this.seedingLogs))
+                        mapCropSeedingDate()
+                    })
 
                 let fullResponse = []
                 if(localStorage.getItem('crops') == null){
@@ -350,6 +376,11 @@
                 getCropToIDMap().then((response) => {
                     this.cropToIDMap = response
                 })
+                //#4 get ID to crop for Date of Tray Seeding matching
+                getIDToCropMap().then((response) => {
+                    this.idToCropMap = response
+                })
+
                 getUserToIDMap().then((response) => {
                     this.userToIDMap = response
                 })
