@@ -307,6 +307,9 @@
             },
             created(){
                 //Create one if/else for seedDate
+                // see activity spike axios
+                // endpoint: /log.json?type=farm_transplanting
+
                 let fullResponse = []
                 if(localStorage.getItem('crops') == null){
                     getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
