@@ -85,7 +85,12 @@
                 selectedField: 'All',
                 fieldOptions: [ 'All', 'Chuau-1', 'SQ7' ],
                 harvestLogs: [],
-			}
+            },
+            methods: {
+                saveName: function() {
+                    harvestLogs.push( {date: "2018-05-02", area: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"} )
+                    }
+            }
         });
         
         Vue.config.devtools = true;
