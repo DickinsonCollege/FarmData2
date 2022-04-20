@@ -40,19 +40,29 @@
 
                     <button type="btn btn-primary" @click="runFilter">Run Filter</button>
 
-                    </div>
+                    
                     <hr/> 
-                        <!--
-                            Ask professor whether or not we need to look into cypress 
-                            to imitate the style of the  
-                        -->
+                        <custom-table
+                        can-delete 
+                        can-edit
+                        :headers="tableHeaders" 
+                        :input-options="tableinputTypes"
+                        :rows="tableData" 
+                        
+                        @row-deleted="deleteTableRow"
+                        @row-edited="updateTableRow">
                     <p>
                         Create UI suitable Reports Results
                     </p>
+                    </div>
         </p>
        <script>
            var ReportVue= new Vue({
                 el:"#rpt",
+                // Define tags used for components
+                components:{
+                    "custom-table":CustomTableComponent,
+                },
                 data:{
                     Response:null,
                     
@@ -71,26 +81,47 @@
 
                     idToCropMap: [],
                     idToFieldMap: [],
+                    idToUnitMap:[],
+                    idToUserMap:[],
+
+                    tableHeaders: ['ID', 'Date', 'Field', 'Crop', 'Yield', 'Unit', 'Hours', 'Comments','User'],
+                    
+                    tableinputTypes: [
+                        {'type': 'no input'},
+                        {'type': 'date'},
+                        {'type': 'dropdown', 'value': [item in mapToCropArray]},
+                        {'type': 'dropdown', 'value': [item in mapToFieldArray]},
+                        {'type': 'number'},
+                        {'type': 'dropdown','value':[]},
+                        {'type': 'number'},
+                        {'type': 'text'},
+                    ],
+                    tableData: [
+                        {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01']},
+                        {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01']},
+                        {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01']},
+                    ],
 
                     LogListRetrieved:[],
                     LogList:[],
                 },
                 created() {
                         getIDToCropMap()
-                            .then((theMap1) => {
-                                    this.idToCropMap= theMap1
+                            .then((theMap) => {
+                                    this.idToCropMap= theMap
                             })
                             .catch((err) => {
 
                             }),
                         getIDToAreaMap()
-                            .then((theMap2) => {
-                                    this.idToFieldMap = theMap2
+                            .then((theMap) => {
+                                    this.idToFieldMap = theMap
                             })
                             .catch((err) => {
                                 // An error occured during the request, process it here.
                             })
                     },
+
                 computed:{
                     mapToCropArray(){
                         return Array.from(this.idToCropMap.values())
@@ -142,8 +173,29 @@
                         .catch((err) => {
                             console.log("An error has occurred");
                         })
+                        
                         // Retrieve data from the API through a certain filter
                         // Test this with a span of date, a certain crop or field
+                    },
+                    deleteTableRow(rowID) {
+                        for(var i=0; i < this.tableData.length; i++){
+                            if(this.tableData[i].id == rowID){
+                                this.tableData.splice(i, 1)
+                            }
+                        }
+
+                        // Would also need to delete data from the db via API here.
+                    },
+                    updateTableRow(edits, rowID) {
+                        for(var i=0; i < this.tableData.length; i++){
+                            if(this.tableData[i].id == rowID){
+                                for( const [key, value] of Object.entries(edits)) {
+                                    this.tableData[key] = value
+                                }
+                            }
+                        }
+
+                        // Would also need to update data in the db via API here.
                     },
                 },
            });
