@@ -53,8 +53,10 @@
 					<li><b>Crop</b>:{{ selectedCrop }}</li>
 				</ul>
 
+        <p v-if="harvestLogs.length === 0">There are no Harvest Logs to be displayed.</p>
+
 		<table border=1>
-			<tr>
+			<tr v-if="harvestLogs.length > 0">
                 <th>Row</th>
 				<th>Date</th>
 				<th>Area</th>
