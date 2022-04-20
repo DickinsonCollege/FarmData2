@@ -55,6 +55,7 @@
 			<th>Crop</th>
 			<th>Yield</th>
             <th>Units</th>
+            <th>Date of Planting</th>
             <th>Harvest Status</th>
 		</tr>
 
@@ -65,6 +66,7 @@
 			<th> {{ x.crop }}</th>
 			<th> {{ x.yield }}</th>
             <th> {{ x.units }}</th>
+            <th> {{ x.dop }}</th>
             <th><input type="checkbox" id="harvStat" value="checked"></input></th>
 		</tr>
        	   </table>
@@ -88,7 +90,7 @@
 				this.idToUnitMap=theMap;
 			})
 			},
-                data: {
+            data: {
 		
 			state: 'default',
 			
@@ -113,7 +115,7 @@
 			plantTable: [
 
 				{
-				date: '2018-05-01', area: 'Orion', crop: 'Kale', yield: '12', units: 'Bunches'
+				date: '2018-05-01', area: 'Orion', crop: 'Kale', yield: '12', units: 'Bunches', dop: "2018-05-01"
 				},
 
 				{
