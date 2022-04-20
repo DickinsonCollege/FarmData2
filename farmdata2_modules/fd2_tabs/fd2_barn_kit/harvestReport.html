@@ -1,93 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-
+    <head>   
     </head>
 
     <body>
+        <!-- Center the work to the middle of the page -->
         <h1>
-            Harvest Report
+            <!-- Add extra formatting to highlight the title of the page -->
+            <center>Harvest Report</center>
         </h1>
         <p>
-            This page is a <i>mockup</i> of a simplified harvest report.
+            <center>This is a tab to retrieve harvest reports.</center>
         </p>
         <p>
             <div id="rpt" class = "v-cloak">
                 <br/>
                 <div class = "add-item">
-                    <label for="Title">Title:</label>
-                    <input type="text" id="Title" name="Title" v-model="header">
-                    
-                    <br/>
-
-                        <label for="StartDate">Start date:</label>
-                        <input type="date" id="start" name="plant start" v-model="startDay" min="2014-01-01" max="2022-01-01"
-                        :disabled= "startDay >= endDay">
-                    
-
-                        <label for="EndDate">End date:</label>
-                        <input type="date" id="end" name="plant end" v-model="endDay" min="2020-05-05" max="2022-01-01" 
-                        :disabled= "endDay <= startDay">
-                    
-
+                        <label for="StartDate">From:</label>
+                        <input type="date" id="start" name="filter start limit day" v-model="startDay" min="2014-01-01" max="endDay">
+                    <br/>    
+                        <label for="EndDate">To:</label>
+                        <input type="date" id="end" name="filter end limit day" v-model="endDay" min="startDay" max="2022-01-01" >
+            <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
                     <br/>
                         <label for="CropType">Crop:</label>
-
-                        
                             <select id="groups" name="Crop" v-model="chosenCrop">
                                 <optgroup label="possible crops"> 
-
-                                    <option v-for="item in cropList">{{item}}</option>
-
+                                    <option v-for="item in mapToCropArray">{{item}}</option>
                                 </optgroup> <br/>
                             </select>
-                        
 
-                        <label for="CropType">Field:</label>
-                            
-                            <select id="groups" name="Field">
+                        <label for="FieldType">Field:</label>
+                            <select id="groups" name="Field" v-model="chosenField">
                                 <optgroup label="possible field"> 
-                                    <option v-for="item in fieldList">{{item}}</option>
+                                    <option v-for="item in mapToFieldArray">{{item}}</option>
                                 </optgroup>
                         </select>
                     <br/>
-                    <button type="btn btn-primary" @click="saveLog">Generate Report</button>
-                    </div>
-        </p>
 
-        
+                    <button type="btn btn-primary" @click="runFilter">Run Filter</button>
+
+                    </div>
+                    <hr/> 
+                        <!--
+                            Ask professor whether or not we need to look into cypress 
+                            to imitate the style of the  
+                        -->
+                    <p>
+                        Create UI suitable Reports Results
+                    </p>
+        </p>
        <script>
            var ReportVue= new Vue({
                 el:"#rpt",
                 data:{
-                    header:'My Sample Harvest Report',
-
-                    startDay: "2018-05-01",
-                    endDay: "2018-05-15",
+                    Response:null,
+                    
+                    startDay: "2020-05-01",
+                    endDay: "2020-05-15",
                 
                     chosenCrop:"Kale",
-                    cropList:[
-                    "Kale",
-                    "Broccoli",
-                    "Peas",
-                    ],
-                    fieldList:[
-                    "All",
-                    "SQ7",
-                    "Chuau-1",
-                    ],
-                    ANewLog:{ Date: '05/01/2018', Area: "Orion-3", Crop: "Kale", Yield: 12, Units: "Bunches"},
+                    chosenField:"All",
+
                     sampleLog:[
-                        // {Date: '02/05/2018', Area: 'Chuau-1', Crop: 'Kale', Yield: 10, Units: 'Bunches'},
-                        // {Date: '05/05/2018', Area: 'SQ7', Crop: 'Kale', Yield: 7, Units: 'Bunches'},
                     ],
+
+                    Farm:"",
+                    User:"",
+                    Language:"",
+
+                    idToCropMap: [],
+                    idToFieldMap: [],
+
+                    LogListRetrieved:[],
+                    LogList:[],
                 },
-                
+                created() {
+                        getIDToCropMap()
+                            .then((theMap1) => {
+                                    this.idToCropMap= theMap1
+                            })
+                            .catch((err) => {
+
+                            }),
+                        getIDToAreaMap()
+                            .then((theMap2) => {
+                                    this.idToFieldMap = theMap2
+                            })
+                            .catch((err) => {
+                                // An error occured during the request, process it here.
+                            })
+                    },
+                computed:{
+                    mapToCropArray(){
+                        return Array.from(this.idToCropMap.values())
+                    },
+
+                    mapToFieldArray(){
+                        return Array.from(this.idToFieldMap.values())
+                    }
+                },
+
                 methods: {
-                    saveLog: function () {
+                    runFilter: function () {
+                        axios
+                            .get('http://localhost/farm.json')
+                            .then(response => {
+                                    console.log("Got Response")
+                                    this.Farm = response.data.name
+                                    this.User = response.data.user.name
+                                    this.Language = response.data.languages.en.name
+                                })
+                            .catch(error => {
+                                	console.log("Error Occurred")
+                                })
+                                
+                        let timestampStart = dayjs(this.startDay).unix();
+                        let timestampEnd = dayjs(this.endDay).unix();
+
+                        let logString = "";
+
                         if(this.ANewLog !== {}){
-                            this.sampleLog.push(this.ANewLog);      
+                            this.sampleLog.push(this.ANewLog);
                         } 
+                        
+                        getAllPages("/log.json?type=farm_harvest&timestamp[ge]=" +timestampStart +"&timestamp[le]=" + timestampEnd, this.LogList)
+                        .then(() => {
+                            let tableRows = [];
+                            for(let log of this.LogList) {
+                                let tableRow = {
+                                    date: log.timestamp,
+                                    area: log.area[0].name,
+                                    crop: this.idToCropMap.get(log.data.crop_tid),
+                                    yield: log.quantity[0].value,
+                                    unit: log.quantity[0].unit.name,
+                                }
+                                tableRows.push(tableRow);
+                            }
+                            this.LogListRetrieved = tableRows;
+                        })
+                        .catch((err) => {
+                            console.log("An error has occurred");
+                        })
+                        // Retrieve data from the API through a certain filter
+                        // Test this with a span of date, a certain crop or field
                     },
                 },
            });
@@ -95,3 +151,4 @@
        </script>
     </body>
 </html>
+                    <!-- I know this is a lot left to do but we can do it!!! Fighting!!! -->
