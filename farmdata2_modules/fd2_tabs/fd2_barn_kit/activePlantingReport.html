@@ -1,5 +1,5 @@
 <body>
-    <div id="seedingReport" v-cloak>
+    <div id="activePlantingReport" v-cloak>
         <h1 class="text-center">Active Planting Report</h1>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
@@ -79,8 +79,8 @@
         </div>
     </div>
     <script>
-        var seedingReport = new Vue ({
-            el: '#seedingReport',
+        var activePlantingReport = new Vue ({
+            el: '#activePlantingReport',
             components: {
                 'custom-table': CustomTableComponent,
                 'date-range-selection': DateRangeSelectionComponent,
