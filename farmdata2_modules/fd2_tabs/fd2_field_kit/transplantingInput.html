@@ -40,7 +40,7 @@
 
 		<!-- Inserting time units here -->
 		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
-		<select id='timeUnit' name='TimeUnit' :default-input-'selectedTimeUnit" @selection-changes='setNewTimeUnit'>
+		<select id='timeUnit' name='TimeUnit' @selection-changed='setNewTimeUnit' v-model='selectedTimeUnit'>
 			<option selected>Hours</option>
 			<option>Minutes</option>
 		</select>
