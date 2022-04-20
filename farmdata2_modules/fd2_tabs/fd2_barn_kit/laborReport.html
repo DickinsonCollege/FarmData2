@@ -26,7 +26,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
+                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs'  @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
             </div>
@@ -270,18 +270,7 @@
                     }
                     this.rowBeingEdited = false
                 },
-                /**
-                 * Uses deleteRecord function to delete the record in the database. Also deletes the record from the current logs that are in seedingLogs
-                 */
-                deleteRowLog(logID) {
-                    let url = '/log/' + logID
-                    deleteRecord(url, this.sessionToken)
-                    for(var i=0; i < this.seedingLogs.length; i++){
-                        if(this.seedingLogs[i].id === logID){
-                            this.seedingLogs.splice(i, 1)
-                        }
-                    }
-                },
+                
                 disableFilters() {
                     this.rowBeingEdited = true
                 },
