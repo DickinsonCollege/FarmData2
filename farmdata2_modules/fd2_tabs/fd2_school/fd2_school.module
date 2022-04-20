@@ -60,51 +60,6 @@ function fd2_school_menu() {
     'weight' => -100,
   );
 
-  $items['farm/fd2-school/html'] = array(
-            'title' => 'HTML',
-            'type' => MENU_LOCAL_TASK,
-            'page callback' => 'fd2_school_view',
-            'page arguments' => array('html.html'),
-            'access arguments' => array('view fd2 school'),
-            'weight' => 110,
-        );
-
-  $items['farm/fd2-school/vue1'] = array(
-            'title' => 'Vue 1',
-            'type' => MENU_LOCAL_TASK,
-            'page callback' => 'fd2_school_view',
-            'page arguments' => array('vue1.html'),
-            'access arguments' => array('view fd2 school'),
-            'weight' => 110,
-        );
-
-  $items['farm/fd2-school/vue2'] = array(
-            'title' => 'Vue 2',
-            'type' => MENU_LOCAL_TASK,
-            'page callback' => 'fd2_school_view',
-            'page arguments' => array('vue2.html'),
-            'access arguments' => array('view fd2 school'),
-            'weight' => 110,
-        );
-
-    $items['farm/fd2-school/API1'] = array(
-            'title' => 'API1',
-            'type' => MENU_LOCAL_TASK,
-            'page callback' => 'fd2_school_view',
-            'page arguments' => array('api1.html'),
-            'access arguments' => array('view fd2 school'),
-            'weight' => 110,
-        );
-
-     $items['farm/fd2-school/API2'] = array(
-            'title' => 'API2',
-            'type' => MENU_LOCAL_TASK,
-            'page callback' => 'fd2_school_view',
-            'page arguments' => array('api2.html'),
-            'access arguments' => array('view fd2 school'),
-            'weight' => 110,
-        );
-
   // Add items blocks for new sub-tabs here.
 
   return $items;
