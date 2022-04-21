@@ -437,7 +437,7 @@ function deleteRecord(url, sessionToken) {
 }
 
 /**
- * Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to create records.  
+ * Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privilege to create records.  
  * 
  * @param {string} url the farmOS API endpoint to use to create the record.
  * @param {string} data a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url. If a data property if present inside this object it should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.
@@ -448,7 +448,7 @@ function deleteRecord(url, sessionToken) {
  * @example <caption>Create a new log in the database</caption>
  * // Assume logData contains the data for the new log.
  * // Assume token has been set to the session token.
- * deleteRecord('/log', logData, token)
+ * createRecord('/log', logData, token)
  *    // The record was created.
  * })
  * .catch((err) => {
@@ -458,7 +458,7 @@ function deleteRecord(url, sessionToken) {
  * // Note that the record will not have been created until the then() executes.
  */
 function createRecord(url, data, sessionToken) {
-    // If the incomming object has a data property then
+    // If the incoming object has a data property then
     // it should be stringified because farmOS expects 
     // data properties to be strings not JSON objects but
     // FarmData2 uses the data property to hold JSON.
