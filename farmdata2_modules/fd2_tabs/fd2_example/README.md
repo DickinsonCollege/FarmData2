@@ -145,7 +145,7 @@ scripts[] = '../resources/dropdownWithAllComponent.js'
 
 #### Using Nested Vue Components #### 
 
-If a Vue component contains a nested Vue compnent then both the nested component and the parent component must be added to the `scripts[]`. The nested comonent must be listed before the parent component.  For example, the following lines make the `DateSelectionComponent` and the `DateRandeSelectionComponent` avaialable on the `FD2 Example` tab:
+If a Vue component contains a nested Vue compnent then both the nested component and the parent component must be added to the `scripts[]`. The nested comonent must be listed before the parent component.  For example, the following lines make the `DateSelectionComponent` and the `DateRandeSelectionComponent` available on the `FD2 Example` tab:
 ```php
 scripts[] = '../resources/DateSelectionComponent.js'
 scripts[] = '../resources/DateRangeSelectionComponent.js'
