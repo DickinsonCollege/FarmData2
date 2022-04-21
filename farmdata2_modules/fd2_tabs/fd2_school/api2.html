@@ -28,7 +28,7 @@
     </select>
     <br></br>
     <!-- GENERATE REPORT BUTTON -->
-    <input type="button" value="Generate Report" @click="saveLog(); generateData();"                      >
+    <input type="button" value="Generate Report" @click="generateData();">
     <hr>
     </hr>
     <!-- REPORT TITLE -->
@@ -125,9 +125,9 @@ var harvestReport = new Vue({
         idToAreaMap: [],
     },
     methods: {
-        saveLog: function(){
-            this.harvestLog.push(this.someHarvestLogs.firstLog);
-        },
+        //saveLog: function(){
+          //  this.harvestLog.push(this.someHarvestLogs.firstLog);
+        //},
         deleteLog: function(logIndex){
             this.harvestLog.splice(this.logIndex, 1);
         },
@@ -147,8 +147,24 @@ var harvestReport = new Vue({
                 .catch((error) => {
                     console.log("Error Occured");
                     console.log(error);
-                })
+                });
 
+                let startTime = dayjs(this.reportStartDate).unix();
+                let endTime = dayjs(this.reportEndDate).unix();
+                let logRequest = '/log.json?type=farm_harvest&timestamp[ge]' + startTime + '&timestamp[le]' + endTime;
+                console.log(startTime);
+                console.log(endTime);
+                console.log(logRequest);
+
+                let result = [];
+                getAllPages(logRequest, result)
+                    .then(() => {
+                        this.harvestLog = result;
+                    })
+                    .catch((error) => {
+                        console.log("Cannot fetch log");
+                        console.log(error);
+                    })
                 
 
         }
