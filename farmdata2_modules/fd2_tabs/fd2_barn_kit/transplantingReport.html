@@ -63,7 +63,7 @@
             selectedCrop: "All",
             selectedArea: "All",
             results: [],
-            idToCropMap: new Map(),            
+            idToCropMap: new Map()
         },
         methods: {
             //methods for date range selection
@@ -90,12 +90,6 @@
                 getAllPages(requestString, this.results)
                 .then(() => {
                     console.log("Results processed correctly")
-                    // if(this.results.length === 0){ 
-                    //     this.reportDisplay = false
-                    // }
-                    // else{
-                    //     this.reportDisplay = true
-                    // }
                     // All of the requested records have now been added to result.
                     // Additional processing can happen here if necessary,
                     // or then may be omitted.
@@ -114,11 +108,6 @@
                     console.log("Error Occurred")
                     console.log(error)
                 })
-                
-                // if(this.results.length == 0){
-                //     this.reportDisplay = false
-                // }
-
                 //Code out here will run after the API call
 
             },   
