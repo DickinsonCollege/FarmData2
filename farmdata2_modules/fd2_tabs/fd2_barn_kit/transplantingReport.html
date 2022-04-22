@@ -17,7 +17,7 @@
         </div>
      </fieldset>
      <!--Report table filters UI (uses the DropdownWithAllComponent defined in the fd2_tabs/resources directory) and the styles from the Seeding Report-->
-     <fieldset class="center-block panel panel-default" style="width: 75%;">
+     <fieldset class="center-block panel panel-default" style="width: 75%;" v-if="reportDisplay">
         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
          <div style="display: flex; width: 100%;">
             <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
