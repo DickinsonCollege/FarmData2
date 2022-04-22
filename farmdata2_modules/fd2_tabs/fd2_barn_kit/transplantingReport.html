@@ -20,8 +20,8 @@
      <fieldset class="center-block panel panel-default" style="width: 75%;">
         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
          <div style="display: flex; width: 100%;">
-            <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
-            <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed="areaChange">Area:</dropdown-with-all>
+            <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
+            <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list=areaList includes-all default-input='All' @selection-changed="areaChange">Area:</dropdown-with-all>
          </div>   
      </fieldset>  
 
@@ -63,7 +63,7 @@
             selectedCrop: "All",
             selectedArea: "All",
             results: [],
-            idToCropMap: new Map()
+            idToCropMap: new Map(),            
         },
         methods: {
             //methods for date range selection
@@ -90,6 +90,12 @@
                 getAllPages(requestString, this.results)
                 .then(() => {
                     console.log("Results processed correctly")
+                    // if(this.results.length === 0){ 
+                    //     this.reportDisplay = false
+                    // }
+                    // else{
+                    //     this.reportDisplay = true
+                    // }
                     // All of the requested records have now been added to result.
                     // Additional processing can happen here if necessary,
                     // or then may be omitted.
@@ -109,9 +115,9 @@
                     console.log(error)
                 })
                 
-                if(this.results.length == 0){
-                    this.reportDisplay = false
-                }
+                // if(this.results.length == 0){
+                //     this.reportDisplay = false
+                // }
 
                 //Code out here will run after the API call
 
@@ -129,18 +135,30 @@
             //parses a string for integer
         },
         computed: {
-            //This should be replaced with a function that returns a sorted list of all of the available crops in the logs - this function is already written in seedingReport.html
+           //Returns a sorted list of the crops represented in the logs in the report table. This is based off of the cropList() property in seedingReport.html
             
             cropList(){
-                //Sample list
-                return ["BOKCHOY", "BROCCOLI", "CABBAGE"]
+                let cropFilter = this.results.filter((x) => x)
+
+                cropArray = cropFilter.map(h=>this.idToCropMap.get(h.data.crop_tid))
+
+                let crops = new Set(cropArray)
+                let newCropArray = Array.from(crops)
+                console.log(newCropArray)
+                return newCropArray.sort()
             },
             
-            //This should be replaced with a function that returns a sorted list of all of the available fields in the logs - this function is already written in seedingReport.html
+            //Returns a sorted list of the areas represented in the logs in the report table. This is based off of the areaList() property in seedingReport.html
             
-            fieldList(){
-                //Sample list
-                return ["GHANA-1", "CHUAU-4", "CHUAH-4"]
+            areaList(){
+                let areaFilter = this.results.filter((x) => x)
+
+                areaArray = areaFilter.map(h => h.movement.area[0].name)
+
+                let areas = new Set(areaArray)
+                let newAreaArray = Array.from(areas)
+                console.log(newAreaArray)
+                return newAreaArray.sort()
             },
             
             //This is currently copied from the API 2 activity form the earlier part of the semester - some of it should be replaced to parse the returned JSON string correctly.
