@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Vue Data Binding Spike</title>
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <div id="vue-spike" v-cloak>
+            
+            <input type="text" v-model="rptTitle">
+
+            <h1>The Harvest Report</h1> 
+            <p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+            <hr>
+
+            <h1>{{ rptTitle ? rptTitle : 'Mock Harvest Report' }}</h1>
+
+            <p>Details:</p>
+
+        <ul>
+            <li><b>Farm:</b> Sample Farm</li>
+            <li><b>User:</b> manager1</li>
+            <li><b>Language:</b> English</li>
+            <br>
+            <li><b>Start:</b> {{ rptStartDate }}</li>
+            <li><b>End:</b> {{ rptEndDate }}</li>
+            <li><b>Crop:</b> {{ cropSelected }}</li>
+
+        </ul>
+
+        <button type="button">
+            Generate
+        </button>
+
+        <br>
+
+        <label for="crop">Crop:</label>
+
+        <select name="crops" id="crop-select" v-model="cropSelected">
+            <option v-for="crop in crops">{{ crop }}</option>
+        </select>
+
+        <br>
+
+        <label for="field">Field:</label>
+
+        <select name="fields" id="field-select">
+            <option v-for="field in fields">{{ field }}</option>
+        </select>
+
+        <br>
+
+        <label for="start">Start date:</label>
+
+        <input type="date" id="start" name="trip-start" v-model="rptStartDate"
+            min="2014-01-01" max="2020-01-01">
+        </input>
+
+        <br>
+
+        <label for="end">End date:</label>
+
+        <input type="date" id="end" name="trip-end" v-model="rptEndDate"
+            min="2020-05-05" max="2022-01-01">
+
+        </input>
+
+        <ul>
+            <li v-for="name in names">{{ name }}</li>
+        </ul>
+
+        <ul>
+            <li v-for="card in cards">{{ card.rank + ' of ' + card.suit }}</li>
+        </ul>
+
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Area</th>
+                <th>Crop</th>
+                <th>Yield</th>
+                <th>Units</th>
+            </tr>
+            <tr>
+                <td>05/02/2018</td>
+                <td>Chuau-1</td>
+                <td>Kale</td>
+                <td>10</td>
+                <td>Bunches</td>
+            </tr>
+            <tr>
+                <td>05/05/2018</td>
+                <td>SQ7</td>
+                <td>Kale</td>
+                <td>7</td>
+                <td>Bunches</td>
+            </tr>
+        </table>
+
+
+        </div>
+        <script>
+        var spikeTest = new Vue({
+            el: '#vue-spike',
+            data: {
+            rptTitle: 'My Sample Harvest Report',
+            rptStartDate:'',
+            rptEndDate:'',
+            cropSelected: '',
+            names: [ 'Joe', 'Arun', 'Ouwen', 'Anh', 'Sue' ],
+            crops: [ 'Kale', 'Broccoli', 'Peas' ],
+            fields: [ 'All', 'Chuau-1', 'SQ7' ],
+
+            cards: [
+
+		        {suit: 'H', rank: '3'},
+
+		        {suit: 'S', rank: 'K'},
+
+                {suit: 'D', rank: '7'}
+            ],
+
+            logObj: [
+
+                { date: '2018-05-02', area: 'Chuau-1', crop: 'Kale', yield: '10', units: 'Bunches' },
+
+                {date: '2019-06-05', area: 'MudBrook', crop: 'Corn', yield: '20', units: 'Bushels' }
+
+            ]
+
+            }
+        });
+        Vue.config.devtools = true;
+        </script>
+
+        
+
+    </body>
+</html>

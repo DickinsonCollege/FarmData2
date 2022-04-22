@@ -1,0 +1,88 @@
+<p>Philip M.</p>
+
+<h1>The Harvest Report</h1> 
+<p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+<hr>
+<h1>My Mock Report</h1>
+
+<input type="text" id="comment" name="comment" value="Title">
+
+<p>Details:</p>
+
+<ul>
+    <li><b>Farm:</b> Sample Farm</li>
+    <li><b>User:</b> manager1</li>
+    <li><b>Language:</b> English</li>
+    <br>
+    <li><b>Start:</b> 05/01/2018</li>
+    <li><b>End:</b> 05/15/2018</li>
+    <li><b>Crop:</b> Kale</li>
+
+</ul>
+
+<button type="button">
+    Generate
+</button>
+
+<br>
+
+<label for="crop">Crop:</label>
+
+<select name="crops" id="crop-select">
+    <option value="Kale"><selected>Kale</selected></option>
+    <option value="Broccoli">Broccoli</option>
+    <option value="Peas">Peas</option>
+</select>
+
+<br>
+
+<label for="field">Field:</label>
+
+<select name="fields" id="field-select">
+    <option value="All"><selected>All</selected></option>
+    <option value="Chuau-1">Chuau-1</option>
+    <option value="SQ7">SQ7</option>
+</select>
+
+<br>
+
+<label for="start">Start date:</label>
+
+<input type="date" id="start" name="trip-start"
+       value="2020-05-05"
+       min="2014-01-01" max="2020-01-01">
+</input>
+
+<br>
+
+<label for="end">End date:</label>
+
+<input type="date" id="end" name="trip-end"
+       value="2020-05-15"
+       min="2020-05-05" max="2022-01-01">
+
+</input>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Area</th>
+        <th>Crop</th>
+        <th>Yield</th>
+        <th>Units</th>
+    </tr>
+    <tr>
+        <td>05/02/2018</td>
+        <td>Chuau-1</td>
+        <td>Kale</td>
+        <td>10</td>
+        <td>Bunches</td>
+    </tr>
+    <tr>
+        <td>05/05/2018</td>
+        <td>SQ7</td>
+        <td>Kale</td>
+        <td>7</td>
+        <td>Bunches</td>
+    </tr>
+</table>
