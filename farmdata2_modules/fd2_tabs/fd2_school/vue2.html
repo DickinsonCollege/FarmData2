@@ -17,11 +17,11 @@
 			
 			<label for=”start”>Start:</label>
 			<input type="date" id="start" name="start" v-model="startDate"
-	       	min="2014-01-01" max="2022-01-01">
+	       	min="2014-01-01" :max="endDate">
 
-			<label for=”end”>Start:</label>
+			<label for=”end”>End:</label>
 			<input type="date" id="end" name="end" v-model="endDate"
-	       	min="2020-05-05" max="2022-01-01">
+	       	:min="startDate" max="2022-01-01">
 
 			<br>
 			
@@ -92,6 +92,9 @@
             },
             methods: {
                 saveName: function() {
+                    harvestLogs.push( {date: "2018-05-02", area: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"} )
+                    },
+                restrictDate: function() {
                     harvestLogs.push( {date: "2018-05-02", area: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"} )
                     }
             }
