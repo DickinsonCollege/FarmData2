@@ -17,10 +17,10 @@
                 <br/>
                 <div class = "add-item">
                         <label for="StartDate">From:</label>
-                        <input type="date" id="start" name="filter start limit day" v-model="startDay" min="2014-01-01" max="endDay">
+                        <input type="date" id="start" name="filter start limit day" v-model=startDay min="2014-01-01" :max="endDay">
                     <br/>    
                         <label for="EndDate">To:</label>
-                        <input type="date" id="end" name="filter end limit day" v-model="endDay" min="startDay" max="2022-01-01" >
+                        <input type="date" id="end" name="filter end limit day" v-model=endDay :min="startDay" max="2022-01-01" >
             <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
                     <br/>
                         <label for="CropType">Crop:</label>
