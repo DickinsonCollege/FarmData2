@@ -10,7 +10,7 @@ catch {
 // updates apply to all pages.
 
 /**
- * Make a GET reqest to an API endpoint and retrieve all pages of a multipage responses.
+ * Make a GET request to an API endpoint and retrieve all pages of a multipage responses.
  * 
  * If there are data properties in the logs, they are parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
  *  
@@ -28,7 +28,7 @@ catch {
  *     // or then may be omitted.
  * })
  * .catch((err) => {
- *     // An error occured during the requests, process it here.
+ *     // An error occurred during the requests, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Result will not yet contain records but will be filled as responses are received.
@@ -41,7 +41,7 @@ catch {
  *     // filled with all of the requested records.  
  * })
 * .catch((err) => {
- *     // An error occured during the requests, process it here.
+ *     // An error occurred during the requests, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  */
@@ -88,7 +88,7 @@ function getAllPages(endpoint, arr=[]) {
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -109,7 +109,7 @@ function getIDToUserMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -130,7 +130,7 @@ function getUserToIDMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -151,7 +151,7 @@ function getIDToCropMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -172,7 +172,7 @@ function getCropToIDMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -193,7 +193,7 @@ function getIDToAreaMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -214,7 +214,7 @@ function getAreaToIDMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -236,7 +236,7 @@ function getIDToUnitMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -257,7 +257,7 @@ function getUnitToIDMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -278,7 +278,7 @@ function getIDToLogTypeMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -293,7 +293,7 @@ function getLogTypeToIDMap(){
  * 
  * @param {string} url the farmOS API endpoint from which to retrieve the data for the Map. 
  * @param {string} key the name of the property to be used as the key in the Map. 
- * @param {string} value the name fo the property to be used as the value in the Map.
+ * @param {string} value the name of the property to be used as the value in the Map.
  * 
  * @returns a Promise that when resolved yields a new Map object from the specified key to the specified value.
  * 
@@ -304,7 +304,7 @@ function getLogTypeToIDMap(){
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -331,14 +331,14 @@ function getMap(url, key, value){
  * 
  * @returns A Promise that when resolved yields a string containing the session token for the current login.
  * 
- * @example <caption>Get the session token for the currrent login.</caption>
+ * @example <caption>Get the session token for the current login.</caption>
  * getSessonToken()
  * .then((theToken) => {
  *     // Process the token.
  *     // Typically it is stored in the Vue data for later use.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the Map will not be available until the then() executes.
@@ -370,12 +370,12 @@ function getSessionToken() {
  * 
  * @returns A Promise that when resolved yields the response received from the farmOS server.
  * 
- * @example <caption>Request log 123 in json format using its id</caption>
+ * @example <caption>Request log 123 in JSON format using its id</caption>
  * getRecord('/log.json?id=123')
  *     // Process the response.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the response will not be available until the then() executes.
@@ -401,7 +401,7 @@ function getRecord(url) {
 }
 
 /**
- * Delete a record from the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to delete records.  
+ * Delete a record from the database using a farmOS API endpoint. The currently logged in user must have sufficient privilege to delete records.  
  * @param {string} url the farmOS API endpoint to use to delete the record.  Typically records are deleted using their id/tid/etc.
  * @param {string} sessionToken the session token for the current login sessions.  Use the getSessionToken() function to obtain it prior to calling this function.
  * 
@@ -413,7 +413,7 @@ function getRecord(url) {
  *    // The record was deleted.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the record will not have been deleted until the then() executes.
@@ -437,7 +437,7 @@ function deleteRecord(url, sessionToken) {
 }
 
 /**
- * Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to create records.  
+ * Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficient privilege to create records.  
  * 
  * @param {string} url the farmOS API endpoint to use to create the record.
  * @param {string} data a JSON object containing the data for the record to be created.  The format of the data must match what is expected by the endpoint specified by the url. If a data property if present inside this object it should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.
@@ -448,17 +448,17 @@ function deleteRecord(url, sessionToken) {
  * @example <caption>Create a new log in the database</caption>
  * // Assume logData contains the data for the new log.
  * // Assume token has been set to the session token.
- * deleteRecord('/log', logData, token)
+ * createRecord('/log', logData, token)
  *    // The record was created.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the record will not have been created until the then() executes.
  */
 function createRecord(url, data, sessionToken) {
-    // If the incomming object has a data property then
+    // If the incoming object has a data property then
     // it should be stringified because farmOS expects 
     // data properties to be strings not JSON objects but
     // FarmData2 uses the data property to hold JSON.
@@ -485,7 +485,7 @@ function createRecord(url, data, sessionToken) {
 }
 
 /**
- * Update a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to modify records.  
+ * Update a record in the database using a farmOS API endpoint. The currently logged in user must have sufficient privilege to modify records.  
  * 
  * @param {string} url the farmOS API endpoint to use to update the record.
  * @param {string} updateData a JSON object containing the data to be updated in the record.  The format of the data must match what is expected by the endpoint specified by the url.  The data property if present should be standard JSON. This function will stringify it to meet the farmOS expectation that the value of the data property is a string.
@@ -500,13 +500,13 @@ function createRecord(url, data, sessionToken) {
  *    // The record has been updated.
  * })
  * .catch((err) => {
- *     // An error occured during the request, process it here.
+ *     // An error occurred during the request, process it here.
  * })
  * // Execution continues here immediately after the request is made.
  * // Note that the record will not have been updated until the then() executes.
  */
 function updateRecord(url, updateData, sessionToken){
-    // If the incomming object has a data property then
+    // If the incoming object has a data property then
     // it should be stringified because farmOS expects 
     // data properties to be strings not JSON objects but
     // FarmData2 uses the data property to hold JSON.
