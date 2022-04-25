@@ -57,7 +57,7 @@
             <th>Units</th>
             <th>Delete</th>
         </tr>
-        <tr v-for="(log, index) in harvestLog">
+        <tr v-for="(log, index) in harvestReportRows">
             <td>{{ index }}</td>
             <td>{{ log.date }}</td>
             <td>{{ log.area }}</td>
@@ -77,6 +77,21 @@ var harvestReport = new Vue({
         },
         areaMapToArray(){
             return Array.from(this.idToAreaMap.values());
+        },
+        harestReportRows(){
+            let tableRows = []
+            for (let log of this.harvestLog){
+                let tableRow = {
+                    date: log.timestamp,
+                    area: log.area[0].name,
+                    crop: this.idToCropMap.get(log.data.crop_tid),
+                    yield: log.quantity[0].value,
+                    units: log.quantity[0].unit.name,
+                    
+                }
+                tableRows.push(tableRow)
+            }
+            return tableRows
         }
 
     },
@@ -100,12 +115,17 @@ var harvestReport = new Vue({
         farm: '',
         user:'',
         language:'',
+
         header: 'My Sample Harvest Report',
+
         reportStartDate: '2020-05-05',
         reportEndDate: '2022-05-15',
+
         selectedCrop: 'Kale',
         selectedField: 'All',
+
         harvestLog: [],
+
         someHarvestLogs: {
             firstLog: {
                 date: '2018-05-02',
@@ -121,6 +141,7 @@ var harvestReport = new Vue({
                 'yeild': 15,
                 units: 'Pounds' }
         },
+
         idToCropMap: [],
         idToAreaMap: [],
     },
@@ -149,22 +170,24 @@ var harvestReport = new Vue({
                     console.log(error);
                 });
 
-                let startTime = dayjs(this.reportStartDate).unix();
-                let endTime = dayjs(this.reportEndDate).unix();
-                let logRequest = '/log.json?type=farm_harvest&timestamp[ge]' + startTime + '&timestamp[le]' + endTime;
-                console.log(startTime);
-                console.log(endTime);
-                console.log(logRequest);
+            let startTime = dayjs(this.reportStartDate).unix();
+            let endTime = dayjs(this.reportEndDate).unix();
+            let logRequest = ('/log.json?type=farm_harvest&timestamp[ge]' +startTime + '&timestamp[le]' + endTime);
 
-                let result = [];
-                getAllPages(logRequest, result)
-                    .then(() => {
-                        this.harvestLog = result;
-                    })
-                    .catch((error) => {
-                        console.log("Cannot fetch log");
-                        console.log(error);
-                    })
+            console.log(startTime);
+            console.log(endTime);
+            console.log(logRequest);
+
+            
+            getAllPages(logRequest)
+                .then((result) => {
+                    this.harvestLog = result;
+                    console.log("logs Added");
+                })
+                .catch((error) => {
+                    console.log("Cannot fetch log");
+                    console.log(error);
+                });
                 
 
         }
