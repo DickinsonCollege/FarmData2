@@ -59,7 +59,6 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
-                selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
                 selectedUnit: null,
                 comments: '',
@@ -68,11 +67,11 @@
                 numSeedsPlanted: 0,
                 numRowBed: 0,
                 numFeet: 0,
+                time: 0, 
                 cropArray: [],
                 areaResponse: [],
                 units: ['bunches','pounds'],
                 timeUnits: ['minutes', 'hours'],
-                feetUnits: ['row', 'bed'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -95,9 +94,6 @@
                 },
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
-                },
-                setNewFeetUnit(newFeetUnit){
-                    this.selectedFeetUnit = newFeetUnit
                 },
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
