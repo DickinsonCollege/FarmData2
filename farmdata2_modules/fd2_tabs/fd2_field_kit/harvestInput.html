@@ -20,12 +20,17 @@
                 </select>            
                 <br>
                 <br>
-                
+                <label for="yield">Yield:<label style='color: #da4f3f'>*</label></label>
+                <input type="text" id="yield" name="yield">
+                <br>
+                <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
-                <label>Yield: </label><textarea data-cy="yield" v-model='yield'></textarea>
+                
+                <!--<input type = "text" id ="comments" name = //"comments> data-cy="comments" v-model='comments'></textarea>-->
+                
                 
             
-            </div>
+            </div>ssss
        </fieldset>
        
        <!-- Labor Section: Num workers, Units of time -->  
@@ -157,6 +162,10 @@
                     if(this.numWorkers == 0){
                         return true
                     }
+                    if(this.yield == ''){
+                        return true
+                    }
+                    
                     return false
                 },
                 plantingLogData(){
