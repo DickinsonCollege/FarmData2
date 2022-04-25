@@ -37,14 +37,9 @@
                                 </optgroup>
                         </select>
                     <br/>
-<<<<<<< HEAD
-                    <button type="btn btn-primary" @click="saveLog">Generate Report</button>
-                    
-=======
 
                     <button type="btn btn-primary" @click="runFilter">Run Filter</button>
 
->>>>>>> 5687513981f3487c31c320da3f9f5ecff643c9a4
                     </div>
                     <hr/> 
                         <!--
@@ -54,6 +49,26 @@
                     <p>
                         Create UI suitable Reports Results
                     </p>
+                    <table border=1>
+                        <tr v-if="LogListRetrieved.length !== 0">
+                            <th>Row</th>
+                            <th>Date</th>
+                            <th>Area</th>
+                            <th>Crop</th>
+                            <th>Yield</th>
+                            <th>Units</th>
+                        </tr>
+                        <tr v-for="(log, index) in LogListRetrieved">
+                            <td>{{index + 1}}</td>
+                            <td>{{log.date}}</td>
+                            <td>{{log.area}}</td>
+                            <td>{{log.crop}}</td>
+                            <td>{{log.yield}}</td>
+                            <td>{{log.units}}</td>
+
+                        </tr>
+                    </table>
+                    <h1 v-if="LogListRetrieved.length === 0">No matching records</h1>
         </p>
        <script>
            var ReportVue= new Vue({
@@ -103,7 +118,7 @@
 
                     mapToFieldArray(){
                         return Array.from(this.idToFieldMap.values())
-                    }
+                    },
                 },
 
                 methods: {
