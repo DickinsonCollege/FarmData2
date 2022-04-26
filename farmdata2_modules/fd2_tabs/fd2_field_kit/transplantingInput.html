@@ -37,14 +37,15 @@
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
                  <label>Number of Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type=number value='1' min='1' v-model='numWorkers'>
                 <label> Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 60px;' type=number value='1' min='1' v-model='time'>
-                <!--<dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> -->
 
-        		<!-- Inserting time units here -->
-        		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
-        		<select id='TimeUnit' name='TimeUnit' v-model='timeUnits'>
-        			<option selected>Hours</option>
-        			<option>Minutes</option>
-        		</select>
+		<!-- Inserting time units here -->
+		<!-- Adding @selection-changed method -->
+		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
+		<select id='timeUnit' name='TimeUnit' @selection-changed='setNewTimeUnit' v-model='selectedTimeUnit'>
+			<option selected>Hours</option>
+			<option>Minutes</option>
+		</select>
+
             </div>
        </fieldset>
        <div style='text-align:center;'>
