@@ -66,7 +66,7 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
-                selectedSeedDate: null, //some transplant crops won't have tray seeding date (N/A ->0000-00-00) bc they arrived in trays
+                selectedSeedDate: null, //some transplant crops won't have tray seeding date (N/A ->0000-00-00) as they arrived in trays
                 selectedTimeUnit: 'minutes',
                 comments: '',
                 numWorkers: 0,
@@ -123,10 +123,25 @@
                 seedingDateFilter() {
                     let seedingDateArray = []
 
-                    if (this.selectedCrop !== null) {
+                    if (this.selectedCrop !== null && this.cropToSeedDate[this.selectedCrop] !== undefined) {
+                        // Reverse the array so that most recent days appear on top of the list
+                        this.cropToSeedDate[this.selectedCrop].reverse()
                         seedingDateArray = this.cropToSeedDate[this.selectedCrop]
                     }
                     return seedingDateArray
+                },
+                cropToSeedingDateFilter(){
+                    for (let i = 0; i < this.cropArray.length; i++){
+                            this.cropToSeedDate[this.cropArray[i]] = new Array()
+                    }  
+                    for (let log of this.traySeedingLogs) {
+                        let cropName = this.idToCropMap.get(log.data.crop_tid)
+                        let seedingDate = new Date(log.timestamp*1000).toLocaleDateString("en-US")
+                        this.cropToSeedDate[cropName].push(seedingDate)
+                    }
+                    for (let i = 0; i < this.cropArray.length; i++){
+                        this.cropToSeedDate[this.cropArray[i]].push("N/A")
+                    }
                 },
                 areaFilter(){
                     let areaArray = []
@@ -355,27 +370,20 @@
                         localStorage.setItem('crops', JSON.stringify(this.cropArray))
                     })
                 }
-                
-                //Get all tray seeding logs
-                getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs).then(() => {
-                        console.log("success: get tray seeding logs")
-                        // localStorage.setItem('seedingLogs', JSON.stringify(this.seedingLogs)
 
-                        for (let i = 0; i < this.cropArray.length; i++){
-                            this.cropToSeedDate[this.cropArray[i]] = new Array()
-                            this.cropToSeedDate[this.cropArray[i]].push("N/A")
-                        }  
-                        for (let log of this.traySeedingLogs) {
-                            let cropName = this.idToCropMap.get(log.data.crop_tid)
-                            let seedingDate = new Date(log.timestamp*1000).toLocaleDateString("en-US")
-                            if (!(cropName in this.cropToSeedDate)) {
-                                this.cropToSeedDate[cropName] = new Array()
-                                this.cropToSeedDate[cropName].push("N/A")
-                            }
-                            this.cropToSeedDate[cropName].push(seedingDate)
-                        }
-                        console.log(this.cropToSeedDate)
+                //Get all tray seeding logs
+                if(localStorage.getItem('crop_to_seed_date') == null) {
+                    getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs).then(() => {
+                        this.cropToSeedingDateFilter
+                        localStorage.setItem('crop_to_seed_date', JSON.stringify(this.cropToSeedDate))
                     })
+                } else {
+                    this.cropToSeedDate = JSON.parse(localStorage.getItem('crop_to_seed_date'))
+                    getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs).then(() => {
+                        this.cropToSeedingDateFilter
+                        localStorage.setItem('crop_to_seed_date', JSON.stringify(this.cropToSeedDate))
+                    })
+                }
                 
                 //Get all area/field names
                 if(localStorage.getItem('areas') == null){
