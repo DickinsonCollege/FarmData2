@@ -21,7 +21,7 @@
 
                 <!-- Inserting rows per bed input here -->
                 <label for='BedRows'>Number of rows per bed:<label style='color: #da4f3f'>*</label>
-                <input type='number' id='BedRows' name='BedRows' @selection-changed='setNewBedRows' value='1' min='1'>
+                <input type='number' id='BedRows' name='BedRows' @selection-changed='setNewBedRows' v-model='rowsPerBed' value='1' min='1'>
                 <br>
 
 		<!-- Inserting bedfeet input here -->
