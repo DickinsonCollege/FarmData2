@@ -16,11 +16,13 @@
             <div id="rpt" class = "v-cloak">
                 <br/>
                 <div class = "add-item">
-                        <label for="StartDate">From:</label>
-                        <input type="date" id="start" name="filter start limit day" v-model=startDay min="2014-01-01" :max="endDay">
-                    <br/>    
-                        <label for="EndDate">To:</label>
-                        <input type="date" id="end" name="filter end limit day" v-model=endDay :min="startDay" max="2022-01-01" >
+                       <date-range-selection 
+                            default-start-date="2021-01-15" 
+                            :default-end-date=dateRangeMaxDate
+                            @start-date-changed='startDateChange' 
+                            @end-date-changed='endDateChange' 
+                        >
+                        </date-range-selection> 
             <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
                     <br/>
                         <label for="CropType">Crop:</label>
@@ -40,24 +42,13 @@
 
                     <button type="btn btn-primary" @click="runFilter">Run Filter</button>
 
-                    
+                    </div>
                     <hr/> 
-                        <custom-table
-                        can-delete 
-                        can-edit
-                        :headers="tableHeaders" 
-                        :input-options="tableinputTypes"
-                        :rows="tableData" 
                         
-                        @row-deleted="deleteTableRow"
-                        @row-edited="updateTableRow">
                     <p>
                         Create UI suitable Reports Results
                     </p>
-<<<<<<< HEAD
-                    </div>
-=======
-                        <custom-table data-cy="test-table"
+                        <!-- <custom-table 
                             can-delete 
                             can-edit
                             :headers="tableHeaders" 
@@ -66,31 +57,26 @@
                             :visible-columns="tableVisibleColumns"  
                             @row-deleted="deleteTableRow"
                             @row-edited="updateTableRow">
-                        </custom-table>
+                        </custom-table> -->
                         
                         
                         
->>>>>>> 2cde69698b2a2baa5ce058d27ccc5066874c3afd
         </p>
        <script>
            var ReportVue= new Vue({
                 el:"#rpt",
-<<<<<<< HEAD
-                // Define tags used for components
-                components:{
-                    "custom-table":CustomTableComponent,
-=======
                 components: {
                     // Register the components used and define the tag name to be used.
                     
                     'custom-table': CustomTableComponent,
->>>>>>> 2cde69698b2a2baa5ce058d27ccc5066874c3afd
                 },
                 data:{
                     Response:null,
                     
-                    startDay: "2020-05-01",
-                    endDay: "2020-05-15",
+                    startDate: null,
+                    endDate: null,
+                    dateRangeClicks: 0,
+                    dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
                 
                     chosenCrop:"Kale",
                     chosenField:"All",
@@ -104,40 +90,22 @@
 
                     idToCropMap: [],
                     idToFieldMap: [],
-                    idToUnitMap:[],
-                    idToUserMap:[],
-
-                    tableHeaders: ['ID', 'Date', 'Field', 'Crop', 'Yield', 'Unit', 'Hours', 'Comments','User'],
-                    
-                    tableinputTypes: [
-                        {'type': 'no input'},
-                        {'type': 'date'},
-                        {'type': 'dropdown', 'value': []},
-                        {'type': 'dropdown', 'value': []},
-                        {'type': 'number'},
-                        {'type': 'dropdown','value':[]},
-                        {'type': 'number'},
-                        {'type': 'text'},
-                    ],
-                    tableData: [
-                        {id: 1, data: ['1', '24-03-2022', 'A', 'BOKCHOY', 5, '12.1','2','1','','admin']},
-                    ],
 
                     LogListRetrieved:[],
                     LogList:[],
 
-
-                    tableHeaders: ['Row', 'Date', 'Area', 'Crop', 'Yield', 'Units', 'Edit', 'Delete'],
-                    tableinputTypes: [
-                        {'type': 'number', 'value': this.tableData.map(index, log => index)},
-                        {'type': 'text', 'value': this.tableData.map(index, log => log.data[0])},
-                        {'type': 'dropdown', 'value': this.idToFieldMap},
-                        {'type': 'dropdown', 'value': this.idToCropMap},
-                        {'type': 'number'},
-                        {'type': 'text'},
-                    ],
                     tableData: [],
-                    tableVisibleColumns: [true, true, false, true, true, true],
+
+                    // tableHeaders: ['Row', 'Date', 'Area', 'Crop', 'Yield', 'Units', 'Edit', 'Delete'],
+                    // // Trouble with creating the table here <Try looking into How Vue cycle>
+                    // tableinputTypes: [
+                    //     {'type': 'number', 'value': this.tableData.map(index, log => index)},
+                    //     {'type': 'text', 'value': this.tableData.map(index, log => log.data[0])},
+                    //     {'type': 'dropdown', 'value': this.idToFieldMap},
+                    //     {'type': 'dropdown', 'value': this.idToCropMap},
+                    //     {'type': 'number'},
+                    //     {'type': 'text'},
+                    // ],
 
                 },
                 computed:{
@@ -148,50 +116,27 @@
                     mapToFieldArray(){
                         return Array.from(this.idToFieldMap.values())
                     },
-                    
                 },
-
                 created() {
                         getIDToCropMap()
-                            .then((theMap) => {
-                                    this.idToCropMap= theMap
+                            .then((theMap1) => {
+                                    this.idToCropMap= theMap1
                             })
+                            .catch((err) => {
+
+                            }),
                         getIDToAreaMap()
-                            .then((theMap) => {
-                                    this.idToFieldMap = theMap
+                            .then((theMap2) => {
+                                    this.idToFieldMap = theMap2
                             })
-                        getIDToUnitMap()
-                            .then((theMap) => {
-                                    this.idToUnitMap = theMap
+                            .catch((err) => {
+                                // An error occured during the request, process it here.
                             })
-                        getIDToUserMap()
-                            .then((theMap) => {
-                                    this.idToUserMap = theMap
-                            })    
                     },
-<<<<<<< HEAD
-
-                computed:{
-                    mapToCropArray(){
-                        return Array.from(this.idToCropMap.values())
-                    },
-
-                    mapToFieldArray(){
-                        return Array.from(this.idToFieldMap.values())
-                    },
-                    mapToUnitArray(){
-                        return Array.from(this.idToUnitMap.values())
-                    },
-                    mapToUserArray(){
-                        return Array.from(this.idToUserMap.values())
-                    },
-                },
-=======
                 
->>>>>>> 2cde69698b2a2baa5ce058d27ccc5066874c3afd
 
                 methods: {
-                    runFilter: function () {
+                    runFilter: function () {//This is pointless
                         axios
                             .get('http://localhost/farm.json')
                             .then(response => {
@@ -207,11 +152,7 @@
                         let timestampStart = dayjs(this.startDay).unix();
                         let timestampEnd = dayjs(this.endDay).unix();
 
-                        let logString = "";
-
-                        if(this.ANewLog !== {}){
-                            this.sampleLog.push(this.ANewLog);
-                        } 
+                        
                         
                         getAllPages("/log.json?type=farm_harvest&timestamp[ge]=" +timestampStart +"&timestamp[le]=" + timestampEnd, this.LogList)
                         .then(() => {
@@ -230,39 +171,25 @@
                                 tableRows.push(tableRow);
                             }
                             this.LogListRetrieved = tableRows;
-<<<<<<< HEAD
-                        })
-                        .catch((err) => {
-                            console.log("An error has occurred");
-                        })
-                        
-                        // Retrieve data from the API through a certain filter
-                        // Test this with a span of date, a certain crop or field
-                    },
-                    deleteTableRow(rowID) {
-=======
                             this.tableData = this.LogListRetrieved;
-                            
+                        })
                         // Retrieve data from the API through a certain filter
                         // Test this with a span of date, a certain crop or field
                     },
-                    
+                    startDateChange(newDate) {
+                            this.startDate = newDate
+                        },
+                        endDateChange(newDate) {
+                            this.endDate = newDate
+                        },
                     deleteTableRow: function(rowID) {
->>>>>>> 2cde69698b2a2baa5ce058d27ccc5066874c3afd
                         for(var i=0; i < this.tableData.length; i++){
                             if(this.tableData[i].id == rowID){
                                 this.tableData.splice(i, 1)
                             }
                         }
-<<<<<<< HEAD
-
-                        // Would also need to delete data from the db via API here.
-                    },
-                    updateTableRow(edits, rowID) {
-=======
                     },
                     updateTableRow: function(edits, rowID) {
->>>>>>> 2cde69698b2a2baa5ce058d27ccc5066874c3afd
                         for(var i=0; i < this.tableData.length; i++){
                             if(this.tableData[i].id == rowID){
                                 for( const [key, value] of Object.entries(edits)) {
@@ -270,16 +197,9 @@
                                 }
                             }
                         }
-<<<<<<< HEAD
-
-                        // Would also need to update data in the db via API here.
-                    },
-                },
-=======
                 
                     }
                 }
->>>>>>> 2cde69698b2a2baa5ce058d27ccc5066874c3afd
            });
            Vue.config.devtools = true;
        </script>
