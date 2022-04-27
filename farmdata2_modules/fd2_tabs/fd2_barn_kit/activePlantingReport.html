@@ -1,37 +1,47 @@
+<head>
+    <style>
+        #resetDates {
+        width: 50%;
+        padding: 50px 0;
+        text-align: center;
+        display: "none"
+        margin-top: 20px;
+}
+</style>
+</head>
 <body>
     <div id="seedingReport" v-cloak>
-        <h1 class="text-center">Seeding Report</h1>
+        <h1 class="text-center">Active Planting Report</h1>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
-            <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
-            <div style="display: flex;width: 100%; padding: 7px">
-                <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
-                @click='hide'
-                :default-start-date=startDate :default-end-date=endDate></date-range-selection>
-
-                <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
+            <div v-if='!moreFilters'>
+                <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Date Range</legend>
             </div>
-        </fieldset>
-
-        <div v-if='reportVisible'>
-
-            <div v-if="seedingLogs.length != 0">
-                <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
-                    <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
-                    <div style="display: flex; width: 100%;">
+            <div v-if='moreFilters'>
+                <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
+            </div>
+            <div style="display: flex;width: 100%; padding: 7px">
+                <button @click='resetDate'>Reset Dates</button>
+                <date-range-selection id="resetDates" data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
+                @click='hide'
+                :default-start-date=startDate :default-end-date=endDate :key=dateKey></date-range-selection>
+                <div v-if='reportVisible'>
+                    <div style="display: flex; width: 100%;"></div>
                         <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list=seedingTypeList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
                     
                         <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
-                        <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
-                    </div>
-                </fieldset>-->
-
+                        <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all>                
+                </div>
+                <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
+            </div>
+        </fieldset>
+            <div v-if='reportVisible'>
                 <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
-                <br>
+                <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
             </div>
 
-            <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
+
 
             <div v-if="!stillLoading && seedingLogs.length != 0">
                 <br>
@@ -87,12 +97,13 @@
                 'dropdown-with-all': DropdownWithAllComponent
             },
             data: {
-                startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                startDate:'2020-05-01', //dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
+                dateKey: 0,
 
                 stillLoading: true,
                 reportVisible: false,
-                generateDropdowns: true,
+                moreFilters: false,
                 seedingLogs: [],
                 updateLog: [],
 
@@ -130,6 +141,7 @@
                 },
                 seedingLogRequestWithDates(){
                     this.reportVisible = true
+                    this.moreFilters = true
                     let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
 
                     getAllPages(link, this.seedingLogs).then(() => {
@@ -288,6 +300,12 @@
                 },
                 enableFilters(){
                     this.rowBeingEdited = false
+                },
+                resetDate() {
+                    this.hide()
+                    this.startDate = '2020-05-01'
+                    this.endDate = dayjs().format('YYYY-MM-DD').toString()
+                    this.dateKey = this.dateKey + 1
                 },
             },
             computed: {
