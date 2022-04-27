@@ -26,20 +26,23 @@
             <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
                     <br/>
                         <label for="CropType">Crop:</label>
-                            <select id="groups" name="Crop" v-model="chosenCrop">
-                                <optgroup label="possible crops"> 
-                                    <option v-for="item in mapToCropArray">{{item}}</option>
-                                </optgroup> <br/>
-                            </select>
-
-                        <label for="FieldType">Field:</label>
-                            <select id="groups" name="Field" v-model="chosenField">
-                                <optgroup label="possible fields"> 
-                                    <option v-for="item in mapToFieldArray">{{item}}</option>
-                                </optgroup>
-                        </select>
+                        <dropdown-with-all 
+                            includes-all 
+                            :default-input=pickedCrop
+                            :dropdown-list=mapToCropArray
+                            @selection-changed="cropChange">
+                            Crop:
+                        </dropdown-with-all>
+                        <label for="FieldType">Field:</label>    
+                            <dropdown-with-all 
+                                includes-all 
+                                :default-input=chosenField
+                                :dropdown-list=mapToFieldArray
+                                @selection-changed="FieldChange">
+                            Field:
+                        </dropdown-with-all>
                     <br/>
-
+                    <br/>
                     <button type="btn btn-primary" @click="runFilter">Run Filter</button>
 
                     </div>
@@ -67,7 +70,8 @@
                 el:"#rpt",
                 components: {
                     // Register the components used and define the tag name to be used.
-                    
+                    'dropdown-with-all': DropdownWithAllComponent,
+                    'date-range-selection': DateRangeSelectionComponent,
                     'custom-table': CustomTableComponent,
                 },
                 data:{
@@ -78,7 +82,7 @@
                     dateRangeClicks: 0,
                     dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
                 
-                    chosenCrop:"Kale",
+                    pickedCrop:"All",
                     chosenField:"All",
 
                     sampleLog:[
@@ -179,7 +183,13 @@
                     startDateChange(newDate) {
                             this.startDate = newDate
                         },
-                        endDateChange(newDate) {
+                    cropChange(newCrop) {
+                            this.pickedCrop = newCrop
+                        },
+                    FieldChange(newField) {
+                            this.chosenField = newField
+                        },
+                    endDateChange(newDate) {
                             this.endDate = newDate
                         },
                     deleteTableRow: function(rowID) {
