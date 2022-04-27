@@ -1,7 +1,7 @@
 <!-- Harvest Input Form HTML-->
 <body>
     <div id='harvestInput'>
-       <h1 style='text-align:center;'>Harvest Input Log</h1> 
+       <h1 style='text-align:center;'>Harvest Input Log</h1>
        <br>
 
        <!-- Data Section: date picker, crop/area dropdowns, comments -->
@@ -16,35 +16,36 @@
                 <br>
                 <!-- Has red astrik, but not actually required - edit formNotCompleted function -->
                 <label for="unitDropDown">Units:<label style='color: #da4f3f'>*</label><select id="Unit" name="Unit" v-model= 'selectedUnit'><option v-for="units in units"> {{ units }} </option>
+                  </select>
                 </label>
-                </select>            
+
                 <br>
                 <br>
-                
+
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
-       
-       <!-- Labor Section: Num workers, Units of time -->  
+
+       <!-- Labor Section: Num workers, Units of time -->
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
                  <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type=number v-model='numWorkers'>
                 <label>Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
+                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all>
             </div>
        </fieldset>
 
-       <!-- Submit button --> 
+       <!-- Submit button -->
        <div style='text-align:center;'>
            <label style='color: #da4f3f'>* required field.</label>
        </div>
        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
     </div>
 
-    
+
     <!-- Vue Instances -->
-    <!-- This may contain unnecessary code from seedingInputt--> 
+    <!-- This may contain unnecessary code from seedingInputt-->
     <script>
         new Vue({
             el: '#harvestInput',
@@ -62,7 +63,8 @@
                 selectedUnit: null,
                 comments: '',
                 numWorkers: 0,
-                time: 0, 
+                numFeet: 0,
+                time: 0,
                 cropArray: [],
                 areaResponse: [],
                 units: ['bunches','pounds', 'head', 'quart'],
@@ -144,7 +146,7 @@
                     let harvestID = 0
                     quantityUnits = this.quantityHarvest
                     harvestID = this.logTypeToIDMap
-                   
+
                     harvest = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
                         "type": "farm_harvest",
@@ -154,14 +156,11 @@
                             "value": this.comments,
                             "format": "farm_format"
                         },
-                        "asset": [{ 
+                        "asset": [{
                             "id": this.plantingId,   //Associated planting
                             "resource": "farm_asset"
                         }],
-                        "log_category": [{
-                            "id": harvestID,
-                            "resource": "taxonomy_term"
-                        }],
+
                         "movement": {
                             "area": [{
                                 "id": this.areaToIDMap.get(this.selectedArea),
@@ -171,7 +170,7 @@
                         "quantity": quantityUnits,
                         "created": dayjs().unix(),
                         "lot_number": "N/A (No Variety)",
-                        "data": { 
+                        "data": {
                             "crop_tid": this.cropToIDMap.get(this.selectedCrop)
                         }
                     }
@@ -183,9 +182,17 @@
                         time = (Math.round((time / 60)*100))/100
                     }
                     quantity = [
-                        
                         {
-                            "measure": "time", 
+                          "measure": "weight",
+                          "value": "20",  // set value (yield)
+                          "unit": {
+                              "id": "22", // set value (pounds)
+                              "resource": "taxonomy_term"
+                          },
+                          "label": "Harvest"
+                        },
+                        {
+                            "measure": "time",
                             "value": time,  //hours worked
                             "unit": {
                                 "id": this.unitToIDMap.get('HOURS'),
@@ -194,7 +201,7 @@
                             "label": "Labor"
                         },
                         {
-                            "measure": "count", 
+                            "measure": "count",
                             "value": this.numWorkers,
                             "unit": {
                                 "id": this.unitToIDMap.get('PEOPLE'),
