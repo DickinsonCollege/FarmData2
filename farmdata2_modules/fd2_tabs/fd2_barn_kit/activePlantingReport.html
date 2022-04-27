@@ -8,18 +8,6 @@
         margin-top: 20px;
 }
 </style>
-    <script>
-function resetDate() {
-        alert("This is the start date:" + seedingReport.startDate);
-        var calendarDate = document.getElementById("resetDates");
-        if (calendarDate.default-start-date.value != seedingReport.startDate && calendarDate.default-end-date.value != seedingReport.endDate) {
-            calendarDate.setAttribute(calendarDate.default-start-date , seedingReport.startDate);
-            calendarDate.setAttribute(calendarDate.default-end-date , seedingReport.endDate);
-        } else {
-
-        }
-    }
-    </script>
 </head>
 <body>
     <div id="seedingReport" v-cloak>
@@ -32,10 +20,10 @@ function resetDate() {
                 <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
             </div>
             <div style="display: flex;width: 100%; padding: 7px">
-                <button onclick="resetDate()">Reset Dates</button>
+                <button @click='resetDate'>Reset Dates</button>
                 <date-range-selection id="resetDates" data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
                 @click='hide'
-                :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+                :default-start-date=startDate :default-end-date=endDate :key=dateKey></date-range-selection>
                 <div v-if='reportVisible'>
                     <div style="display: flex; width: 100%;"></div>
                         <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list=seedingTypeList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
@@ -111,6 +99,7 @@ function resetDate() {
             data: {
                 startDate:'2020-05-01', //dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
+                dateKey: 0,
 
                 stillLoading: true,
                 reportVisible: false,
@@ -311,6 +300,11 @@ function resetDate() {
                 },
                 enableFilters(){
                     this.rowBeingEdited = false
+                },
+                resetDate() {
+                    this.startDate = '2020-05-01'
+                    this.endDate = dayjs().format('YYYY-MM-DD').toString()
+                    this.dateKey = this.dateKey + 1
                 },
             },
             computed: {
