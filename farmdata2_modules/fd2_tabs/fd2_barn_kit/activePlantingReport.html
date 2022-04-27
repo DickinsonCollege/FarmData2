@@ -93,6 +93,7 @@
                 stillLoading: true,
                 reportVisible: false,
                 seedingLogs: [],
+                transplantingLogs: [],
                 updateLog: [],
 
                 sessionToken: null,
@@ -100,8 +101,8 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
 
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num Workers','Varieties', 'Comments','User'],
-                visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
+                headers: ['date of planting', 'date of transplanting','crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num Workers','Varieties', 'Comments','User'],
+                visibleColumns: [true, true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
 
                 idToCropMap: new Map(),
                 cropToIDMap: new Map(),
@@ -132,6 +133,15 @@
                     let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
 
                     getAllPages(link, this.seedingLogs).then(() => {
+                        this.stillLoading = false
+                    })
+                    this.stillLoading = true
+                },
+                transplantingLogRequestWithDates(){
+                    this.reportVisible = true
+                    let link = '/log.json?type=farm_transplanting&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+
+                    getAllPages(link, this.transplantingLogs).then(() => {
                         this.stillLoading = false
                     })
                     this.stillLoading = true
