@@ -19,7 +19,11 @@
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                     <div style="display: flex; width: 100%;">
                         <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list=seedingTypeList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
-                    
+
+                        <!--
+                        <dropdown-with-all data-cy="labor-type-dropdown" class="center-block" :dropdown-list=laborTypeList includes-all default-input='All' @selection-changed='laborChange'>Type Of Seeding:</dropdown-with-all>
+                        -->
+                        
                         <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
                         <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
@@ -100,8 +104,8 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
 
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num Workers','Varieties', 'Comments','User'],
-                visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
+                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Task','Hours', 'Num Workers','Varieties', 'Comments','User'],
+                visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true, true],
 
                 idToCropMap: new Map(),
                 cropToIDMap: new Map(),
@@ -145,13 +149,13 @@
                 seedingChange(selectedSeeding){
                     this.selectedSeeding = selectedSeeding
                     if(selectedSeeding == 'All'){
-                        this.visibleColumns = [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true]
+                        this.visibleColumns = [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true, true]
                     }
                     else if(selectedSeeding == 'Direct Seedings'){
-                        this.visibleColumns = [true, true, true, true, true, true, true, false, false, false, true, true, true, true, true]
+                        this.visibleColumns = [true, true, true, true, true, true, true, false, false, false, true, true, true, true, true, true]
                     }
                     else if(selectedSeeding == 'Tray Seedings'){
-                        this.visibleColumns = [true, true, true, true,false, false, false, true, true, true,  true, true, true, true, true]
+                        this.visibleColumns = [true, true, true, true,false, false, false, true, true, true, true, true, true, true, true, true]
                     }
                 },
                 /**
@@ -189,6 +193,10 @@
                                 "id": this.cropToIDMap.get(updateObject['crop']),
                                 "resource": "taxonomy_term"
                             }]
+                        } else if(keys[i] == 'task'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Labor')].value = updateObject['task']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
                         }
                         else if (keys[i] == 'area'){
                             updateSeedingObject['movement'] = { 'area': [{
