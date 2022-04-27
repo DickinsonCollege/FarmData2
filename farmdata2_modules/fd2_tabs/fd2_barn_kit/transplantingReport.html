@@ -129,7 +129,13 @@
             cropList(){
                 let cropFilter = this.results.filter((x) => x)
 
-                cropArray = cropFilter.map(h=>this.idToCropMap.get(h.data.crop_tid))
+                if(this.selectedArea != 'All'){
+                    let areaFilter = cropFilter.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    cropArray = areaFilter.map(h => this.idToCropMap.get(h.data.crop_tid))
+                }
+                else{
+                    cropArray = cropFilter.map(h=>this.idToCropMap.get(h.data.crop_tid))
+                }
 
                 let crops = new Set(cropArray)
                 let newCropArray = Array.from(crops)
@@ -142,7 +148,13 @@
             areaList(){
                 let areaFilter = this.results.filter((x) => x)
 
-                areaArray = areaFilter.map(h => h.movement.area[0].name)
+                if(this.selectedCrop != 'All'){
+                    let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
+                    areaArray = cropFilter.map(h => h.movement.area[0].name)
+                }
+                else{
+                    areaArray = areaFilter.map(h => h.movement.area[0].name)
+                }
 
                 let areas = new Set(areaArray)
                 let newAreaArray = Array.from(areas)
