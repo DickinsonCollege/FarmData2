@@ -152,29 +152,39 @@
             
             //This is currently copied from the API 2 activity form the earlier part of the semester - some of it should be replaced to parse the returned JSON string correctly.
             harvestReportRows() {
-                let tableRows = []
-
-                //For calculating days elapse
+                //For calculating days elapsed
                 const DAY = 1000 * 60 * 60 * 24
 
-                for(let log of this.results) {
-                    let tableRow = {
-                        crop: this.idToCropMap.get(log.data.crop_tid),
-                        // crop: this.parseString(log.data),
-                        area: log.movement.area[0].name,
-                        tray_date: log.created,
-                        transplant_date: log.changed,
-                        days: Math.round((log.changed-log.created)/DAY),
-                        row_feet: log.quantity[0].value,
-                        rows_bed: log.quantity[1].value,
-                        trays: log.quantity[2].value,
-                        hours: log.quantity[3].value,
-                        comments: log.notes.value,
-                        user: log.uid.id
-                    }
-                    tableRows.push(tableRow)
+                let filterRows = this.results.filter((x) => x)
+
+                if(this.selectedArea != 'All'){
+                    filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
                 }
-                return tableRows
+                if(this.selectedCrop != 'All'){
+                    filterRows = filterRows.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
+                }
+
+                let $vm = this
+                let rows = filterRows.map(function(h) {
+                    return{
+                        id: h.id,
+                        data: [
+                            $vm.idToCropMap.get(h.data.crop_tid),
+                            h.movement.area[0].name,
+                            dayjs.unix(h.created).format('YYYY-MM-DD'),
+                            dayjs.unix(h.changed).format('YYYY-MM-DD'),
+                            Math.round((h.changed-h.created)/DAY),
+                            h.quantity[0].value,
+                            h.quantity[1].value,
+                            h.quantity[2].value,
+                            h.quantity[3].value,
+                            h.notes.value,
+                            h.uid.id
+                        ]
+                    }                    
+                })
+
+                return rows
             }
         },
         created(){
