@@ -25,7 +25,6 @@
                         </date-range-selection> 
             <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
                     <br/>
-                        <label for="CropType">Crop:</label>
                         <dropdown-with-all 
                             includes-all 
                             :default-input=pickedCrop
@@ -33,12 +32,11 @@
                             @selection-changed="cropChange">
                             Crop:
                         </dropdown-with-all>
-                        <label for="FieldType">Field:</label>    
-                            <dropdown-with-all 
-                                includes-all 
-                                :default-input=chosenField
-                                :dropdown-list=mapToFieldArray
-                                @selection-changed="FieldChange">
+                        <dropdown-with-all 
+                            includes-all 
+                            :default-input=chosenField
+                            :dropdown-list=mapToFieldArray
+                            @selection-changed="FieldChange">
                             Field:
                         </dropdown-with-all>
                     <br/>
@@ -75,7 +73,8 @@
                     'custom-table': CustomTableComponent,
                 },
                 data:{
-                    Response:null,
+                    userID: fd2UserID,
+                    userName: fd2UserName,
                     
                     startDate: null,
                     endDate: null,
