@@ -139,7 +139,7 @@
                 
 
                 methods: {
-                    runFilter: function () {//This is pointless
+                    runFilter: function () {//This is pointless make this into retrieving the API and implement the filters to return the items depending the actually results
                         axios
                             .get('http://localhost/farm.json')
                             .then(response => {
@@ -191,14 +191,14 @@
                     endDateChange(newDate) {
                             this.endDate = newDate
                         },
-                    deleteTableRow: function(rowID) {
+                    deleteTableRow: function(rowID) {//Make this also changes values in the API
                         for(var i=0; i < this.tableData.length; i++){
                             if(this.tableData[i].id == rowID){
                                 this.tableData.splice(i, 1)
                             }
                         }
                     },
-                    updateTableRow: function(edits, rowID) {
+                    updateTableRow: function(edits, rowID) {//Make this also changes values in the API
                         for(var i=0; i < this.tableData.length; i++){
                             if(this.tableData[i].id == rowID){
                                 for( const [key, value] of Object.entries(edits)) {
