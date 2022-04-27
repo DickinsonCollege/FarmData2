@@ -4,9 +4,9 @@
     </head>
 
     <body>
-        <!-- Center the work to the middle of the page -->
+
         <h1>
-            <!-- Add extra formatting to highlight the title of the page -->
+           
             <center>Harvest Report</center>
         </h1>
         <p>
@@ -15,7 +15,19 @@
         <p>
             <div id="rpt" class = "v-cloak">
                 <br/>
-                <div class = "add-item">
+                <UL>
+                <!-- A fieldset groups a collection of input elements to create a form -->
+                    <fieldset class="panel panel-default">
+                        <!--Legend is used to create a header in the fieldset-->
+                        <legend class="panel-heading fd2-legend">
+                             <center>Harvest Report</center>
+                        </legend>
+
+                        <center>
+                            <p>Layout content for the panel here.</p>
+
+                            <div class="center-block">
+                                <div class = "add-item">
                        <date-range-selection 
                             default-start-date="2021-01-15" 
                             :default-end-date=dateRangeMaxDate
@@ -23,7 +35,7 @@
                             @end-date-changed='endDateChange' 
                         >
                         </date-range-selection> 
-            <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
+                        <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
                     <br/>
                         <dropdown-with-all 
                             includes-all 
@@ -41,9 +53,14 @@
                         </dropdown-with-all>
                     <br/>
                     <br/>
-                    <button type="btn btn-primary" @click="runFilter">Run Filter</button>
+                    <button class="btn fd2-red-button" @click="runFilter">Run Filter</button>
 
                     </div>
+                            </div>
+                        </center>
+                    </fieldset>
+                </UL>
+                
                     <hr/> 
                         
                     <p>
