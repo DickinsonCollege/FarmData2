@@ -6,21 +6,17 @@
     <body>
 
         <h1>
-           
             <center>Harvest Report</center>
         </h1>
-        <p>
-            <center>This is a tab to retrieve harvest reports.</center>
-        </p>
         <p>
             <div id="rpt" class = "v-cloak">
                 <br/>
                 <UL>
                 <!-- A fieldset groups a collection of input elements to create a form -->
-                    <fieldset class="panel panel-default">
+                    <fieldset class="panel panel-default center-block" style="width: 50%;">
                         <!--Legend is used to create a header in the fieldset-->
                         <legend class="panel-heading fd2-legend">
-                             <center>Harvest Report</center>
+                            <p>Set Dates, Crop, and Area</p>
                         </legend>
 
                         <center>
@@ -52,12 +48,8 @@
                             Field:
                         </dropdown-with-all>
                     <br/>
-                    <br/>
-                    <button class="btn fd2-red-button" @click="runFilter">Run Filter</button>
+                    <button class="btn fd2-red-button" @click="runFilter">Generate Report</button>
 
-                    </div>
-                            </div>
-                        </center>
                     </fieldset>
                 </UL>
                 
