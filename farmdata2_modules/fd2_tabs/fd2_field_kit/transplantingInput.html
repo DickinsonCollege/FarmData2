@@ -73,9 +73,9 @@
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
-		// Inserting new data variables (Story8)
-		rowsPerBed: 1,
-		bedFeet: 1,	
+        		// Inserting new data variables (Story8)
+        		rowsPerBed: 1,
+        		bedFeet: 1,	
 
                 cropArray: [],
                 areaResponse: [],
@@ -123,7 +123,7 @@
                     })
                     if(confirm("You have saved a log! Would you like to go the seeding report page?")){
                         //Modify later after checking the endpoint
-                        //window.location.replace('/farm/fd2-barn-kit/seedingReport')
+                        window.location.replace('/farm/fd2-barn-kit/transplantingReport')
                     }
                 }
             },
@@ -194,13 +194,13 @@
                     if(this.numWorkers == 0){
                         return true
                     }
-		    <!-- Inserting new verification (Story8) -->
-		    if(this.rowsPerBed == 0){
-			return true
-		    }
-		    if(this.bedFeet == 0){
-			return true
-		    } 
+        		    // Inserting new verification (Story8)
+        		    if(this.rowsPerBed == 0){
+        			return true
+        		    }
+        		    if(this.bedFeet == 0){
+        			return true
+        		    } 
 
                     return false
                 },
@@ -218,19 +218,19 @@
                 logData(){
                     let quantityUnits = []
                     let seedingID = 0
-                    if(this.selectedSeedingType == "Direct Seedings"){
+                    /*if(this.selectedSeedingType == "Direct Seedings"){
                         quantityUnits = this.quantityDirectSeeding
                         seedingID = this.logTypeToIDMap.get('Direct Seedings')
                     }
                     else if (this.selectedSeedingType == "Tray Seedings"){
                         quantityUnits = this.quantityTraySeeding
                         seedingID = this.logTypeToIDMap.get('Tray Seedings')
-                    }
-                    seeding = {
+                    }*/
+                    transplanting = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
-                        "type": "farm_seeding",
+                        "type": "farm_transplanting",
                         "timestamp": dayjs(this.selectedDate).unix(),
-                        "done": "1",  //any seeding recorded is done.
+                        "done": "1",  //any transplanting recorded is done.
                         "notes": {
                             "value": this.comments,
                             "format": "farm_format"
@@ -239,10 +239,10 @@
                             "id": this.plantingId,   //Associated planting
                             "resource": "farm_asset"
                         }],
-                        "log_category": [{
+                        /*"log_category": [{
                             "id": seedingID,
                             "resource": "taxonomy_term"
-                        }],
+                        }],*/
                         "movement": {
                             "area": [{
                                 "id": this.areaToIDMap.get(this.selectedArea),
@@ -251,12 +251,12 @@
                         },
                         "quantity": quantityUnits,
                         "created": dayjs().unix(),
-                        "lot_number": "N/A (No Variety)",
+                        /*"lot_number": "N/A (No Variety)",*/
                         "data": { 
                             "crop_tid": this.cropToIDMap.get(this.selectedCrop)
                         }
                     }
-                    return seeding
+                    return transplanting
                 },
                 quantityDirectSeeding(){
                     let time = this.time
