@@ -129,7 +129,12 @@
                 },
                 seedingLogRequestWithDates(){
                     this.reportVisible = true
-                    let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+                    if (this.startDate < this.endDate) {
+                        let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+                        console.log("Wrong!")
+                    } else {
+                        throw new Error ("Invalid date")
+                    }
 
                     getAllPages(link, this.seedingLogs).then(() => {
                         this.stillLoading = false
