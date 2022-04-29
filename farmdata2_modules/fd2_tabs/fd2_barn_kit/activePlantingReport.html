@@ -129,17 +129,22 @@
                 },
                 seedingLogRequestWithDates(){
                     this.reportVisible = true
-                    if (this.startDate < this.endDate) {
+                    if (dayjs(this.startDate).unix() <= dayjs(this.endDate).unix()) {
                         let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
-                        console.log("Wrong!")
-                    } else {
-                        throw new Error ("Invalid date")
+                        console.log("correct")
+
+                        getAllPages(link, this.seedingLogs).then(() => {
+                        this.stillLoading = false
+                        })
+                        this.stillLoading = true
+                    } else if (dayjs(this.startDate).unix() > dayjs(this.endDate).unix()) {
+                        let errMessage = "An invalid date has been entered"
+                        errMessage = JSON.stringify(errMessage)
+                        console.log("Invalid date")
+                        //throw new Error ("Invalid date")
+                        this.stillLoading=false
                     }
 
-                    getAllPages(link, this.seedingLogs).then(() => {
-                        this.stillLoading = false
-                    })
-                    this.stillLoading = true
                 },
                 cropChange(selectedCrop){
                     this.selectedCrop = selectedCrop
