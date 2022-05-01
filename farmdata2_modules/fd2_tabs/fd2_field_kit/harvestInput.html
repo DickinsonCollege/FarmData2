@@ -30,7 +30,7 @@
                 
                 
             
-            </div>ssss
+            </div>
        </fieldset>
        
        <!-- Labor Section: Num workers, Units of time -->  
@@ -70,7 +70,7 @@
                 selectedTimeUnit: 'minutes',
                 selectedUnit: '',
                 comments: '',
-                yield:'',
+                yield:0,
                 numWorkers: 0,
                 time: 0, 
                 numOfTrays: 0,
@@ -162,7 +162,7 @@
                     if(this.numWorkers == 0){
                         return true
                     }
-                    if(this.yield == ''){
+                    if(this.yield == 0){
                         return true
                     }
                     
