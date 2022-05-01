@@ -1,7 +1,7 @@
 <!-- Harvest Input Form HTML-->
 <body>
     <div id='harvestInput'>
-       <h1 style='text-align:center;'>Harvest Input Log</h1> 
+       <h1 style='text-align:center;'>Harvest Input Log</h1>
        <br>
 
        <!-- Data Section: date picker, crop/area dropdowns, comments -->
@@ -16,8 +16,9 @@
                 <br>
                 <!-- Has red astrik, but not actually required - edit formNotCompleted function -->
                 <label for="unitDropDown">Units:<label style='color: #da4f3f'>*</label><select id="Unit" name="Unit" v-model= 'selectedUnit'><option v-for="units in units"> {{ units }} </option>
+                  </select>
                 </label>
-                </select>            
+
                 <br>
                 <br>
                 <label for="yield">Yield:<label style='color: #da4f3f'>*</label></label>
@@ -32,27 +33,27 @@
             
             </div>
        </fieldset>
-       
-       <!-- Labor Section: Num workers, Units of time -->  
+
+       <!-- Labor Section: Num workers, Units of time -->
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
                  <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type=number v-model='numWorkers'>
                 <label>Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type=number v-model='time'>
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
+                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all>
             </div>
        </fieldset>
 
-       <!-- Submit button --> 
+       <!-- Submit button -->
        <div style='text-align:center;'>
            <label style='color: #da4f3f'>* required field.</label>
        </div>
        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
     </div>
 
-    
+
     <!-- Vue Instances -->
-    <!-- This may contain unnecessary code from seedingInputt--> 
+    <!-- This may contain unnecessary code from seedingInputt-->
     <script>
         new Vue({
             el: '#harvestInput',
@@ -66,23 +67,17 @@
                 selectedCrop: null,
                 selectedArea: null,
                 savedArea: null,
-                selectedFeetUnit: 'bed',
                 selectedTimeUnit: 'minutes',
-                selectedUnit: '',
+                selectedUnit: null,
                 comments: '',
                 yield:0,
                 numWorkers: 0,
-                time: 0, 
-                numOfTrays: 0,
-                numCellsPerTray: 0,
-                numSeedsPlanted: 0,
-                numRowBed: 0,
                 numFeet: 0,
+                time: 0,
                 cropArray: [],
                 areaResponse: [],
-                units: ['bunches','pounds'],
+                units: ['bunches','pounds', 'head', 'quart'],
                 timeUnits: ['minutes', 'hours'],
-                feetUnits: ['row', 'bed'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -106,9 +101,6 @@
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
                 },
-                setNewFeetUnit(newFeetUnit){
-                    this.selectedFeetUnit = newFeetUnit
-                },
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
@@ -124,29 +116,9 @@
             computed: {
                 areaFilter(){
                     let areaArray = []
-                    if(this.selectedSeedingType == 'Tray Seedings'){
-                        let trayAreaOnly = this.areaResponse.filter((x) => x.area_type === 'greenhouse')
-                        areaArray = trayAreaOnly.map((h) => h.name)
-                        if(!areaArray.includes(this.selectedArea)){
-                            this.selectedArea = null
-                        }
-                        if(areaArray.includes(this.savedArea)){
-                            this.selectedArea = this.savedArea
-                        }
-                    }
-                    else if(this.selectedSeedingType == 'Direct Seedings'){
-                        let directAreaOnly = this.areaResponse.filter((x) => x.area_type === 'field' || x.area_type === 'bed')
-                        areaArray = directAreaOnly.map((h) => h.name)
-                        if(!areaArray.includes(this.selectedArea)){
-                            this.selectedArea = null
-                        }
-                        if(areaArray.includes(this.savedArea)){
-                            this.selectedArea = this.savedArea
-                        }
-                    }
-                    else{
-                        areaArray = this.areaResponse.map((h) => h.name)
-                    }
+                    let harvestArea = this.areaResponse
+                    areaArray = harvestArea.map((h) => h.name)
+                    this.selectedArea = this.savedArea
                     return areaArray
                 },
                 formNotCompleted(){
@@ -156,15 +128,16 @@
                     if(this.selectedArea == null){
                         return true
                     }
+                    if(this.selectedUnit == null){
+                        return true
+                    }
                     if(this.time == 0){
                         return true
                     }
                     if(this.numWorkers == 0){
                         return true
                     }
-                    if(this.yield == 0){
-                        return true
-                    }
+                    
                     
                     return false
                 },
@@ -182,14 +155,9 @@
                 logData(){
                     let quantityUnits = []
                     let harvestID = 0
-                    if(this.selectedSeedingType == "Direct Seedings"){
-                        quantityUnits = this.quantityDirectSeeding
-                        harvestID = this.logTypeToIDMap.get('Direct Seedings')
-                    }
-                    else if (this.selectedSeedingType == "Tray Seedings"){
-                        quantityUnits = this.quantityTraySeeding
-                        harvestID = this.logTypeToIDMap.get('Tray Seedings')
-                    }
+                    quantityUnits = this.quantityHarvest
+                    harvestID = this.logTypeToIDMap
+
                     harvest = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
                         "type": "farm_harvest",
@@ -199,14 +167,11 @@
                             "value": this.comments,
                             "format": "farm_format"
                         },
-                        "asset": [{ 
+                        "asset": [{
                             "id": this.plantingId,   //Associated planting
                             "resource": "farm_asset"
                         }],
-                        "log_category": [{
-                            "id": harvestID,
-                            "resource": "taxonomy_term"
-                        }],
+
                         "movement": {
                             "area": [{
                                 "id": this.areaToIDMap.get(this.selectedArea),
@@ -216,96 +181,29 @@
                         "quantity": quantityUnits,
                         "created": dayjs().unix(),
                         "lot_number": "N/A (No Variety)",
-                        "data": { 
+                        "data": {
                             "crop_tid": this.cropToIDMap.get(this.selectedCrop)
                         }
                     }
                     return harvest
                 },
-                quantityDirectSeeding(){
-                    let time = this.time
-                    let feet = this.numFeet
-                    if(this.selectedTimeUnit == 'minutes'){
-                        time = (Math.round((time / 60)*100))/100
-                    }
-                    if(this.selectedFeetUnit == 'bed'){
-                        feet = feet * this.numRowBed
-                    }
-                    quantity = [
-                        {
-                            "measure": "length", 
-                            "value": feet,  //total row feet
-                            "unit": {
-                                "id": this.unitToIDMap.get('ROW FEET'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Amount planted"
-                        },
-                        {
-                            "measure": "ratio", 
-                            "value": this.numRowBed,
-                            "unit": {
-                                "id": this.unitToIDMap.get('ROWS/BED'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Rows/Bed"
-                        },
-                        {
-                            "measure": "time", 
-                            "value": time, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('HOURS'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Labor"
-                        },
-                        {
-                            "measure": "count", 
-                            "value": this.numWorkers, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('PEOPLE'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Workers"
-                        },
-                    ]
-                    return quantity
-                },
-                quantityTraySeeding(){
+                quantityHarvest(){
                     let time = this.time
                     if(this.selectedTimeUnit == 'minutes'){
                         time = (Math.round((time / 60)*100))/100
                     }
                     quantity = [
                         {
-                            "measure": "count", 
-                            "value": this.numSeedsPlanted,  //number of seed planted
-                            "unit": {
-                                "id": this.unitToIDMap.get('SEEDS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Seeds planted"
+                          "measure": "weight",
+                          "value": "20",  // set value (yield)
+                          "unit": {
+                              "id": "22", // set value (pounds)
+                              "resource": "taxonomy_term"
+                          },
+                          "label": "Harvest"
                         },
                         {
-                            "measure": "count", 
-                            "value": this.numOfTrays,  //number of flats(trays)
-                            "unit": {
-                                "id": this.unitToIDMap.get('FLATS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Flats used"
-                        },
-                        {
-                            "measure": "ratio", 
-                            "value": this.numCellsPerTray,  //cells per flat
-                            "unit": {
-                                "id": this.unitToIDMap.get('CELLS/FLAT'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Cells/Flat"
-                        },
-                        {
-                            "measure": "time", 
+                            "measure": "time",
                             "value": time,  //hours worked
                             "unit": {
                                 "id": this.unitToIDMap.get('HOURS'),
@@ -314,7 +212,7 @@
                             "label": "Labor"
                         },
                         {
-                            "measure": "count", 
+                            "measure": "count",
                             "value": this.numWorkers,
                             "unit": {
                                 "id": this.unitToIDMap.get('PEOPLE'),
