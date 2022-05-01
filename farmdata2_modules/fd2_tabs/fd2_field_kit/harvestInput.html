@@ -21,8 +21,18 @@
 
                 <br>
                 <br>
-
+                <!--<label for="yield">Yield:<label style='color: #da4f3f'>*</label></label>
+                <input type="text" id="yield" name="yield">-->
+                
+                <label>Yield:<label style='color: #da4f3f'>*</label> </label><input data-cy="yield" style='width: 50px;' type=number v-model='yield'>
+                <br>
+                <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
+                
+                <!--<input type = "text" id ="comments" name = //"comments> data-cy="comments" v-model='comments'></textarea>-->
+                
+                
+            
             </div>
        </fieldset>
 
@@ -62,6 +72,7 @@
                 selectedTimeUnit: 'minutes',
                 selectedUnit: null,
                 comments: '',
+                yield:0,
                 numWorkers: 0,
                 numFeet: 0,
                 time: 0,
@@ -122,12 +133,18 @@
                     if(this.selectedUnit == null){
                         return true
                     }
+                    if(this.yield == 0){
+                        return true
+                    }
                     if(this.time == 0){
                         return true
                     }
                     if(this.numWorkers == 0){
                         return true
                     }
+                    
+                    
+                    
                     return false
                 },
                 plantingLogData(){
