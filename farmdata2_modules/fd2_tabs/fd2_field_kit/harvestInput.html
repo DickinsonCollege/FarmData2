@@ -23,16 +23,16 @@
                 <br>
                 <!--<label for="yield">Yield:<label style='color: #da4f3f'>*</label></label>
                 <input type="text" id="yield" name="yield">-->
-                
+
                 <label>Yield:<label style='color: #da4f3f'>*</label> </label><input data-cy="yield" style='width: 50px;' type=number v-model='yield'>
                 <br>
                 <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
-                
+
                 <!--<input type = "text" id ="comments" name = //"comments> data-cy="comments" v-model='comments'></textarea>-->
-                
-                
-            
+
+
+
             </div>
        </fieldset>
 
@@ -74,11 +74,10 @@
                 comments: '',
                 yield:0,
                 numWorkers: 0,
-                numFeet: 0,
                 time: 0,
                 cropArray: [],
                 areaResponse: [],
-                units: ['bunches','pounds', 'head', 'quart'],
+                units: ['BUNCH','POUND', 'HEAD', 'QUART'],
                 timeUnits: ['minutes', 'hours'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
@@ -142,9 +141,7 @@
                     if(this.numWorkers == 0){
                         return true
                     }
-                    
-                    
-                    
+
                     return false
                 },
                 plantingLogData(){
@@ -201,9 +198,9 @@
                     quantity = [
                         {
                           "measure": "weight",
-                          "value": "20",  // set value (yield)
+                          "value": this.yield,
                           "unit": {
-                              "id": "22", // set value (pounds)
+                              "id": '22', // set value (pounds)
                               "resource": "taxonomy_term"
                           },
                           "label": "Harvest"
