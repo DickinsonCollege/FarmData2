@@ -108,12 +108,12 @@
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
                 },
-		setNewBedRows(newBedRows){
-		    this.rowsPerBed = newBedRows
-		},
-		setNewBedFeet(newBedFeet){
-		    this.bedFeet = newBedFeet
-		},
+                setNewBedRows(newBedRows){
+                    this.rowsPerBed = newBedRows
+                },
+                setNewBedFeet(newBedFeet){
+                    this.bedFeet = newBedFeet
+                },
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
@@ -124,6 +124,20 @@
                     if(confirm("You have saved a log! Would you like to go the seeding report page?")){
                         //Modify later after checking the endpoint
                         //window.location.replace('/farm/fd2-barn-kit/seedingReport')
+                    }
+                },
+                sixMonthsFilter(pastTime) {
+                    const now = new Date();
+
+                    // 6 months = 182 days in average
+                    const sixMonthsInMs = 182 * 24 * 60 * 60 * 1000; 
+
+                    const timeDiffInMs = now.getTime() - pastTime.getTime();
+
+                    if(timeDiffInMs >= sixMonthsInMs) {
+                        return true;
+                    } else{
+                        return false;
                     }
                 }
             },
@@ -138,14 +152,16 @@
                     }
                     return seedingDateArray
                 },
-                cropToSeedingDateFilter(){
+                cropToSeedingDateFilter() {
                     for (let i = 0; i < this.cropArray.length; i++){
                             this.cropToSeedDate[this.cropArray[i]] = new Array()
                     }  
                     for (let log of this.traySeedingLogs) {
                         let cropName = this.idToCropMap.get(log.data.crop_tid)
-                        let seedingDate = new Date(log.timestamp*1000).toLocaleDateString("en-US")
-                        this.cropToSeedDate[cropName].push(seedingDate)
+                        let seedingDate = new Date(log.timestamp*1000)
+                        if (this.sixMonthsFilter(seedingDate)) {
+                            this.cropToSeedDate[cropName].push(seedingDate.toLocaleDateString("en-US"))
+                        }
                     }
                     for (let i = 0; i < this.cropArray.length; i++){
                         this.cropToSeedDate[this.cropArray[i]].push("N/A")
