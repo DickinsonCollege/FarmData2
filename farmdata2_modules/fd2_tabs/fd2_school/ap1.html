@@ -42,9 +42,9 @@
 			<h1>{{ header.length == 0 ? "Mock Harvest Report" : header }}</h1>
 				<p>Details:</p>
 					<ul>
-						<li><strong>Farm: </strong>Sample Farm</li>
-						<li><strong>User: </strong>manager1</li>
-						<li><strong>Language: </strong>English</li><br>
+                        <li><strong>Farm: </strong>{{ Farm }}</li>
+						<li><strong>User: </strong>{{ User }}</li>
+						<li><strong>Language: </strong>{{ Language }}</li><br>
 						<li><strong>Start: </strong>{{ startDate }}</li>
                         <li><strong>End: </strong>{{ endDate }}</li>
                         <li><strong>Crop: </strong>{{ cropSelect }}</li>
@@ -80,6 +80,9 @@
                     el: '#harvest-report',
                     data: {
                     header: '',
+                    Farm: '',
+                    User: '',
+                    Language: '',
                     startDate: '2020-05-05',
                     endDate: '2020-05-15',
                     cropSelect: 'Kale',
@@ -91,17 +94,16 @@
                        
                     ],
                         row: 
-                        {date: '05/01/2018', field: 'Orion-3', crop: 'Kale', yield: '12', units: 'Bunches'}
-                    ,
-                     row2: [
-                        {date: '2018-05-02', field: 'Chuau-1', crop: 'Kale', yield: '10', units: 'bundles'}
-                    ],
+                         {date: '05/01/2018', field: 'Orion-3', crop: 'Kale', yield: '12', units: 'Bunches'},
                     },
                     methods: {
                         addLog:function(){
                             harvestLog.push(this.row)
                         
-                    }
+                    this.Farm='Sample Farm';
+                        this.User='manager1';
+                        this.Language='English';
+                      },
                   }
                   });
 
