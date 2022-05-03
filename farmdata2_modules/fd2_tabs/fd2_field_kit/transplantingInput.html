@@ -43,8 +43,8 @@
 		<!-- Adding @selection-changed method -->
 		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
 		<select id='timeUnit' name='TimeUnit' @selection-changed='setNewTimeUnit' v-model='selectedTimeUnit'>
-			<option selected>Hours</option>
-			<option>Minutes</option>
+			<option>hours</option>
+			<option selected>minutes</option>
 		</select>
 
             </div>
@@ -119,6 +119,7 @@
                     })
                     if(confirm("You have saved a log! Would you like to go the transplanting report page?")){
                         //Modify later after checking the endpoint
+                        console.log("log created successfully")
                         window.location.replace('/farm/fd2-barn-kit/transplantingReport')
                     }
                 }
