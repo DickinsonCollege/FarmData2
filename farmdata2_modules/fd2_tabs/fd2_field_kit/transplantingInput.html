@@ -73,18 +73,14 @@
                 comments: '',
                 numWorkers: 0,
                 time: 0, 
-        		// Inserting new data variables (Story8)
         		rowsPerBed: 1,
         		bedFeet: 1,	
-
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
-                //Story 1 
                 idToCropMap: new Map(),
                 cropToSeedDate: new Object(),
                 traySeedingLogs: new Array(),
-
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -108,12 +104,12 @@
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
                 },
-		setNewBedRows(newBedRows){
-		    this.rowsPerBed = newBedRows
-		},
-		setNewBedFeet(newBedFeet){
-		    this.bedFeet = newBedFeet
-		},
+                setNewBedRows(newBedRows){
+                    this.rowsPerBed = newBedRows
+                },
+                setNewBedFeet(newBedFeet){
+                    this.bedFeet = newBedFeet
+                },
                 saveLog(){
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
@@ -121,7 +117,7 @@
                         createRecord('/log', this.logData, this.sessionToken).then((response) => {
                         })
                     })
-                    if(confirm("You have saved a log! Would you like to go the seeding report page?")){
+                    if(confirm("You have saved a log! Would you like to go the transplanting report page?")){
                         //Modify later after checking the endpoint
                         window.location.replace('/farm/fd2-barn-kit/transplantingReport')
                     }
@@ -216,16 +212,9 @@
                     return planting
                 },
                 logData(){
-                    let quantityUnits = []
-                    let seedingID = 0
-                    /*if(this.selectedSeedingType == "Direct Seedings"){
-                        quantityUnits = this.quantityDirectSeeding
-                        seedingID = this.logTypeToIDMap.get('Direct Seedings')
-                    }
-                    else if (this.selectedSeedingType == "Tray Seedings"){
-                        quantityUnits = this.quantityTraySeeding
-                        seedingID = this.logTypeToIDMap.get('Tray Seedings')
-                    }*/
+                    let transplantingID = this.logTypeToIDMap.get('Transplantings')
+                    let quantityUnits = this.quantityTransplanting
+                    
                     transplanting = {
                         "name": this.selectedDate + " " + this.selectedCrop + " " + this.selectedArea,
                         "type": "farm_transplanting",
@@ -239,10 +228,10 @@
                             "id": this.plantingId,   //Associated planting
                             "resource": "farm_asset"
                         }],
-                        /*"log_category": [{
-                            "id": seedingID,
+                        "log_category": [{
+                            "id": transplantingID,
                             "resource": "taxonomy_term"
-                        }],*/
+                        }],
                         "movement": {
                             "area": [{
                                 "id": this.areaToIDMap.get(this.selectedArea),
@@ -251,26 +240,22 @@
                         },
                         "quantity": quantityUnits,
                         "created": dayjs().unix(),
-                        /*"lot_number": "N/A (No Variety)",*/
                         "data": { 
                             "crop_tid": this.cropToIDMap.get(this.selectedCrop)
                         }
                     }
                     return transplanting
                 },
-                quantityDirectSeeding(){
+                quantityTransplanting() {
                     let time = this.time
-                    let feet = this.numFeet
+                    let feet = this.bedFeet * this.rowsPerBed //bedFeet needs changing to "numFeet"
                     if(this.selectedTimeUnit == 'minutes'){
                         time = (Math.round((time / 60)*100))/100
-                    }
-                    if(this.selectedFeetUnit == 'bed'){
-                        feet = feet * this.numRowBed
                     }
                     quantity = [
                         {
                             "measure": "length", 
-                            "value": feet,  //total row feet
+                            "value": feet,  //number of row feet 
                             "unit": {
                                 "id": this.unitToIDMap.get('ROW FEET'), 
                                 "resource": "taxonomy_term"
@@ -279,66 +264,12 @@
                         },
                         {
                             "measure": "ratio", 
-                            "value": this.numRowBed,
+                            "value": this.rowsPerBed,  
                             "unit": {
-                                "id": this.unitToIDMap.get('ROWS/BED'),
+                                "id": this.unitToIDMap.get('ROWS/BED'), 
                                 "resource": "taxonomy_term"
                             },
                             "label": "Rows/Bed"
-                        },
-                        {
-                            "measure": "time", 
-                            "value": time, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('HOURS'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Labor"
-                        },
-                        {
-                            "measure": "count", 
-                            "value": this.numWorkers, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('PEOPLE'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Workers"
-                        },
-                    ]
-                    return quantity
-                },
-                quantityTraySeeding(){
-                    let time = this.time
-                    if(this.selectedTimeUnit == 'minutes'){
-                        time = (Math.round((time / 60)*100))/100
-                    }
-                    quantity = [
-                        {
-                            "measure": "count", 
-                            "value": this.numSeedsPlanted,  //number of seed planted
-                            "unit": {
-                                "id": this.unitToIDMap.get('SEEDS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Seeds planted"
-                        },
-                        {
-                            "measure": "count", 
-                            "value": this.numOfTrays,  //number of flats(trays)
-                            "unit": {
-                                "id": this.unitToIDMap.get('FLATS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Flats used"
-                        },
-                        {
-                            "measure": "ratio", 
-                            "value": this.numCellsPerTray,  //cells per flat
-                            "unit": {
-                                "id": this.unitToIDMap.get('CELLS/FLAT'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Cells/Flat"
                         },
                         {
                             "measure": "time", 
@@ -360,8 +291,7 @@
                         },
                     ]
                     return quantity
-                }
-
+                },
             },
             created() {
                 //Get all crop names
