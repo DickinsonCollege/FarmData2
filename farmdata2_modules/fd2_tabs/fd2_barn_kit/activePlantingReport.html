@@ -1,6 +1,8 @@
 <body>
+
     <div id="plantingReport" v-cloak>
         <h1 class="text-center">Active Planting Report</h1> <!-- Below are the basic functionalities; just the button, once the button is clicked, API call is made and the static report will be generated -->
+
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Click the Button to Generate report</legend>
             <div style="display: flex;width: 100%; padding: 7px"> 
@@ -13,8 +15,11 @@
            
         </div>
     <script>
+
         var plantingReport = new Vue ({
             el: '#plantingReport',
+
+
             components: {
 
             },
