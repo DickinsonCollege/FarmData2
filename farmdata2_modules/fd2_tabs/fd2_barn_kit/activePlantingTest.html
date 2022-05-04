@@ -1,0 +1,63 @@
+<body>
+    <div id="plantingReport" v-cloak>
+        <h1 class="text-center">Active Planting Report</h1> <!-- Below are the basic functionalities; just the button, once the button is clicked, API call is made and the static report will be generated -->
+        <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
+            <legend class="panel-heading" style="background-color: #d62a17; color: white;">Click the Button to Generate report</legend>
+            <div style="display: flex;width: 100%; padding: 7px"> 
+                <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='plantingLogRequest'>Generate Report</button>
+            </div>
+        </fieldset>
+
+        <div v-if='reportVisible'>
+            <p> API call success! </p>
+           
+        </div>
+    <script>
+        var plantingReport = new Vue ({
+            el: '#plantingReport',
+            components: {
+
+            },
+            data: {
+                stillLoading: true,
+                reportVisible: false,
+                plangintLogs: [],
+                updateLog: [],
+                indicator: false, //indicator of whether API call has been successfully made 
+                sessionToken: null,
+                selectedCrop: 'All', // selected are needed for dropdown/date range in the future
+                selectedArea: 'All',
+                selectedPlanting: 'All',
+
+                headers: [], // these are the headers for the columns
+                visibleColumns: [], // use boolean values [true,true,false]
+
+                idToCropMap: new Map(), // these are the mapped IDs to the JSON objects; created once the button is clicked
+                cropToIDMap: new Map(),
+                idToUserMap: new Map(),
+                userToIDMap: new Map(),
+                areaToIDMap: new Map(),
+                unitToIDMap: new Map(),
+
+                rowBeingEdited: false // this boolean value changes when the user tries to actively edit the rows 
+            },
+            methods: {
+                hide(){
+                    this.reportVisible = false // This funciton will be called when length of report = 0 
+                    this.plantingLogs = []
+                },
+                
+                },
+                plantingLogRequest(){
+                    this.reportVisible = true // this value changes when button is clicked
+                    let link = '/farm_asset.json?type=planting'   // need to make the API call to the Active Farm report
+
+                    getAllPages(link, this.plantingLogs).then(() => {
+                        this.stillLoading = false
+                    })
+                    this.stillLoading = true
+                    this.indicator = true  
+                },
+            },            
+    </script>
+</body>
