@@ -268,24 +268,6 @@
                         if(this.chosenCrop != 'All'){
                             filterRows = filterRows.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.chosenCrop)
                         }
-                        // let rows = filterRows.map(function(h) {
-                        // for(let log of this.HRLog){
-                        //     let row = {
-                        //         id: this.HRLog.indexOf(log),
-                        //         data:[
-                        //             dayjs.unix(log.timestamp).format('YYYY-MM-DD'),
-                        //             this.idToCropMap.get(log.data.crop_tid),
-                        //             log.area[0].name, 
-                        //             log.quantity[0].value,
-                        //             log.quantity[0].unit.name,
-                        //             (Math.round(log.quantity[1].value*100))/100,
-                        //             log.notes.value,
-                        //             this.idToUserMap.get(log.uid.id),
-                        //         ]
-                        //         }
-                        //     rows.push(row)
-                        // }
-                        // return rows
                         let $vm = this
                         let rows = filterRows.map(function(h) {
                             return{
