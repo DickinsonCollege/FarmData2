@@ -152,68 +152,7 @@
 
                         // Would also need to update data in the db via API here.
                     },
-                //     updateTableRow(Object, id){
-                //     this.updateLog = this.HRLog.filter((x) => x.id === id)
-                //     let updateHarvestObject = {}
-                //     let updatePlantObject = {}
                     
-                //     let keys = Object.keys(updateObject)
-                //     for(i=0; i < keys.length; i++){
-                //         if(keys[i] == 'Date'){
-                //             updateHarvestObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
-                //         }
-                //         else if(keys[i] == 'Crop'){
-                //             updateHarvestObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
-                //             updatePlantObject['crop'] = [{
-                //                 "id": this.cropToIDMap.get(updateObject['crop']),
-                //                 "resource": "taxonomy_term"
-                //             }]
-                //         }
-                //         else if (keys[i] == 'Field'){
-                //             updateHarvestObject['movement'] = { 'area': [{
-                //                 "id": this.areaToIDMap.get(updateObject['area']),
-                //                 "resource": "taxonomy_term",}]
-                //             }
-                //         }
-                //         else if(keys[i] == 'Hours'){
-                //             updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Labor')].value = updateObject['Hours']
-
-                //             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
-                //         }
-                //         else if(keys[i] == 'Num Workers'){
-                //             updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Workers')].value = updateObject['Num Workers']
-
-                //             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Num Workers']
-                //         }
-                //         else if(keys[i] == 'Comments'){
-                //             updateHarvestObject['notes'] = {'value': updateObject['Comments'],
-                //                 'format': 'farm_format'}
-                //         }
-                //         else if(keys[i] == 'User'){
-                //             updateHarvestObject['uid'] = {
-                //                 'id': this.userToIDMap.get(updateObject['User']),
-                //                 'resource': 'user'
-                //             }
-                //             updatePlantObject['uid'] = {
-                //                 'id': this.userToIDMap.get(updateObject['User']),
-                //                 'resource': 'user'
-                //             }
-                //         }  
-                //     }
-                
-                    
-                //     let HarvestURL = '/log/' + id
-                //     let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
-                //     //call updateRecord function to update planting log
-                //     if(!(Object.entries(updatePlantObject).length === 0)){
-                //         updateRecord(plantingUrl, updatePlantObject, this.sessionToken)
-                //     }
-                //     //call updateRecord function to update seeding log
-                //     if(!(Object.entries(updateHarvestObject).length === 0)){
-                //         updateRecord(HarvestURL, updateHarvestObject,this.sessionToken)
-                //     }
-                //     this.rowBeingEdited = false
-                // },
                     disableFilters() {
                         this.rowBeingEdited = true
                     },
