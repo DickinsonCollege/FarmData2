@@ -56,7 +56,7 @@
 
                 <p>Details:</p>
                 <ul>
-                    <li><strong>Farm:</strong> {{ ftext.farm }}</li>                        <li><strong>User:</strong> {{ ftext.user }}</li>
+                    <li><strong>Farm:</strong> {{ ftext.farm }}</li>            <li><strong>User:</strong> {{ ftext.user }}</li>
                     <li><strong>Language:</strong> {{ ftext.language }}</li>
                     <br>
                     <li><strong>Start:</strong> {{ reportStartDate }} </li>
@@ -123,6 +123,19 @@
                         },
                             methods: {
                                 addLog: function (index) {
+                                    axios.get('/farm.json')
+                                    .then((response) => {
+                                        this.farm = response.data.name
+                                        this.user = response.data.user.name
+                                        this.language = response.data.user.language
+                                        console.log("Got Response")
+                                        console.log(response)
+                                    })
+                                    .catch((error) => {
+                                        console.log("Error Occured")
+                                        console.log(error)
+                                    })
+
                                     this.harvestLog.push(this.row);
                                     this.state = 'show';
                                 },
