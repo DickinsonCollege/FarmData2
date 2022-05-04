@@ -17,20 +17,20 @@
                                     @end-date-changed='endDateChange' 
                                     @click='hide'>
                                 </date-range-selection>
-                            <button class="btn center-block btn-primary" v-if='!reportVisible' @click='HarvestLogRequestInDateSpan'>Run Date Filter</button>
+                            <button class="btn center-block btn-primary" v-if='!reportVisible' @click='harvestLogRequestInDateSpan'>Run Date Filter</button>
                             </div>
                         </div>
                     </fieldset>
 
                 <div v-if='reportVisible'>    
-                    <div v-if="HRLog.length != 0">
+                    <div v-if="harvestLogs.length != 0">
                         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 75%;">              
                             <legend class="panel-heading fd2-legend">
                                 <center>Filters</center>
                             </legend>            
                             <div style="display: flex;width: 100%; padding: 7px">
-                                <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='CropChange'>Crop:</dropdown-with-all>
-                                <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed='FieldChange'>Field:</dropdown-with-all> 
+                                <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
+                                <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed='fieldChange'>Field:</dropdown-with-all> 
                             </div>
                         </fieldset>
                     
@@ -48,7 +48,7 @@
                         </custom-table>
                     </div>
                     <div class="loader center-block" v-if="stillLoading"></div>
-                    <div v-if="!stillLoading && HRLog.length == 0">
+                    <div v-if="!stillLoading && harvestLogs.length == 0">
                         <div class="box" data-cy="no-logs-message" style="  
                             border: 5px solid #d62a17;
                             background-color: white;
@@ -89,7 +89,7 @@
                     
                     //Processing data segment
                     stillLoading: true,
-                    HRLog:[],
+                    harvestLogs:[],
                     updateLog:[],
                     Farm:"",
                     User:"",
@@ -109,7 +109,7 @@
                 methods: {
                     hide(){
                         this.reportVisible = false
-                        this.HRLog = []
+                        this.harvestLogs = []
                     },
                     startDateChange(newDate) {
                             this.startDate = newDate
@@ -117,16 +117,16 @@
                     endDateChange(newDate) {
                             this.endDate = newDate
                         },    
-                    CropChange(selectedCrop) {
+                    cropChange(selectedCrop) {
                             this.chosenCrop = selectedCrop
                         },
-                    FieldChange(selectedField) {
+                    fieldChange(selectedField) {
                             this.chosenField = selectedField
                         },
-                    HarvestLogRequestInDateSpan(){
+                    harvestLogRequestInDateSpan(){
                             this.reportVisible = true
                             let link = '/log.json?type=farm_harvest&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
-                            getAllPages(link,this.HRLog).then(()=>{
+                            getAllPages(link,this.harvestLogs).then(()=>{
                                 this.stillLoading = false
                             })
                             this.stillLoading = true
@@ -135,14 +135,14 @@
                     deleteTableRow(logID) {
                         let url = '/log/' + logID
                         deleteRecord(url, this.sessionToken)
-                        for(var i=0; i < this.HRLog.length; i++){
-                            if(this.HRLog[i].id === logID){
-                                this.HRLog.splice(i, 1)
+                        for(var i = 0; i < this.harvestLogs.length; i++){
+                            if(this.harvestLogs[i].id === logID){
+                                this.harvestLogs.splice(i, 1)
                             }
                         }
                     },
-                     updateTableRow(edits, rowID) {
-                        for(var i=0; i < this.tableData.length; i++){
+                    updateTableRow(edits, rowID) {
+                        for(var i = 0; i < this.tableData.length; i++){
                             if(this.tableData[i].id == rowID){
                                 for( const [key, value] of Object.entries(edits)) {
                                     this.tableData[key] = value
@@ -162,36 +162,34 @@
                 },
                 computed:{
                     cropList(){
-                    let harvestFilter = this.HRLog.filter((x) => x)
-                    let cropArray = []
-                    if(this.chosenField != 'All'){
-                        let fieldFilter = harvestFilter.filter((x) => x.area[0].name === this.chosenField)
-                        cropArray = fieldFilter.map(h => 
-                            this.idToCropMap.get(h.data.crop_tid)
-                        )
-                    }
-                    else{
-                        cropArray = harvestFilter.map(h=> 
-                            this.idToCropMap.get(h.data.crop_tid)
-                        )
-                    }
+                        let harvestFilter = this.harvestLogs.filter((log) => log)
+                        let cropArray = []
+                        if(this.chosenField != 'All') {
+                            let fieldFilter = harvestFilter.filter((log) => log.area[0].name === this.chosenField)
+                            cropArray = fieldFilter.map(log => 
+                                this.idToCropMap.get(log.data.crop_tid)
+                            )
+                        }
+                        else {
+                            cropArray = harvestFilter.map((log) => this.idToCropMap.get(log.data.crop_tid))
+                        }
 
-                    let crops = new Set(cropArray)
-                    let newCropArray = Array.from(crops)
-                    return newCropArray.sort()
-                },
+                        let crops = new Set(cropArray)
+                        let newCropArray = Array.from(crops)
+                        return newCropArray.sort()
+                    },
                     fieldList(){
-                        let harvestFilter = this.HRLog.filter((x) => x)
+                        let harvestFilter = this.harvestLogs.filter((log) => log)
                         let fieldArray = []
                         if(this.chosenCrop != 'All'){
-                            let cropFilter = harvestFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.chosenCrop)
-                            fieldArray = cropFilter.map(h =>
-                                h.area[0].name
+                            let cropFilter = harvestFilter.filter((log) => this.idToCropMap.get(log.data.crop_tid) === this.chosenCrop)
+                            fieldArray = cropFilter.map(log =>
+                                log.area[0].name
                             )
                         }
                         else{
-                            fieldArray = harvestFilter.map(h =>
-                                h.area[0].name
+                            fieldArray = harvestFilter.map(log =>
+                                log.area[0].name
                             )
                         }
                         let fields = new Set(fieldArray)
@@ -199,27 +197,27 @@
                         return newfieldArray.sort()
                     },
                     tableData() {
-                        let filterRows = this.HRLog.filter((x) => x)
+                        let filterRows = this.harvestLogs.filter((log) => log)
 
                         if(this.chosenField != 'All'){
-                            filterRows = filterRows.filter((x) => x.area[0].name === this.chosenField)
+                            filterRows = filterRows.filter((log) => log.area[0].name === this.chosenField)
                         }
                         if(this.chosenCrop != 'All'){
-                            filterRows = filterRows.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.chosenCrop)
+                            filterRows = filterRows.filter((log) => this.idToCropMap.get(log.data.crop_tid) === this.chosenCrop)
                         }
                         let $vm = this
-                        let rows = filterRows.map(function(h) {
+                        let rows = filterRows.map(function(harvestLog) {
                             return{
-                                id: h.id,
+                                id: harvestLog.id,
                                 data: [
-                                    dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
-                                    $vm.idToCropMap.get(h.data.crop_tid),
-                                    h.area[0].name, 
-                                    h.quantity[0].value,
-                                    h.quantity[0].unit.name,
-                                    (Math.round(h.quantity[1].value*100))/100,
-                                    h.notes.value,
-                                    $vm.idToUserMap.get(h.uid.id),
+                                    dayjs.unix(harvestLog.timestamp).format('YYYY-MM-DD'),
+                                    $vm.idToCropMap.get(harvestLog.data.crop_tid),
+                                    harvestLog.area[0].name, 
+                                    harvestLog.quantity[0].value,
+                                    harvestLog.quantity[0].unit.name,
+                                    (Math.round(harvestLog.quantity[1].value*100))/100,
+                                    harvestLog.notes.value,
+                                    $vm.idToUserMap.get(harvestLog.uid.id),
                                 ]
                             }
                         })
@@ -227,21 +225,29 @@
                     },
                     tableInputTypes(){
                         let userNameArray = []
+
                         const userKeyIterator = this.userToIDMap.keys()
-                        for(i=0; i < this.userToIDMap.size; i++){
+
+                        for(i = 0; i < this.userToIDMap.size; i++){
                             userNameArray.push(userKeyIterator.next().value)
                         }
+
                         let cropNameArray = []
+
                         for(let [key, info] of this.cropToIDMap){
                             cropNameArray.push(key)
                         }
                         let fieldNameArray = []
+
                         const fieldKeyIterator = this.areaToIDMap.keys()
-                        for(i=0; i < this.areaToIDMap.size; i++){
+
+                        for(i = 0; i < this.areaToIDMap.size; i++){
                             fieldNameArray.push(fieldKeyIterator.next().value)
                         }
                         let unitNameArray = []
+                        
                         const unitKeyIterator = this.unitToIDMap.keys()
+                        
                         for(i = 0; i < this.unitToIDMap.size;i++){
                             unitNameArray.push(unitKeyIterator.next().value)
                         }
@@ -276,4 +282,3 @@
        </script>
     </body>
 </html>
-                    <!-- I know this is a lot left to do but I can do it!!! Fighting!!! -->
