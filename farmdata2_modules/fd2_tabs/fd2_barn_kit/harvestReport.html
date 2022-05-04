@@ -1,221 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>   
-    </head>
-
+    <head></head>
     <body>
-
-        <h1>
-           
-            <center>Harvest Report</center>
-        </h1>
-        <p>
-            <center>This is a tab to retrieve harvest reports.</center>
-        </p>
-        <p>
+        <h1 class="text-center">Harvest Report</h1>
             <div id="rpt" class = "v-cloak">
-                <br/>
-                <UL>
-                <!-- A fieldset groups a collection of input elements to create a form -->
-                    <fieldset class="panel panel-default">
-                        <!--Legend is used to create a header in the fieldset-->
+                    <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
                         <legend class="panel-heading fd2-legend">
-                             <center>Harvest Report</center>
+                             <center>Date Span</center>
                         </legend>
-
-                        <center>
-                            <p>Layout content for the panel here.</p>
-
-                            <div class="center-block">
-                                <div class = "add-item">
-                       <date-range-selection 
-                            default-start-date="2021-01-15" 
-                            :default-end-date=dateRangeMaxDate
-                            @start-date-changed='startDateChange' 
-                            @end-date-changed='endDateChange' 
-                        >
-                        </date-range-selection> 
-                        <!-- Create drop down list for month-day-year to make it more accessible for mobile usage -->
-                    <br/>
-                        <dropdown-with-all 
-                            includes-all 
-                            :default-input=pickedCrop
-                            :dropdown-list=mapToCropArray
-                            @selection-changed="cropChange">
-                            Crop:
-                        </dropdown-with-all>
-                        <dropdown-with-all 
-                            includes-all 
-                            :default-input=chosenField
-                            :dropdown-list=mapToFieldArray
-                            @selection-changed="FieldChange">
-                            Field:
-                        </dropdown-with-all>
-                    <br/>
-                    <br/>
-                    <button class="btn fd2-red-button" @click="runFilter">Run Filter</button>
-
-                    </div>
+                        <div class="center-block">
+                            <div style="display: flex;width: 100%; padding: 7px">
+                                <date-range-selection 
+                                    class="center-block"  
+                                    :default-start-date=startDate :default-end-date=endDate
+                                    @start-date-changed='startDateChange'
+                                    @end-date-changed='endDateChange' 
+                                    @click='hide'>
+                                </date-range-selection>
+                            <button class="btn center-block btn-primary" v-if='!reportVisible' @click='HarvestLogRequestInDateSpan'>Run Date Filter</button>
                             </div>
-                        </center>
+                        </div>
                     </fieldset>
-                </UL>
-                
-                    <hr/> 
-                        
-                    <p>
-                        Create UI suitable Reports Results
-                    </p>
-                        <!-- <custom-table 
+
+                <div v-if='reportVisible'>    
+                    <div v-if="HRLog.length != 0">
+                        <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 75%;">              
+                            <legend class="panel-heading fd2-legend">
+                                <center>Filters</center>
+                            </legend>            
+                            <div style="display: flex;width: 100%; padding: 7px">
+                                <dropdown-with-all class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='CropChange'>Crop:</dropdown-with-all>
+                                <dropdown-with-all class="center-block" :dropdown-list=fieldList includes-all default-input='All' @selection-changed='FieldChange'>Field:</dropdown-with-all> 
+                            </div>
+                        </fieldset>
+                    
+                        <custom-table 
                             can-delete 
                             can-edit
                             :headers="tableHeaders" 
-                            :input-options="tableinputTypes"
+                            :input-options="tableInputTypes"
                             :rows="tableData"
                             :visible-columns="tableVisibleColumns"  
                             @row-deleted="deleteTableRow"
-                            @row-edited="updateTableRow">
-                        </custom-table> -->
+                            @row-edited="updateTableRow"
+                            @edit-clicked='disableFilters' 
+                            @row-canceled='enableFilters'>
+                        </custom-table>
+                    </div>
+                    <div class="loader center-block" v-if="stillLoading"></div>
+                    <div v-if="!stillLoading && HRLog.length == 0">
+                        <div class="box" data-cy="no-logs-message" style="  
+                            border: 5px solid #d62a17;
+                            background-color: white;
+                            padding: 20px;
+                            margin: auto;
+                            width: 50%;
+                            text-align: center;
+                            font-size: large;">
+                            No Logs Found in These Dates 
+                        </div> 
+                    </div>
+                </div>
+            </div>    
                         
                         
-                        
-        </p>
+       
        <script>
            var ReportVue= new Vue({
                 el:"#rpt",
                 components: {
-                    // Register the components used and define the tag name to be used.
                     'dropdown-with-all': DropdownWithAllComponent,
                     'date-range-selection': DateRangeSelectionComponent,
                     'custom-table': CustomTableComponent,
                 },
                 data:{
-                    userID: fd2UserID,
-                    userName: fd2UserName,
+                    //Data upon initialization
+                    sessionToken: null,
                     
-                    startDate: null,
-                    endDate: null,
-                    dateRangeClicks: 0,
-                    dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
+                    startDate: dayjs().format('YYYY-MM-DD').toString(),
+                    endDate: dayjs().format('YYYY-MM-DD').toString(),  
                 
-                    pickedCrop:"All",
+                    chosenCrop:"All",
                     chosenField:"All",
-
-                    sampleLog:[
-                    ],
-
+                    
+                    
+                    rowBeingEdited : false,
+                    reportVisible: false,
+                    
+                    //Processing data segment
+                    stillLoading: true,
+                    HRLog:[],
+                    updateLog:[],
                     Farm:"",
                     User:"",
                     Language:"",
 
-                    idToCropMap: [],
-                    idToFieldMap: [],
+                    idToCropMap: new Map(),
+                    cropToIDMap: new Map(),
+                    idToUserMap: new Map(),
+                    userToIDMap: new Map(),
+                    areaToIDMap: new Map(),
+                    unitToIDMap: new Map(),
 
-                    LogListRetrieved:[],
-                    LogList:[],
-
-                    tableData: [],
-
-                    // tableHeaders: ['Row', 'Date', 'Area', 'Crop', 'Yield', 'Units', 'Edit', 'Delete'],
-                    // // Trouble with creating the table here <Try looking into How Vue cycle>
-                    // tableinputTypes: [
-                    //     {'type': 'number', 'value': this.tableData.map(index, log => index)},
-                    //     {'type': 'text', 'value': this.tableData.map(index, log => log.data[0])},
-                    //     {'type': 'dropdown', 'value': this.idToFieldMap},
-                    //     {'type': 'dropdown', 'value': this.idToCropMap},
-                    //     {'type': 'number'},
-                    //     {'type': 'text'},
-                    // ],
+                    tableHeaders: [ 'Date', 'Crop', 'Field', 'Yield', 'Unit', 'Hours','Comments', 'Users', 'Edit', 'Delete'],
+                    tableVisibleColumns:[true, true, true, true, true, true, true, true],
 
                 },
-                computed:{
-                    mapToCropArray(){
-                        return Array.from(this.idToCropMap.values())
-                    },
-
-                    mapToFieldArray(){
-                        return Array.from(this.idToFieldMap.values())
-                    },
-                },
-                created() {
-                        getIDToCropMap()
-                            .then((theMap1) => {
-                                    this.idToCropMap= theMap1
-                            })
-                            .catch((err) => {
-
-                            }),
-                        getIDToAreaMap()
-                            .then((theMap2) => {
-                                    this.idToFieldMap = theMap2
-                            })
-                            .catch((err) => {
-                                // An error occured during the request, process it here.
-                            })
-                    },
-                
-
                 methods: {
-                    runFilter: function () {//This is pointless make this into retrieving the API and implement the filters to return the items depending the actually results
-                        axios
-                            .get('http://localhost/farm.json')
-                            .then(response => {
-                                    console.log("Got Response")
-                                    this.Farm = response.data.name
-                                    this.User = response.data.user.name
-                                    this.Language = response.data.languages.en.name
-                                })
-                            .catch(error => {
-                                	console.log("Error Occurred")
-                                })
-                                
-                        let timestampStart = dayjs(this.startDay).unix();
-                        let timestampEnd = dayjs(this.endDay).unix();
-
-                        
-                        
-                        getAllPages("/log.json?type=farm_harvest&timestamp[ge]=" +timestampStart +"&timestamp[le]=" + timestampEnd, this.LogList)
-                        .then(() => {
-                            let tableRows = [];
-                            for(let log of this.LogList) {
-                                let tableRow = {
-                                    id: this.LogList.indexOf(log),
-                                    data: [
-                                    log.timestamp,
-                                    log.area[0].name,
-                                    this.idToCropMap.get(log.data.crop_tid),
-                                    log.quantity[0].value,
-                                    log.quantity[0].unit.name,
-                                    ]
-                                }
-                                tableRows.push(tableRow);
-                            }
-                            this.LogListRetrieved = tableRows;
-                            this.tableData = this.LogListRetrieved;
-                        })
-                        // Retrieve data from the API through a certain filter
-                        // Test this with a span of date, a certain crop or field
+                    hide(){
+                        this.reportVisible = false
+                        this.HRLog = []
                     },
                     startDateChange(newDate) {
                             this.startDate = newDate
                         },
-                    cropChange(newCrop) {
-                            this.pickedCrop = newCrop
-                        },
-                    FieldChange(newField) {
-                            this.chosenField = newField
-                        },
                     endDateChange(newDate) {
                             this.endDate = newDate
+                        },    
+                    CropChange(selectedCrop) {
+                            this.chosenCrop = selectedCrop
                         },
-                    deleteTableRow: function(rowID) {//Make this also changes values in the API
-                        for(var i=0; i < this.tableData.length; i++){
-                            if(this.tableData[i].id == rowID){
-                                this.tableData.splice(i, 1)
+                    FieldChange(selectedField) {
+                            this.chosenField = selectedField
+                        },
+                    HarvestLogRequestInDateSpan(){
+                            this.reportVisible = true
+                            let link = '/log.json?type=farm_harvest&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+                            getAllPages(link,this.HRLog).then(()=>{
+                                this.stillLoading = false
+                            })
+                            this.stillLoading = true
+                    },    
+                    
+                    deleteTableRow(logID) {
+                        let url = '/log/' + logID
+                        deleteRecord(url, this.sessionToken)
+                        for(var i=0; i < this.HRLog.length; i++){
+                            if(this.HRLog[i].id === logID){
+                                this.HRLog.splice(i, 1)
                             }
                         }
                     },
-                    updateTableRow: function(edits, rowID) {//Make this also changes values in the API
+                     updateTableRow(edits, rowID) {
                         for(var i=0; i < this.tableData.length; i++){
                             if(this.tableData[i].id == rowID){
                                 for( const [key, value] of Object.entries(edits)) {
@@ -223,8 +149,189 @@
                                 }
                             }
                         }
+
+                        // Would also need to update data in the db via API here.
+                    },
+                //     updateTableRow(Object, id){
+                //     this.updateLog = this.HRLog.filter((x) => x.id === id)
+                //     let updateHarvestObject = {}
+                //     let updatePlantObject = {}
+                    
+                //     let keys = Object.keys(updateObject)
+                //     for(i=0; i < keys.length; i++){
+                //         if(keys[i] == 'Date'){
+                //             updateHarvestObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
+                //         }
+                //         else if(keys[i] == 'Crop'){
+                //             updateHarvestObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
+                //             updatePlantObject['crop'] = [{
+                //                 "id": this.cropToIDMap.get(updateObject['crop']),
+                //                 "resource": "taxonomy_term"
+                //             }]
+                //         }
+                //         else if (keys[i] == 'Field'){
+                //             updateHarvestObject['movement'] = { 'area': [{
+                //                 "id": this.areaToIDMap.get(updateObject['area']),
+                //                 "resource": "taxonomy_term",}]
+                //             }
+                //         }
+                //         else if(keys[i] == 'Hours'){
+                //             updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Labor')].value = updateObject['Hours']
+
+                //             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
+                //         }
+                //         else if(keys[i] == 'Num Workers'){
+                //             updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Workers')].value = updateObject['Num Workers']
+
+                //             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Num Workers']
+                //         }
+                //         else if(keys[i] == 'Comments'){
+                //             updateHarvestObject['notes'] = {'value': updateObject['Comments'],
+                //                 'format': 'farm_format'}
+                //         }
+                //         else if(keys[i] == 'User'){
+                //             updateHarvestObject['uid'] = {
+                //                 'id': this.userToIDMap.get(updateObject['User']),
+                //                 'resource': 'user'
+                //             }
+                //             updatePlantObject['uid'] = {
+                //                 'id': this.userToIDMap.get(updateObject['User']),
+                //                 'resource': 'user'
+                //             }
+                //         }  
+                //     }
                 
+                    
+                //     let HarvestURL = '/log/' + id
+                //     let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
+                //     //call updateRecord function to update planting log
+                //     if(!(Object.entries(updatePlantObject).length === 0)){
+                //         updateRecord(plantingUrl, updatePlantObject, this.sessionToken)
+                //     }
+                //     //call updateRecord function to update seeding log
+                //     if(!(Object.entries(updateHarvestObject).length === 0)){
+                //         updateRecord(HarvestURL, updateHarvestObject,this.sessionToken)
+                //     }
+                //     this.rowBeingEdited = false
+                // },
+                    disableFilters() {
+                        this.rowBeingEdited = true
+                    },
+                    enableFilters(){
+                        this.rowBeingEdited = false
+                    },
+                },
+                computed:{
+                    cropList(){
+                    let harvestFilter = this.HRLog.filter((x) => x)
+                    let cropArray = []
+                    if(this.chosenField != 'All'){
+                        let fieldFilter = harvestFilter.filter((x) => x.area[0].name === this.chosenField)
+                        cropArray = fieldFilter.map(h => 
+                            this.idToCropMap.get(h.data.crop_tid)
+                        )
                     }
+                    else{
+                        cropArray = harvestFilter.map(h=> 
+                            this.idToCropMap.get(h.data.crop_tid)
+                        )
+                    }
+
+                    let crops = new Set(cropArray)
+                    let newCropArray = Array.from(crops)
+                    return newCropArray.sort()
+                },
+                    fieldList(){
+                        let harvestFilter = this.HRLog.filter((x) => x)
+                        let fieldArray = []
+                        if(this.chosenCrop != 'All'){
+                            let cropFilter = harvestFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.chosenCrop)
+                            fieldArray = cropFilter.map(h =>
+                                h.area[0].name
+                            )
+                        }
+                        else{
+                            fieldArray = harvestFilter.map(h =>
+                                h.area[0].name
+                            )
+                        }
+                        let fields = new Set(fieldArray)
+                        let newfieldArray = Array.from(fields)
+                        return newfieldArray.sort()
+                    },
+                    tableData() {
+                        let filterRows = this.HRLog.filter((x) => x)
+
+                        if(this.selectedArea != 'All'){
+                            filterRows = filterRows.filter((x) => x.area[0].name === this.chosenField)
+                        }
+                        if(this.selectedCrop != 'All'){
+                            filterRows = filterRows.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.chosenCrop)
+                        }
+                        let rows = []
+                        for(let log of this.HRLog){
+                            let row = {
+                                id: this.HRLog.indexOf(log),
+                                data:[
+                                    dayjs.unix(log.timestamp).format('YYYY-MM-DD'),
+                                    this.idToCropMap.get(log.data.crop_tid),
+                                    log.area[0].name, 
+                                    log.quantity[0].value,
+                                    log.quantity[0].unit.name,
+                                    (Math.round(log.quantity[1].value*100))/100,
+                                    log.notes.value,
+                                    this.idToUserMap.get(log.uid.id),
+                                ]
+                                }
+                            rows.push(row)
+                        }
+                        return rows
+                    },
+                    tableInputTypes(){
+                        let userNameArray = []
+                        const userKeyIterator = this.userToIDMap.keys()
+                        for(i=0; i < this.userToIDMap.size; i++){
+                            userNameArray.push(userKeyIterator.next().value)
+                        }
+                        let cropNameArray = []
+                        for(let [key, info] of this.cropToIDMap){
+                            cropNameArray.push(key)
+                        }
+                        let fieldNameArray = []
+                        const fieldKeyIterator = this.areaToIDMap.keys()
+                        for(i=0; i < this.areaToIDMap.size; i++){
+                            fieldNameArray.push(fieldKeyIterator.next().value)
+                        }
+                        let unitNameArray = []
+                        const unitKeyIterator = this.unitToIDMap.keys()
+                        for(i = 0; i < this.unitToIDMap.size;i++){
+                            unitNameArray.push(unitKeyIterator.next().value)
+                        }
+                        return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: fieldNameArray}, {type:'number'}, {type:'dropdown', value: unitNameArray}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
+                    },
+                },
+                created() {
+                    getSessionToken().then((response) => {
+                        this.sessionToken = response
+                    })
+                    getIDToCropMap().then((response) => {
+                        this.idToCropMap = new Map(response)
+                    })
+                    getCropToIDMap().then((response) => {
+                        this.cropToIDMap = new Map(response)
+                    })
+                    getIDToUserMap().then((response) => {
+                        this.idToUserMap = new Map (response)
+                    })
+                    getUserToIDMap().then((response) => {
+                        this.userToIDMap = new Map (response)
+                    })
+                    getAreaToIDMap().then((response) => {
+                        this.areaToIDMap = new Map(response)
+                    })
+                    getUnitToIDMap().then((response) => {
+                        this.unitToIDMap = new Map(response)
+                    })
                 }
            });
            Vue.config.devtools = true;
