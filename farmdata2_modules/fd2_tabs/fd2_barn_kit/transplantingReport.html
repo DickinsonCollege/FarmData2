@@ -8,7 +8,7 @@
         <!--This uses the dateRangeSelectionComponent defined in the FD2 Resources file - it defines the date input forms together.-->
             <date-range-selection data-cy="date-range-selection"
             class="center-block"  
-            default-start-date="2020-05-05" :default-end-date=dateRangeMaxDate @start-date-changed="startDateChange" @end-date-changed="endDateChange" 
+            default-start-date="2020-05-05" :default-end-date=endDate @start-date-changed="startDateChange" @end-date-changed="endDateChange" 
             >
             </date-range-selection>
 
@@ -16,8 +16,9 @@
             <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" @click="reportButtonClicked">Generate Report</button>
         </div>
      </fieldset>
+
      <!--Report table filters UI (uses the DropdownWithAllComponent defined in the fd2_tabs/resources directory) and the styles from the Seeding Report-->
-     <fieldset class="center-block panel panel-default" style="width: 75%;" v-if="reportDisplay">
+     <fieldset class="center-block panel panel-default" style="width: 75%;" v-if="reportDisplay && !noResults">
         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
          <div style="display: flex; width: 100%;">
             <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed="cropChange">Crop:</dropdown-with-all>
@@ -37,6 +38,11 @@
                 :visible-columns="tableVisibleColumns">
         </custom-table>        
     </div>
+
+    <!--'No Data Found' message displayed if no transplanting logs match the query-->
+    <div style="display: flex; width: 100%;">
+        <p v-if="noResults">No Transplanting Logs Found</p>
+    </div>
 </div>
 <script>
     new Vue({
@@ -53,7 +59,7 @@
             endDate: "2020-05-15",
             dateRangeClicks: 0,
             // dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
-            dateRangeMaxDate: "2020-05-15",
+            dateRangeMaxDate: dayjs().format("YYYY-MM-DD"),
             //display variables
             reportDisplay: false,
             //report table variables
@@ -63,6 +69,7 @@
             selectedCrop: "All",
             selectedArea: "All",
             results: [],
+            noResults: false,
             idToCropMap: new Map()
         },
         methods: {
@@ -196,6 +203,12 @@
                     }                    
                 })
 
+                if(rows.length == 0){
+                    this.noResults = true
+                }
+                else{
+                    this.noResults = false
+                }
                 return rows
             }
         },
