@@ -102,7 +102,7 @@
                     areaToIDMap: new Map(),
                     unitToIDMap: new Map(),
 
-                    tableHeaders: [ 'Date', 'Crop', 'Field', 'Yield', 'Unit', 'Hours','Comments', 'Users', 'Edit', 'Delete'],
+                    tableHeaders: [ 'Date', 'Crop', 'Field', 'Yield', 'Unit', 'Hours', 'Comments', 'Users', 'Edit', 'Delete'],
                     tableVisibleColumns:[true, true, true, true, true, true, true, true],
 
                 },
@@ -141,18 +141,89 @@
                             }
                         }
                     },
-                    updateTableRow(edits, rowID) {
-                        for(var i = 0; i < this.tableData.length; i++){
-                            if(this.tableData[i].id == rowID){
-                                for( const [key, value] of Object.entries(edits)) {
-                                    this.tableData[key] = value
+
+                    // updateTableRow(edits, rowID) {
+                    //     let url = '/log/' + logID
+                    //     for(var i = 0; i < this.tableData.length; i++){
+                    //         if(this.tableData[i].id == rowID){
+                    //             for( const [key, value] of Object.entries(edits)) {
+                    //                 this.tableData[key] = value
+                    //             }
+                    //         }
+                    //     }
+                        
+                    //     if(!(Object.entries(edits).length === 0)){
+                    //     updateRecord(url, edits, this.sessionToken)
+                    // }
+
+                    //     // Would also need to update data in the db via API here.
+                    // },
+                    
+                    updateTableRow(updateObject, id){
+                        this.updateLog = this.harvestLogs.filter((x) => x.id === id)
+                        let updateHarvestObject = {}
+                
+                        /**
+                         * The Table component returns an object with the cells that were updated. We don't know how many or which ones where updated, so we check for all possible cells that could have been updated.
+                         */
+                        let keys = Object.keys(updateObject)
+                        if(keys.includes('Yield') || keys.includes('Unit') || keys.includes('Hours')){
+                            updateHarvestObject['quantity'] = this.quantityFarmHarvest
+                        }
+                        
+                        for(i=0; i < keys.length; i++){
+                            if(keys[i] == 'Date'){ //works
+                                updateHarvestObject['timestamp'] = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
+                            }
+                            else if(keys[i] == 'Crop'){ //works
+                                updateHarvestObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
+                            }
+                            else if (keys[i] == 'Field'){ //works
+                                updateHarvestObject['area'] = [{ 'id': this.areaToIDMap.get(updateObject['Field']),
+                                    "resource": "taxonomy_term",}]
+                            }
+                            else if (keys[i] == 'Yield'){ //not yet
+                               updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Harvest')].value = updateObject['Units']
+                               this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Harvest')].value = updateObject['Units']
+                            }
+                            else if (keys[i] == 'Unit'){ //not yet
+                                updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Harvest')].unit.name.value = updateObject['Units']
+                                this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Harvest')].unit.name.value = updateObject['Units']
+                            }
+                            else if (keys[i] == 'Hours'){ //works
+                                updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Labor')].value = updateObject['Hours']
+
+                                this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
+                            }
+                            else if(keys[i] == 'Comments'){ //works
+                                updateHarvestObject['notes'] = {'value': updateObject['Comments'],
+                                    'format': 'farm_format'}
+                            }
+                            else if(keys[i] == 'Users'){ //works
+                                updateHarvestObject['uid'] = {
+                                    'id': this.userToIDMap.get(updateObject['Users']),
+                                    'resource': 'user'
+                                }
+                            }
+                        }
+                        
+                        if(keys.includes('Yield') || keys.includes('Unit') || 
+                            keys.includes('Hours')){
+                            for(var i=0; i < this.harvestLogs.length; i++){
+                                if(this.harvestLogs[i].id === id){
+                                    this.harvestLogs.splice(i, this.updateLog)
                                 }
                             }
                         }
 
-                        // Would also need to update data in the db via API here.
-                    },
-                    
+                        let harvestUrl = '/log/' + id
+                        //call updateRecord function to update harvest log
+                        if(!(Object.entries(updateHarvestObject).length === 0)){
+                            updateRecord(harvestUrl, updateHarvestObject,this.sessionToken)
+                        }
+                        this.rowBeingEdited = false
+                },
+
                     disableFilters() {
                         this.rowBeingEdited = true
                     },
@@ -252,6 +323,40 @@
                             unitNameArray.push(unitKeyIterator.next().value)
                         }
                         return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: fieldNameArray}, {type:'number'}, {type:'dropdown', value: unitNameArray}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
+                    },
+                    /**
+                     * returns the structure for updating the quantity section of the Harvest Report Logs. The values have not been updated yet.
+                     */
+                    quantityFarmHarvest(){
+                        return [
+                            {
+                                "measure": "weight", 
+                                "value": this.updateLog[0].quantity[0].value,
+                                "unit": {
+                                    "id": this.unitToIDMap.get('POUND'), 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Harvest"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": this.updateLog[0].quantity[1].value,
+                                "unit": {
+                                    "id": this.unitToIDMap.get('HOURS'),
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": this.updateLog[0].quantity[2].value,
+                                "unit": {
+                                    "id": this.unitToIDMap.get('PEOPLE'),
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ]
                     },
                 },
                 created() {
