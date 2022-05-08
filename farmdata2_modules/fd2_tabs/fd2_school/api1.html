@@ -98,9 +98,22 @@
                     this.harvestLogs.push( {date: "2018-05-02", area: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"} )
                 },
                 addLoginData: function() {
-                    this.farm = "Sample Farm";
-                    this.user = "manager1";
-                    this.language = "English";
+                    axios
+                    .get('/farm.json') 
+                    .then((response) => {
+                        console.log("Got Response")
+                        console.log(response)
+                        this.farm = response.data.name;
+                        this.user = response.data.user.name;
+                        this.language = response.data.languages.en.name;
+                    })
+                    .catch((error) => {
+                        console.log("Error Occurred")
+                        console.log(error)
+
+                })
+                    
+                    
                 }
                 
             }
