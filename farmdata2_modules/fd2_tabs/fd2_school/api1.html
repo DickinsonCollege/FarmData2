@@ -27,12 +27,12 @@
 			
 			<label for=”crop”>Crop:</label>
 			<select id="crop" name="crop" v-model="selectedCrop">
-	  			<option v-for="cropOption in cropOptions">{{ cropOption }}</option>
+	  			<option v-for="crop in cropMaptoArray">{{ crop }}</option>
             </select>
             
             <label for=”field”>Field:</label>
 			<select id="field" name="field" v-model="selectedField">
-	  			<option v-for="fieldOption in fieldOptions">{{ fieldOption }}</option>
+	  			<option v-for="area in areaMaptoArray">{{ area }}</option>
 			</select>
             
 			<br>
@@ -92,6 +92,8 @@
                 farm: '',
                 user: '',
                 language: '',
+                idToCropMap: [],
+                idToAreaMap: [],
             },
             methods: {
                 addReport: function() {
@@ -112,11 +114,34 @@
                         console.log(error)
 
                 })
-                    
-                    
                 }
-                
-            }
+            },
+            computed:{
+                cropMaptoArray() {
+                    return Array.from(this.idToCropMap.values())
+                },
+                areaMaptoArray() {
+                    return Array.from(this.idToAreaMap.values())
+                }
+            },
+            created() {
+                getIDToCropMap()
+                    .then((response) => {
+                        this.idToCropMap = new Map(response)
+                    })
+                    .catch((err) => {
+                        console.log("Error Occurred")
+                        console.log(err)
+                    })
+                getIDToAreaMap()
+                    .then((response) => {
+                        this.idToAreaMap = new Map(response)
+                    })
+                    .catch((err) => {
+                        console.log("Error Occurred")
+                        console.log(err)
+                    })
+            },
         });
         
         Vue.config.devtools = true;
