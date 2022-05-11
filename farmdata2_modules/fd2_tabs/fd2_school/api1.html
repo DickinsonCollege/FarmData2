@@ -30,7 +30,7 @@
 
                         <label for="cropDropDown">Crop: </label>
                         <select id="Crop" name="Crop" v-model= 'reportCrop'>
-                        <option v-for="crops in crops"> {{ crops }} </option>
+                        <option v-for="crops in toArray"> {{ crops }} </option>
 
                         </select>
 
@@ -94,6 +94,17 @@
                 <script>
                     var report = new Vue ({
                         el: '#report',
+                        created() {
+                            console.log("HarvestReport created!")
+                            getIDToCropMap () 
+                            .then ((theMap) => {
+                                this.idToCropMap = theMap
+                            })
+                            .catch((err) => {
+                                console.log ("Error occured!")
+                                console.log (error)
+                            })
+                        },
                         data: {
                             reportTitle: '',
                             farm: '',
@@ -102,7 +113,10 @@
                             reportStartDate: '2020/05/05',
                             reportEndDate: '2020/05/15',
                             reportCrop: 'Kale',
-                            feildSelect: 'All',       
+                            feildSelect: 'All', 
+                            idToCropMap: [
+
+                            ],     
                             crops: [
                                 'broccoli',
                                 'kale',
@@ -121,7 +135,14 @@
                             ftext: {farm: "My Sample Report", user: "manager1", language:"English"},
 
                         },
-                            methods: {
+                        computed: {
+                            toArray(){
+                                return (Array.from (this.idToCropMap.values()));
+
+                            }
+
+                        },
+                        methods: {
                                 addLog: function (index) {
                                     axios.get('/farm.json')
                                     .then((response) => {
