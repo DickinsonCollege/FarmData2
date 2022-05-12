@@ -77,7 +77,7 @@
                             <th><strong>Yield</strong></th>
                             <th><strong>Units</strong></th>                               <th><strong>Delete</strong></th>
                     </tr>
-                    <tr v-for= "(row, index) in harvestLog">
+                    <tr v-for= "(row, index) in                         harvestReportRows">
                         <td>{{ index + 1 }}</td>
                         <td> {{ row.date }}</td>
                         <td> {{ row.field }}</td>
@@ -144,6 +144,25 @@
                             }
 
                         },
+
+                        harvestReportRows() {
+	                        let tableRows = []
+	                        for(let log of this.queryResult) {          
+		                        let tableRow = {
+                                    field: log.area[0].name,
+                                    date: new Date (log.timestamp * 1000),
+                                    yield: log.quantity[0].value,
+                                    units: log.quantity[0].unit.name,
+                                    crop: this.idToCropMap.get(log.data.crop_tid)
+                                
+		                    }
+		                        tableRows.push(tableRow)
+	                        }
+	                        return tableRows
+
+                        },
+
+
                         methods: {
                                 addLog: function (index) {
                                     let startD = dayjs(this.reportStartDate).unix()
