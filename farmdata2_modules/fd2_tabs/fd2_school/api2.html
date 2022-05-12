@@ -44,7 +44,7 @@
                 <br>
                 <br>
             
-            <button class="btn btn-primary" v-bind:disabled = "reportStartDate > reportEndDate" @click="addLog" @click="addD" type= "submit" >Generate Report</button>
+            <button class="btn btn-primary" v-bind:disabled = "reportStartDate > reportEndDate" @click="addLog" type= "submit" >Generate Report</button>
 
                 <hr></hr>
                 <br> 
@@ -110,8 +110,8 @@
                             farm: '',
                             user: '',
                             language: '',
-                            reportStartDate: '2020/05/05',
-                            reportEndDate: '2020/05/15',
+                            reportStartDate: '2020-05-05',
+                            reportEndDate: '2020-05-15',
                             reportCrop: 'Kale',
                             feildSelect: 'All', 
                             idToCropMap: [
@@ -133,6 +133,8 @@
                             row: {date: "05/01/2018", field: "Orion-3", crop: "Kale", yield: 12, units: "Bunches"},
                             state: 'hide',
                             ftext: {farm: "My Sample Report", user: "manager1", language:"English"},
+                            query: "",
+                            queryResult: []
 
                         },
                         computed: {
@@ -144,6 +146,19 @@
                         },
                         methods: {
                                 addLog: function (index) {
+                                    let startD = dayjs(this.reportStartDate).unix()
+                                    let endD = dayjs(this.reportEndDate).unix()
+                                    this.query = ("/log.json?type=farm_harvest&timestamp[ge]="+startD+"&timestamp[le]="+endD)
+
+                                    getAllPages(this.query)
+                                    .then((result) => {
+                                        this.queryResult = result
+                                        console.log("Success")
+                                    })
+                                    .catch((err) => {
+                                        console.log("Fail")
+                                    })
+
                                     axios.get('/farm.json')
                                     .then((response) => {
                                         this.farm = response.data.name
