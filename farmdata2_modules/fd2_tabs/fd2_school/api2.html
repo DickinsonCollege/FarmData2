@@ -1,0 +1,152 @@
+<html>
+	<head>
+		<title>Vue Data Binding Spike</title>
+	</head>
+	
+	<body>
+
+		<div id="sample-report" v-cloak>		
+
+		<h1>Harvest Report</h1>
+	 		<p>This page is a <i>mockup</i> of a simplified harvest report.</p>
+
+			<label for=”title”>Title:</label>
+			<input type="text" id="title" name="title" value="My Sample Harvest Report" v-model="harvestTitle">
+
+			<br>
+			
+			<label for=”start”>Start:</label>
+			<input type="date" id="start" name="start" v-model="startDate"
+	       	min="2014-01-01" :max="endDate">
+
+			<label for=”end”>End:</label>
+			<input type="date" id="end" name="end" v-model="endDate"
+	       	:min="startDate" max="2022-01-01">
+
+			<br>
+			
+			<label for=”crop”>Crop:</label>
+			<select id="crop" name="crop" v-model="selectedCrop">
+	  			<option v-for="crop in cropMaptoArray">{{ crop }}</option>
+            </select>
+            
+            <label for=”field”>Field:</label>
+			<select id="field" name="field" v-model="selectedField">
+	  			<option v-for="area in areaMaptoArray">{{ area }}</option>
+			</select>
+            
+			<br>
+			<button class="btn btn-primary" @click="addReport() ; addLoginData()">Generate Report</button>
+
+		<hr>
+		
+		<h1>{{ harvestTitle == '' ? 'Mock Harvest Report' : harvestTitle }}</h1>
+		
+			<p>Details:</p>
+			<ul>
+					<li><b>Farm</b>: {{ farm }}</li>
+					<li><b>User</b>: {{ user }}</li>
+					<li><b>Language</b>: {{ language }}</li>
+					<br>
+					<li><b>Start</b>:{{ startDate }}</li>
+					<li><b>End</b>:{{ endDate }}</li>
+					<li><b>Crop</b>:{{ selectedCrop }}</li>
+				</ul>
+
+        <p v-if="harvestLogs.length === 0">There are no Harvest Logs to be displayed.</p>
+
+		<table border=1>
+			<tr v-if="harvestLogs.length > 0">
+                <th>Row</th>
+				<th>Date</th>
+				<th>Area</th>
+				<th>Crop</th>
+				<th>Yield</th>
+				<th>Units</th>
+			</tr>
+			<tr v-for="(harvestLog,index) in harvestLogs">
+                <td>{{ index }}</td>
+                <td>{{ harvestLog.date }}</td>
+                <td>{{ harvestLog.area }}</td>
+                <td>{{ harvestLog.crop }}</td>
+                <td>{{ harvestLog.yield }}</td>
+                <td>{{ harvestLog.units }}</td>
+            </tr>
+		</table>
+
+		</div>
+
+		<script src="https://unpkg.com/vue@2"></script>
+		<script>
+		var harvestReport = new Vue({
+			el: '#sample-report',
+			data: {
+				harvestTitle: 'My Sample Harvest Report',
+				startDate: '2020-05-05',
+				endDate: '2020-05-15',
+				selectedCrop: 'Kale',
+                cropOptions: [ 'Broccoli', 'Kale', 'Peas' ],
+                selectedField: 'All',
+                fieldOptions: [ 'All', 'Chuau-1', 'SQ7' ],
+                harvestLogs: [],
+                farm: '',
+                user: '',
+                language: '',
+                idToCropMap: [],
+                idToAreaMap: [],
+            },
+            methods: {
+                addReport: function() {
+                    this.harvestLogs.push( {date: "2018-05-02", area: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"} )
+                },
+                addLoginData: function() {
+                    axios
+                    .get('/farm.json') 
+                    .then((response) => {
+                        console.log("Got Response")
+                        console.log(response)
+                        this.farm = response.data.name;
+                        this.user = response.data.user.name;
+                        this.language = response.data.languages.en.name;
+                    })
+                    .catch((error) => {
+                        console.log("Error Occurred")
+                        console.log(error)
+
+                })
+                }
+            },
+            computed:{
+                cropMaptoArray() {
+                    return Array.from(this.idToCropMap.values())
+                },
+                areaMaptoArray() {
+                    return Array.from(this.idToAreaMap.values())
+                }
+            },
+            created() {
+                getIDToCropMap()
+                    .then((response) => {
+                        this.idToCropMap = new Map(response)
+                    })
+                    .catch((err) => {
+                        console.log("Error Occurred")
+                        console.log(err)
+                    })
+                getIDToAreaMap()
+                    .then((response) => {
+                        this.idToAreaMap = new Map(response)
+                    })
+                    .catch((err) => {
+                        console.log("Error Occurred")
+                        console.log(err)
+                    })
+            },
+        });
+        
+        Vue.config.devtools = true;
+
+		</script>		
+
+	</body>
+</html>
