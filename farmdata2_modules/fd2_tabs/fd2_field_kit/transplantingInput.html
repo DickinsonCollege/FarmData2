@@ -7,7 +7,8 @@
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
                 <label for='date-selection'>Date of Transplanting:</label><label style='color:  #da4f3f'>*</label>
-                <input type='date' id='date-selection' name='date-selection' v-model='selectedDate'>
+                <input type='date' id='date-selection' name='date-selection' v-model='selectedDate'
+                :min="getMinDate" :max="getMaxDate">
                 <!--Note: method setNewDate-->
                 <br> 
                 <br>
@@ -131,7 +132,8 @@
 
                     const timeDiffInMs = now.getTime() - pastTime.getTime();
 
-                    if(timeDiffInMs >= sixMonthsInMs) {
+                    // Only crops that have been seeded within 6 months from now are eligible for transplanting
+                    if(timeDiffInMs <= sixMonthsInMs) {
                         return true;
                     } else{
                         return false;
@@ -139,6 +141,14 @@
                 }
             },
             computed: {
+                getMinDate() {
+                    return new Date().toISOString().slice(0,10);
+                },
+                getMaxDate() {
+                    // let date = new Date();
+                    // let endDate = new Date(date.getFullYear(), date.getMonth() + 1, 10);
+                    return new Date(1658030400*1000).toISOString().slice(0,10);
+                },
                 seedingDateFilter() {
                     let seedingDateArray = []
 
@@ -150,6 +160,7 @@
                     return seedingDateArray
                 },
                 cropToSeedingDateFilter() {
+                    let march2022TestDate = 1647489600;
                     for (let i = 0; i < this.cropArray.length; i++){
                             this.cropToSeedDate[this.cropArray[i]] = new Array()
                     }  
@@ -161,6 +172,7 @@
                         }
                     }
                     for (let i = 0; i < this.cropArray.length; i++){
+                        this.cropToSeedDate[this.cropArray[i]].push(new Date(march2022TestDate*1000).toLocaleDateString("en-US"))
                         this.cropToSeedDate[this.cropArray[i]].push("N/A")
                     }
                 },
@@ -334,6 +346,7 @@
                     })
                 } else {
                     this.cropToSeedDate = JSON.parse(localStorage.getItem('crop_to_seed_date'))
+                    console.log(this.cropToSeedDate)
                     getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs).then(() => {
                         this.cropToSeedingDateFilter
                         localStorage.setItem('crop_to_seed_date', JSON.stringify(this.cropToSeedDate))
