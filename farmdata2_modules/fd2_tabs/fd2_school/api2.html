@@ -36,7 +36,7 @@
 			</select>
             
 			<br>
-			<button class="btn btn-primary" @click="addReport() ; addLoginData()">Generate Report</button>
+			<button class="btn btn-primary" @click="reqDates()">Generate Report</button>
 
 		<hr>
 		
@@ -96,9 +96,6 @@
                 idToAreaMap: [],
             },
             methods: {
-                addReport: function() {
-                    this.harvestLogs.push( {date: "2018-05-02", area: "Chuau-1", crop: "Kale", yield: 10, units: "Bunches"} )
-                },
                 addLoginData: function() {
                     axios
                     .get('/farm.json') 
@@ -114,6 +111,10 @@
                         console.log(error)
 
                 })
+                },
+                reqDates: function() {
+                    let link = '/log.json?type=farm_harvest&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+                    getAllPages(link,this.harvestLogs)
                 }
             },
             computed:{
