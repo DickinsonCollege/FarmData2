@@ -56,7 +56,7 @@
         <p v-if="harvestLogs.length === 0">There are no Harvest Logs to be displayed.</p>
 
 		<table border=1>
-			<tr v-if="harvestLogs.length > 0">
+			<tr v-if="harvestReportRows.length > 0">
                 <th>Row</th>
 				<th>Date</th>
 				<th>Area</th>
@@ -64,7 +64,7 @@
 				<th>Yield</th>
 				<th>Units</th>
 			</tr>
-			<tr v-for="(harvestLog,index) in harvestLogs">
+			<tr v-for="(harvestLog,index) in harvestReportRows">
                 <td>{{ index }}</td>
                 <td>{{ harvestLog.date }}</td>
                 <td>{{ harvestLog.area }}</td>
@@ -123,6 +123,22 @@
                 },
                 areaMaptoArray() {
                     return Array.from(this.idToAreaMap.values())
+                },
+                harvestReportRows() {
+                    let tableRows = []
+                    for(let log of this.harvestLogs) {
+                        crop = this.idToCropMap.get(log.data.crop_tid)
+                        let tableRow = {
+                            date: log.timestamp,
+                            area: log.area[0].name,
+                            crop: crop,
+                            yield: log.quantity[0].value,
+                            units: log.quantity[0].unit.name,
+
+                        }
+                        tableRows.push(tableRow)
+                    }
+                    return tableRows
                 }
             },
             created() {
