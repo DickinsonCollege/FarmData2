@@ -7,7 +7,8 @@
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
                 <label for='date-selection'>Date of Transplanting:</label><label style='color:  #da4f3f'>*</label>
-                <input type='date' id='date-selection' name='date-selection' v-model='selectedDate'>
+                <input type='date' id='date-selection' name='date-selection' v-model='selectedDate'
+                :min="getMinDate" :max="getMaxDate">
                 <!--Note: method setNewDate-->
                 <br> 
                 <br>
@@ -99,7 +100,9 @@
                     this.savedArea = newArea
                 },
                 setNewSeedDate(newSeedDate){
-                    this.selectedSeedDate = newSeedDate;
+                    this.selectedSeedDate = newSeedDate
+                    // Reset currently selected transplanting date
+                    this.selectedDate = dayjs().format('YYYY-MM-DD').toString()
                 },
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
@@ -131,7 +134,8 @@
 
                     const timeDiffInMs = now.getTime() - pastTime.getTime();
 
-                    if(timeDiffInMs >= sixMonthsInMs) {
+                    // Only crops that have been seeded within 6 months from now are eligible for transplanting
+                    if(timeDiffInMs <= sixMonthsInMs) {
                         return true;
                     } else{
                         return false;
@@ -139,6 +143,30 @@
                 }
             },
             computed: {
+                getMinDate() {
+                    if (this.selectedSeedDate != "N/A" && this.selectedSeedDate != null) {
+                        // Convert date string MM/DD/YYYY to Date
+                        const month = +this.selectedSeedDate.substring(0, 2);
+                        const day = +this.selectedSeedDate.substring(3, 5);
+                        const year = +this.selectedSeedDate.substring(6, 10);
+
+                        const date = new Date(year, month - 1, day);
+                        return date.toISOString().slice(0,10);
+                    }
+                },
+                getMaxDate() {
+                    if (this.selectedSeedDate != "N/A" && this.selectedSeedDate != null) {
+                        // Convert date string MM/DD/YYYY to Date
+                        const month = +this.selectedSeedDate.substring(0, 2);
+                        const day = +this.selectedSeedDate.substring(3, 5);
+                        const year = +this.selectedSeedDate.substring(6, 10);
+
+                        // Get the date 6 months from the selected seeding date
+                        const date = new Date(year, month - 1 + 6, day);
+
+                        return date.toISOString().slice(0,10);
+                    }
+                },
                 seedingDateFilter() {
                     let seedingDateArray = []
 
@@ -150,6 +178,9 @@
                     return seedingDateArray
                 },
                 cropToSeedingDateFilter() {
+                    let march2022TestDate = 1647489600;
+                    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+
                     for (let i = 0; i < this.cropArray.length; i++){
                             this.cropToSeedDate[this.cropArray[i]] = new Array()
                     }  
@@ -157,10 +188,11 @@
                         let cropName = this.idToCropMap.get(log.data.crop_tid)
                         let seedingDate = new Date(log.timestamp*1000)
                         if (this.sixMonthsFilter(seedingDate)) {
-                            this.cropToSeedDate[cropName].push(seedingDate.toLocaleDateString("en-US"))
+                            this.cropToSeedDate[cropName].push(seedingDate.toLocaleDateString("en-US", options))
                         }
                     }
                     for (let i = 0; i < this.cropArray.length; i++){
+                        this.cropToSeedDate[this.cropArray[i]].push(new Date(march2022TestDate*1000).toLocaleDateString("en-US", options))
                         this.cropToSeedDate[this.cropArray[i]].push("N/A")
                     }
                 },
