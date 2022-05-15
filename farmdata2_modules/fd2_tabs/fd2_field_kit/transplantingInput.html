@@ -100,7 +100,9 @@
                     this.savedArea = newArea
                 },
                 setNewSeedDate(newSeedDate){
-                    this.selectedSeedDate = newSeedDate;
+                    this.selectedSeedDate = newSeedDate
+                    // Reset currently selected transplanting date
+                    this.selectedDate = dayjs().format('YYYY-MM-DD').toString()
                 },
                 setNewTimeUnit(newTimeUnit){
                     this.selectedTimeUnit = newTimeUnit
@@ -142,12 +144,28 @@
             },
             computed: {
                 getMinDate() {
-                    return new Date().toISOString().slice(0,10);
+                    if (this.selectedSeedDate != "N/A" && this.selectedSeedDate != null) {
+                        // Convert date string MM/DD/YYYY to Date
+                        const month = +this.selectedSeedDate.substring(0, 2);
+                        const day = +this.selectedSeedDate.substring(3, 5);
+                        const year = +this.selectedSeedDate.substring(6, 10);
+
+                        const date = new Date(year, month - 1, day);
+                        return date.toISOString().slice(0,10);
+                    }
                 },
                 getMaxDate() {
-                    // let date = new Date();
-                    // let endDate = new Date(date.getFullYear(), date.getMonth() + 1, 10);
-                    return new Date(1658030400*1000).toISOString().slice(0,10);
+                    if (this.selectedSeedDate != "N/A" && this.selectedSeedDate != null) {
+                        // Convert date string MM/DD/YYYY to Date
+                        const month = +this.selectedSeedDate.substring(0, 2);
+                        const day = +this.selectedSeedDate.substring(3, 5);
+                        const year = +this.selectedSeedDate.substring(6, 10);
+
+                        // Get the date 6 months from the selected seeding date
+                        const date = new Date(year, month - 1 + 6, day);
+
+                        return date.toISOString().slice(0,10);
+                    }
                 },
                 seedingDateFilter() {
                     let seedingDateArray = []
@@ -161,6 +179,8 @@
                 },
                 cropToSeedingDateFilter() {
                     let march2022TestDate = 1647489600;
+                    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+
                     for (let i = 0; i < this.cropArray.length; i++){
                             this.cropToSeedDate[this.cropArray[i]] = new Array()
                     }  
@@ -168,11 +188,11 @@
                         let cropName = this.idToCropMap.get(log.data.crop_tid)
                         let seedingDate = new Date(log.timestamp*1000)
                         if (this.sixMonthsFilter(seedingDate)) {
-                            this.cropToSeedDate[cropName].push(seedingDate.toLocaleDateString("en-US"))
+                            this.cropToSeedDate[cropName].push(seedingDate.toLocaleDateString("en-US", options))
                         }
                     }
                     for (let i = 0; i < this.cropArray.length; i++){
-                        this.cropToSeedDate[this.cropArray[i]].push(new Date(march2022TestDate*1000).toLocaleDateString("en-US"))
+                        this.cropToSeedDate[this.cropArray[i]].push(new Date(march2022TestDate*1000).toLocaleDateString("en-US", options))
                         this.cropToSeedDate[this.cropArray[i]].push("N/A")
                     }
                 },
@@ -346,7 +366,6 @@
                     })
                 } else {
                     this.cropToSeedDate = JSON.parse(localStorage.getItem('crop_to_seed_date'))
-                    console.log(this.cropToSeedDate)
                     getAllPages('http://localhost/log.json?type=farm_seeding&log_category=Tray Seedings', this.traySeedingLogs).then(() => {
                         this.cropToSeedingDateFilter
                         localStorage.setItem('crop_to_seed_date', JSON.stringify(this.cropToSeedDate))
