@@ -37,7 +37,23 @@
                 :headers="columns"
                 :rows="harvestReportRows"
                 :visible-columns="tableVisibleColumns">
-        </custom-table>        
+        </custom-table>   
+        
+        <br>
+                <div style="display: flex; width: 100%;">
+                    <fieldset data-cy="transplant-summary" class="center-block panel panel-default" style="width: 47%;">
+                        <legend class="panel-heading" style="background-color: #d62a17; color: white;">Transplant Report Summary</legend>
+                        
+                        <div>
+                            <p style="margin-left: 5%;">Total Number of Transplants: <b>{{ numTransplants }}</b></p>
+                            <p style="margin-left: 5%;">Total Number of Rows Per Bed: <b>{{ totalRowBed }}</b></p>
+                            <p style="margin-left: 5%;">Total number of Row Feet: <b>{{ totalRowFeet }}</b></p>
+                            <p style="margin-left: 5%;">Total number of Trays: <b>{{ totalNumTrays }}</b></p>
+                            <p style="margin-left: 5%;">Total Hours Worked: <b>{{ totalNumHours }}</b></p>
+                        </div>
+                    </fieldset>
+                </div>
+
     </div>
 
     <!--'No Data Found' message displayed if no transplanting logs match the query-->
@@ -45,6 +61,7 @@
         <p v-if="noResults">No Transplanting Logs Found</p>
     </div>
 </div>
+
 <script>
     new Vue({
         el: '#transplantUI',
@@ -217,6 +234,53 @@
                 }
                 return rows
             },
+
+            //Returns total number of transplants in filtered report
+            numTransplants(){
+                    let numTransplants = this.harvestReportRows.length
+                    return numTransplants
+            },
+
+            //Returns total Rows per Bed in filtered report
+            totalRowBed(){
+                    let tableData = this.harvestReportRows
+                    let sumRowBed = 0
+                    tableData.map(h => {
+                        sumRowBed = sumRowBed + parseInt(h.data[5])
+                    })
+                    return sumRowBed
+            },
+
+            //Returns total number of Row Feet in filtered report 
+            totalRowFeet(){
+                    let tableData = this.harvestReportRows
+                    let sumRowFeet = 0
+                    tableData.map(h => {
+                        sumRowFeet = sumRowFeet + parseInt(h.data[6])
+                    })
+                    return (Math.round(sumRowFeet*100))/100
+            },
+
+            //Returns total number of trays in filtered report
+            totalNumTrays(){
+                    let tableData = this.harvestReportRows
+                    let totalTrays = 0
+                    tableData.map(h =>
+                       totalTrays = totalTrays + parseFloat(h.data[7])
+                    )
+                    return (Math.round(totalTrays*100))/100
+            },
+
+            //Returns total hours worked in filtered report
+            totalNumHours(){
+                    let tableData = this.harvestReportRows
+                    let totalTrays = 0
+                    tableData.map(h =>
+                       totalTrays = totalTrays + parseFloat(h.data[8])
+                    )
+                    return (Math.round(totalTrays*100))/100
+            },
+
             columnInputs(){
                 let userNameArray = []
                 const userKeyIterator = this.userToIDMap.keys()
@@ -237,6 +301,7 @@
 
                 return [{type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'date'}, {type:'date'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
             }
+
         },
         created(){
             //Creates a map that is able to convert crop ids to the crop name from the JSON string.
