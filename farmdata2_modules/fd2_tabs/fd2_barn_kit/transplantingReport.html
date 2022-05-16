@@ -33,6 +33,7 @@
         <custom-table data-cy="report-table"
                 can-delete
                 can-edit
+                :input-options="columnInputs"
                 :headers="columns"
                 :rows="harvestReportRows"
                 :visible-columns="tableVisibleColumns">
@@ -70,7 +71,11 @@
             selectedArea: "All",
             results: [],
             noResults: false,
-            idToCropMap: new Map()
+            //Data maps
+            idToCropMap: new Map(),
+            cropToIDMap: new Map(),
+            userToIDMap: new Map(),
+            areaToIDMap: new Map()
         },
         methods: {
             //methods for date range selection
@@ -210,6 +215,26 @@
                     this.noResults = false
                 }
                 return rows
+            },
+            columnInputs(){
+                let userNameArray = []
+                const userKeyIterator = this.userToIDMap.keys()
+                for(i=0; i < this.userToIDMap.size; i++){
+                    userNameArray.push(userKeyIterator.next().value)
+                }
+
+                let cropNameArray = []
+                for(let [key, info] of this.cropToIDMap){
+                    cropNameArray.push(key)
+                }
+
+                let areaNameArray = []
+                const areaKeyIterator = this.areaToIDMap.keys()
+                for(i=0; i < this.areaToIDMap.size; i++){
+                    areaNameArray.push(areaKeyIterator.next().value)
+                }
+
+                return [{type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'date'}, {type:'date'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
             }
         },
         created(){
@@ -221,6 +246,30 @@
                 })
                 .catch((err) => {
                     console.log("An error occurred in getting the IDToCropMap.")
+                    console.log(err)
+                })
+            getUserToIDMap()
+                .then((response) => {
+                    this.userToIDMap = new Map (response)
+                })
+                .catch((err) => {
+                    console.log("An error occurred in getting the userToIDMap.")
+                    console.log(err)
+                })
+            getCropToIDMap()
+                .then((response) => {
+                    this.cropToIDMap = new Map (response)
+                })
+                .catch((err) => {
+                    console.log("An error occurred in getting the cropToIDMap.")
+                    console.log(err)
+                })
+            getAreaToIDMap()
+                .then((response) => {
+                    this.areaToIDMap = new Map (response)
+                })
+                .catch((err) => {
+                    console.log("An error occurred in getting the areaToIDMap.")
                     console.log(err)
                 })
         }
