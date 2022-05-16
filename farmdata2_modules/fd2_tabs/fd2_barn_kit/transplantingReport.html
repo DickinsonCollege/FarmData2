@@ -108,6 +108,13 @@
             },
             reportButtonClicked: function(){
                 this.reportDisplay = true
+                this.results = []
+
+                // totalNumHours = 0 
+                // totalNumTrays = 0
+                // totalRowBed = 0
+                // totalRowFeet = 0
+
                 //Converts selected date-times into unix date format
                 let timestampStart = dayjs(this.startDate).unix()
                 let timestampEnd= dayjs(this.endDate).unix()
