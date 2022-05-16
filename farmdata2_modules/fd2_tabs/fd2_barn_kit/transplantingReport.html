@@ -75,7 +75,8 @@
             idToCropMap: new Map(),
             cropToIDMap: new Map(),
             userToIDMap: new Map(),
-            areaToIDMap: new Map()
+            areaToIDMap: new Map(),
+            idToUserMap: new Map()
         },
         methods: {
             //methods for date range selection
@@ -203,7 +204,7 @@
                             h.quantity[2].value,
                             h.quantity[3].value,
                             h.notes.value,
-                            h.uid.id
+                            $vm.idToUserMap.get(h.uid.id)
                         ]
                     }                    
                 })
@@ -270,6 +271,14 @@
                 })
                 .catch((err) => {
                     console.log("An error occurred in getting the areaToIDMap.")
+                    console.log(err)
+                })
+            getIDToUserMap()
+                .then((response) => {
+                    this.idToUserMap = new Map (response)
+                })
+                .catch((err) => {
+                    console.log("An error occurred in getting the idToUserMap.")
                     console.log(err)
                 })
         }
