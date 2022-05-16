@@ -36,7 +36,8 @@
                 :input-options="columnInputs"
                 :headers="columns"
                 :rows="harvestReportRows"
-                :visible-columns="tableVisibleColumns">
+                :visible-columns="tableVisibleColumns"
+                @row-deleted="deleteRowLog">
         </custom-table>   
         
         <br>
@@ -151,7 +152,13 @@
             areaChange(selectedArea){
                 this.selectedArea = selectedArea   
             },
-            //parses a string for integer
+            deleteRowLog(logID) {
+                for(var i=0; i < this.results.length; i++){
+                    if(this.results[i].id === logID){
+                        this.results.splice(i, 1)
+                    }
+                }
+            }
         },
         computed: {
            //Returns a sorted list of the crops represented in the logs in the report table. This is based off of the cropList() property in seedingReport.html
