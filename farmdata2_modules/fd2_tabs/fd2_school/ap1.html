@@ -98,11 +98,20 @@
                     },
                     methods: {
                         addLog:function(){
-                            harvestLog.push(this.row)
-                        
-                    this.Farm='Sample Farm';
-                        this.User='manager1';
-                        this.Language='English';
+                            axios.get('/farm.json')
+                        .then((response) => {
+                            A:  console.log("Got Response");
+                                console.log(response);
+                                this.Farm=response.data.name;
+                                this.User=response.data.user.name;
+                                this.Language=response.data.user.language;
+
+                        })
+                        .catch((error) => {
+                            B:  console.log("Error Occurred");
+                                console.log(response);
+                        })
+                        C:  this.harvestLog.push(this.row);
                       },
                   }
                   });
