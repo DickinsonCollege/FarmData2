@@ -88,7 +88,7 @@ function fd2_school_menu() {
         'title' => 'API1',
         'type' => MENU_LOCAL_TASK,
         'page callback' => 'fd2_school_view',
-        'page arguments' => array('API1.html'),
+        'page arguments' => array('api1.html'),
         'access arguments' => array('view fd2 school'),
         'weight' => 110,
     );
