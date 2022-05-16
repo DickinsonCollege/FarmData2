@@ -6,7 +6,7 @@
             <div style="display: flex;width: 100%; padding: 7px">
                 <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
                 @click='hide'
-                :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+                :default-start-date='startDate' :default-end-date='endDate'></date-range-selection>
 
                 <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
             </div>
@@ -18,15 +18,15 @@
                 <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                     <div style="display: flex; width: 100%;">
-                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list=seedingTypeList includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
+                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list='seedingTypeList' includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
                     
-                        <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list=cropList includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
+                        <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list='cropList' includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
-                        <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list=areaList includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
+                        <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list='areaList' includes-all default-input='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
                     </div>
                 </fieldset>-->
 
-                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows=tableRows :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
+                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows='tableRows' :headers='headers' :input-options='columnInputs' @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
             </div>

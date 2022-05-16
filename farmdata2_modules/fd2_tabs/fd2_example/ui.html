@@ -8,8 +8,8 @@
     <UL>
         <dropdown-with-all data-cy="crop-dropdown" 
             includes-all 
-            :default-input=pickedCrop
-            :dropdown-list=cropList
+            :default-input='pickedCrop'
+            :dropdown-list='cropList'
             @selection-changed="cropChange">
         Pick a Crop: 
         </dropdown-with-all>
@@ -46,7 +46,7 @@
     <ul>
         <date-range-selection data-cy="date-range" 
             default-start-date="2021-01-15" 
-            :default-end-date=dateRangeMaxDate
+            :default-end-date='dateRangeMaxDate'
             @start-date-changed='startDateChange' 
             @end-date-changed='endDateChange' 
             @click='dateRangeClicked'>
@@ -73,10 +73,10 @@
         </custom-table>
         <!-- Does not work at present See Issue #357.
         <button data-cy='show-column' 
-            :disabled=tableVisibleColumns[2]
+            :disabled='tableVisibleColumns[2]'
             @click='showColumn'>Show Column</button>
         <button data-cy='hide-column' 
-            :disabled=!tableVisibleColumns[2]
+            :disabled='!tableVisibleColumns[2]'
             @click='hideColumn'>Hide Column</button>
         -->
         <button data-cy='add-data' 

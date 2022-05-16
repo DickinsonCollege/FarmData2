@@ -10,7 +10,7 @@
     <UL>
         <button data-cy='clear-cache' @click='clearCache'>Clear the Cache</button>
     </UL>
-    <OL data-cy=crop-list>
+    <OL data-cy='crop-list'>
         <!-- Give each LI a data-cy attribute that matches the list numbering -->
         <LI v-for="(crop,i) in cropNames"><span :data-cy=(i+1)+'crop'>{{ crop }}</span></LI>
     </OL>
