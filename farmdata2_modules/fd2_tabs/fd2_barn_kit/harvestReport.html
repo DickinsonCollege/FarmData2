@@ -6,8 +6,9 @@
             <div id="rpt" class = "v-cloak">
                     <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
                         <legend class="panel-heading fd2-legend">
-                             <center>Date Span</center>
+                             <center>Select Dates</center>
                         </legend>
+                        <!-- first filter by date -->
                         <div class="center-block">
                             <div style="display: flex;width: 100%; padding: 7px">
                                 <date-range-selection 
@@ -17,11 +18,12 @@
                                     @end-date-changed='endDateChange' 
                                     @click='hide'>
                                 </date-range-selection>
-                            <button class="btn center-block btn-primary" v-if='!reportVisible' @click='harvestLogRequestInDateSpan'>Run Date Filter</button>
+                            <button class="btn center-block btn-primary" v-if='!reportVisible' @click='harvestLogRequestInDateSpan'>Generate Report</button>
                             </div>
                         </div>
                     </fieldset>
 
+                <!-- second set of filters appears after initially picking the daates -->
                 <div v-if='reportVisible'>    
                     <div v-if="harvestLogs.length != 0">
                         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 75%;">              
@@ -61,10 +63,8 @@
                         </div> 
                     </div>
                 </div>
-            </div>    
-                        
-                        
-       
+            </div>            
+
        <script>
            var ReportVue= new Vue({
                 el:"#rpt",
@@ -132,6 +132,7 @@
                             this.stillLoading = true
                     },    
                     
+                    // deletes a record in the list of HarvestLogs returned
                     deleteTableRow(logID) {
                         let url = '/log/' + logID
                         deleteRecord(url, this.sessionToken)
@@ -141,24 +142,8 @@
                             }
                         }
                     },
-
-                    // updateTableRow(edits, rowID) {
-                    //     let url = '/log/' + logID
-                    //     for(var i = 0; i < this.tableData.length; i++){
-                    //         if(this.tableData[i].id == rowID){
-                    //             for( const [key, value] of Object.entries(edits)) {
-                    //                 this.tableData[key] = value
-                    //             }
-                    //         }
-                    //     }
-                        
-                    //     if(!(Object.entries(edits).length === 0)){
-                    //     updateRecord(url, edits, this.sessionToken)
-                    // }
-
-                    //     // Would also need to update data in the db via API here.
-                    // },
                     
+                    // updates a record in the list of HarvestLogs returned
                     updateTableRow(updateObject, id){
                         this.updateLog = this.harvestLogs.filter((x) => x.id === id)
                         let updateHarvestObject = {}
@@ -172,34 +157,34 @@
                         }
                         
                         for(i=0; i < keys.length; i++){
-                            if(keys[i] == 'Date'){ //works
+                            if(keys[i] == 'Date'){
                                 updateHarvestObject['timestamp'] = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
                             }
-                            else if(keys[i] == 'Crop'){ //works
+                            else if(keys[i] == 'Crop'){
                                 updateHarvestObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
                             }
-                            else if (keys[i] == 'Field'){ //works
+                            else if (keys[i] == 'Field'){
                                 updateHarvestObject['area'] = [{ 'id': this.areaToIDMap.get(updateObject['Field']),
                                     "resource": "taxonomy_term",}]
                             }
-                            else if (keys[i] == 'Yield'){ //not yet
+                            else if (keys[i] == 'Yield'){ //does not work yet
                                updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Harvest')].value = updateObject['Units']
                                this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Harvest')].value = updateObject['Units']
                             }
-                            else if (keys[i] == 'Unit'){ //not yet
+                            else if (keys[i] == 'Unit'){ //does not work yet
                                 updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Harvest')].unit.name.value = updateObject['Units']
                                 this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Harvest')].unit.name.value = updateObject['Units']
                             }
-                            else if (keys[i] == 'Hours'){ //works
+                            else if (keys[i] == 'Hours'){
                                 updateHarvestObject.quantity[quantityLocation(updateHarvestObject.quantity, 'Labor')].value = updateObject['Hours']
 
                                 this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
                             }
-                            else if(keys[i] == 'Comments'){ //works
+                            else if(keys[i] == 'Comments'){
                                 updateHarvestObject['notes'] = {'value': updateObject['Comments'],
                                     'format': 'farm_format'}
                             }
-                            else if(keys[i] == 'Users'){ //works
+                            else if(keys[i] == 'Users'){
                                 updateHarvestObject['uid'] = {
                                     'id': this.userToIDMap.get(updateObject['Users']),
                                     'resource': 'user'
@@ -207,6 +192,7 @@
                             }
                         }
                         
+                        //replace old update log with current update log
                         if(keys.includes('Yield') || keys.includes('Unit') || 
                             keys.includes('Hours')){
                             for(var i=0; i < this.harvestLogs.length; i++){
@@ -222,7 +208,7 @@
                             updateRecord(harvestUrl, updateHarvestObject,this.sessionToken)
                         }
                         this.rowBeingEdited = false
-                },
+                    },
 
                     disableFilters() {
                         this.rowBeingEdited = true
@@ -232,6 +218,7 @@
                     },
                 },
                 computed:{
+                    // returns an array of sorted crops
                     cropList(){
                         let harvestFilter = this.harvestLogs.filter((log) => log)
                         let cropArray = []
@@ -249,6 +236,7 @@
                         let newCropArray = Array.from(crops)
                         return newCropArray.sort()
                     },
+                    // returns an array of sorted fields
                     fieldList(){
                         let harvestFilter = this.harvestLogs.filter((log) => log)
                         let fieldArray = []
@@ -267,6 +255,7 @@
                         let newfieldArray = Array.from(fields)
                         return newfieldArray.sort()
                     },
+                    // formats the data into the proper format for the table component
                     tableData() {
                         let filterRows = this.harvestLogs.filter((log) => log)
 
@@ -294,6 +283,7 @@
                         })
                         return rows
                     },
+                    // returns the input options for each column in the table, uses the maps created in order to make the dropdown options
                     tableInputTypes(){
                         let userNameArray = []
 
@@ -324,8 +314,9 @@
                         }
                         return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: fieldNameArray}, {type:'number'}, {type:'dropdown', value: unitNameArray}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
                     },
+                    
                     /**
-                     * returns the structure for updating the quantity section of the Harvest Report Logs. The values have not been updated yet.
+                     * returns the basic data structure for updating the quantity section of the Harvest Report Logs. The values have not been updated yet.
                      */
                     quantityFarmHarvest(){
                         return [
