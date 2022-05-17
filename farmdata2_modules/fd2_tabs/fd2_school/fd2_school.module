@@ -54,6 +54,7 @@ function fd2_school_menu() {
 
   // Define the name and URL for the default sub-tab that appears when the tab is opened.
   // Content for this default sub-tab is provided by the 'page arguments' above.
+
   $items['farm/fd2-school/info'] = array(
     'title' => 'Info',
     'type' => MENU_DEFAULT_LOCAL_TASK,
@@ -61,9 +62,66 @@ function fd2_school_menu() {
   );
 
   // Add items blocks for new sub-tabs here.
+$items['farm/fd2-school/HTML'] = array(
+            'title' => 'HTML',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('html.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
 
-  return $items;
-};
+
+    // Add items blocks for new sub-tabs here.
+$items['farm/fd2-school/Vue1'] = array(
+            'title' => 'Vue1',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('vue1.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
+    $items['farm/fd2-school/Test'] = array(
+            'title' => 'Test',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('test.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
+    $items['farm/fd2-school/Vue2'] = array(
+            'title' => 'Vue2',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('vue2.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
+
+    $items['farm/fd2-school/API1'] = array(
+            'title' => 'API1',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('api1.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
+
+    $items['farm/fd2-school/API2'] = array(
+            'title' => 'API2',
+            'type' => MENU_LOCAL_TASK,
+            'page callback' => 'fd2_school_view',
+            'page arguments' => array('api2.html'),
+            'access arguments' => array('view fd2 school'),
+            'weight' => 110,
+        );
+
+        return $items;
+    };
+
+
+
+  
 
 // This function Loads the content for the sub-tab from the html file specified in the arguemnt.
 // It must be renamed in each module.

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="utf=8">
+<head>
+<title>Page Title</title>
+<style>
+    span{
+        font-weight: bold
+    }
+</style>
+
+
+</head>
+<body>
+<br/>
+
+
+
+<div id = "title" v-cloak>
+
+<h1>Harvest Report</h1>
+
+<p>This page is a <i>mocked up</i> of a simplified harvest report.</p>
+
+
+<label for="title">Title: </label>
+        <input type="text" id="title" name="title" v-model = "title">
+        <br><br>
+        <!-- date starts here -->
+        <label for="date">Start: </label>
+        <input type="date" id ="start" class ="date" name="start" min="2000-01-01" :max="end" v-model="start">
+        <label for="date">End: </label>
+        <input type="date" id="end" class = "date" name="end" :min="start" max="2025-12-31" v-model="end">
+        <br><br>
+        <!-- crop starts here-->
+        <label for="crop">Crop: </label>
+            <select id="crop-01" name="crop-01" v-model="crop">
+                <option v-for="item in apiCrop"> {{item}}</option>
+
+            </select>
+
+        <!--area starts here-->
+        <label for="area">Area: </label>
+          <select id="area" name="area" v-model="area">
+
+      <option v-for="area in areas":selected="option == 'All'">
+          {{area}}</option>
+      </select>
+          <br>
+          <br>
+        
+            <button type="button" class="btn btn-primary" @click="generateButton" id="generate-report">Generate Report</button>
+
+
+
+<hr>
+
+Details:
+  <h1>{{ title ==('')? "Mock Harvest Report": title }}</h1>
+  <ul>
+    <li><strong>Farm: </strong> {{farm}}</li>
+      <li><strong>User: </strong> {{user}}</li>
+      <li> <strong>Language: </strong> {{language}}</li>
+      <br>
+      <li><span>Start:</span>{{start}}</li>
+      <li><span>End:</span>{{end}}</li>
+      <li><span>Crop:</span>{{crop}}</li>
+      <li><span></Area:>Area:</span>{{area}}</li>
+    </ul>
+<p v-if="harvestLog.length == 0">No matching records</p>
+
+<div id="rogerHarvest" v-if="harvestReportRows.length > 0"></div>
+<table border = "1"> 
+    <tr>
+        <th>Idx</th>
+        <th>Date</th>
+        <th>Area</th>
+        <th>Crop</th>
+        <th>Yield</th>
+        <th>Units</th>
+        <th>Delete</th>
+    </tr>
+
+    
+    <tr v-for="(log,idx) in harvestReportRows">
+    <td>{{idx+1}}</td>
+    <td>{{log.Date}}</td>
+    <td>{{log.Field}}</td>
+    <td>{{log.Crop}}</td>
+    <td>{{log.Yield}}</td>
+    <td>{{log.Unit}}</td>
+    <td><button type="button"  @click="deleteTuple">Delete </button></td>
+    </tr>
+
+</table>
+</div>
+
+
+
+<script src="https://unpkg.com/vue@2"></script> 
+<script>
+
+var harvestReport = new Vue({
+    el: '#title',
+    data:{
+        title: 'title',
+        start:"2020-05-01",
+        end:"2020-05-15",
+        crop: "Kale",
+        //crops:['Kale','Broccoli','Peas'],
+        idToCropMap: [],
+        idToAreaMap: [],
+        area: 'ALL',
+        areas:['ALL', 'Chuau-1', 'SQ7'],
+        harvestLog:[],
+        farm: "",
+        user: "",
+        language: "",
+
+        HLog:[ 
+            {Date: '05/02/2018', Field: 'SQ7', Crop:'Kale', Yield: '10', Unit:'Bunches'},
+            {Date: '05/17/2019', Field: 'All', Crop:'Broccoli', Yield: '7', Unit:'Bunches'},
+            {Date: '04/06/2001', Field: 'All', Crop:'Peas', Yield: '12', Unit:'Bunches'}
+        ]
+        },
+        
+        
+
+        computed: {
+            apiCrop: function(){
+                return this.idToCropMap.values()
+            },
+
+            apiArea: function(){
+                return this.idToAreaMap.values()
+            },
+          
+
+          harvestReportRows(){
+              let tableRows = []
+              for(let log of this.harvestLog){
+                  let tableRow = {
+                      date:log.timestamp,
+                      area: log.area[0].name,
+                      yield: log.quantity[0].value,
+                      units: log.quantity[0].unit.name,
+                      crop: this.idToCropMap.get(log.data.crop_tid),
+                  }
+                  tableRows.push(tableRow)
+              }
+              return tableRows
+        },
+    },
+        
+
+        methods:{
+            generateButton: function(){
+                
+
+                this.farm = "Sample Farm";
+                this.user = "manager1";
+                this.language = "English";
+
+                axios.get('http://localhost/farm.json')
+                .then((response) => {
+                    console.log("Got Response")
+                    console.log(response)
+                    this.farm=response.data.name
+                    this.user=response.data.user.name
+                    this.language=response.data.languages.en.name
+                })
+
+                //if(this.harvestLog.length < 50){
+                //    this.harvestLog.push(this.HLog[0])
+                 //   this.harvestLog.push(this.HLog[1])
+                 //   this.harvestLog.push(this.HLog[2])
+                //}
+                .catch((error) =>{
+                    console.log("Error!");
+                    console.log(error);
+                });
+
+                let start = dayjs(this.start).unix();
+                let end = dayjs(this.end).unix();
+                let requestEndPoint = '/log.json?type=farm_harvest&timestamp[ge]=' + start + 
+                '&timestamp[le]='+end;
+                
+                //check the timestamp values for start,end and the endpoint URL
+                console.log(start);
+                console.log(end);
+                console.log(requestEndPoint);
+
+                let res = [];
+
+                getAllPages(requestEndPoint, res)
+                    .then(() => {
+                        console.log("Passed");
+                        this.harvestLog.push(this.HLog[0])
+                        this.harvestLog.push(this.HLog[1])
+                        this.harvestLog.push(this.HLog[2])
+                        this.harvestLog = res;
+                    })
+
+                    .catch((err)=>{
+                        console.log("Error!! ");
+                        console.log(err);
+                    });
+
+                    if(this.harvestLog.length < 50){
+                        this.harvestLog.push(this.HLog[0])
+                        this.harvestLog.push(this.HLog[1])
+                        this.harvestLog.push(this.HLog[2])
+                    }
+
+            },
+            deleteTuple: function(index){
+                this.harvestLog.splice(index,1);
+            }
+        }, 
+
+        created() {
+             getIDToCropMap()
+                .then((theMap) => {
+                
+                    this.idToCropMap=theMap;
+                })
+                .catch((err) => {
+                    console.log("mapping ID to crop failed!");
+                    console.log(err);
+                })
+
+             getIDToAreaMap()
+                 .then((theMap) =>{
+                    this.idToAreaMap = theMap;
+                 })
+
+                 .catch((err) => {
+                    console.log("Error!");
+                    console.log(err);
+                 })
+                 
+             
+            console.log("HarvestReport created!")
+        }    
+
+        
+    });
+
+Vue.config.devtools = true;
+</script>
+</body>
+</html>
+

@@ -1,0 +1,65 @@
+
+<body>
+    <div id="seedingReport" v-cloak>
+        <h1 class="text-center">Active Seeding Report</h1>
+        <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
+            <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
+            <div style="display: flex;width: 100%; padding: 7px">
+                <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
+                @click='hide'
+                :default-start-date=startDate :default-end-date=endDate></date-range-selection>
+
+                <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
+            </div>
+        </fieldset>
+    </div>
+        
+    <script src="https://unpkg.com/vue@2"></script>
+   <script>
+        var seedingReport = new Vue ({
+            el: '#seedingReport',
+            components: {
+                
+                'date-range-selection': DateRangeSelectionComponent,
+               
+            },
+            data: {
+                startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                endDate: dayjs().format('YYYY-MM-DD').toString(),
+
+                
+            },
+            methods: {
+                hide(){
+                    this.reportVisible = false
+                    this.seedingLogs = []
+                },
+                startDateChange(selectedDate){
+                    this.startDate = selectedDate
+                    //this.reportVisible = false
+                    //this.seedingLogs = []
+                },
+                endDateChange(selectedDate){
+                    this.endDate = selectedDate
+                    //this.reportVisible = false
+                    //this.seedingLogs = []
+                },
+              seedingLogRequestWithDates(){
+                    this.reportVisible = true
+                    let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+
+                    getAllPages(link, this.seedingLogs).then(() => {
+                        this.stillLoading = false
+                    })
+                    this.stillLoading = true
+                },
+               
+            },
+             
+           
+            
+        });
+        Vue.config.devtools = true;
+        
+    </script>
+</body>
