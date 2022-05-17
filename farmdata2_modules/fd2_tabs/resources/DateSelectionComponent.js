@@ -49,6 +49,14 @@ let DateSelectionComponent = {
             else if (this.selectedDate < this.earliestDate) {
                 this.selectedDate = this.earliestDate;
             }
+            var d = this.selectedDate;
+            if (Object.prototype.toString.call(d) === "[object Date]") {
+                if (isNaN(d.getTime())) { 
+                    console.log("Invalid Date.");
+                } else {
+                    console.log("Valid Date.");
+                }
+            }
             this.$emit('date-changed', this.selectedDate)
         }
     },
