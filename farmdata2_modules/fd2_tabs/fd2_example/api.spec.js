@@ -113,6 +113,16 @@ describe('test some api calls in a page', () => {
             cy.get('[data-cy=13area]')
                 .should('have.text','ALF-1')
         })
+
+        it('check table is cleared', () => {
+            cy.get('[data-cy=fetch-seedings]').click()
+            cy.get('[data-cy=13area]')
+                .should('have.text','ALF-1')
+
+            cy.get('[data-cy=clear-seedings]').click()
+            cy.get('[data-cy=0date]')
+                .should('not.exist')
+        })
     })
 
     context('asset ceation/modification/deletion', () => {

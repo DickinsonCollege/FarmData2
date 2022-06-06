@@ -39,14 +39,14 @@
     <p>The button below fetches the seeding logs from May 1, 2020 through May 5, 2020 and displays the dates, crops and locations where the crops that were seeded.</p>
     <UL>
         <button data-cy='fetch-seedings' @click='fetchSeedingLogs'>Fetch Logs</button>
-        <button data-cy='clear-seedings' @click='seedingLogs = []'>Clear</button>
+        <button data-cy='clear-seedings' @click='seedingLogs = null'>Clear</button>
         <p>Result:</p>
         <UL>
             <table border=1px>
                 <tr><th>Date</th><th>Crop</th><th>Area</th></tr>
                 <tr v-for="(log,i) in seedingLogs">
                     <td :data-cy=i+'date'>{{ dayjs.unix(log.timestamp).format("YYYY/MM/DD") }}</td>
-                    <td :data-cy=i+'crop'>{{ idToCropMap.get(JSON.parse(log.data).crop_tid) }}</td>
+                    <td :data-cy=i+'crop'>{{ idToCropMap.get(log.data.crop_tid) }}</td>
                     <td :data-cy=i+'area'>{{ log.movement.area[0].name }}</td>
                 </tr>
             </table>

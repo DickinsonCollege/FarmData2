@@ -50,6 +50,7 @@ function getAllPages(endpoint, arr=[]) {
         axios.get(endpoint)
         .then(function(response) {
 
+            // Parse the custom FD2 data field in the JSON.
             response.data.list.map(log => {
                 if (log.data != null) {
                     log.data = JSON.parse(log.data)
