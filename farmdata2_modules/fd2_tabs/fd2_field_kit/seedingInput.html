@@ -1,7 +1,14 @@
 <body>
     <div id='seedingInput'>
-    <div class="alert alert-success d-flex align-items-center" role="alert">
-            Log created and saved successfully
+    <div class="alert-boxs">
+        <div class="alert alert-success alert-dismissible fade in" role="alert" v-show='alertType == "success"'>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Log created and saved successfully.
+        </div>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert" v-show='alertType == "canceled"'>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Log submission canceled by user. The log is <strong>NOT</strong> saved.  
+        </div>
     </div>
     <h1 style='text-align:center;'>Seeding Input Log</h1> 
     <br>
@@ -86,6 +93,7 @@
                 areaToIDMap: new Map(),
                 logTypeToIDMap: new Map(),
                 plantingId: 0,
+                alertType: '',
             },
             methods:{
                 setNewDate(newDate){
@@ -105,14 +113,23 @@
                     this.selectedFeetUnit = newFeetUnit
                 },
                 saveLog(){
-                    createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
-                        this.plantingId = response.data.id
-                    }).then(() => {
-                        createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                    if(confirm("Would you like to create the seeding log based on your input?")){
+                        createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
+                            this.plantingId = response.data.id
+                        }).then(() => {
+                            createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                            })    
                         })
-                    })
-                    if(confirm("You have saved a log! Would you like to go the seeding report page?")){
-                        window.location.replace('/farm/fd2-barn-kit/seedingReport')
+                        this.alertType = 'success'
+                            setTimeout(() => {
+                                document.querySelector('.close').click();
+                            }, 3000)
+                    } else {
+                        this.alertType = 'canceled'
+                        setTimeout(() => {
+                                document.querySelector('.close').click();
+                            }, 3000)
+
                     }
                 }
             },
