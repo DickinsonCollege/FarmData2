@@ -358,7 +358,7 @@
                 }else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
                     getAllPages('/taxonomy_term.json?bundle=farm_areas').then((resp) => {
-                        this.areaResp = resp
+                        this.areaResponse = resp
                         localStorage.setItem('areas', JSON.stringify(resp))
                     })
                 }
