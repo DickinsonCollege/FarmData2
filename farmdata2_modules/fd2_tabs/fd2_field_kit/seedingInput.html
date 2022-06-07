@@ -276,42 +276,42 @@
                         feet = feet * this.numRowBed
                     }
                     quantity = [
-                    {
-                        "measure": "length", 
-                        "value": feet,  //total row feet
-                        "unit": {
-                            "id": this.unitToIDMap.get('ROW FEET'), 
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "length", 
+                            "value": feet,  //total row feet
+                            "unit": {
+                                "id": this.unitToIDMap.get('ROW FEET'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
                         },
-                        "label": "Amount planted"
-                    },
-                    {
-                        "measure": "ratio", 
-                        "value": this.numRowBed,
-                        "unit": {
-                            "id": this.unitToIDMap.get('ROWS/BED'),
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "ratio", 
+                            "value": this.numRowBed,
+                            "unit": {
+                                "id": this.unitToIDMap.get('ROWS/BED'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
                         },
-                        "label": "Rows/Bed"
-                    },
-                    {
-                        "measure": "time", 
-                        "value": time, 
-                        "unit": {
-                            "id": this.unitToIDMap.get('HOURS'),
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "time", 
+                            "value": time, 
+                            "unit": {
+                                "id": this.unitToIDMap.get('HOURS'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
                         },
-                        "label": "Labor"
-                    },
-                    {
-                        "measure": "count", 
-                        "value": this.numWorkers, 
-                        "unit": {
-                            "id": this.unitToIDMap.get('PEOPLE'),
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "count", 
+                            "value": this.numWorkers, 
+                            "unit": {
+                                "id": this.unitToIDMap.get('PEOPLE'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
                         },
-                        "label": "Workers"
-                    },
                     ]
                     return quantity
                 },
@@ -321,51 +321,51 @@
                         time = (Math.round((time / 60)*100))/100
                     }
                     quantity = [
-                    {
-                        "measure": "count", 
-                        "value": this.numSeedsPlanted,  //number of seed planted
-                        "unit": {
-                            "id": this.unitToIDMap.get('SEEDS'), 
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "count", 
+                            "value": this.numSeedsPlanted,  //number of seed planted
+                            "unit": {
+                                "id": this.unitToIDMap.get('SEEDS'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Seeds planted"
                         },
-                        "label": "Seeds planted"
-                    },
-                    {
-                        "measure": "count", 
-                        "value": this.numOfTrays,  //number of flats(trays)
-                        "unit": {
-                            "id": this.unitToIDMap.get('FLATS'), 
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "count", 
+                            "value": this.numOfTrays,  //number of flats(trays)
+                            "unit": {
+                                "id": this.unitToIDMap.get('FLATS'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Flats used"
                         },
-                        "label": "Flats used"
-                    },
-                    {
-                        "measure": "ratio", 
-                        "value": this.numCellsPerTray,  //cells per flat
-                        "unit": {
-                            "id": this.unitToIDMap.get('CELLS/FLAT'),
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "ratio", 
+                            "value": this.numCellsPerTray,  //cells per flat
+                            "unit": {
+                                "id": this.unitToIDMap.get('CELLS/FLAT'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Cells/Flat"
                         },
-                        "label": "Cells/Flat"
-                    },
-                    {
-                        "measure": "time", 
-                        "value": time,  //hours worked
-                        "unit": {
-                            "id": this.unitToIDMap.get('HOURS'),
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "time", 
+                            "value": time,  //hours worked
+                            "unit": {
+                                "id": this.unitToIDMap.get('HOURS'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
                         },
-                        "label": "Labor"
-                    },
-                    {
-                        "measure": "count", 
-                        "value": this.numWorkers,
-                        "unit": {
-                            "id": this.unitToIDMap.get('PEOPLE'),
-                            "resource": "taxonomy_term"
+                        {
+                            "measure": "count", 
+                            "value": this.numWorkers,
+                            "unit": {
+                                "id": this.unitToIDMap.get('PEOPLE'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
                         },
-                        "label": "Workers"
-                    },
                     ]
                     return quantity
                 }
