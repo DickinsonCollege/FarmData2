@@ -357,8 +357,8 @@
                     })
                 }else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
-                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
-                        localStorage.setItem('areas', JSON.stringify(this.areaResponse))
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas').then((resp) => {
+                        localStorage.setItem('areas', JSON.stringify(resp))
                     })
                 }
                 getSessionToken().then((response) => {
