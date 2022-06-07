@@ -9,6 +9,8 @@
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
+                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
@@ -21,7 +23,6 @@
                 <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
             </div>
             <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <label>Number of Trays Planted:<label style='color: #da4f3f'>*</label> </label><input data-cy='trays-planted' style='width: 75px;' type='number' v-model='numOfTrays'>
                 <br>
                 <label>Cells per Tray:<label style='color: #da4f3f'>*</label> </label><input data-cy='cells-tray' style='width: 75px;' type='number' v-model='numCellsPerTray'>
@@ -29,7 +30,6 @@
                 <label>Number of Seeds Planted:<label style='color: #da4f3f'>*</label> </label><input data-cy='seeds-planted' style='width: 75px;' type='number' v-model='numSeedsPlanted'>
             </div>
             <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <label>Rows per Bed:<label style='color: #da4f3f'>*</label> </label><input data-cy='row-bed' style='width: 75px;' type='number' v-model='numRowBed'>
                 <div style='display: flex;text-align:center;padding-top: 25px;'>
                     <label>Number of Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type='number' v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
@@ -357,9 +357,8 @@
                     })
                 }else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
-                    getAllPages('/taxonomy_term.json?bundle=farm_areas').then((resp) => {
-                        this.areaResponse = resp
-                        localStorage.setItem('areas', JSON.stringify(resp))
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
+                        localStorage.setItem('areas', JSON.stringify(this.areaResponse))
                     })
                 }
                 getSessionToken().then((response) => {
