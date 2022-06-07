@@ -1,8 +1,11 @@
 <body>
     <div id='seedingInput'>
-       <h1 style='text-align:center;'>Seeding Input Log</h1> 
-       <br>
-       <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+            Log created and saved successfully
+    </div>
+    <h1 style='text-align:center;'>Seeding Input Log</h1> 
+    <br>
+    <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
                 <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
@@ -11,9 +14,9 @@
                 <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
-       </fieldset>
-       <fieldset class="panel panel-default center-block" style="max-width: 500px;">
-           <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
+    </fieldset>
+    <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+        <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
                 <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
             </legend>
@@ -35,19 +38,19 @@
                     <label>Number of Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type='number' v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
                 </div>
             </div>
-       </fieldset>   
-       <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+    </fieldset>   
+    <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
-                 <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type='number' v-model='numWorkers'>
+                <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type='number' v-model='numWorkers'>
                 <label>Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type='number' v-model='time'>
                 <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
             </div>
-       </fieldset>
-       <div style='text-align:center;'>
-           <label style='color: #da4f3f'>* required field.</label>
-       </div>
-       <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Create Log</button>
+    </fieldset>
+    <div style='text-align:center;'>
+        <label style='color: #da4f3f'>* required field.</label>
+    </div>
+    <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Create Log</button>
     </div>
 
     <script>
