@@ -349,6 +349,9 @@
                             ]
                         }
                     })
+                    rows.sort(function compareNumbers(a, b) {
+                        return new Date(a.data[0]).getTime() - new Date(b.data[0]).getTime();
+                    })   
                     return rows
                 },
                 getTableOneType(){
