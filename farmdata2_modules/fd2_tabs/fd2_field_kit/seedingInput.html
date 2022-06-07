@@ -1,18 +1,16 @@
 <body>
     <div id='seedingInput'>
-    <div class="alert-boxs">
-        <div class="alert alert-success alert-dismissible fade in" role="alert" v-show='alertType == "success"'>
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Log created and saved successfully.
+        <div class="alert-boxs">
+            <div class="alert alert-success" role="alert" v-if='alertType == "success"'>
+                Log created and saved successfully.
+            </div>
+            <div class="alert alert-danger" role="alert" v-if='alertType == "canceled"'>
+                Log submission canceled by user. The log is <strong>NOT</strong> saved.  
+            </div>
         </div>
-        <div class="alert alert-danger alert-dismissible fade in" role="alert" v-show='alertType == "canceled"'>
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Log submission canceled by user. The log is <strong>NOT</strong> saved.  
-        </div>
-    </div>
-    <h1 style='text-align:center;'>Seeding Input Log</h1> 
-    <br>
-    <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
+        <h1 style='text-align:center;'>Seeding Input Log</h1> 
+        <br>
+        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
                 <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
@@ -21,9 +19,9 @@
                 <br>
                 <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
-    </fieldset>
-    <fieldset class="panel panel-default center-block" style="max-width: 500px;">
-        <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
+        </fieldset>
+        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
                 <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
             </legend>
@@ -45,21 +43,21 @@
                     <label>Number of Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type='number' v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
                 </div>
             </div>
-    </fieldset>   
-    <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+        </fieldset>   
+        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
                 <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type='number' v-model='numWorkers'>
                 <label>Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type='number' v-model='time'>
                 <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
             </div>
-    </fieldset>
-    <div style='text-align:center;'>
-        <label style='color: #da4f3f'>* required field.</label>
+        </fieldset>
+        <div style='text-align:center;'>
+            <label style='color: #da4f3f'>* required field.</label>
+        </div>
+        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Create Log</button>
     </div>
-    <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Create Log</button>
-    </div>
-
+    
     <script>
         new Vue({
             el: '#seedingInput',
@@ -118,18 +116,33 @@
                             this.plantingId = response.data.id
                         }).then(() => {
                             createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                                //this.selectedDate = dayjs().format('YYYY-MM-DD').toString() //does not update
+                                //this.selectedCrop = null //does not update
+                                this.selectedArea = null
+                                this.savedArea = null
+                                this.selectedSeedingType = ''
+                                this.selectedFeetUnit = 'bed'
+                                this.selectedTimeUnit = 'minutes'
+                                this.comments = ''
+                                this.numWorkers = 0
+                                this.time = 0 
+                                this.numOfTrays= 0
+                                this.numCellsPerTray= 0
+                                this.numSeedsPlanted= 0
+                                this.numRowBed= 0
+                                this.numFeet= 0 
+                                this.$forceUpdate()
                             })    
                         })
                         this.alertType = 'success'
-                            setTimeout(() => {
-                                document.querySelector('.close').click();
-                            }, 3000)
+                        setTimeout(() => {
+                            this.alertType = ''
+                        }, 3000)
                     } else {
                         this.alertType = 'canceled'
                         setTimeout(() => {
-                                document.querySelector('.close').click();
-                            }, 3000)
-
+                            this.alertType = ''  
+                        }, 3000)
                     }
                 }
             },
@@ -263,42 +276,42 @@
                         feet = feet * this.numRowBed
                     }
                     quantity = [
-                        {
-                            "measure": "length", 
-                            "value": feet,  //total row feet
-                            "unit": {
-                                "id": this.unitToIDMap.get('ROW FEET'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Amount planted"
+                    {
+                        "measure": "length", 
+                        "value": feet,  //total row feet
+                        "unit": {
+                            "id": this.unitToIDMap.get('ROW FEET'), 
+                            "resource": "taxonomy_term"
                         },
-                        {
-                            "measure": "ratio", 
-                            "value": this.numRowBed,
-                            "unit": {
-                                "id": this.unitToIDMap.get('ROWS/BED'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Rows/Bed"
+                        "label": "Amount planted"
+                    },
+                    {
+                        "measure": "ratio", 
+                        "value": this.numRowBed,
+                        "unit": {
+                            "id": this.unitToIDMap.get('ROWS/BED'),
+                            "resource": "taxonomy_term"
                         },
-                        {
-                            "measure": "time", 
-                            "value": time, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('HOURS'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Labor"
+                        "label": "Rows/Bed"
+                    },
+                    {
+                        "measure": "time", 
+                        "value": time, 
+                        "unit": {
+                            "id": this.unitToIDMap.get('HOURS'),
+                            "resource": "taxonomy_term"
                         },
-                        {
-                            "measure": "count", 
-                            "value": this.numWorkers, 
-                            "unit": {
-                                "id": this.unitToIDMap.get('PEOPLE'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Workers"
+                        "label": "Labor"
+                    },
+                    {
+                        "measure": "count", 
+                        "value": this.numWorkers, 
+                        "unit": {
+                            "id": this.unitToIDMap.get('PEOPLE'),
+                            "resource": "taxonomy_term"
                         },
+                        "label": "Workers"
+                    },
                     ]
                     return quantity
                 },
@@ -308,51 +321,51 @@
                         time = (Math.round((time / 60)*100))/100
                     }
                     quantity = [
-                        {
-                            "measure": "count", 
-                            "value": this.numSeedsPlanted,  //number of seed planted
-                            "unit": {
-                                "id": this.unitToIDMap.get('SEEDS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Seeds planted"
+                    {
+                        "measure": "count", 
+                        "value": this.numSeedsPlanted,  //number of seed planted
+                        "unit": {
+                            "id": this.unitToIDMap.get('SEEDS'), 
+                            "resource": "taxonomy_term"
                         },
-                        {
-                            "measure": "count", 
-                            "value": this.numOfTrays,  //number of flats(trays)
-                            "unit": {
-                                "id": this.unitToIDMap.get('FLATS'), 
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Flats used"
+                        "label": "Seeds planted"
+                    },
+                    {
+                        "measure": "count", 
+                        "value": this.numOfTrays,  //number of flats(trays)
+                        "unit": {
+                            "id": this.unitToIDMap.get('FLATS'), 
+                            "resource": "taxonomy_term"
                         },
-                        {
-                            "measure": "ratio", 
-                            "value": this.numCellsPerTray,  //cells per flat
-                            "unit": {
-                                "id": this.unitToIDMap.get('CELLS/FLAT'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Cells/Flat"
+                        "label": "Flats used"
+                    },
+                    {
+                        "measure": "ratio", 
+                        "value": this.numCellsPerTray,  //cells per flat
+                        "unit": {
+                            "id": this.unitToIDMap.get('CELLS/FLAT'),
+                            "resource": "taxonomy_term"
                         },
-                        {
-                            "measure": "time", 
-                            "value": time,  //hours worked
-                            "unit": {
-                                "id": this.unitToIDMap.get('HOURS'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Labor"
+                        "label": "Cells/Flat"
+                    },
+                    {
+                        "measure": "time", 
+                        "value": time,  //hours worked
+                        "unit": {
+                            "id": this.unitToIDMap.get('HOURS'),
+                            "resource": "taxonomy_term"
                         },
-                        {
-                            "measure": "count", 
-                            "value": this.numWorkers,
-                            "unit": {
-                                "id": this.unitToIDMap.get('PEOPLE'),
-                                "resource": "taxonomy_term"
-                            },
-                            "label": "Workers"
+                        "label": "Labor"
+                    },
+                    {
+                        "measure": "count", 
+                        "value": this.numWorkers,
+                        "unit": {
+                            "id": this.unitToIDMap.get('PEOPLE'),
+                            "resource": "taxonomy_term"
                         },
+                        "label": "Workers"
+                    },
                     ]
                     return quantity
                 }
@@ -402,6 +415,6 @@
                 })
             }
         })
-    Vue.config.devtools = true;
+        Vue.config.devtools = true;
     </script>
 </body>
