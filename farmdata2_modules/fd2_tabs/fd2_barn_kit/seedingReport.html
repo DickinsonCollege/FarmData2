@@ -42,7 +42,6 @@
                             <p style="margin-left: 5%;"> There are no Direct Seeding logs with these parameters</p>
                         </div>
                         <div v-else>
-                            <p style="margin-left: 5%;"> Total Row/Bed Planted: <b>{{ totalRowBed }}</b></p>
                             <p style="margin-left: 5%;"> Total Row Feet Planted: <b>{{ totalRowFeet }}</b></p>
                             <p style="margin-left: 5%;">Total Bed Feet Planted: <b>{{ totalBedFeet }}</b></p>
                             <p style="margin-left: 5%;">Total Hours Worked: <b>{{ totalDirectSeedingHours }}</b></p>
@@ -444,19 +443,6 @@
                     let seedingsType = new Set(seedingTypeArray)
                     let newSeedingTypeArray = Array.from(seedingsType)
                     return newSeedingTypeArray.sort()
-                },
-                /**
-                 * returns the total row/bed for the Direct Seedings
-                 */ 
-                totalRowBed(){
-                    let tableData = this.tableRows
-                    
-                    let sumRowBed = 0
-                    tableData.map(h => {
-                        sumRowBed = sumRowBed + parseInt(h.data[4])
-                    })
-
-                    return sumRowBed
                 },
                 /**
                  * returns the total row feet for Direct Seeding
