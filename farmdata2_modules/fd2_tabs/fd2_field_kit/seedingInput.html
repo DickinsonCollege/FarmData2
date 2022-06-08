@@ -7,9 +7,9 @@
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
                 <br>
                 <br>
-                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate' style='position:relative;left: 30%; right: 30%; text-align:center; width:125px; white-space:nowrap;'>Date:<label style='color: #da4f3f'>*</label></date-selection>
+                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate' style='position: relative; left: 30%; right: 30%; text-align:center; width: 125px; white-space: nowrap;'>Date:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
-                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop' style='position:relative; left: 30%; text-align: center; width:125px; white-space:nowrap;'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop' style='position: relative; left: 30%; text-align: center; width: 125px; white-space: nowrap;'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
@@ -28,12 +28,10 @@
                 <br>
                 <label>Seeds:<label style='color: #da4f3f'>*</label> </label><input data-cy='seeds-planted' style='width: 75px;' type='number' v-model='numSeedsPlanted'>
             </div>
-            <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
+            <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px; text-align: center; font-size: medium; margin-top: 45px;'>
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <label>Rows/Bed:<label style='color: #da4f3f'>*</label> </label><input data-cy='row-bed' style='width: 75px;' type='number' v-model='numRowBed'>
-                <div style='display: flex;text-align:center;padding-top: 25px;'>
-                    <label>Number of Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type='number' v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
-                </div>
+                <dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit' style="display:flex; white-space: nowrap;"></dropdown-with-all><label>Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type='number' v-model='numFeet'>
             </div>
        </fieldset>   
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
