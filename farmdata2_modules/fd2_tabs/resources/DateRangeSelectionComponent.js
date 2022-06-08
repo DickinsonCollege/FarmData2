@@ -26,7 +26,7 @@ catch(err) {
  * @vue-event {String} end-date-changed - Emits the selected date (YYYY-MM-DD) when an end date is entered or chosen and the end date selection element loses focus.
  */
 let DateRangeSelectionComponent = {
-    template: `<span>
+    template: `<div>
                 <date-selection data-cy="start-date-select" :defaultDate="defaultStartDate" :latestDate="latestStartDate" @date-changed="startDateChange" 
                 @click="click">
                     Start Date:
@@ -35,7 +35,7 @@ let DateRangeSelectionComponent = {
                 @click="click">
                     End Date:
                 </date-selection>
-            </span>
+            </div>
             `,
     props: { 
         defaultStartDate:{
