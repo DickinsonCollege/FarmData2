@@ -34,7 +34,7 @@ let DropdownWithAllComponent = {
         },
         defaultInput: {
             type: String
-        } 
+        },
     }, 
     data() {
         return { selectedOption: this.defaultInput }
