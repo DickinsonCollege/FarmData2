@@ -7,9 +7,9 @@
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
                 <br>
                 <br>
-                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
+                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate' style='position:relative;left: 30%; right: 30%; text-align:center; width:125px; white-space:nowrap;'>Date:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
-                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop' style='position:relative; left: 30%; text-align: center; width:125px; white-space:nowrap;'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
