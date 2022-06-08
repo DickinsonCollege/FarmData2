@@ -4,9 +4,7 @@
        <br>
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <br>
-                <br>
+            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px'>
                 <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate' style='position:relative;left: 30%; right: 30%; text-align:center; width:125px; white-space:nowrap;'>Date:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop' style='position:relative; left: 30%; text-align: center; width:125px; white-space:nowrap;'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
@@ -37,10 +35,10 @@
        </fieldset>   
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
-                 <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type='number' v-model='numWorkers'>
-                <label>for:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type='number' v-model='time'>
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
+            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
+                <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px; ' type='number' v-model='numWorkers'>
+                <label> for: <label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type='number' v-model='time'> 
+                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
