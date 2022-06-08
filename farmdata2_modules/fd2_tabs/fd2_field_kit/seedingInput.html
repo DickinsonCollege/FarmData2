@@ -5,11 +5,11 @@
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
+                <br>
+                <br>
                 <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
-                <br>
-                <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
@@ -44,6 +44,12 @@
                 <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
             </div>
        </fieldset>
+       <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
+        <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Comments</legend>
+        <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
+            <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
+        </div>
+   </fieldset>
        <div style='text-align:center;'>
            <label style='color: #da4f3f'>* required field.</label>
        </div>
