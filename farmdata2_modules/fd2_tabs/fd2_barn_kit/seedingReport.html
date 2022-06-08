@@ -4,7 +4,7 @@
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
-                <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
+                <date-range-selection data-cy="date-range-selection" class="center-block" @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
                 @click='hide'
                 :default-start-date='startDate' :default-end-date='endDate'></date-range-selection>
 
@@ -18,7 +18,7 @@
                 <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                     <div style="display: flex; width: 100%;">
-                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list='seedingTypeList' includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
+                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list='seedingTypeList' includes-all default-input='All' @selection-changed='seedingChange'>Seeding Type:</dropdown-with-all>
                     
                         <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list='cropList' includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
@@ -99,7 +99,7 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
 
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num Workers','Varieties', 'Comments','User'],
+                headers: ['Date', 'Crop', 'Area', 'Seeding', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Workers', 'Hours','Varieties', 'Comments','User'],
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
 
                 idToCropMap: new Map(),
@@ -341,8 +341,8 @@
                                 traySeeds,
                                 numOfTrays,
                                 cellsPerTray,
-                                (Math.round(hours*100))/100,
                                 (Math.round(numWorkers*100))/100,
+                                (Math.round(hours*100))/100,
                                 h.lot_number,
                                 h.notes.value,
                                 $vm.idToUserMap.get(h.uid.id)
