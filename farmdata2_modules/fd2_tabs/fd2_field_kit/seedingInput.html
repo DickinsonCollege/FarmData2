@@ -13,9 +13,9 @@
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
-           <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
-                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
-                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
+           <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large; padding-left:15px'>
+                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray &nbsp;</label>
+                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType'><label>Direct</label> 
             </legend>
             <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
                 <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
