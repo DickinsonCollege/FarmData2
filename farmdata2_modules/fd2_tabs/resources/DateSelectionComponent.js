@@ -17,10 +17,10 @@
  * @vue-event {String} date-changed - Emits the selected date (YYYY-MM-DD) when a date is entered or chosen and the date input element loses focus.
  */ 
 let DateSelectionComponent = {
-    template: `<div>
+    template: `<span>
             <slot></slot>
             <input data-cy="date-select" type="date" :min="earliestDate" :max="latestDate" id="date" v-model="selectedDate" @click="click" @focusout="checkBounds">
-            </div>`,
+            </span>`,
     props: {
         defaultDate: {
             type: String,

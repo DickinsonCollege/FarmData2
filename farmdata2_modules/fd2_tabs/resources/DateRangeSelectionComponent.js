@@ -31,6 +31,7 @@ let DateRangeSelectionComponent = {
                 @click="click">
                     Start Date:
                 </date-selection>
+                <br>
                 <date-selection data-cy="end-date-select" :defaultDate="defaultEndDate" :earliestDate="earliestEndDate" @date-changed="endDateChange"
                 @click="click">
                     End Date:
