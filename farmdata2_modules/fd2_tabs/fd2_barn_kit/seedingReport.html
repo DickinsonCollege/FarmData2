@@ -342,7 +342,7 @@
                                 numOfTrays,
                                 cellsPerTray,
                                 (Math.round(numWorkers*100))/100,
-                                (Math.round(hours*100))/100,
+                                (Math.round(hours*100))/100 * (Math.round(numWorkers*100))/100,
                                 h.lot_number,
                                 h.notes.value,
                                 $vm.idToUserMap.get(h.uid.id)
