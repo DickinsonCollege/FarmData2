@@ -99,7 +99,7 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
 
-                headers: ['Date', 'Crop', 'Area', 'Seeding', 'Rows/Bed', 'Row Feet', 'Bed Feet', 'Seeds', 'Trays', 'Cells/Tray', 'Workers', 'Hours','Varieties', 'Comments','User'],
+                headers: ['Date', 'Crop', 'Area', 'Seeding', 'Row Feet', 'Bed Feet', 'Rows/Bed', 'Seeds', 'Trays', 'Cells/Tray', 'Workers', 'Hours','Varieties', 'Comments','User'],
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
 
                 idToCropMap: new Map(),
@@ -335,9 +335,9 @@
                                 $vm.idToCropMap.get(h.data.crop_tid),
                                 h.movement.area[0].name, 
                                 h.log_category[0].name.substring(0, h.log_category[0].name.indexOf(' ')), 
-                                rowBed,
                                 rowFeet,
                                 bedFeet,
+                                rowBed,
                                 traySeeds,
                                 numOfTrays,
                                 cellsPerTray,
@@ -454,7 +454,7 @@
                     let tableData = this.tableRows
                     let sumRowFeet = 0
                     tableData.map(h => {
-                        sumRowFeet = sumRowFeet + parseInt(h.data[5])
+                        sumRowFeet = sumRowFeet + parseInt(h.data[4])
                     })
                     return (Math.round(sumRowFeet*100))/100
                 },
@@ -465,7 +465,7 @@
                     let tableData = this.tableRows
                     let sumBedFeet = 0
                     tableData.map(h => {
-                        sumBedFeet = sumBedFeet + parseInt(h.data[6])
+                        sumBedFeet = sumBedFeet + parseInt(h.data[5])
                     })
                     return sumBedFeet
                 },
