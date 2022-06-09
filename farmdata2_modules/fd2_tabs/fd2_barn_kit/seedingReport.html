@@ -99,7 +99,7 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
 
-                headers: ['Date', 'Crop', 'Area', 'Seeding', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Workers', 'Hours','Varieties', 'Comments','User'],
+                headers: ['Date', 'Crop', 'Area', 'Seeding', 'Rows/Bed', 'Row Feet', 'Bed Feet', 'Seeds', 'Trays', 'Cells/Tray', 'Workers', 'Hours','Varieties', 'Comments','User'],
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
 
                 idToCropMap: new Map(),
@@ -334,7 +334,7 @@
                                 dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
                                 $vm.idToCropMap.get(h.data.crop_tid),
                                 h.movement.area[0].name, 
-                                h.log_category[0].name, 
+                                h.log_category[0].name.substring(0, h.log_category[0].name.indexOf(' ')), 
                                 rowBed,
                                 rowFeet,
                                 bedFeet,
