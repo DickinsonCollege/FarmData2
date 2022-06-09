@@ -21,24 +21,23 @@
             <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'> 
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <label>Cells/Tray:<label style='color: #da4f3f'>*</label> </label><input data-cy='cells-tray' style='height: 25px; width: 40px;' type='number' v-model='numCellsPerTray'>
-                <label>Trays:<label style='color: #da4f3f'>*</label> </label><input data-cy='trays-planted' style='height: 25px; width: 40px;' type='number' v-model='numOfTrays'>
-                <label>Seeds:<label style='color: #da4f3f'>*</label> </label><input data-cy='seeds-planted' style='height: 25px; width: 40px;' type='number' v-model='numSeedsPlanted'>
+                <label>Cells/Tray:<label style='color: #da4f3f'>*</label> <input data-cy='cells-tray' style='height: 25px; width: 4em;' type='number' v-model='numCellsPerTray'></label>
+                <label>Trays:<label style='color: #da4f3f'>*</label> <input data-cy='trays-planted' style='height: 25px; width: 4em;' type='number' v-model='numOfTrays'></label>
+                <label>Seeds:<label style='color: #da4f3f'>*</label> <input data-cy='seeds-planted' style='height: 25px; width: 4em;' type='number' v-model='numSeedsPlanted'></label>
             </div>
             <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'>
                 <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <label>Rows/Bed:<label style='color: #da4f3f'>*</label> </label><input data-cy='row-bed' style='height: 25px; width: 40px;' type='number' v-model='numRowBed'>
-                <label><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit' style='padding-left:50px;' ></dropdown-with-all></label>
-                <label style='color: #da4f3f'>*</label> <input data-cy='num-feet' style='height: 25px; width: 40px;' type='number' v-model='numFeet'>
+                <label>Rows/Bed:<label style='color: #da4f3f'>*</label> <input data-cy='row-bed' style='height: 25px; width: 4em;' type='number' v-model='numRowBed'></label>
+                <label><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit' style='padding-left:20px;' ></dropdown-with-all>
+                <label style='color: #da4f3f'>*</label> <input data-cy='num-feet' style='height: 25px; width: 4em;' type='number' v-model='numFeet'></label>
             </div>
        </fieldset>   
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
-                <label style='color: #da4f3f'>*</label><input data-cy="num-workers" style='height: 25px; width: 40px;' type='number' v-model='numWorkers'><label>&nbsp; Workers </label>
-                <label>for <label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='height: 25px; width: 40px;' type='number' v-model='time'> 
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all>
+                <label style='color: #da4f3f'>*&nbsp;</label><input data-cy="num-workers" style='height: 25px; width: 4em;' type='number' v-model='numWorkers'><label>&nbsp; Worker for </label> 
+                <label><label style='color: #da4f3f'>*</label> <input data-cy='time-spent' style='height: 25px; width: 4em;' type='number' v-model='time'> <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all></label>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style='max-width: 500px; '>
