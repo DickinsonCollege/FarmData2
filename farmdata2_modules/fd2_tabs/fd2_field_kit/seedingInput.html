@@ -4,46 +4,48 @@
        <br>
        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date of Seeding:<label style='color: #da4f3f'>*</label></date-selection>
+            <div class="center-block" style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px'>
+                <date-selection data-cy="date-selection" :default-date='selectedDate' @date-changed='setNewDate'>Date:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
-                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
-                <br>
-                <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
+                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
-                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
-                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
+                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray &nbsp;</label>
+                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType'><label>Direct</label> 
             </legend>
             <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
                 <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
             </div>
-            <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
-                <label>Number of Trays Planted:<label style='color: #da4f3f'>*</label> </label><input data-cy='trays-planted' style='width: 75px;' type='number' v-model='numOfTrays'>
+            <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'> 
+                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <label>Cells per Tray:<label style='color: #da4f3f'>*</label> </label><input data-cy='cells-tray' style='width: 75px;' type='number' v-model='numCellsPerTray'>
-                <br>
-                <label>Number of Seeds Planted:<label style='color: #da4f3f'>*</label> </label><input data-cy='seeds-planted' style='width: 75px;' type='number' v-model='numSeedsPlanted'>
+                <label>Cells/Tray:<label style='color: #da4f3f'>*</label> <input data-cy='cells-tray' style='height: 25px; width: 4em;' type='number' v-model='numCellsPerTray'></label>
+                <label>Trays:<label style='color: #da4f3f'>*</label> <input data-cy='trays-planted' style='height: 25px; width: 4em;' type='number' v-model='numOfTrays'></label>
+                <label>Seeds:<label style='color: #da4f3f'>*</label> <input data-cy='seeds-planted' style='height: 25px; width: 4em;' type='number' v-model='numSeedsPlanted'></label>
             </div>
-            <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px;text-align:center;font-size: medium;'>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
-                <label>Rows per Bed:<label style='color: #da4f3f'>*</label> </label><input data-cy='row-bed' style='width: 75px;' type='number' v-model='numRowBed'>
-                <div style='display: flex;text-align:center;padding-top: 25px;'>
-                    <label>Number of Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='width: 75px;' type='number' v-model='numFeet'><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit'>Units</dropdown-with-all>
-                </div>
+            <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'>
+                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <br>
+                <label>Rows/Bed:<label style='color: #da4f3f'>*</label> <input data-cy='row-bed' style='height: 25px; width: 4em;' type='number' v-model='numRowBed'></label>
+                <label><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit' style='padding-left:20px;' ></dropdown-with-all>
+                <label style='color: #da4f3f'>*</label> <input data-cy='num-feet' style='height: 25px; width: 4em;' type='number' v-model='numFeet'></label>
             </div>
        </fieldset>   
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
-                 <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type='number' v-model='numWorkers'>
-                <label>Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type='number' v-model='time'>
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
+            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
+                <label style='color: #da4f3f'>*&nbsp;</label><input data-cy="num-workers" style='height: 25px; width: 4em;' type='number' v-model='numWorkers'><label>&nbsp; Worker for </label> 
+                <label><label style='color: #da4f3f'>*</label> <input data-cy='time-spent' style='height: 25px; width: 4em;' type='number' v-model='time'> <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all></label>
             </div>
        </fieldset>
+       <fieldset class="panel panel-default center-block" style='max-width: 500px; '>
+        <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Comments</legend>
+        <div class="center-block" style='padding: 12px; text-align: center; font-size: medium; margin-top: 45px;'>
+            <textarea data-cy="comments" v-model='comments' style='height: 25px; width: 400px;'></textarea>
+        </div>
+   </fieldset>
        <div style='text-align:center;'>
            <label style='color: #da4f3f'>* required field.</label>
        </div>
@@ -64,7 +66,7 @@
                 selectedArea: null,
                 savedArea: null,
                 selectedSeedingType: '',
-                selectedFeetUnit: 'bed',
+                selectedFeetUnit: 'Bed Feet',
                 selectedTimeUnit: 'minutes',
                 comments: '',
                 numWorkers: 0,
@@ -77,7 +79,7 @@
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
-                feetUnits: ['row', 'bed'],
+                feetUnits: ['Row Feet', 'Bed Feet'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -239,7 +241,7 @@
                     if(this.selectedTimeUnit == 'minutes'){
                         time = (Math.round((time / 60)*100))/100
                     }
-                    if(this.selectedFeetUnit == 'bed'){
+                    if(this.selectedFeetUnit == 'Bed Feet'){
                         feet = feet * this.numRowBed
                     }
                     quantity = [
