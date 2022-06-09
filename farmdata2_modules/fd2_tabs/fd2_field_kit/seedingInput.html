@@ -30,7 +30,7 @@
                 <br>
                 <label>Rows/Bed:<label style='color: #da4f3f'>*</label> </label><input data-cy='row-bed' style='height: 25px; width: 40px;' type='number' v-model='numRowBed'>
                 <label><dropdown-with-all data-cy='unit-feet' :default-input='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit' style='padding-left:50px;' ></dropdown-with-all></label>
-                <label>Feet:<label style='color: #da4f3f'>*</label> </label><input data-cy='num-feet' style='height: 25px; width: 40px;' type='number' v-model='numFeet'>
+                <label style='color: #da4f3f'>*</label> <input data-cy='num-feet' style='height: 25px; width: 40px;' type='number' v-model='numFeet'>
             </div>
        </fieldset>   
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
@@ -67,7 +67,7 @@
                 selectedArea: null,
                 savedArea: null,
                 selectedSeedingType: '',
-                selectedFeetUnit: 'bed',
+                selectedFeetUnit: 'Bed Feet',
                 selectedTimeUnit: 'minutes',
                 comments: '',
                 numWorkers: 0,
@@ -80,7 +80,7 @@
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
-                feetUnits: ['row', 'bed'],
+                feetUnits: ['Row Feet', 'Bed Feet'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -242,7 +242,7 @@
                     if(this.selectedTimeUnit == 'minutes'){
                         time = (Math.round((time / 60)*100))/100
                     }
-                    if(this.selectedFeetUnit == 'bed'){
+                    if(this.selectedFeetUnit == 'Bed Feet'){
                         feet = feet * this.numRowBed
                     }
                     quantity = [
