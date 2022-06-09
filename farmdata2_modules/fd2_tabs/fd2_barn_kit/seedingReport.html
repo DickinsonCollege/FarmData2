@@ -4,7 +4,7 @@
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
-                <date-range-selection data-cy="date-range-selection" class="center-block"  @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
+                <date-range-selection data-cy="date-range-selection" class="center-block" @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
                 @click='hide'
                 :default-start-date='startDate' :default-end-date='endDate'></date-range-selection>
 
@@ -18,7 +18,7 @@
                 <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                     <div style="display: flex; width: 100%;">
-                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list='seedingTypeList' includes-all default-input='All' @selection-changed='seedingChange'>Type Of Seeding:</dropdown-with-all>
+                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list='seedingTypeList' includes-all default-input='All' @selection-changed='seedingChange'>Seeding Type:</dropdown-with-all>
                     
                         <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list='cropList' includes-all default-input='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
@@ -38,7 +38,7 @@
                 <div style="display: flex; width: 100%;">
                     <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Tray Seedings'">
+                        <div v-if="getTableOneType == 'Tray'">
                             <p style="margin-left: 5%;"> There are no Direct Seeding logs with these parameters</p>
                         </div>
                         <div v-else>
@@ -51,7 +51,7 @@
                     </fieldset>
                     <fieldset data-cy="tray-summary" class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Direct Seedings'">
+                        <div v-if="getTableOneType == 'Direct'">
                             <p style="margin-left: 5%;"> There are no Tray Seeding logs with these parameters</p>
                         </div>
                         <div v-else>
@@ -99,7 +99,7 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
 
-                headers: ['date', 'crop', 'area', 'Tray/Direct', 'Row/Bed', 'Row Feet', 'Bed Feet', 'Tray Seeds', '# of Trays', 'Cells Per Tray', 'Hours', 'Num Workers','Varieties', 'Comments','User'],
+                headers: ['Date', 'Crop', 'Area', 'Seeding', 'Row Feet', 'Bed Feet', 'Rows/Bed', 'Seeds', 'Trays', 'Cells/Tray', 'Workers', 'Hours','Varieties', 'Comments','User'],
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
 
                 idToCropMap: new Map(),
@@ -334,15 +334,15 @@
                                 dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
                                 $vm.idToCropMap.get(h.data.crop_tid),
                                 h.movement.area[0].name, 
-                                h.log_category[0].name, 
-                                rowBed,
+                                h.log_category[0].name.substring(0, h.log_category[0].name.indexOf(' ')), 
                                 rowFeet,
                                 bedFeet,
+                                rowBed,
                                 traySeeds,
                                 numOfTrays,
                                 cellsPerTray,
-                                (Math.round(hours*100))/100,
                                 (Math.round(numWorkers*100))/100,
+                                ((Math.round(hours*100))/100).toFixed(2),
                                 h.lot_number,
                                 h.notes.value,
                                 $vm.idToUserMap.get(h.uid.id)
@@ -454,7 +454,7 @@
                     let tableData = this.tableRows
                     let sumRowFeet = 0
                     tableData.map(h => {
-                        sumRowFeet = sumRowFeet + parseInt(h.data[5])
+                        sumRowFeet = sumRowFeet + parseInt(h.data[4])
                     })
                     return (Math.round(sumRowFeet*100))/100
                 },
@@ -465,7 +465,7 @@
                     let tableData = this.tableRows
                     let sumBedFeet = 0
                     tableData.map(h => {
-                        sumBedFeet = sumBedFeet + parseInt(h.data[6])
+                        sumBedFeet = sumBedFeet + parseInt(h.data[5])
                     })
                     return sumBedFeet
                 },
