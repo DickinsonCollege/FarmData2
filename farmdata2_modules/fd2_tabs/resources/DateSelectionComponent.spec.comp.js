@@ -60,4 +60,28 @@ describe('date selection component', () => {
                 expect(spy).to.be.calledWith('2021-05-02')
             })
     })
+
+    context('mount event tests', () => {
+        let prop = {
+            defaultDate: "2021-08-09",
+            latestDate: "2021-12-31",
+            earliestDate: "2021-01-01"
+        }
+
+        it('emits date after the component is mounted', () => {   
+            const spy = cy.spy()
+            mount(DateSelectionComponent, {
+                propsData: prop,
+                listeners: {
+                    'date-changed': spy
+                }
+            })
+            .then(() => {
+                    expect(spy).to.be.calledWith('2021-08-09')
+            })
+        })
+    })
+
 })
+
+

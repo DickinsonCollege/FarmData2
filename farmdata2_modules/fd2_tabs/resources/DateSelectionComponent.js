@@ -38,6 +38,9 @@ let DateSelectionComponent = {
             selectedDate: this.defaultDate,
         } 
     },
+    mounted() {
+        this.$emit('date-changed', this.selectedDate)
+    },
     methods: {
         click(){
             this.$emit('click')
@@ -50,8 +53,14 @@ let DateSelectionComponent = {
                 this.selectedDate = this.earliestDate;
             }
             this.$emit('date-changed', this.selectedDate)
-        }
+        },
     },
+    watch: {
+        defaultDate(newDate) {
+            this.selectedDate = newDate
+        }
+    }
+    
 }
 
 try {
