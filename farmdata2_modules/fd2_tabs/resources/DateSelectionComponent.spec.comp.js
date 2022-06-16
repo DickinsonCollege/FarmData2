@@ -77,19 +77,46 @@ describe('date selection component', () => {
             })
         })
         
-
         it ('change setDate prop to 2021-08-09', () => {
             expect(comp.vm.selectedDate).to.equal('2021-07-09')
             cy.wrap(comp.setProps({ setDate: '2021-08-09' }))
             .then(() => {
-                  expect(comp.vm.selectedDate).to.equal('2021-08-09')
+                expect(comp.vm.selectedDate).to.equal('2021-08-09')
             })
         })
+
+        it ('change setDate prop to date after latestDate, which will set to latestDate', () => {
+            expect(comp.vm.selectedDate).to.equal('2021-07-09')
+            cy.wrap(comp.setProps({ setDate: '2022-12-01' }))
+            .then(() => {
+                expect(comp.vm.selectedDate).to.equal('2021-12-31')
+            })
+        })
+        it ('change setDate prop to date before earliestDate, which will set to earliestDate', () => {
+            expect(comp.vm.selectedDate).to.equal('2021-07-09')
+            cy.wrap(comp.setProps({ setDate: '1999-12-01' }))
+            .then(() => {
+                expect(comp.vm.selectedDate).to.equal('2021-01-01')
+            })
+        })
+
     })
 
-    context('mount event tests', () => {
+    context('emitted event tests', () => {
         let prop = {
             setDate: "2021-08-09",
+            latestDate: "2021-12-31",
+            earliestDate: "2021-01-01"
+        }
+
+        let propInvalidEarliest = {
+            setDate: "1999-05-01",
+            latestDate: "2021-12-31",
+            earliestDate: "2021-01-01"
+        }
+
+        let propInvalidLatest = {
+            setDate: "2035-05-01",
             latestDate: "2021-12-31",
             earliestDate: "2021-01-01"
         }
@@ -103,12 +130,77 @@ describe('date selection component', () => {
                 }
             })
             .then(() => {
-                    expect(spy).to.be.calledWith('2021-08-09')
+                expect(spy).to.be.calledWith('2021-08-09')
+            })
+        })
+
+        it('emits correct date after the component is mounted with invalid date(< than earliestDate)', () => {   
+            const spy = cy.spy()
+            mount(DateSelectionComponent, {
+                propsData: propInvalidEarliest,
+                listeners: {
+                    'date-changed': spy
+                }
+            })
+            .then(() => {
+                expect(spy).to.be.calledWith('2021-01-01')
+            })
+        })
+
+        it('emits correct date after the component is mounted with invalid date(> than latestDate)', () => {   
+            const spy = cy.spy()
+            mount(DateSelectionComponent, {
+                propsData: propInvalidLatest,
+                listeners: {
+                    'date-changed': spy
+                }
+            })
+            .then(() => {
+                expect(spy).to.be.calledWith('2021-12-31')
+            })
+        })
+
+        it('emits date after the prop is changed', () => {   
+            const spy = cy.spy()
+            let comp = shallowMount(DateSelectionComponent, {
+                propsData: prop,
+                listeners: {
+                    'date-changed': spy
+                }
+            })
+            cy.wrap(comp.setProps({ setDate: '2021-08-09' }))
+            .then(() => {
+                expect(spy).to.be.calledWith('2021-08-09')
+            })
+        })
+
+        it('emits correct date after the prop is changed to invalid date(< than earliestDate)', () => {   
+            const spy = cy.spy()
+            let comp = shallowMount(DateSelectionComponent, {
+                propsData: prop,
+                listeners: {
+                    'date-changed': spy
+                }
+            })
+            cy.wrap(comp.setProps({ setDate: '2000-08-09' }))
+            .then(() => {
+                expect(spy).to.be.calledWith('2021-01-01')
+            })
+        })
+
+        it('emits correct date after the prop is changed to invalid date(> than latestDate)', () => {   
+            const spy = cy.spy()    
+            let comp = shallowMount(DateSelectionComponent, {
+                propsData: prop,
+                listeners: {
+                    'date-changed': spy
+                }
+            })
+            cy.wrap(comp.setProps({ setDate: '2029-08-09' }))
+            .then(() => {
+                expect(spy).to.be.calledWith('2021-12-31')
             })
         })
 
     })
-
 })
-
-
