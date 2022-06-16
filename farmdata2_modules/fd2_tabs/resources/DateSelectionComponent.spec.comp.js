@@ -77,13 +77,22 @@ describe('date selection component', () => {
             })
         })
         
-
         it ('change setDate prop to 2021-08-09', () => {
             expect(comp.vm.selectedDate).to.equal('2021-07-09')
             cy.wrap(comp.setProps({ setDate: '2021-08-09' }))
             .then(() => {
                   expect(comp.vm.selectedDate).to.equal('2021-08-09')
             })
+        })
+
+        it ('change setDate prop to an invalid date of 2022-12-01', () => {
+            expect(comp.vm.selectedDate).to.equal('2021-08-09')
+            cy.wrap(comp.setProps({ setDate: '2022-12-01' }))
+            .then(() => {
+                  expect(comp.vm.selectedDate).to.equal('2021-12-31')
+            })
+
+        
         })
     })
 

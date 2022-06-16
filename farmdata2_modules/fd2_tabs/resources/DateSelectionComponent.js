@@ -9,7 +9,7 @@
  * </tbody>
  * </table>
  * 
- * @vue-prop {String} setDate - the initial date to be displayed in the component (YYYY-MM-DD).
+ * @vue-prop {String} setDate - the prop date to be displayed in the component (YYYY-MM-DD).
  * @vue-prop {String} [earliestDate] - the earliest date will be able to be chosen (YYYY-MM-DD).  If not specified, there will be no limit on the earliest date that can be chosen.
  * @vue-prop {String} [latestDate] - the latest date that will be able to be chosen (YYYY-MM-DD). If not specfied, there will be no limit (including future dates) that can be chosen.
  * 
@@ -39,7 +39,7 @@ let DateSelectionComponent = {
         } 
     },
     mounted() {
-        this.$emit('date-changed', this.selectedDate)
+        this.checkBounds()
     },
     methods: {
         click(){
@@ -57,7 +57,8 @@ let DateSelectionComponent = {
     },
     watch: {
         setDate(newDate) {
-            this.selectedDate = newDate
+            this.selectedDate = newDate;
+            this.checkBounds();
         }
     }
     
