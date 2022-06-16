@@ -18,12 +18,12 @@
  * @vue-event {String} selection-changed - Emits the selected option when the option is changed. Note: This event is also emitted in the mounted lifecycle hook to signal the setting of the initial value.
  */ 
 let DropdownWithAllComponent = {
-    template: `<div data-cy="dropdown-component">
+    template: `<span data-cy="dropdown-component">
             <label for="dropdownOptions"><slot> </slot></label>
             <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
                 <option v-for="(singleOption,i) in fullDropdown" :data-cy="'option'+i">{{ singleOption }}</option>
             </select>
-        </div>`, 
+        </span>`, 
     props: {
         dropdownList: {
             type: Array,
