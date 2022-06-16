@@ -108,7 +108,7 @@
 
 <p><b>data-cy attributes</b></p>
 <table>
-<thead><tr><th>Value</th>         <th>Descripion</th></tr></thead>
+<thead><tr><th>Value</th>         <th>Description</th></tr></thead>
 <tbody>
 <tr><td>table</td>                <td>The table element.</td></tr>
 <tr><td>table-headers</td>        <td>The tr element holding the th elements</td></tr>
@@ -164,7 +164,7 @@
         <td>true if the table rows should be editable via an edit button that appears in each row.</td>
     </tr><tr>
         <td><code>canDelete</code></td>
-        <td>Booelan</td>
+        <td>Boolean</td>
         <td><code>false</code></td>
         <td>No</td>
         <td>true if the table rows should be able to be deleted via a delete button that appears in each row.</td>
@@ -173,7 +173,7 @@
         <td>Array.&lt;Boolean></td>
         <td>-</td>
         <td>No</td>
-        <td>An array the same length as the headers prop.  Each entry indicates if the associated column is visble (true) or hidden (false).  If omitted, all columns are visible.</td>
+        <td>An array the same length as the headers prop.  Each entry indicates if the associated column is visible (true) or hidden (false).  If omitted, all columns are visible.</td>
     </tr><tr>
         <td><code>inputOptions</code></td>
         <td>Array.&lt;String></td>
@@ -206,7 +206,7 @@
     </tr><tr>
         <td><code>row-edited</code></td>
         <td>Object|Number</td>
-        <td>Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be <code>{crop: 'KALE'}</code>, and if they also edited the area to Chuau it would be <code>{crop: 'KALE', area: 'CHUAU'}</code>.  The second is a Nubmer that indicates 'id' of the row that was changed.</td>
+        <td>Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be <code>{crop: 'KALE'}</code>, and if they also edited the area to Chuau it would be <code>{crop: 'KALE', area: 'CHUAU'}</code>.  The second is a Number that indicates 'id' of the row that was changed.</td>
     </tr><tr>
         <td><code>row-canceled</code></td>
         <td></td>
@@ -301,17 +301,17 @@
     </tr>
     </thead>
     <tbody><tr>
-        <td><code>defaultStartDate</code></td>
+        <td><code>setStartDate</code></td>
         <td>String</td>
         <td>-</td>
         <td><b>Yes</b></td>
-        <td>the initial start date to be displayed (YYYY-MM-DD).</td>
+        <td>the start date to be displayed (YYYY-MM-DD).</td>
     </tr><tr>
-        <td><code>defaultEndDate</code></td>
+        <td><code>setEndDate</code></td>
         <td>String</td>
         <td>-</td>
         <td><b>Yes</b></td>
-        <td>the initial end date to be displayed (YYYY-MM-DD).</td>
+        <td>the end date to be displayed (YYYY-MM-DD).</td>
     </tr></tbody>
 </table>
 
@@ -338,11 +338,11 @@
     </tr><tr>
         <td><code>start-date-changed</code></td>
         <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when a start date is entered or chosen and the start date selection element loses focus.</td>
+        <td>Emits the selected date (YYYY-MM-DD) when a start date is entered, chosen, component is mounted, prop is changed, and the start date selection element loses focus.</td>
     </tr><tr>
         <td><code>end-date-changed</code></td>
         <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when an end date is entered or chosen and the end date selection element loses focus.</td>
+        <td>Emits the selected date (YYYY-MM-DD) when an end date isentered, chosen, component is mounted, prop is changed, and the end date selection element loses focus.</td>
     </tr></tbody>
 </table>
 
@@ -428,11 +428,11 @@
     </tr>
     </thead>
     <tbody><tr>
-        <td><code>defaultDate</code></td>
+        <td><code>setDate</code></td>
         <td>String</td>
         <td>-</td>
         <td><b>Yes</b></td>
-        <td>the initial date to be displayed in the component (YYYY-MM-DD).</td>
+        <td>the date to be displayed in the component (YYYY-MM-DD).</td>
     </tr><tr>
         <td><code>earliestDate</code></td>
         <td>String</td>
@@ -471,7 +471,7 @@
     </tr><tr>
         <td><code>date-changed</code></td>
         <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when a date is entered or chosen and the date input element loses focus.</td>
+        <td>Emits the selected date (YYYY-MM-DD) when a date is entered, chosen, setDate in prop is changed by the parent, the component is mounted, and the date input element loses focus.</td>
     </tr></tbody>
 </table>
 
@@ -673,7 +673,7 @@
 
 
 <div class="description">
-    Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to create records.
+    Create a record in the database using a farmOS API endpoint. The currently logged in user must have sufficient privilege to create records.
 </div>
 
 
@@ -812,7 +812,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line460">line 460</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line461">line 461</a>
     </li></ul></dd>
     
 
@@ -857,11 +857,11 @@
     
     <pre class="prettyprint"><code>// Assume logData contains the data for the new log.
 // Assume token has been set to the session token.
-deleteRecord('/log', logData, token)
+createRecord('/log', logData, token)
    // The record was created.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the record will not have been created until the then() executes.</code></pre>
@@ -882,7 +882,7 @@ deleteRecord('/log', logData, token)
 
 
 <div class="description">
-    Delete a record from the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to delete records.
+    Delete a record from the database using a farmOS API endpoint. The currently logged in user must have sufficient privilege to delete records.
 </div>
 
 
@@ -998,7 +998,7 @@ deleteRecord('/log', logData, token)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line421">line 421</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line422">line 422</a>
     </li></ul></dd>
     
 
@@ -1046,7 +1046,7 @@ deleteRecord('/farm_asset/234', token)
    // The record was deleted.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the record will not have been deleted until the then() executes.</code></pre>
@@ -1067,7 +1067,7 @@ deleteRecord('/farm_asset/234', token)
 
 
 <div class="description">
-    Make a GET reqest to an API endpoint and retrieve all pages of a multipage responses.
+    Make a GET request to an API endpoint and retrieve all pages of a multipage responses.
 
 If there are data properties in the logs, they are parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
 </div>
@@ -1164,7 +1164,7 @@ If there are data properties in the logs, they are parsed into JSON before the r
 
             
 
-            <td class="description last">optionally an array that will be filled with the records as they are returned.  If ommitted a new array will be returned when the request completes.</td>
+            <td class="description last">optionally an array that will be filled with the records as they are returned.  If omitted a new array will be returned when the request completes.</td>
         </tr>
 
     
@@ -1256,7 +1256,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // or then may be omitted.
 })
 .catch((err) => {
-    // An error occured during the requests, process it here.
+    // An error occurred during the requests, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Result will not yet contain records but will be filled as responses are received.
@@ -1270,7 +1270,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // filled with all of the requested records.  
 })
 .catch((err) => {
-    // An error occured during the requests, process it here.
+    // An error occurred during the requests, process it here.
 })
 // Execution continues here immediately after the request is made.</code></pre>
 
@@ -1334,7 +1334,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line201">line 201</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line202">line 202</a>
     </li></ul></dd>
     
 
@@ -1383,7 +1383,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -1448,7 +1448,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line159">line 159</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line160">line 160</a>
     </li></ul></dd>
     
 
@@ -1497,7 +1497,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -1562,7 +1562,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line180">line 180</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -1611,7 +1611,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -1676,7 +1676,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line138">line 138</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line139">line 139</a>
     </li></ul></dd>
     
 
@@ -1725,7 +1725,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -1790,7 +1790,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line265">line 265</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line266">line 266</a>
     </li></ul></dd>
     
 
@@ -1839,7 +1839,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -1904,7 +1904,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line222">line 222</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line223">line 223</a>
     </li></ul></dd>
     
 
@@ -1953,7 +1953,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -2018,7 +2018,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line96">line 96</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -2067,7 +2067,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -2132,7 +2132,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line286">line 286</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line287">line 287</a>
     </li></ul></dd>
     
 
@@ -2181,7 +2181,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -2300,7 +2300,7 @@ getAllPages('/log.json?type=farm_harvest', result)
 
             
 
-            <td class="description last">the name fo the property to be used as the value in the Map.</td>
+            <td class="description last">the name of the property to be used as the value in the Map.</td>
         </tr>
 
     
@@ -2341,7 +2341,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line313">line 313</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line314">line 314</a>
     </li></ul></dd>
     
 
@@ -2390,7 +2390,7 @@ getAllPages('/log.json?type=farm_harvest', result)
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -2506,7 +2506,7 @@ The data property of the response is parsed into JSON before the response is ret
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line383">line 383</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line384">line 384</a>
     </li></ul></dd>
     
 
@@ -2547,13 +2547,13 @@ The data property of the response is parsed into JSON before the response is ret
 
     <h5>Example</h5>
     
-        <p class="code-caption">Request log 123 in json format using its id</p>
+        <p class="code-caption">Request log 123 in JSON format using its id</p>
     
     <pre class="prettyprint"><code>getRecord('/log.json?id=123')
     // Process the response.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the response will not be available until the then() executes.</code></pre>
@@ -2618,7 +2618,7 @@ The data property of the response is parsed into JSON before the response is ret
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line346">line 346</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line347">line 347</a>
     </li></ul></dd>
     
 
@@ -2659,7 +2659,7 @@ The data property of the response is parsed into JSON before the response is ret
 
     <h5>Example</h5>
     
-        <p class="code-caption">Get the session token for the currrent login.</p>
+        <p class="code-caption">Get the session token for the current login.</p>
     
     <pre class="prettyprint"><code>getSessonToken()
 .then((theToken) => {
@@ -2667,7 +2667,7 @@ The data property of the response is parsed into JSON before the response is ret
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -2732,7 +2732,7 @@ The data property of the response is parsed into JSON before the response is ret
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line244">line 244</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line245">line 245</a>
     </li></ul></dd>
     
 
@@ -2781,7 +2781,7 @@ The data property of the response is parsed into JSON before the response is ret
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -2846,7 +2846,7 @@ The data property of the response is parsed into JSON before the response is ret
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line117">line 117</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -2895,7 +2895,7 @@ The data property of the response is parsed into JSON before the response is ret
     // Typically it is stored in the Vue data for later use.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the Map will not be available until the then() executes.</code></pre>
@@ -3032,7 +3032,7 @@ The data property of the response is parsed into JSON before the response is ret
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line557">line 557</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line558">line 558</a>
     </li></ul></dd>
     
 
@@ -3094,7 +3094,7 @@ let index = quantityLocation(seedingLog.quantity, 'Amount planted')</code></pre>
 
 
 <div class="description">
-    Update a record in the database using a farmOS API endpoint. The currently logged in user must have sufficent privlidge to modify records.
+    Update a record in the database using a farmOS API endpoint. The currently logged in user must have sufficient privilege to modify records.
 </div>
 
 
@@ -3233,7 +3233,7 @@ let index = quantityLocation(seedingLog.quantity, 'Amount planted')</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line508">line 508</a>
+        <a href="FarmOSAPI.js.html">FarmOSAPI.js</a>, <a href="FarmOSAPI.js.html#line509">line 509</a>
     </li></ul></dd>
     
 
@@ -3282,7 +3282,7 @@ updateRecord('/log', assetUpdate, token)
    // The record has been updated.
 })
 .catch((err) => {
-    // An error occured during the request, process it here.
+    // An error occurred during the request, process it here.
 })
 // Execution continues here immediately after the request is made.
 // Note that the record will not have been updated until the then() executes.</code></pre>
@@ -3311,7 +3311,7 @@ updateRecord('/log', assetUpdate, token)
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Jan 04 2022 21:49:18 GMT-0500 (Eastern Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jun 16 2022 15:32:10 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
