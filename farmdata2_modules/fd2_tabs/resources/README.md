@@ -12,8 +12,8 @@ The documentation for the Javascript library functions are generated using [JSDo
 
 To install the necessary tools:
 
-1. `sudo apt install npm`
-2. `sudo npm install -g jsdoc@3.6.7 jsdoc-vuejs@3.0.9 vue-template-compiler@2.6.14`
+1. `sudo apt install npm`  (if not already installed)
+2. `npm install -prefix . --no-package-lock jsdoc@3.6.7 jsdoc-vuejs@3.0.9 vue-template-compiler@2.6.14`
 
 ### Generating Documentation
 
