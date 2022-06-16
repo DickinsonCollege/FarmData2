@@ -23,7 +23,7 @@ catch(err) {
  * 
  * @vue-event click - Emits an event with no payload when when one of the date selection elements is clicked.  This event does not necessarily indicate a change in date.
  * @vue-event {String} start-date-changed - Emits the selected date (YYYY-MM-DD) when a start date is entered, chosen, component is mounted, prop is changed, and the start date selection element loses focus.
- * @vue-event {String} end-date-changed - Emits the selected date (YYYY-MM-DD) when an end date isentered, chosen, component is mounted, prop is changed, and the end date selection element loses focus.
+ * @vue-event {String} end-date-changed - Emits the selected date (YYYY-MM-DD) when an end date is entered, chosen, component is mounted, prop is changed, and the end date selection element loses focus.
  */
 let DateRangeSelectionComponent = {
     template: `<div>
@@ -66,7 +66,7 @@ let DateRangeSelectionComponent = {
             this.$emit('start-date-changed', selectedDate)
         },
         endDateChange(selectedDate) {
-            this.latestStartDate=selectedDate
+            this.latestStartDate = selectedDate
             this.$emit('end-date-changed', selectedDate)
         },
     },
