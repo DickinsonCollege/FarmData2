@@ -42,12 +42,12 @@ describe('Field and Crop Dropdowns', () => {
         })
     })
 
-    context('selectionVal property sets initial value', () => {
+    context('selectedVal property sets initial value', () => {
         it('loads with specified default input in the search bar', () => {
             mount(DropdownWithAllComponent, {
                 propsData: {
                     dropdownList: ['Corn', 'Beans', 'Peas'],
-                    selectionVal: "Beans"
+                    selectedVal: "Beans"
                 },
             })
 
@@ -61,7 +61,7 @@ describe('Field and Crop Dropdowns', () => {
             mount(DropdownWithAllComponent, {
                 propsData: {
                     dropdownList: ['Corn', 'Beans', 'Peas'],
-                    selectionVal: "Beans"
+                    selectedVal: "Beans"
                 },
                 listeners: {
                     'selection-changed': spy
@@ -78,7 +78,7 @@ describe('Field and Crop Dropdowns', () => {
                 propsData: {
                     dropdownList: ['Corn', 'Beans', 'Peas'],
                     includesAll: true,
-                    selectionVal: "All"
+                    selectedVal: "All"
                 },
             })
 
@@ -91,7 +91,7 @@ describe('Field and Crop Dropdowns', () => {
                 propsData: {
                     dropdownList: ['Corn', 'Beans', 'Peas'],
                     includesAll: true,
-                    selectionVal: "Nope"
+                    selectedVal: "Nope"
                 },
             })
 
@@ -108,7 +108,7 @@ describe('Field and Crop Dropdowns', () => {
                     propsData: {
                         dropdownList: ['Corn', 'Beans', 'Peas'],
                         includesAll: true,
-                        selectionVal: "Beans"
+                        selectedVal: "Beans"
                     }
             })
         })
@@ -142,35 +142,35 @@ describe('Field and Crop Dropdowns', () => {
                 propsData: {
                     dropdownList: ['Corn', 'Beans', 'Peas'],
                     includesAll: true,
-                    selectionVal: 'Beans',
+                    selectedVal: 'Beans',
                 },
             })
         })
 
         it ('change prop to Corn', () => {
             expect(comp.vm.selectedOption).to.equal('Beans')
-            cy.wrap(comp.setProps({ selectionVal: 'Corn' })).then(() => {
+            cy.wrap(comp.setProps({ selectedVal: 'Corn' })).then(() => {
                   expect(comp.vm.selectedOption).to.equal('Corn')
             })
         })
 
         it('change prop to All', () => {
             expect(comp.vm.selectedOption).to.equal('Beans')
-            cy.wrap(comp.setProps({ selectionVal: 'All' })).then(() => {
+            cy.wrap(comp.setProps({ selectedVal: 'All' })).then(() => {
                   expect(comp.vm.selectedOption).to.equal('All')
             })
         })
 
         it('change prop to nonlisted option', () => {
             expect(comp.vm.selectedOption).to.equal('Beans')
-            cy.wrap(comp.setProps({ selectionVal: 'Nope' })).then(() => {
+            cy.wrap(comp.setProps({ selectedVal: 'Nope' })).then(() => {
                   expect(comp.vm.selectedOption).to.equal(null)
             })
         })
 
         it('change prop to null', () => {
             expect(comp.vm.selectedOption).to.equal('Beans')
-            cy.wrap(comp.setProps({ selectionVal: null })).then(() => {
+            cy.wrap(comp.setProps({ selectedVal: null })).then(() => {
                   expect(comp.vm.selectedOption).to.equal(null)
             })
         })
