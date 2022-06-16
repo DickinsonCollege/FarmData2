@@ -28,7 +28,7 @@
         <date-selection data-cy="date-picker" 
             earliest-date="2021-01-15" 
             latest-date="2021-02-15" 
-            default-date="2021-01-20"
+            set-date="2021-01-20"
             @date-changed='dateChange' 
             @click='dateClicked'>
         Choose a Date:
@@ -45,8 +45,8 @@
     <p><b>DateRangeSelectionComponent</b></p>
     <ul>
         <date-range-selection data-cy="date-range" 
-            default-start-date="2021-01-15" 
-            :default-end-date='dateRangeMaxDate'
+            set-start-date="2021-01-15" 
+            :set-end-date='dateRangeMaxDate'
             @start-date-changed='startDateChange' 
             @end-date-changed='endDateChange' 
             @click='dateRangeClicked'>

@@ -6,7 +6,7 @@
             <div style="display: flex;width: 100%; padding: 7px">
                 <date-range-selection data-cy="date-range-selection" class="center-block" @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
                 @click='hide'
-                :default-start-date='startDate' :default-end-date='endDate'></date-range-selection>
+                :set-start-date='startDate' :set-end-date='endDate'></date-range-selection>
 
                 <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
             </div>
