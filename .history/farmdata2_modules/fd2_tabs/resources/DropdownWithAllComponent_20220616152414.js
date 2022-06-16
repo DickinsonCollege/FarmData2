@@ -47,7 +47,6 @@ let DropdownWithAllComponent = {
             else {
                 this.selectedOption = null;
             }
-            this.selectionChanged()
         }
     },
     mounted() {

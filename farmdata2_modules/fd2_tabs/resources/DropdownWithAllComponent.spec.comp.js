@@ -172,7 +172,113 @@ describe('Field and Crop Dropdowns', () => {
             expect(comp.vm.selectedOption).to.equal('Beans')
             cy.wrap(comp.setProps({ selectedVal: null })).then(() => {
                   expect(comp.vm.selectedOption).to.equal(null)
+                })
+            })
+        })
+
+        context('changing prop emits event', () => {
+            // Would be nice to do these tests with a mount so that
+            // we could check that the drop down actually changes
+            // to display the correct value.
+    
+            let comp;
+            beforeEach(() => {
+                // Use shallowMount here so we can use setProp in its
+                const spy = cy.spy()
+                comp = shallowMount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: 'Beans',
+                    },
+                    listeners: {
+                        'selection-changed': spy
+                    },
+                })
+            })
+    
+
+            it('emits event when prop changed to corn', () => {
+                const spySelected = cy.spy()
+                let comp = shallowMount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: 'Beans',
+                    },
+                    listeners: {
+                        'selection-changed': spySelected
+                    }
+                })
+                expect(comp.vm.selectedOption).to.equal('Beans')
+                cy.wrap(comp.setProps({ selectedVal: 'Corn' })).then(() => {
+                      expect(comp.vm.selectedOption).to.equal('Corn')
+                      expect(spySelected).to.be.calledWith('Corn')
+
+                })
+
+            })
+
+            it('emits event when prop changed to all', () => {
+                const spySelected = cy.spy()
+                let comp = shallowMount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: 'Beans',
+                    },
+                    listeners: {
+                        'selection-changed': spySelected
+                    }
+                })
+                expect(comp.vm.selectedOption).to.equal('Beans')
+                cy.wrap(comp.setProps({ selectedVal: 'All' })).then(() => {
+                      expect(comp.vm.selectedOption).to.equal('All')
+                      expect(spySelected).to.be.calledWith('All')
+
+                })
+
+            })
+
+            it('emits event when prop changed to nonlisted option', () => {
+                const spySelected = cy.spy()
+                let comp = shallowMount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: 'Beans',
+                    },
+                    listeners: {
+                        'selection-changed': spySelected
+                    }
+                })
+                expect(comp.vm.selectedOption).to.equal('Beans')
+                cy.wrap(comp.setProps({ selectedVal: 'Nope' })).then(() => {
+                      expect(comp.vm.selectedOption).to.equal(null)
+                      expect(spySelected).to.be.calledWith(null)
+
+                })
+
+            })
+
+            it('emits event when prop changed to null', () => {
+                const spySelected = cy.spy()
+                let comp = shallowMount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: 'Beans',
+                    },
+                    listeners: {
+                        'selection-changed': spySelected
+                    }
+                })
+                expect(comp.vm.selectedOption).to.equal('Beans')
+                cy.wrap(comp.setProps({ selectedVal: null })).then(() => {
+                      expect(comp.vm.selectedOption).to.equal(null)
+                      expect(spySelected).to.be.calledWith(null)
+
+                })
             })
         })
     })
-})
