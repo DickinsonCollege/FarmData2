@@ -1,6 +1,6 @@
 {
   "plugins": [
-    "/usr/lib/node_modules/jsdoc-vuejs"
+    "node_modules/jsdoc-vuejs"
   ],
   "source": {
     "includePattern": "\\.(vue|js)$"
