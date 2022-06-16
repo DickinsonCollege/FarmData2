@@ -1,4 +1,5 @@
 import { mount } from '@cypress/vue'
+import { shallowMount } from '@vue/test-utils'
 
 var DateComps = require("./DateRangeSelectionComponent.js")
 var DateRangeSelectionComponent = DateComps.DateRangeSelectionComponent
@@ -70,6 +71,49 @@ describe('date range selection component', () => {
                     .then(() => {
                         expect(spy).to.be.calledWith('2021-07-01')
                     })
+        })
+    })
+
+    context('emitted event test', () => {
+        let prop = {
+            setStartDate: "2021-01-01",
+            setEndDate: "2021-12-31"
+        }   
+        
+        it('emits date after the component is mounted', () => {   
+            const spyStartDate = cy.spy()
+            const spyEndDate = cy.spy()
+            mount(DateRangeSelectionComponent, {
+                propsData: prop,
+                listeners: {
+                    'start-date-changed': spyStartDate,
+                    'end-date-changed': spyEndDate
+                }
+            })
+            .then(() => {
+                expect(spyStartDate).to.be.calledWith('2021-01-01')
+                expect(spyEndDate).to.be.calledWith('2021-12-31')
+            })
+        })
+
+        it('emits start and end dates after the prop is changed', () => {   
+            const spyStartDate = cy.spy()
+            const spyEndDate = cy.spy()
+            let comp = shallowMount(DateRangeSelectionComponent, {
+                propsData: prop,
+                listeners: {
+                    'start-date-changed': spyStartDate,
+                    'end-date-changed': spyEndDate
+                }
+            })
+            cy.wrap(comp.setProps({
+                setStartDate: '2021-02-01',
+                setEndDate: '2021-11-31',
+            }))
+            .then(() => {
+                expect(spyStartDate).to.be.calledWith('2021-02-01')
+                expect(spyEndDate).to.be.calledWith('2021-11-31')
+            })
         })
     })
 })
