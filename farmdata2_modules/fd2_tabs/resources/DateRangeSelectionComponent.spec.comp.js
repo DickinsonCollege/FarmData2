@@ -73,6 +73,26 @@ describe('date range selection component', () => {
                     })
         })
     })
+    context('watch prop change test', () => {
+        let comp;
+        beforeEach(() => {  
+            // Use shallowMount here so we can use setProp
+            comp = shallowMount(DateSelectionComponent, {
+                propsData: {
+                    setStartDate: "2021-01-01",
+                    setEndDate: "2021-12-31"
+                }   
+            })
+        })
+
+        it ('change setStartDate prop to 2021-08-09', () => {
+            expect(comp.vm.earliestEndDate).to.equal('2021-01-01')
+            cy.wrap(comp.setProps({ setStartDate: '2021-08-09' }))
+            .then(() => {
+                expect(comp.vm.selectedDate).to.equal('2021-08-09')
+            })
+        })
+    })
 
     context('emitted event test', () => {
         let prop = {
