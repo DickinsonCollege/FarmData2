@@ -21,7 +21,7 @@ To install the necessary tools:
 To generate the documentation:
 
 1. Change into the `resources` directory.
-2. Run the `doc.bash` script.
+2. `./doc.bash`
 
 The documentation files will be generated in the `doc` directory within the `resources` directory.
 
