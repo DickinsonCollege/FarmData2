@@ -1,6 +1,6 @@
 <body>
     <div id='seedingInput'>
-        <div class="alert-boxs">
+        <div class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <div class="alert alert-success" role="alert" v-show="alertType == 'success'">
                 Log created and saved successfully.
             </div>
@@ -13,15 +13,15 @@
         <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
             <div class="center-block" style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px'>
-                <date-selection data-cy="date-selection" :set-date='selectedDate' @date-changed='setNewDate'>Date:<label style='color: #da4f3f'>*</label></date-selection>
+                <date-selection data-cy="date-selection" :set-date='selectedDate' @date-changed='setNewDate'>Date:<label style='color: #da4f3f'>*</label></date-selection> 
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :selected-val='selectedCrop' :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
             </div>
-       </fieldset>
-       <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+        </fieldset>
+        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
-                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray &nbsp;</label>
-                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType'><label>Direct</label> 
+                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType' :checked='selectedSeedingType == "Tray Seedings"' v-bind:disabled='isReadOnly'><label>Tray &nbsp;</label>
+                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType' :checked='selectedSeedingType == "Direct Seedings"' v-bind:disabled='isReadOnly'><label>Direct</label> 
             </legend>
             <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
                 <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
@@ -29,35 +29,40 @@
             <div v-if='(selectedSeedingType=="Tray Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'> 
                 <dropdown-with-all data-cy="area-selection" :selected-val='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <label>Cells/Tray:<label style='color: #da4f3f'>*</label> <input data-cy='cells-tray' style='height: 25px; width: 4em;' type='number' v-model='numCellsPerTray'></label>
-                <label>Trays:<label style='color: #da4f3f'>*</label> <input data-cy='trays-planted' style='height: 25px; width: 4em;' type='number' v-model='numOfTrays'></label>
-                <label>Seeds:<label style='color: #da4f3f'>*</label> <input data-cy='seeds-planted' style='height: 25px; width: 4em;' type='number' v-model='numSeedsPlanted'></label>
+                <label>Cells/Tray:<label style='color: #da4f3f'>*</label> <input data-cy='cells-tray' style='height: 25px; width: 4em;' type='number' v-model='numCellsPerTray' v-bind:readonly='isReadOnly'></label>
+                <label>Trays:<label style='color: #da4f3f'>*</label> <input data-cy='trays-planted' style='height: 25px; width: 4em;' type='number' v-model='numOfTrays' v-bind:readonly='isReadOnly'></label>
+                <label>Seeds:<label style='color: #da4f3f'>*</label> <input data-cy='seeds-planted' style='height: 25px; width: 4em;' type='number' v-model='numSeedsPlanted' v-bind:readonly='isReadOnly'></label>
             </div>
             <div v-if='(selectedSeedingType=="Direct Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'>
                 <dropdown-with-all data-cy="area-selection" :selected-val='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
-                <label>Rows/Bed:<label style='color: #da4f3f'>*</label> <input data-cy='row-bed' :selected-val='selectedFeetUnit' style='height: 25px; width: 4em;' type='number' v-model='numRowBed'></label>
+                <label>Rows/Bed:<label style='color: #da4f3f'>*</label> <input data-cy='row-bed' :selected-val='selectedFeetUnit' style='height: 25px; width: 4em;' type='number' v-model='numRowBed' v-bind:readonly='isReadOnly'></label>
                 <label><dropdown-with-all data-cy='unit-feet' :selected-val='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit' style='padding-left:20px;' ></dropdown-with-all>
-                <label style='color: #da4f3f'>*</label> <input data-cy='num-feet' style='height: 25px; width: 4em;' type='number' v-model='numFeet'></label>
+                <label style='color: #da4f3f'>*</label> <input data-cy='num-feet' style='height: 25px; width: 4em;' type='number' v-model='numFeet' v-bind:readonly='isReadOnly'></label>
             </div>
         </fieldset>   
         <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
-                <label style='color: #da4f3f'>*&nbsp;</label><input data-cy="num-workers" style='height: 25px; width: 4em;' type='number' v-model='numWorkers'><label>&nbsp; Worker for </label> 
-                <label><label style='color: #da4f3f'>*</label> <input data-cy='time-spent' style='height: 25px; width: 4em;' type='number' v-model='time'> <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all></label>
+                <label style='color: #da4f3f'>*&nbsp;</label><input data-cy="num-workers" style='height: 25px; width: 4em;' type='number' v-model='numWorkers' v-bind:readonly='isReadOnly'><label>&nbsp; Worker for </label> 
+                <label><label style='color: #da4f3f'>*</label> <input data-cy='time-spent' style='height: 25px; width: 4em;' type='number' v-model='time' v-bind:readonly='isReadOnly'> 
+                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all></label>
             </div>
-       </fieldset>
-       <fieldset class="panel panel-default center-block" style='max-width: 500px; '>
+        </fieldset>
+        <fieldset class="panel panel-default center-block" style='max-width: 500px; '>
         <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Comments</legend>
         <div class="center-block" style='padding: 12px; text-align: center; font-size: medium; margin-top: 45px;'>
-            <textarea data-cy="comments" v-model='comments' style='height: 25px; width: 400px;'></textarea>
+            <textarea data-cy="comments" v-model='comments' style='height: 25px; width: 400px;' v-bind:readonly='isReadOnly'></textarea>
         </div>
-   </fieldset>
-       <div style='text-align:center;'>
-           <label style='color: #da4f3f'>* required field.</label>
-       </div>
-       <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
+        </fieldset>
+        <div class="confirm-cancel-button" style='display: flex; justify-content: center;' v-show="isSubmitted==true">
+            <button data-cy="confirm-button" class="btn center-block" style='background-color: #da4f3f; color: white; margin: 15px; width: 100px; font-size: large;' @click='saveLog'>Confirm</button>
+            <button data-cy="cancel-button" class="btn center-block" style='background-color: gray; color: white; margin: 15px; width: 100px; font-size: large;' @click='cancelLog'>Cancel</button>
+        </div>
+        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='submitLog'>Submit</button>
+        <div style='text-align:center;'>
+            <label style='color: #da4f3f'>* required field.</label>
+        </div> 
     </div>
     
     <script>
@@ -94,6 +99,8 @@
                 logTypeToIDMap: new Map(),
                 plantingId: 0,
                 alertType: '',
+                isReadOnly: false,
+                isSubmitted: false,
             },
             methods:{
                 setNewDate(newDate){
@@ -129,26 +136,32 @@
                     this.numRowBed= 0
                     this.numFeet= 0 
                 },
-                saveLog(){
-                    if(confirm("Would you like to create the seeding log based on your input?")){
-                        createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
-                            this.plantingId = response.data.id
-                        }).then(() => {
-                            createRecord('/log', this.logData, this.sessionToken).then((response) => {
-                                this.clearFields();
-                            })    
-                        })
-                        this.alertType = 'success'
-                        setTimeout(() => {
-                            this.alertType = '' 
-                        }, 3000)    
-                    } else {
-                        this.alertType = 'canceled'
-                        setTimeout(() => { 
-                            this.alertType = ''
-                        }, 3000)
-
-                    }
+                submitLog() {
+                    this.isSubmitted = true
+                    this.isReadOnly = true
+                },
+                saveLog() {
+                    createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
+                        this.plantingId = response.data.id
+                    }).then(() => {
+                        createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                            this.clearFields();
+                        })    
+                    })
+                    this.alertType = 'success'
+                    this.isReadOnly = false
+                    this.isSubmitted = false
+                    setTimeout(() => {
+                        this.alertType = '' 
+                    }, 3000)    
+                },
+                cancelLog() {
+                    this.isReadOnly = false
+                    this.isSubmitted = false
+                    this.alertType = 'canceled'
+                    setTimeout(() => { 
+                        this.alertType = ''
+                    }, 3000)
                 }
             },
             computed: {
@@ -180,6 +193,9 @@
                     return areaArray
                 },
                 formNotCompleted(){
+                    if (this.isSubmitted == true){
+                        return true
+                    }
                     if(this.selectedCrop == null){
                         return true
                     }
