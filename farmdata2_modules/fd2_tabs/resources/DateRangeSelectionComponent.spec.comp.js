@@ -93,7 +93,14 @@ describe('date range selection component', () => {
             })
         })
 
-
+        it ('change setEndDate prop to 2021-09-09', () => {
+            expect(comp.vm.latestStartDate).to.equal('2021-01-01')
+            cy.wrap(comp.setProps({ setEndDate: '2021-09-09' }))
+            .then(() => {
+                expect(comp.vm.latestStartDate).to.equal('2021-08-09')
+            })
+        })
+        
     })
 
     context('emitted event test', () => {
