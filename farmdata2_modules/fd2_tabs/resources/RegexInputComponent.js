@@ -1,7 +1,7 @@
 let RegexInputComponent = {
     template: 
         `<span>
-        <input style='height: 25px; width: 4em;' type='number'>
+        <input v-model.number="val" @change='formatValue(val)' style='height: 25px; width: 4em;' type='number'>
          </span>`, 
 
          props: {
