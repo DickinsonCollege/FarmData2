@@ -1,10 +1,12 @@
 <body>
     <div id='seedingInput'>
         <div class="alert-boxs">
-            <div class="alert alert-success" role="alert" v-if='alertType == "success"'>
+            <div class="alert alert-danger fade in" role="alert" v-if='alertType == "success"'>
+                <a href="#" id="closeButtonOnSuccess" class="close" data-dismiss="alert">&times;</a>
                 Log created and saved successfully.
             </div>
-            <div class="alert alert-danger" role="alert" v-if='alertType == "canceled"'>
+            <div class="alert alert-danger fade in" role="alert" v-if='alertType == "canceled"'>
+                <a href="#" id="closeButtonOnCancel" class="close" data-dismiss="alert">&times;</a>
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
         </div>
@@ -15,7 +17,7 @@
             <div class="center-block" style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px'>
                 <date-selection data-cy="date-selection" :set-date='selectedDate' @date-changed='setNewDate'>Date:<label style='color: #da4f3f'>*</label></date-selection>
                 <br>
-                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="crop-selection" :selected-val='selectedCrop' :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
             </div>
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
@@ -141,12 +143,14 @@
                         })
                         this.alertType = 'success'
                         setTimeout(() => {
+                            $("#closeButtonOnSuccess").click()
                             this.alertType = ''
-                        }, 3000)
+                        }, 3000)    
                     } else {
                         this.alertType = 'canceled'
                         setTimeout(() => {
-                            this.alertType = ''  
+                            $("#closeButtonOnCancel").click()
+                            //this.alertType = ''  
                         }, 3000)
                     }
                 }
