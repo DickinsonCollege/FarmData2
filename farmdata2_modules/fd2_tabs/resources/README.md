@@ -14,7 +14,7 @@ To install the necessary tools:
 
 1. `sudo apt install npm`  (if not already installed)
 2. Change into the `resources` directory
-3. `npm install -prefix . --no-package-lock jsdoc@3.6.7 jsdoc-vuejs@3.0.9 vue-template-compiler@2.6.14`
+3. `npm install -prefix . --no-package-lock --no-save jsdoc@3.6.7 jsdoc-vuejs@3.0.9 vue-template-compiler@2.6.14`
 
 ### Generating Documentation
 
