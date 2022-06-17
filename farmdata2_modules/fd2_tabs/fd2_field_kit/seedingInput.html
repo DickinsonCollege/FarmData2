@@ -17,19 +17,11 @@
                 <br>
                 <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f;'>*</label></dropdown-with-all>
             </div>
-<<<<<<< HEAD
-        </fieldset>
-        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
-            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
-                <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray Seeding</label>
-                <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings' v-model='selectedSeedingType'> <label>Direct Seeding</label> 
-=======
        </fieldset>
        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
                 <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType'><label>Tray &nbsp;</label>
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType'><label>Direct</label> 
->>>>>>> main
             </legend>
             <div v-if='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
                 <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
@@ -51,18 +43,6 @@
         </fieldset>   
         <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
-<<<<<<< HEAD
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
-                <label>Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type='number' v-model='numWorkers'>
-                <label>Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 75px;' type='number' v-model='time'>
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all> 
-            </div>
-        </fieldset>
-        <div style='text-align:center;'>
-            <label style='color: #da4f3f'>* required field.</label>
-        </div>
-        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Create Log</button>
-=======
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
                 <label style='color: #da4f3f'>*&nbsp;</label><input data-cy="num-workers" style='height: 25px; width: 4em;' type='number' v-model='numWorkers'><label>&nbsp; Worker for </label> 
                 <label><label style='color: #da4f3f'>*</label> <input data-cy='time-spent' style='height: 25px; width: 4em;' type='number' v-model='time'> <dropdown-with-all data-cy='time-unit' style='text-align:center;' :default-input='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all></label>
@@ -78,7 +58,6 @@
            <label style='color: #da4f3f'>* required field.</label>
        </div>
        <button data-cy="submit-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='formNotCompleted' @click='saveLog'>Submit</button>
->>>>>>> main
     </div>
     
     <script>
@@ -133,28 +112,31 @@
                 setNewFeetUnit(newFeetUnit){
                     this.selectedFeetUnit = newFeetUnit
                 },
+                clearFields(){
+                    this.selectedDate = dayjs().format('YYYY-MM-DD').toString() 
+                    this.selectedCrop = null 
+                    this.selectedArea = null
+                    this.savedArea = null
+                    this.selectedSeedingType = 'Bed Feet'
+                    this.selectedFeetUnit = 'bed'
+                    this.selectedTimeUnit = 'minutes'
+                    this.comments = ''
+                    this.numWorkers = 0
+                    this.time = 0 
+                    this.numOfTrays= 0
+                    this.numCellsPerTray= 0
+                    this.numSeedsPlanted= 0
+                    this.numRowBed= 0
+                    this.numFeet= 0 
+                    this.$forceUpdate()
+                },
                 saveLog(){
                     if(confirm("Would you like to create the seeding log based on your input?")){
                         createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                             this.plantingId = response.data.id
                         }).then(() => {
                             createRecord('/log', this.logData, this.sessionToken).then((response) => {
-                                //this.selectedDate = dayjs().format('YYYY-MM-DD').toString() //does not update
-                                //this.selectedCrop = null //does not update
-                                this.selectedArea = null
-                                this.savedArea = null
-                                this.selectedSeedingType = ''
-                                this.selectedFeetUnit = 'bed'
-                                this.selectedTimeUnit = 'minutes'
-                                this.comments = ''
-                                this.numWorkers = 0
-                                this.time = 0 
-                                this.numOfTrays= 0
-                                this.numCellsPerTray= 0
-                                this.numSeedsPlanted= 0
-                                this.numRowBed= 0
-                                this.numFeet= 0 
-                                this.$forceUpdate()
+                                this.clearFields();
                             })    
                         })
                         this.alertType = 'success'
