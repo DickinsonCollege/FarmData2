@@ -301,17 +301,17 @@
     </tr>
     </thead>
     <tbody><tr>
-        <td><code>defaultStartDate</code></td>
+        <td><code>setStartDate</code></td>
         <td>String</td>
         <td>-</td>
         <td><b>Yes</b></td>
-        <td>the initial start date to be displayed (YYYY-MM-DD).</td>
+        <td>the start date to be displayed (YYYY-MM-DD).</td>
     </tr><tr>
-        <td><code>defaultEndDate</code></td>
+        <td><code>setEndDate</code></td>
         <td>String</td>
         <td>-</td>
         <td><b>Yes</b></td>
-        <td>the initial end date to be displayed (YYYY-MM-DD).</td>
+        <td>the end date to be displayed (YYYY-MM-DD).</td>
     </tr></tbody>
 </table>
 
@@ -338,11 +338,11 @@
     </tr><tr>
         <td><code>start-date-changed</code></td>
         <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when a start date is entered or chosen and the start date selection element loses focus.</td>
+        <td>Emits the selected date (YYYY-MM-DD) when a start date is entered, chosen, component is mounted, prop is changed, and the start date selection element loses focus.</td>
     </tr><tr>
         <td><code>end-date-changed</code></td>
         <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when an end date is entered or chosen and the end date selection element loses focus.</td>
+        <td>Emits the selected date (YYYY-MM-DD) when an end date is entered, chosen, component is mounted, prop is changed, and the end date selection element loses focus.</td>
     </tr></tbody>
 </table>
 
@@ -428,11 +428,11 @@
     </tr>
     </thead>
     <tbody><tr>
-        <td><code>defaultDate</code></td>
+        <td><code>setDate</code></td>
         <td>String</td>
         <td>-</td>
         <td><b>Yes</b></td>
-        <td>the initial date to be displayed in the component (YYYY-MM-DD).</td>
+        <td>the date to be displayed in the component (YYYY-MM-DD).</td>
     </tr><tr>
         <td><code>earliestDate</code></td>
         <td>String</td>
@@ -471,7 +471,7 @@
     </tr><tr>
         <td><code>date-changed</code></td>
         <td>String</td>
-        <td>Emits the selected date (YYYY-MM-DD) when a date is entered or chosen and the date input element loses focus.</td>
+        <td>Emits the selected date (YYYY-MM-DD) when a date is entered, chosen, setDate in prop is changed by the parent, the component is mounted, and the date input element loses focus.</td>
     </tr></tbody>
 </table>
 
