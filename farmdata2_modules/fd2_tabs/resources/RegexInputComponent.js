@@ -1,77 +1,87 @@
+
 let RegexInputComponent = {
-    template: 
-        `<span>
-        <input @input="updateValue($event.target.value)"
-        @change="emitChange"
-        v-model="val" style='height: 25px; width: 4em;' type='number'>
-         </span>`, 
+  template: 
+      `<span>
+      <input v-model='val' :style='inputStyle' :type='defineType' @blur='blurEventHandler($event)'>
+       </span>`, 
 
-         props: {
-          value: {
-              required: true,
-              type: [Number, String]
-          },
-          // Using for: String.prototype.replace(regexp, replacement)
+       props: {
           regExp: {
-              type: RegExp,
-              default: null
+            type: RegExp,
+            default: null
           },
-          // Using for: String.prototype.replace(regexp, replacement)
-          replacement: {
-              type: String,
-              default: ''
+
+          match:{
+            type: Boolean,
+            default: null
+          },
+
+          defineType: {
+            type: String,
+            default: 'text'
+          },
+
+          defineBColor: {
+            type: String,
+            default: null
+          },
+
+          defineHeight: {
+            type: String,
+            default: '25px'
+          },
+
+          defineWidth: {
+            type: String,
+            default: '4em'
+          },
+
+          defaultVal: {
+            type: String,
           }
-      },
-      data() {
+        },
+        data () {
           return {
-              val: ''
-          };
-      },
-      methods: {
-          // format the value of input
-          formatValue(val) {
-              const formattedValue = val.toString().replace(this.regExp, this.replacement);
+            val: this.defaultVal,
+            selectType : this.defineType,
 
-              return formattedValue;
+            inputStyle: {
+              backgroundColor: this.defineBColor,
+              height: this.defineHeight,
+              width: this.defineWidth,
           },
 
-          // update the value of input
-          updateValue(val) {
-              const formattedValue = this.formatValue(val);
-
-              this.val = formattedValue;
-              this.emitInput(formattedValue);
-          },
-
-          // emit input event
-          emitInput(val) {
-              this.$emit('input', val);
-          },
-
-          // emit change event
-          emitChange() {
-              this.$emit('change', this.val);
           }
+        },
+        methods: {
+          // Handles validation of the input value
+          blurEventHandler: function (e) {
+            const name = e.target.value;
+            console.log(name);
+            this.validateVal(name)
+            
+        },
+
+        validateVal(check){
+          const re = new RegExp(this.regExp)
+          console.log(this.regExp + " this is the re var: " + re)
+          console.log("We are checking the Regex: " + this.regExp + ", against this value: " + check)
+          const validation = re.test(this.check)
+          console.log("This is the result of the validation: " + validation)
+        },
       },
       watch: {
-          // watch value prop
-          value(val) {
-              if (val !== this.val) {
-                  this.updateValue(val)
-              }
-          }
+          
       }
-  }
-        
-
+    }
 
 /*
- * Export the RegexInputComponent object as a CommonJS component
- * so that it can be required bythe component test.
- */
+* Export the RegexInputComponent object as a CommonJS component
+* so that it can be required by the component test.
+*/
 try {
-    module.exports = {
-        RegexInputComponent: RegexInputComponent
-    }
+  module.exports = {
+      RegexInputComponent: RegexInputComponent
+  }
 }
 catch {}
