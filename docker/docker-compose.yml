@@ -41,7 +41,6 @@ services:
     container_name: fd2_phpmyadmin
     environment:
       PMA_HOST: "db"
-    restart: always
     ports:
       - 8181:80
     volumes:
