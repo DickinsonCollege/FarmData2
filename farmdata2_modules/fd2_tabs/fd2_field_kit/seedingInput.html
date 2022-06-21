@@ -44,9 +44,8 @@
         <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
-                <label style='color: #da4f3f'>*&nbsp;</label><input data-cy="num-workers" style='height: 25px; width: 4em;' type='number' v-model='numWorkers' v-bind:readonly='isReadOnly'><label>&nbsp; Worker for </label> 
-                <label><label style='color: #da4f3f'>*</label> <input data-cy='time-spent' style='height: 25px; width: 4em;' type='number' v-model='time' v-bind:readonly='isReadOnly'> 
-                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all></label>
+                <label style='color: #da4f3f'>*&nbsp;</label><input data-cy="num-workers" style='height: 25px; width: 4em;' type='number' v-model='numWorkers'><label>&nbsp; Worker(s) for </label> 
+                <label><label style='color: #da4f3f'>*</label> <input data-cy='time-spent' style='height: 25px; width: 4em;' type='number' v-model='time'> <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit'></dropdown-with-all></label>
             </div>
         </fieldset>
         <fieldset class="panel panel-default center-block" style='max-width: 500px; '>
