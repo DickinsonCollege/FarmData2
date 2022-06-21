@@ -20,7 +20,7 @@
 let DropdownWithAllComponent = {
     template: `<span data-cy="dropdown-component">
             <label for="dropdownOptions"><slot> </slot></label>
-            <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged">
+            <select id="dropdownOptions" v-model="selectedOption" data-cy="dropdown-input" @change="selectionChanged" :disabled="isDisabled">
                 <option v-for="(singleOption,i) in fullDropdown" :data-cy="'option'+i">{{ singleOption }}</option>
             </select>
         </span>`, 
@@ -34,10 +34,17 @@ let DropdownWithAllComponent = {
         },
         selectedVal: {
             type: String
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         } 
     }, 
     data() {
-        return { selectedOption: this.selectedVal }
+        return { 
+            selectedOption: this.selectedVal,
+            isDisabled: this.disabled
+        }
     },
     watch: {
         selectedVal(newVal) {
@@ -48,6 +55,9 @@ let DropdownWithAllComponent = {
                 this.selectedOption = null;
             }
             this.selectionChanged()
+        },
+        disabled(newBool) {
+            this.isDisabled = newBool;
         }
     },
     mounted() {
