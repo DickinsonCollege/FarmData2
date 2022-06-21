@@ -73,6 +73,44 @@ describe('date range selection component', () => {
                     })
         })
     })
+
+    context('testing disabled option', () => {
+        let comp;
+        beforeEach(() => {
+            //ShallowMount to test disabled option
+            comp = shallowMount(DateRangeSelectionComponent, { 
+                propsData: {
+                    setStartDate: "2021-01-01",
+                    setEndDate: "2021-12-01",
+                    disabled: true,
+                },
+            })
+        })
+        
+        it('checking if the datePicker is disabled', () => {
+            mount(DateRangeSelectionComponent, {
+                propsData: {
+                    setStartDate: "2021-01-01",
+                    setEndDate: "2021-12-01",
+                    disabled: true,
+                }
+            })
+            cy.get('[data-cy=start-date-select]')
+            .get('[data-cy=date-select]')
+            .should('be.disabled')
+            cy.get('[data-cy=end-date-select]')
+            .get('[data-cy=date-select]')
+            .should('be.disabled')
+        })
+
+        it('checking disabled when prop changes', () => {
+            expect(comp.vm.isDisabled).to.equal(true)
+            cy.wrap(comp.setProps({ disabled: false })).then(() => {
+                expect(comp.vm.isDisabled).to.equal(false)
+            })
+        })
+    })
+
     context('watch prop change test', () => {
         let comp;
         beforeEach(() => {  
@@ -80,7 +118,7 @@ describe('date range selection component', () => {
             comp = shallowMount(DateRangeSelectionComponent, {
                 propsData: {
                     setStartDate: "2021-01-01",
-                    setEndDate: "2021-12-31"
+                    setEndDate: "2021-12-31"    
                 }   
             })
         })
@@ -94,10 +132,10 @@ describe('date range selection component', () => {
         })
 
         it ('change setEndDate prop to 2021-09-09', () => {
-            expect(comp.vm.latestStartDate).to.equal('2021-01-01')
+            expect(comp.vm.latestStartDate).to.equal('2021-12-31')
             cy.wrap(comp.setProps({ setEndDate: '2021-09-09' }))
             .then(() => {
-                expect(comp.vm.latestStartDate).to.equal('2021-08-09')
+                expect(comp.vm.latestStartDate).to.equal('2021-09-09')
             })
         })
         

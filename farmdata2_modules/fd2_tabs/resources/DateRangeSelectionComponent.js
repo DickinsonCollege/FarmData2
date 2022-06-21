@@ -20,7 +20,8 @@ catch(err) {
  * 
  * @vue-prop {String} setStartDate - the start date to be displayed (YYYY-MM-DD).
  * @vue-prop {String} setEndDate - the end date to be displayed (YYYY-MM-DD).
- * 
+ * @vue-prop {Boolean} [disabled=false] - true to disable the datepicker, false otherwise.
+ *
  * @vue-event click - Emits an event with no payload when when one of the date selection elements is clicked.  This event does not necessarily indicate a change in date.
  * @vue-event {String} start-date-changed - Emits the selected date (YYYY-MM-DD) when a start date is entered, chosen, component is mounted, prop is changed, and the start date selection element loses focus.
  * @vue-event {String} end-date-changed - Emits the selected date (YYYY-MM-DD) when an end date is entered, chosen, component is mounted, prop is changed, and the end date selection element loses focus.
@@ -28,12 +29,12 @@ catch(err) {
 let DateRangeSelectionComponent = {
     template: `<div>
                 <date-selection data-cy="start-date-select" :setDate="setStartDate" :latestDate="latestStartDate" @date-changed="startDateChange" 
-                @click="click">
+                @click="click" :disabled="isDisabled">>
                     Start Date:
                 </date-selection>
                 <br>
                 <date-selection data-cy="end-date-select" :setDate="setEndDate" :earliestDate="earliestEndDate" @date-changed="endDateChange"
-                @click="click">
+                @click="click" :disabled="isDisabled">
                     End Date:
                 </date-selection>
             </div>
@@ -46,7 +47,11 @@ let DateRangeSelectionComponent = {
         setEndDate:{
             type: String,
             required: true
-        }
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        } 
     },
     components: {
         'date-selection': DateSelectionComponent,
@@ -55,6 +60,7 @@ let DateRangeSelectionComponent = {
         return{
             earliestEndDate: this.setStartDate,
             latestStartDate: this.setEndDate,
+            isDisabled: this.disabled
         }
     },
     methods: {
@@ -80,6 +86,9 @@ let DateRangeSelectionComponent = {
         },
         setEndDate(newEndDate) {
             this.endDateChange(newEndDate);
+        },
+        disabled(newBool) {
+            this.isDisabled = newBool;
         }
     }
 }
