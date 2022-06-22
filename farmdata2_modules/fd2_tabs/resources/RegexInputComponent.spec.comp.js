@@ -65,19 +65,7 @@ describe('RegexInput Component', () => {
     })
 })
 
-    context('testing disabled option', () => {
-        let comp;
-        beforeEach(() => {
-            //ShallowMount to test disabled option
-            comp = shallowMount(RegexInputComponent, { 
-                propsData: {
-                    regExp: null,
-                    defaultVal: null,
-                    disabled: true,
-                },
-            })
-        })
-    
+    context('testing disabled option', () => {  
         it('checking if the input box is disabled', () => {
             mount(RegexInputComponent, {
                 propsData: {
@@ -90,6 +78,14 @@ describe('RegexInput Component', () => {
         .should('be.disabled')
     })
         it('checking disabled when prop changes', () => {
+            let comp; 
+            comp = shallowMount(RegexInputComponent, { 
+                propsData: {
+                    regExp: null,
+                    defaultVal: null,
+                    disabled: true,
+                },
+            })
             expect(comp.vm.isDisabled).to.equal(true)
             cy.wrap(comp.setProps({ disabled: false })).then(() => {
                 expect(comp.vm.isDisabled).to.equal(false)
