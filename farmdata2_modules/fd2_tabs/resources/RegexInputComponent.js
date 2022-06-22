@@ -20,6 +20,7 @@
  * @vue-prop {String} [setMin] - Defines the min of the input element.
  * @vue-prop {String} [setMax] - Defines the max of the input element.
  * @vue-prop {String} [setStep] - Defines the step increments of the input element.
+ * @vue-prop {String} [setTitle] - Defines the title for a simple hover tip for the input element.
  * @vue-prop {Boolean} [isDisabled] - Makes the element read-only.
  * 
  * @vue-event {Boolean} is-enabled - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
@@ -27,7 +28,8 @@
 let RegexInputComponent = {
   template: 
       `<span data-cy='regex-input'>
-      <input data-cy='text-input' v-model='val' :style='inputStyle' :min='setMin' :max='setMax' :step='setStep' :type='setType' @click="clickEventHandler($event)" @blur="blurEventHandler($event)">
+      <input data-cy='text-input' v-model='val' :style='inputStyle' :min='setMin' :max='setMax' :step='setStep' 
+      :title='setTitle' :disabled="isDisabled" :type='setType' @click="clickEventHandler($event)" @blur="blurEventHandler($event)">
        </span>`, 
 
        props: {
@@ -66,8 +68,13 @@ let RegexInputComponent = {
             type: Number,
             default: null
           },
-          isDisabled: {
-            type: Boolean
+          setTitle: {
+            type: String,
+            default: null
+          },
+          disabled: {
+            type: Boolean,
+            default: false
           },
         },
         data () {
@@ -75,6 +82,7 @@ let RegexInputComponent = {
             val: this.defaultVal,
             InputType : this.setType,
             isMatch: false,
+            isDisabled: this.disabled,
 
             inputStyle: {
               backgroundColor: "white",
@@ -103,7 +111,7 @@ let RegexInputComponent = {
           const re = new RegExp(this.regExp)
           this.isMatch = re.test(isValid)
           this.updateColor(this.isMatch)
-          this.$emit('isEnabled', this.isMatch)
+          this.$emit('is-match-changed', this.isMatch)
         },
 
         updateColor(setNewColor){
@@ -117,6 +125,7 @@ let RegexInputComponent = {
 
         updateVal(){
           this.$emit('input-changed', this.val)
+          this.validateVal(this.val)
         }
 
       },
@@ -125,9 +134,9 @@ let RegexInputComponent = {
           this.val = newVal
           this.updateVal()
         },
-        isDisabled(newBool){
-          this.isDisabled = newBool
-        }
+        disabled(newBool) {
+          this.isDisabled = newBool;
+      }
       }
     }
 
