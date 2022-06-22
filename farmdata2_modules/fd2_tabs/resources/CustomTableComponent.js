@@ -141,11 +141,11 @@ let CustomTableComponent = {
             default: false
         },
         visibleColumns: {
-            type: Array,
+            type: Array,    
             default: null
         },
         inputOptions: {
-            type: Array,
+            type: Array,    
             default: null
         }
     },
@@ -156,6 +156,7 @@ let CustomTableComponent = {
             editedRowData: {},
             originalRow: {},
             currentlyEditing: false,
+            updatedVis: this.visibleColumns,
         }
     },
     methods: {
@@ -227,16 +228,15 @@ let CustomTableComponent = {
             }
         },
         isVisible() {
-            let updatedVis = []
-            if (this.visibleColumns == null) {
+            tempArr = []
+            if (this.updatedVis == null) {
                 for (i = 0; i < this.headers.length; i++) {
-                    updatedVis.push(true);
+                    tempArr.push(true);
                 }
-            }
-            else {
-                updatedVis = this.visibleColumns
-            }
-            return updatedVis;
+            } else [
+                tempArr = this.updatedVis
+            ]
+            return tempArr;
         },
         inputType() {
             let typeArray = []
@@ -252,10 +252,10 @@ let CustomTableComponent = {
         }
     },
     watch: {
-        visibleColumns() {
-            this.isVisible()
+        visibleColumns(newArr) {
+            this.updatedVis = newArr
         }
-    }
+    } 
 }
 
 try {
