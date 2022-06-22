@@ -64,6 +64,41 @@ describe('date selection component', () => {
         })
     })
 
+    context('testing disabled option', () => {
+        let comp;
+        beforeEach(() => {
+            //ShallowMount to test disabled option
+            comp = shallowMount(DateSelectionComponent, { 
+                propsData: {
+                    setDate: "2021-06-09",
+                    latestDate: "2021-12-31",
+                    earliestDate: "2021-01-01",
+                    disabled: true,
+                },
+            })
+        })
+        
+        it('checking if the datePicker is disabled', () => {
+            mount(DateSelectionComponent, {
+                propsData: {
+                    setDate: "2021-06-09",
+                    latestDate: "2021-12-31",
+                    earliestDate: "2021-01-01",
+                    disabled: true,
+                }
+            })
+            cy.get('[data-cy=date-select]')
+            .should('be.disabled')
+        })
+
+        it('checking disabled when prop changes', () => {
+            expect(comp.vm.isDisabled).to.equal(true)
+            cy.wrap(comp.setProps({ disabled: false })).then(() => {
+                expect(comp.vm.isDisabled).to.equal(false)
+            })
+        })
+    })
+        
     context('watch prop change tests', () => {
         let comp;
         beforeEach(() => {  
