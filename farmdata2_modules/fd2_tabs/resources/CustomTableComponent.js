@@ -250,6 +250,11 @@ let CustomTableComponent = {
             }
             return typeArray;
         }
+    },
+    watch: {
+        visibleColumns() {
+            this.isVisible()
+        }
     }
 }
 

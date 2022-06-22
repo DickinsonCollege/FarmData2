@@ -1,4 +1,5 @@
 import {mount} from '@cypress/vue'
+import { shallowMount } from '@vue/test-utils'
 
 var CustTable = require("./CustomTableComponent.js")
 var CustomTableComponent = CustTable.CustomTableComponent
@@ -435,7 +436,7 @@ describe('custom table component', () => {
             })
         })
 
-        it('confirms that row is not deletedd if "cancel" is clicked', () => {
+        it('confirms that row is not deleted if "cancel" is clicked', () => {
             const spy = cy.spy()
             Cypress.vue.$on('row-deleted', spy)
             cy.get('[data-cy=delete-button-r1]')
@@ -445,6 +446,32 @@ describe('custom table component', () => {
             
             cy.wait(100).then(() => { 
                 expect(spy).to.not.be.called
+            })
+        })
+    })
+
+    context('watch prop changes', () => {
+        let comp;
+        beforeEach(() => {
+            //ShallowMount to test prop changes
+            comp = shallowMount(CustomTableComponent, {
+                propsData: {
+                    rows: [ {id: 10, data: [12, 3, 'answome']},
+                    {id: 11, data: [19, 3, 'and'],},
+                    {id: 12, data: [12, 12, 'answome12'],}, 
+                    ],
+                    headers: ['cool', 'works?', 'hello'],
+                    canDelete: true,
+                    visibleColumns: [true, true, false],
+                }
+            })
+        })
+
+        it('checking prop changes for visibleColumns', () => {
+            //deep equal to compare key value pairs instead of references
+            expect(comp.vm.visibleColumns).to.deep.equal([true, true, false])
+            cy.wrap(comp.setProps({ visibleColumns: [false, true, false]})).then(() => {
+                expect(comp.vm.visibleColumns).to.deep.equal([false, true, false] );
             })
         })
     })
