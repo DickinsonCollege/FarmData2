@@ -11,19 +11,23 @@
  * </tbody>
  * </table>
  * 
- * @vue-prop {RegExp} [regExp] - The regular expression that will be used to valid user input.
- * @vue-prop {String} [defaultType] - Defines the HTML input type. Set to 'text' by default.
- * @vue-prop {String} [defaultColor] - Defines the background color of the input element.
- * @vue-prop {String} [defaultHeight] - Defines the height of the input element.
- * @vue-prop {String} [defaultWidth] - Defines the width of the input element.
- * @vue-prop {String} [defaultVal] - Defines the value inside the input element. Set to null by default.
+ * @vue-prop {RegExp} [regExp] - The regular expression used to validate user inputs.
+ * @vue-prop {String} [defaultVal] - Used to clear the page once a log has been submitted.
+ * @vue-prop {String} [setType] - Defines the type of input box.
+ * @vue-prop {String} [setColor] - Defines the background color of the input element.
+ * @vue-prop {String} [setHeight] - Defines the height of the input element.
+ * @vue-prop {String} [setWidth] - Defines the width of the input element.
+ * @vue-prop {String} [setMin] - Defines the min of the input element.
+ * @vue-prop {String} [setMax] - Defines the max of the input element.
+ * @vue-prop {String} [setStep] - Defines the step increments of the input element.
+ * @vue-prop {Boolean} [isDisabled] - Makes the element read-only.
  * 
- * @vue-event {Boolean} update-color - Emits the Boolean of the last input and updates the background color depending on whether a valid or invalid was computed. 
+ * @vue-event {Boolean} is-enabled - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
  */ 
 let RegexInputComponent = {
   template: 
-      `<span>
-      <input v-model='val' :style='inputStyle' :type='defaultType' @blur='blurEventHandler($event)'>
+      `<span data-cy='regex-input'>
+      <input data-cy='text-input' v-model='val' :style='inputStyle' :min='setMin' :max='setMax' :step='setStep' :type='setType' @click="clickEventHandler($event)" @blur="blurEventHandler($event)">
        </span>`, 
 
        props: {
@@ -31,83 +35,101 @@ let RegexInputComponent = {
             type: RegExp,
             default: null
           },
-
-          defaultType: {
+          defaultVal: {
+            type: String,
+          },
+          setType: {
             type: String,
             default: 'text'
           },
-
-          defaultColor: {
+          setColor: {
             type: String,
-            default: null
+            default: "pink"
           },
-
-          defaultHeight: {
+          setHeight: {
             type: String,
             default: '25px'
           },
-
-          defaultWidth: {
+          setWidth: {
             type: String,
             default: '4em'
           },
-
-          defaultVal: {
-            type: String,
-          }
+          setMin: {
+            type: Number,
+            default: null
+          },
+          setMax: {
+            type: Number,
+            default: null
+          },
+          setStep: {
+            type: Number,
+            default: null
+          },
+          isDisabled: {
+            type: Boolean
+          },
         },
         data () {
           return {
             val: this.defaultVal,
-            selectType : this.defaultType,
-            match: false,
+            InputType : this.setType,
+            isMatch: false,
 
             inputStyle: {
-              backgroundColor: this.defaultColor,
-              height: this.defaultHeight,
-              width: this.defaultWidth,
+              backgroundColor: "white",
+              height: this.setHeight,
+              width: this.setWidth,
             },
           }
         },
         methods: {
           // Handles validation of the input value
           blurEventHandler: function (e) {
-            const name = e.target.value;
-            console.log(name);
-            this.validateVal(name)
+            const inputVal = e.target.value;
+            console.log(inputVal);
+            this.validateVal(inputVal)
             
         },
 
-        validateVal(check){
-          const re = new RegExp(this.regExp)
-          console.log(this.regExp + " this is the re var: " + re)
-          console.log("We are checking the Regex: " + this.regExp + ", against this value: " + check)
-          this.match = re.test(check)
-          console.log("This is the result of the validation: " + this.match)
-          this.updateColor(this.match)
+        // This click even handler points the event to the input box to address
+        // an issue in FireFox where clicking on the increment/decrement buttons 
+        // does not actually focus the input box.
+        clickEventHandler: function (e) {
+            e.target.focus()
         },
 
-        updateColor(valid){
-          console.log('HEY! HELLO! LISTEN!')
-          this.$emit('update-color', valid)
-        }
+        validateVal(isValid){
+          const re = new RegExp(this.regExp)
+          this.isMatch = re.test(isValid)
+          this.updateColor(this.isMatch)
+          this.$emit('isEnabled', this.isMatch)
+        },
 
+        updateColor(setNewColor){
+          if(!setNewColor){
+            this.inputStyle.backgroundColor = this.setColor
+        }
+        else{
+            this.inputStyle.backgroundColor = 'white'
+        }
+        },
+
+        updateVal(){
+          this.$emit('input-changed', this.val)
+        }
 
       },
       watch: {
         defaultVal(newVal) {
           this.val = newVal
+          this.updateVal()
         },
-        defaultColor(newColor) {
-          var s = new Option().style;
-          s.color = newColor;
-          this.default = newColor;
-          this.inputStyle.backgroundColor = newColor;
-        
+        isDisabled(newBool){
+          this.isDisabled = newBool
+        }
       }
     }
-    
-  }
 
 /*
 * Export the RegexInputComponent object as a CommonJS component
