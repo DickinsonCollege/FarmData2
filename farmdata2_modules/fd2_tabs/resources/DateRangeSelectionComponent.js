@@ -20,7 +20,7 @@ catch(err) {
  * 
  * @vue-prop {String} setStartDate - the start date to be displayed (YYYY-MM-DD).
  * @vue-prop {String} setEndDate - the end date to be displayed (YYYY-MM-DD).
- * @vue-prop {Boolean} [disabled=false] - true to disable the datepicker, false otherwise.
+ * @vue-prop {Boolean} [disabled=false] - true to disable both start and end date selection elements, false otherwise.
  *
  * @vue-event click - Emits an event with no payload when when one of the date selection elements is clicked.  This event does not necessarily indicate a change in date.
  * @vue-event {String} start-date-changed - Emits the selected date (YYYY-MM-DD) when a start date is entered, chosen, component is mounted, prop is changed, and the start date selection element loses focus.
