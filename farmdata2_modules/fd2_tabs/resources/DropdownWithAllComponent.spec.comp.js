@@ -177,18 +177,6 @@ describe('Field and Crop Dropdowns', () => {
         })
 
         context('testing disabled option', () => {
-            let comp;
-            beforeEach(() => {
-                //ShallowMount to test disabled option
-                comp = shallowMount(DropdownWithAllComponent, { 
-                    propsData: {
-                        dropdownList: ['Corn', 'Beans', 'Peas'],
-                        includesAll: true,
-                        selectedVal: 'Beans',
-                        disabled: true,
-                    },
-                })
-            })
             
             it('checking if the dropdown is disabled', () => {
                 mount(DropdownWithAllComponent, {
@@ -204,6 +192,15 @@ describe('Field and Crop Dropdowns', () => {
             })
 
             it('checking disabled when prop changes', () => {
+                let comp;
+                comp = shallowMount(DropdownWithAllComponent, { 
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: 'Beans',
+                        disabled: true,
+                    },
+                })
                 expect(comp.vm.isDisabled).to.equal(true)
                 cy.wrap(comp.setProps({ disabled: false })).then(() => {
                     expect(comp.vm.isDisabled).to.equal(false)
