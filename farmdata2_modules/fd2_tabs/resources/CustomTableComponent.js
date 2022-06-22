@@ -31,7 +31,7 @@
  * @vue-prop {String[]} headers - The column headings for the table. Must be the same length as the data arrays in the rows prop.
  * @vue-prop {Boolean} [canEdit=false] - true if the table rows should be editable via an edit button that appears in each row.
  * @vue-prop {Boolean} [canDelete=false] - true if the table rows should be able to be deleted via a delete button that appears in each row.
- * @vue-prop {Boolean[]} [visibleColumns] - An array the same length as the headers prop.  Each entry indicates if the associated column is visible (true) or hidden (false).  If omitted, all columns are visible.
+ * @vue-prop {Boolean[]} [visibleColumns] - An array the same length as the headers prop.  Each entry indicates if the associated column is visible (true) or hidden (false).  If omitted, all columns are visible. It is being watched for direct changes from the parent.
  * @vue-prop {String[]} [inputOptions] - An array the same length as the headers prop.  Each entry indicates the type of edit component that will appear in edit mode.  The entries must be one of 'text', 'dropdown', 'date', 'number', or 'no input'.  If omitted, all columns are edited as 'text'.
  * 
  * @vue-event edit-clicked - Emitted when an edit button is clicked to indicate that the table is in edit mode.
