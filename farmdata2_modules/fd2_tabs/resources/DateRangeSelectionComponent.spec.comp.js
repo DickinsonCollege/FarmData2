@@ -75,18 +75,7 @@ describe('date range selection component', () => {
     })
 
     context('testing disabled option', () => {
-        let comp;
-        beforeEach(() => {
-            //ShallowMount to test disabled option
-            comp = shallowMount(DateRangeSelectionComponent, { 
-                propsData: {
-                    setStartDate: "2021-01-01",
-                    setEndDate: "2021-12-01",
-                    disabled: true,
-                },
-            })
-        })
-        
+
         it('checking if the datePicker is disabled', () => {
             mount(DateRangeSelectionComponent, {
                 propsData: {
@@ -104,6 +93,14 @@ describe('date range selection component', () => {
         })
 
         it('checking disabled when prop changes', () => {
+            let comp;
+            comp = shallowMount(DateRangeSelectionComponent, { 
+                propsData: {
+                    setStartDate: "2021-01-01",
+                    setEndDate: "2021-12-01",
+                    disabled: true,
+                },
+            })
             expect(comp.vm.isDisabled).to.equal(true)
             cy.wrap(comp.setProps({ disabled: false })).then(() => {
                 expect(comp.vm.isDisabled).to.equal(false)
