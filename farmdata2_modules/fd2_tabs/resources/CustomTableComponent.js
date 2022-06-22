@@ -141,11 +141,11 @@ let CustomTableComponent = {
             default: false
         },
         visibleColumns: {
-            type: Array,    
+            type: Array,
             default: null
         },
         inputOptions: {
-            type: Array,    
+            type: Array,
             default: null
         }
     },
