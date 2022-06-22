@@ -57,7 +57,7 @@
             el: '#seedingInput',
             components:{
                 'date-selection': DateSelectionComponent,
-                'dropdown-with-all': DropdownWithAllComponent
+                'dropdown-with-all': DropdownWithAllComponent,
             },
             data:{
                 sessionToken: null,
@@ -85,6 +85,7 @@
                 areaToIDMap: new Map(),
                 logTypeToIDMap: new Map(),
                 plantingId: 0,
+
             },
             methods:{
                 setNewDate(newDate){
@@ -113,7 +114,7 @@
                     if(confirm("You have saved a log! Would you like to go the seeding report page?")){
                         window.location.replace('/farm/fd2-barn-kit/seedingReport')
                     }
-                }
+                },
             },
             computed: {
                 areaFilter(){
