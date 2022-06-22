@@ -176,6 +176,41 @@ describe('Field and Crop Dropdowns', () => {
             })
         })
 
+        context('testing disabled option', () => {
+            let comp;
+            beforeEach(() => {
+                //ShallowMount to test disabled option
+                comp = shallowMount(DropdownWithAllComponent, { 
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: 'Beans',
+                        disabled: true,
+                    },
+                })
+            })
+            
+            it('checking if the dropdown is disabled', () => {
+                mount(DropdownWithAllComponent, {
+                    propsData: {
+                        dropdownList: ['Corn', 'Beans', 'Peas'],
+                        includesAll: true,
+                        selectedVal: "Beans",
+                        disabled: true,
+                    }
+                })
+                cy.get('[data-cy=dropdown-input]')
+                .should('be.disabled')
+            })
+
+            it('checking disabled when prop changes', () => {
+                expect(comp.vm.isDisabled).to.equal(true)
+                cy.wrap(comp.setProps({ disabled: false })).then(() => {
+                    expect(comp.vm.isDisabled).to.equal(false)
+                })
+            })
+        })
+        
         context('changing prop emits event', () => {
             // Would be nice to do these tests with a mount so that
             // we could check that the drop down actually changes
