@@ -10,7 +10,12 @@ describe('RegexInput Component', () => {
             beforeEach(() => {
                 mount(RegexInputComponent, {
                     propsData: {
-                        regExp: null,
+                        setColor: 'pink',
+                        setHeight: '25px',
+                        setWidth: '10px',
+                        setMin: '0',
+                        setMax: '10',
+                        setStep: '1',
                     }
                 })
             })
@@ -18,23 +23,45 @@ describe('RegexInput Component', () => {
             it('exists', () => {
                 cy.get('[data-cy=regex-input]').should('exist')
             })
-
             it('can be typed in', () => {
                 cy.get('[data-cy=text-input]')
                     .clear()
                     .type('Hello World!')
                     .should('have.value', 'Hello World!')
         })
-
-            it('emits the new isMatch value after blur', () => {
-                const spy = cy.spy()
-                Cypress.vue.$on('is-match-changed', spy)
-                cy.get('[data-cy=text-input]')
-                    .type('Hello world!')
-                    .blur()
-                    .then(() => {
-                        expect(spy).to.be.called
-                    })
+        it('make sure width exists and has a pre-set value', () => {
+            cy.get('[data-cy=text-input]')
+                .should('have.css', 'width', '10px')
+        })
+        it('make sure height exists and has a pre-set value', () => {
+            cy.get('[data-cy=text-input]')
+                .should('have.css','height', '25px')
+        })
+        it('make sure color is white and not set setColor', () => {
+            cy.get('[data-cy=text-input]')
+                .should('have.css','background-color', 'rgb(255, 255, 255)')
+        })
+        it('make sure min exists and has a pre-set value', () => {
+            cy.get('[data-cy=text-input]')
+                .should('have.attr','min', '0')
+        })
+        it('make sure max exists and has a pre-set value', () => {
+            cy.get('[data-cy=text-input]')
+                .should('have.attr','max', '10')
+        })
+        it('make sure step exists and has a pre-set value', () => {
+            cy.get('[data-cy=text-input]')
+                .should('have.attr','step', '1')
+        })
+        it('emits the new isMatch value after blur', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('match-changed', spy)
+            cy.get('[data-cy=text-input]')
+                .type('Hello world!')
+                .blur()
+                .then(() => {
+                    expect(spy).to.be.called
+                })
     })
 })
 
@@ -51,124 +78,24 @@ describe('RegexInput Component', () => {
             })
         })
     
-    it('checking if the input box is disabled', () => {
-        mount(RegexInputComponent, {
-            propsData: {
-                regExp: null,
-                defaultVal: null,
-                disabled: true,
-            }
+        it('checking if the input box is disabled', () => {
+            mount(RegexInputComponent, {
+                propsData: {
+                    regExp: null,
+                    defaultVal: null,
+                    disabled: true,
+                }
         })
         cy.get('[data-cy=text-input]')
         .should('be.disabled')
     })
-    it('checking disabled when prop changes', () => {
-        expect(comp.vm.isDisabled).to.equal(true)
-        cy.wrap(comp.setProps({ disabled: false })).then(() => {
-            expect(comp.vm.isDisabled).to.equal(false)
+        it('checking disabled when prop changes', () => {
+            expect(comp.vm.isDisabled).to.equal(true)
+            cy.wrap(comp.setProps({ disabled: false })).then(() => {
+                expect(comp.vm.isDisabled).to.equal(false)
         })
     })
 })
-
-        context('watch prop change tests', () => {
-            let comp;
-            beforeEach(() => {
-                comp = shallowMount(RegexInputComponent, {
-                    propsData: {
-                        regExp: null,
-                        defaultVal: null,
-                        setType: 'text',
-                        setColor: 'pink',
-                        setHeight: '25px',
-                        setWidth: '4em',
-                        setMin: null,
-                        setMax: null,
-                        setStep: null,
-                        setTitle: null,
-                        disabled: null
-
-                    },
-                })
-            })
-
-            it('change regExp prop', () => {
-                    expect(comp.vm.regExp).to.equal(null)
-                    cy.wrap(comp.setProps({regExp : '^[1-9]+[0-9]*$'}))
-                        .then(() => {
-                            expect(comp.vm.regExp).to.equal('^[1-9]+[0-9]*$')
-                    })
-                })
-            it('change defaultVal prop', () => {
-                    expect(comp.vm.defaultVal).to.equal(null)
-                    cy.wrap(comp.setProps({defaultVal : '0'}))
-                        .then(() => {
-                            expect(comp.vm.defaultVal).to.equal('0')
-                    })
-                })
-            it('change setType prop', () => {
-                    expect(comp.vm.setType).to.equal('text')
-                    cy.wrap(comp.setProps({setType : 'number'}))
-                        .then(() => {
-                            expect(comp.vm.setType).to.equal('number')
-                    })
-                })
-            it('change setColor prop', () => {
-                    expect(comp.vm.setColor).to.equal('pink')
-                    cy.wrap(comp.setProps({setColor : 'red'}))
-                        .then(() => {
-                            expect(comp.vm.setColor).to.equal('red')
-                    })
-                })
-            it('change setHeight prop', () => {
-                    expect(comp.vm.setHeight).to.equal('25px')
-                    cy.wrap(comp.setProps({setHeight : '15px'}))
-                        .then(() => {
-                            expect(comp.vm.setHeight).to.equal('15px')
-                    })
-                })
-            it('change setWidth prop', () => {
-                    expect(comp.vm.setWidth).to.equal('4em')
-                    cy.wrap(comp.setProps({setWidth : '6em'}))
-                        .then(() => {
-                            expect(comp.vm.setWidth).to.equal('6em')
-                    })
-                })
-            it('change setMin prop', () => {
-                    expect(comp.vm.setMin).to.equal(null)
-                    cy.wrap(comp.setProps({setMin : '0'}))
-                        .then(() => {
-                            expect(comp.vm.setMin).to.equal('0')
-                    })
-                })
-            it('change setMax prop', () => {
-                    expect(comp.vm.setMax).to.equal(null)
-                    cy.wrap(comp.setProps({setMax : '10000'}))
-                        .then(() => {
-                            expect(comp.vm.setMax).to.equal('10000')
-                    })
-                })
-            it('change setStep prop', () => {
-                    expect(comp.vm.setStep).to.equal(null)
-                    cy.wrap(comp.setProps({setStep : '2'}))
-                        .then(() => {
-                            expect(comp.vm.setStep).to.equal('2')
-                    })
-                })
-            it('change setTitle prop', () => {
-                    expect(comp.vm.setTitle).to.equal(null)
-                    cy.wrap(comp.setProps({setTitle : 'Positive Ints Only'}))
-                        .then(() => {
-                            expect(comp.vm.setTitle).to.equal('Positive Ints Only')
-                    })
-                })
-            it('change disabled prop', () => {
-                    expect(comp.vm.disabled).to.equal(null)
-                    cy.wrap(comp.setProps({disabled : 'true'}))
-                        .then(() => {
-                            expect(comp.vm.disabled).to.equal('true')
-                    })
-                })
-        })
 
         context('emitted events test', () => {
             let comp;
@@ -206,14 +133,15 @@ describe('RegexInput Component', () => {
                     })
                 })
 
-            it('isMatch change emits event', () => {
+            it('isMatch emits false when regex is null', () => {
                     const spy = cy.spy()
                     comp = shallowMount(RegexInputComponent, {
                         propsData: {
+                            regExp: null,
                             defaultVal: null
                             },
                         listeners: {
-                            'is-match-changed' : spy
+                            'match-changed' : spy
                             },
                         })
                         expect(comp.vm.defaultVal).to.equal(null)
@@ -223,6 +151,43 @@ describe('RegexInput Component', () => {
                                 expect(spy).to.be.calledWith(false)
                         })
                     })
+                it('isMatch emits true when regex is set and value is valid', () => {
+                        const spy = cy.spy()
+                        comp = shallowMount(RegexInputComponent, {
+                            propsData: {
+                                regExp: '^[1-9]+[0-9]*$',
+                                defaultVal: null
+                                },
+                            listeners: {
+                                'match-changed' : spy
+                                },
+                            })
+                            expect(comp.vm.defaultVal).to.equal(null)
+                            cy.wrap(comp.setProps({defaultVal : '1016'}))
+                                .then(() => {
+                                    expect(comp.vm.defaultVal).to.equal('1016')
+                                    expect(spy).to.be.calledWith(true)
+                            })
+                        })
+                    it('isMatch emits false when regex is set and value is invalid', () => {
+                            const spy = cy.spy()
+                            comp = shallowMount(RegexInputComponent, {
+                                propsData: {
+                                    regExp: '^[1-9]+[0-9]*$',
+                                    defaultVal: null
+                                    },
+                                listeners: {
+                                    'match-changed' : spy
+                                    },
+                                })
+                                expect(comp.vm.defaultVal).to.equal(null)
+                                cy.wrap(comp.setProps({defaultVal : 'cheese'}))
+                                    .then(() => {
+
+                                        expect(comp.vm.defaultVal).to.equal('cheese')
+                                        expect(spy).to.be.calledWith(false)
+                                })
+                            })
         })
 })
 

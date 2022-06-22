@@ -1,13 +1,14 @@
 /**
- * A Vue component for input HTML elements that use Regex to validate user input
+ * A Vue component for input HTML elements that use Regex to validate user input <br>
+ * Quickstart with some basic regex expressions: <br>
+ * <strong>^[1-9]+[0-9]*$<strong> - Positive integers greater than 0.
  * 
  * <p><b>data-cy attributes</b></p>
  * <table>
  * <thead><tr><th>Value</th>        <th>Descripion</th></tr></thead>
  * <tbody>
- * <tr><td>dropdown-component</td>  <td>div containing the label and select elements.</td></tr>
- * <tr><td>dropdown-input</td>      <td>The select element.</td></tr>
- * <tr><td>optioni</td>             <td>The ith option element, i=0,1,2...</td></tr>
+ * <tr><td>regex-input</td>  <td>span containing input element.</td></tr>
+ * <tr><td>text-input</td>      <td>The input element.</td></tr>
  * </tbody>
  * </table>
  * 
@@ -17,13 +18,14 @@
  * @vue-prop {String} [setColor] - Defines the background color of the input element.
  * @vue-prop {String} [setHeight] - Defines the height of the input element.
  * @vue-prop {String} [setWidth] - Defines the width of the input element.
- * @vue-prop {String} [setMin] - Defines the min of the input element.
- * @vue-prop {String} [setMax] - Defines the max of the input element.
- * @vue-prop {String} [setStep] - Defines the step increments of the input element.
+ * @vue-prop {String} [setMin] - Defines the min of the input element. Prop is ignored if the input type does not support those attributes.
+ * @vue-prop {String} [setMax] - Defines the max of the input element. Prop is ignored if the input type does not support those attributes.
+ * @vue-prop {String} [setStep] - Defines the step increments of the input element. Prop is ignored if the input type does not support those attributes.
  * @vue-prop {String} [setTitle] - Defines the title for a simple hover tip for the input element.
  * @vue-prop {Boolean} [isDisabled] - Makes the element read-only.
  * 
- * @vue-event {Boolean} is-enabled - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
+ * @vue-event {Boolean} match-changed - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
+ * @vue-event {String} input-changed - Emits String (val) for the parent page to make use of the value stored within that data variable. 
  */ 
 let RegexInputComponent = {
   template: 
@@ -95,7 +97,6 @@ let RegexInputComponent = {
           // Handles validation of the input value
           blurEventHandler: function (e) {
             const inputVal = e.target.value;
-            console.log(inputVal);
             this.validateVal(inputVal)
             
         },
@@ -111,7 +112,7 @@ let RegexInputComponent = {
           const re = new RegExp(this.regExp)
           this.isMatch = re.test(isValid)
           this.updateColor(this.isMatch)
-          this.$emit('is-match-changed', this.isMatch)
+          this.$emit('match-changed', this.isMatch)
         },
 
         updateColor(setNewColor){
@@ -136,7 +137,7 @@ let RegexInputComponent = {
         },
         disabled(newBool) {
           this.isDisabled = newBool;
-      }
+        }
       }
     }
 
