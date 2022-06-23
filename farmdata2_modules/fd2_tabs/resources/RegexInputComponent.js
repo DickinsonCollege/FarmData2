@@ -97,8 +97,7 @@ let RegexInputComponent = {
           // Handles validation of the input value
           blurEventHandler: function (e) {
             const inputVal = e.target.value;
-            this.validateVal(inputVal)
-            
+            this.validateVal(inputVal) 
         },
 
         // This click even handler points the event to the input box to address
@@ -108,11 +107,20 @@ let RegexInputComponent = {
             e.target.focus()
         },
 
-        validateVal(isValid){
+        validateVal(inputVal){
           const re = new RegExp(this.regExp)
-          this.isMatch = re.test(isValid)
-          this.updateColor(this.isMatch)
-          this.$emit('match-changed', this.isMatch)
+          const temp = this.isMatch
+          this.isMatch = re.test(inputVal)
+          this.$emit('input-changed', inputVal)
+          if(this.isMatch == temp){
+            this.updateColor(this.isMatch)
+          }
+          else{
+            this.updateColor(this.isMatch)
+            this.$emit('match-changed', this.isMatch)
+
+          }
+
         },
 
         updateColor(setNewColor){
@@ -124,16 +132,20 @@ let RegexInputComponent = {
         }
         },
 
-        updateVal(){
-          this.$emit('input-changed', this.val)
-          this.validateVal(this.val)
-        }
-
       },
+      
       watch: {
         defaultVal(newVal) {
           this.val = newVal
-          this.updateVal()
+          if(this.val == null){
+            this.isMatch = false
+            this.$emit('match-changed', this.isMatch)
+            this.$emit('input-changed', this.val)
+          }
+          else{
+            this.validateVal(this.val)
+          }
+          
         },
         disabled(newBool) {
           this.isDisabled = newBool;
