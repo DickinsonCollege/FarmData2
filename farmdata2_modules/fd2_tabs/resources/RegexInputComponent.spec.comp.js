@@ -140,10 +140,10 @@ describe('RegexInput Component', () => {
                             'match-changed' : spy
                             },
                         })
-                        expect(comp.vm.defaultVal).to.equal(null)
-                        cy.wrap(comp.setProps({defaultVal : '1016'}))
+                        expect(comp.vm.isMatch).to.equal(false)
+                        cy.wrap(comp.setData({isMatch : true}))
                             .then(() => {
-                                expect(comp.vm.defaultVal).to.equal('1016')
+                                expect(comp.vm.isMatch).to.equal(true)
                                 expect(spy).to.be.calledWith(false)
                         })
                     })
