@@ -25,7 +25,7 @@
  * @vue-prop {Boolean} [isDisabled] - Makes the element read-only.
  * 
  * @vue-event {Boolean} match-changed - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
- * @vue-event {String} input-changed - Emits String (val) for the parent page to make use of the value stored within that data variable. 
+ * @vue-event {String} input-changed - Emits String (val) for the parent page to make use of the value stored within the input element. 
  */ 
 let RegexInputComponent = {
   template: 

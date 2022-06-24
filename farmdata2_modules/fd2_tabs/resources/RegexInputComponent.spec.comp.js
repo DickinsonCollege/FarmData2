@@ -10,6 +10,7 @@ describe('RegexInput Component', () => {
             beforeEach(() => {
                 mount(RegexInputComponent, {
                     propsData: {
+                        regExp: '^[1-9]+[0-9]*$',
                         setColor: 'pink',
                         setHeight: '25px',
                         setWidth: '10px',
@@ -57,12 +58,22 @@ describe('RegexInput Component', () => {
             const spy = cy.spy()
             Cypress.vue.$on('match-changed', spy)
             cy.get('[data-cy=text-input]')
-                .type('Hello world!')
+                .type('1205')
                 .blur()
                 .then(() => {
                     expect(spy).to.be.called
                 })
     })
+        it('emits the new value after blur', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('input-changed', spy)
+            cy.get('[data-cy=text-input]')
+                .type('1205')
+                .blur()
+                .then(() => {
+                    expect(spy).to.be.called
+            })
+})
 })
 
     context('testing disabled option', () => {  
@@ -140,14 +151,34 @@ describe('RegexInput Component', () => {
                             'match-changed' : spy
                             },
                         })
-                        expect(comp.vm.isMatch).to.equal(false)
                         cy.wrap(comp.setData({isMatch : true}))
+                        expect(comp.vm.isMatch).to.equal(true)
+                        cy.wrap(comp.setData({defaultVal : '10'}))
                             .then(() => {
-                                expect(comp.vm.isMatch).to.equal(true)
+                                expect(comp.vm.isMatch).to.equal(false)
                                 expect(spy).to.be.calledWith(false)
                         })
                     })
-                it('isMatch emits true when regex is set and value is valid', () => {
+            it('isMatch emits true when regex is set and value is valid', () => {
+                    const spy = cy.spy()
+                    comp = shallowMount(RegexInputComponent, {
+                        propsData: {
+                            regExp: '^[1-9]+[0-9]*$',
+                            defaultVal: null
+                            },
+                        listeners: {
+                            'match-changed' : spy
+                            },
+                        })
+                        expect(comp.vm.defaultVal).to.equal(null)
+                        expect(comp.vm.isMatch).to.equal(false)
+                        cy.wrap(comp.setProps({defaultVal : '1016'}))
+                            .then(() => {
+                                expect(comp.vm.defaultVal).to.equal('1016')
+                                expect(spy).to.be.calledWith(true)
+                        })
+                    })
+            it('isMatch emits false when regex is set and value is invalid', () => {
                         const spy = cy.spy()
                         comp = shallowMount(RegexInputComponent, {
                             propsData: {
@@ -158,32 +189,35 @@ describe('RegexInput Component', () => {
                                 'match-changed' : spy
                                 },
                             })
+                            cy.wrap(comp.setData({isMatch : true}))
+                            expect(comp.vm.isMatch).to.equal(true)
                             expect(comp.vm.defaultVal).to.equal(null)
-                            cy.wrap(comp.setProps({defaultVal : '1016'}))
+                            cy.wrap(comp.setProps({defaultVal : 'cheese'}))
                                 .then(() => {
-                                    expect(comp.vm.defaultVal).to.equal('1016')
-                                    expect(spy).to.be.calledWith(true)
-                            })
+                                    expect(comp.vm.defaultVal).to.equal('cheese')
+                                    expect(spy).to.be.calledWith(false)
+                                })
                         })
-                    it('isMatch emits false when regex is set and value is invalid', () => {
-                            const spy = cy.spy()
-                            comp = shallowMount(RegexInputComponent, {
-                                propsData: {
-                                    regExp: '^[1-9]+[0-9]*$',
-                                    defaultVal: null
-                                    },
-                                listeners: {
-                                    'match-changed' : spy
-                                    },
-                                })
-                                expect(comp.vm.defaultVal).to.equal(null)
-                                cy.wrap(comp.setProps({defaultVal : 'cheese'}))
-                                    .then(() => {
-
-                                        expect(comp.vm.defaultVal).to.equal('cheese')
-                                        expect(spy).to.be.calledWith(false)
-                                })
+            it('val emits the correct value', () => {
+                        const spy = cy.spy()
+                        comp = shallowMount(RegexInputComponent, {
+                            propsData: {
+                                regExp: '^[1-9]+[0-9]*$',
+                                defaultVal: null
+                                },
+                            listeners: {
+                                'input-changed' : spy
+                                },
                             })
+                            expect(comp.vm.defaultVal).to.equal(null)
+                            expect(comp.vm.val).to.equal(null)
+                            cy.wrap(comp.setProps({defaultVal : 'cheese'}))
+                                .then(() => {
+                                    expect(comp.vm.defaultVal).to.equal('cheese')
+                                    expect(comp.vm.val).to.equal('cheese')
+                                    expect(spy).to.be.calledWith('cheese')
+                                })
+                        })
         })
 })
 
