@@ -140,6 +140,7 @@ let RegexInputComponent = {
           this.val = newVal
           if(this.val == null){
             this.isMatch = false
+            this.inputStyle.backgroundColor = 'white'
             this.$emit('match-changed', this.isMatch)
             this.$emit('input-changed', this.val)
           }
