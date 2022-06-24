@@ -112,6 +112,7 @@ let RegexInputComponent = {
           const temp = this.isMatch
           this.isMatch = re.test(inputVal)
           this.$emit('input-changed', inputVal)
+          // isMatch begins false so this is here to handle the first case. 
           if(this.isMatch == temp){
             this.updateColor(this.isMatch)
           }
