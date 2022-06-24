@@ -218,6 +218,29 @@ describe('RegexInput Component', () => {
                                     expect(spy).to.be.calledWith('cheese')
                                 })
                         })
+
+                it('val emits the correct value when set to null', () => {
+                        const spy = cy.spy()
+                        comp = shallowMount(RegexInputComponent, {
+                            propsData: {
+                                regExp: '^[1-9]+[0-9]*$',
+                                defaultVal: 'cheese'
+                                },
+                            listeners: {
+                                'input-changed' : spy
+                                },
+                            })
+                            expect(comp.vm.defaultVal).to.equal('cheese')
+                            expect(comp.vm.val).to.equal('cheese')
+                            expect(comp.vm.inputStyle.backgroundColor).to.equal('white')
+                            cy.wrap(comp.setProps({defaultVal : null}))
+                                .then(() => {
+                                    expect(comp.vm.inputStyle.backgroundColor).to.equal('white')
+                                    expect(comp.vm.defaultVal).to.equal(null)
+                                    expect(comp.vm.val).to.equal(null)
+                                    expect(spy).to.be.calledWith(null)
+                                })
+                        })
         })
 })
 
