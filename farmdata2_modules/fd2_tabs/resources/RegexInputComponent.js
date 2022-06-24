@@ -100,37 +100,31 @@ let RegexInputComponent = {
             this.validateVal(inputVal) 
         },
 
-        // This click even handler points the event to the input box to address
-        // an issue in FireFox where clicking on the increment/decrement buttons 
-        // does not actually focus the input box.
-        clickEventHandler: function (e) {
-            e.target.focus()
-        },
+          // This click even handler points the event to the input box to address
+          // an issue in FireFox where clicking on the increment/decrement buttons 
+          // does not actually focus the input box.
+          clickEventHandler: function (e) {
+              e.target.focus()
+          },
 
-        validateVal(inputVal){
-          const re = new RegExp(this.regExp)
-          const temp = this.isMatch
-          this.isMatch = re.test(inputVal)
-          this.$emit('input-changed', inputVal)
-          // isMatch begins false so this is here to handle the first case. 
-          if(this.isMatch == temp){
+          validateVal(inputVal){
+            const re = new RegExp(this.regExp)
+            const temp = this.isMatch
+            this.isMatch = re.test(inputVal)
+            this.$emit('input-changed', inputVal)
             this.updateColor(this.isMatch)
+            if(this.isMatch != temp){
+              this.$emit('match-changed', this.isMatch)
+            }
+          },
+
+          updateColor(setNewColor){
+            if(!setNewColor){
+              this.inputStyle.backgroundColor = this.setColor
           }
           else{
-            this.updateColor(this.isMatch)
-            this.$emit('match-changed', this.isMatch)
-
+              this.inputStyle.backgroundColor = 'white'
           }
-
-        },
-
-        updateColor(setNewColor){
-          if(!setNewColor){
-            this.inputStyle.backgroundColor = this.setColor
-        }
-        else{
-            this.inputStyle.backgroundColor = 'white'
-        }
         },
 
       },
