@@ -62,8 +62,18 @@ describe('RegexInput Component', () => {
                 .blur()
                 .then(() => {
                     expect(spy).to.be.called
-                })
-    })
+                })     
+        })
+        it('does not emit the isMatch value after blur if it does not change', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('match-changed', spy)
+            cy.get('[data-cy=text-input]')
+                .type('Hello World')
+                .blur()
+                .then(() => {
+                    expect(spy).not.to.be.called
+                })  
+        })
         it('emits the new value after blur', () => {
             const spy = cy.spy()
             Cypress.vue.$on('input-changed', spy)
@@ -73,7 +83,7 @@ describe('RegexInput Component', () => {
                 .then(() => {
                     expect(spy).to.be.called
             })
-})
+        })
 })
 
     context('testing disabled option', () => {  
@@ -106,37 +116,22 @@ describe('RegexInput Component', () => {
 
         context('emitted events test', () => {
             let comp;
-            beforeEach(() => {
-                comp = shallowMount(RegexInputComponent, {
-                    propsData: {
-                        regExp: null,
-                        defaultVal: null,
-                        setType: 'text',
-                        setColor: 'pink',
-                        setHeight: '25px',
-                        setWidth: '4em',
-                        setMin: null,
-                        setMax: null,
-                        setStep: null,
-                        disabled: null
-                    },
-                })
-            })
             it('defaultVal change emits event', () => {
                 const spy = cy.spy()
                 comp = shallowMount(RegexInputComponent, {
                     propsData: {
+                        regExp: null,
                         defaultVal: null
                         },
                     listeners: {
-                        'input-changed' : spy
+                        'match-changed' : spy
                         },
                     })
-                    expect(comp.vm.defaultVal).to.equal(null)
-                    cy.wrap(comp.setProps({defaultVal : '1205'}))
-                        .then(() => {
-                            expect(comp.vm.defaultVal).to.equal('1205')
-                            expect(spy).to.be.calledWith('1205')
+                expect(comp.vm.defaultVal).to.equal(null)
+                cy.wrap(comp.setProps({defaultVal : '1205'}))
+                    .then(() => {
+                        expect(comp.vm.defaultVal).to.equal('1205')
+                        expect(spy).to.be.calledWith('1205')
                     })
                 })
 

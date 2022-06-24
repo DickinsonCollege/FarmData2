@@ -118,8 +118,8 @@ let RegexInputComponent = {
             }
           },
 
-          updateColor(setNewColor){
-            if(!setNewColor){
+          updateColor(matches){
+            if(!matches){
               this.inputStyle.backgroundColor = this.setColor
           }
           else{
