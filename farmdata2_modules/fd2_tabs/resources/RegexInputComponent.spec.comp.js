@@ -133,7 +133,48 @@ describe('RegexInput Component', () => {
                     expect(spy).to.be.calledWith('1205')
                 })
         })
-
+        it('val emits the correct value', () => {
+            const spy = cy.spy()
+            comp = shallowMount(RegexInputComponent, {
+                propsData: {
+                    regExp: '^[1-9]+[0-9]*$',
+                    defaultVal: null
+                },
+                listeners: {
+                    'input-changed' : spy
+                },
+            })
+            expect(comp.vm.defaultVal).to.equal(null)
+            expect(comp.vm.val).to.equal(null)
+            cy.wrap(comp.setProps({defaultVal : 'cheese'}))
+                .then(() => {
+                    expect(comp.vm.defaultVal).to.equal('cheese')
+                    expect(comp.vm.val).to.equal('cheese')
+                    expect(spy).to.be.calledWith('cheese')
+                })
+        })
+        it('val emits the correct value when set to null', () => {
+            const spy = cy.spy()
+            comp = shallowMount(RegexInputComponent, {
+                propsData: {
+                    regExp: '^[1-9]+[0-9]*$',
+                    defaultVal: 'cheese'
+                },
+                listeners: {
+                    'input-changed' : spy
+                },
+            })
+            expect(comp.vm.defaultVal).to.equal('cheese')
+            expect(comp.vm.val).to.equal('cheese')
+            expect(comp.vm.inputStyle.backgroundColor).to.equal('white')
+            cy.wrap(comp.setProps({defaultVal : null}))
+                .then(() => {
+                    expect(comp.vm.inputStyle.backgroundColor).to.equal('white')
+                    expect(comp.vm.defaultVal).to.equal(null)
+                    expect(comp.vm.val).to.equal(null)
+                    expect(spy).to.be.calledWith(null)
+                })
+        })
         it('isMatch emits false when regex is null', () => {
             const spy = cy.spy()
             comp = shallowMount(RegexInputComponent, {
@@ -192,7 +233,7 @@ describe('RegexInput Component', () => {
                     expect(spy).to.be.calledWith(false)
                 })
         })
-        it('val emits the correct value', () => {
+        it('isMatch does not emit anything when isMatch has no value change', () => {
             const spy = cy.spy()
             comp = shallowMount(RegexInputComponent, {
                 propsData: {
@@ -200,38 +241,15 @@ describe('RegexInput Component', () => {
                     defaultVal: null
                 },
                 listeners: {
-                    'input-changed' : spy
+                    'match-changed' : spy
                 },
             })
+            expect(comp.vm.isMatch).to.equal(false)
             expect(comp.vm.defaultVal).to.equal(null)
-            expect(comp.vm.val).to.equal(null)
             cy.wrap(comp.setProps({defaultVal : 'cheese'}))
                 .then(() => {
                     expect(comp.vm.defaultVal).to.equal('cheese')
-                    expect(comp.vm.val).to.equal('cheese')
-                    expect(spy).to.be.calledWith('cheese')
-                })
-        })
-        it('val emits the correct value when set to null', () => {
-            const spy = cy.spy()
-            comp = shallowMount(RegexInputComponent, {
-                propsData: {
-                    regExp: '^[1-9]+[0-9]*$',
-                    defaultVal: 'cheese'
-                },
-                listeners: {
-                    'input-changed' : spy
-                },
-            })
-            expect(comp.vm.defaultVal).to.equal('cheese')
-            expect(comp.vm.val).to.equal('cheese')
-            expect(comp.vm.inputStyle.backgroundColor).to.equal('white')
-            cy.wrap(comp.setProps({defaultVal : null}))
-                .then(() => {
-                    expect(comp.vm.inputStyle.backgroundColor).to.equal('white')
-                    expect(comp.vm.defaultVal).to.equal(null)
-                    expect(comp.vm.val).to.equal(null)
-                    expect(spy).to.be.calledWith(null)
+                    expect(spy).not.to.be.called
                 })
         })
     })
