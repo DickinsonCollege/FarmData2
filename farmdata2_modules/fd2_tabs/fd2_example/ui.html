@@ -29,6 +29,7 @@
     <p><b>RegexInputComponent</b></p>
     <UL>
         <regex-input data-cy='regex-input'
+            ref='regexinputfocus'
             :reg-exp='regularExp' 
             :default-val='regexInputVal' 
             set-type='number' 
@@ -37,8 +38,8 @@
             @input-changed='setNewRegexVal'
             :disabled="disabledMap['RegexInputComponent']">
         </regex-input>
-        <button data-cy='choose-positive-reals' 
-            @click='pickRegExp'>Only Positive Reals</button>
+        <button data-cy='choose-positive-decimals' 
+            @click='pickRegExp'>Only Positive Decimals</button>
         <button data-cy='choose-positive-ints' 
             @click='pickRegExp(0)'>Only Positive Integers</button>
         <button data-cy='reset-input-val' 
@@ -250,9 +251,16 @@ new Vue({
         pickRegExp(newOption) {
             if(newOption == 0){
                 this.regularExp = "^[1-9]+[0-9]*$"
+                temp = this.regexInputVal
+                this.regexInputVal = '0'
+                // this.$refs.regexinputfocus.$el.children[0].focus().blur();
+
             }
             else {
                 this.regularExp = "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                temp = this.regexInputVal
+                this.regexInputVal = '0'
+                // this.$refs.regexinputfocus.$el.children[0].focus().blur();
             }
         },
         pickKaleOption() {
