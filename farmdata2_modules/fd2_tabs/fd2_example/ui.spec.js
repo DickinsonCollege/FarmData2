@@ -31,6 +31,30 @@ describe('Test the UI component', () => {
         })
     })
 
+    context('check the regex input with all component', () => {
+        it('check initial value', () => {
+            cy.get('[data-cy=regex-input-val]').should('have.value', null)
+        })
+
+        it('check item selection event handler', () => {
+            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+            .select("WATERMELLON")
+            cy.get('[data-cy=picked-crop]').should('have.text','WATERMELLON')
+        })
+
+        it('programatically set selected item', () => {
+            cy.get('[data-cy=choose-kale]').click()
+            cy.get('[data-cy=picked-crop]').should('have.text','KALE')
+        })
+
+        it('modify the list of choices', () => {
+            cy.get('[data-cy=add-zucchini]').click()
+            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
+            .select("ZUCCHINI")
+            cy.get('[data-cy=picked-crop]').should('have.text','ZUCCHINI')
+        })
+    })
+
     context('check the date input component', () => {
 
         it('test click event handler', () => {

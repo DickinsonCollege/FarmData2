@@ -23,6 +23,29 @@
         </UL>
     </UL>
 
+    <p><b>RegexInputComponent</b></p>
+    <UL>
+        <regex-input data-cy='regex-input'
+            :reg-exp='regularExp' 
+            :default-val='regexInputVal' 
+            set-type='number' 
+            set-width='100px' 
+            @match-changed='setNewRegexMatch' 
+            @input-changed='setNewRegexVal'>
+        </regex-input>
+        <button data-cy='choose-positive-reals' 
+            @click='pickRegExp(0)'>Only Positive Reals</button>
+        <button data-cy='choose-positive-ints' 
+            @click='pickRegExp'>Only Positive Integers</button>
+        <button data-cy='reset-input-val' 
+            @click='resetRegexVal'>Reset Input</button>
+        <p>Result:</p>
+        <UL>
+            <LI>Input Value: <span data-cy="inputed-val">{{ regexInputVal }}</span></LI>
+            <LI>Match Value: <span data-cy="match-val">{{ regexMatchVal }}</span></LI>
+        </UL>
+    </UL>
+
     <p><b>DateSelectionComponent</b></p>
     <ul>
         <date-selection data-cy="date-picker" 
@@ -139,6 +162,7 @@ new Vue({
         'date-selection': DateSelectionComponent,
         'date-range-selection': DateRangeSelectionComponent,
         'custom-table': CustomTableComponent,
+        'regex-input': RegexInputComponent,
     },
     data: {
         // The predefined FarmData2 variables.
@@ -176,10 +200,32 @@ new Vue({
 
         waitingOnLogs: false,
         seedingLogs: [],
+
+        regularExp: null,
+        selectedRegOpt: null,
+        regexInputVal: null,
+        regexMatchVal: false,
     },
     methods: {
         cropChange(newCrop) {
             this.pickedCrop = newCrop
+        },
+        setNewRegexMatch(newMatch){
+            this.regexMatchVal = newMatch
+        },
+        setNewRegexVal(newVal){
+            this.regexInputVal = newVal 
+        },
+        resetRegexVal(){
+            this.regexInputVal = '0' 
+        },
+        pickRegExp(newOption) {
+            if(newOption == 0){
+                this.regularExp = "^[1-9]+[0-9]*$"
+            }
+            else {
+                this.regularExp = "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+            }
         },
         pickKaleOption() {
             this.pickedCrop = 'KALE'
