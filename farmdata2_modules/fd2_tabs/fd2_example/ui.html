@@ -10,13 +10,16 @@
             includes-all 
             :selected-val='pickedCrop'
             :dropdown-list='cropList'
-            @selection-changed="cropChange">
+            @selection-changed="cropChange"
+            :disabled="disabledMap['DropdownWithAllComponent']">
         Pick a Crop: 
         </dropdown-with-all>
         <button data-cy='choose-kale' 
             @click='pickKaleOption'>Choose Kale</button>
         <button data-cy='add-zucchini' 
             @click='addZucchini'>Add Zucchini</button>
+        <button data-cy='btn-dropdown-disable'
+            @click='makeDisabled("DropdownWithAllComponent")'>{{ checkDisabled("DropdownWithAllComponent") }}</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Value: <span data-cy="picked-crop">{{ pickedCrop }}</span></LI>
@@ -31,7 +34,8 @@
             set-type='number' 
             set-width='100px' 
             @match-changed='setNewRegexMatch' 
-            @input-changed='setNewRegexVal'>
+            @input-changed='setNewRegexVal'
+            :disabled="disabledMap['RegexInputComponent']">
         </regex-input>
         <button data-cy='choose-positive-reals' 
             @click='pickRegExp'>Only Positive Reals</button>
@@ -39,6 +43,8 @@
             @click='pickRegExp(0)'>Only Positive Integers</button>
         <button data-cy='reset-input-val' 
             @click='resetRegexVal'>Reset Input</button>
+        <button data-cy='btn-input-disable'
+            @click='makeDisabled("RegexInputComponent")'>{{ checkDisabled("RegexInputComponent") }}</button>
         <p>Result:</p>
         <UL>
             <LI>Input Value: <span data-cy="inputed-val">{{ regexInputVal }}</span></LI>
@@ -53,9 +59,12 @@
             latest-date="2021-02-15" 
             set-date="2021-01-20"
             @date-changed='dateChange' 
-            @click='dateClicked'>
+            @click='dateClicked'
+            :disabled="disabledMap['DateSelectionComponent']">
         Choose a Date:
         </date-selection>
+        <button data-cy='btn-date-disable'
+        @click='makeDisabled("DateSelectionComponent")'>{{ checkDisabled("DateSelectionComponent") }}</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Date: <span data-cy="date-chosen">{{ chosenDate }}</span>
@@ -72,8 +81,11 @@
             :set-end-date='dateRangeMaxDate'
             @start-date-changed='startDateChange' 
             @end-date-changed='endDateChange' 
-            @click='dateRangeClicked'>
+            @click='dateRangeClicked'
+            :disabled="disabledMap['DateRangeSelectionComponent']">
         </date-range-selection>
+        <button data-cy='btn-daterange-disable'
+        @click='makeDisabled("DateRangeSelectionComponent")'>{{ checkDisabled("DateRangeSelectionComponent") }}</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Start Date: <span data-cy="start-date">{{ startDate }}</span></LI>
@@ -205,8 +217,24 @@ new Vue({
         selectedRegOpt: null,
         regexInputVal: null,
         regexMatchVal: false,
+        disabledMap: {
+            "DropdownWithAllComponent": false,
+            "RegexInputComponent": false,
+            "DateSelectionComponent": false,
+            "DateRangeSelectionComponent": false,
+        }
     },
     methods: {
+        checkDisabled(key) {
+            if(this.disabledMap[key]) {
+                return "Enable"
+            } else {
+                return "Disable"
+            }
+        },
+        makeDisabled(key) {
+            this.disabledMap[key] = !this.disabledMap[key];
+        },
         cropChange(newCrop) {
             this.pickedCrop = newCrop
         },
