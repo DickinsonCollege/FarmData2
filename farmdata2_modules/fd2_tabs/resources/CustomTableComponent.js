@@ -252,8 +252,12 @@ let CustomTableComponent = {
         }
     },
     watch: {
-        visibleColumns(newArr) {
-            this.updatedVis = newArr
+        visibleColumns: {
+            // using deep watch to track nested property changes
+            handler(newArr) {
+                this.updatedVis = newArr
+            },
+            deep: true
         }
     } 
 }

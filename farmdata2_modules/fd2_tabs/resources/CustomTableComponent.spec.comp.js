@@ -492,8 +492,17 @@ describe('custom table component', () => {
                     expect(comp.vm.visibleColumns).to.deep.equal([false, true, true]) 
                     expect(comp.vm.isVisible).to.deep.equal([false, true, true])
                 })
+            })    
+        })
+
+        it.only('checking prop changes for visibleColumns when the element is directly modified', () => {
+            expect(comp.vm.visibleColumns).to.deep.equal([true, true, false])
+            cy.wrap(comp.vm.visibleColumns[0] = false)
+            cy.wrap(comp.vm.visibleColumns[2] = true)
+            .then(() => {
+                expect(comp.vm.visibleColumns).to.deep.equal([false, true, true])
+                expect(comp.vm.isVisible).to.deep.equal([false, true, true])
             })
-            
         })
     })
 })
