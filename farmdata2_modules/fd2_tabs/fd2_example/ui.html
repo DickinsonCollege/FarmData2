@@ -34,9 +34,9 @@
             @input-changed='setNewRegexVal'>
         </regex-input>
         <button data-cy='choose-positive-reals' 
-            @click='pickRegExp(0)'>Only Positive Reals</button>
+            @click='pickRegExp'>Only Positive Reals</button>
         <button data-cy='choose-positive-ints' 
-            @click='pickRegExp'>Only Positive Integers</button>
+            @click='pickRegExp(0)'>Only Positive Integers</button>
         <button data-cy='reset-input-val' 
             @click='resetRegexVal'>Reset Input</button>
         <p>Result:</p>
