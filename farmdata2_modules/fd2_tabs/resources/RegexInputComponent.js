@@ -25,7 +25,7 @@
  * @vue-prop {Boolean} [isDisabled] - Makes the element read-only.
  * 
  * @vue-event {Boolean} match-changed - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
- * @vue-event {String} input-changed - Emits String (val) for the parent page to make use of the value stored within that data variable. 
+ * @vue-event {String} input-changed - Emits String (val) for the parent page to make use of the value stored within the input element. 
  */ 
 let RegexInputComponent = {
   template: 
@@ -97,43 +97,51 @@ let RegexInputComponent = {
           // Handles validation of the input value
           blurEventHandler: function (e) {
             const inputVal = e.target.value;
-            this.validateVal(inputVal)
-            
+            this.validateVal(inputVal) 
         },
 
-        // This click even handler points the event to the input box to address
-        // an issue in FireFox where clicking on the increment/decrement buttons 
-        // does not actually focus the input box.
-        clickEventHandler: function (e) {
-            e.target.focus()
-        },
+          // This click even handler points the event to the input box to address
+          // an issue in FireFox where clicking on the increment/decrement buttons 
+          // does not actually focus the input box.
+          clickEventHandler: function (e) {
+              e.target.focus()
+          },
 
-        validateVal(isValid){
-          const re = new RegExp(this.regExp)
-          this.isMatch = re.test(isValid)
-          this.updateColor(this.isMatch)
-          this.$emit('match-changed', this.isMatch)
-        },
+          validateVal(inputVal){
+            const re = new RegExp(this.regExp)
+            const temp = this.isMatch
+            this.isMatch = re.test(inputVal)
+            this.$emit('input-changed', inputVal)
+            this.updateColor(this.isMatch)
+            if(this.isMatch != temp){
+              this.$emit('match-changed', this.isMatch)
+            }
+          },
 
-        updateColor(setNewColor){
-          if(!setNewColor){
-            this.inputStyle.backgroundColor = this.setColor
-        }
-        else{
-            this.inputStyle.backgroundColor = 'white'
-        }
+          updateColor(matches){
+            if(!matches){
+              this.inputStyle.backgroundColor = this.setColor
+          }
+          else{
+              this.inputStyle.backgroundColor = 'white'
+          }
         },
-
-        updateVal(){
-          this.$emit('input-changed', this.val)
-          this.validateVal(this.val)
-        }
 
       },
+      
       watch: {
         defaultVal(newVal) {
           this.val = newVal
-          this.updateVal()
+          if(this.val == null){
+            this.isMatch = false
+            this.inputStyle.backgroundColor = 'white'
+            this.$emit('match-changed', this.isMatch)
+            this.$emit('input-changed', this.val)
+          }
+          else{
+            this.validateVal(this.val)
+          }
+          
         },
         disabled(newBool) {
           this.isDisabled = newBool;
