@@ -29,6 +29,83 @@ describe('Test the UI component', () => {
             .select("ZUCCHINI")
             cy.get('[data-cy=picked-crop]').should('have.text','ZUCCHINI')
         })
+
+        it('disable and enable the dropdown', () => {
+            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]').should('not.be.disabled')
+            cy.get('[data-cy=btn-dropdown-disable]').click()
+            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]').should('be.disabled')
+            cy.get('[data-cy=btn-dropdown-enable]').click()
+            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]').should('not.be.disabled')
+        })
+    })
+
+    context('check the regex input with all component', () => {
+        it('check initial value', () => {
+            cy.get('[data-cy=inputed-val]').should('have.text', '')
+            cy.get('[data-cy=match-val]').should('have.text', 'false')
+        })
+
+        it('enter an invalid value into the input box', () => {
+            cy.get('[data-cy=regex-input] > [data-cy=text-input]')
+            .type("WATERMELLON")
+            .blur()
+            cy.get('[data-cy=inputed-val]').should('have.text', '')
+            cy.get('[data-cy=match-val]').should('have.text', 'false')
+        })
+
+        it('click the button for positive decimals and test positive results', () => {
+            cy.get('[data-cy=choose-positive-decimals]').click()
+            cy.get('[data-cy=regex-input] > [data-cy=text-input]')
+            .clear()
+            .type("10.5")
+            .blur()
+            cy.get('[data-cy=inputed-val]').should('have.text', '10.5')
+            cy.get('[data-cy=match-val]').should('have.text', 'true')
+
+        })
+
+        it('click the button for positive decimals and test negative results', () => {
+            cy.get('[data-cy=regex-input] > [data-cy=text-input]')
+            .clear()
+            .type("LEMONS")
+            .blur()
+            cy.get('[data-cy=inputed-val]').should('have.text', '')
+            cy.get('[data-cy=match-val]').should('have.text', 'false')
+        })
+
+        it('click the button for positive ints and test positive results', () => {
+            cy.get('[data-cy=choose-positive-ints]').click()
+            cy.get('[data-cy=regex-input] > [data-cy=text-input]')
+            .clear()
+            .type("10")
+            .blur()
+            cy.get('[data-cy=inputed-val]').should('have.text', '10')
+            cy.get('[data-cy=match-val]').should('have.text', 'true')
+
+        })
+
+        it('click the button for positive reals and test negative results', () => {
+            cy.get('[data-cy=regex-input] > [data-cy=text-input]')
+            .clear()
+            .type("10.5")
+            .blur()
+            cy.get('[data-cy=inputed-val]').should('have.text', '10.5')
+            cy.get('[data-cy=match-val]').should('have.text', 'false')
+        })
+
+        it('click reset button and check val in input box', () => {
+            cy.get('[data-cy=reset-input-val]').click()
+            cy.get('[data-cy=inputed-val]').should('have.text', '0')
+            cy.get('[data-cy=match-val]').should('have.text', 'false')
+        })
+
+        it('disable and enable the input', () => {
+            cy.get('[data-cy=regex-input] > [data-cy=text-input]').should('not.be.disabled')
+            cy.get('[data-cy=btn-input-disable]').click()
+            cy.get('[data-cy=regex-input] > [data-cy=text-input]').should('be.disabled')
+            cy.get('[data-cy=btn-input-enable]').click()
+            cy.get('[data-cy=regex-input]').should('not.be.disabled')
+        })
     })
 
     context('check the date input component', () => {
@@ -53,6 +130,14 @@ describe('Test the UI component', () => {
             .blur() // makes component inactive which triggers the date-change event.
 
             cy.get('[data-cy=date-chosen]').should('have.text', '2021-01-22')
+        })
+
+        it('disable and enable the date selection component', () => {
+            cy.get('[data-cy=date-select]').should('not.be.disabled')
+            cy.get('[data-cy=btn-date-disable]').click()
+            cy.get('[data-cy=date-select]').should('be.disabled')
+            cy.get('[data-cy=btn-date-enable]').click()
+            cy.get('[data-cy=date-select]').should('not.be.disabled')
         })
     })
 
@@ -91,6 +176,16 @@ describe('Test the UI component', () => {
             .blur()
 
             cy.get('[data-cy=end-date]').should('have.text', '2021-01-23')
+        })
+        it('disable and enable the date range component', () => {
+            cy.get('[data-cy=start-date-select] > [data-cy=date-select]').should('not.be.disabled')
+            cy.get('[data-cy=end-date-select] > [data-cy=date-select]').should('not.be.disabled')
+            cy.get('[data-cy=btn-daterange-disable]').click()
+            cy.get('[data-cy=start-date-select] > [data-cy=date-select]').should('be.disabled')
+            cy.get('[data-cy=end-date-select] > [data-cy=date-select]').should('be.disabled')
+            cy.get('[data-cy=btn-daterange-enable]').click()
+            cy.get('[data-cy=start-date-select] > [data-cy=date-select]').should('not.be.disabled')
+            cy.get('[data-cy=end-date-select] > [data-cy=date-select]').should('not.be.disabled')
         })
      })
 
