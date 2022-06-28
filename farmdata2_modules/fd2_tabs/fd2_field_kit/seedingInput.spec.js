@@ -54,7 +54,8 @@ describe('Test the seeding input page', () => {
         // Setting up wait for the request in the created() to complete.
         cy.intercept('GET', 'restws/session/token').as('sessiontok')
         cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-        cy.intercept('GET', 'taxonomy_term?bundle=farm_areas&page=1').as('areamap')        cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+        cy.intercept('GET', 'taxonomy_term?bundle=farm_areas&page=1').as('areamap')        
+        cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
         cy.intercept('GET', 'user').as('usermap')
         cy.intercept('GET', 'taxonomy_term?farm_quantity_units&page=1').as('unitmap')
 
