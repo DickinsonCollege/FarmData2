@@ -10,16 +10,51 @@
             includes-all 
             :selected-val='pickedCrop'
             :dropdown-list='cropList'
-            @selection-changed="cropChange">
+            @selection-changed="cropChange"
+            :disabled="disabledMap['DropdownWithAllComponent']">
         Pick a Crop: 
         </dropdown-with-all>
         <button data-cy='choose-kale' 
             @click='pickKaleOption'>Choose Kale</button>
         <button data-cy='add-zucchini' 
             @click='addZucchini'>Add Zucchini</button>
-        <p>Result:</p>
+        <button data-cy='btn-dropdown-disable' v-show="!disabledMap['DropdownWithAllComponent']"
+            @click='toggleDisabled("DropdownWithAllComponent")'>Disable</button>
+        <button data-cy='btn-dropdown-enable' v-show="disabledMap['DropdownWithAllComponent']"
+            @click='toggleDisabled("DropdownWithAllComponent")'>Enable</button>
+
+            <p>Result:</p>
         <UL>
             <LI>Chosen Value: <span data-cy="picked-crop">{{ pickedCrop }}</span></LI>
+        </UL>
+    </UL>
+
+    <p><b>RegexInputComponent</b></p>
+    <UL>
+        <regex-input data-cy='regex-input'
+            ref='regexinputfocus'
+            :reg-exp='regularExp' 
+            :default-val='regexInputVal' 
+            set-type='number' 
+            set-width='100px' 
+            @match-changed='setNewRegexMatch' 
+            @input-changed='setNewRegexVal'
+            :disabled="disabledMap['RegexInputComponent']">
+        </regex-input>
+        <button data-cy='choose-positive-decimals' 
+            @click='updateRegexMap("pos_decimals")'>Only Positive Decimals</button>
+        <button data-cy='choose-positive-ints' 
+            @click='updateRegexMap("pos_ints")'>Only Positive Integers</button>
+        <button data-cy='reset-input-val' 
+            @click='resetRegexVal'>Reset Input</button>
+        <button data-cy='btn-input-disable' v-show="!disabledMap['RegexInputComponent']"
+            @click='toggleDisabled("RegexInputComponent")'>Disable</button>
+        <button data-cy='btn-input-enable' v-show="disabledMap['RegexInputComponent']"
+            @click='toggleDisabled("RegexInputComponent")'>Enable</button>
+        <p>Result:</p>
+        <UL>
+            <LI>Input Value: <span data-cy="inputed-val">{{ regexInputVal }}</span></LI>
+            <LI>Match Value: <span data-cy="match-val">{{ regexMatchVal }}</span></LI>
         </UL>
     </UL>
 
@@ -30,9 +65,14 @@
             latest-date="2021-02-15" 
             set-date="2021-01-20"
             @date-changed='dateChange' 
-            @click='dateClicked'>
+            @click='dateClicked'
+            :disabled="disabledMap['DateSelectionComponent']">
         Choose a Date:
         </date-selection>
+        <button data-cy='btn-date-disable'
+        @click='toggleDisabled("DateSelectionComponent")' v-show="!disabledMap['DateSelectionComponent']">Disable</button>
+        <button data-cy='btn-date-enable' v-show="disabledMap['DateSelectionComponent']"
+        @click='toggleDisabled("DateSelectionComponent")'>Enable</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Date: <span data-cy="date-chosen">{{ chosenDate }}</span>
@@ -49,8 +89,13 @@
             :set-end-date='dateRangeMaxDate'
             @start-date-changed='startDateChange' 
             @end-date-changed='endDateChange' 
-            @click='dateRangeClicked'>
+            @click='dateRangeClicked'
+            :disabled="disabledMap['DateRangeSelectionComponent']">
         </date-range-selection>
+        <button data-cy='btn-daterange-disable'
+        @click='toggleDisabled("DateRangeSelectionComponent")' v-show="!disabledMap['DateRangeSelectionComponent']">Disable</button>
+        <button data-cy='btn-daterange-enable'
+        @click='toggleDisabled("DateRangeSelectionComponent")' v-show="disabledMap['DateRangeSelectionComponent']">Enable</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Start Date: <span data-cy="start-date">{{ startDate }}</span></LI>
@@ -139,6 +184,7 @@ new Vue({
         'date-selection': DateSelectionComponent,
         'date-range-selection': DateRangeSelectionComponent,
         'custom-table': CustomTableComponent,
+        'regex-input': RegexInputComponent,
     },
     data: {
         // The predefined FarmData2 variables.
@@ -176,10 +222,41 @@ new Vue({
 
         waitingOnLogs: false,
         seedingLogs: [],
+
+        regularExp: null,
+        selectedRegOpt: null,
+        regexInputVal: null,
+        regexMatchVal: false,
+        regexMap: {
+            "pos_ints": "^[1-9]+[0-9]*$",
+            "pos_decimals": "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
+        },
+        disabledMap: {
+            "DropdownWithAllComponent": false,
+            "RegexInputComponent": false,
+            "DateSelectionComponent": false,
+            "DateRangeSelectionComponent": false,
+        }
     },
     methods: {
+        toggleDisabled(key) {
+            this.disabledMap[key] = !this.disabledMap[key];
+        },
         cropChange(newCrop) {
             this.pickedCrop = newCrop
+        },
+        setNewRegexMatch(newMatch){
+            this.regexMatchVal = newMatch
+        },
+        setNewRegexVal(newVal){
+            this.regexInputVal = newVal 
+        },
+        resetRegexVal(){
+            this.regexInputVal = '0' 
+        },
+        updateRegexMap(key) {    
+            this.regexInputVal = '0'
+            this.regularExp = this.regexMap[key]
         },
         pickKaleOption() {
             this.pickedCrop = 'KALE'
