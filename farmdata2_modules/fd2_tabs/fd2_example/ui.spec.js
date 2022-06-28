@@ -263,6 +263,19 @@ describe('Test the UI component', () => {
             cy.get('[data-cy=r3c0]')
                 .should('have.text', '12')
         })
+
+        it('size column shows when show column is clicked, hides when hide column is clicked', () => {
+            cy.get('[data-cy=table-headers]').children()
+                .should('not.contain', 'Size')
+            cy.get('[data-cy=show-column')
+                .click()
+            cy.get('[data-cy=table-headers]').children()
+                .should('contain', 'Size')
+            cy.get('[data-cy=hide-column')
+                .click()
+            cy.get('[data-cy=table-headers]').children()
+                .should('not.contain', 'Size')
+        })
     })
 
     context('check the spinner example', () => {
