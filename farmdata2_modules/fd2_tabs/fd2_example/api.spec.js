@@ -18,7 +18,7 @@ describe('test some api calls in a page', () => {
         .then(() => {
             // Once we have logged in, request the session token and
             // cropToIDMap.
-            // Using wrap allows us to wait for the asynchronus API request
+            // Using wrap allows us to wait for the asynchronous API request
             // to complete (see cy.get just below).
             cy.wrap(getSessionToken()).as('token')
             cy.wrap(getCropToIDMap()).as('cropMap')
@@ -125,7 +125,7 @@ describe('test some api calls in a page', () => {
         })
     })
 
-    context('asset ceation/modification/deletion', () => {
+    context('asset creation/modification/deletion', () => {
         it('new asset is created', () => {
             let plantingID = null
             let url = null
@@ -135,8 +135,8 @@ describe('test some api calls in a page', () => {
             cy.get('[data-cy=planting-status]')
             .should('have.text', '201')  // 201 = created
 
-            // The assest should have been created, so now request it 
-            // from the database to ensure that it was created corectly.
+            // The asset should have been created, so now request it
+            // from the database to ensure that it was created correctly.
             cy.get('[data-cy=planting-id]')
             .then((id) => {
                 plantingID = id.text()
@@ -207,7 +207,7 @@ describe('test some api calls in a page', () => {
             let url = null
             
             cy.intercept({
-                method: '+(POST|PUT)',  // match both the create and the updates.
+                method: '+(POST|PUT)',  // match both create and the updates.
                 url: /.*farm_asset.*/,  // match any route including farm_asset
             })
             .as('asset')
@@ -217,7 +217,7 @@ describe('test some api calls in a page', () => {
                 cy.get('[data-cy=update-planting]').click() // update to BEET
             })
 
-            // Wait here for the create and both updates to complete.
+            // Wait here for create and both updates to complete.
             cy.wait(['@asset', '@asset', '@asset'])
 
             // Get the record to check the update.
@@ -251,11 +251,11 @@ describe('test some api calls in a page', () => {
             cy.get('[data-cy=planting-status]')
             .should('have.text', '201')  // 201 = created
 
-            // The assest has been created, so now we can
+            // The asset has been created, so now we can
             // delete it by clicking the button
             cy.get('[data-cy=delete-planting]').click()
 
-            // If succssfully deleted we should get a 200 status.
+            // If successfully deleted we should get a 200 status.
             cy.get('[data-cy=planting-status]')
             .should('have.text', '200')  // 200 - OK/success
         })
