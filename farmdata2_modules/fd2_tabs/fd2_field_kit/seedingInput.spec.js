@@ -14,70 +14,148 @@ var getSessionToken = FarmOSAPI.getSessionToken
 var getLogTypeToIDMap = FarmOSAPI.getLogTypeToIDMap
 
 describe('Test the seeding input page', () => {
-
+    
     let sessionToken = null
     let cropToIDMap = null
     let areaToIDMap = null
     let userToIDMap = null
     let unitToIDMap = null
     let logTypeToIDMap = null
+    
+    context('cache tests', () => {
+        before(() => {
+            // Delete the crops and areas from local storge if it is there
+            // before running our tests.  
+            localStorage.removeItem('crops')
+            localStorage.removeItem('areas')
+        })
+        
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            
+            // Cypress clears the local storage between each test.  
+            // So we need to save it at the end of each test (see afterEach)
+            // and then restore beore each test (here). 
+            cy.restoreLocalStorage() 
 
-    beforeEach(() => {
-        cy.login('manager1', 'farmdata2')
-        .then(() => {
-            // Using wrap to wait for the asynchronus API request.
-            cy.wrap(getSessionToken()).as('token')
-            cy.wrap(getCropToIDMap()).as('cropMap')
-            cy.wrap(getAreaToIDMap()).as('areaMap')
-            cy.wrap(getUserToIDMap()).as('userMap')
-            cy.wrap(getUnitToIDMap()).as('unitMap')
-            cy.wrap(getLogTypeToIDMap()).as('logTypeMap')
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+        }) 
+        
+        afterEach(() => {
+            // Save the local storage at the end of each test so 
+            // that it can be restored at the start of the next 
+            cy.saveLocalStorage()
+        })
+        
+        it('test the first visit to the page (i.e. no cached crops and areas)', () => {
+            // This needs to be the first test run to work properly.
+            // First time through the crops and areas should not be cached.
+            // Note the cached value is cleared in the before().
+            let crops = localStorage.getItem('crops')
+            let areas = localStorage.getItem('areas')
+            expect(crops).to.equal(null)
+            expect(areas).to.equal(null)
+
+            // Check if the dropdowns are generated with correct maps
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[0]).should('exist')
+                    .select('ARUGULA')
+                    .should('have.value', 'ARUGULA')
+            })
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .select('CHUAU', { force: true })   // force select to disregard :disabled
+                    .should('have.value', 'CHUAU')
+            })
         })
 
-        // Waiting for the session token and maps to load.
-        cy.get('@token').should(function(token) {
-            sessionToken = token
+        it('test a second visit to the page (i.e. with cached crops and areas)', () => {
+            // Second time through the crops and areas should be cached.
+            let crops = localStorage.getItem('crops')
+            let areas = localStorage.getItem('areas')
+            expect(crops).to.not.equal(null)
+            expect(areas).to.not.equal(null)
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[0]).should('exist')
+                    .select('ARUGULA')
+                    .should('have.value', 'ARUGULA')
+            })
+
+            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+                cy.get($dropdowns[1]).should('exist')
+                    .select('CHUAU', { force: true })   // force select to disregard :disabled
+                    .should('have.value', 'CHUAU')
+            })
         })
-        cy.get('@cropMap').should(function(map) {
-            cropToIDMap = map
-        })
-        cy.get('@areaMap').should(function(map) {
-            areaToIDMap = map
-        })
-        cy.get('@userMap').should(function(map) {
-            userToIDMap = map
-        })
-        cy.get('@unitMap').should(function(map) {
-            areaunitToIDMapToIDMap = map
-        })        
-
-        // Setting up wait for the request in the created() to complete.
-        cy.intercept('GET', 'restws/session/token').as('sessiontok')
-        cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-        cy.intercept('GET', 'taxonomy_term?bundle=farm_areas&page=1').as('areamap')        
-        cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-        cy.intercept('GET', 'user').as('usermap')
-        cy.intercept('GET', 'taxonomy_term?farm_quantity_units&page=1').as('unitmap')
-
-        cy.visit('/farm/fd2-field-kit/seedingInput')
-
-        // Wait here for the maps and token to be loaded in the page.
-        cy.wait(['@cropmap', '@cropmap', '@sessiontok'])
-
-
-
-
-        // cy.restoreLocalStorage() // this is to preserve local storage and restore it; not sure if we need this.
-
-
-        //makes sure that the area is loaded before continueing
-    //     cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[1]).contains('A', {timeout: 130000})
+        
+    })
+    
+    // beforeEach(() => {
+        
+    //     cy.login('manager1', 'farmdata2')
+    //     .then(() => {
+    //         // Using wrap to wait for the asynchronus API request.
+    //         cy.wrap(getSessionToken()).as('token')
+    //         cy.wrap(getCropToIDMap()).as('cropMap')
+    //         cy.wrap(getAreaToIDMap()).as('areaMap')
+    //         cy.wrap(getUserToIDMap()).as('userMap')
+    //         cy.wrap(getUnitToIDMap()).as('unitMap')
+    //         cy.wrap(getLogTypeToIDMap()).as('logTypeMap')
     //     })
-    })
-    afterEach(() => {
-        cy.saveLocalStorage()
-    })
+        
+        
+    //     // Waiting for the session token and maps to load.
+    //     cy.get('@token').should(function(token) {
+    //         sessionToken = token
+    //     })
+    //     cy.get('@cropMap').should(function(map) {
+    //         cropToIDMap = map
+    //     })
+    //     cy.get('@areaMap').should(function(map) {
+    //         areaToIDMap = map
+    //     })
+    //     cy.get('@userMap').should(function(map) {
+    //         userToIDMap = map
+    //     })
+    //     cy.get('@unitMap').should(function(map) {
+    //         unitToIDMap = map
+    //     })        
+    //     cy.get('@logTypeMap').should(function(map) {
+    //         logTypeToIDMap = map
+    //     })
+        
+    //     // Setting up wait for the request in the created() to complete.
+    //     cy.intercept('GET', 'restws/session/token').as('sessiontok')
+    //     cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+    //     cy.intercept('GET', 'user').as('usermap')
+    //     cy.intercept('GET', 'taxonomy_term?bundle=farm_areas').as('areamap')        
+    //     cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+    //     cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+        
+        
+    //     cy.visit('/farm/fd2-field-kit/seedingInput')
+        
+    //     // Wait here for the map and token to be loaded in the page 
+    //     // Sessiontok and cropmap are the only two that get loaded when page is enterd.
+    //     cy.wait(['@sessiontok','@cropmap'])
+        
+    // })
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
     // context('test inputs and buttons', () => {
     //     it('button is disabled', () => {
     //         cy.get('[data-cy=submit-button]')
