@@ -18,9 +18,12 @@
             @click='pickKaleOption'>Choose Kale</button>
         <button data-cy='add-zucchini' 
             @click='addZucchini'>Add Zucchini</button>
-        <button data-cy='btn-dropdown-disable'
-            @click='makeDisabled("DropdownWithAllComponent")'>{{ checkDisabled("DropdownWithAllComponent") }}</button>
-        <p>Result:</p>
+        <button data-cy='btn-dropdown-disable' v-show="!disabledMap['DropdownWithAllComponent']"
+            @click='toggleDisabled("DropdownWithAllComponent")'>Disable</button>
+        <button data-cy='btn-dropdown-enable' v-show="disabledMap['DropdownWithAllComponent']"
+            @click='toggleDisabled("DropdownWithAllComponent")'>Enable</button>
+
+            <p>Result:</p>
         <UL>
             <LI>Chosen Value: <span data-cy="picked-crop">{{ pickedCrop }}</span></LI>
         </UL>
@@ -43,8 +46,10 @@
             @click='pickRegExp(0)'>Only Positive Integers</button>
         <button data-cy='reset-input-val' 
             @click='resetRegexVal'>Reset Input</button>
-        <button data-cy='btn-input-disable'
-            @click='makeDisabled("RegexInputComponent")'>{{ checkDisabled("RegexInputComponent") }}</button>
+        <button data-cy='btn-input-disable' v-show="!disabledMap['RegexInputComponent']"
+            @click='toggleDisabled("RegexInputComponent")'>Disable</button>
+        <button data-cy='btn-input-enable' v-show="disabledMap['RegexInputComponent']"
+            @click='toggleDisabled("RegexInputComponent")'>Enable</button>
         <p>Result:</p>
         <UL>
             <LI>Input Value: <span data-cy="inputed-val">{{ regexInputVal }}</span></LI>
@@ -64,7 +69,9 @@
         Choose a Date:
         </date-selection>
         <button data-cy='btn-date-disable'
-        @click='makeDisabled("DateSelectionComponent")'>{{ checkDisabled("DateSelectionComponent") }}</button>
+        @click='toggleDisabled("DateSelectionComponent")' v-show="!disabledMap['DateSelectionComponent']">Disable</button>
+        <button data-cy='btn-date-enable' v-show="disabledMap['DateSelectionComponent']"
+        @click='toggleDisabled("DateSelectionComponent")'>Enable</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Date: <span data-cy="date-chosen">{{ chosenDate }}</span>
@@ -85,7 +92,9 @@
             :disabled="disabledMap['DateRangeSelectionComponent']">
         </date-range-selection>
         <button data-cy='btn-daterange-disable'
-        @click='makeDisabled("DateRangeSelectionComponent")'>{{ checkDisabled("DateRangeSelectionComponent") }}</button>
+        @click='toggleDisabled("DateRangeSelectionComponent")' v-show="!disabledMap['DateRangeSelectionComponent']">Disable</button>
+        <button data-cy='btn-daterange-enable'
+        @click='toggleDisabled("DateRangeSelectionComponent")' v-show="disabledMap['DateRangeSelectionComponent']">Enable</button>
         <p>Result:</p>
         <UL>
             <LI>Chosen Start Date: <span data-cy="start-date">{{ startDate }}</span></LI>
@@ -225,14 +234,7 @@ new Vue({
         }
     },
     methods: {
-        checkDisabled(key) {
-            if(this.disabledMap[key]) {
-                return "Enable"
-            } else {
-                return "Disable"
-            }
-        },
-        makeDisabled(key) {
+        toggleDisabled(key) {
             this.disabledMap[key] = !this.disabledMap[key];
         },
         cropChange(newCrop) {
