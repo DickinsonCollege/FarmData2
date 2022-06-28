@@ -975,29 +975,39 @@ describe('Testing for the seeding report page', () => {
                 .click()
         })
 
-        it('edits the database when a row is edited in the table', () => {
-            cy.get('[data-cy=edit-button]')
+        it.only('edits the database when a row is edited in the table', () => {
+            cy.get('[data-cy=edit-button-r0]')
                 .first().click()
-
-            cy.get('[data-cy=number-input]')
-                .first()
-                .type('15')
-                .blur()
-
-            cy.get('[data-cy=date-input]')
+            
+            cy.get('[data-cy=date-input-r0c0]')
                 .type('2001-09-28')
-                .blur()
+                .blur()    
 
-            cy.get('[data-cy=test-input]')
-                .type('New Comment')
-                .blur()
-
-            cy.get('[data-cy=dropdown-table-input]')
+            cy.get('[data-cy=dropdown-input-r0c1]')
                 .first()
                 .select('TOMATO')
                 .blur()
 
-            cy.get('[data-cy=save-button]')
+            cy.get('[data-cy=dropdown-input-r0c2]')
+                .first()
+                .select('A')
+                .blur()
+
+            cy.get('[data-cy=number-input-r0c4]')
+                .first()
+                .type('4')
+                .blur()
+
+            cy.get('[data-cy=number-input-r0c5]')
+                .first()
+                .type('0.25')
+                .blur()
+
+            cy.get('[data-cy=text-input-r0c7]')
+                .type('New Comment')
+                .blur()
+
+            cy.get('[data-cy=save-button-r0]')
                 .first().click()
 
             cy.request('/log.json?type=farm_seeding&id=' + logID).as('check')
