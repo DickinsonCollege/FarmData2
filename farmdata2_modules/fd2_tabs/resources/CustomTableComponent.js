@@ -233,9 +233,9 @@ let CustomTableComponent = {
                 for (i = 0; i < this.headers.length; i++) {
                     tempArr.push(true);
                 }
-            } else [
+            } else {
                 tempArr = this.updatedVis
-            ]
+            }
             return tempArr;
         },
         inputType() {
