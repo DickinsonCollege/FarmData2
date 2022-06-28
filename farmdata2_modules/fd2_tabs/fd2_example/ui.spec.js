@@ -33,11 +33,9 @@ describe('Test the UI component', () => {
         it('disable and enable the dropdown', () => {
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]').should('not.be.disabled')
             cy.get('[data-cy=btn-dropdown-disable]').click()
-            cy.get('[data-cy=btn-dropdown-disable]').contains('Enable')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]').should('be.disabled')
-            cy.get('[data-cy=btn-dropdown-disable]').click()
+            cy.get('[data-cy=btn-dropdown-enable]').click()
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]').should('not.be.disabled')
-            cy.get('[data-cy=btn-dropdown-disable]').contains('Disable')
         })
     })
 
