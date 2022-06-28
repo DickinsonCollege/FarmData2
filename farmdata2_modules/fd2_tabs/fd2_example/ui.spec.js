@@ -104,11 +104,9 @@ describe('Test the UI component', () => {
         it('disable and enable the input', () => {
             cy.get('[data-cy=regex-input] > [data-cy=text-input]').should('not.be.disabled')
             cy.get('[data-cy=btn-input-disable]').click()
-            cy.get('[data-cy=btn-input-disable]').contains('Enable')
             cy.get('[data-cy=regex-input] > [data-cy=text-input]').should('be.disabled')
-            cy.get('[data-cy=btn-input-disable]').click()
+            cy.get('[data-cy=btn-input-enable]').click()
             cy.get('[data-cy=regex-input]').should('not.be.disabled')
-            cy.get('[data-cy=btn-input-disable]').contains('Disable')
         })
     })
 
@@ -139,11 +137,9 @@ describe('Test the UI component', () => {
         it('disable and enable the date selection component', () => {
             cy.get('[data-cy=date-select]').should('not.be.disabled')
             cy.get('[data-cy=btn-date-disable]').click()
-            cy.get('[data-cy=btn-date-disable]').contains('Enable')
             cy.get('[data-cy=date-select]').should('be.disabled')
-            cy.get('[data-cy=btn-date-disable]').click()
+            cy.get('[data-cy=btn-date-enable]').click()
             cy.get('[data-cy=date-select]').should('not.be.disabled')
-            cy.get('[data-cy=btn-date-disable]').contains('Disable')
         })
     })
 
@@ -187,13 +183,11 @@ describe('Test the UI component', () => {
             cy.get('[data-cy=start-date-select] > [data-cy=date-select]').should('not.be.disabled')
             cy.get('[data-cy=end-date-select] > [data-cy=date-select]').should('not.be.disabled')
             cy.get('[data-cy=btn-daterange-disable]').click()
-            cy.get('[data-cy=btn-daterange-disable]').contains('Enable')
             cy.get('[data-cy=start-date-select] > [data-cy=date-select]').should('be.disabled')
             cy.get('[data-cy=end-date-select] > [data-cy=date-select]').should('be.disabled')
-            cy.get('[data-cy=btn-daterange-disable]').click()
+            cy.get('[data-cy=btn-daterange-enable]').click()
             cy.get('[data-cy=start-date-select] > [data-cy=date-select]').should('not.be.disabled')
             cy.get('[data-cy=end-date-select] > [data-cy=date-select]').should('not.be.disabled')
-            cy.get('[data-cy=btn-daterange-disable]').contains('Disable')
         })
      })
 
