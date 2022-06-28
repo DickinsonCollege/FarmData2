@@ -39,9 +39,9 @@
             :disabled="disabledMap['RegexInputComponent']">
         </regex-input>
         <button data-cy='choose-positive-decimals' 
-            @click='pickRegExp'>Only Positive Decimals</button>
+            @click='updateRegexMap("pos_ints")'>Only Positive Decimals</button>
         <button data-cy='choose-positive-ints' 
-            @click='pickRegExp(0)'>Only Positive Integers</button>
+            @click='updateRegexMap("pos_decimals")'>Only Positive Integers</button>
         <button data-cy='reset-input-val' 
             @click='resetRegexVal'>Reset Input</button>
         <button data-cy='btn-input-disable'
@@ -218,6 +218,10 @@ new Vue({
         selectedRegOpt: null,
         regexInputVal: null,
         regexMatchVal: false,
+        regexMap: {
+            "pos_decimals": "^[1-9]+[0-9]*$",
+            "pos_ints": "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
+        },
         disabledMap: {
             "DropdownWithAllComponent": false,
             "RegexInputComponent": false,
@@ -248,20 +252,9 @@ new Vue({
         resetRegexVal(){
             this.regexInputVal = '0' 
         },
-        pickRegExp(newOption) {
-            if(newOption == 0){
-                this.regularExp = "^[1-9]+[0-9]*$"
-                temp = this.regexInputVal
-                this.regexInputVal = '0'
-                // this.$refs.regexinputfocus.$el.children[0].focus().blur();
-
-            }
-            else {
-                this.regularExp = "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
-                temp = this.regexInputVal
-                this.regexInputVal = '0'
-                // this.$refs.regexinputfocus.$el.children[0].focus().blur();
-            }
+        updateRegexMap(key) {    
+            this.regexInputVal = '0'
+            this.regularExp = this.regexMap[key]
         },
         pickKaleOption() {
             this.pickedCrop = 'KALE'
