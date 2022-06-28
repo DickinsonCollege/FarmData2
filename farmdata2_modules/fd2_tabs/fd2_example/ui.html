@@ -32,6 +32,7 @@
     <p><b>RegexInputComponent</b></p>
     <UL>
         <regex-input data-cy='regex-input'
+            ref='regexinputfocus'
             :reg-exp='regularExp' 
             :default-val='regexInputVal' 
             set-type='number' 
@@ -40,10 +41,10 @@
             @input-changed='setNewRegexVal'
             :disabled="disabledMap['RegexInputComponent']">
         </regex-input>
-        <button data-cy='choose-positive-reals' 
-            @click='pickRegExp'>Only Positive Reals</button>
+        <button data-cy='choose-positive-decimals' 
+            @click='updateRegexMap("pos_decimals")'>Only Positive Decimals</button>
         <button data-cy='choose-positive-ints' 
-            @click='pickRegExp(0)'>Only Positive Integers</button>
+            @click='updateRegexMap("pos_ints")'>Only Positive Integers</button>
         <button data-cy='reset-input-val' 
             @click='resetRegexVal'>Reset Input</button>
         <button data-cy='btn-input-disable' v-show="!disabledMap['RegexInputComponent']"
@@ -226,6 +227,10 @@ new Vue({
         selectedRegOpt: null,
         regexInputVal: null,
         regexMatchVal: false,
+        regexMap: {
+            "pos_ints": "^[1-9]+[0-9]*$",
+            "pos_decimals": "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
+        },
         disabledMap: {
             "DropdownWithAllComponent": false,
             "RegexInputComponent": false,
@@ -249,13 +254,9 @@ new Vue({
         resetRegexVal(){
             this.regexInputVal = '0' 
         },
-        pickRegExp(newOption) {
-            if(newOption == 0){
-                this.regularExp = "^[1-9]+[0-9]*$"
-            }
-            else {
-                this.regularExp = "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
-            }
+        updateRegexMap(key) {    
+            this.regexInputVal = '0'
+            this.regularExp = this.regexMap[key]
         },
         pickKaleOption() {
             this.pickedCrop = 'KALE'
