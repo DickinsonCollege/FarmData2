@@ -182,14 +182,475 @@ describe('Test the seeding input page', () => {
     })
     
     
-    context('Normal Features tests', () => {
-        context('Non-API related dropdown tests', () => {
+    context('Non-API related dropdown tests', () => {
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.restoreLocalStorage()
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+        })
+        
+        afterEach(() => { 
+            cy.saveLocalStorage()
+        })
+
+        it('feet unit dropdown test', () => {
+            cy.get('[data-cy=direct-seedings]')
+                .click()
+                .then(() => {
+                    cy.get('[data-cy=unit-feet] > [data-cy=dropdown-input]')
+                        .children() 
+                        .first()
+                        .should('have.value', 'Bed Feet')
+                    cy.get('[data-cy=unit-feet] > [data-cy=dropdown-input]')
+                        .children() 
+                        .last()  
+                        .should('have.value', 'Row Feet')
+                    cy.get('[data-cy=unit-feet] > [data-cy=dropdown-input]')
+                        .children() 
+                        .should('have.length', 2)
+                })
+        })
+
+        
+        it('time unit dropdown test', () => {
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .children() 
+                .first()
+                .should('have.value', 'minutes')
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .children() 
+                .last()
+                .should('have.value', 'hours')
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .children() 
+                .should('have.length', 2)
+        })
+
+        it('test if time unit dropdown displays correct input field', () => {
+            // when minute is selected, hour input should not be visible
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .select("minutes")
+                .then(() => {
+                    cy.get('[data-cy=minute-input]')
+                        .should('be.visible')
+                    cy.get('[data-cy=hour-input]')
+                        .should('not.be.visible')
+                })
+            // when hour is selected, minute input should not be visible
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .select("hours")
+                .then(() => {
+                    cy.get('[data-cy=minute-input]')
+                        .should('not.be.visible')
+                    cy.get('[data-cy=hour-input]')
+                        .should('be.visible')
+                })    
+        })
+    })    
+    // context('Date selection test', () => {
+    //     beforeEach(() => {
+    //         cy.login('manager1', 'farmdata2')
+    //         cy.visit('/farm/fd2-field-kit/seedingInput')
+    //     })
+    
+    //     it('valid typed date selection test', () => {
+    //         cy.get('[data-cy=date-selection] > [data-cy=date-select]')
+    //             .type('2011-05-07')
+    //             .invoke('val')
+    //             .should('eq', '2011-05-07')                   
+    //     })
+    // })
+    context('Tray/Direct seeding type switch test', () => {
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+        })
+        
+
+        it('check if correct fields are displayed when tray seeding is selected', () => {
+            cy.get('[data-cy=tray-seedings]')
+                .click()
+            cy.get('[data-cy=tray-area-selection]')
+                .should('be.visible')
+            cy.get('[data-cy=num-cell-input]')
+                .should('be.visible')
+            cy.get('[data-cy=num-tray-input]')
+                .should('be.visible')
+            cy.get('[data-cy=num-seed-input]')
+                .should('be.visible')
+
+            cy.get('[data-cy=direct-area-selection]')
+                .should('not.be.visible')
+            cy.get('[data-cy=num-rowbed-input]')
+                .should('not.be.visible')
+            cy.get('[data-cy=num-feet-input]')
+                .should('not.be.visible')
+        })
+
+        it('check if correct fields are displayed when direct seeding is selected', () => {
+            cy.get('[data-cy=direct-seedings]')
+                .click()
+            cy.get('[data-cy=direct-area-selection]')
+                .should('be.visible')
+            cy.get('[data-cy=num-rowbed-input]')
+                .should('be.visible')
+            cy.get('[data-cy=num-feet-input]')
+                .should('be.visible')
+
+            cy.get('[data-cy=tray-area-selection]')
+                .should('not.be.visible')
+            cy.get('[data-cy=num-cell-input]')
+                .should('not.be.visible')
+            cy.get('[data-cy=num-tray-input]')
+                .should('not.be.visible')
+            cy.get('[data-cy=num-seed-input]')
+                .should('not.be.visible')
+
+        })
+
+    })    
+    context('Regex input test', () => {
+        context('Tray Seeding input test', () => {
             beforeEach(() => {
                 cy.login('manager1', 'farmdata2')
+                cy.restoreLocalStorage()
                 cy.visit('/farm/fd2-field-kit/seedingInput')
-            });
+                cy.get('[data-cy=tray-seedings]')
+                    .click()
+            })
+
+            afterEach(() => {
+                // Save the local storage at the end of each test so 
+                // that it can be restored at the start of the next 
+                cy.saveLocalStorage()
+            })
+
+            it('valid Cells/Tray input test', () => {
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 255, 255)')
+            })
+
+            it('invalid Cells/Tray input test', () => {
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('asdf')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('-5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3.343')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+            })
+
+            it('valid Tray input test', () => {
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 255, 255)')
+            })
+
+            it('invalid Tray input test', () => {
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('asdf')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('-5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3.343')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+            })
+
+            it('valid Seed input test', () => {
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 255, 255)')
+            })
+
+            it('invalid Seed input test', () => {
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('asdf')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('-5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3.343')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+            })
+        })
+
+        context('Direct Seeding input test', () => {
+            beforeEach(() => {
+                cy.login('manager1', 'farmdata2')
+                cy.restoreLocalStorage()
+                cy.visit('/farm/fd2-field-kit/seedingInput')
+                cy.get('[data-cy=direct-seedings]')
+                    .click()
+            })
+
+            afterEach(() => { 
+                cy.saveLocalStorage()
+            })
+
+            it('valid Row/Bed input test', () => {
+                cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 255, 255)')
+            })
+
+            it('invalid Row/Bed input test', () => {
+                cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('asdf')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+                cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('-5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+
+                cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3.343')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+            })
+
+            it('valid Feet input test', () => {
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 255, 255)')
+            })
+
+            it('invalid Feet input test', () => {
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('asdf')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('-5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3.343')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+            })
+        })
+
+        context('Labor input test', () => {
+            beforeEach(() => {
+                cy.login('manager1', 'farmdata2')
+                cy.restoreLocalStorage()
+                cy.visit('/farm/fd2-field-kit/seedingInput')
+            })
+            
+            afterEach(() => { 
+                cy.saveLocalStorage()
+            })
+
+            it('valid Worker input test', () => {
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 255, 255)')
+            })
+
+            it('invalid Worker input test', () => {
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('asdf')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('-5')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+                    
+
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('3.343')
+                    .blur()
+                    .should('have.css', 'background-color')
+                    .and('eq', 'rgb(255, 192, 203)')
+            })
+
+            it('valid Minute input test', () => {
+                cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                    .select('minutes')
+                    .then(() => {
+                        cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('5')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 255, 255)')
+                    })
+            })
+
+            it('invalid Minute input test', () => {
+                cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                    .select('minutes')
+                    .then(() => {
+                        cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('asdf')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 192, 203)')
+        
+                        cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('-5')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 192, 203)')
+        
+                        cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                            .clear()       
+                            .type('3.343')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 192, 203)') 
+                    })
+            })
+
+            it('valid Hour input test', () => {
+                cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                    .select('hours')
+                    .then(() => {
+                        cy.get('[data-cy=hour-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('3')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 255, 255)')
+                        
+                        cy.get('[data-cy=hour-input] > [data-cy=text-input]')
+                        .clear()
+                            .type('3.33')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 255, 255)')
+                            
+                            cy.get('[data-cy=hour-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('.33')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 255, 255)')
+                            
+                            cy.get('[data-cy=hour-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('0.3')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 255, 255)')
+                    })
+            })
+
+            it('invalid Hour input test', () => {
+                cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                    .select('hours')
+                    .then(() => {
+                        cy.get('[data-cy=hour-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('asdf')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 192, 203)')
+                            
+                        cy.get('[data-cy=hour-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('-5')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 192, 203)')
+                            
+                        cy.get('[data-cy=hour-input] > [data-cy=text-input]')
+                            .clear()
+                            .type('3.343')
+                            .blur()
+                            .should('have.css', 'background-color')
+                            .and('eq', 'rgb(255, 192, 203)')
+                    })
+            })
         })
     })
+    
+
         
         // context('Unit', () => {
         //     beforeEach(() => {
@@ -320,19 +781,19 @@ describe('Test the seeding input page', () => {
     //                 .should('have.value', 'A')
     //         })
     //     }) 
+    //              .clear()
     //     it('input num of workers', () => {
     //         cy.get('[data-cy=num-workers]')
     //             .should('exist')
     //             .click()
-    //             .clear()
     //             .type('2')
     //             .should('have.value', '2')
     //     })
+    //              .clear()
     //     it('input time spent', () => {
     //         cy.get('[data-cy=time-spent]')
     //             .should('exist')
     //             .click()
-    //             .clear()
     //             .type('10')
     //             .should('have.value', '10')
     //     })
@@ -364,19 +825,19 @@ describe('Test the seeding input page', () => {
     //             .check()
     //             .should('be.checked')
     //     })
+    //              .clear()
     //     it('input a row per bed number', () =>{
     //         cy.get('[data-cy=row-bed]')
     //             .should('exist')
     //             .click()
-    //             .clear()
     //             .type('5')
     //             .should('have.value', '5')
     //     })
+    //              .clear()
     //     it('input the number of feet', () => {
     //         cy.get('[data-cy=num-feet')
     //             .should('exist')
     //             .click()
-    //             .clear()
     //             .type('20')
     //             .should('have.value', '20')
     //     })
@@ -412,27 +873,27 @@ describe('Test the seeding input page', () => {
     //             .check()
     //             .should('be.checked')
     //     })
+    //              .clear()
     //     it('input number of Trays', () => {
     //         cy.get('[data-cy=trays-planted')
     //             .should('exist')
     //             .click()
-    //             .clear()
     //             .type('3')
     //             .should('have.value', '3')
     //     })
+    //              .clear()
     //     it('input number of Cells per Tray', () => {
     //         cy.get('[data-cy=cells-tray')
     //             .should('exist')
     //             .click()
-    //             .clear()
     //             .type('25')
     //             .should('have.value', '25')
     //     })
+    //              .clear()
     //     it('input number of seeds planted', () => {
     //         cy.get('[data-cy=seeds-planted')
     //             .should('exist')
     //             .click()
-    //             .clear()
     //             .type('76')
     //             .should('have.value', '76')
     //     })
@@ -453,30 +914,30 @@ describe('Test the seeding input page', () => {
     //             .type('2011-05-07')
 
     //         cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
+        //              .clear()
     //             cy.get($dropdowns[0]).select('BEAN')
     //         })
 
+    //              .clear()
     //         cy.get('[data-cy=num-workers]')
-    //             .clear()
     //             .type('2')
 
     //          cy.get('[data-cy=time-spent]')
-    //             .clear()
     //             .type('10')
     //     })
     //     it('submit button is not disabled when direct seeding is filled in', () => {
     //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
     //             cy.get($dropdowns[1]).select('A')
     //         })
+    //              .clear()
             
     //         cy.get('[data-cy=direct-seedings').check()
 
+    //              .clear()
     //         cy.get('[data-cy=row-bed]')
-    //             .clear()
     //             .type('5')
 
     //         cy.get('[data-cy=num-feet')
-    //             .clear()
     //             .type('20')
 
     //         cy.get('[data-cy=submit-button')
@@ -487,19 +948,19 @@ describe('Test the seeding input page', () => {
     //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
     //             cy.get($dropdowns[1]).select('CHUAU')
     //         })
+    //              .clear()
             
     //         cy.get('[data-cy=tray-seedings]').click()
 
+    //              .clear()
     //         cy.get('[data-cy=trays-planted')
-    //             .clear()
     //             .type('3')
 
+    //              .clear()
     //         cy.get('[data-cy=cells-tray')
-    //             .clear()
     //             .type('25')
 
     //         cy.get('[data-cy=seeds-planted')
-    //             .clear()
     //             .type('76')
 
     //         cy.get('[data-cy=submit-button')
@@ -543,15 +1004,15 @@ describe('Test the seeding input page', () => {
     //         plantingLog = []
     //         token = 0
 
+    //              .clear()
     //         cy.get('[data-cy=date-select')
     //             .type('2011-08-09')
 
+    //              .clear()
     //         cy.get('[data-cy=time-spent]')
-    //             .clear()
     //             .type('10')
             
     //         cy.get('[data-cy=num-workers]')
-    //             .clear()
     //             .type('2')
 
     //         cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
@@ -581,19 +1042,19 @@ describe('Test the seeding input page', () => {
     //         beforeEach(() => {
     //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
     //                 cy.get($dropdowns[1]).select('CHUAU')
+    //                  .clear()
     //             })
     //             cy.get('[data-cy=tray-seedings]').check()
 
+    //                  .clear()
     //             cy.get('[data-cy=trays-planted')
-    //                 .clear()
     //                 .type('3')
 
+    //                  .clear()
     //             cy.get('[data-cy=cells-tray')
-    //                 .clear()
     //                 .type('25')
 
     //             cy.get('[data-cy=seeds-planted')
-    //                 .clear()
     //                 .type('76')
     //         })
     //         it('create a tray seedings log and a planting log w/ minutes', () => {
@@ -662,15 +1123,15 @@ describe('Test the seeding input page', () => {
     //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
     //                 cy.get($dropdowns[1]).select('C')
     //             })
+    //                  .clear()
 
     //             cy.get('[data-cy=direct-seedings]').check()
 
+    //                  .clear()
     //             cy.get('[data-cy=row-bed]')
-    //                 .clear()
     //                 .type('5')
 
     //             cy.get('[data-cy=num-feet')
-    //                 .clear()
     //                 .type('20')
     //         })
     //         it('create a direct seedings log and a planting log w/ minute and bed', () => {
@@ -745,19 +1206,19 @@ describe('Test the seeding input page', () => {
     //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
     //                 cy.get($dropdowns[1]).select('CHUAU')
     //             })
+    //                  .clear()
 
     //             cy.get('[data-cy=tray-seedings]').check()
 
+    //                  .clear()
     //             cy.get('[data-cy=trays-planted')
-    //                 .clear()
     //                 .type('3')
 
+    //                  .clear()
     //             cy.get('[data-cy=cells-tray')
-    //                 .clear()
     //                 .type('25')
 
     //             cy.get('[data-cy=seeds-planted')
-    //                 .clear()
     //                 .type('76')
     //         })
     //         it('creates a tray seeding report, sends it to the report page', () =>{

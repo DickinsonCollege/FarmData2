@@ -108,7 +108,7 @@
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
-                feetUnits: ['Row Feet', 'Bed Feet'],
+                feetUnits: ['Bed Feet', 'Row Feet'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -127,7 +127,7 @@
                     "validNumFeet": false,
                 },
                 regPosInt: "^[1-9]+[0-9]*$",
-                regHour:"^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
             },
             methods:{
                 updateValidMap(key, bool) {    
