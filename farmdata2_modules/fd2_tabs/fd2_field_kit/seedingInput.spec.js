@@ -104,57 +104,73 @@ describe('Test the seeding input page', () => {
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
             cy.visit('/farm/fd2-field-kit/seedingInput')
 
-            // Wait here for the maps and sesson token to load in the page.
+            // Wait here for the maps to load in the page.
             
-            cy.wait(['@cropmap', '@areamap', '@cropmap', '@areamap']) // Repeated as it is called twice in the created().
+            cy.wait(['@cropmap', '@areamap'])
         })
 
         it('test if crops are correctly loaded to the dropdown', () => {
-            cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-                cy.get($dropdowns[0]).should('exist')
-                    .select('BEAN')
-                    .should('have.value', 'BEAN')
-            })
 
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[0]).should('exist')
-                    .select('ARUGULA')
-                    .should('have.value', 'ARUGULA')
-            })
+            cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+                .children() 
+                .first()
+                .should('have.value', 'ARUGULA')
+            cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+                .children() 
+                .last()  
+                .should('have.value', 'ZUCCHINI')
+            cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+                .children() 
+                .should('have.length', cropToIDMap.size)
         })
 
-        it('test if areas are correctly loaded to the dropdown', () => {
-            cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-                cy.get($dropdowns[1]).should('exist')
-                    .select('CHUAU', { force: true })   // force select to disregard :disabled
-                    .should('have.value', 'CHUAU')
-            })
+        it.only('test if areas are correctly loaded to the dropdown for tray seeding', () => {
+            // Applying the filter to the area dropdown for tray seeding
+            let areaArray = []
+            let areaResponse = JSON.parse(localStorage.getItem('areas'))
+            let trayAreaOnly = areaResponse.filter((x) => x.area_type === 'greenhouse')
+            areaArray = trayAreaOnly.map((h) => h.name)
 
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[1]).should('exist')
-                    .select('GHANA', { force: true })   // force select to disregard :disabled
-                    .should('have.value', 'GHANA')
-            })
+            cy.get('[data-cy=tray-seedings]')
+                .click()
+                .then(() => {
+                    cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+                        .children() 
+                        .first()
+                        .should('have.value', 'CHUAU')
+                    cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+                        .children() 
+                        .last()  
+                        .should('have.value', 'SEEDING BENCH')
+                    cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+                        .children() 
+                        .should('have.length', areaArray.length)
+                })
+            
 
-            cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-                cy.get($dropdowns[2]).should('exist')
-                    .select('A', { force: true })   // force select to disregard :disabled
-                    .should('have.value', 'A')
-            })
+           
 
-            cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-                cy.get($dropdowns[2]).should('exist')
-                    .select('B', { force: true })   // force select to disregard :disabled
-                    .should('have.value', 'B')
-            })
-        
+            // cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
+            //     cy.get($dropdowns[2]).should('exist')
+            //         .select('A', { force: true })   // force select to disregard :disabled
+            //         .should('have.value', 'A')
+            // })
+
+            // cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
+            //     cy.get($dropdowns[2]).should('exist')
+            //         .select('B', { force: true })   // force select to disregard :disabled
+            //         .should('have.value', 'B')
+            // })
         })
-        
     })
     
-    context('Normal Features tests', () => {
-        
-    })
+    
+    // context('Normal Features tests', () => {
+    //     context('Non-API related dropdown tests', () => {
+    //         beforeEach(() => {
+    //         });
+    //     })
+    // })
         
         // context('Unit', () => {
         //     beforeEach(() => {
