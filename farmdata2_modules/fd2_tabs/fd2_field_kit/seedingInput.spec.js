@@ -101,12 +101,20 @@ describe('Test the seeding input page', () => {
             
             // Setting up wait for the request in the created() to complete.
             cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+            
+            cy.restoreLocalStorage()
             cy.visit('/farm/fd2-field-kit/seedingInput')
 
             // Wait here for the maps to load in the page.
             
-            cy.wait(['@cropmap', '@areamap'])
+            cy.wait(['@cropmap', '@areamap','@cropmap', '@areamap'])
+        })
+
+        afterEach(() => {
+            // Save the local storage at the end of each test so 
+            // that it can be restored at the start of the next 
+            cy.saveLocalStorage()
         })
 
         it('test if crops are correctly loaded to the dropdown', () => {
@@ -124,7 +132,7 @@ describe('Test the seeding input page', () => {
                 .should('have.length', cropToIDMap.size)
         })
 
-        it.only('test if areas are correctly loaded to the dropdown for tray seeding', () => {
+        it('test if areas are correctly loaded to the dropdown for tray seeding', () => {
             // Applying the filter to the area dropdown for tray seeding
             let areaArray = []
             let areaResponse = JSON.parse(localStorage.getItem('areas'))
@@ -146,31 +154,42 @@ describe('Test the seeding input page', () => {
                         .children() 
                         .should('have.length', areaArray.length)
                 })
-            
-
-           
-
-            // cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-            //     cy.get($dropdowns[2]).should('exist')
-            //         .select('A', { force: true })   // force select to disregard :disabled
-            //         .should('have.value', 'A')
-            // })
-
-            // cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-            //     cy.get($dropdowns[2]).should('exist')
-            //         .select('B', { force: true })   // force select to disregard :disabled
-            //         .should('have.value', 'B')
-            // })
         })
+
+        it('test if areas are correctly loaded to the dropdown for direct seeding', () => {
+            // Applying the filter to the area dropdown for direct seeding
+            let areaArray = []
+            let areaResponse = JSON.parse(localStorage.getItem('areas'))
+            let directAreaOnly = areaResponse.filter((x) => x.area_type === 'field' || x.area_type === 'bed')
+            areaArray = directAreaOnly.map((h) => h.name)
+
+            cy.get('[data-cy=direct-seedings]')
+                .click()
+                .then(() => {
+                    cy.get('[data-cy=direct-area-selection] > [data-cy=dropdown-input]')
+                        .children() 
+                        .first()
+                        .should('have.value', 'A')
+                    cy.get('[data-cy=direct-area-selection] > [data-cy=dropdown-input]')
+                        .children() 
+                        .last()  
+                        .should('have.value', 'Z')
+                    cy.get('[data-cy=direct-area-selection] > [data-cy=dropdown-input]')
+                        .children() 
+                        .should('have.length', areaArray.length)
+                })
+        })        
     })
     
     
-    // context('Normal Features tests', () => {
-    //     context('Non-API related dropdown tests', () => {
-    //         beforeEach(() => {
-    //         });
-    //     })
-    // })
+    context('Normal Features tests', () => {
+        context('Non-API related dropdown tests', () => {
+            beforeEach(() => {
+                cy.login('manager1', 'farmdata2')
+                cy.visit('/farm/fd2-field-kit/seedingInput')
+            });
+        })
+    })
         
         // context('Unit', () => {
         //     beforeEach(() => {
