@@ -169,20 +169,18 @@ describe('Testing for the seeding report page', () => {
     context('can see summary tables at appropriate times', () => {
         beforeEach(() => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
-
-
-        })
-        it('does not immediately display summary tables', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
                 .type('2019-03-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
+
+        })
+        it('does not immediately display summary tables', () => {
                 cy.get('[data-cy=tray-summary]').should('not.exist')
                 cy.get('[data-cy=direct-summary]').should('not.exist')
         })
         it('shows summary tables after table is fully loaded', () => {
-
             cy.get('[data-cy=report-table]', { timeout: 30000 }).find('tr').its('length').then(length =>{
                 expect(length).to.equal(35)
                 cy.get('[data-cy=tray-summary]',{ timeout: 30000 }).should('be.visible')
@@ -250,56 +248,63 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
+            
+            cy.get('[data-cy=report-table]', { timeout: 30000 }).find('tr').its('length').then(length =>{
+                expect(length).to.equal(35)
+            })
         })
         it('requests and displays logs that fall between the specified dates', () => {
             let currentTimestamp = null
             const startTimestamp = dayjs('2019-01-01').unix()
             const endTimestamp = dayjs('2019-03-01').unix()
-
-            cy.get('[data-cy=object-test]', { timeout: 10000 })
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().then(($date) => {
-                        currentTimestamp = dayjs($date[0].innerText).unix()
-                    })
-                    .then(() => {
+            // cy.get('[data-cy=r0c0]')
+            //     .should('have.text', '2019-01-01')
+            for(let r = 0; r < 34; r++){
+                cy.get('[data-cy=r' + r + 'c0')
+                    .invoke('text')
+                    .then(dateText => {
+                        currentTimestamp = dayjs(dateText).unix()
                         expect(currentTimestamp).is.within(startTimestamp, endTimestamp)
                     })
-                })
+            }
         })
 
         it('sorts by type of seeding', () => {
+            let typeSeeding = null
             cy.get('[data-cy=seeding-type-dropdown]')
                 .should('exist')
             cy.get('[data-cy=dropdown-input]').first()
                 .select('Direct Seedings')
                 .should('have.value', 'Direct Seedings')
 
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().then(($seeding) => {
-                        expect($seeding[0].innerText).to.equal('Direct Seedings')
+            for(let r = 0; r < 7; r++){
+                cy.get('[data-cy=r' + r + 'c3')
+                    .invoke('text')
+                    .then(seeding => {
+                        typeSeeding = seeding
+                        expect(typeSeeding, 'Direct')
                     })
-                })
+            }
 
             cy.get('[data-cy=dropdown-input]').first()
                 .select('Tray Seedings')
                 .should('have.value', 'Tray Seedings')
 
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().then(($seeding) => {
-                        expect($seeding[0].innerText).to.equal('Tray Seedings')
+            for(let r = 0; r < 27; r++){
+                cy.get('[data-cy=r' + r + 'c3')
+                    .invoke('text')
+                    .then(seeding => {
+                        typeSeeding = seeding
+                        expect(typeSeeding, 'Tray')
                     })
-                })
-            
+            }
+
             cy.get('[data-cy=dropdown-input]').first()
                 .select('All')
         })
 
         it('sorts by crop', () => {
+            let crop
             cy.get('[data-cy=crop-dropdown]')
                 .should('exist')
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
@@ -308,13 +313,14 @@ describe('Testing for the seeding report page', () => {
                     .should('have.value', 'LEEK')
             })
 
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().then(($crop) => {
-                        expect($crop[0].innerText).to.equal('LEEK')
+            for(let r = 0; r < 3; r++){
+                cy.get('[data-cy=r' + r + 'c1')
+                    .invoke('text')
+                    .then(actualCrop => {
+                        crop = actualCrop
+                        expect(crop, 'LEEK')
                     })
-                })
+            }
 
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[1])
@@ -323,6 +329,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('sorts by field', () => {
+            let area
             cy.get('[data-cy=area-dropdown]')
                 .should('exist')
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
@@ -331,13 +338,14 @@ describe('Testing for the seeding report page', () => {
                     .should('have.value', 'CHUAU')
             })
 
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().then(($crop) => {
-                        expect($crop[0].innerText).to.equal('CHUAU')
+            for(let r = 0; r < 8; r++){
+                cy.get('[data-cy=r' + r + 'c2')
+                    .invoke('text')
+                    .then(actualArea => {
+                        area = actualArea
+                        expect(area, 'CHUAU')
                     })
-                })
+            }
             
             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
                 cy.get($dropdowns[2])
@@ -346,10 +354,10 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context('has the correct totals in the direct seeding summary', () => {
-        let totalRowFeet = 0;
-        let totalBedFeet = 0;
-        let totalHoursWorked = 0;
+    context('has the correct totals in the seeding summary tables', () => {
+        let totalRowFeet = null;
+        let totalBedFeet = null;
+        let totalHoursWorked = null;
 
         before(() => {
             cy.login('manager1', 'farmdata2')
@@ -364,125 +372,105 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
 
-            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
-                .select('Direct Seedings')
-                .should('have.value', 'Direct Seedings')
-            
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().next().next().then(($rowFeet) => {
-                        totalRowFeet = totalRowFeet + parseInt($rowFeet[0].innerText);
-                    })
-                    .next().then(($bedFeet) => {
-                        totalBedFeet = totalBedFeet + parseInt($bedFeet[0].innerText);
-                    })
-                    .next().then(($hoursWorked) => {
-                        totalHoursWorked = totalHoursWorked + parseFloat($hoursWorked[0].innerText);
-                    })
-                })
         })
 
-        it('has the correct totals for row feet', () => {
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().children()
-                .should('have.text', totalRowFeet.toString())
-        })
+        it('verify all values in the direct seeding summary', () => {
+            cy.get('[data-cy=direct-total-rowft]')
+            .should('have.text', '26177')
 
-        it('has the correct totals for bed feet', () => {
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().children()
-                .should('have.text', totalBedFeet.toString())
-        })
+            cy.get('[data-cy=direct-total-bedft]')
+            .should('have.text', '8803')
 
-        it('has the correct totals for bed feet', () => {
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().next().children()
-                .should('have.text', totalHoursWorked.toString())
-        })
+            cy.get('[data-cy=direct-total-hours]')
+            .should('have.text', '7')
 
-        it('has the correct bed feet per hour', () => {
-            let bedFeetPerHour = (Math.round((totalBedFeet/totalHoursWorked)*100))/100
+            cy.get('[data-cy=direct-total-rowft-hour]')
+            .should('have.text', '3739.57')
 
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().next().next().children()
-                .should('have.text', bedFeetPerHour.toString())
-        })
+            cy.get('[data-cy=direct-total-bedfr-hour]')
+            .should('have.text', '1257.57')
+            })
 
-        it('has the correct row feet per hour', () => {
-            let rowFeetPerHour = (Math.round((totalRowFeet/totalHoursWorked)*100))/100
-
-            cy.get('[data-cy=direct-summary]')
-                .children().first().next().next().next().next().next().next().children()
-                .should('have.text', rowFeetPerHour.toString())
+        it('verify all values in the tray seeding summary', () => {
+            cy.get('[data-cy=tray-total-seeds]')
+            .should('have.text', '16808')
+    
+            cy.get('[data-cy=tray-total-trays]')
+            .should('have.text', '212.5')
+    
+            cy.get('[data-cy=tray-total-seeds-hour]')
+            .should('have.text', '20.1')
+    
+            cy.get('[data-cy=tray-avg-seeds-hour]')
+            .should('have.text', '836.22')
         })
     })
 
-    context('has the correct totals in the tray seeding summary', () => {
-        let totalSeeds = 0
-        let totalTrays = 0
-        let totalHoursWorked = 0
+    // context('has the correct totals in the tray seeding summary', () => {
+    //     let totalSeeds = 0
+    //     let totalTrays = 0
+    //     let totalHoursWorked = 0
 
-        before(() => {
-            cy.login('manager1', 'farmdata2')
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+    //     before(() => {
+    //         cy.login('manager1', 'farmdata2')
+    //         cy.visit('/farm/fd2-barn-kit/seedingReport')
 
-            cy.get('[data-cy=start-date-select]')
-                .type('2019-01-01')
+    //         cy.get('[data-cy=start-date-select]')
+    //             .type('2019-01-01')
 
-            cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+    //         cy.get('[data-cy=end-date-select]')
+    //             .type('2019-03-01')
 
-            cy.get('[data-cy=generate-rpt-btn]')
-                .click()
+    //         cy.get('[data-cy=generate-rpt-btn]')
+    //             .click()
 
-            cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
-                .select('Tray Seedings')
-                .should('have.value', 'Tray Seedings')
+    //         cy.get('[data-cy=dropdown-input]', {timeout: 10000}).first()
+    //             .select('Tray Seedings')
+    //             .should('have.value', 'Tray Seedings')
             
-            cy.get('[data-cy=object-test]')
-                .each(($el, index, $all) => {
-                    cy.get($el).children()
-                    .first().next().next().next().next().then(($numSeeds) => {
-                        totalSeeds = totalSeeds + parseFloat($numSeeds[0].innerText);
-                    })
-                    .next().then(($numTrays) => {
-                        totalTrays = totalTrays + parseFloat($numTrays[0].innerText);
-                    })
-                    .next().next().then(($numHours) => {
-                        totalHoursWorked = totalHoursWorked + parseFloat($numHours[0].innerText);
-                    })
-                })
-        })
+    //         cy.get('[data-cy=object-test]')
+    //             .each(($el, index, $all) => {
+    //                 cy.get($el).children()
+    //                 .first().next().next().next().next().then(($numSeeds) => {
+    //                     totalSeeds = totalSeeds + parseFloat($numSeeds[0].innerText);
+    //                 })
+    //                 .next().then(($numTrays) => {
+    //                     totalTrays = totalTrays + parseFloat($numTrays[0].innerText);
+    //                 })
+    //                 .next().next().then(($numHours) => {
+    //                     totalHoursWorked = totalHoursWorked + parseFloat($numHours[0].innerText);
+    //                 })
+    //             })
+    //     })
 
-        it('has the correct total number of seeds', () => {
-            cy.get('[data-cy=tray-summary]')
-                .children().first().next().children()
-                .should('have.text', totalSeeds.toString())
-        })
+    //     it('has the correct total number of seeds', () => {
+    //         cy.get('[data-cy=tray-summary]')
+    //             .children().first().next().children()
+    //             .should('have.text', totalSeeds.toString())
+    //     })
 
-        it('has the correct total number of trays', () => {
-            cy.get('[data-cy=tray-summary]')
-                .children().first().next().next().children()
-                .should('have.text', totalTrays.toString())
-        })
+    //     it('has the correct total number of trays', () => {
+    //         cy.get('[data-cy=tray-summary]')
+    //             .children().first().next().next().children()
+    //             .should('have.text', totalTrays.toString())
+    //     })
 
-        it('has the correct total number of hours worked', () => {
-            totalHoursWorked = Math.round((totalHoursWorked)*100)/100
+    //     it('has the correct total number of hours worked', () => {
+    //         totalHoursWorked = Math.round((totalHoursWorked)*100)/100
 
-            cy.get('[data-cy=tray-summary]')
-                .children().first().next().next().next().children()
-                .should('have.text', totalHoursWorked.toString())
-        })
+    //         cy.get('[data-cy=tray-summary]')
+    //             .children().first().next().next().next().children()
+    //             .should('have.text', totalHoursWorked.toString())
+    //     })
 
-        it('has the correct average seeds planted per hour', () => {
-            let avgSeedsPerHour = Math.round((totalSeeds/totalHoursWorked)*100)/100
+    //     it('has the correct average seeds planted per hour', () => {
+    //         let avgSeedsPerHour = Math.round((totalSeeds/totalHoursWorked)*100)/100
 
-            cy.get('[data-cy=tray-summary]', {timeout: 10000})
-                .children().first().next().next().next().next().children()
-                .should('have.text', avgSeedsPerHour.toString())
-        })
-    })
+    //         cy.get('[data-cy=tray-summary]', {timeout: 10000})
+    //             .children().first().next().next().next().next().children()
+    //             .should('have.text', avgSeedsPerHour.toString())
+    //     })
+    // })
 
     context('changing the type of seeding changes the visible columns', () => {
         before(() => {
@@ -504,40 +492,56 @@ describe('Testing for the seeding report page', () => {
                 .select('All')
                 .should('have.value', 'All')
 
-            cy.get('[data-cy=headers]')
-                .first().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('date')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('crop')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('area')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Tray/Direct')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Hours')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Num Workers')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Varieties')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Comments')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('User')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Edit')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Delete')
-                })
+            cy.get('[data-cy=h0]')
+                .should('have.text', 'Date')
+
+            cy.get('[data-cy=h1]')
+                .should('have.text', 'Crop')
+
+            cy.get('[data-cy=h2]')
+                .should('have.text', 'Area')
+
+            cy.get('[data-cy=h3]')
+                .should('have.text', 'Seeding')
+
+            cy.get('[data-cy=h4]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h5]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h6]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h7]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h8]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h9]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h10]')
+                .should('have.text', 'Workers')
+
+            cy.get('[data-cy=h11]')
+                .should('have.text', 'Hours')
+
+            cy.get('[data-cy=h12]')
+                .should('have.text', 'Varieties')
+
+            cy.get('[data-cy=h13]')
+                .should('have.text', 'Comments')
+
+            cy.get('[data-cy=h14]')
+                .should('have.text', 'User')
+
+            cy.get('[data-cy=edit-header]')
+                .should('have.text', 'Edit')
+
+            cy.get('[data-cy=delete-header]')
+                .should('have.text', 'Delete')
         })
 
         it('displays columns relevant to direct seedings when "Direct Seedings" is selected', () => {
@@ -545,49 +549,56 @@ describe('Testing for the seeding report page', () => {
                 .select('Direct Seedings')
                 .should('have.value', 'Direct Seedings')
 
-            cy.get('[data-cy=headers]')
-                .first().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('date')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('crop')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('area')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Tray/Direct')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Row/Bed')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Row Feet')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Bed Feet')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Hours')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Num Workers')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Varieties')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Comments')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('User')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Edit')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Delete')
-                })
+            cy.get('[data-cy=h0]')
+                .should('have.text', 'Date')
+
+            cy.get('[data-cy=h1]')
+                .should('have.text', 'Crop')
+
+            cy.get('[data-cy=h2]')
+                .should('have.text', 'Area')
+
+            cy.get('[data-cy=h3]')
+                .should('have.text', 'Seeding')
+
+            cy.get('[data-cy=h4]')
+                .should('have.text', 'Row Feet')
+
+            cy.get('[data-cy=h5]')
+                .should('have.text', 'Bed Feet')
+
+            cy.get('[data-cy=h6]')
+                .should('have.text', 'Rows/Bed')
+
+            cy.get('[data-cy=h7]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h8]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h9]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h10]')
+                .should('have.text', 'Workers')
+
+            cy.get('[data-cy=h11]')
+                .should('have.text', 'Hours')
+
+            cy.get('[data-cy=h12]')
+                .should('have.text', 'Varieties')
+
+            cy.get('[data-cy=h13]')
+                .should('have.text', 'Comments')
+
+            cy.get('[data-cy=h14]')
+                .should('have.text', 'User')
+
+            cy.get('[data-cy=edit-header]')
+                .should('have.text', 'Edit')
+
+            cy.get('[data-cy=delete-header]')
+                .should('have.text', 'Delete')
         })
 
         it('displays columns relevant to tray seedings when "Tray Seedings" is selected', () => {
@@ -595,49 +606,53 @@ describe('Testing for the seeding report page', () => {
                 .select('Tray Seedings')
                 .should('have.value', 'Tray Seedings')
 
-            cy.get('[data-cy=headers]')
-                .first().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('date')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('crop')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('area')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Tray/Direct')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Tray Seeds')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('# of Trays')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Cells Per Tray')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Hours')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Num Workers')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Varieties')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Comments')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('User')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Edit')
-                })
-                .next().then(($headerVal) => {
-                    expect($headerVal[0].innerText).to.equal('Delete')
-                })
+                cy.get('[data-cy=h1]')
+                .should('have.text', 'Crop')
+
+            cy.get('[data-cy=h2]')
+                .should('have.text', 'Area')
+
+            cy.get('[data-cy=h3]')
+                .should('have.text', 'Seeding')
+
+            cy.get('[data-cy=h4]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h5]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h6]')
+                .should('not.exist')
+
+            cy.get('[data-cy=h7]')
+                .should('have.text', 'Seeds')
+
+            cy.get('[data-cy=h8]')
+                .should('have.text', 'Trays')
+
+            cy.get('[data-cy=h9]')
+                .should('have.text', 'Cells/Tray')
+
+            cy.get('[data-cy=h10]')
+                .should('have.text', 'Workers')
+
+            cy.get('[data-cy=h11]')
+                .should('have.text', 'Hours')
+
+            cy.get('[data-cy=h12]')
+                .should('have.text', 'Varieties')
+
+            cy.get('[data-cy=h13]')
+                .should('have.text', 'Comments')
+
+            cy.get('[data-cy=h14]')
+                .should('have.text', 'User')
+
+            cy.get('[data-cy=edit-header]')
+                .should('have.text', 'Edit')
+
+            cy.get('[data-cy=delete-header]')
+                .should('have.text', 'Delete')
         })
     })
 
@@ -838,7 +853,7 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('disables the filters while a row is being edited', () => {
-            cy.get('[data-cy=edit-button]', {timeout: 10000}).first()
+            cy.get('[data-cy=edit-button-r0]', {timeout: 10000}).first()
                 .click()
 
             cy.get('[data-cy=dropdown-input]').first()
@@ -846,10 +861,10 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('filters are no longer diabled when cancel button is clicked', () => {
-            cy.get('[data-cy=edit-button]', {timeout: 10000}).last()
-                .click()
+            // cy.get('[data-cy=edit-button-r0]', {timeout: 10000}).last()
+            //     .click()
 
-            cy.get('[data-cy=cancel-button]', {timeout: 10000})
+            cy.get('[data-cy=cancel-button-r0]', {timeout: 10000})
                 .first()
                 .should('exist')
                 .click()
@@ -859,10 +874,10 @@ describe('Testing for the seeding report page', () => {
         })
 
         it('filters are no longer diabled when save button is clicked', () => {
-            cy.get('[data-cy=edit-button]', {timeout: 10000}).last()
+            cy.get('[data-cy=edit-button-r0]', {timeout: 10000}).last()
                 .click()
 
-            cy.get('[data-cy=save-button]', {timeout: 10000})
+            cy.get('[data-cy=save-button-r0]', {timeout: 10000})
                 .first()
                 .should('exist')
                 .click()
@@ -879,7 +894,6 @@ describe('Testing for the seeding report page', () => {
             cy.wrap(getSessionToken())
             .then(sessionToken => {
                 token = sessionToken
-     
                 req = {
                     url: '/log',
                     method: 'POST',
@@ -975,9 +989,9 @@ describe('Testing for the seeding report page', () => {
                 .click()
         })
 
-        it.only('edits the database when a row is edited in the table', () => {
+        it('edits the database when a row is edited in the table', () => {
             cy.get('[data-cy=edit-button-r0]')
-                .first().click()
+                .click()
             
             cy.get('[data-cy=date-input-r0c0]')
                 .type('2001-09-28')
@@ -993,22 +1007,23 @@ describe('Testing for the seeding report page', () => {
                 .select('A')
                 .blur()
 
-            cy.get('[data-cy=number-input-r0c4]')
+            cy.get('[data-cy=number-input-r0c10]')
                 .first()
                 .type('4')
                 .blur()
 
-            cy.get('[data-cy=number-input-r0c5]')
+            cy.get('[data-cy=number-input-r0c11]')
                 .first()
                 .type('0.25')
                 .blur()
 
-            cy.get('[data-cy=text-input-r0c7]')
+            cy.get('[data-cy=text-input-r0c13]')
                 .type('New Comment')
                 .blur()
 
+            // Button is actionable, unfortunately it's not in view
             cy.get('[data-cy=save-button-r0]')
-                .first().click()
+                .click({force:true})
 
             cy.request('/log.json?type=farm_seeding&id=' + logID).as('check')
                 cy.get('@check').should(function(response) {
@@ -1016,12 +1031,12 @@ describe('Testing for the seeding report page', () => {
                 })
 
             //use cy.request eventually
-            cy.get('[data-cy=delete-button]')
-                .first().click()
+            cy.get('[data-cy=delete-button-r0]')
+                .click()
         })
 
         it('deletes a log from the database when the delete button is pressed', () => {
-            cy.get('[data-cy=delete-button]')
+            cy.get('[data-cy=delete-button-r0]')
                 .first().click()
 
             cy.get('[data-cy=object-test]')
