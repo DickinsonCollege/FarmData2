@@ -183,10 +183,29 @@ describe('Test the seeding input page', () => {
     
     
     context('Non-API related dropdown tests', () => {
-        beforeEach(() => {
+        before(() => {
             cy.login('manager1', 'farmdata2')
-            cy.restoreLocalStorage()
             cy.visit('/farm/fd2-field-kit/seedingInput')
+            .then(() => {
+                // Using wrap to wait for the asynchronus API request.
+                    cy.wrap(getCropToIDMap()).as('cropMap')
+                    cy.wrap(getAreaToIDMap()).as('areaMap')
+
+            })
+            // Wait here for the maps in the tests.
+            cy.get('@cropMap').should(function(map) {
+                cropToIDMap = map
+            })
+            cy.get('@areaMap').should(function(map) {
+                areaToIDMap = map
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+        })
+        beforeEach(() => {
+            cy.restoreLocalStorage()
         })
         
         afterEach(() => { 
@@ -264,6 +283,23 @@ describe('Test the seeding input page', () => {
         beforeEach(() => {
             cy.login('manager1', 'farmdata2')
             cy.visit('/farm/fd2-field-kit/seedingInput')
+            .then(() => {
+                // Using wrap to wait for the asynchronus API request.
+                    cy.wrap(getCropToIDMap()).as('cropMap')
+                    cy.wrap(getAreaToIDMap()).as('areaMap')
+
+            })
+            // Wait here for the maps in the tests.
+            cy.get('@cropMap').should(function(map) {
+                cropToIDMap = map
+            })
+            cy.get('@areaMap').should(function(map) {
+                areaToIDMap = map
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
         })
         
 
@@ -309,12 +345,33 @@ describe('Test the seeding input page', () => {
         })
 
     })    
+
     context('Regex input test', () => {
+        before(() => {
+            cy.login('manager1', 'farmdata2')
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            .then(() => {
+                // Using wrap to wait for the asynchronus API request.
+                    cy.wrap(getCropToIDMap()).as('cropMap')
+                    cy.wrap(getAreaToIDMap()).as('areaMap')
+
+            })
+            // Wait here for the maps in the tests.
+            cy.get('@cropMap').should(function(map) {
+                cropToIDMap = map
+            })
+            cy.get('@areaMap').should(function(map) {
+                areaToIDMap = map
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+        })
+        
         context('Tray Seeding input test', () => {
             beforeEach(() => {
-                cy.login('manager1', 'farmdata2')
                 cy.restoreLocalStorage()
-                cy.visit('/farm/fd2-field-kit/seedingInput')
                 cy.get('[data-cy=tray-seedings]')
                     .click()
             })
@@ -425,9 +482,7 @@ describe('Test the seeding input page', () => {
 
         context('Direct Seeding input test', () => {
             beforeEach(() => {
-                cy.login('manager1', 'farmdata2')
                 cy.restoreLocalStorage()
-                cy.visit('/farm/fd2-field-kit/seedingInput')
                 cy.get('[data-cy=direct-seedings]')
                     .click()
             })
@@ -504,10 +559,9 @@ describe('Test the seeding input page', () => {
         })
 
         context('Labor input test', () => {
+           
             beforeEach(() => {
-                cy.login('manager1', 'farmdata2')
                 cy.restoreLocalStorage()
-                cy.visit('/farm/fd2-field-kit/seedingInput')
             })
             
             afterEach(() => { 
@@ -640,15 +694,74 @@ describe('Test the seeding input page', () => {
                             .and('eq', 'rgb(255, 192, 203)')
                             
                         cy.get('[data-cy=hour-input] > [data-cy=text-input]')
-                            .clear()
-                            .type('3.343')
-                            .blur()
-                            .should('have.css', 'background-color')
-                            .and('eq', 'rgb(255, 192, 203)')
+                        .clear()
+                        .type('3.343')
+                        .blur()
+                        .should('have.css', 'background-color')
+                        .and('eq', 'rgb(255, 192, 203)')
                     })
             })
         })
     })
+
+    context('workflow test', () => {
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            .then(() => {
+                // Using wrap to wait for the asynchronus API request.
+                cy.wrap(getSessionToken()).as('token')
+                cy.wrap(getCropToIDMap()).as('cropMap')
+                cy.wrap(getAreaToIDMap()).as('areaMap')
+                cy.wrap(getUserToIDMap()).as('userMap')
+                cy.wrap(getUnitToIDMap()).as('unitMap')
+                cy.wrap(getLogTypeToIDMap()).as('logTypeMap')
+            })
+
+            // Waiting for the session token and maps to load.
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            cy.get('@cropMap').should(function(map) {
+                cropToIDMap = map
+            })
+            cy.get('@areaMap').should(function(map) {
+                areaToIDMap = map
+            })
+            cy.get('@userMap').should(function(map) {
+                userToIDMap = map
+            })
+            cy.get('@unitMap').should(function(map) {
+                    unitToIDMap = map
+            })        
+            cy.get('@logTypeMap').should(function(map) {
+                logTypeToIDMap = map
+            })
+                
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+                
+            // Wait here for the map and token to be loaded in the page 
+            cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
+
+            cy.get('[data-cy=[date-select]')
+        })
+
+        afterEach(() => {
+            // Save the local storage at the end of each test so 
+            // that it can be restored at the start of the next 
+            cy.saveLocalStorage()
+        })
+
+
+    })
+    
     
 
         
@@ -657,7 +770,6 @@ describe('Test the seeding input page', () => {
         //         cy.login('manager1', 'farmdata2')
         //         .then(() => {
         //             // Using wrap to wait for the asynchronus API request.
-        //                 cy.wrap(getUnitToIDMap()).as('unitMap')    
         //         })
 
         //         // Wait here for the maps in the tests.
@@ -686,52 +798,9 @@ describe('Test the seeding input page', () => {
     //     cy.login('manager1', 'farmdata2')
     //     .then(() => {
     //         // Using wrap to wait for the asynchronus API request.
-    //         cy.wrap(getSessionToken()).as('token')
-    //         cy.wrap(getCropToIDMap()).as('cropMap')
-    //         cy.wrap(getAreaToIDMap()).as('areaMap')
-    //         cy.wrap(getUserToIDMap()).as('userMap')
-    //         cy.wrap(getUnitToIDMap()).as('unitMap')
-    //         cy.wrap(getLogTypeToIDMap()).as('logTypeMap')
     //     })
         
-        
-    //     // Waiting for the session token and maps to load.
-    //     cy.get('@token').should(function(token) {
-    //         sessionToken = token
-    //     })
-    //     cy.get('@cropMap').should(function(map) {
-    //         cropToIDMap = map
-    //     })
-    //     cy.get('@areaMap').should(function(map) {
-    //         areaToIDMap = map
-    //     })
-    //     cy.get('@userMap').should(function(map) {
-    //         userToIDMap = map
-    //     })
-    //     cy.get('@unitMap').should(function(map) {
-    //             unitToIDMap = map
-    //         })        
-    //         cy.get('@logTypeMap').should(function(map) {
-    //             logTypeToIDMap = map
-    //         })
-            
-    //         // Setting up wait for the request in the created() to complete.
-                // cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-                // cy.intercept('GET', 'restws/session/token').as('sessiontok')
-                // cy.intercept('GET', 'user').as('usermap')
-                // cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
-                // cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
-                // cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
-                // cy.visit('/farm/fd2-field-kit/seedingInput')
-            
-            
-    //         cy.visit('/farm/fd2-field-kit/seedingInput')
-            
-    //         // Wait here for the map and token to be loaded in the page 
-    //         // Sessiontok and cropmap are the only two that get loaded when page is enterd.
-    //         cy.wait(['@sessiontok','@cropmap'])
-            
-    //     })
+    
     // })
     
 
