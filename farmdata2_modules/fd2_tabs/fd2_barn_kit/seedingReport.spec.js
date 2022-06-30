@@ -2,19 +2,85 @@ const dayjs = require('dayjs')
 var FarmOSAPI = require('../resources/FarmOSAPI.js')
 var getSessionToken = FarmOSAPI.getSessionToken
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
+var getIDToCropMap = FarmOSAPI.getIDToCropMap
 var getAreaToIDMap = FarmOSAPI.getAreaToIDMap
+var getUserToIDMap = FarmOSAPI.getUserToIDMap
+var getIDToUserMap = FarmOSAPI.getIDToUserMap
+var getUnitToIDMap = FarmOSAPI.getUnitToIDMap
 var createRecord = FarmOSAPI.createRecord
 var deleteRecord = FarmOSAPI.deleteRecord
 
+// Cypress.on('uncaught:exception', (err, runnable) => {
+//     // returning false here prevents Cypress from
+//     // failing the test
+//     return false
+// })
+
 describe('Testing for the seeding report page', () => {
     let cropToIDMap = null
+    let IDToCropMap = null
     let areaToIDMap = null
+    let userToIDMap = null
+    let IDToUserMap = null
+    let unitToIDMap = null
     beforeEach(() => {
+        //cy.login('manager1', 'farmdata2')
         cy.login('manager1', 'farmdata2')
+            .then(() => {
+                // Using wrap to wait for the asynchronus API request.
+                cy.wrap(getCropToIDMap()).as('cropMap')
+                cy.wrap(getAreaToIDMap()).as('areaMap')
+                cy.wrap(getIDToCropMap()).as('IDCropMap')
+                cy.wrap(getUserToIDMap()).as('userMap')
+                cy.wrap(getIDToUserMap()).as('IDUserMap')
+                cy.wrap(getUnitToIDMap()).as('unitMap')
+    
+            })
+                // Wait here for the maps in the tests.
+                cy.get('@cropMap').should(function(map) {
+                    cropToIDMap = map
+                })
+                cy.get('@areaMap').should(function(map) {
+                    areaToIDMap = map
+                })
+
+                cy.get('@IDCropMap').should(function(map) {
+                    IDToCropMap = map
+                })
+
+                cy.get('@userMap').should(function(map) {
+                    userToIDMap = map
+                })
+
+                cy.get('@IDUserMap').should(function(map) {
+                    IDToUserMap = map
+                })
+                
+                cy.get('@unitMap').should(function(map) {
+                    unitToIDMap = map
+                })
+                
+                // Setting up wait for the request in the created() to complete.
+                cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+                cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+                cy.intercept('GET', '/taxonomy_term.json?bundle=farm_crops').as('IDCropMap')
+
+                // What are the terms for these?
+                // cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('userMap') 
+                // cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('IDUserMap')
+
+                //cy.intercept('GET', '/taxonomy_term.json?bundle=farm_quantity_units').as('unitMap') 
+                
+                // cy.restoreLocalStorage()
+                cy.visit('/farm/fd2-barn-kit/seedingReport')
+    
+                // Wait here for the maps to load in the page.
+                
+                cy.wait(['@cropmap', '@areamap', '@IDCropMap'])
     })
 
     context('can set dates and then render the report', () => {
-        it('visits the page and logs in', () => {
+        it('visits the page and see if it loads', () => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
         })
 
@@ -60,33 +126,32 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('assures filters are actually populated', () => {
-        beforeEach(() => {
-            cy.login('manager1', 'farmdata2')
-            .then(() => {
-                // Using wrap to wait for the asynchronus API request.
-                cy.wrap(getCropToIDMap()).as('cropMap')
-                cy.wrap(getAreaToIDMap()).as('areaMap')
+        // beforeEach(() => {
+        //     // cy.login('manager1', 'farmdata2')
+        //     // .then(() => {
+        //         // Using wrap to wait for the asynchronus API request.
+        //     cy.wrap(getCropToIDMap()).as('cropMap')
+        //     cy.wrap(getAreaToIDMap()).as('areaMap')
 
-            })
-            // Wait here for the maps in the tests.
-            cy.get('@cropMap').should(function(map) {
-                cropToIDMap = map
-            })
-            cy.get('@areaMap').should(function(map) {
-                areaToIDMap = map
-            })
+        //     // })
+        //     // Wait here for the maps in the tests.
+        //     cy.get('@cropMap').should(function(map) {
+        //         cropToIDMap = map
+        //     })
+        //     cy.get('@areaMap').should(function(map) {
+        //         areaToIDMap = map
+        //     })
             
-            // Setting up wait for the request in the created() to complete.
-            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+        //     // Setting up wait for the request in the created() to complete.
+        //     cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+        //     cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
             
-            cy.restoreLocalStorage()
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+        //     cy.visit('/farm/fd2-barn-kit/seedingReport')
 
-            // Wait here for the maps to load in the page.
+        //     // Wait here for the maps to load in the page.
             
-            cy.wait(['@cropmap', '@areamap',])
-        })
+        //     cy.wait(['@cropmap', '@areamap',])
+        // })
 
         it('test if seeding type are correctly loaded to the filter dropdown', () => {
             cy.get('[data-cy=start-date-select]')
@@ -165,33 +230,33 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('filter selection impacts other filter options', () => {
-        beforeEach(() => {
-            cy.login('manager1', 'farmdata2')
-            .then(() => {
-                // Using wrap to wait for the asynchronus API request.
-                cy.wrap(getCropToIDMap()).as('cropMap')
-                cy.wrap(getAreaToIDMap()).as('areaMap')
+        // beforeEach(() => {
+        //     // cy.login('manager1', 'farmdata2')
+        //     // .then(() => {
+        //         // Using wrap to wait for the asynchronus API request.
+        //     cy.wrap(getCropToIDMap()).as('cropMap')
+        //     cy.wrap(getAreaToIDMap()).as('areaMap')
 
-            })
-            // Wait here for the maps in the tests.
-            cy.get('@cropMap').should(function(map) {
-                cropToIDMap = map
-            })
-            cy.get('@areaMap').should(function(map) {
-                areaToIDMap = map
-            })
+        //     // })
+        //     // Wait here for the maps in the tests.
+        //     cy.get('@cropMap').should(function(map) {
+        //         cropToIDMap = map
+        //     })
+        //     cy.get('@areaMap').should(function(map) {
+        //         areaToIDMap = map
+        //     })
             
-            // Setting up wait for the request in the created() to complete.
-            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+        //     // Setting up wait for the request in the created() to complete.
+        //     cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+        //     cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
             
-            cy.restoreLocalStorage()
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+        //     cy.restoreLocalStorage()
+        //     cy.visit('/farm/fd2-barn-kit/seedingReport')
 
-            // Wait here for the maps to load in the page.
+        //     // Wait here for the maps to load in the page.
             
-            cy.wait(['@cropmap', '@areamap',])
-        })
+        //     cy.wait(['@cropmap', '@areamap',])
+        // })
 
         it('test seeding type impact on other filters', () => {
             cy.get('[data-cy=start-date-select]')
@@ -323,10 +388,9 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('can see spinner at appropriate times', () => {
-        beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
-
-        })
+        // beforeEach(() => {
+        //     cy.visit('/farm/fd2-barn-kit/seedingReport')
+        // })
 
         it('show spinner after input', () => {
             cy.get('[data-cy=start-date-select]')
@@ -403,9 +467,9 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('can see No Logs message at appropriate times', () => {
-        beforeEach(() => {
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
-        })
+        // beforeEach(() => {
+        //     cy.visit('/farm/fd2-barn-kit/seedingReport')
+        // })
 
         it('does not show No Logs message after input with logs', () => {
             cy.get('[data-cy=start-date-select]')
@@ -498,22 +562,22 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('displays the right information in the table', () => {
-        before(() => {
-            cy.login('manager1', 'farmdata2')
+        beforeEach(() => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
-
+    
             cy.get('[data-cy=end-date-select]')
                 .type('2019-03-01')
-
+    
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
-            
-            cy.get('[data-cy=report-table]').find('tr').its('length').then(length =>{
-                expect(length).to.equal(35)
-            })
+                
+            cy.get('[data-cy=report-table]').find('tr').its('length')
+                .then(length =>{
+                    expect(length).to.equal(35)
+                })
         })
 
         it('requests and displays logs that fall between the specified dates', () => {
@@ -617,12 +681,8 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('has the correct totals in the seeding summary tables', () => {
-        let totalRowFeet = null;
-        let totalBedFeet = null;
-        let totalHoursWorked = null;
 
-        before(() => {
-            cy.login('manager1', 'farmdata2')
+        beforeEach(() => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
             cy.get('[data-cy=start-date-select]')
@@ -666,8 +726,7 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('changing the type of seeding changes the visible columns', () => {
-        before(() => {
-            cy.login('manager1', 'farmdata2')
+        beforeEach(() => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
             cy.get('[data-cy=start-date-select]')
@@ -999,8 +1058,7 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('date picker and filter behavior', () => {
-        before(() => {
-            cy.login('manager1', 'farmdata2')
+        beforeEach(() => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
             cy.get('[data-cy=start-date-select]')
@@ -1198,7 +1256,9 @@ describe('Testing for the seeding report page', () => {
                 .should('be.disabled')
         })
 
-        it('filters are no longer diabled when cancel button is clicked', () => {
+        it('filters are no longer disabled when cancel button is clicked', () => {
+            cy.get('[data-cy=edit-button-r0]').first()
+                .click()
             cy.get('[data-cy=cancel-button-r0]')
                 .first()
                 .should('exist')
@@ -1208,7 +1268,7 @@ describe('Testing for the seeding report page', () => {
                 .should('not.be.disabled')
         })
 
-        it('filters are no longer diabled when save button is clicked', () => {
+        it('filters are no longer disabled when save button is clicked', () => {
             cy.get('[data-cy=edit-button-r0]').last()
                 .click()
 
