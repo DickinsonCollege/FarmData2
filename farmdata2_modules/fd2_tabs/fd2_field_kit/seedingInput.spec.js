@@ -806,8 +806,10 @@ describe('Test the seeding input page', () => {
                     .click()
                 cy.get('[data-cy=cancel-button]')
                     .click()
-                cy.get('[data-cy=alert-cancel')
+                cy.get('[data-cy=alert-cancel')     // need to add scroll up test here after added
                     .should('be.visible')
+                    .wait(3000)
+                    .should('not.be.visible')
                 cy.get('[data-cy=alert-success')
                     .should('not.be.visible')
                 cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
@@ -837,8 +839,10 @@ describe('Test the seeding input page', () => {
                     .click()
                 cy.get('[data-cy=alert-cancel')
                     .should('not.be.visible')
-                cy.get('[data-cy=alert-success')
+                cy.get('[data-cy=alert-success')    // need to add scroll up test here after added
                     .should('be.visible')
+                    .wait(3000)
+                    .should('not.be.visible')
                 cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
                     .should('not.have.value', 'ARUGULA')
                 cy.get('[data-cy=tray-seedings]')
@@ -1196,13 +1200,88 @@ describe('Test the seeding input page', () => {
                 cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
                     .select('minutes')    
             })
-
         })
 
-
-        
-
     })
+        context('Log Creation tests', () => {
+            before(() => {
+                cy.login('manager1', 'farmdata2')
+                .then(() => {
+                    // Using wrap to wait for the asynchronus API request.
+                    cy.wrap(getSessionToken()).as('token')
+                    cy.wrap(getCropToIDMap()).as('cropMap')
+                    cy.wrap(getAreaToIDMap()).as('areaMap')
+                    cy.wrap(getUserToIDMap()).as('userMap')
+                    cy.wrap(getUnitToIDMap()).as('unitMap')
+                    cy.wrap(getLogTypeToIDMap()).as('logTypeMap')
+                })
+    
+                // Waiting for the session token and maps to load.
+                cy.get('@token').should(function(token) {
+                    sessionToken = token
+                })
+                cy.get('@cropMap').should(function(map) {
+                    cropToIDMap = map
+                })
+                cy.get('@areaMap').should(function(map) {
+                    areaToIDMap = map
+                })
+                cy.get('@userMap').should(function(map) {
+                    userToIDMap = map
+                })
+                cy.get('@unitMap').should(function(map) {
+                        unitToIDMap = map
+                })        
+                cy.get('@logTypeMap').should(function(map) {
+                    logTypeToIDMap = map
+                })
+                    
+                // Setting up wait for the request in the created() to complete.
+                cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+                cy.intercept('GET', 'restws/session/token').as('sessiontok')
+                cy.intercept('GET', 'user').as('usermap')
+                cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
+                cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+                cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+    
+                cy.visit('/farm/fd2-field-kit/seedingInput')
+                    
+                // Wait here for the map and token to be loaded in the page 
+                cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
+    
+                // initialize with valid default input values. Date should be today's date by default.
+                cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+                    .select("ARUGULA")
+                cy.get('[data-cy=tray-seedings]')
+                    .click()
+                cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+                    .select("CHUAU")
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .type('2')
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .type('2')
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .type('2')
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .type('2')
+                cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                    .type('2')
+                    .blur()
+            })
+            
+            it('Minute/ Tray Seeding/ Date/ No comment', () => {
+                let plantingID = null
+                let url = null
+                cy.get('[data-cy=submit-button]')
+                    .click
+                cy.get('[data-cy=confirm-button]')
+                    .click
+
+                getAllPages('/log.json?type=farm_seeding&timestamp[gt]='+startUnix+'&timestamp[lt]='+endUnix, this.seedingLogs)
+                
+            
+            })
+        })
     
     
 
