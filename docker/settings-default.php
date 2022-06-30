@@ -230,35 +230,7 @@
  *     'host' => 'localhost',
  *     'prefix' => '',
  *   );
- *   $databases['default']['default'] = array(
- *     'driver' => 'pgsql',
- *     'database' => 'databasename',
- *     'username' => 'username',
- *     'password' => 'password',
- *     'host' => 'localhost',
- *     'prefix' => '',
- *   );
- *   $databases['default']['default'] = array(
- *     'driver' => 'sqlite',
- *     'database' => '/path/to/databasefilename',
- *   );
- * @endcode
  */
-$databases = array (
-  'default' => 
-  array (
-    'default' => 
-    array (
-      'database' => 'farm',
-      'username' => 'farm',
-      'password' => 'farm',
-      'host' => 'fd2_mariadb',
-      'port' => '',
-      'driver' => 'mysql',
-      'prefix' => '',
-    ),
-  ),
-);
 
 /**
  * Quoting of identifiers in MySQL.
@@ -308,7 +280,7 @@ $update_free_access = FALSE;
  *   $drupal_hash_salt = file_get_contents('/home/example/salt.txt');
  *
  */
-$drupal_hash_salt = 'hbOQDU92klZQZCHRmzmaZ0qa0AezC18DMMP_7DGQ3Eo';
+$drupal_hash_salt = '8z2e5gni4FqrADshalUU4vlyPPi4NOPnOLIAnV_n0yw';
 
 /**
  * Base URL (optional).
