@@ -801,7 +801,7 @@ describe('Test the seeding input page', () => {
                     })
             })
 
-            it.only('cancel test (alert message and maintain inputs)', () => {
+            it('cancel test (alert message and maintain inputs)', () => {
                 cy.get('[data-cy=submit-button]')
                     .click()
                 cy.get('[data-cy=cancel-button]')
@@ -832,7 +832,7 @@ describe('Test the seeding input page', () => {
                     .should('not.be.disabled')
             })
 
-            it.only('confirm test (alert message and reset inputs)', () => {
+            it('confirm test (alert message and reset inputs)', () => {
                 cy.get('[data-cy=submit-button]')
                     .click()
                 cy.get('[data-cy=confirm-button]')
@@ -1269,7 +1269,7 @@ describe('Test the seeding input page', () => {
                     .blur()
             })
             
-            it('Minute/ Tray Seeding/ Date/ No comment', () => {
+            it('Minute/Tray Seeding/Date/No comment', () => {
                 let plantingID = null
                 let url = null
                 cy.get('[data-cy=submit-button]')
@@ -1277,8 +1277,13 @@ describe('Test the seeding input page', () => {
                 cy.get('[data-cy=confirm-button]')
                     .click
 
-                getAllPages('/log.json?type=farm_seeding&timestamp[gt]='+startUnix+'&timestamp[lt]='+endUnix, this.seedingLogs)
-                
+                createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
+                    this.plantingId = response.data.id
+                }).then(() => {
+                    createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                        this.clearFields();
+                    })    
+                })                
             
             })
         })
