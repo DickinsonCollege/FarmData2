@@ -31,6 +31,7 @@ echo "Enabling FarmData2 modules..."
 docker exec -it fd2_farmdata2 drush en fd2_example -y
 docker exec -it fd2_farmdata2 drush en fd2_barn_kit -y
 docker exec -it fd2_farmdata2 drush en fd2_field_kit -y
+docker exec -it fd2_farmdata2 drush en fd2_school -y
 echo "Enabled."
 
 echo "Enabling the Field UI module..."
@@ -48,7 +49,7 @@ docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampl
   # Add the units used for quantities
   ./addUnits.py
   # Add the crop families and crops.
-  ./addCrops.py  
+  ./addCrops.py
   # Add the farm areas (fields, greenhouses, beds)
   ./addAreas.py
 
@@ -60,7 +61,7 @@ docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampl
   ./addTransplantings.py
   # Add the harvests
   ./addHarvests.py
-  
+
 echo "Compressing the sample database..."
 cd ..
 rm -f db.sample.tar.bz2
