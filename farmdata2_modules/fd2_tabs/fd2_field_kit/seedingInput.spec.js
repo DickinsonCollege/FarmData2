@@ -792,11 +792,73 @@ describe('Test the seeding input page', () => {
                     .should('not.be.disabled')
                     .click()
                     .then(() => {
+                        cy.get('[data-cy=submit-button]')
+                            .should('be.disabled')
                         cy.get('[data-cy=confirm-button]')
                             .should('not.be.disabled')
                         cy.get('[data-cy=cancel-button]')
                             .should('not.be.disabled')
                     })
+            })
+
+            it.only('cancel test (alert message and maintain inputs)', () => {
+                cy.get('[data-cy=submit-button]')
+                    .click()
+                cy.get('[data-cy=cancel-button]')
+                    .click()
+                cy.get('[data-cy=alert-cancel')
+                    .should('be.visible')
+                cy.get('[data-cy=alert-success')
+                    .should('not.be.visible')
+                cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+                    .should('have.value', 'ARUGULA')
+                cy.get('[data-cy=tray-seedings]')
+                    .should('be.checked')
+                cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+                    .should('have.value','CHUAU')
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .should('have.value', '1')
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .should('have.value','1')
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .should('have.value', '1')
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .should('have.value', '1')
+                cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                    .should('have.value', '1')
+                cy.get('[data-cy=submit-button]')
+                    .should('not.be.disabled')
+            })
+
+            it.only('confirm test (alert message and reset inputs)', () => {
+                cy.get('[data-cy=submit-button]')
+                    .click()
+                cy.get('[data-cy=confirm-button]')
+                    .click()
+                cy.get('[data-cy=alert-cancel')
+                    .should('not.be.visible')
+                cy.get('[data-cy=alert-success')
+                    .should('be.visible')
+                cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+                    .should('not.have.value', 'ARUGULA')
+                cy.get('[data-cy=tray-seedings]')
+                    .should('not.be.checked')
+                cy.get('[data-cy=direct-seedings]')
+                    .should('not.be.checked')
+                cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+                    .should('not.have.value','CHUAU')
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .should('not.have.value', '1')
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .should('not.have.value','1')
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .should('not.have.value', '1')
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .should('not.have.value', '1')
+                cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                    .should('not.have.value', '1')
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled')
             })
         })
 
@@ -908,11 +970,39 @@ describe('Test the seeding input page', () => {
                 cy.get('[data-cy=submit-button]')
                     .should('not.be.disabled')           
             })
-        
+            
+            it('all invalid inputs test', () => {
+                cy.get('[data-cy=tray-seedings]')
+                    .click()
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .type('1.2222')
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .type('1.2222')
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .type('1.2222')
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .type('1.22221')
+                cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+                    .type('1.2222')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled') 
+                cy.get('[data-cy=direct-seedings]')
+                    .click()
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .type('1.4536356')
+                    .blur()    
+                cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
+                    .type('2.232323')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled') 
+            })
         
         
         })
-        context.only('invalid non-API inputs submit button test (submit button should be disbled when there is an invalid input)', () => {
+
+        context('invalid non-API inputs submit button test (submit button should be disbled when there is an invalid input)', () => {
             before(() => {
                 cy.login('manager1', 'farmdata2')
                 .then(() => {
@@ -965,8 +1055,6 @@ describe('Test the seeding input page', () => {
                     .click()
                 cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
                     .select("CHUAU")
-                cy.get('[data-cy=tray-seedings]')
-                    .click()
                 cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
                     .type('1')
                 cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
@@ -979,18 +1067,93 @@ describe('Test the seeding input page', () => {
                     .type('1')
                     .blur()
             })
-            
+
+            it('invalid Cell/Tray input test', () => {
+                cy.get('[data-cy=submit-button]')
+                    .should('not.be.disabled')
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('2.232323')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled')
+                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('1')
+                    .blur()
+            })
+
+            it('invalid Tray input test', () => {
+                cy.get('[data-cy=submit-button]')
+                    .should('not.be.disabled')
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('2.232323')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled')
+                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('1')
+                    .blur()
+            })
+
+            it('invalid Seed input test', () => {
+                cy.get('[data-cy=submit-button]')
+                    .should('not.be.disabled')
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('2.232323')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled')
+                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('1')
+                    .blur()
+            })
+
+            it('invalid Rowbed input test', () => {
+                cy.get('[data-cy=submit-button]')
+                    .should('not.be.disabled')
+                cy.get('[data-cy=direct-seedings]')
+                    .click()
+                cy.get('[data-cy=direct-area-selection] > [data-cy=dropdown-input]')
+                    .select("A")
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .type('1')
+                    .blur()    
+                cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
+                    .type('2.232323')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled')
+                cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('1')
+                    .blur()
+            })
+
+            it('invalid Feet input test', () => {
+                cy.get('[data-cy=submit-button]')
+                    .should('not.be.disabled')
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .type('2.232323')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled')
+                cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('1')
+                    .blur()
+            })
 
             it('invalid minute test', () => {
-                cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
-                    .select("ARUGULA")
-                cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
-                    .select("CHUAU")
                 cy.get('[data-cy=submit-button]')
                     .should('not.be.disabled')
                 cy.get('[data-cy=minute-input] > [data-cy=text-input]')
                     .clear()
-                  .type('2.232323')
+                    .type('2.232323')
                     .blur()
                 cy.get('[data-cy=submit-button]')
                     .should('be.disabled')
@@ -1000,11 +1163,22 @@ describe('Test the seeding input page', () => {
                     .blur()
             })
             
+            it('invalid worker test', () => {
+                cy.get('[data-cy=submit-button]')
+                    .should('not.be.disabled')
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('2.232323')
+                    .blur()
+                cy.get('[data-cy=submit-button]')
+                    .should('be.disabled')
+                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .clear()
+                    .type('1')
+                    .blur()
+            })
+
             it('invalid hour test', () => {
-                cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
-                    .select("ARUGULA")
-                cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
-                    .select("CHUAU")
                 cy.get('[data-cy=submit-button]')
                     .should('not.be.disabled')
                 cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
@@ -1022,63 +1196,15 @@ describe('Test the seeding input page', () => {
                 cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
                     .select('minutes')    
             })
+
         })
 
+
+        
 
     })
     
     
-
-        
-        // context('Unit', () => {
-        //     beforeEach(() => {
-        //         cy.login('manager1', 'farmdata2')
-        //         .then(() => {
-        //             // Using wrap to wait for the asynchronus API request.
-        //         })
-
-        //         // Wait here for the maps in the tests.
-        //         cy.get('@unitMap').should(function(map) {
-        //             unitToIDMap = map
-        //         })
-                
-        //         // Setting up wait for the request in the created() to complete.
-        //         cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
-        //         cy.visit('/farm/fd2-field-kit/seedingInput')
-
-        //         // Wait here for the maps and sesson token to load in the page.
-                
-        //         cy.wait(['@unitmap']) 
-        //     })
-
-        //     it.only('test if units are correctly loaded to the dropdown', () => {
-        //         cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-        //             cy.get($dropdowns[4]).should('exist')
-        //                 .select('CHUAU',)   // force select to disregard :disabled
-        //                 .should('have.value', 'CHUAU')
-        //         })
-        
-        // })   
-        
-    //     cy.login('manager1', 'farmdata2')
-    //     .then(() => {
-    //         // Using wrap to wait for the asynchronus API request.
-    //     })
-        
-    
-    // })
-    
-
-
-
-
-
-
-
-
-
-
-
 
 
     // context('test inputs and buttons', () => {

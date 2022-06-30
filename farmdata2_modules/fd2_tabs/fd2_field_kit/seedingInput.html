@@ -1,10 +1,10 @@
 <body>
     <div id='seedingInput'>
         <div class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
-            <div class="alert alert-success" role="alert" v-show="isConfirmed == true">
+            <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isConfirmed == true">
                 Log created and saved successfully.
             </div>
-            <div class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
+            <div data-cy='alert-cancel'class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
         </div>
