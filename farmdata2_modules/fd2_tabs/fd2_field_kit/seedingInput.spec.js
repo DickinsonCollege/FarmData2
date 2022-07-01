@@ -1204,6 +1204,7 @@ describe('Test the seeding input page', () => {
         })
         
     })
+
     context('Log Creation tests', () => {
         let seedingLog = []
         let plantingAsset = []
@@ -1221,655 +1222,195 @@ describe('Test the seeding input page', () => {
                 cy.wrap(getLogTypeToIDMap()).as('logTypeMap')
             })
             
-                // Waiting for the session token and maps to load.
-                cy.get('@token').should(function(token) {
-                    sessionToken = token
-                })
-                cy.get('@cropMap').should(function(map) {
-                    cropToIDMap = map
-                })
-                cy.get('@areaMap').should(function(map) {
-                    areaToIDMap = map
-                })
-                cy.get('@userMap').should(function(map) {
-                    userToIDMap = map
-                })
-                cy.get('@unitMap').should(function(map) {
-                    unitToIDMap = map
-                })        
-                cy.get('@logTypeMap').should(function(map) {
-                    logTypeToIDMap = map
-                })
-                
-                // Setting up wait for the request in the created() to complete.
-                cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-                cy.intercept('GET', 'restws/session/token').as('sessiontok')
-                cy.intercept('GET', 'user').as('usermap')
-                cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
-                cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
-                cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
-                
-                cy.visit('/farm/fd2-field-kit/seedingInput')
-                
-                // Wait here for the map and token to be loaded in the page 
-                cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
-                
-                cy.get('[data-cy=date-select')
-                .type('1999-10-06')
-                cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
-                .select("ARUGULA")
-                cy.get('[data-cy=tray-seedings]')
+            // Waiting for the session token and maps to load.
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            cy.get('@cropMap').should(function(map) {
+                cropToIDMap = map
+            })
+            cy.get('@areaMap').should(function(map) {
+                areaToIDMap = map
+            })
+            cy.get('@userMap').should(function(map) {
+                userToIDMap = map
+            })
+            cy.get('@unitMap').should(function(map) {
+                unitToIDMap = map
+            })        
+            cy.get('@logTypeMap').should(function(map) {
+                logTypeToIDMap = map
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+            
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            
+            // Wait here for the map and token to be loaded in the page 
+            cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
+            
+            cy.get('[data-cy=date-select')
+            .type('1999-10-06')
+            cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+            .select("ARUGULA")
+            cy.get('[data-cy=tray-seedings]')
+            .click()
+            cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+            .select("CHUAU")
+            cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=minute-input] > [data-cy=text-input]')
+            .type('60')
+            .blur()
+        })
+
+        it('Hour/Tray Seeding/Row Feet/Date/Without Comment', () => {
+            let startdate = dayjs('1999-10-05', 'YYYY-MM-DD')
+            let enddate = dayjs('1999-10-07', 'YYYY-MM-DD')
+            let startunix = startdate.unix()
+            let endunix = enddate.unix()
+            let url = '/log.json?type=farm_seeding&timestamp[gt]='+startunix+'&timestamp[lt]='+ endunix
+            let logID = ""
+            let plantingID = "" 
+            cy.intercept('POST', 'log').as('logCreation')
+            cy.get('[data-cy=submit-button]')
                 .click()
-                cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
-                .select("CHUAU")
-                cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
-                .type('2')
-                cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
-                .type('2')
-                cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
-                .type('2')
-                cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
-                .type('2')
-                cy.get('[data-cy=minute-input] > [data-cy=text-input]')
-                .type('60')
-                .blur()
+            cy.get('[data-cy=confirm-button]')
+                .click()
+            cy.wait('@logCreation') // wait for the log creation
+                .then(interception => {
+                    // read the response
+                    expect(interception.response.statusCode).to.eq(201)
+                    cy.wrap(getRecord(url)).as('getSeedingLog')
+                })
+                
+            cy.get('@getSeedingLog').should((response) => {
+                expect(response.data.list.length).to.equal(1)
+                var data = response.data.list[0]
+                logID = data.id
+                expect(data.movement.area[0].name).to.equal('CHUAU')
+                expect(data.quantity[0].value).to.equal('2') // num seeds                 
+                expect(data.quantity[1].value).to.equal('2') // num tray               
+                expect(data.quantity[2].value).to.equal('2') // num tray/cell                
+                expect(data.quantity[3].value).to.equal('1') // labor                 
+                expect(data.quantity[4].value).to.equal('2') // workers    
+                expect(data.timestamp).to.equal('939168000') // timestamp for 1999-10-06            
             })
-            
-            afterEach(() =>{
-                // cy.wrap(deleteRecord('/log/' + seedingLog.id, sessionToken)).as('deleteSeedingsLog')
-                
-                // cy.get('@deleteSeedingsLog').should(function(response) {
-                //     expect(response.status).to.equal(200)
-                // })
-                
-                // cy.wrap(deleteRecord('/log/' + plantingAsset.id, sessionToken)).as('deletePlantingAsset')
-                
-                // cy.get('@deletePlantingLog').should(function(response){
-                //     expect(response.status).to.equal(200)
-                // })
-                
+            .then((response) => {
+                var data = response.data.list[0]
+                var plantingUrl = '/farm_asset.json?type=planting&id=' + data.asset[0].id
+                cy.wrap(getRecord(plantingUrl)).as('getPlantingAsset')
             })
-
-            it('Minute/Tray Seeding/Date/No comment', () => {
-                let startdate = dayjs('1999-10-05', 'YYYY-MM-DD')
-                let enddate = dayjs('1999-10-07', 'YYYY-MM-DD')
-                let startunix = startdate.unix()
-                let endunix = enddate.unix()
-                let url = '/log.json?type=farm_seeding&timestamp[gt]='+startunix+'&timestamp[lt]='+ endunix
-                let logID = ""
-                let plantingID = "" 
-                cy.intercept('POST', 'log').as('logCreation')
-                cy.get('[data-cy=submit-button]')
-                    .click()
-                cy.get('[data-cy=confirm-button]')
-                    .click()
-                cy.wait('@logCreation') // wait for the log creation
-                    .then(interception => {
-                        // read the response
-                        expect(interception.response.statusCode).to.eq(201)
-                        cy.wrap(getRecord(url)).as('getSeedingLog')
-                    })
-                    
-                cy.get('@getSeedingLog').should((response) => {
-                    expect(response.data.list.length).to.equal(1)
-                    var data = response.data.list[0]
-                    logID = data.id
-                    expect(data.movement.area[0].name).to.equal('CHUAU')
-                    expect(data.quantity[0].value).to.equal('2') // num seeds                 
-                    expect(data.quantity[1].value).to.equal('2') // num tray               
-                    expect(data.quantity[2].value).to.equal('2') // num tray/cell                
-                    expect(data.quantity[3].value).to.equal('1') // labor                 
-                    expect(data.quantity[4].value).to.equal('2') // workers    
-                    expect(data.timestamp).to.equal('939168000') // timestamp for 1999-10-06            
-                })
-                .then((response) => {
-                    var data = response.data.list[0]
-                    var plantingUrl = '/farm_asset.json?type=planting&id=' + data.asset[0].id
-                    cy.wrap(getRecord(plantingUrl)).as('getPlantingAsset')
-                })
-                cy.get('@getPlantingAsset').should((response) => {
-                    var data = response.data.list[0]
-                    plantingID = data.id
-                    expect(response.data.list.length).to.equal(1)
-                    expect(data.crop[0].name).to.equal('ARUGULA')
-                    expect(data.name).to.equal('1999-10-06 ARUGULA CHUAU')                
-                })
-                .then(() => {       
-                    // We know we have correctly created the asset, so now delete it directly
-                    // from the database using the deleteRecord function from FarmOSAPI.js
-                    cy.wrap(deleteRecord("/log/" + logID , sessionToken)).as('seedingDelete')
-                })
-                // Wait here for the record to be deleted and check that it worked.
-                cy.get('@seedingDelete').should((response) => {
-                    expect(response.status).to.equal(200)  // 200 - OK/success
-                }) 
-                .then(() => {
-                    cy.wrap(deleteRecord('/farm_asset/' + plantingID, sessionToken)).as('plantingDelete')
-                })
-                cy.get('@plantingDelete').should((response) => {
-                    expect(response.status).to.equal(200)  // 200 - OK/success
-                })
-
-            
+            cy.get('@getPlantingAsset').should((response) => {
+                var data = response.data.list[0]
+                plantingID = data.id
+                expect(response.data.list.length).to.equal(1)
+                expect(data.crop[0].name).to.equal('ARUGULA')
+                expect(data.name).to.equal('1999-10-06 ARUGULA CHUAU')                
+            })
+            .then(() => {       
+                // We know we have correctly created the asset, so now delete it directly
+                // from the database using the deleteRecord function from FarmOSAPI.js
+                cy.wrap(deleteRecord("/log/" + logID , sessionToken)).as('seedingDelete')
+            })
+            // Wait here for the record to be deleted and check that it worked.
+            cy.get('@seedingDelete').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            }) 
+            .then(() => {
+                cy.wrap(deleteRecord('/farm_asset/' + plantingID, sessionToken)).as('plantingDelete')
+            })
+            cy.get('@plantingDelete').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
             })
         })
-    
-    
 
-
-    // context('test inputs and buttons', () => {
-    //     it('button is disabled', () => {
-    //         cy.get('[data-cy=submit-button]')
-    //             .should('exist')
-    //             .should('be.disabled')
-    //     })
-    //     it('input new date', () => {
-    //         cy.get('[data-cy=date-selection')
-    //             .should('exist')
-
-    //         cy.get('[data-cy=date-select')
-    //             .should('exist')
-    //             .type('2011-05-07')
-    //     })
-    //     it('select a crop', () => {
-    //         cy.get('[data-cy=crop-selection')
-    //             .should('exist')
-            
-    //         cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-    //             cy.get($dropdowns[0]).should('exist')
-    //                 .select('BEAN')
-    //                 .should('have.value', 'BEAN')
-    //         })  
-    //     })
-    //     it('select a area', () => {
-    //         cy.get('[data-cy=area-selection')
-    //             .should('exist') 
-            
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[1]).should('exist')
-    //                 .select('A')
-    //                 .should('have.value', 'A')
-    //         })
-    //     }) 
-    //              .clear()
-    //     it('input num of workers', () => {
-    //         cy.get('[data-cy=num-workers]')
-    //             .should('exist')
-    //             .click()
-    //             .type('2')
-    //             .should('have.value', '2')
-    //     })
-    //              .clear()
-    //     it('input time spent', () => {
-    //         cy.get('[data-cy=time-spent]')
-    //             .should('exist')
-    //             .click()
-    //             .type('10')
-    //             .should('have.value', '10')
-    //     })
-    //     it('select time unit', () => {
-    //         cy.get('[data-cy=time-unit]')
-    //             .should('exist')
-
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[2]).should('exist')
-    //                 .should('have.value', 'minutes')
-    //                 .select('hours')
-    //                 .should('have.value', 'hours')
-    //         })
-    //     })
-    //     it('input comments', () => {
-    //         cy.get('[data-cy=comments]')
-    //             .should('exist')
-    //             .type('Yeeewhaw')
-    //             .should('have.value', 'Yeeewhaw')
-    //     })
-    // })
-    // context('select direct seedings and test its inputs', () => {
-    //     beforeEach(()=> {
-    //         cy.get('[data-cy=direct-seedings').check()
-    //     })
-    //     it('select Direct Seeding', () => {
-    //         cy.get('[data-cy=direct-seedings]')
-    //             .should('exist')
-    //             .check()
-    //             .should('be.checked')
-    //     })
-    //              .clear()
-    //     it('input a row per bed number', () =>{
-    //         cy.get('[data-cy=row-bed]')
-    //             .should('exist')
-    //             .click()
-    //             .type('5')
-    //             .should('have.value', '5')
-    //     })
-    //              .clear()
-    //     it('input the number of feet', () => {
-    //         cy.get('[data-cy=num-feet')
-    //             .should('exist')
-    //             .click()
-    //             .type('20')
-    //             .should('have.value', '20')
-    //     })
-    //     it('select feet unit(ei. bed or row)', () => {
-    //         cy.get('[data-cy=unit-feet')
-    //             .should('exist')
-
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[2]).should('exist')
-    //                 .should('have.value', 'bed')
-    //                 .select('row')
-    //                 .should('have.value', 'row')
-    //         })
-    //     })
-    //     it('Tray Seeding inputs should not exist in DOM', () => {
-    //         cy.get('[data-cy=trays-planted]')
-    //             .should('not.exist')
-
-    //         cy.get('[data-cy=cells-tray]')
-    //             .should('not.exist')
-
-    //         cy.get('[data-cy=seeds-planted')
-    //             .should('not.exist')
-    //     })
-    // })
-    // context('select tray seedings and test its inputs', () => {
-    //     beforeEach(() => {
-    //         cy.get('[data-cy=tray-seedings]').click()
-    //     })
-    //     it('select Tray Seeding', () => {
-    //         cy.get('[data-cy=tray-seedings]')
-    //             .should('exist')
-    //             .check()
-    //             .should('be.checked')
-    //     })
-    //              .clear()
-    //     it('input number of Trays', () => {
-    //         cy.get('[data-cy=trays-planted')
-    //             .should('exist')
-    //             .click()
-    //             .type('3')
-    //             .should('have.value', '3')
-    //     })
-    //              .clear()
-    //     it('input number of Cells per Tray', () => {
-    //         cy.get('[data-cy=cells-tray')
-    //             .should('exist')
-    //             .click()
-    //             .type('25')
-    //             .should('have.value', '25')
-    //     })
-    //              .clear()
-    //     it('input number of seeds planted', () => {
-    //         cy.get('[data-cy=seeds-planted')
-    //             .should('exist')
-    //             .click()
-    //             .type('76')
-    //             .should('have.value', '76')
-    //     })
-    //     it('Direct Seeding inputs should not exist in DOM', () => {
-    //         cy.get('[data-cy=row-bed]')
-    //             .should('not.exist')
-
-    //         cy.get('[data-cy=num-feet')
-    //             .should('not.exist')
-
-    //         cy.get('[data-cy=unit-feet')
-    //             .should('not.exist')
-    //     })
-    // })
-    // context('check that button not disabled', () => {
-    //     beforeEach(() => {
-    //         cy.get('[data-cy=date-select')
-    //             .type('2011-05-07')
-
-    //         cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-        //              .clear()
-    //             cy.get($dropdowns[0]).select('BEAN')
-    //         })
-
-    //              .clear()
-    //         cy.get('[data-cy=num-workers]')
-    //             .type('2')
-
-    //          cy.get('[data-cy=time-spent]')
-    //             .type('10')
-    //     })
-    //     it('submit button is not disabled when direct seeding is filled in', () => {
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[1]).select('A')
-    //         })
-    //              .clear()
-            
-    //         cy.get('[data-cy=direct-seedings').check()
-
-    //              .clear()
-    //         cy.get('[data-cy=row-bed]')
-    //             .type('5')
-
-    //         cy.get('[data-cy=num-feet')
-    //             .type('20')
-
-    //         cy.get('[data-cy=submit-button')
-    //             .should('exist')
-    //             .should('not.be.disabled')
-    //     })
-    //     it('submit button is not disabled when trayseeding is filled in',() => {
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[1]).select('CHUAU')
-    //         })
-    //              .clear()
-            
-    //         cy.get('[data-cy=tray-seedings]').click()
-
-    //              .clear()
-    //         cy.get('[data-cy=trays-planted')
-    //             .type('3')
-
-    //              .clear()
-    //         cy.get('[data-cy=cells-tray')
-    //             .type('25')
-
-    //         cy.get('[data-cy=seeds-planted')
-    //             .type('76')
-
-    //         cy.get('[data-cy=submit-button')
-    //             .should('exist')
-    //             .should('not.be.disabled')
-    //     })
-    // })
-    // context('check area filter', () => {
-    //     it('only shows greenhouses when tray seeding is selected', () =>{
-    //         cy.get('[data-cy=tray-seedings]').click()
-    //         //tests that the beds are not in the dropdown
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[1]).should('exist')
-    //                 .contains('CHUAU')
-    //                 .contains('ALF-1').should('not.exist')
-    //         })
-    //         //tests that the fields are not in the dropdown
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[1]).should('exist')
-    //                 .contains('CHUAU')
-    //                 .contains('E').should('not.exist') 
-    //         })
-    //     })
-    //     it('only shows beds or fields when direct seeding is selected', () =>{
-    //         cy.get('[data-cy=direct-seedings').click()
-
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) =>{
-    //             cy.get($dropdowns[1]).should('exist')
-    //                 .contains('ALF-1')
-    //                 .contains('A')
-    //                 .contains('CHUAU').should('not.exist')
-    //         })
-    //     })
-    // })
-    // context('create logs in database', () => {
-    //     let seedingLog = []
-    //     let plantingLog = []
-    //     let token = 0
-    //     beforeEach(() => {
-    //         seedingLog = []
-    //         plantingLog = []
-    //         token = 0
-
-    //              .clear()
-    //         cy.get('[data-cy=date-select')
-    //             .type('2011-08-09')
-
-    //              .clear()
-    //         cy.get('[data-cy=time-spent]')
-    //             .type('10')
-            
-    //         cy.get('[data-cy=num-workers]')
-    //             .type('2')
-
-    //         cy.get('[data-cy=dropdown-input').then(($dropdowns) => {
-    //             cy.get($dropdowns[0]).select('BEET')
-    //         })
-            
-    //         cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //             cy.get($dropdowns[1]).select('C')
-    //         })
-    //     })
-    //     afterEach(() => {
-    //         cy.wait(10000)
-
-            // cy.wrap(deleteRecord('/log/' + seedingLog[0].id, token)).as('deleteSeedingsLog')
-
-            // cy.get('@deleteSeedingsLog').should(function(response) {
-            //     expect(response.status).to.equal(200)
-            // })
-
-            // cy.wrap(deleteRecord('/log/' + plantingLog[0].id, token)).as('deletePlantingLog')
-
-            // cy.get('@deletePlantingLog').should(function(response){
-            //     expect(response.status).to.equal(200)
-    //         })
-    //     })
-    //     context('All creation of tray seeding logs test', () => {
-    //         beforeEach(() => {
-    //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //                 cy.get($dropdowns[1]).select('CHUAU')
-    //                  .clear()
-    //             })
-    //             cy.get('[data-cy=tray-seedings]').check()
-
-    //                  .clear()
-    //             cy.get('[data-cy=trays-planted')
-    //                 .type('3')
-
-    //                  .clear()
-    //             cy.get('[data-cy=cells-tray')
-    //                 .type('25')
-
-    //             cy.get('[data-cy=seeds-planted')
-    //                 .type('76')
-    //         })
-    //         it('create a tray seedings log and a planting log w/ minutes', () => {
-    //             cy.get('[data-cy=submit-button]')
-    //                 .click()
-
-    //             cy.on("window:confirm", () => false)
-
-    //             cy.wait(30000).then(() => {
-    //                 cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getLog')
-
-    //                 cy.get('@getLog').should(function(){
-    //                     expect(seedingLog.length).to.equal(1)
-    //                     expect(seedingLog[0].movement.area[0].name).to.equal('CHUAU')
-    //                     expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('0.17')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
-
-    //                 cy.get('@getPlanting').should(function(){
-                        // expect(plantingLog.length).to.equal(1)
-                        // expect(plantingLog[0].crop[0].name).to.equal('BEET')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getSessionToken()).as('token')
-    //                 cy.get('@token').should(function(sessionToken){
-    //                     token = sessionToken
-    //                 })
-    //             })
-    //         })
-    //         it('create a tray seedings log and a planting log w/ hours', () => {
-    //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //                 cy.get($dropdowns[2]).select('hours')
-    //             })
+        it('Minute/Direct Seeding/With comment', () => {
+            let startdate = dayjs('1999-10-05', 'YYYY-MM-DD')
+            let enddate = dayjs('1999-10-07', 'YYYY-MM-DD')
+            let startunix = startdate.unix()
+            let endunix = enddate.unix()
+            let url = '/log.json?type=farm_seeding&timestamp[gt]='+startunix+'&timestamp[lt]='+ endunix
+            let logID = ""
+            let plantingID = "" 
+            cy.get('[data-cy=direct-seedings]')
+                .click()
+            cy.get('[data-cy=direct-area-selection] > [data-cy=dropdown-input]')
+                .select('A')
+            cy.get('[data-cy=num-rowbed-input]')
+                .type('3')
+            cy.get('[data-cy=num-feet-input]')
+                .type('3')
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .select('hours')
+            cy.get('[data-cy=hour-input]')
+                .type('60')
+            cy.get('[data-cy=comments]')
+                .type('test comment')
+                .blur()
+            cy.intercept('POST', 'log').as('logCreation')
+            cy.get('[data-cy=submit-button]')
+                .click()
+            cy.get('[data-cy=confirm-button]')
+                .click()
+            cy.wait('@logCreation') // wait for the log creation
+                .then(interception => {
+                    // read the response
+                    expect(interception.response.statusCode).to.eq(201)
+                    cy.wrap(getRecord(url)).as('getSeedingLog')
+                })
                 
-    //             cy.get('[data-cy=submit-button]')
-    //                 .click()
-
-    //             cy.on("window:confirm", () => false)
-
-    //             cy.wait(30000).then(() => {
-    //                 cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getLog')
-
-    //                 cy.get('@getLog').should(function(){
-    //                     expect(seedingLog.length).to.equal(1)
-    //                     expect(seedingLog[0].movement.area[0].name).to.equal('CHUAU')
-    //                     expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('10')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
-
-    //                 cy.get('@getPlanting').should(function(){
-    //                     expect(plantingLog.length).to.equal(1)
-    //                     expect(plantingLog[0].crop[0].name).to.equal('BEET')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getSessionToken()).as('token')
-    //                 cy.get('@token').should(function(sessionToken){
-    //                     token = sessionToken
-    //                 })
-    //             })
-    //         })
-    //     })
-    //     context('All tests creating a direct seeding', () => {
-    //         beforeEach(() => {
-    //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //                 cy.get($dropdowns[1]).select('C')
-    //             })
-    //                  .clear()
-
-    //             cy.get('[data-cy=direct-seedings]').check()
-
-    //                  .clear()
-    //             cy.get('[data-cy=row-bed]')
-    //                 .type('5')
-
-    //             cy.get('[data-cy=num-feet')
-    //                 .type('20')
-    //         })
-    //         it('create a direct seedings log and a planting log w/ minute and bed', () => {
-    //             cy.get('[data-cy=submit-button]')
-    //                 .click()
-
-    //             cy.on("window:confirm", () => false)
-
-    //             cy.wait(30000).then(() => {
-    //                 cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getSeeding')
-                    
-    //                 cy.get('@getSeeding').should(function(){
-    //                     expect(seedingLog.length).to.equal(1)
-    //                     expect(seedingLog[0].movement.area[0].name).to.equal('C')
-    //                     expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('0.17')
-    //                     expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Amount planted')].value).to.equal('100')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
-
-    //                 cy.get('@getPlanting').should(function(){
-    //                     expect(plantingLog.length).to.equal(1)
-    //                     expect(plantingLog[0].crop[0].name).to.equal('BEET')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getSessionToken()).as('token')
-    //                 cy.get('@token').should(function(sessionToken){
-    //                     token = sessionToken
-    //                 })
-    //             })
-    //         })
-    //         it('create a direct seedings log and a planting log w/ hour and row', () => {
-    //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //                 cy.get($dropdowns[3]).select('hours')
-    //             })
-
-    //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //                 cy.get($dropdowns[2]).select('row')
-    //             })
-
-    //             cy.get('[data-cy=submit-button]')
-    //                 .click()
-
-    //             cy.on("window:confirm", () => false)
-
-    //             cy.wait(30000).then(() => {
-    //                 cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getSeeding')
-                    
-    //                 cy.get('@getSeeding').should(function(){
-    //                     expect(seedingLog.length).to.equal(1)
-    //                     expect(seedingLog[0].movement.area[0].name).to.equal('C')
-    //                     expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Labor')].value).to.equal('10')
-    //                     expect(seedingLog[0].quantity[quantityLocation(seedingLog[0].quantity, 'Amount planted')].value).to.equal('20')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
-
-    //                 cy.get('@getPlanting').should(function(){
-    //                     expect(plantingLog.length).to.equal(1)
-    //                     expect(plantingLog[0].crop[0].name).to.equal('BEET')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getSessionToken()).as('token')
-    //                 cy.get('@token').should(function(sessionToken){
-    //                     token = sessionToken
-    //                 })
-    //             })
-    //         })
-    //     }) 
-    //     context('Test that popup will send to Seeding Report Page or not', () => {
-    //         beforeEach(() => {
-    //             cy.get('[data-cy=dropdown-input]').then(($dropdowns) => {
-    //                 cy.get($dropdowns[1]).select('CHUAU')
-    //             })
-    //                  .clear()
-
-    //             cy.get('[data-cy=tray-seedings]').check()
-
-    //                  .clear()
-    //             cy.get('[data-cy=trays-planted')
-    //                 .type('3')
-
-    //                  .clear()
-    //             cy.get('[data-cy=cells-tray')
-    //                 .type('25')
-
-    //             cy.get('[data-cy=seeds-planted')
-    //                 .type('76')
-    //         })
-    //         it('creates a tray seeding report, sends it to the report page', () =>{
-    //             cy.get('[data-cy=submit-button').click()
-
-    //             cy.wait(30000).then(() => {
-    //                 cy.location().should((loc) => {
-    //                     expect(loc.pathname).to.equal('/farm/fd2-barn-kit/seedingReport')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getSeeding')
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
-    //             }).then(() => {
-    //                 cy.wrap(getSessionToken()).as('token')
-    //                 cy.get('@token').should(function(sessionToken){
-    //                     token = sessionToken
-    //                 })
-    //             })
-    //         })
-    //         it('creates a tray seeding report, sends it to the input page', () =>{
-    //             cy.get('[data-cy=submit-button]')
-    //                 .click()
-
-    //             cy.on("window:confirm", () => false)
-
-    //             cy.wait(30000).then(() => {
-    //                 cy.location().should((loc) => {
-    //                     expect(loc.pathname).to.equal('/farm/fd2-field-kit/seedingInput')
-    //                 })
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/log.json?type=farm_seeding&timestamp=' + dayjs('2011-08-09').unix(), seedingLog)).as('getSeeding')
-    //             }).then(() => {
-    //                 cy.wrap(getAllPages('/farm_asset.json?type=planting&id=' + seedingLog[0].asset[0].id, plantingLog)).as('getPlanting')
-    //             }).then(() => {
-    //                 cy.wrap(getSessionToken()).as('token')
-    //                 cy.get('@token').should(function(sessionToken){
-    //                     token = sessionToken
-    //                 })
-    //             })
-    //         })
-    //     })
-    // })
+            cy.get('@getSeedingLog').should((response) => {
+                expect(response.data.list.length).to.equal(1)
+                var data = response.data.list[0]
+                logID = data.id
+                expect(data.movement.area[0].name).to.equal('A')
+                expect(data.quantity[0].value).to.equal('9') // num row Feet                 
+                expect(data.quantity[1].value).to.equal('3') // num row bed                              
+                expect(data.quantity[2].value).to.equal('60') // workers                 
+                expect(data.quantity[3].value).to.equal('2') // hour    
+                expect(data.timestamp).to.equal('939168000') // timestamp for 1999-10-06            
+            })
+            .then((response) => {
+                var data = response.data.list[0]
+                var plantingUrl = '/farm_asset.json?type=planting&id=' + data.asset[0].id
+                cy.wrap(getRecord(plantingUrl)).as('getPlantingAsset')
+            })
+            cy.get('@getPlantingAsset').should((response) => {
+                var data = response.data.list[0]
+                plantingID = data.id
+                expect(response.data.list.length).to.equal(1)
+                expect(data.crop[0].name).to.equal('ARUGULA')
+                expect(data.name).to.equal('1999-10-06 ARUGULA A')                
+            })
+            .then(() => {       
+                // We know we have correctly created the asset, so now delete it directly
+                // from the database using the deleteRecord function from FarmOSAPI.js
+                cy.wrap(deleteRecord("/log/" + logID , sessionToken)).as('seedingDelete')
+            })
+            // Wait here for the record to be deleted and check that it worked.
+            cy.get('@seedingDelete').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            }) 
+            .then(() => {
+                cy.wrap(deleteRecord('/farm_asset/' + plantingID, sessionToken)).as('plantingDelete')
+            })
+            cy.get('@plantingDelete').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            })
+        })
+    })
+    
 })
