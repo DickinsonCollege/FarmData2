@@ -227,7 +227,7 @@ let CustomTableComponent = {
             let headerTemp = []
             let rowTemp = []
             console.log(this.rows)
-            console.log(this.headers)
+            //console.log(this.headers)
             for(let i = 0; i < this.headers.length; i++){
                 if(this.visibleColumns[i]){
                     headerTemp.push(this.headers[i])
@@ -238,13 +238,23 @@ let CustomTableComponent = {
             for(let i = 0; i < this.rows.length; i++){
                 for(let j = 0; j < this.visibleColumns.length; j++){
                     if(this.visibleColumns[j]){
-                        rowTemp.push(this.rows[i].data[j])
+                        if(typeof this.rows[i].data[j] === 'string'){
+                            cleanHTML = this.rows[i].data[j].replace(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
+                            cleanHTML = cleanHTML.replace(/(\r\n|\n|\r)/gm, "--")
+                            cleanHTML = cleanHTML.replace(',', "-")
+                            //console.log(cleanHTML)
+                            rowTemp.push(cleanHTML)
+                        }
+                        else{
+                            rowTemp.push(this.rows[i].data[j])
+                        }
                     }
                 }
+                //console.log(rowTemp)
                 csvInfoArr.push(rowTemp)
                 rowTemp = []
             }
-            console.log(csvInfoArr)
+            //console.log(csvInfoArr)
             
 
             let csvContent = "data:text/csv;charset=utf-8," 
