@@ -223,32 +223,42 @@ let CustomTableComponent = {
             }
         },
         exportCSV(){
-            let csvHeadersArr = []
-            let temp = []
+            let csvInfoArr = []
+            let headerTemp = []
+            let rowTemp = []
             console.log(this.rows)
             console.log(this.headers)
             for(let i = 0; i < this.headers.length; i++){
                 if(this.visibleColumns[i]){
-                    temp.push(this.headers[i])
+                    headerTemp.push(this.headers[i])
                 }
             }
-            csvHeadersArr.push(temp)
-            console.log(csvHeadersArr)
+            csvInfoArr.push(headerTemp)
+
+            for(let i = 0; i < this.rows.length; i++){
+                for(let j = 0; j < this.visibleColumns.length; j++){
+                    if(this.visibleColumns[j]){
+                        rowTemp.push(this.rows[i].data[j])
+                    }
+                }
+                csvInfoArr.push(rowTemp)
+                rowTemp = []
+            }
+            console.log(csvInfoArr)
             
 
             let csvContent = "data:text/csv;charset=utf-8," 
-            + csvHeadersArr.map(e => e.join(",")).join("\n");
+            + csvInfoArr.map(e => e.join(",")).join("\n");
 
-            // var encodedUri = encodeURI(csvContent);
-            // window.open(encodedUri);
+            // Required if we want to be able to name the file
+            var encodedUri = encodeURI(csvContent)
+            var link = document.createElement("a")
+            link.setAttribute("href", encodedUri)
+            link.setAttribute("download", "my_data.csv")
+            document.body.appendChild(link)
 
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "my_data.csv");
-            document.body.appendChild(link); // Required for FF
-
-            link.click(); // This will download the data file named "my_data.csv".
+            // This will download the data file named "my_data.csv".
+            link.click()
         }
     },
     computed: {
