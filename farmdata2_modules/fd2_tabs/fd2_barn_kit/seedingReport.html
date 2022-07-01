@@ -38,10 +38,10 @@
                 <div style="display: flex; width: 100%;">
                     <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Tray'">
+                        <div v-if="getTableOneType == 'Tray'" style="margin-top: 50px">
                             <p style="margin-left: 5%;"> There are no Direct Seeding logs with these parameters</p>
                         </div>
-                        <div v-else>
+                        <div v-else style="margin-top: 50px">
                             <p style="margin-left: 5%;">Total Row Feet Planted: <b>{{ totalRowFeet }}</b></p>
                             <p style="margin-left: 5%;">Total Bed Feet Planted: <b>{{ totalBedFeet }}</b></p>
                             <p style="margin-left: 5%;">Total Hours: <b>{{ totalDirectSeedingHours }}</b></p>
@@ -51,10 +51,10 @@
                     </fieldset>
                     <fieldset data-cy="tray-summary" class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Direct'">
+                        <div v-if="getTableOneType == 'Direct'" style="margin-top: 50px">
                             <p style="margin-left: 5%;"> There are no Tray Seeding logs with these parameters</p>
                         </div>
-                        <div v-else>
+                        <div v-else style="margin-top: 50px">
                             <p style="margin-left: 5%;">Total Number of Seeds Planted: <b>{{ traySeedsPlanted }}</b></p>
                             <p style="margin-left: 5%;">Total Number of Trays: <b>{{ totalNumTrays }}</b></p>
                             <p style="margin-left: 5%;">Total Hours: <b>{{ totalTraySeedingHours }}</b></p>
@@ -72,7 +72,7 @@
                     width: 50%;
                     text-align: center;
                     font-size: large;">
-                     No Logs Found in These Dates 
+                    No Logs Found in These Dates 
                 </div> 
             </div>
         </div>

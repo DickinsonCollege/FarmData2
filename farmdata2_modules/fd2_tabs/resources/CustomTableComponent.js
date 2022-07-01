@@ -41,8 +41,11 @@
  */
 let CustomTableComponent = {
     template:
-    `<div class="sticky-table">
-        <table data-cy="table" style="width:100%" class="table table-bordered table-striped">
+    `<span>
+    <button data-cy="export-button" 
+        style="float: right; float: top; margin-left: 1808px;" class="btn fd2-red-button" @click="exportCSV">Export</button>
+    <div class="sticky-table">
+        <table data-cy="table" style="width:100%;" class="table table-bordered table-striped">
             <thead>
                 <tr class="sticky-header table-text" data-cy="table-headers">
                     <th v-for="(header, hi) in headers"
@@ -122,6 +125,7 @@ let CustomTableComponent = {
                 </tr>
             </tbody>
         </table>
+        </span>
     </div>`,
     props: { 
         rows: {
@@ -217,6 +221,34 @@ let CustomTableComponent = {
                     }
                 }
             }
+        },
+        exportCSV(){
+            let csvHeadersArr = []
+            let temp = []
+            console.log(this.rows)
+            console.log(this.headers)
+            for(let i = 0; i < this.headers.length; i++){
+                if(this.visibleColumns[i]){
+                    temp.push(this.headers[i])
+                }
+            }
+            csvHeadersArr.push(temp)
+            console.log(csvHeadersArr)
+            
+
+            let csvContent = "data:text/csv;charset=utf-8," 
+            + csvHeadersArr.map(e => e.join(",")).join("\n");
+
+            // var encodedUri = encodeURI(csvContent);
+            // window.open(encodedUri);
+
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "my_data.csv");
+            document.body.appendChild(link); // Required for FF
+
+            link.click(); // This will download the data file named "my_data.csv".
         }
     },
     computed: {
