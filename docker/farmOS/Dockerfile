@@ -127,6 +127,7 @@ RUN git clone --branch ${FARMOS_BRANCH} ${FARMOS_REPO} /tmp/farmOS && \
 # But have also been modified locally to fix a few additional issues.
 
 # Install the files for the restws module that allows date range searches via the API.
+# NOTE: These have been modified locally in FarmData2 so these versions must be used.
 COPY restws/restws.entity.inc /var/www/html/profiles/farm/modules/contrib/restws/restws.entity.inc
 COPY restws/restws.module /var/www/html/profiles/farm/modules/contrib/restws/restws.module
 COPY restws/restws.test /var/www/html/profiles/farm/modules/contrib/restws/restws.test
