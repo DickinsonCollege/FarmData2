@@ -1,0 +1,4 @@
+name = Demo
+description = Demo module illustrating how to define a custom entity type.
+core = 7.x
+dependencies[] = entity
