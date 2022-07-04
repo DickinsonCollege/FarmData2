@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * Implements hook_entity_info().
+ */
+function fd2_config_entity_info() {
+
+  $info = array();
+
+  $info['fd2_config'] = array(
+    'label' => t('FarmData2 Configuration'),
+    'base table' => 'fd2_config',
+    'entity keys' => array(
+      'id' => 'id',
+    ),
+    'entity class' => 'Entity',
+    'controller class' => 'EntityAPIController',
+    'access callback' => 'fd2_config_access_callback',
+    'metadata controller class' => '',
+    'module' => 'fd2_config',
+  );
+
+  return $info;
+}
+
+/**
+ * Access callback for project entities.
+ * Allow only viewing and updating here since there is only 1 record allowed.
+ */
+function fd2_config_access_callback($op, $project = NULL, $account = NULL) {
+  if ($op == 'view' || $op == 'update') {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+function fd2_config_permission() {
+  return array(
+    'view fd2 config' => array(
+      'title' => t('View FD2 Configuration'),
+    ),
+    'configure fd2 config' => array(
+      'title' => t('Configure FD2 Configuration'),
+    ),
+  );
+}
+
+function fd2_config_farm_access_perms($role) {
+  $perms = array();
+
+  // Load the list of farm roles.
+  $roles = farm_access_roles();
+
+  // If this role has 'config' access, allow them to see the config tab.
+  if (!empty($roles[$role]['access']['config'])) {
+    $perms[] = 'view fd2 config';
+  }
+
+  // If this role has 'config' access, it to configure the fd2_config module.
+  if (!empty($roles[$role]['access']['config'])) {
+    $perms[] = 'configure fd2 config';
+  }
+
+  return $perms;
+}
+
+/**
+ * Implements hook_entity_property_info().
+ */
+function fd2_config_entity_property_info() {
+
+  $info = array();
+
+  $info['fd2_config']['properties']['id'] = array(
+    'label' => t('Project ID'),
+    'description' => t('The ID of the project.'),
+    'type' => 'integer',
+    'schema field' => 'id',
+    'setter callback' => 'entity_property_verbatim_set',
+  );
+
+  $info['fd2_config']['properties']['labor'] = array(
+    'labor' => t('Labor data configuration'),
+    'description' => t('Whether labor data is Required, Optional or Hidden'),
+    'type' => 'text',
+    'schema field' => 'labor',
+    'setter callback' => 'entity_property_verbatim_set',
+  );
+
+  return $info;
+}
+
+/**
+* Implements hook_menu() which places the config tab in the Farm
+* menu at the top of the FarmData2 page with the Dashboard.
+*/
+function fd2_config_menu() {
+ $items = array();
+
+ // Define the tab for the module.
+ $items['farm/fd2-config'] = array(
+   'title' => 'FD2 Config',
+   'page callback' => 'fd2_config_view',
+   'page arguments' => array('config.html'),
+   'access arguments' => array('view fd2 config'),
+   'type' => MENU_LOCAL_TASK,
+   'weight' => 300,
+ );
+
+ return $items;
+};
+
+// This function Loads the content for the sub-tab from the html file specified in the arguemnt.
+function fd2_config_view($subtab_content) {
+ $dir=dirname(__FILE__);
+ $html=$dir."/".$subtab_content;
+ $code=file_get_contents($html);
+ return $code;
+};
+
+function fd2_config_preprocess_page() {
+ $alias = drupal_get_path_alias(current_path());
+ $path = implode("\n",array('farm/fd2-config*',));
+
+ if (drupal_match_path($alias, $path)) {
+   // Include the external JS libraries that are used here so they are cached by drupal.
+   drupal_add_js('https://unpkg.com/vue@2.6.14/dist/vue.min.js','external');
+   drupal_add_js('https://unpkg.com/axios@0.24.0/dist/axios.min.js','external');
+   drupal_add_js('https://unpkg.com/dayjs@1.8.21/dayjs.min.js', 'external');
+
+   // Define some useful variables in the JavaScript for page.
+   global $user;
+   $cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."';";
+   drupal_add_js($cmd,'inline');
+ }
+};
