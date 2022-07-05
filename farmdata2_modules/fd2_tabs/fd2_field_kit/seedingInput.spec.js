@@ -61,7 +61,7 @@ describe('Test the seeding input page', () => {
             cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
             // Wait here for the maps to load in the page. 
-            cy.wait(['@cropmap', '@areamap'])
+            cy.wait(['@cropmap', '@areamap']) 
         })
 
         it('test a second visit to the page (i.e. with cached crops and areas)', () => {
@@ -1332,7 +1332,7 @@ describe('Test the seeding input page', () => {
             })
         })
 
-        it('Minute/Direct Seeding/With comment', () => {
+        it.only('Minute/Direct Seeding/With comment', () => {
             let startdate = dayjs('1999-10-05', 'YYYY-MM-DD')
             let enddate = dayjs('1999-10-07', 'YYYY-MM-DD')
             let startunix = startdate.unix()
@@ -1376,7 +1376,8 @@ describe('Test the seeding input page', () => {
                 expect(data.quantity[1].value).to.equal('3') // num row bed                              
                 expect(data.quantity[2].value).to.equal('60') // workers                 
                 expect(data.quantity[3].value).to.equal('2') // hour    
-                expect(data.timestamp).to.equal('939168000') // timestamp for 1999-10-06            
+                expect(data.timestamp).to.equal('939168000') // timestamp for 1999-10-06        
+                expect(data.notes.value).to.contain('test comment') // comment should include 'test comment'
             })
             .then((response) => {
                 var data = response.data.list[0]
