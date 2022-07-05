@@ -552,7 +552,7 @@ describe('custom table component', () => {
                 .click();
 
             cy.readFile(path.join(downloadsFolder, 'seedingReport_' + today + '.csv')).should("eq", "cool,works?\n12,3\n19,3\n12,12");
-            cy.exec("cd " + downloadsFolder + ' ' + "&& rm -rf *")
+            cy.exec("rm -r " + downloadsFolder)
         });
     })
 })
