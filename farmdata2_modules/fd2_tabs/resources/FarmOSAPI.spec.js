@@ -873,21 +873,23 @@ describe('API Request Functions', () => {
 
         it('sets labor to optional, then back to Required', () => {           
             cy.wrap(getSessionToken())
+            // First request for the session token.
             .then((sessionToken) => {
-                token = sessionToken
-                
+                token = sessionToken     
             })
-            updateData =
-                {
-                    "id" : "1",
-                    "labor":"Optional"
-                } 
-            cy.wrap(setConfiguration(updateData , token)).as('update')
+            // Then update the log using the token
             .then(() => {
-                cy.get('@update').should((response) => {
-                    expect(response.status).to.equal(200)
-                })
+                updateData =
+                    {
+                        "id" : "1",
+                        "labor":"Optional"
+                    } 
+                cy.wrap(setConfiguration(updateData , token)).as('update')
             })
+            cy.get('@update').should((response) => {
+            expect(response.status).to.equal(200)
+            })
+            // If the update was successful, change the labor data to optional.
             .then(() => {
                 cy.wrap(getConfiguration()).as('changed')
             })
@@ -896,7 +898,9 @@ describe('API Request Functions', () => {
                 expect(response.data.id).to.equal('1')
                 expect(response.data.labor).to.equal('Optional')
             })
+            // If the change was successful, change it back to required
             .then(() => {
+                
                 resetData =
                     {
                         "id" : "1",
@@ -916,8 +920,6 @@ describe('API Request Functions', () => {
                 expect(response.data.id).to.equal('1')
                 expect(response.data.labor).to.equal('Required')
             })
-            
-
         })
         
     })
