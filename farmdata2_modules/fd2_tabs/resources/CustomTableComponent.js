@@ -41,88 +41,93 @@
  */
 let CustomTableComponent = {
     template:
-    `<div class="sticky-table">
-        <table data-cy="table" style="width:100%" class="table table-bordered table-striped">
-            <thead>
-                <tr class="sticky-header table-text" data-cy="table-headers">
-                    <th v-for="(header, hi) in headers"
-                    v-if="isVisible[hi]" 
-                    :data-cy="'h'+hi">{{ header }}</th>
-                    <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
-                    <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
-                    <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
-                    <th data-cy="cancel-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="table-text" 
-                v-for="(row, ri) in rows"
-                :data-cy="'r'+ri">
-                    <td v-for="(item, ci) in row.data"
-                    v-if="isVisible[ci]"
-                    :data-cy="'td-r'+ri+'c'+ci">
-                        <div v-if="rowToEditIndex!=ri || inputType[ci].type == 'no input'"
-                        :data-cy="'r'+ri+'c'+ci"
-                        v-html='item'></div>
-                                    
-                        <textarea 
-                        :data-cy="'text-input-r'+ri+'c'+ci"
-                        v-if="rowToEditIndex==ri && inputType[ci].type == 'text'" 
-                        v-model="editedRowData.data[ci]" 
-                        @focusout="changedCell(ci)"></textarea>
-                                    
-                        <select 
-                        :data-cy="'dropdown-input-r'+ri+'c'+ci"
-                        v-if="rowToEditIndex==ri && inputType[ci].type == 'dropdown'" 
-                        v-model="editedRowData.data[ci]" 
-                        @focusout="changedCell(ci)">
-                            <option v-for="option in inputType[ci].value">{{ option }}</option>
-                        </select>
-                                    
-                        <input 
-                        :data-cy="'date-input-r'+ri+'c'+ci"
-                        type="date" 
-                        v-if="rowToEditIndex==ri && inputType[ci].type == 'date'" 
-                        v-model="editedRowData.data[ci]" 
-                        @focusout="changedCell(ci)">
-                                    
-                        <input 
-                        :data-cy="'number-input-r'+ri+'c'+ci" 
-                        type="number" step="0.001" style="width: 70px;" 
-                        v-if="rowToEditIndex==ri && inputType[ci].type == 'number'"
-                        v-model="editedRowData.data[ci]" 
-                        @focusout="changedCell(ci)">
-                    </td>
-                    <td v-if="canEdit"> 
-                        <button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
-                        @click="editRow(ri)" 
-                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </button> 
-                        <button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
-                        v-if="rowToEditIndex==ri" 
-                        @click="finishRowEdit(row.id, row)">
-                            <span class="glyphicon glyphicon-check"></span>
-                        </button>
-                    </td>
-                    <td v-if="canDelete"> 
-                        <button class="table-button btn btn-danger" 
-                        :data-cy="'delete-button-r'+ri" 
-                        @click="deleteRow(row.id)" 
-                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                        <button class="table-button btn btn-danger"
-                        :data-cy="'cancel-button-r'+ri"
-                        @click="cancelRowEdit(ri)" 
-                        v-if="(rowToEditIndex==ri)">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>`,
+    `<span>
+        <button data-cy="export-btn" 
+            style="float: right; float: top;" class="btn fd2-red-button" @click="exportCSV">Export
+        </button>
+        <div class="sticky-table">
+            <table data-cy="table" style="width:100%;" class="table table-bordered table-striped">
+                <thead>
+                    <tr class="sticky-header table-text" data-cy="table-headers">
+                        <th v-for="(header, hi) in headers"
+                        v-if="isVisible[hi]" 
+                        :data-cy="'h'+hi">{{ header }}</th>
+                        <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
+                        <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
+                        <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
+                        <th data-cy="cancel-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-text" 
+                    v-for="(row, ri) in rows"
+                    :data-cy="'r'+ri">
+                        <td v-for="(item, ci) in row.data"
+                        v-if="isVisible[ci]"
+                        :data-cy="'td-r'+ri+'c'+ci">
+                            <div v-if="rowToEditIndex!=ri || inputType[ci].type == 'no input'"
+                            :data-cy="'r'+ri+'c'+ci"
+                            v-html='item'></div>
+                                        
+                            <textarea 
+                            :data-cy="'text-input-r'+ri+'c'+ci"
+                            v-if="rowToEditIndex==ri && inputType[ci].type == 'text'" 
+                            v-model="editedRowData.data[ci]" 
+                            @focusout="changedCell(ci)"></textarea>
+                                        
+                            <select 
+                            :data-cy="'dropdown-input-r'+ri+'c'+ci"
+                            v-if="rowToEditIndex==ri && inputType[ci].type == 'dropdown'" 
+                            v-model="editedRowData.data[ci]" 
+                            @focusout="changedCell(ci)">
+                                <option v-for="option in inputType[ci].value">{{ option }}</option>
+                            </select>
+                                        
+                            <input 
+                            :data-cy="'date-input-r'+ri+'c'+ci"
+                            type="date" 
+                            v-if="rowToEditIndex==ri && inputType[ci].type == 'date'" 
+                            v-model="editedRowData.data[ci]" 
+                            @focusout="changedCell(ci)">
+                                        
+                            <input 
+                            :data-cy="'number-input-r'+ri+'c'+ci" 
+                            type="number" step="0.001" style="width: 70px;" 
+                            v-if="rowToEditIndex==ri && inputType[ci].type == 'number'"
+                            v-model="editedRowData.data[ci]" 
+                            @focusout="changedCell(ci)">
+                        </td>
+                        <td v-if="canEdit"> 
+                            <button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
+                            @click="editRow(ri)" 
+                            v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button> 
+                            <button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
+                            v-if="rowToEditIndex==ri" 
+                            @click="finishRowEdit(row.id, row)">
+                                <span class="glyphicon glyphicon-check"></span>
+                            </button>
+                        </td>
+                        <td v-if="canDelete"> 
+                            <button class="table-button btn btn-danger" 
+                            :data-cy="'delete-button-r'+ri" 
+                            @click="deleteRow(row.id)" 
+                            v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            <button class="table-button btn btn-danger"
+                            :data-cy="'cancel-button-r'+ri"
+                            @click="cancelRowEdit(ri)" 
+                            v-if="(rowToEditIndex==ri)">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </span>`,
     props: { 
         rows: {
             type: Array,
@@ -217,6 +222,56 @@ let CustomTableComponent = {
                     }
                 }
             }
+        },
+        exportCSV(){
+            let csvInfoArr = []
+            let headerTemp = []
+            let rowTemp = []
+
+            for(let i = 0; i < this.headers.length; i++){
+                if(this.visibleColumns[i]){
+                    headerTemp.push(this.headers[i])
+                }
+            }
+            csvInfoArr.push(headerTemp)
+
+            for(let i = 0; i < this.rows.length; i++){
+                for(let j = 0; j < this.visibleColumns.length; j++){
+                    if(this.visibleColumns[j]){
+                        if(typeof this.rows[i].data[j] === 'string'){
+                            cleanHTML = this.rows[i].data[j].replace(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
+                            cleanHTML = cleanHTML.replace(/(\r\n|\n|\r)/gm, "-")
+                            cleanHTML = cleanHTML.replace(',', "--")
+                            rowTemp.push(cleanHTML)
+                        }
+                        else{
+                            rowTemp.push(this.rows[i].data[j])
+                        }
+                    }
+                }
+                csvInfoArr.push(rowTemp)
+                rowTemp = []
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8," 
+            + csvInfoArr.map(e => e.join(",")).join("\n");
+
+            // Create a new date used for the file's name
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+            today = mm + dd + yyyy;
+
+            // Required if we want to be able to name the file
+            var encodedUri = encodeURI(csvContent)
+            var link = document.createElement("a")
+            link.setAttribute("href", encodedUri)
+            link.setAttribute("download", "seedingReport_" + today + ".csv")
+            document.body.appendChild(link)
+
+            // This will download the csv file named "seedingReport_(today).csv"
+            link.click()
         }
     },
     computed: {
