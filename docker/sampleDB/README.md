@@ -4,16 +4,16 @@ This document describes the details of the FarmData2 data model.  Note that Farm
 
 The sections below describe each part of the sample database provided with FarmData2 for development and testing. Several pieces of information are provided for each part of the sample database:
 - The scripts that create each part of the sample data are indicated and provide a good reference for how to create new records in the database.
-- An API request is given for each type of data as well. Accessing these APIs using a tool like Hoppscotch or Postman is a good way to understand the structure of the data returned by API calls in FarmData2. 
+- An API request is given for each type of data as well. Accessing these APIs using a tool like Hoppscotch or Postman is a good way to understand the structure of the data returned by API calls in FarmData2.
 
 ## The Sample Database ##
 
-A sample database is provided with FarmData2 for development and testing purposes.  That database is created by running the `buildSampleDB.bash` script.  That script, and its sub-scripts, use the contents of the csv files in the `sampleData` directory to create the sample database.  Each of csv files in the `sampleData` directory gives a description of its purpose, contents and format in the comments at the top of the file.
+A sample database is provided with FarmData2 for development and testing purposes.
 
 Some useful properties of the sample data:
 - It is real data from the Dickinson College farm.
 - The data runs from Jan 1, 2019 - July 15, 2020. So it includes:
-  - One completed growing season (Jan 1 - Dec 31, 2019). 
+  - One completed growing season (Jan 1 - Dec 31, 2019).
   - One in progress growing season (Jan 1 - July 15, 2020).
 
 More details are included in the table below:
@@ -84,7 +84,7 @@ The crop families and varieties in the FarmData2 sample database are created by 
 
 The Farm Log Categories vocabulary is used to categorize the log entries by what they pertain to (e.g. Equipment, Animals, Plantings, etc.). Of particular interest are the categories of Direct Seeding and Tray Seeding that are added to the standard farmOS vocabulary. These are sub-terms of the Planting term and are used to categorize the different types of seeding.
 
-The terms for the Farm Log Categories vocabulary can be accessed with the request: 
+The terms for the Farm Log Categories vocabulary can be accessed with the request:
 ```
 GET http://localhost/taxonomy_term.json?bundle=farm_log_categories
 ```
@@ -104,11 +104,11 @@ The quantity units in the FarmData2 sample database are created by the `addUnits
 
 ## Seeding Logs and Planting Assets ##
 
-A _seeding_ is a crop that has been planted from seed either directly in the ground (a _Direct Seeding_) or in a seeding tray (a _Tray Seeding_).  There is one _Seeding Log_ for every seeding and each is categorized as either a Direct Seeding or a Tray Seeding. 
+A _seeding_ is a crop that has been planted from seed either directly in the ground (a _Direct Seeding_) or in a seeding tray (a _Tray Seeding_).  There is one _Seeding Log_ for every seeding and each is categorized as either a Direct Seeding or a Tray Seeding.
 
 Every Seeding Log is associated with a _Planting Asset_, which represents the crop that resulted from the planting.  Planting Assets indicate the crops that are available for future operations (e.g. observation, transplanting, harvesting, etc.).
 
-The Planting Asset must be created before the Seeding Log because the Seeding Log must reference the Planting Asset that it creates. 
+The Planting Asset must be created before the Seeding Log because the Seeding Log must reference the Planting Asset that it creates.
 
 The Seeding Logs and associated Planting Assets in the FarmData2 sample database are created by the `addDirectSeedings.py` and `addTraySeedings.py` scripts using the data in the `sampleData/directSeedings.csv` and `sampleData/traySeedings.csv` files.
 
@@ -161,3 +161,68 @@ The Harvest Logs in the FarmData2 sample database are created by the `addHarvest
 
 Notes:
 - The `data` attribute will contain an object that provides the `crop_tid` of the crop that was transplanted (e.g. `{ crop_tid: 115 }`).  This can be used to get the crop name without retrieving the Planting Asset.
+
+# Building the Provided Databases #
+
+The following sections detail how to build the empty and sample databases that are provided for development with the FarmData2 repo.
+
+## Building the Empty Database ##
+
+When the Drupal or farmOS images are updated it is sometimes necessary to rebuild the empty database to allow the full sample database to be built on top of it.  The following steps outline how to build the empty database.
+
+1. Change to the `docker` directory in `FarmData2`.
+1. `rm -rf db`
+1. `rm settings.php`
+1. `cp settings-default.php settingsp.php`
+1. `./fd2-up.bash`
+1. Visit `http:\\localhost` in a browser.
+1. Follow the install instructions with the following information:
+   1. __Verify Requirements__
+      1. _Database name_: `farm`
+      1. _Database username_: `farm`
+      1. _Database password_: `farm`
+      1. __Advanced Options__:
+         1. _Database host_: `fd2_mariadb`
+   1. __Configure Site__
+      1. _Site name_: `Sample Farm`
+      1. _Site e-mail address_: `sample@sample.farm`
+      1. _Username_: `admin`
+      1. _E-mail address_: `admin@sample.farm`
+      1. _Password_: `farmdata2`
+      1. _Default Country_: `United States`
+      1. _Default time zone_: `America\New York`
+      1. _Check for updates automatically_: unchecked
+      1. _Receive e-mail notifications_: unchecked
+   1. __Configure farmOS__
+      1. _System of measurement_: US/Imperial
+   1. __Finished__
+      1. Click `Visit your new site`
+1. Click `Manage`
+   1. Click `Modules`
+      1. Turn on modules for:
+         * `FarmData2 BarnKit`
+         * `FarmData2 Example`
+         * `FarmData2 FieldKit`
+         * `FarmData2 School`
+      1. Click `Save configuration`
+   1. Click `Appearance`
+      1. Click `Logo image settings`
+         1. Uncheck `Use the default logo`
+         1. _Path to custom logo_: `farmdata2logo.png`
+      1. Click `Save configuration`
+         1. Logo should change to FarmData2 logo.
+1. Click `Log out`
+1. `./fd2-down.bash`
+1. `rm db.empty.tar.bz2`
+1. `sudo tar cjvf db.empty.tar.bz2 db`
+
+## Building the Sample Database ##
+
+The sample database is built on top of the empty database.  The csv files in the `docker/sampleData` directory provide the data for the sample database. Each file contains a detailed description of its purpose, contents and format in the comments at the top of the file. The `buildSampleDB.bash` script and its sub-scripts, use the contents of the csv files in the `sampleData` directory to create the sample database on top of the provided empty database. The following steps will rebuild the sample database.  Note: building the sample database typically takes 10-20 minutes.
+
+1. Ensure that `python3` is installed in `/usr/bin`
+1. `python3 -m pip install requests`
+1. Change to the `docker` directory in `FarmData2`.
+1. `rm db.sample.tar.bz2`
+1. Change to the `sampleDB` directory in `FarmData2/docker`.
+1. `./buildSampleDB.bash`
