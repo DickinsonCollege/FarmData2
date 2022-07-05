@@ -1,0 +1,41 @@
+<div>
+    <h3>FarmData2 Configuration</h3>
+    <p data-cy='intro'>This configuration page contains setting for FarmData2 specific settings.</p>
+
+    <p>This page should be redesigned and created using Vue to make it nicer to display and set the configurations.  For example, the Labor should be set and displayed using a dropdown with the three options "Required", "Optional", "Hidden". The page as it is below was just a quick functional test as a proof of concept.
+
+    <br><br>
+    <button onclick='getIt()'>Get Config</button>
+    <br>
+    <button onclick='makeOptional()'>Set Labor Optional</button>
+    <br>
+    <button onclick='makeRequired()'>Set Labor Required</button>
+
+    <script>
+      function getIt() {
+        getConfiguration().then((response) => {
+            console.log(response.data)
+        })
+      }
+
+      function makeOptional() {
+        let config={
+          "labor": "Optional",
+        }
+
+        getSessionToken().then((token) => {
+          setConfiguration(config, token)
+        })
+      }
+
+      function makeRequired() {
+        let config={
+          "labor": "Required",
+        }
+
+        getSessionToken().then((token) => {
+          setConfiguration(config, token)
+        })
+      }
+    </script>
+</div>
