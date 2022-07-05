@@ -39,7 +39,7 @@
                     <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
                         <div v-if="getTableOneType == 'Tray'">
-                            <p style="margin-left: 5%;"> There are no Direct Seeding logs with these parameters</p>
+                            <p style="margin-left: 5%;" data-cy='direct-no-logs'>There are no Direct Seeding logs with these parameters</p>
                         </div>
                         <div v-else>
                             <p style="margin-left: 5%;">Total Row Feet Planted: <b><span data-cy='direct-total-rowft'>{{ totalRowFeet }}</span></b></p>
@@ -52,7 +52,7 @@
                     <fieldset data-cy="tray-summary" class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
                         <div v-if="getTableOneType == 'Direct'">
-                            <p style="margin-left: 5%;"> There are no Tray Seeding logs with these parameters</p>
+                            <p style="margin-left: 5%;" data-cy='tray-no-logs'>There are no Tray Seeding logs with these parameters</p>
                         </div>
                         <div v-else>
                             <p style="margin-left: 5%;">Total Number of Seeds Planted: <b><span data-cy='tray-total-seeds'>{{ traySeedsPlanted }}</span></b></p>
