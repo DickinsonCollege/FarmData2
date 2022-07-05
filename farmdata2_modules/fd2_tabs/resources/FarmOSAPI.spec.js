@@ -7,6 +7,9 @@ var createRecord = FarmOSAPI.createRecord
 var deleteRecord = FarmOSAPI.deleteRecord
 var getRecord = FarmOSAPI.getRecord
 
+var getConfiguration = FarmOSAPI.getConfiguration
+var setConfiguration = FarmOSAPI.setConfiguration
+
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
 var getIDToAreaMap = FarmOSAPI.getIDToAreaMap
@@ -855,4 +858,67 @@ describe('API Request Functions', () => {
                 expect(quantityLocation(quantity, 'Yeehaw')).to.equal(-1)
             })
         })
+    
+    context.only('test configuration functions', () => {
+        
+        it('gets an existing configuration log', () => {
+            cy.wrap(getConfiguration()).as('done')
+
+            cy.get('@done').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.id).to.equal('1')
+                expect(response.data.labor).to.equal('Required')
+            })
+        })
+
+        it('sets labor to optional, then back to Required', () => {           
+            cy.wrap(getSessionToken())
+            .then((sessionToken) => {
+                token = sessionToken
+                
+            })
+            updateData =
+                {
+                    "id" : "1",
+                    "labor":"Optional"
+                } 
+            cy.wrap(setConfiguration(updateData , token)).as('update')
+            .then(() => {
+                cy.get('@update').should((response) => {
+                    expect(response.status).to.equal(200)
+                })
+            })
+            .then(() => {
+                cy.wrap(getConfiguration()).as('changed')
+            })
+            cy.get('@changed').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.id).to.equal('1')
+                expect(response.data.labor).to.equal('Optional')
+            })
+            .then(() => {
+                resetData =
+                    {
+                        "id" : "1",
+                        "labor":"Required"
+                    } 
+                        
+                cy.wrap(setConfiguration(resetData, token)).as('default')
+            })
+            cy.get('@default').should((response) => {
+                expect(response.status).to.equal(200)
+            })
+            .then(() => {
+                cy.wrap(getConfiguration()).as('reset')
+            })
+            cy.get('@reset').should((response) => {
+                expect(response.status).to.equal(200)
+                expect(response.data.id).to.equal('1')
+                expect(response.data.labor).to.equal('Required')
+            })
+            
+
+        })
+        
     })
+})
