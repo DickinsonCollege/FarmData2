@@ -1332,7 +1332,7 @@ describe('Test the seeding input page', () => {
             })
         })
 
-        it.only('Minute/Direct Seeding/With comment', () => {
+        it('Minute/Direct Seeding/With comment', () => {
             let startdate = dayjs('1999-10-05', 'YYYY-MM-DD')
             let enddate = dayjs('1999-10-07', 'YYYY-MM-DD')
             let startunix = startdate.unix()
