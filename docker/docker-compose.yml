@@ -9,7 +9,7 @@ services:
       - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: farm
-      MYSQL_DATABASE: farm
+      MYSQL_DATABASE: farmd
       MYSQL_USER: farm
       MYSQL_PASSWORD: farm
 
@@ -48,22 +48,22 @@ services:
     links:
      - 'db'
 
-  theiaide:
-    # If there are changes to the Dockerfile update the tag
-    # here to force a new build when main is updated.
-    image: theiaide:fd2.1
-    container_name: fd2_theiaide
-    init: true
-    build:
-     context: ./theia
-     dockerfile: Dockerfile
-     args:
-      HOST_UID: ${HOST_UID}
-      HOST_GID: ${HOST_GID}
-      HOST_USER: ${HOST_USER}
-      HOST_GROUP: ${HOST_GROUP}
-    user: ${HOST_USER}
-    volumes:
-     - ..:/home/${HOST_USER}/FarmData2
-    ports:
-     - 3000:3000
+#  theiaide:
+#    # If there are changes to the Dockerfile update the tag
+#    # here to force a new build when main is updated.
+#    image: theiaide:fd2.1
+#    container_name: fd2_theiaide
+#    init: true
+#    build:
+#     context: ./theia
+#     dockerfile: Dockerfile
+#     args:
+#      HOST_UID: ${HOST_UID}
+#      HOST_GID: ${HOST_GID}
+#      HOST_USER: ${HOST_USER}
+#      HOST_GROUP: ${HOST_GROUP}
+#    user: ${HOST_USER}
+#    volumes:
+#     - ..:/home/${HOST_USER}/FarmData2
+#    ports:
+#     - 3000:3000

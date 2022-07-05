@@ -1,0 +1,10 @@
+name = FarmData2 Configuration
+description = Configuration module for FarmData2 specific features.
+core = 7.x
+package = FarmData2
+
+dependencies[] = entity
+
+stylesheets[all][] = '../resources/fd2.css'
+scripts[] = '../resources/FarmData2.js'
+scripts[] = '../resources/FarmOSAPI.js'

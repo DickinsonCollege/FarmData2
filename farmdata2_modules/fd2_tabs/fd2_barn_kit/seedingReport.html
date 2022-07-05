@@ -38,27 +38,27 @@
                 <div style="display: flex; width: 100%;">
                     <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Tray'" style="margin-top: 50px">
-                            <p style="margin-left: 5%;"> There are no Direct Seeding logs with these parameters</p>
+                        <div v-if="getTableOneType == 'Tray'">
+                            <p style="margin-left: 5%;" data-cy='direct-no-logs'>There are no Direct Seeding logs with these parameters</p>
                         </div>
-                        <div v-else style="margin-top: 50px">
-                            <p style="margin-left: 5%;">Total Row Feet Planted: <b>{{ totalRowFeet }}</b></p>
-                            <p style="margin-left: 5%;">Total Bed Feet Planted: <b>{{ totalBedFeet }}</b></p>
-                            <p style="margin-left: 5%;">Total Hours: <b>{{ totalDirectSeedingHours }}</b></p>
-                            <p style="margin-left: 5%;">Average Row Feet/Hour: <b>{{ totalRowFeetPerHour }}</b></p>
-                            <p style="margin-left: 5%;">Average Bed Feet/Hour: <b>{{ totalBedFeetPerHour }}</b></p>
+                        <div v-else>
+                            <p style="margin-left: 5%;">Total Row Feet Planted: <b><span data-cy='direct-total-rowft'>{{ totalRowFeet }}</span></b></p>
+                            <p style="margin-left: 5%;">Total Bed Feet Planted: <b><span data-cy='direct-total-bedft'>{{ totalBedFeet }}</span></b></p>
+                            <p style="margin-left: 5%;">Total Hours: <b><span data-cy='direct-total-hours'>{{ totalDirectSeedingHours }}</span></b></p>
+                            <p style="margin-left: 5%;">Average Row Feet/Hour: <b><span data-cy='direct-total-rowft-hour'>{{ totalRowFeetPerHour }}</span></b></p>
+                            <p style="margin-left: 5%;">Average Bed Feet/Hour: <b><span data-cy='direct-total-bedfr-hour'>{{ totalBedFeetPerHour }}</span></b></p>
                         </div>
                     </fieldset>
                     <fieldset data-cy="tray-summary" class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Direct'" style="margin-top: 50px">
-                            <p style="margin-left: 5%;"> There are no Tray Seeding logs with these parameters</p>
+                        <div v-if="getTableOneType == 'Direct'">
+                            <p style="margin-left: 5%;" data-cy='tray-no-logs'>There are no Tray Seeding logs with these parameters</p>
                         </div>
-                        <div v-else style="margin-top: 50px">
-                            <p style="margin-left: 5%;">Total Number of Seeds Planted: <b>{{ traySeedsPlanted }}</b></p>
-                            <p style="margin-left: 5%;">Total Number of Trays: <b>{{ totalNumTrays }}</b></p>
-                            <p style="margin-left: 5%;">Total Hours: <b>{{ totalTraySeedingHours }}</b></p>
-                            <p style="margin-left: 5%;">Average Seeds Planted/Hour: <b>{{ aveSeedsPerHour }}</b></p>
+                        <div v-else>
+                            <p style="margin-left: 5%;">Total Number of Seeds Planted: <b><span data-cy='tray-total-seeds'>{{ traySeedsPlanted }}</span></b></p>
+                            <p style="margin-left: 5%;">Total Number of Trays: <b><span data-cy='tray-total-trays'>{{ totalNumTrays }}</span></b></p>
+                            <p style="margin-left: 5%;">Total Hours: <b><span data-cy='tray-total-seeds-hour'>{{ totalTraySeedingHours }}</span></b></p>
+                            <p style="margin-left: 5%;">Average Seeds Planted/Hour: <b><span data-cy='tray-avg-seeds-hour'>{{ aveSeedsPerHour }}</span></b></p>
                         </div>
                     </fieldset>
                 </div>
