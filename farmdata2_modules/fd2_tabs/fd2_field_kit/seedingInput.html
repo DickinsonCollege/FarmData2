@@ -1,10 +1,10 @@
 <body>
     <div id='seedingInput'>
         <div class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
-            <div class="alert alert-success" role="alert" v-show="isConfirmed == true">
+            <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isConfirmed == true">
                 Log created and saved successfully.
             </div>
-            <div class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
+            <div data-cy='alert-cancel'class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
         </div>
@@ -27,27 +27,27 @@
                 <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
             </div>
             <div v-show='(selectedSeedingType=="Tray Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'> 
-                <dropdown-with-all data-cy="area-selection" :selected-val='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;' :disabled='submitInProgress'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="tray-area-selection" :selected-val='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;' :disabled='submitInProgress'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <label>Cells/Tray:<label style='color: #da4f3f'>*</label>
-                <regex-input :reg-exp="regPosInt" :default-val="numCellsPerTray" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumCellsPerTray" @match-changed="(newBool) =>updateValidMap('validNumCellsPerTray', newBool)"></regex-input> 
+                <regex-input data-cy='num-cell-input' :reg-exp="regPosInt" :default-val="numCellsPerTray" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumCellsPerTray" @match-changed="(newBool) =>updateValidMap('validNumCellsPerTray', newBool)"></regex-input> 
                 </label>
                 <label>Trays:<label style='color: #da4f3f'>*</label> 
-                <regex-input :reg-exp="regPosInt" :default-val="numOfTrays" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumOfTrays" @match-changed="(newBool) => updateValidMap('validNumOfTrays', newBool)"></regex-input> 
+                <regex-input data-cy='num-tray-input' :reg-exp="regPosInt" :default-val="numOfTrays" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumOfTrays" @match-changed="(newBool) => updateValidMap('validNumOfTrays', newBool)"></regex-input> 
                 </label>
                 <label>Seeds:<label style='color: #da4f3f'>*</label> 
-                <regex-input :reg-exp="regPosInt" :default-val="numSeedsPlanted" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumSeedsPlanted" @match-changed="(newBool) => updateValidMap('validNumSeedsPlanted', newBool)"></regex-input>                 
+                <regex-input data-cy='num-seed-input' :reg-exp="regPosInt" :default-val="numSeedsPlanted" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumSeedsPlanted" @match-changed="(newBool) => updateValidMap('validNumSeedsPlanted', newBool)"></regex-input>                 
                 </label>
             </div>
             <div v-show='(selectedSeedingType=="Direct Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'>
-                <dropdown-with-all data-cy="area-selection" :selected-val='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;' :disabled='submitInProgress'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                <dropdown-with-all data-cy="direct-area-selection" :selected-val='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;' :disabled='submitInProgress'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
                 <br>
                 <label>Rows/Bed:<label style='color: #da4f3f'>*</label> 
-                <regex-input :reg-exp="regPosInt" set-type="number" :default-val="numRowBed" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumRowBed" @match-changed="(newBool) => updateValidMap('validNumRowBed', newBool)"></regex-input>                 
+                <regex-input data-cy='num-rowbed-input' :reg-exp="regPosInt" set-type="number" :default-val="numRowBed" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumRowBed" @match-changed="(newBool) => updateValidMap('validNumRowBed', newBool)"></regex-input>                 
                 </label>
                 <label><dropdown-with-all data-cy='unit-feet' :selected-val='selectedFeetUnit' :dropdown-list='feetUnits' @selection-changed='setNewFeetUnit' style='padding-left:20px;' :disabled='submitInProgress'></dropdown-with-all>
                 <label style='color: #da4f3f'>*</label> 
-                <regex-input :reg-exp="regPosInt" set-type="number" :default-val="numFeet" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumFeet" @match-changed="(newBool) => updateValidMap('validNumFeet', newBool)"></regex-input>                                
+                <regex-input data-cy='num-feet-input':reg-exp="regPosInt" set-type="number" :default-val="numFeet" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumFeet" @match-changed="(newBool) => updateValidMap('validNumFeet', newBool)"></regex-input>                                
                 </label>
             </div>
         </fieldset>   
@@ -55,11 +55,11 @@
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
                 <label style='color: #da4f3f'>*&nbsp;</label>
-                <regex-input :reg-exp="regPosInt" :default-val="numWorkers" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumWorkers" @match-changed="(newBool) => updateValidMap('validNumWorkers', newBool)"></regex-input>                                                
+                <regex-input data-cy='num-worker-input' :reg-exp="regPosInt" :default-val="numWorkers" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumWorkers" @match-changed="(newBool) => updateValidMap('validNumWorkers', newBool)"></regex-input>                                                
                 <label>&nbsp; Worker(s) for </label> 
                 <label><label style='color: #da4f3f'>*</label> 
-                <regex-input v-show='selectedTimeUnit == "minutes"' :reg-exp='regPosInt' :default-val="minute" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setMinute" @match-changed="(newBool) => updateValidMap('validMinute', newBool)"></regex-input>                                                
-                <regex-input v-show='selectedTimeUnit == "hours"' :reg-exp='regHour' :default-val="hour" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setHour" @match-changed="(newBool) => updateValidMap('validHour', newBool)"></regex-input>                                                
+                <regex-input data-cy='minute-input' v-show='selectedTimeUnit == "minutes"' :reg-exp='regPosInt' :default-val="minute" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setMinute" @match-changed="(newBool) => updateValidMap('validMinute', newBool)"></regex-input>                                                
+                <regex-input data-cy='hour-input' v-show='selectedTimeUnit == "hours"' :reg-exp='regHour' :default-val="hour" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setHour" @match-changed="(newBool) => updateValidMap('validHour', newBool)"></regex-input>                                                
                 <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit' :disabled='submitInProgress'></dropdown-with-all></label>
             </div>
         </fieldset>
@@ -108,7 +108,7 @@
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
-                feetUnits: ['Row Feet', 'Bed Feet'],
+                feetUnits: ['Bed Feet', 'Row Feet'],
                 cropToIDMap: new Map(),
                 userToIDMap: new Map(),
                 areaToIDMap: new Map(),
@@ -127,7 +127,7 @@
                     "validNumFeet": false,
                 },
                 regPosInt: "^[1-9]+[0-9]*$",
-                regHour:"^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
             },
             methods:{
                 updateValidMap(key, bool) {    

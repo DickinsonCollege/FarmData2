@@ -1,4 +1,5 @@
 docker/db/*
+docker/._db
 docker/logo/tmp/**
 docker/logo/.htaccess
 
