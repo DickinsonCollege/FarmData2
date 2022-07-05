@@ -54,19 +54,14 @@ describe('Test the seeding input page', () => {
             let crops = localStorage.getItem('crops')
             let areas = localStorage.getItem('areas')
 
-            // Waiting for the initial API calls to complete when the page is first loaded
-            // They have to be loaded in the first visit to be saved in the localStorage.
-            cy.wrap(getCropToIDMap()).as('cropMap')
-            cy.wrap(getAreaToIDMap()).as('areaMap')
-            cy.get('@cropMap').should(function(map) {
-                cropToIDMap = map
-            })
-            cy.get('@areaMap').should(function(map) {
-                areaToIDMap = map
-            })
             expect(crops).to.equal(null)
             expect(areas).to.equal(null)
 
+            // Set up intercepts to wait for the map to be loaded for caching. 
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+            // Wait here for the maps to load in the page. 
+            cy.wait(['@cropmap', '@areamap','@cropmap', '@areamap'])
         })
 
         it('test a second visit to the page (i.e. with cached crops and areas)', () => {
