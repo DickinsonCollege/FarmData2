@@ -61,7 +61,7 @@ describe('Test the seeding input page', () => {
             cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
             // Wait here for the maps to load in the page. 
-            cy.wait(['@cropmap', '@areamap','@cropmap', '@areamap'])
+            cy.wait(['@cropmap', '@areamap'])
         })
 
         it('test a second visit to the page (i.e. with cached crops and areas)', () => {
