@@ -126,8 +126,8 @@ let CustomTableComponent = {
                     </tr>
                 </tbody>
             </table>
-        </span>
-    </div>`,
+        </div>
+    </span>`,
     props: { 
         rows: {
             type: Array,
@@ -240,8 +240,8 @@ let CustomTableComponent = {
                     if(this.visibleColumns[j]){
                         if(typeof this.rows[i].data[j] === 'string'){
                             cleanHTML = this.rows[i].data[j].replace(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
-                            cleanHTML = cleanHTML.replace(/(\r\n|\n|\r)/gm, "--")
-                            cleanHTML = cleanHTML.replace(',', "-")
+                            cleanHTML = cleanHTML.replace(/(\r\n|\n|\r)/gm, "-")
+                            cleanHTML = cleanHTML.replace(',', "--")
                             rowTemp.push(cleanHTML)
                         }
                         else{
