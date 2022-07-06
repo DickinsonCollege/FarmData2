@@ -1,6 +1,6 @@
 <body>
     <div id='seedingInput'>
-        <div class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+        <div id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isConfirmed == true">
                 Log created and saved successfully.
             </div>
@@ -204,6 +204,8 @@
                     })
                     this.isConfirmed = true
                     this.submitInProgress = false
+                    var confirmBanner = document.getElementById('scrollBanners');
+                    confirmBanner.scrollIntoView(false);
                     setTimeout(() => {
                         this.isConfirmed = null 
                     }, 3000)    
@@ -211,6 +213,8 @@
                 cancelLog() {
                     this.submitInProgress = false
                     this.isConfirmed = false
+                    var cancelBanner = document.getElementById('scrollBanners');
+                    cancelBanner.scrollIntoView(false);
                     setTimeout(() => { 
                         this.isConfirmed = null
                     }, 3000)
