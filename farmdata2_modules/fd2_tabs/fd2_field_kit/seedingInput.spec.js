@@ -749,6 +749,7 @@ describe('Test the seeding input page', () => {
                 cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
                     .type('1')
                 cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+                    .scrollIntoView()
                     .type('1')
                 cy.get('[data-cy=minute-input] > [data-cy=text-input]')
                     .type('1')
@@ -797,12 +798,12 @@ describe('Test the seeding input page', () => {
                     })
             })
 
-            it('cancel test (alert message and maintain inputs)', () => {
+            it('cancel test (alert message and maintain inputs)', { scrollBehavior: false }, () => {
                 cy.get('[data-cy=submit-button]')
                     .click()
                 cy.get('[data-cy=cancel-button]')
                     .click()
-                cy.get('[data-cy=alert-cancel')     // need to add scroll up test here after added
+                cy.get('[data-cy=alert-cancel')    
                     .should('be.visible')
                     .wait(3000)
                     .should('not.be.visible')
@@ -828,7 +829,7 @@ describe('Test the seeding input page', () => {
                     .should('not.be.disabled')
             })
 
-            it('confirm test (alert message and reset inputs)', () => {
+            it('confirm test (alert message and reset inputs)', { scrollBehavior: false }, () => {
                 cy.get('[data-cy=submit-button]')
                     .click()
                 cy.get('[data-cy=confirm-button]')
