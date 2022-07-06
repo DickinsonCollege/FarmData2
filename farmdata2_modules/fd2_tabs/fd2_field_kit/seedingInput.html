@@ -1,11 +1,11 @@
 <body>
     <div id='seedingInput'>
-        <div id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+            <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
+                Log submission canceled by user. The log is <strong>NOT</strong> saved.  
+            </div>
             <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isConfirmed == true">
                 Log created and saved successfully.
-            </div>
-            <div data-cy='alert-cancel'class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
-                Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
         </div>
         <h1 style='text-align:center;'>Seeding Input Log</h1> 

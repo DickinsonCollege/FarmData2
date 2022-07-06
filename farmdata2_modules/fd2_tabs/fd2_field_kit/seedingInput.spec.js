@@ -543,7 +543,7 @@ describe('Test the seeding input page', () => {
         })
 
         context('Labor input test', () => {
-           
+
             beforeEach(() => {
                 cy.restoreLocalStorage()
             })
@@ -749,7 +749,6 @@ describe('Test the seeding input page', () => {
                 cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
                     .type('1')
                 cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
-                    .scrollIntoView()
                     .type('1')
                 cy.get('[data-cy=minute-input] > [data-cy=text-input]')
                     .type('1')
@@ -798,11 +797,17 @@ describe('Test the seeding input page', () => {
                     })
             })
 
-            it('cancel test (alert message and maintain inputs)', { scrollBehavior: false }, () => {
+            it.only('cancel test (alert message and maintain inputs)', () => {
                 cy.get('[data-cy=submit-button]')
                     .click()
                 cy.get('[data-cy=cancel-button]')
                     .click()
+                    .then(() => {
+                        cy.get('[data-cy=alert-success]')
+                            .then((element) => element[0].offsetTop)
+                            .then((offset) => cy.window().its('scrollY').should('equal', offset));
+                    })
+
                 cy.get('[data-cy=alert-cancel')    
                     .should('be.visible')
                     .wait(3000)
@@ -829,14 +834,20 @@ describe('Test the seeding input page', () => {
                     .should('not.be.disabled')
             })
 
-            it('confirm test (alert message and reset inputs)', { scrollBehavior: false }, () => {
+            it.only('confirm test (alert message and reset inputs)', () => {
                 cy.get('[data-cy=submit-button]')
                     .click()
                 cy.get('[data-cy=confirm-button]')
                     .click()
+                    .then(() => {
+                        cy.get('[data-cy=alert-cancel]')
+                            .then((element) => element[0].offsetTop)
+                            .then((offset) => cy.window().its('scrollY').should('equal', offset));
+                    })
+
                 cy.get('[data-cy=alert-cancel')
                     .should('not.be.visible')
-                cy.get('[data-cy=alert-success')    // need to add scroll up test here after added
+                cy.get('[data-cy=alert-success')   
                     .should('be.visible')
                     .wait(3000)
                     .should('not.be.visible')
