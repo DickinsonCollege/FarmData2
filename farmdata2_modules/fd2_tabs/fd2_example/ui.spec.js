@@ -304,4 +304,38 @@ describe('Test the UI component', () => {
                 .should('not.exist')
         })
     })
+
+    context.only('check the api error handler example', () => {
+
+        it('spinner appears while loading', () => {
+            cy.get('[data-cy=alert-err-handler]')
+                .should('not.visible')
+            cy.get('[data-cy=loading-err-spinner]')
+                .should('not.exist')
+
+            cy.get('[data-cy=fetch-err-api]')
+                .click()
+
+            cy.get('[data-cy=alert-err-handler]')
+                .should('be.visible')
+            cy.get('[data-cy=first-log-name]')
+                .should('have.text','')
+            cy.get('[data-cy=loading-err-spinner]')
+                .should('not.exist')
+            cy.get('[data-cy=last-log-name]')
+                .should('have.text','')
+            cy.get('[data-cy=loading-err-spinner]')
+                .should('not.exist')
+            cy.get('[data-cy=last-log-name]')
+                .should('have.text','')
+        
+            cy.get('[data-cy=loading-err-spinner]')
+                .should('not.exist')
+
+            cy.get('[data-cy=alert-err-handler]')
+                .should('be.visible')
+                .click()
+                .should('not.visible')
+        })
+    })
 })

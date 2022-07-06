@@ -19,7 +19,7 @@
             </div>
         </fieldset>
         <fieldset class="panel panel-default center-block" style="max-width: 500px;">
-           <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
                 <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType' :checked='selectedSeedingType == "Tray Seedings"' v-bind:disabled='submitInProgress'><label>Tray &nbsp;</label>
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType' :checked='selectedSeedingType == "Direct Seedings"' v-bind:disabled='submitInProgress'><label>Direct</label> 
             </legend>
