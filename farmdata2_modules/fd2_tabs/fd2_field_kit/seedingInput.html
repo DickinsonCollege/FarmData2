@@ -1,6 +1,6 @@
 <body>
     <div id='seedingInput'>
-        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+        <div data-cy="alert-container" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
@@ -204,17 +204,21 @@
                     })
                     this.isConfirmed = true
                     this.submitInProgress = false
-                    var confirmBanner = document.getElementById('scrollBanners');
-                    confirmBanner.scrollIntoView(false);
-                    setTimeout(() => {
-                        this.isConfirmed = null 
-                    }, 3000)    
+                    scrollTo({
+                        top: 230,
+                        behavior: 'smooth'
+                    });
+                    setTimeout(() => { 
+                        this.isConfirmed = null
+                    }, 3000)   
                 },
                 cancelLog() {
                     this.submitInProgress = false
                     this.isConfirmed = false
-                    var cancelBanner = document.getElementById('scrollBanners');
-                    cancelBanner.scrollIntoView(false);
+                    scrollTo({
+                        top: 230,
+                        behavior: 'smooth'
+                    });
                     setTimeout(() => { 
                         this.isConfirmed = null
                     }, 3000)
