@@ -1,5 +1,9 @@
+<body>
     <div id="config">
         <h3>FarmData2 Configuration</h3>
+        <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+            Error Processing Request. This may be an intermittent network issue. Please try again later. 
+        </div>
         <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isSaved == true">
             Configuration Saved
         </div>
@@ -10,8 +14,9 @@
             </label>
         </div>
         <button data-cy="save-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='configNotReady' @click='saveConfig'>Save</button>
+    </div>
 
-        <script>
+    <script>
         new Vue({
             el: '#config',
             components: {
@@ -22,7 +27,8 @@
                 configObj: {},
                 selectedLaborConfig: '',
                 laborConfigs: ['Required', 'Optional', "Hidden"],
-                isSaved: false
+                isSaved: false,
+                errBanner: null,
             },
             methods: {
                 setNewLabor(newLaborConfig) {
@@ -30,12 +36,36 @@
                 },
                 saveConfig() {
                     this.configObj.labor = this.selectedLaborConfig
-                    setConfiguration(this.configObj, this.sessionToken)
-                        this.isSaved = true
-                    setTimeout(() => { 
-                        this.isSaved= false
-                    }, 3000)
-                }
+                    setConfiguration(this.configObj, this.sessionToken) 
+                        .then(() => {
+                            this.isSaved = true
+                            setTimeout(() => { 
+                                this.isSaved= false
+                            }, 3000)
+
+                        }) 
+                        .catch((err) => { 
+                            if (err.response) {
+                                // The request was made and the server responded with a status code
+                                // that falls out of the range of 2xx
+                                this.errBanner = true
+                                console.log('Error code that falls out of 2xx.')
+                            } else if (err.request) {
+                                // The request was made but no response was received
+                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                // http.ClientRequest in node.js
+                                this.errBanner = true
+                                console.log('No response was received');
+                            } else {
+                                // Something happened in setting up the request that triggered an Error
+                                this.errBanner = true
+                                console.log('Error Message: ', err.message);
+                            }
+                        })
+                },
+                hideBanner(){
+                    this.errBanner = false
+                },
             },
             computed: {
                 configNotReady() {
@@ -50,13 +80,48 @@
                 getSessionToken().then((response) => {
                     this.sessionToken = response
                 })
+                .catch((err) => { 
+                    if (err.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        this.errBanner = true
+                        console.log('Error code that falls out of 2xx.')
+                    } else if (err.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        this.errBanner = true
+                        console.log('No response was received');
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        this.errBanner = true
+                        console.log('Error Message: ', err.message);
+                    }
+                })
                 getConfiguration().then((response) => {
                     this.configObj = response.data
                     this.selectedLaborConfig = response.data.labor
                 })
+                .catch((err) => { 
+                    if (err.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        this.errBanner = true
+                        console.log('Error code that falls out of 2xx.')
+                    } else if (err.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        this.errBanner = true
+                        console.log('No response was received');
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        this.errBanner = true
+                        console.log('Error Message: ', err.message);
+                    }
+                })
             }
-        })
-        
+        })       
         Vue.config.devtools = true;
-        </script>
-    </div>
+    </script>
+</body>
