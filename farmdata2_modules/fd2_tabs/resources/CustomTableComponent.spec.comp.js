@@ -505,4 +505,54 @@ describe('custom table component', () => {
             })
         })
     })
+
+    context('export csv file', () => {
+        const path = require("path");
+        const downloadsFolder = 'cypress/downloads'
+        let comp;
+        beforeEach(() => {
+            comp = mount(CustomTableComponent, {
+                propsData: {
+                    rows: [ {id: 10, data: [12, 3, 'answome']},
+                    {id: 11, data: [19, 3, 'and'],},
+                    {id: 12, data: [12, 12, 'answome12'],}, 
+                    ],
+                    headers: ['cool', 'works?', 'hello'],
+                    canDelete: true,
+                    visibleColumns: [true, true, false],
+                }
+            })
+        })
+
+        it('assure the button exists', () => {
+            cy.get('[data-cy=export-btn')
+            .should('have.exist')
+        })
+
+        it('verifies download', () => {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+            today = mm + dd + yyyy;
+            cy.get('[data-cy=export-btn]')
+                .click();
+
+            cy.readFile(path.join(downloadsFolder, 'seedingReport_' + today + '.csv')).should("exist");
+
+        });
+
+        it('verifies content of csv', () => {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+            today = mm + dd + yyyy;
+            cy.get('[data-cy=export-btn]')
+                .click();
+
+            cy.readFile(path.join(downloadsFolder, 'seedingReport_' + today + '.csv')).should("eq", "cool,works?\n12,3\n19,3\n12,12");
+            cy.exec("rm -r " + downloadsFolder)
+        });
+    })
 })
