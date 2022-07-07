@@ -355,14 +355,34 @@ new Vue({
             // To display the spinner
             this.waitingOnErr = true
 
+            // Purposely has a bad API call so behavior is the same
+            // every single time
             getAllPages('abc')
             .then(() => {
                 this.waitingOnErr = false
             })
             .catch((err) => { 
-                this.waitingOnErr = false
-                this.errBanner = true
-
+                if (err.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    this.errBanner = true
+                    this.waitingOnErr = false
+                    console.log('Error code that falls out of 2xx.')
+                } 
+                else if (err.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    this.errBanner = true
+                    this.waitingOnErr = false
+                    console.log('No response was received');
+                } 
+                else {
+                    // Something happened in setting up the request that triggered an Error
+                    this.errBanner = true
+                    this.waitingOnErr = false
+                    console.log('Error Message: ', err.message);
+                }
             })
         },
         hideBanner(){
