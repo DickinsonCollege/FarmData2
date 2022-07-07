@@ -348,7 +348,7 @@ describe('Test the UI component', () => {
             cy.get('[data-cy=loading-err-spinner]')
                 .should('not.exist')
             
-            cy.intercept('GET', '/farm/fd2-example/abc',{ forceNetworkError: true })
+            cy.intercept('GET', '/farm/fd2-example/abc', { forceNetworkError: true })
                 .as('getNetworkFailure')
             
             cy.get('[data-cy=fetch-err-api]')

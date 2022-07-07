@@ -340,7 +340,7 @@ new Vue({
             // To display the spinner
             this.waitingOnLogs = true
 
-            //this.seedingLogs = []
+            this.seedingLogs = []
 
             // Then invoke one of the FarmOSAPI methods and setup
             // what to do when the API call completes.
@@ -354,6 +354,8 @@ new Vue({
         badAPICall() {
             // To display the spinner
             this.waitingOnErr = true
+
+            this.seedingLogs = []
 
             // Purposely has a bad API call so behavior is the same
             // every single time

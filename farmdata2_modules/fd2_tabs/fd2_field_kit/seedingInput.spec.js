@@ -1407,6 +1407,277 @@ describe('Test the seeding input page', () => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
             })
         })
+
+        it('log creation fails: outside of 2xx error code', () => {
+            let startdate = dayjs('1999-10-05', 'YYYY-MM-DD')
+            let enddate = dayjs('1999-10-07', 'YYYY-MM-DD')
+            let startunix = startdate.unix()
+            let endunix = enddate.unix()
+            let url = '/log.json?type=farm_seeding&timestamp[gt]='+startunix+'&timestamp[lt]='+ endunix
+            let logID = ""
+            let plantingID = "" 
+            cy.get('[data-cy=direct-seedings]')
+                .click()
+            cy.get('[data-cy=direct-area-selection] > [data-cy=dropdown-input]')
+                .select('A')
+            cy.get('[data-cy=num-rowbed-input]')
+                .type('3')
+            cy.get('[data-cy=num-feet-input]')
+                .type('3')
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .select('hours')
+            cy.get('[data-cy=hour-input]')
+                .type('60')
+            cy.get('[data-cy=comments]')
+                .type('test comment')
+                .blur()
+            cy.intercept('POST', '/farm_asset', { statusCode: 500 }).as('failedAssetCreation')
+            cy.get('[data-cy=submit-button]')
+                .click()
+            cy.get('[data-cy=confirm-button]')
+                .click()
+            cy.wait('@failedAssetCreation') // wait for the log creation
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                })
+        })
+
+        it('log creation fails: network error', () => {
+            let startdate = dayjs('1999-10-05', 'YYYY-MM-DD')
+            let enddate = dayjs('1999-10-07', 'YYYY-MM-DD')
+            let startunix = startdate.unix()
+            let endunix = enddate.unix()
+            let url = '/log.json?type=farm_seeding&timestamp[gt]='+startunix+'&timestamp[lt]='+ endunix
+            let logID = ""
+            let plantingID = "" 
+            cy.get('[data-cy=direct-seedings]')
+                .click()
+            cy.get('[data-cy=direct-area-selection] > [data-cy=dropdown-input]')
+                .select('A')
+            cy.get('[data-cy=num-rowbed-input]')
+                .type('3')
+            cy.get('[data-cy=num-feet-input]')
+                .type('3')
+            cy.get('[data-cy=time-unit] > [data-cy=dropdown-input]')
+                .select('hours')
+            cy.get('[data-cy=hour-input]')
+                .type('60')
+            cy.get('[data-cy=comments]')
+                .type('test comment')
+                .blur()
+            cy.intercept('POST', '/farm_asset', { forceNetworkError: true }).as('failedAssetCreation')
+            cy.get('[data-cy=submit-button]')
+                .click()
+            cy.get('[data-cy=confirm-button]')
+                .click()
+            cy.wait('@failedAssetCreation') // wait for the log creation
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                })
+        })
     })
-    
+
+    context('make sure any APIs that fail on page load make the API failed alert appear', () => {
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            
+        })
+        
+        it('fail the session token API: outside of 2xx error code', () => {
+            cy.intercept('GET', 'restws/session/token', { statusCode: 500 }).as('failedSessionTok')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedSessionTok')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        it('fail the session token API: network error', () => {
+            cy.intercept('GET', 'restws/session/token', { forceNetworkError: true }).as('failedSessionTok')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedSessionTok')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        // if something else happens while setting up the request
+        // then it would also be handled here. 
+        // it('fail the session token API: something happened that triggered an error', () => {
+        // })
+
+        it('fail the crop map API: outside of 2xx error code', () => {
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1', { statusCode: 500 }).as('failedCropMap')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedCropMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        it('fail the crop map API: network error', () => {
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1', { forceNetworkError: true }).as('failedCropMap')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedCropMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        // if something else happens while setting up the request
+        // then it would also be handled here. 
+        // it('fail the crop map API: something happened that triggered an error', () => {
+        // })
+
+        it('fail the user map API: outside of 2xx error code', () => {
+            cy.intercept('GET', 'user', { statusCode: 500 }).as('failedUserMap')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')         
+            cy.wait('@failedUserMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        it('fail the user map API: network error', () => {
+            cy.intercept('GET', 'user', { forceNetworkError: true }).as('failedUserMap')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')         
+            cy.wait('@failedUserMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        // if something else happens while setting up the request
+        // then it would also be handled here. 
+        // it('fail the user map API: something happened that triggered an error', () => {
+        // })
+        
+        it('fail the area map API: outside of 2xx error code', () => {
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { statusCode: 500 }).as('failedAreaMap') 
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedAreaMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        it('fail the area map API: outside of network error', () => {
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { forceNetworkError: true }).as('failedAreaMap') 
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedAreaMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        // if something else happens while setting up the request
+        // then it would also be handled here. 
+        // it('fail the area map API: something happened that triggered an error', () => {
+        // })
+
+        it('fail the unit map API: outside of 2xx error code', () => {
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units', { statusCode: 500 }).as('failedUnitMap')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedUnitMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        it('fail the unit map API: network error', () => {
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units', { forceNetworkError: true }).as('failedUnitMap')
+
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedUnitMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        // if something else happens while setting up the request
+        // then it would also be handled here. 
+        // it('fail the unit map API: something happened that triggered an error', () => {
+        // })
+
+        it('fail the log type map API: outside of 2xx error code', () => {
+            cy.login('manager1', 'farmdata2')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories', { statusCode: 500 }).as('failedLogTypeMap')
+            
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedLogTypeMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+
+        it('fail the log type map API: network error', () => {
+            cy.login('manager1', 'farmdata2')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories', { forceNetworkError: true }).as('failedLogTypeMap')
+            
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+            cy.wait('@failedLogTypeMap')
+                .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    .should('be.visible')
+                    .click()
+                    .should('not.visible')
+                }) 
+        })
+
+        // if something else happens while setting up the request
+        // then it would also be handled here. 
+        // it('fail the log type map API: something happened that triggered an error', () => {
+        // })
+
+        
+    })
 })
