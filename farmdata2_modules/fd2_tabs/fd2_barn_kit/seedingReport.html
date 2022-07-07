@@ -1,5 +1,8 @@
 <body>
     <div id="seedingReport" v-cloak>
+        <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+            Error Processing Request. This may be an intermittent network issue. Please try again later. 
+        </div>
         <h1 class="text-center">Seeding Report</h1>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
@@ -109,7 +112,8 @@
                 areaToIDMap: new Map(),
                 unitToIDMap: new Map(),
 
-                rowBeingEdited: false
+                rowBeingEdited: false,
+                errBanner: null,
             },
             methods: {
                 hide(){
@@ -130,9 +134,30 @@
                     this.reportVisible = true
                     let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
 
-                    getAllPages(link, this.seedingLogs).then(() => {
-                        this.stillLoading = false
-                    })
+                    getAllPages(link, this.seedingLogs)
+                        .then(() => {
+                            this.stillLoading = false
+                        })
+                        .catch((err) => { 
+                                if (err.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    this.errBanner = true
+                                    console.log('Error code that falls out of 2xx.')
+                                } 
+                                else if (err.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    this.errBanner = true
+                                    console.log('No response was received');
+                                } 
+                                else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    this.errBanner = true
+                                    console.log('Error Message: ', err.message);
+                                }
+                            })
                     this.stillLoading = true
                 },
                 cropChange(selectedCrop){
@@ -161,7 +186,6 @@
                     let updateSeedingObject = {}
                     let updatePlantObject = {}
                     
-                   
                     /**
                      * The Table component returns an object with the cells that were updated. We don't know how many or wich ones where updated, so we check for all possible cells that could have been updated.
                      */
@@ -287,6 +311,9 @@
                 enableFilters(){
                     this.rowBeingEdited = false
                 },
+                hideBanner(){
+                    this.errBanner = false
+                },
             },
             computed: {
                 /**
@@ -407,7 +434,7 @@
                     let areaArray = []
                     if(this.selectedCrop != 'All'){
                         let cropFilter = seedFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
-                         areaArray = cropFilter.map(h =>
+                        areaArray = cropFilter.map(h =>
                             h.movement.area[0].name
                         )
                     }
@@ -504,7 +531,7 @@
                     let tableData = this.tableRows
                     let totalTraySeeds = 0
                     tableData.map(h =>
-                       totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
+                        totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
                     )
                     return totalTraySeeds
                 },
@@ -515,7 +542,7 @@
                     let tableData = this.tableRows
                     let totalTrays = 0
                     tableData.map(h =>
-                       totalTrays = totalTrays + parseFloat(h.data[8])
+                        totalTrays = totalTrays + parseFloat(h.data[8])
                     )
                     return (Math.round(totalTrays*100))/100
                 },
@@ -656,27 +683,174 @@
                 }
             },
             created() {
-                getSessionToken().then((response) => {
-                    this.sessionToken = response
-                })
-                getIDToCropMap().then((response) => {
-                    this.idToCropMap = new Map(response)
-                })
-                getCropToIDMap().then((response) => {
-                    this.cropToIDMap = new Map(response)
-                })
-                getIDToUserMap().then((response) => {
-                    this.idToUserMap = new Map (response)
-                })
-                getUserToIDMap().then((response) => {
-                    this.userToIDMap = new Map (response)
-                })
-                getAreaToIDMap().then((response) => {
-                    this.areaToIDMap = new Map(response)
-                })
-                getUnitToIDMap().then((response) => {
-                    this.unitToIDMap = new Map(response)
-                })
+                getSessionToken()
+                    .then((response) => {
+                        this.sessionToken = response
+                    })
+                    .catch((err) => { 
+                            if (err.response) {
+                                // The request was made and the server responded with a status code
+                                // that falls out of the range of 2xx
+                                this.errBanner = true
+                                console.log('Error code that falls out of 2xx.')
+                            } 
+                            else if (err.request) {
+                                // The request was made but no response was received
+                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                // http.ClientRequest in node.js
+                                this.errBanner = true
+                                console.log('No response was received');
+                            } 
+                            else {
+                                // Something happened in setting up the request that triggered an Error
+                                this.errBanner = true
+                                console.log('Error Message: ', err.message);
+                            }
+                        })
+                getIDToCropMap()
+                    .then((response) => {
+                        this.idToCropMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                                if (err.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    this.errBanner = true
+                                    console.log('Error code that falls out of 2xx.')
+                                } 
+                                else if (err.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    this.errBanner = true
+                                    console.log('No response was received');
+                                } 
+                                else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    this.errBanner = true
+                                    console.log('Error Message: ', err.message);
+                                }
+                            })
+                getCropToIDMap()
+                    .then((response) => {
+                        this.cropToIDMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                                if (err.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    this.errBanner = true
+                                    console.log('Error code that falls out of 2xx.')
+                                } 
+                                else if (err.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    this.errBanner = true
+                                    console.log('No response was received');
+                                } 
+                                else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    this.errBanner = true
+                                    console.log('Error Message: ', err.message);
+                                }
+                            })
+                getIDToUserMap()
+                    .then((response) => {
+                        this.idToUserMap = new Map (response)
+                    })
+                    .catch((err) => { 
+                                if (err.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    this.errBanner = true
+                                    console.log('Error code that falls out of 2xx.')
+                                } 
+                                else if (err.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    this.errBanner = true
+                                    console.log('No response was received');
+                                } 
+                                else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    this.errBanner = true
+                                    console.log('Error Message: ', err.message);
+                                }
+                            })
+                getUserToIDMap()
+                    .then((response) => {
+                        this.userToIDMap = new Map (response)
+                    })
+                    .catch((err) => { 
+                                if (err.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    this.errBanner = true
+                                    console.log('Error code that falls out of 2xx.')
+                                } 
+                                else if (err.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    this.errBanner = true
+                                    console.log('No response was received');
+                                } 
+                                else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    this.errBanner = true
+                                    console.log('Error Message: ', err.message);
+                                }
+                            })
+                getAreaToIDMap()
+                    .then((response) => {
+                        this.areaToIDMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                                if (err.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    this.errBanner = true
+                                    console.log('Error code that falls out of 2xx.')
+                                } 
+                                else if (err.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    this.errBanner = true
+                                    console.log('No response was received');
+                                } 
+                                else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    this.errBanner = true
+                                    console.log('Error Message: ', err.message);
+                                }
+                            })
+                getUnitToIDMap()
+                    .then((response) => {
+                        this.unitToIDMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                                if (err.response) {
+                                    // The request was made and the server responded with a status code
+                                    // that falls out of the range of 2xx
+                                    this.errBanner = true
+                                    console.log('Error code that falls out of 2xx.')
+                                } 
+                                else if (err.request) {
+                                    // The request was made but no response was received
+                                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                    // http.ClientRequest in node.js
+                                    this.errBanner = true
+                                    console.log('No response was received');
+                                } 
+                                else {
+                                    // Something happened in setting up the request that triggered an Error
+                                    this.errBanner = true
+                                    console.log('Error Message: ', err.message);
+                                }
+                            })
             }
         });
         Vue.config.devtools = true;

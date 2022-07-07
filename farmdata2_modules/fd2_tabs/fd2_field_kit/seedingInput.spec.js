@@ -1658,7 +1658,6 @@ describe('Test the seeding input page', () => {
                 }) 
         })
 
-
         it('fail the log type map API: network error', () => {
             cy.login('manager1', 'farmdata2')
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories', { forceNetworkError: true }).as('failedLogTypeMap')
@@ -1676,8 +1675,6 @@ describe('Test the seeding input page', () => {
         // if something else happens while setting up the request
         // then it would also be handled here. 
         // it('fail the log type map API: something happened that triggered an error', () => {
-        // })
-
-        
+        // })   
     })
 })
