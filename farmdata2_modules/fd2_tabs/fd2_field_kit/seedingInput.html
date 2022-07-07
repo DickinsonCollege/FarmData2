@@ -215,22 +215,13 @@
                         })
                         .catch((err) => { 
                             if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
                                 this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
                             } 
                             else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
                                 this.errBanner = true
-                                console.log('No response was received');
                             } 
                             else {
-                                // Something happened in setting up the request that triggered an Error
                                 this.errBanner = true
-                                console.log('Error Message: ', err.message);
                             }
                         })
                 },
@@ -491,22 +482,13 @@
                         })
                         .catch((err) => { 
                             if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
                                 this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
                             } 
                             else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
                                 this.errBanner = true
-                                console.log('No response was received');
                             } 
                             else {
-                                // Something happened in setting up the request that triggered an Error
                                 this.errBanner = true
-                                console.log('Error Message: ', err.message);
                             }
                         })
                 }else{
@@ -518,22 +500,13 @@
                         })
                         .catch((err) => { 
                             if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
                                 this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
                             } 
                             else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
                                 this.errBanner = true
-                                console.log('No response was received');
                             } 
                             else {
-                                // Something happened in setting up the request that triggered an Error
                                 this.errBanner = true
-                                console.log('Error Message: ', err.message);
                             }
                         })
                 }
@@ -543,25 +516,16 @@
                             localStorage.setItem('areas', JSON.stringify(this.areaResponse))
                         })
                         .catch((err) => { 
-                        if (err.response) {
-                            // The request was made and the server responded with a status code
-                            // that falls out of the range of 2xx
-                            this.errBanner = true
-                            console.log('Error code that falls out of 2xx.')
-                        } 
-                        else if (err.request) {
-                            // The request was made but no response was received
-                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                            // http.ClientRequest in node.js
-                            this.errBanner = true
-                            console.log('No response was received');
-                        } 
-                        else {
-                            // Something happened in setting up the request that triggered an Error
-                            this.errBanner = true
-                            console.log('Error Message: ', err.message);
-                        }
-                    })
+                            if (err.response) {
+                                this.errBanner = true
+                            } 
+                            else if (err.request) {
+                                this.errBanner = true
+                            } 
+                            else {
+                                this.errBanner = true
+                            }
+                        })
                 }else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
                     getAllPages('/taxonomy_term.json?bundle=farm_areas')
@@ -571,22 +535,13 @@
                         })
                         .catch((err) => { 
                             if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
                                 this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
                             } 
                             else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
                                 this.errBanner = true
-                                console.log('No response was received');
                             } 
                             else {
-                                // Something happened in setting up the request that triggered an Error
                                 this.errBanner = true
-                                console.log('Error Message: ', err.message);
                             }
                         })
                 }
@@ -595,145 +550,91 @@
                         this.sessionToken = response
                     })
                     .catch((err) => { 
-                            if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
-                            } 
-                            else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                this.errBanner = true
-                                console.log('No response was received');
-                            } 
-                            else {
-                                // Something happened in setting up the request that triggered an Error
-                                this.errBanner = true
-                                console.log('Error Message: ', err.message);
-                            }
-                        })
+                        if (err.response) {
+                            this.errBanner = true
+                        } 
+                        else if (err.request) {
+                            this.errBanner = true
+                        } 
+                        else {
+                            this.errBanner = true
+                        }
+                    })
                 getCropToIDMap()
                     .then((response) => {
                         this.cropToIDMap = response
                     })
                     .catch((err) => { 
-                            if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
-                            } 
-                            else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                this.errBanner = true
-                                console.log('No response was received');
-                            } 
-                            else {
-                                // Something happened in setting up the request that triggered an Error
-                                this.errBanner = true
-                                console.log('Error Message: ', err.message);
-                            }
-                        })
+                        if (err.response) {
+                            this.errBanner = true
+                        } 
+                        else if (err.request) {
+                            this.errBanner = true
+                        } 
+                        else {
+                            this.errBanner = true
+                        }
+                    })
                 getUserToIDMap()
                     .then((response) => {
                         this.userToIDMap = response
                     })
                     .catch((err) => { 
-                            if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
-                            } 
-                            else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                this.errBanner = true
-                                console.log('No response was received');
-                            } 
-                            else {
-                                // Something happened in setting up the request that triggered an Error
-                                this.errBanner = true
-                                console.log('Error Message: ', err.message);
-                            }
-                        })
+                        if (err.response) {
+                            this.errBanner = true
+                        } 
+                        else if (err.request) {
+                            this.errBanner = true
+                        } 
+                        else {
+                            this.errBanner = true
+                        }
+                    })
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = response
                     })
                     .catch((err) => { 
-                            if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
-                            } 
-                            else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                this.errBanner = true
-                                console.log('No response was received');
-                            } 
-                            else {
-                                // Something happened in setting up the request that triggered an Error
-                                this.errBanner = true
-                                console.log('Error Message: ', err.message);
-                            }
-                        })
+                        if (err.response) {
+                            this.errBanner = true
+                        } 
+                        else if (err.request) {
+                            this.errBanner = true
+                        } 
+                        else {
+                            this.errBanner = true
+                        }
+                    })
                 getUnitToIDMap()
                     .then((response) => {
                         this.unitToIDMap = response
                     })
                     .catch((err) => { 
-                            if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
-                            } 
-                            else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                this.errBanner = true
-                                console.log('No response was received');
-                            } 
-                            else {
-                                // Something happened in setting up the request that triggered an Error
-                                this.errBanner = true
-                                console.log('Error Message: ', err.message);
-                            }
-                        })
+                        if (err.response) {
+                            this.errBanner = true
+                        } 
+                        else if (err.request) {
+                            this.errBanner = true
+                        } 
+                        else {
+                            this.errBanner = true
+                        }
+                    })
                 getLogTypeToIDMap()
                     .then((response) => {
                         this.logTypeToIDMap = response
                     })
                     .catch((err) => { 
-                            if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
-                            } 
-                            else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                this.errBanner = true
-                                console.log('No response was received');
-                            } 
-                            else {
-                                // Something happened in setting up the request that triggered an Error
-                                this.errBanner = true
-                                console.log('Error Message: ', err.message);
-                            }
-                        })
+                        if (err.response) {
+                            this.errBanner = true
+                        } 
+                        else if (err.request) {
+                            this.errBanner = true
+                        } 
+                        else {
+                            this.errBanner = true
+                        }
+                    })
             }
         })
         Vue.config.devtools = true;
