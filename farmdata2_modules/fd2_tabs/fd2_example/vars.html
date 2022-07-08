@@ -21,18 +21,22 @@
         <LI>UserName: <span data-cy="user-name">{{ userName }}</span></LI>
     </UL>
     <p>The current values of the configuration variables are:</p>
-    <table class ="table table-bordered" style="width: 20em">
-        <thead>
-            <tr>
-                <th data-cy="table-headings" v-for="keys in Object.keys(this.configObj)">{{ keys }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td data-cy="table-data" v-for="values in this.configObj">{{ values }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <UL>
+        <table class ="table table-bordered" style="width: 20em">
+            <thead>
+                <tr>
+                    <th>Configuration Variables</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for='(name, i) in keyArray'>
+                    <td :data-cy=i+'configName'>{{ name }}</td>
+                    <td :data-cy=i+'data'>{{ configObj[name] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </UL>
 </div>
 
 <script>
@@ -51,8 +55,11 @@ new Vue({
         configObj: {},
         sessionToken: null,
     },
-    methods: {
-
+    computed: {
+        keyArray() {
+            keys = Array.from(Object.keys(this.configObj));
+            return keys
+        },
     },
     created() {
         getConfiguration().then((response) => {
