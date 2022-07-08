@@ -148,6 +148,10 @@
                                 else {
                                     this.errBanner = true
                                 }
+                                scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                })
                             })
                     this.stillLoading = true
                 },
@@ -688,6 +692,10 @@
                             else {
                                 this.errBanner = true
                             }
+                            scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            })
                         })
                 getIDToCropMap()
                     .then((response) => {
@@ -703,6 +711,10 @@
                         else {
                             this.errBanner = true
                         }
+                        scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        })
                     })
                 getCropToIDMap()
                     .then((response) => {
@@ -718,6 +730,10 @@
                         else {
                             this.errBanner = true
                         }
+                        scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        })
                     })
                 getIDToUserMap()
                     .then((response) => {
@@ -733,6 +749,10 @@
                         else {
                             this.errBanner = true
                         }
+                        scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        })
                     })
                 getUserToIDMap()
                     .then((response) => {
@@ -748,6 +768,10 @@
                         else {
                             this.errBanner = true
                         }
+                        scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        })
                     })
                 getAreaToIDMap()
                     .then((response) => {
@@ -764,6 +788,10 @@
                         else {
                             this.errBanner = true
                         }
+                        scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        })
                     })
                 getUnitToIDMap()
                     .then((response) => {
@@ -779,6 +807,10 @@
                         else {
                             this.errBanner = true
                         }
+                        scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        })
                     })
             }
         });

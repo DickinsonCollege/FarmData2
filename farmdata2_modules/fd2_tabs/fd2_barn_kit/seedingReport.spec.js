@@ -117,6 +117,8 @@ describe('Testing for the seeding report page', () => {
             cy.wait('@getAPIFailure')
             .then(() => {
                 cy.get('[data-cy=alert-err-handler]')
+                cy.window().its('scrollY').should('equal', 0)
+                cy.get('[data-cy=alert-err-handler]')
                 .should('be.visible')
                 .click()
                 .should('not.visible')
@@ -150,6 +152,8 @@ describe('Testing for the seeding report page', () => {
                 .click()
             cy.wait('@getAPIFailure')
             .then(() => {
+                cy.get('[data-cy=alert-err-handler]')
+                cy.window().its('scrollY').should('equal', 0)
                 cy.get('[data-cy=alert-err-handler]')
                 .should('be.visible')
                 .click()
@@ -1141,6 +1145,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1152,6 +1158,8 @@ describe('Testing for the seeding report page', () => {
             cy.visit('/farm/fd2-barn-kit/seedingReport')
             cy.wait('@failedSessionTok')
                 .then(() => {
+                    cy.get('[data-cy=alert-err-handler]')
+                    cy.window().its('scrollY').should('equal', 0)
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
                     .click()
@@ -1172,6 +1180,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1185,6 +1195,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1203,6 +1215,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1216,6 +1230,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1234,6 +1250,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1247,6 +1265,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1265,6 +1285,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
@@ -1278,6 +1300,8 @@ describe('Testing for the seeding report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
                 }) 
