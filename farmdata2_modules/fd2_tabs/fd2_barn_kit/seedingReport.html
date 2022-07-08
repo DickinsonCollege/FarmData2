@@ -139,20 +139,12 @@
                             this.stillLoading = false
                         })
                         .catch((err) => { 
-                                if (err.response) {
-                                    this.errBanner = true
-                                } 
-                                else if (err.request) {
-                                    this.errBanner = true
-                                } 
-                                else {
-                                    this.errBanner = true
-                                }
-                                scrollTo({
-                                    top: 0,
-                                    behavior: 'smooth'
-                                })
+                            this.errBanner = true
+                            scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
                             })
+                        })
                     this.stillLoading = true
                 },
                 cropChange(selectedCrop){
@@ -683,34 +675,18 @@
                         this.sessionToken = response
                     })
                     .catch((err) => { 
-                            if (err.response) {
-                                this.errBanner = true
-                            } 
-                            else if (err.request) {
-                                this.errBanner = true
-                            } 
-                            else {
-                                this.errBanner = true
-                            }
-                            scrollTo({
-                                top: 0,
-                                behavior: 'smooth'
-                            })
+                        this.errBanner = true
+                        scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
                         })
+                    })
                 getIDToCropMap()
                     .then((response) => {
                         this.idToCropMap = new Map(response)
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -721,15 +697,7 @@
                         this.cropToIDMap = new Map(response)
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -740,15 +708,7 @@
                         this.idToUserMap = new Map (response)
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -759,15 +719,7 @@
                         this.userToIDMap = new Map (response)
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -778,16 +730,7 @@
                         this.areaToIDMap = new Map(response)
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                            console.log('No response was received');
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -798,22 +741,14 @@
                         this.unitToIDMap = new Map(response)
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
                         })
                     })
             }
-        });
+        })
         Vue.config.devtools = true;
     </script>
 </body>

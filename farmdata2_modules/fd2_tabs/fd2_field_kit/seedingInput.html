@@ -214,15 +214,7 @@
                             }, 3000)    
                         })
                         .catch((err) => { 
-                            if (err.response) {
-                                this.errBanner = true
-                            } 
-                            else if (err.request) {
-                                this.errBanner = true
-                            } 
-                            else {
-                                this.errBanner = true
-                            }
+                            this.errBanner = true
                             scrollTo({
                                 top: 0,
                                 behavior: 'smooth'
@@ -528,15 +520,7 @@
                             localStorage.setItem('areas', JSON.stringify(this.areaResponse))
                         })
                         .catch((err) => { 
-                            if (err.response) {
-                                this.errBanner = true
-                            } 
-                            else if (err.request) {
-                                this.errBanner = true
-                            } 
-                            else {
-                                this.errBanner = true
-                            }
+                            this.errBanner = true
                             scrollTo({
                                 top: 0,
                                 behavior: 'smooth'
@@ -550,19 +534,11 @@
                             localStorage.setItem('areas', JSON.stringify(resp))
                         })
                         .catch((err) => { 
-                            if (err.response) {
-                                this.errBanner = true
-                            } 
-                            else if (err.request) {
-                                this.errBanner = true
-                            } 
-                            else {
-                                this.errBanner = true
-                            }
+                            this.errBanner = true
                             scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        })
+                                top: 0,
+                                behavior: 'smooth'
+                            })
                         })
                 }
                 getSessionToken()
@@ -570,15 +546,7 @@
                         this.sessionToken = response
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -589,15 +557,7 @@
                         this.cropToIDMap = response
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -608,15 +568,7 @@
                         this.userToIDMap = response
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -627,15 +579,7 @@
                         this.areaToIDMap = response
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -646,15 +590,7 @@
                         this.unitToIDMap = response
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -665,15 +601,7 @@
                         this.logTypeToIDMap = response
                     })
                     .catch((err) => { 
-                        if (err.response) {
-                            this.errBanner = true
-                        } 
-                        else if (err.request) {
-                            this.errBanner = true
-                        } 
-                        else {
-                            this.errBanner = true
-                        }
+                        this.errBanner = true
                         scrollTo({
                             top: 0,
                             behavior: 'smooth'
