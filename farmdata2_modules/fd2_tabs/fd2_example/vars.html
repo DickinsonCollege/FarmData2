@@ -33,7 +33,6 @@
             </tr>
         </tbody>
     </table>
-    <button data-cy="update-labor-btn" @click="updateConfig" >Change labor configuration</button> 
 </div>
 
 <script>
@@ -53,25 +52,6 @@ new Vue({
         sessionToken: null,
     },
     methods: {
-        updateConfig(id) {
-            if (this.configObj.labor == "Required") {
-                this.configObj.labor = "Optional";
-
-                setConfiguration(this.configObj, this.sessionToken).then(() => {
-
-                }).catch((error) => {
-                    console.error("Failed to update configuration")
-                })
-            } else if (this.configObj.labor == "Optional") {
-                this.configObj.labor = "Required";
-
-                setConfiguration(this.configObj, this.sessionToken).then(() => {
-
-                }).catch((error) => {
-                    console.error("Failed to update configuration")
-                })
-            }
-        }
     },
     created() {
         getConfiguration().then((response) => {
