@@ -1,49 +1,58 @@
 <body>
     <div id='transplantingInput'>
         <h1 style='text-align:center;'>Transplanting Input Log</h1> 
-        <br>
-        <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
-            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
-                <label for='date-selection'>Date of Transplanting:</label><label style='color:  #da4f3f'>*</label>
-                <input type='date' id='date-selection' name='date-selection' v-model='selectedDate'
-                :min="getMinDate" :max="getMaxDate">
-                <!--Note: method setNewDate-->
-                <br> 
-                <br>
-                <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f'>*</label></dropdown-with-all>
-                <br>
-                <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
-                <br>
-                <!-- Date of Seeding here -->
-                <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedingDateFilter' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
-                <br>
-                <!-- Inserting rows per bed input here -->
-                <label for='BedRows'>Number of rows per bed:<label style='color: #da4f3f'>*</label>
-                <input type='number' id='BedRows' name='BedRows' @selection-changed='setNewBedRows' v-model='rowsPerBed' value='1' min='1'>
-                <br>
-		<!-- Inserting bedfeet input here -->
-		<label for='BedFeet'>Bed feet:<label style='color: #da4f3f'>*</label>
-		<input type='number' id='BedFeet' name='BedFeet' @selection-changed='setNewBedFeet' v-model='bedFeet' value='1' min='1'>
-		<br>
-		<br>
-                <label>Comments: </label><textarea data-cy="comments" v-model='comments'></textarea>
+        <div class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+            <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isConfirmed == true">
+                Log created and saved successfully.
             </div>
+            <div data-cy='alert-cancel'class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
+                Log submission canceled by user. The log is <strong>NOT</strong> saved.  
+            </div>
+        </div>
+        <fieldset class="panel panel-default center-block" style='max-width: 500px; margin-top: 25px;'>
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
+                <div class="center-block" style='padding: 12px;text-align:center;font-size: medium'>
+                    <label for='date-selection'>Date:</label><label style='color:  #da4f3f; margin-top: 15px'>*</label>
+                    <input type='date' id='date-selection' name='date-selection' v-model='selectedDate'
+                    :min="getMinDate" :max="getMaxDate">
+                    <!--Note: method setNewDate-->
+                    <br> 
+                    <dropdown-with-all data-cy="crop-selection" :dropdown-list='cropArray' @selection-changed='setNewCrop'>Crop:<label style='color: #da4f3f; margin-top: 15px'>*</label></dropdown-with-all>
+                    <br>
+                    <dropdown-with-all data-cy="area-selection" :dropdown-list='areaFilter' @selection-changed='setNewArea'>Area:<label style='color: #da4f3f; margin-top: 15px'>*</label></dropdown-with-all>
+                    <br>
+                    <!-- Date of Seeding here -->
+                    <dropdown-with-all data-cy="seed-date-selection" :dropdown-list='seedingDateFilter' @selection-changed='setNewSeedDate'>Date of seeding:<label style='color: #da4f3f'>*</label></dropdown-with-all>
+                    <br>
+                    <!-- Inserting rows per bed input here -->
+                    <label for='BedRows'>Rows/Bed: <label style='color: #da4f3f'>*</label>
+                    <regex-input data-cy='num-rowbed-input' :reg-exp="regPosInt" set-type="number" :default-val="numRowBed" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumRowBed" @match-changed="(newBool) => updateValidMap('validNumRowBed', newBool)"></regex-input>
+                    <br>
+            <!-- Inserting bedfeet input here -->
+            <label for='BedFeet'>Bed feet:<label style='color: #da4f3f'>*</label>
+            <regex-input data-cy='num-feet-input':reg-exp="regPosInt" set-type="number" :default-val="numFeet" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumFeet" @match-changed="(newBool) => updateValidMap('validNumFeet', newBool)"></regex-input> 
+            <br>
+            <br>
+                </div>
         </fieldset>
         <fieldset class="panel panel-default center-block" style="max-width: 500px;">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
-            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; display:flex'>
-                <label>Number of Workers:<label style='color: #da4f3f'>*</label> </label><input data-cy="num-workers" style='width: 50px;' type=number value='1' min='1' v-model='numWorkers'>
-                <label> Time:<label style='color: #da4f3f'>*</label> </label><input data-cy='time-spent' style='width: 60px;' type=number value='1' min='1' v-model='time'>
-		<!-- Inserting time units here -->
-		<!-- Adding @selection-changed method -->
-		<label> Units:<label style='color: #da4f3f'>*</label> </label>		
-		<select id='timeUnit' name='TimeUnit' @selection-changed='setNewTimeUnit' v-model='selectedTimeUnit'>
-			<option>hours</option>
-			<option selected>minutes</option>
-		</select>
+            <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
+                <label style='color: #da4f3f'>*&nbsp;</label>
+                <regex-input data-cy='num-worker-input' :reg-exp="regPosInt" :default-val="numWorkers" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumWorkers" @match-changed="(newBool) => updateValidMap('validNumWorkers', newBool)"></regex-input>                                                
+                <label>&nbsp; Worker(s) for </label> 
+                <label><label style='color: #da4f3f'>*</label> 
+                <regex-input data-cy='minute-input' v-show='selectedTimeUnit == "minutes"' :reg-exp='regPosInt' :default-val="minute" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setMinute" @match-changed="(newBool) => updateValidMap('validMinute', newBool)"></regex-input>                                                
+                <regex-input data-cy='hour-input' v-show='selectedTimeUnit == "hours"' :reg-exp='regHour' :default-val="hour" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setHour" @match-changed="(newBool) => updateValidMap('validHour', newBool)"></regex-input>                                                
+                <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit' :disabled='submitInProgress'></dropdown-with-all></label>
             </div>
         </fieldset>
+        <fieldset class="panel panel-default center-block" style='max-width: 500px; '>
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Comments</legend>
+            <div class="center-block" style='padding: 12px; text-align: center; font-size: medium; margin-top: 45px;'>
+                <textarea data-cy="comments" v-model='comments' style='height: 25px; width: 400px;' :disabled='submitInProgress'></textarea>
+            </div>
+            </fieldset>
         <div style='text-align:center;'>
             <label style='color: #da4f3f'>* required field.</label>
         </div>
@@ -67,10 +76,11 @@
                 selectedSeedDate: null, //some crops don't have tray seeding dates (N/A ->0000-00-00) as they arrived in trays
                 selectedTimeUnit: 'minutes',
                 comments: '',
-                numWorkers: 0,
-                time: 0, 
-                rowsPerBed: 1,
-                bedFeet: 1,	
+                numWorkers: null,
+                minute: null,
+                hour: null, 
+                numRowBed: null,
+                numFeet: null,	
                 cropArray: [],
                 areaResponse: [],
                 timeUnits: ['minutes', 'hours'],
@@ -82,6 +92,17 @@
                 areaToIDMap: new Map(),
                 logTypeToIDMap: new Map(),
                 plantingId: 0,
+                isConfirmed: null,
+                submitInProgress: false, 
+                validMap: {
+                    "validNumWorkers": false,
+                    "validMinute": false,
+                    "validHour": false,
+                    "validNumRowBed": false,
+                    "validNumFeet": false,
+                },
+                regPosInt: "^[1-9]+[0-9]*$",
+                regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
             },
             methods:{
                 setNewDate(newDate){
@@ -108,19 +129,82 @@
                 setNewBedFeet(newBedFeet){
                     this.bedFeet = newBedFeet
                 },
-                saveLog(){
+                updateValidMap(key, bool) {    
+                    this.validMap[key] = bool;
+                },
+                setNewDate(newDate){
+                    this.selectedDate = newDate
+                },
+                setNewCrop(newCrop){
+                    this.selectedCrop = newCrop
+                },
+                setNewArea(newArea){
+                    this.selectedArea = newArea
+                    this.savedArea = newArea
+                },
+                setNewTimeUnit(newTimeUnit){
+                    this.selectedTimeUnit = newTimeUnit
+                },
+                setNewFeetUnit(newFeetUnit){
+                    this.selectedFeetUnit = newFeetUnit
+                },
+                setNewNumCellsPerTray(newNumCellsPerTray){
+                    this.numCellsPerTray = newNumCellsPerTray
+                },
+                setNewNumOfTrays(newNumOfTrays){
+                    this.numOfTrays = newNumOfTrays
+                },
+                setNewNumSeedsPlanted(newNumSeedsPlanted) {
+                    this.numSeedsPlanted = newNumSeedsPlanted
+                },
+                setNewNumRowBed(newNumRowBed) {
+                    this.numRowBed = newNumRowBed
+                },
+                setNewNumFeet(newNumFeet) {
+                    this.numFeet = newNumFeet
+                },
+                setNewNumWorkers(newNumWorkers) {
+                    this.numWorkers = newNumWorkers
+                },
+                setMinute(newMinute) {
+                    this.minute = newMinute
+                },
+                setHour(newHour) {
+                    this.hour = newHour
+                },
+                saveLog() {
                     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
                         this.plantingId = response.data.id
                     }).then(() => {
                         createRecord('/log', this.logData, this.sessionToken).then((response) => {
                         })
                     })
-                    if(confirm("You have saved a log! Would you like to go the transplanting report page?")){
-                        //Modify later after checking the endpoint
-                        console.log("log created successfully")
-                        window.location.replace('/farm/fd2-barn-kit/transplantingReport')
-                    }
+                    this.isConfirmed = true
+                    this.submitInProgress = false
+                    setTimeout(() => {
+                        this.isConfirmed = null 
+                    }, 3000)    
                 },
+                cancelLog() {
+                    this.submitInProgress = false
+                    this.isConfirmed = false
+                    setTimeout(() => { 
+                        this.isConfirmed = null
+                    }, 3000)
+                },
+                // saveLog(){
+                //     createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
+                //         this.plantingId = response.data.id
+                //     }).then(() => {
+                //         createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                //         })
+                //     })
+                //     if(confirm("You have saved a log! Would you like to go the transplanting report page?")){
+                //         //Modify later after checking the endpoint
+                //         console.log("log created successfully")
+                //         window.location.replace('/farm/fd2-barn-kit/transplantingReport')
+                //     }
+                // },
                 sixMonthsFilter(pastTime) {
                     const now = new Date();
 
