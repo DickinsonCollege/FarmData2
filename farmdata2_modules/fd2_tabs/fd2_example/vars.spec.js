@@ -3,6 +3,7 @@ const dayjs = require('dayjs')
 var FarmOSAPI = require('../resources/FarmOSAPI.js')
 var getSessionToken = FarmOSAPI.getSessionToken
 var getConfiguration = FarmOSAPI.getConfiguration
+var setConfiguration = FarmOSAPI.setConfiguration
 describe('Test the fd2 javascript variables defined by the module', () => {
     context('check vars as the admin user', () => {
         
@@ -120,45 +121,42 @@ describe('Test the fd2 javascript variables defined by the module', () => {
             } 
         })
 
-        // it("check values in the table after the values are updated", () => {
-        //     // check initial values 
-        //     var keys = Object.keys(configMap)
-        //     for (let i = 0; i < keys.length; i++) {
-        //         cy.get('[data-cy=table-headings]')
-        //             .should('contain.text', keys[i])
-        //         cy.get('[data-cy=table-data]')
-        //             .should('contain', configMap[keys[i]])
-        //     } 
-        //     // update the config object by clicking the button
-        //     cy.intercept('PUT', 'fd2_config/1').as('updateConfig')
-        //     cy.get('[data-cy=update-labor-btn]')
-        //         .click()
+        it.only("check values in the table after the values are updated", () => {
+            // check initial values 
+            var keys = Object.keys(configMap)
+            
+            for (let i = 0; i < keys.length; i++) {
+                cy.get('[data-cy=table-headings]')
+                    .should('contain.text', keys[i])
+                cy.get('[data-cy=table-data]')
+                    .should('contain', configMap[keys[i]])
+            } 
+            // update the config object
+            var newConfigObj = { id:1, labor: "Optional"}
+            cy.intercept('GET', '/fd2_config/1').as('newconfig')
+            cy.wrap(setConfiguration(newConfigObj, sessionToken))
+            .then(() => {
+                cy.wrap(getConfiguration()).as('getNewConfigMap')
+            })
+            // read the config map again to verify update
 
-        //     // set up intercept here before calling getConfiguration()
-        //     cy.intercept('GET', '/fd2_config/1').as('newconfig')
-        //     cy.wait('@updateConfig')
-        //     .then(interception => {
-        //         // read the response
-        //         expect(interception.response.statusCode).to.eq(200)
-        //         cy.wrap(getConfiguration()).as('getNewConfigMap')
-        //     })
-        //     // read the config map again to verify update
-        //     cy.get('@getNewConfigMap').should(function(map) {
-        //         configMap = map.data
-        //     })
-        //     cy.wait('@newconfig')
-        //     .then(() => {
-        //         var newkeys = Object.keys(configMap)
-        //         console.log(configMap)
-        //         console.log(newkeys)
-        //         for (let i = 0; i < newkeys.length; i++) {
-        //             cy.get('[data-cy=table-headings]')
-        //                 .should('contain.text', newkeys[i])
-        //             cy.get('[data-cy=table-data]')
-        //                 .should('contain', configMap[keys[i]])
-        //         }
-        //     })
-    //     })
+            cy.get('@getNewConfigMap').should(function(map) {
+                newconfigMap = map.data
+            })
+            cy.reload()
+            .then(() => {
+                var newkeys = Object.keys(newconfigMap)
+                for (let i = 0; i < newkeys.length; i++) {
+                    cy.get('[data-cy=table-headings]')
+                        .should('contain.text', newkeys[i])
+                    cy.get('[data-cy=table-data]')
+                        .should('contain', newconfigMap[newkeys[i]])
+                } 
+            })
+            .then(() => {
+                setConfiguration(configMap, sessionToken)
+            })
+        })
     })
     // Note: The FD2 Example tab is not shown when logged in as guest.
 })
