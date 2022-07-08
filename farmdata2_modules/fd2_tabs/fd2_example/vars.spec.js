@@ -114,22 +114,26 @@ describe('Test the fd2 javascript variables defined by the module', () => {
             var keys = Object.keys(configMap)
             // for loop to check the headings and data in the table
             for (let i = 0; i < keys.length; i++) {
-                cy.get('[data-cy=table-headings]')
-                    .should('contain.text', keys[i])
-                cy.get('[data-cy=table-data]')
-                    .should('contain', configMap[keys[i]])
+                attr1='[data-cy='+i+'configName]'
+                attr2='[data-cy='+i+'data]'
+                cy.get(attr1)
+                    .should('have.text', keys[i])
+                cy.get(attr2)
+                    .should('have.text', configMap[keys[i]])
             } 
         })
 
-        it.only("check values in the table after the values are updated", () => {
+        it("check values in the table after the values are updated", () => {
             // check initial values 
             var keys = Object.keys(configMap)
             
             for (let i = 0; i < keys.length; i++) {
-                cy.get('[data-cy=table-headings]')
-                    .should('contain.text', keys[i])
-                cy.get('[data-cy=table-data]')
-                    .should('contain', configMap[keys[i]])
+                attr1='[data-cy='+i+'configName]'
+                attr2='[data-cy='+i+'data]'
+                cy.get(attr1)
+                    .should('have.text', keys[i])
+                cy.get(attr2)
+                    .should('have.text', configMap[keys[i]])
             } 
             // update the config object
             var newConfigObj = { id:1, labor: "Optional"}
@@ -147,10 +151,12 @@ describe('Test the fd2 javascript variables defined by the module', () => {
             .then(() => {
                 var newkeys = Object.keys(newconfigMap)
                 for (let i = 0; i < newkeys.length; i++) {
-                    cy.get('[data-cy=table-headings]')
-                        .should('contain.text', newkeys[i])
-                    cy.get('[data-cy=table-data]')
-                        .should('contain', newconfigMap[newkeys[i]])
+                    attr1='[data-cy='+i+'configName]'
+                    attr2='[data-cy='+i+'data]'
+                    cy.get(attr1)
+                        .should('have.text', newkeys[i])
+                    cy.get(attr2)
+                        .should('have.text', newconfigMap[newkeys[i]])
                 } 
             })
             .then(() => {

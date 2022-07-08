@@ -98,7 +98,7 @@ describe('Test the configuration page', () =>{
                 .should('not.be.visible')
         })
 
-        it('test if save button updates the JSON', () => {
+        it.only('test if save button updates the JSON', () => {
             cy.get('[data-cy=labor-dropdown] > [data-cy=dropdown-input]')
                 .select('Optional')
             cy.intercept('PUT', 'fd2_config/1').as('changeConfig')
@@ -114,8 +114,20 @@ describe('Test the configuration page', () =>{
             .then(interception => {
                 // read the response
                 expect(interception.status).to.eq(200)
-                expect(interception.data.labor).to.eq("Optional")
             })
+            cy.get('@getChangedConfigMap').should((map) => {
+                newMap = map.data
+            })
+            // reload and verify that the dropdown is updated correctly
+            cy.reload()
+            cy.get('[data-cy=labor-dropdown] > [data-cy=dropdown-input] option:selected')
+                .should('have.text', "Optional")
+            // now reset the JSON object
+            cy.intercept('PUT', 'fd2_config/1').as('setDefault')
+            cy.get('[data-cy=labor-dropdown] > [data-cy=dropdown-input]')
+                .select(defaultLaborConfig)
+            cy.get('[data-cy=save-button]')
+                .click()
         })
     })
 
