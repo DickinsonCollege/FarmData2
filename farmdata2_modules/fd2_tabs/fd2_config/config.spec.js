@@ -46,7 +46,7 @@ describe('Test the configuration page', () =>{
             // Setting up wait for the request in the created() to complete.
             cy.intercept('GET', 'restws/session/token').as('sessiontok')
             cy.intercept('GET', '/fd2_config/1').as('getConfigMap')       
-                     
+            
             cy.visit('/farm/fd2-config')
 
             cy.wait(['@sessiontok', '@getConfigMap'])
