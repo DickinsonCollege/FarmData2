@@ -477,15 +477,7 @@
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
                         })
                         .catch((err) => { 
-                            if (err.response) {
-                                this.errBanner = true
-                            } 
-                            else if (err.request) {
-                                this.errBanner = true
-                            } 
-                            else {
-                                this.errBanner = true
-                            }
+                            this.errBanner = true
                             scrollTo({
                                 top: 0,
                                 behavior: 'smooth'
@@ -499,15 +491,7 @@
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
                         })
                         .catch((err) => { 
-                            if (err.response) {
-                                this.errBanner = true
-                            } 
-                            else if (err.request) {
-                                this.errBanner = true
-                            } 
-                            else {
-                                this.errBanner = true
-                            }
+                            this.errBanner = true
                             scrollTo({
                                 top: 0,
                                 behavior: 'smooth'
