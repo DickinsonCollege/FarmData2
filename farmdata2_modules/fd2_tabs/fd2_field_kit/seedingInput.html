@@ -209,8 +209,8 @@
                     var pageHeader = document.getElementById('navbar');
                     var headerBounds = pageHeader.getBoundingClientRect();
                     var alertBounds = successBanner.getBoundingClientRect();
-                    scrollTo({
-                        top: (-(alertBounds.bottom) - headerBounds.bottom),
+                    scrollBy({
+                        top: alertBounds.top - headerBounds.bottom,
                         behavior: 'smooth'
                     })
                     setTimeout(() => { 
@@ -225,8 +225,8 @@
                     var pageHeader = document.getElementById('navbar');
                     var headerBounds = pageHeader.getBoundingClientRect();
                     var alertBounds = cancelBanner.getBoundingClientRect();
-                    scrollTo({
-                        top: (-(alertBounds.bottom) - headerBounds.bottom),
+                    scrollBy({
+                        top: alertBounds.top - headerBounds.bottom,
                         behavior: 'smooth'
                     })
                     setTimeout(() => { 
