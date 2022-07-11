@@ -1,17 +1,22 @@
 <body>
     <div id='seedingInput'>
+<<<<<<< HEAD
         <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
             Error Processing Request. This may be an intermittent network issue. Please try again later. 
         </div>
         <div class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+=======
+
+        <h1 style='text-align:center;'>Seeding Input Log</h1> 
+        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+            <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
+                Log submission canceled by user. The log is <strong>NOT</strong> saved.  
+            </div>
+>>>>>>> main
             <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isConfirmed == true">
                 Log created and saved successfully.
             </div>
-            <div data-cy='alert-cancel'class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
-                Log submission canceled by user. The log is <strong>NOT</strong> saved.  
-            </div>
         </div>
-        <h1 style='text-align:center;'>Seeding Input Log</h1> 
         <br>
         <fieldset class="panel panel-default center-block" style='max-width: 500px;'>
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Data</legend>
@@ -209,9 +214,17 @@
                             })    
                             this.isConfirmed = true
                             this.submitInProgress = false
-                            setTimeout(() => {
-                                this.isConfirmed = null 
-                            }, 3000)    
+                            var successBanner = document.getElementById('scrollBanners');
+                            var pageHeader = document.getElementById('navbar');
+                            var headerBounds = pageHeader.getBoundingClientRect();
+                            var alertBounds = successBanner.getBoundingClientRect();
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                            setTimeout(() => { 
+                                this.isConfirmed = null
+                            }, 3000)     
                         })
                         .catch((err) => { 
                             this.errBanner = true
@@ -224,6 +237,14 @@
                 cancelLog() {
                     this.submitInProgress = false
                     this.isConfirmed = false
+                    var cancelBanner = document.getElementById('scrollBanners');
+                    var pageHeader = document.getElementById('navbar');
+                    var headerBounds = pageHeader.getBoundingClientRect();
+                    var alertBounds = cancelBanner.getBoundingClientRect();
+                    scrollBy({
+                        top: alertBounds.top - headerBounds.bottom,
+                        behavior: 'smooth'
+                    })
                     setTimeout(() => { 
                         this.isConfirmed = null
                     }, 3000)

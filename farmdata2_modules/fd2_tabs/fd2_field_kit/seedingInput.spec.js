@@ -543,7 +543,7 @@ describe('Test the seeding input page', () => {
         })
 
         context('Labor input test', () => {
-           
+
             beforeEach(() => {
                 cy.restoreLocalStorage()
             })
@@ -802,7 +802,12 @@ describe('Test the seeding input page', () => {
                     .click()
                 cy.get('[data-cy=cancel-button]')
                     .click()
-                cy.get('[data-cy=alert-cancel')     // need to add scroll up test here after added
+                    .then(() => {
+                        cy.get('[data-cy=alert-container]')
+                        cy.window().its('scrollY').should('equal', 300)
+                    })
+
+                cy.get('[data-cy=alert-cancel')    
                     .should('be.visible')
                     .wait(3000)
                     .should('not.be.visible')
@@ -833,9 +838,15 @@ describe('Test the seeding input page', () => {
                     .click()
                 cy.get('[data-cy=confirm-button]')
                     .click()
+                    .then(() => {
+                        cy.get('[data-cy=alert-container]')
+                            .then(() => 
+                                cy.window().its('scrollY').should('equal', 300));
+                    })
+
                 cy.get('[data-cy=alert-cancel')
                     .should('not.be.visible')
-                cy.get('[data-cy=alert-success')    // need to add scroll up test here after added
+                cy.get('[data-cy=alert-success')   
                     .should('be.visible')
                     .wait(3000)
                     .should('not.be.visible')
