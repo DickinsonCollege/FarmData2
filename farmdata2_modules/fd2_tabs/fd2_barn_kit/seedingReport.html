@@ -1,9 +1,11 @@
 <body>
     <div id="seedingReport" v-cloak>
-        <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-            Error Processing Request. This may be an intermittent network issue. Please try again later. 
-        </div>
         <h1 class="text-center">Seeding Report</h1>
+        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+            <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+                Error Processing Request. This may be an intermittent network issue. Please try again later. 
+            </div>
+        </div>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
@@ -140,8 +142,12 @@
                         })
                         .catch((err) => { 
                             this.errBanner = true
+                            var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
                             scrollBy({
-                                top: 0,
+                                top: alertBounds.top - headerBounds.bottom,
                                 behavior: 'smooth'
                             })
                         })
@@ -676,8 +682,12 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
                         scrollBy({
-                            top: 0,
+                            top: alertBounds.top - headerBounds.bottom,
                             behavior: 'smooth'
                         })
                     })
@@ -687,8 +697,12 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
                         scrollBy({
-                            top: 0,
+                            top: alertBounds.top - headerBounds.bottom,
                             behavior: 'smooth'
                         })
                     })
@@ -698,8 +712,12 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
                         scrollBy({
-                            top: 0,
+                            top: alertBounds.top - headerBounds.bottom,
                             behavior: 'smooth'
                         })
                     })
@@ -709,8 +727,12 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
                         scrollBy({
-                            top: 0,
+                            top: alertBounds.top - headerBounds.bottom,
                             behavior: 'smooth'
                         })
                     })
@@ -720,8 +742,12 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
                         scrollBy({
-                            top: 0,
+                            top: alertBounds.top - headerBounds.bottom,
                             behavior: 'smooth'
                         })
                     })
@@ -731,8 +757,12 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
                         scrollBy({
-                            top: 0,
+                            top: alertBounds.top - headerBounds.bottom,
                             behavior: 'smooth'
                         })
                     })
@@ -742,8 +772,12 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
                         scrollBy({
-                            top: 0,
+                            top: alertBounds.top - headerBounds.bottom,
                             behavior: 'smooth'
                         })
                     })
