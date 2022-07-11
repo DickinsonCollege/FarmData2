@@ -1,8 +1,10 @@
 <body>
     <div id='seedingInput'>
-
         <h1 style='text-align:center;'>Seeding Input Log</h1> 
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+            <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+                Error Processing Request. This may be an intermittent network issue. Please try again later. 
+            </div>
             <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
@@ -20,7 +22,7 @@
             </div>
         </fieldset>
         <fieldset class="panel panel-default center-block" style="max-width: 500px;">
-           <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>
                 <input data-cy='tray-seedings' type='radio' name='typeOfSeeding' value='Tray Seedings' v-model='selectedSeedingType' :checked='selectedSeedingType == "Tray Seedings"' v-bind:disabled='submitInProgress'><label>Tray &nbsp;</label>
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType' :checked='selectedSeedingType == "Direct Seedings"' v-bind:disabled='submitInProgress'><label>Direct</label> 
             </legend>
@@ -128,7 +130,8 @@
                     "validNumFeet": false,
                 },
                 regPosInt: "^[1-9]+[0-9]*$",
-                regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
+                errBanner: null,
             },
             methods:{
                 updateValidMap(key, bool) {    
@@ -196,34 +199,47 @@
                     this.submitInProgress = true
                 },
                 saveLog() {
-                    createRecord('/farm_asset', this.plantingLogData, this.sessionToken).then((response) => {
-                        this.plantingId = response.data.id
-                    }).then(() => {
-                        createRecord('/log', this.logData, this.sessionToken).then((response) => {
-                            this.clearFields();
-                        })    
-                    })
-                    this.isConfirmed = true
-                    this.submitInProgress = false
-                    var successBanner = document.getElementById('scrollBanners');
-                    var pageHeader = document.getElementById('navbar');
-                    var headerBounds = pageHeader.getBoundingClientRect();
-                    var alertBounds = successBanner.getBoundingClientRect();
-                    scrollBy({
-                        top: alertBounds.top - headerBounds.bottom,
-                        behavior: 'smooth'
-                    })
-                    setTimeout(() => { 
-                        this.isConfirmed = null
-                    }, 3000)   
+                    createRecord('/farm_asset', this.plantingLogData, this.sessionToken)
+                        .then((response) => {
+                            this.plantingId = response.data.id
+                        })
+                        .then(() => {
+                            createRecord('/log', this.logData, this.sessionToken).then((response) => {
+                                this.clearFields();
+                            })    
+                            this.isConfirmed = true
+                            this.submitInProgress = false
+                            var successBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = successBanner.getBoundingClientRect()
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                            setTimeout(() => { 
+                                this.isConfirmed = null
+                            }, 3000)     
+                        })
+                        .catch((err) => { 
+                            this.errBanner = true
+                            var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                        })
                 },
                 cancelLog() {
                     this.submitInProgress = false
                     this.isConfirmed = false
-                    var cancelBanner = document.getElementById('scrollBanners');
-                    var pageHeader = document.getElementById('navbar');
-                    var headerBounds = pageHeader.getBoundingClientRect();
-                    var alertBounds = cancelBanner.getBoundingClientRect();
+                    var cancelBanner = document.getElementById('scrollBanners')
+                    var pageHeader = document.getElementById('navbar')
+                    var headerBounds = pageHeader.getBoundingClientRect()
+                    var alertBounds = cancelBanner.getBoundingClientRect()
                     scrollBy({
                         top: alertBounds.top - headerBounds.bottom,
                         behavior: 'smooth'
@@ -231,6 +247,9 @@
                     setTimeout(() => { 
                         this.isConfirmed = null
                     }, 3000)
+                },
+                hideBanner(){
+                    this.errBanner = false
                 },
             },
             computed: {
@@ -472,46 +491,167 @@
             created(){
                 let fullResponse = []
                 if(localStorage.getItem('crops') == null){
-                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
-                        this.cropArray = fullResponse.map((h) => h.name)
-                        localStorage.setItem('crops', JSON.stringify(this.cropArray))
-                    })
+                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse)
+                        .then(() => {
+                            this.cropArray = fullResponse.map((h) => h.name)
+                            localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                        })
+                        .catch((err) => { 
+                            this.errBanner = true
+                            var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                        })
                 }else{
                     this.cropArray = JSON.parse(localStorage.getItem('crops'))
-                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse).then(() => {
-                        this.cropArray = fullResponse.map((h) => h.name)
-                        localStorage.setItem('crops', JSON.stringify(this.cropArray))
-                    })
+                    getAllPages('/taxonomy_term.json?bundle=farm_crops',fullResponse)
+                        .then(() => {
+                            this.cropArray = fullResponse.map((h) => h.name)
+                            localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                        })
+                        .catch((err) => { 
+                            this.errBanner = true
+                            var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                        })
                 }
                 if(localStorage.getItem('areas') == null){
-                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse).then(() => {
-                        localStorage.setItem('areas', JSON.stringify(this.areaResponse))
-                    })
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse)
+                        .then(() => {
+                            localStorage.setItem('areas', JSON.stringify(this.areaResponse))
+                        })
+                        .catch((err) => { 
+                            this.errBanner = true
+                            var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                        })
                 }else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
-                    getAllPages('/taxonomy_term.json?bundle=farm_areas').then((resp) => {
-                        this.areaResponse = resp
-                        localStorage.setItem('areas', JSON.stringify(resp))
-                    })
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas')
+                        .then((resp) => {
+                            this.areaResponse = resp
+                            localStorage.setItem('areas', JSON.stringify(resp))
+                        })
+                        .catch((err) => { 
+                            this.errBanner = true
+                            this.errBanner = true
+                            var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                        })
                 }
-                getSessionToken().then((response) => {
-                    this.sessionToken = response
-                })
-                getCropToIDMap().then((response) => {
-                    this.cropToIDMap = response
-                })
-                getUserToIDMap().then((response) => {
-                    this.userToIDMap = response
-                })
-                getAreaToIDMap().then((response) => {
-                    this.areaToIDMap = response
-                })
-                getUnitToIDMap().then((response) => {
-                    this.unitToIDMap = response
-                })
-                getLogTypeToIDMap().then((response) => {
-                    this.logTypeToIDMap = response
-                })
+                getSessionToken()
+                    .then((response) => {
+                        this.sessionToken = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getCropToIDMap()
+                    .then((response) => {
+                        this.cropToIDMap = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getUserToIDMap()
+                    .then((response) => {
+                        this.userToIDMap = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getAreaToIDMap()
+                    .then((response) => {
+                        this.areaToIDMap = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getUnitToIDMap()
+                    .then((response) => {
+                        this.unitToIDMap = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getLogTypeToIDMap()
+                    .then((response) => {
+                        this.logTypeToIDMap = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
             }
         })
         Vue.config.devtools = true;
