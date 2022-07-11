@@ -170,6 +170,27 @@
         class="loader center-block" 
         v-if="waitingOnLogs"></div>
     </UL>
+
+    <p><b>API Error Handling</b></p>
+    <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+        Error Processing Request. This may be an intermittent network issue. Please try again later. 
+    </div>
+    <UL>
+        <button data-cy='fetch-err-api'
+            :disabled='waitingOnLogs' 
+            @click='badAPICall'>Fetch All Seeding Logs</button>
+        <p>Result:</p>
+        <UL>
+            <p>Purposely makes an erroneous API call to demonstrate how the API error handler deals with errors in API requests</p>
+
+            <LI>First Log Name: <span data-cy='first-err-log'>{{ firstSeedingLogName }}</span>
+            <LI>Last Log Name: <span data-cy='second-err-log'>{{ lastSeedingLogName }}</span>
+        </UL>
+        
+        <div data-cy="loading-err-spinner" 
+        class="loader center-block" 
+        v-if="waitingOnErr"></div>
+    </UL>
 </div>
 
 <script>
@@ -219,6 +240,8 @@ new Vue({
         tableVisibleColumns: [true, true, false, true, true, true],
 
         waitingOnLogs: false,
+        waitingOnErr: false,
+        errBanner: false,
         seedingLogs: [],
 
         regularExp: null,
@@ -314,7 +337,7 @@ new Vue({
             this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01']})
         },
         fetchSeedingLogs() {
-            // To use the spinner display it
+            // To display the spinner
             this.waitingOnLogs = true
 
             this.seedingLogs = []
@@ -327,6 +350,45 @@ new Vue({
             .then(() => {
                 this.waitingOnLogs = false
             })
+        },
+        badAPICall() {
+            // To display the spinner
+            this.waitingOnErr = true
+
+            this.seedingLogs = []
+
+            // Purposely has a bad API call so behavior is the same
+            // every single time
+            getAllPages('abc')
+            .then(() => {
+                this.waitingOnErr = false
+            })
+            .catch((err) => { 
+                if (err.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    this.errBanner = true
+                    this.waitingOnErr = false
+                    console.log('Error code that falls out of 2xx.')
+                } 
+                else if (err.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    this.errBanner = true
+                    this.waitingOnErr = false
+                    console.log('No response was received');
+                } 
+                else {
+                    // Something happened in setting up the request that triggered an Error
+                    this.errBanner = true
+                    this.waitingOnErr = false
+                    console.log('Error Message: ', err.message);
+                }
+            })
+        },
+        hideBanner(){
+            this.errBanner = false
         },
     },
     computed: {
