@@ -43,7 +43,7 @@ let CustomTableComponent = {
     template:
     `<span>
         <button data-cy="export-btn" 
-            style="float: right; float: top;" class="btn fd2-red-button" @click="exportCSV">Export
+            style="float: right; float: top;" class="btn fd2-red-button" @click="exportCSV" v-if="csvName != ''">Export
         </button>
         <div class="sticky-table">
             <table data-cy="table" style="width:100%;" class="table table-bordered table-striped">
@@ -152,6 +152,10 @@ let CustomTableComponent = {
         inputOptions: {
             type: Array,
             default: null
+        },
+        csvName : {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -267,7 +271,7 @@ let CustomTableComponent = {
             var encodedUri = encodeURI(csvContent)
             var link = document.createElement("a")
             link.setAttribute("href", encodedUri)
-            link.setAttribute("download", "seedingReport_" + today + ".csv")
+            link.setAttribute("download", this.csvName + today + ".csv")
             document.body.appendChild(link)
 
             // This will download the csv file named "seedingReport_(today).csv"
