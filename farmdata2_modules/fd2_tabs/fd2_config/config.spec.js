@@ -13,7 +13,16 @@ describe('Test the configuration page', () =>{
     let defaultLaborConfig = null
     // set the labor configuration to required by default for testing
     let testConfig = { id: "1", labor: 'Required' }
-
+    before (() => {
+        cy.login('manager1', 'farmdata2')
+        .then(() => {
+            cy.wrap(getConfiguration()).as('def')
+        })
+        cy.get('@def').should(function(map) {
+            configMap = map.data
+            defaultLaborConfig = configMap.labor
+        })
+    })
     context('Test the labor configuration', () =>{
         beforeEach(() =>{
             cy.login('manager1', 'farmdata2')
@@ -29,7 +38,6 @@ describe('Test the configuration page', () =>{
             })
             cy.get('@configData').should(function(map) {
                 configMap = map.data
-                defaultLaborConfig = configMap.labor
             })
             .then(() => {
                 cy.wrap(setConfiguration(testConfig, sessionToken)).as('updateConfig')
@@ -91,14 +99,18 @@ describe('Test the configuration page', () =>{
                 .select('Optional')
             cy.get('[data-cy=save-button]')
                 .click()
-            cy.get('[data-cy=alert-success')
-                .should('be.visible')     
-            cy.wait(3000)
+                .then(() => {
+                    cy.get('[data-cy=alert-success')
+                        .should('be.visible')
+                    cy.get('[data-cy=alert-container]')
+                    cy.window().its('scrollY').should('equal', 0)
+                    cy.wait(3000)    
+                })
             cy.get('[data-cy=alert-success')
                 .should('not.be.visible')
         })
 
-        it.only('test if save button updates the JSON', () => {
+        it('test if save button updates the JSON', () => {
             cy.get('[data-cy=labor-dropdown] > [data-cy=dropdown-input]')
                 .select('Optional')
             cy.intercept('PUT', 'fd2_config/1').as('changeConfig')
@@ -127,14 +139,44 @@ describe('Test the configuration page', () =>{
             cy.get('[data-cy=labor-dropdown] > [data-cy=dropdown-input]')
                 .select(defaultLaborConfig)
             cy.get('[data-cy=save-button]')
-                .click()
+                .click({force: true}) // this will prevent Optional -> Optional
         })
     })
 
     context('API failure tests', () => {
         beforeEach(() => {
             cy.login('manager1', 'farmdata2')
+            .then(() => {
+                // Using wrap to wait for the asynchronus API request.
+                    cy.wrap(getSessionToken()).as('token')
+                    cy.wrap(getConfiguration()).as('configData')
 
+            })
+            // Wait here for the maps in the tests.
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            cy.get('@configData').should(function(map) {
+                configMap = map.data            })
+            .then(() => {
+                cy.wrap(setConfiguration(testConfig, sessionToken)).as('updateConfig')
+            })
+            cy.get('@updateConfig') 
+            .then(() => {
+                cy.wrap(getConfiguration()).as('getNewConfigMap')
+            })          
+            // set up intercept for setting up the configuration
+            cy.get('@getNewConfigMap').should(function(map) {
+                configMap = map.data
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', '/fd2_config/1').as('getConfigMap')       
+            
+            cy.visit('/farm/fd2-config')
+
+            cy.wait(['@sessiontok', '@getConfigMap'])
         })
 
         it('fail the session token API: outside of 2xx error code', () => {
@@ -143,6 +185,8 @@ describe('Test the configuration page', () =>{
             cy.visit('/farm/fd2-config')
             cy.wait('@failedSessionTok')
                 .then(() => {
+                    cy.get('[data-cy=alert-container]')
+                    cy.window().its('scrollY').should('equal', 0)    
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
                     .click()
@@ -156,6 +200,8 @@ describe('Test the configuration page', () =>{
             cy.visit('/farm/fd2-config')
             cy.wait('@failedSessionTok')
                 .then(() => {
+                    cy.get('[data-cy=alert-container]')
+                    cy.window().its('scrollY').should('equal', 0)   
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
                     .click()
@@ -169,6 +215,8 @@ describe('Test the configuration page', () =>{
             cy.visit('/farm/fd2-config')
             cy.wait('@failedGetConfig')
                 .then(() => {
+                    cy.get('[data-cy=alert-container]')
+                    cy.window().its('scrollY').should('equal', 0)    
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
                     .click()
@@ -182,6 +230,8 @@ describe('Test the configuration page', () =>{
             cy.visit('/farm/fd2-config')
             cy.wait('@failedGetConfig')
                 .then(() => {
+                    cy.get('[data-cy=alert-container]')
+                    cy.window().its('scrollY').should('equal', 0)    
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
                     .click()
@@ -198,11 +248,20 @@ describe('Test the configuration page', () =>{
                 .click()
             cy.wait('@failedChangeConfig') // wait for the log creation
                 .then(() => {
+                    cy.get('[data-cy=alert-container]')
+                    cy.window().its('scrollY').should('equal', 0)    
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
                     .click()
                     .should('not.visible')
                 })
+            // now reset the JSON object
+            cy.intercept('PUT', 'fd2_config/1').as('setDefault')
+            cy.get('[data-cy=labor-dropdown] > [data-cy=dropdown-input]')
+                .select(defaultLaborConfig)
+            cy.get('[data-cy=save-button]')
+                .click({force: true}) // this will prevent Optional -> Optional
+        
         })
 
         it('fail the set config API Request when save is clicked: network error', () => {
@@ -214,11 +273,20 @@ describe('Test the configuration page', () =>{
                 .click()
             cy.wait('@failedChangeConfig') // wait for the log creation
                 .then(() => {
+                    cy.get('[data-cy=alert-container]')
+                    cy.window().its('scrollY').should('equal', 0)    
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
                     .click()
                     .should('not.visible')
                 })
+            // now reset the JSON object
+            cy.intercept('PUT', 'fd2_config/1').as('setDefault')
+            cy.get('[data-cy=labor-dropdown] > [data-cy=dropdown-input]')
+                .select(defaultLaborConfig)
+            cy.get('[data-cy=save-button]')
+                .click({force: true}) // this will prevent Optional -> Optional
+        
         })
     })
 })

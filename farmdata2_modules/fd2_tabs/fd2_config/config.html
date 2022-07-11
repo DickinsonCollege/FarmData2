@@ -1,11 +1,13 @@
 <body>
     <div id="config">
         <h3>FarmData2 Configuration</h3>
-        <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-            Error Processing Request. This may be an intermittent network issue. Please try again later. 
-        </div>
-        <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isSaved == true">
-            Configuration Saved
+        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='margin:auto; font-size: large'>
+            <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+                Error Processing Request. This may be an intermittent network issue. Please try again later. 
+            </div>
+            <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isSaved == true">
+                Configuration Saved
+            </div>
         </div>
         <p data-cy='intro'>This configuration page contains setting for FarmData2 specific settings.</p>
         <div>
@@ -46,25 +48,29 @@
                             setTimeout(() => { 
                                 this.isSaved= false
                             }, 3000)
-
+                            var successBanner = document.getElementById('scrollBanners');
+                            var pageHeader = document.getElementById('navbar');
+                            var headerBounds = pageHeader.getBoundingClientRect();
+                            var alertBounds = successBanner.getBoundingClientRect();
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                            setTimeout(() => { 
+                                this.isConfirmed = null
+                            }, 3000)   
+                        
                         }) 
                         .catch((err) => { 
-                            if (err.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                this.errBanner = true
-                                console.log('Error code that falls out of 2xx.')
-                            } else if (err.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                this.errBanner = true
-                                console.log('No response was received');
-                            } else {
-                                // Something happened in setting up the request that triggered an Error
-                                this.errBanner = true
-                                console.log('Error Message: ', err.message);
-                            }
+                            this.errBanner = true
+                            var successBanner = document.getElementById('scrollBanners');
+                            var pageHeader = document.getElementById('navbar');
+                            var headerBounds = pageHeader.getBoundingClientRect();
+                            var alertBounds = successBanner.getBoundingClientRect();
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })  
                         })
                 },
                 hideBanner(){
@@ -85,44 +91,30 @@
                     this.sessionToken = response
                 })
                 .catch((err) => { 
-                    if (err.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        this.errBanner = true
-                        console.log('Error code that falls out of 2xx.')
-                    } else if (err.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        this.errBanner = true
-                        console.log('No response was received');
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        this.errBanner = true
-                        console.log('Error Message: ', err.message);
-                    }
+                    this.errBanner = true
+                    var successBanner = document.getElementById('scrollBanners');
+                    var pageHeader = document.getElementById('navbar');
+                    var headerBounds = pageHeader.getBoundingClientRect();
+                    var alertBounds = successBanner.getBoundingClientRect();
+                    scrollBy({
+                        top: alertBounds.top - headerBounds.bottom,
+                        behavior: 'smooth'
+                    }) 
                 })
                 getConfiguration().then((response) => {
                     this.configObj = response.data
                     this.selectedLaborConfig = response.data.labor
                 })
                 .catch((err) => { 
-                    if (err.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        this.errBanner = true
-                        console.log('Error code that falls out of 2xx.')
-                    } else if (err.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        this.errBanner = true
-                        console.log('No response was received');
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        this.errBanner = true
-                        console.log('Error Message: ', err.message);
-                    }
+                    this.errBanner = true
+                    var successBanner = document.getElementById('scrollBanners');
+                    var pageHeader = document.getElementById('navbar');
+                    var headerBounds = pageHeader.getBoundingClientRect();
+                    var alertBounds = successBanner.getBoundingClientRect();
+                    scrollBy({
+                        top: alertBounds.top - headerBounds.bottom,
+                        behavior: 'smooth'
+                    }) 
                 })
             }
         })       
