@@ -20,6 +20,23 @@
         <LI>UserID: <span data-cy="user-id">{{ userID }}</span></LI>
         <LI>UserName: <span data-cy="user-name">{{ userName }}</span></LI>
     </UL>
+    <p>The current values of the configuration variables are:</p>
+    <UL>
+        <table class ="table table-bordered" style="width: 20em">
+            <thead>
+                <tr>
+                    <th>Configuration Variables</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for='(name, i) in keyArray'>
+                    <td :data-cy=i+'configName'>{{ name }}</td>
+                    <td :data-cy=i+'data'>{{ configObj[name] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </UL>
 </div>
 
 <script>
@@ -35,7 +52,23 @@ new Vue({
         //   tabs so are avaiable there as well. 
         userID: fd2UserID,
         userName: fd2UserName,
+        configObj: {},
+        sessionToken: null,
     },
+    computed: {
+        keyArray() {
+            keys = Array.from(Object.keys(this.configObj));
+            return keys
+        },
+    },
+    created() {
+        getConfiguration().then((response) => {
+            this.configObj = response.data
+        })
+        getSessionToken().then((response) => {
+            this.sessionToken = response
+        })
+    }
 })
 
 //Allows Vue to be accessed in Dev Tools
