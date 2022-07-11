@@ -1,18 +1,10 @@
 <body>
     <div id='seedingInput'>
-<<<<<<< HEAD
-        <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-            Error Processing Request. This may be an intermittent network issue. Please try again later. 
-        </div>
-        <div class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
-=======
-
         <h1 style='text-align:center;'>Seeding Input Log</h1> 
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
->>>>>>> main
             <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isConfirmed == true">
                 Log created and saved successfully.
             </div>
@@ -228,7 +220,7 @@
                         })
                         .catch((err) => { 
                             this.errBanner = true
-                            scrollTo({
+                            scrollBy({
                                 top: 0,
                                 behavior: 'smooth'
                             })
@@ -499,7 +491,7 @@
                         })
                         .catch((err) => { 
                             this.errBanner = true
-                            scrollTo({
+                            scrollBy({
                                 top: 0,
                                 behavior: 'smooth'
                             })
@@ -513,7 +505,7 @@
                         })
                         .catch((err) => { 
                             this.errBanner = true
-                            scrollTo({
+                            scrollBy({
                                 top: 0,
                                 behavior: 'smooth'
                             })
@@ -526,7 +518,7 @@
                         })
                         .catch((err) => { 
                             this.errBanner = true
-                            scrollTo({
+                            scrollBy({
                                 top: 0,
                                 behavior: 'smooth'
                             })
@@ -540,7 +532,7 @@
                         })
                         .catch((err) => { 
                             this.errBanner = true
-                            scrollTo({
+                            scrollBy({
                                 top: 0,
                                 behavior: 'smooth'
                             })
@@ -552,7 +544,7 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
-                        scrollTo({
+                        scrollBy({
                             top: 0,
                             behavior: 'smooth'
                         })
@@ -563,7 +555,7 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
-                        scrollTo({
+                        scrollBy({
                             top: 0,
                             behavior: 'smooth'
                         })
@@ -574,7 +566,7 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
-                        scrollTo({
+                        scrollBy({
                             top: 0,
                             behavior: 'smooth'
                         })
@@ -585,7 +577,7 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
-                        scrollTo({
+                        scrollBy({
                             top: 0,
                             behavior: 'smooth'
                         })
@@ -596,7 +588,7 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
-                        scrollTo({
+                        scrollBy({
                             top: 0,
                             behavior: 'smooth'
                         })
@@ -607,7 +599,7 @@
                     })
                     .catch((err) => { 
                         this.errBanner = true
-                        scrollTo({
+                        scrollBy({
                             top: 0,
                             behavior: 'smooth'
                         })
