@@ -1,41 +1,123 @@
-<div>
-    <h3>FarmData2 Configuration</h3>
-    <p data-cy='intro'>This configuration page contains setting for FarmData2 specific settings.</p>
-
-    <p>This page should be redesigned and created using Vue to make it nicer to display and set the configurations.  For example, the Labor should be set and displayed using a dropdown with the three options "Required", "Optional", "Hidden". The page as it is below was just a quick functional test as a proof of concept.
-
-    <br><br>
-    <button onclick='getIt()'>Get Config</button>
-    <br>
-    <button onclick='makeOptional()'>Set Labor Optional</button>
-    <br>
-    <button onclick='makeRequired()'>Set Labor Required</button>
+<body>
+    <div id="config">
+        <h3>FarmData2 Configuration</h3>
+        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='margin:auto; font-size: large'>
+            <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+                Error Processing Request. This may be an intermittent network issue. Please try again later. 
+            </div>
+            <div data-cy='alert-success' class="alert alert-success" role="alert" v-show="isSaved == true">
+                Configuration Saved
+            </div>
+        </div>
+        <p data-cy='intro'>This configuration page contains setting for FarmData2 specific settings.</p>
+        <div>
+            <label>Labor Data: 
+                <dropdown-with-all data-cy="labor-dropdown" :selected-val="selectedLaborConfig" :dropdown-list="laborConfigs" @selection-changed='setNewLabor'></dropdown-with-all>
+            </label>
+            <button type="button" class="btn" style="background-color:transparent" data-toggle="tooltip" data-placement="right" title="Set the labor data input to required, optional, or hidden (optional and not displayed).">
+                <span class="glyphicon glyphicon-question-sign">
+                </span>
+            </button>
+        </div>
+        <button data-cy="save-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='configNotReady' @click='saveConfig'>Save</button>
+    </div>
 
     <script>
-      function getIt() {
-        getConfiguration().then((response) => {
-            console.log(response.data)
-        })
-      }
-
-      function makeOptional() {
-        let config={
-          "labor": "Optional",
-        }
-
-        getSessionToken().then((token) => {
-          setConfiguration(config, token)
-        })
-      }
-
-      function makeRequired() {
-        let config={
-          "labor": "Required",
-        }
-
-        getSessionToken().then((token) => {
-          setConfiguration(config, token)
-        })
-      }
+        new Vue({
+            el: '#config',
+            components: {
+                'dropdown-with-all': DropdownWithAllComponent,
+            },
+            data: {
+                sessionToken: null,
+                configObj: {},
+                selectedLaborConfig: '',
+                laborConfigs: ['Required', 'Optional', "Hidden"],
+                isSaved: false,
+                errBanner: null,
+            },
+            methods: {
+                setNewLabor(newLaborConfig) {
+                    this.selectedLaborConfig = newLaborConfig
+                },
+                saveConfig() {
+                    this.configObj.labor = this.selectedLaborConfig
+                    setConfiguration(this.configObj, this.sessionToken) 
+                        .then(() => {
+                            this.isSaved = true
+                            setTimeout(() => { 
+                                this.isSaved= false
+                            }, 3000)
+                            var successBanner = document.getElementById('scrollBanners');
+                            var pageHeader = document.getElementById('navbar');
+                            var headerBounds = pageHeader.getBoundingClientRect();
+                            var alertBounds = successBanner.getBoundingClientRect();
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                            setTimeout(() => { 
+                                this.isConfirmed = null
+                            }, 3000)   
+                        
+                        }) 
+                        .catch((err) => { 
+                            this.errBanner = true
+                            var successBanner = document.getElementById('scrollBanners');
+                            var pageHeader = document.getElementById('navbar');
+                            var headerBounds = pageHeader.getBoundingClientRect();
+                            var alertBounds = successBanner.getBoundingClientRect();
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })  
+                        })
+                },
+                hideBanner(){
+                    this.errBanner = false
+                },
+            },
+            computed: {
+                configNotReady() {
+                    if(this.selectedLaborConfig == this.configObj.labor) {
+                        return true
+                    }
+                    return false
+                }
+            
+            },
+            created(){
+                getSessionToken().then((response) => {
+                    this.sessionToken = response
+                })
+                .catch((err) => { 
+                    this.errBanner = true
+                    var successBanner = document.getElementById('scrollBanners');
+                    var pageHeader = document.getElementById('navbar');
+                    var headerBounds = pageHeader.getBoundingClientRect();
+                    var alertBounds = successBanner.getBoundingClientRect();
+                    scrollBy({
+                        top: alertBounds.top - headerBounds.bottom,
+                        behavior: 'smooth'
+                    }) 
+                })
+                getConfiguration().then((response) => {
+                    this.configObj = response.data
+                    this.selectedLaborConfig = response.data.labor
+                })
+                .catch((err) => { 
+                    this.errBanner = true
+                    var successBanner = document.getElementById('scrollBanners');
+                    var pageHeader = document.getElementById('navbar');
+                    var headerBounds = pageHeader.getBoundingClientRect();
+                    var alertBounds = successBanner.getBoundingClientRect();
+                    scrollBy({
+                        top: alertBounds.top - headerBounds.bottom,
+                        behavior: 'smooth'
+                    }) 
+                })
+            }
+        })       
+        Vue.config.devtools = true;
     </script>
-</div>
+</body>
