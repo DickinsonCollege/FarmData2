@@ -25,6 +25,11 @@ describe('custom table component', () => {
                 .should('exist')
         })
 
+        it('the csv button does not exist', () => {
+            cy.get('[data-cy=export-btn')
+                .should('not.exist')
+        })
+
         it('Displays headers in first row', () => {
             cy.get('[data-cy=h0]').should('have.text', 'cool')
             cy.get('[data-cy=h1]').should('have.text', 'works?')
@@ -520,6 +525,7 @@ describe('custom table component', () => {
                     headers: ['cool', 'works?', 'hello'],
                     canDelete: true,
                     visibleColumns: [true, true, false],
+                    csvName: 'seedingReport_'
                 }
             })
         })
