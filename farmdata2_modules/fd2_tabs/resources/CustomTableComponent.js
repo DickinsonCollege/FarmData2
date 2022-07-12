@@ -33,6 +33,7 @@
  * @vue-prop {Boolean} [canDelete=false] - true if the table rows should be able to be deleted via a delete button that appears in each row.
  * @vue-prop {Boolean[]} [visibleColumns] - An array the same length as the headers prop.  Each entry indicates if the associated column is visible (true) or hidden (false).  If omitted, all columns are visible. It is being watched for direct changes from the parent.
  * @vue-prop {String[]} [inputOptions] - An array the same length as the headers prop.  Each entry indicates the type of edit component that will appear in edit mode.  The entries must be one of 'text', 'dropdown', 'date', 'number', or 'no input'.  If omitted, all columns are edited as 'text'.
+ * @vue-prop {String} [csvName] - A String that assigns the exported CSV file its name. If left empty the export button does not appear. 
  * 
  * @vue-event edit-clicked - Emitted when an edit button is clicked to indicate that the table is in edit mode.
  * @vue-event {Object|Number} row-edited - Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be <code>{crop: 'KALE'}</code>, and if they also edited the area to Chuau it would be <code>{crop: 'KALE', area: 'CHUAU'}</code>.  The second is a Number that indicates 'id' of the row that was changed. 
