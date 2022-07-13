@@ -13,16 +13,20 @@ var getRecord = FarmOSAPI.getRecord
 var getSessionToken = FarmOSAPI.getSessionToken
 var getLogTypeToIDMap = FarmOSAPI.getLogTypeToIDMap
 var getAllPages = FarmOSAPI.getAllPages
+var getConfiguration = FarmOSAPI.getConfiguration;
+var setConfiguration = FarmOSAPI.setConfiguration;
 
 describe('Test the seeding input page', () => {
-    
     let sessionToken = null
     let cropToIDMap = null
     let areaToIDMap = null
     let userToIDMap = null
     let unitToIDMap = null
     let logTypeToIDMap = null
-    
+    let configMap = null
+    let defaultConfig = null
+    let testConfig = { id: "1", labor: 'Required' }
+
     context('Cache tests', () => {
         before(() => {
             // Delete the crops and areas from local storge if it is there
@@ -1715,5 +1719,170 @@ describe('Test the seeding input page', () => {
         // then it would also be handled here. 
         // it('fail the log type map API: something happened that triggered an error', () => {
         // })   
+    })
+
+    context('Configuration tests', () => {
+        before(() =>{
+            cy.login('manager1', 'farmdata2')
+            .then(() => {
+                cy.wrap(getConfiguration()).as('def')
+                cy.wrap(getSessionToken()).as('token')
+            }) 
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            cy.get('@def').should(function(map) {
+                configMap = map.data
+                defaultConfig = configMap
+            })
+        })
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            .then(() => {
+                cy.wrap(getSessionToken()).as('token')
+            })
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            .then(() => {
+                cy.wrap(setConfiguration(testConfig, sessionToken)).as('updateConfig')
+            })
+            cy.get('@updateConfig') 
+            .then(() => {
+                cy.wrap(getConfiguration()).as('getNewConfigMap')
+            })          
+            // set up intercept for setting up the configuration
+            cy.get('@getNewConfigMap').should(function(map) {
+                configMap = map.data
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')            
+            cy.intercept('GET', '/fd2_config/1').as('getConfigMap')       
+            
+            cy.visit('/farm/fd2-field-kit/seedingInput')
+
+            cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
+        })
+        
+        afterEach(() =>{
+            cy.wrap(setConfiguration(defaultConfig, sessionToken)).as('resetConfig')
+            cy.get('@resetConfig')
+        })
+
+        it('test labor required', () => {            
+            
+            cy.get('[data-cy=date-select')
+            .type('1999-10-06')
+            cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+            .select("ARUGULA")
+            cy.get('[data-cy=tray-seedings]')
+            .click()
+            cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+            .select("CHUAU")
+            cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-worker-input]')
+                .should('be.visible')
+            cy.get('[data-cy=time-unit]')
+                .should('be.visible')
+            cy.get('[data-cy=submit-button]')
+                .should('be.disabled')
+        })
+        
+        it('test labor hidden', () => {
+            hiddenConfig = {id: 1, labor: 'Hidden'}
+            cy.wrap(setConfiguration(hiddenConfig, sessionToken)).as('updateConfig')
+            cy.get('@updateConfig')
+            .then(() => {
+                cy.reload()
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+                        
+            // Wait here for the map and token to be loaded in the page 
+            cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
+            
+            cy.get('[data-cy=date-select')
+            .type('1999-10-06')
+            cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+            .select("ARUGULA")
+            cy.get('[data-cy=tray-seedings]')
+            .click()
+            cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+            .select("CHUAU")
+            cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+            .type('2')
+            .blur()
+            
+            cy.get('[data-cy=num-worker-input]')
+                .should('not.be.visible')
+            cy.get('[data-cy=time-unit]')
+                .should('not.be.visible')
+            cy.get('[data-cy=submit-button]')
+                .should('not.be.disabled')
+            
+        })
+
+        it('test labor optional', () => {
+            OptionalConfig = {id: 1, labor: 'Optional'}
+            cy.wrap(setConfiguration(OptionalConfig, sessionToken)).as('updateConfig')
+            cy.get('@updateConfig')
+            .then(() => {
+                cy.reload()
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+
+            
+            // Wait here for the map and token to be loaded in the page 
+            cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
+            
+            cy.get('[data-cy=date-select')
+            .type('1999-10-06')
+            cy.get('[data-cy=crop-selection] > [data-cy=dropdown-input]')
+            .select("ARUGULA")
+            cy.get('[data-cy=tray-seedings]')
+            .click()
+            cy.get('[data-cy=tray-area-selection] > [data-cy=dropdown-input]')
+            .select("CHUAU")
+            cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
+            .type('2')
+            cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
+            .type('2')
+            .blur()
+            
+            cy.get('[data-cy=num-worker-input]')
+                .should('be.visible')
+            cy.get('[data-cy=time-unit]')
+                .should('be.visible')
+            cy.get('[data-cy=submit-button]')
+                .should('not.be.disabled')
+        })
+
+        
     })
 })
