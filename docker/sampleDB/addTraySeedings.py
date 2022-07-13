@@ -89,7 +89,7 @@ def addSeedings(row, plantingID, seedingTypeID):
         # If seed count not given, assume one seed per tray cell.
         cellsPerFlat = int(row[6])
         totalSeeds = totalFlats*cellsPerFlat
-   
+
     seedsPerFlat = totalSeeds/totalFlats 
 
     for seeding in seedings:
@@ -192,9 +192,9 @@ def addSeeding(row, plantingID, seedingTypeID):
             },
             {
                 "measure": "count", 
-                "value": 1,  # number of people (x Time = Total Time)
-                             # default 1 here because FarmData didn't record this.
-                             # Workers x Labor gives total time
+                "value": 1, # number of people (x Time = Total Time)
+                            # default 1 here because FarmData didn't record this.
+                            # Workers x Labor gives total time
                 "unit": {
                     "id": peopleID,
                     "resource": "taxonomy_term"
