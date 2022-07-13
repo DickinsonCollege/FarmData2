@@ -1722,18 +1722,27 @@ describe('Test the seeding input page', () => {
     })
 
     context.only('Configuration tests', () => {
-        beforeEach(() => {
+        before(() =>{
             cy.login('manager1', 'farmdata2')
             .then(() => {
                 cy.wrap(getConfiguration()).as('def')
                 cy.wrap(getSessionToken()).as('token')
-            })
+            }) 
             cy.get('@token').should(function(token) {
                 sessionToken = token
             })
             cy.get('@def').should(function(map) {
                 configMap = map.data
                 defaultConfig = configMap
+            })
+        })
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            .then(() => {
+                cy.wrap(getSessionToken()).as('token')
+            })
+            cy.get('@token').should(function(token) {
+                sessionToken = token
             })
             .then(() => {
                 cy.wrap(setConfiguration(testConfig, sessionToken)).as('updateConfig')
@@ -1761,6 +1770,11 @@ describe('Test the seeding input page', () => {
             cy.wait(['@cropmap', '@areamap', '@sessiontok', '@cropmap', '@usermap', '@areamap', '@unitmap', '@logtypemap'])
         })
         
+        afterEach(() =>{
+            cy.wrap(setConfiguration(defaultConfig, sessionToken)).as('resetConfig')
+            cy.get('@resetConfig')
+        })
+
         it('test labor required', () => {            
             
             cy.get('[data-cy=date-select')
@@ -1824,8 +1838,7 @@ describe('Test the seeding input page', () => {
                 .should('not.be.visible')
             cy.get('[data-cy=submit-button]')
                 .should('not.be.disabled')
-            cy.wrap(setConfiguration(defaultConfig, sessionToken)).as('resetConfig')
-            cy.get('@resetConfig')
+            
         })
 
         it('test labor optional', () => {
