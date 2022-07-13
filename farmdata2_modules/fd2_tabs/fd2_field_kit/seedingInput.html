@@ -54,13 +54,13 @@
                 </label>
             </div>
         </fieldset>   
-        <fieldset class="panel panel-default center-block" style="max-width: 500px;">
+        <fieldset class="panel panel-default center-block" style="max-width: 500px;" v-show="configToIDMap.labor != 'Hidden'">
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
-                <label style='color: #da4f3f'>*&nbsp;</label>
+                <label style='color: #da4f3f' v-show="configToIDMap.labor == 'Required'">*&nbsp;</label>
                 <regex-input data-cy='num-worker-input' :reg-exp="regPosInt" :default-val="numWorkers" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumWorkers" @match-changed="(newBool) => updateValidMap('validNumWorkers', newBool)"></regex-input>                                                
                 <label>&nbsp; Worker(s) for </label> 
-                <label><label style='color: #da4f3f'>*</label> 
+                <label><label style='color: #da4f3f' v-show="configToIDMap.labor == 'Required'">*</label> 
                 <regex-input data-cy='minute-input' v-show='selectedTimeUnit == "minutes"' :reg-exp='regPosInt' :default-val="minute" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setMinute" @match-changed="(newBool) => updateValidMap('validMinute', newBool)"></regex-input>                                                
                 <regex-input data-cy='hour-input' v-show='selectedTimeUnit == "hours"' :reg-exp='regHour' :default-val="hour" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setHour" @match-changed="(newBool) => updateValidMap('validHour', newBool)"></regex-input>                                                
                 <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit' :disabled='submitInProgress'></dropdown-with-all></label>
@@ -132,6 +132,7 @@
                 regPosInt: "^[1-9]+[0-9]*$",
                 regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
                 errBanner: null,
+                configToIDMap: new Map(),
             },
             methods:{
                 updateValidMap(key, bool) {    
@@ -293,14 +294,19 @@
                     if(this.selectedSeedingType == ''){
                         return true
                     }
-                    if(this.selectedTimeUnit == 'minutes'){
-                        if(!this.validMap["validMinute"]){
-                            return true
+                    if(this.configToIDMap.labor == "Required"){
+                        if(this.selectedTimeUnit == 'minutes'){
+                            if(!this.validMap["validMinute"]){
+                                return true
+                            }
                         }
-                    }
-                    if(this.selectedTimeUnit == 'hours'){
-                        if(!this.validMap["validHour"]){
-                            return true
+                        if(this.selectedTimeUnit == 'hours'){
+                            if(!this.validMap["validHour"]){
+                                return true
+                            }
+                        }
+                        if(!this.validMap["validNumWorkers"]){
+                        return true
                         }
                     }
                     if(this.selectedSeedingType == 'Direct Seedings'){
@@ -323,9 +329,7 @@
                             return true
                         }
                     }
-                    if(!this.validMap["validNumWorkers"]){
-                        return true
-                    }
+
                     return false
                 },
                 plantingLogData(){
@@ -640,6 +644,21 @@
                 getLogTypeToIDMap()
                     .then((response) => {
                         this.logTypeToIDMap = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getConfiguration()
+                    .then((response) => {
+                        this.configToIDMap = response.data
                     })
                     .catch((err) => { 
                         this.errBanner = true
