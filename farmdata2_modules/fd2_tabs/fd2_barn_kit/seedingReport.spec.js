@@ -9,6 +9,8 @@ var getUnitToIDMap = FarmOSAPI.getUnitToIDMap
 var createRecord = FarmOSAPI.createRecord
 var getRecord = FarmOSAPI.getRecord
 var deleteRecord = FarmOSAPI.deleteRecord
+var getConfiguration = FarmOSAPI.getConfiguration
+var setConfiguration = FarmOSAPI.setConfiguration
 
 describe('Testing for the seeding report page', () => {
     let cropToIDMap = null
@@ -16,6 +18,8 @@ describe('Testing for the seeding report page', () => {
     let areaToIDMap = null
     let userToIDMap = null
     let unitToIDMap = null
+    let defaultConfig = null
+    let testConfig = { id: "1", labor: 'Required' }
 
     beforeEach(() => {
         cy.login('manager1', 'farmdata2')
@@ -1311,5 +1315,216 @@ describe('Testing for the seeding report page', () => {
         // then it would also be handled here. 
         // it('fail the unit map API: something happened that triggered an error', () => {
         // })
+    })
+
+    context.only('Configuration tests', () => {
+        before(() =>{
+            cy.login('manager1', 'farmdata2')
+            .then(() => {
+                cy.wrap(getConfiguration()).as('def')
+                cy.wrap(getSessionToken()).as('token')
+            }) 
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            cy.get('@def').should(function(map) {
+                configMap = map.data
+                defaultConfig = configMap
+            })
+        })
+
+        beforeEach(() => {
+            cy.login('manager1', 'farmdata2')
+            .then(() => {
+                cy.wrap(getSessionToken()).as('token')
+            })
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            .then(() => {
+                cy.wrap(setConfiguration(testConfig, sessionToken)).as('updateConfig')
+            })
+            cy.get('@updateConfig') 
+            .then(() => {
+                cy.wrap(getConfiguration()).as('getNewConfigMap')
+            })          
+            // set up intercept for setting up the configuration
+            cy.get('@getNewConfigMap').should(function(map) {
+                configMap = map.data
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')            
+            cy.intercept('GET', '/fd2_config/1').as('getConfigMap')       
+            
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
+
+            cy.wait(['@cropmap', '@areamap', '@cropmap', '@usermap', '@areamap', '@unitmap',])
+        })
+
+        afterEach(() => {
+            cy.wrap(setConfiguration(defaultConfig, sessionToken)).as('resetConfig')
+            cy.get('@resetConfig')
+        })
+
+        it('test labor required', () => {
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+            cy.get('[data-cy=h0]')
+                .should('have.text', 'Date')
+            cy.get('[data-cy=h1]')
+                .should('have.text', 'Crop')
+            cy.get('[data-cy=h2]')
+                .should('have.text', 'Area')
+            cy.get('[data-cy=h3]')
+                .should('have.text', 'Seeding')
+            cy.get('[data-cy=h4]')
+                .should('not.exist')
+            cy.get('[data-cy=h5]')
+                .should('not.exist')
+            cy.get('[data-cy=h6]')
+                .should('not.exist')
+            cy.get('[data-cy=h7]')
+                .should('not.exist')
+            cy.get('[data-cy=h8]')
+                .should('not.exist')
+            cy.get('[data-cy=h9]')
+                .should('not.exist')
+            cy.get('[data-cy=h10]')
+                .should('have.text', 'Workers')
+            cy.get('[data-cy=h11]')
+                .should('have.text', 'Hours')
+            cy.get('[data-cy=h12]')
+                .should('have.text', 'Varieties')
+            cy.get('[data-cy=h13]')
+                .should('have.text', 'Comments')
+            cy.get('[data-cy=h14]')
+                .should('have.text', 'User')
+            cy.get('[data-cy=edit-header]')
+                .should('have.text', 'Edit')
+            cy.get('[data-cy=delete-header]')
+                .should('have.text', 'Delete')
+        })
+
+        it('test labor optional', () => {
+            OptionalConfig = {id: 1, labor: 'Optional'}
+            cy.wrap(setConfiguration(OptionalConfig, sessionToken)).as('updateConfig')
+            cy.get('@updateConfig')
+            .then(() => {
+                cy.reload()
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+            cy.get('[data-cy=h0]')
+                .should('have.text', 'Date')
+            cy.get('[data-cy=h1]')
+                .should('have.text', 'Crop')
+            cy.get('[data-cy=h2]')
+                .should('have.text', 'Area')
+            cy.get('[data-cy=h3]')
+                .should('have.text', 'Seeding')
+            cy.get('[data-cy=h4]')
+                .should('not.exist')
+            cy.get('[data-cy=h5]')
+                .should('not.exist')
+            cy.get('[data-cy=h6]')
+                .should('not.exist')
+            cy.get('[data-cy=h7]')
+                .should('not.exist')
+            cy.get('[data-cy=h8]')
+                .should('not.exist')
+            cy.get('[data-cy=h9]')
+                .should('not.exist')
+            cy.get('[data-cy=h10]')
+                .should('have.text', 'Workers')
+            cy.get('[data-cy=h11]')
+                .should('have.text', 'Hours')
+            cy.get('[data-cy=h12]')
+                .should('have.text', 'Varieties')
+            cy.get('[data-cy=h13]')
+                .should('have.text', 'Comments')
+            cy.get('[data-cy=h14]')
+                .should('have.text', 'User')
+            cy.get('[data-cy=edit-header]')
+                .should('have.text', 'Edit')
+            cy.get('[data-cy=delete-header]')
+                .should('have.text', 'Delete')
+        })
+
+        it('test labor hidden', () => {
+            hiddenConfig = {id: 1, labor: 'Hidden'}
+            cy.wrap(setConfiguration(hiddenConfig, sessionToken)).as('updateConfig')
+            cy.get('@updateConfig')
+            .then(() => {
+                cy.reload()
+            })
+            
+            // Setting up wait for the request in the created() to complete.
+            cy.intercept('GET', 'restws/session/token').as('sessiontok')
+            cy.intercept('GET', 'user').as('usermap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+
+            cy.get('[data-cy=start-date-select]')
+                .type('2019-01-01')
+            cy.get('[data-cy=end-date-select]')
+                .type('2019-03-01')
+            cy.get('[data-cy=generate-rpt-btn]')
+                .click()
+            cy.get('[data-cy=h0]')
+                .should('have.text', 'Date')
+            cy.get('[data-cy=h1]')
+                .should('have.text', 'Crop')
+            cy.get('[data-cy=h2]')
+                .should('have.text', 'Area')
+            cy.get('[data-cy=h3]')
+                .should('have.text', 'Seeding')
+            cy.get('[data-cy=h4]')
+                .should('not.exist')
+            cy.get('[data-cy=h5]')
+                .should('not.exist')
+            cy.get('[data-cy=h6]')
+                .should('not.exist')
+            cy.get('[data-cy=h7]')
+                .should('not.exist')
+            cy.get('[data-cy=h8]')
+                .should('not.exist')
+            cy.get('[data-cy=h9]')
+                .should('not.exist')
+            cy.get('[data-cy=h10]')
+                .should('not.exist')
+            cy.get('[data-cy=h11]')
+                .should('not.exist')
+            cy.get('[data-cy=h12]')
+                .should('have.text', 'Varieties')
+            cy.get('[data-cy=h13]')
+                .should('have.text', 'Comments')
+            cy.get('[data-cy=h14]')
+                .should('have.text', 'User')
+            cy.get('[data-cy=edit-header]')
+                .should('have.text', 'Edit')
+            cy.get('[data-cy=delete-header]')
+                .should('have.text', 'Delete')
+        })
     })
 })
