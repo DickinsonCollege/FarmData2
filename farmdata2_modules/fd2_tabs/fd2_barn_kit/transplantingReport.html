@@ -1,0 +1,783 @@
+<body>
+    <div id="seedingReport" v-cloak>
+        <h1 class="text-center">Seeding Report</h1>
+        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
+            <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
+                Error Processing Request. This may be an intermittent network issue. Please try again later. 
+            </div>
+        </div>
+        <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
+            <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
+            <div style="display: flex;width: 100%; padding: 7px">
+                <date-range-selection data-cy="date-range-selection" class="center-block" @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
+                @click='hide'
+                :set-start-date='startDate' :set-end-date='endDate'></date-range-selection>
+
+                <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
+            </div>
+        </fieldset>
+
+        <div v-if='reportVisible'>
+
+            <div v-if="transplantingLogs.length != 0">
+                <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
+                    <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
+                    <div style="display: flex; width: 100%;">                    
+                        <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list='cropList' includes-all selected-val='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
+
+                        <dropdown-with-all data-cy="area-dropdown" class="center-block" :dropdown-list='areaList' includes-all selected-val='All' @selection-changed='areaChange'>Area:</dropdown-with-all> 
+                    </div>
+                </fieldset>
+
+                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows='tableRows' :headers='headers' :input-options='columnInputs' csv-name="transplantingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
+
+                <br>
+            </div>
+
+            <div data-cy="loader" class="loader center-block" v-if="stillLoading"></div>
+
+            <div v-if="!stillLoading && transplantingLogs.length != 0">
+                <br>
+                <div style="display: flex; width: 100%;">
+                    <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;">
+                        <legend class="panel-heading" style="background-color: #d62a17; color: white;">Transplanting Summary</legend>
+                        <div>
+                            <p style="margin-left: 5%;">Total Row Feet Planted: <b><span data-cy='direct-total-rowft'>{{ totalRowFeet }}</span></b></p>
+                            <p style="margin-left: 5%;">Total Bed Feet Planted: <b><span data-cy='direct-total-bedft'>{{ totalBedFeet }}</span></b></p>
+                            <p style="margin-left: 5%;" v-show="configToIDMap.labor != 'Hidden'">Total Hours: <b><span data-cy='direct-total-hours'>{{ totalDirectSeedingHours }}</span></b></p>
+                            <p style="margin-left: 5%;" v-show="configToIDMap.labor != 'Hidden'">Average Row Feet/Hour: <b><span data-cy='direct-total-rowft-hour'>{{ totalRowFeetPerHour }}</span></b></p>
+                            <p style="margin-left: 5%;" v-show="configToIDMap.labor != 'Hidden'">Average Bed Feet/Hour: <b><span data-cy='direct-total-bedfr-hour'>{{ totalBedFeetPerHour }}</span></b></p>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div v-if="!stillLoading && transplantingLogs.length == 0">
+                <div class="box" data-cy="no-logs-message" style="  
+                    border: 5px solid #d62a17;
+                    background-color: white;
+                    padding: 20px;
+                    margin: auto;
+                    width: 50%;
+                    text-align: center;
+                    font-size: large;">
+                    No Logs Found in These Dates 
+                </div> 
+            </div>
+        </div>
+    </div>
+    <script>
+        var seedingReport = new Vue ({
+            el: '#seedingReport',
+            components: {
+                'custom-table': CustomTableComponent,
+                'date-range-selection': DateRangeSelectionComponent,
+                'dropdown-with-all': DropdownWithAllComponent
+            },
+            data: {
+                startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                endDate: dayjs().format('YYYY-MM-DD').toString(),
+
+                stillLoading: true,
+                reportVisible: false,
+                transplantingLogs: [],
+                updateLog: [],
+
+                sessionToken: null,
+                selectedCrop: 'All',
+                selectedArea: 'All',
+                selectedSeeding: 'All',
+
+                headers: ['Date', 'Crop', 'Area', 'Transplanting Date', 'Bed Feet', 'Rows/Bed', 'Trays', 'Workers', 'Hours','Comments','User'],
+                visibleColumns: [true, true, true, true, true, true, true, true, true, true, true],
+
+                idToCropMap: new Map(),
+                cropToIDMap: new Map(),
+                idToUserMap: new Map(),
+                userToIDMap: new Map(),
+                areaToIDMap: new Map(),
+                unitToIDMap: new Map(),
+                configToIDMap: new Map(),
+
+                rowBeingEdited: false,
+                errBanner: null,
+            },
+            methods: {
+                hide(){
+                    this.reportVisible = false
+                    this.transplantingLogs = []
+                },
+                startDateChange(selectedDate){
+                    this.startDate = selectedDate
+                    //this.reportVisible = false
+                    //this.transplantingLogs = []
+                },
+                endDateChange(selectedDate){
+                    this.endDate = selectedDate
+                    //this.reportVisible = false
+                    //this.transplantingLogs = []
+                },
+                seedingLogRequestWithDates(){
+                    this.reportVisible = true
+                    let link = '/log.json?type=farm_transplanting&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
+
+                    getAllPages(link, this.transplantingLogs)
+                        .then(() => {
+                            this.stillLoading = false
+                        })
+                        .catch((err) => { 
+                            this.errBanner = true
+                            var errorBanner = document.getElementById('scrollBanners')
+                            var pageHeader = document.getElementById('navbar')
+                            var headerBounds = pageHeader.getBoundingClientRect()
+                            var alertBounds = errorBanner.getBoundingClientRect()
+                            scrollBy({
+                                top: alertBounds.top - headerBounds.bottom,
+                                behavior: 'smooth'
+                            })
+                        })
+                    this.stillLoading = true
+                },
+                cropChange(selectedCrop){
+                    this.selectedCrop = selectedCrop
+                },
+                areaChange(selectedArea){
+                    this.selectedArea = selectedArea
+                },
+                seedingChange(selectedSeeding){
+                    this.selectedSeeding = selectedSeeding
+                    if(selectedSeeding == 'All'){
+                        this.visibleColumns = [true, true, true, true, true, true, true, true, true, true, true]
+                    }
+                    else if(selectedSeeding == 'Direct Seedings'){
+                        this.visibleColumns = [true, true, true, true, true, true, true, false, false, false, true, true, true, true, true]
+                    }
+                    else if(selectedSeeding == 'Tray Seedings'){
+                        this.visibleColumns = [true, true, true, true, false, false, false, true, true, true,  true, true, true, true, true]
+                    }
+                    if(this.configToIDMap.labor == 'Hidden') {
+                        this.visibleColumns[10] = false
+                        this.visibleColumns[11] = false
+                    }
+                },
+                /**
+                 * updates the log that the user saved
+                 */
+                updateRow(updateObject, id){
+                    this.updateLog = this.transplantingLogs.filter((x) => x.id === id)
+                    let updateSeedingObject = {}
+                    let updatePlantObject = {}
+                    
+                    /**
+                     * The Table component returns an object with the cells that were updated. We don't know how many or wich ones where updated, so we check for all possible cells that could have been updated.
+                     */
+                    let keys = Object.keys(updateObject)
+                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
+                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
+                        keys.includes('Cells Per Tray')){
+                        if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
+                            updateSeedingObject['quantity'] = this.quantityDirectSeeding
+                        }
+                        else{
+                            updateSeedingObject['quantity'] = this.quantityTraySeeding
+                        }
+                    }
+                    
+                    for(i=0; i < keys.length; i++){
+                        if(keys[i] == 'date'){
+                            updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
+                        }
+                        else if(keys[i] == 'crop'){
+                            updateSeedingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
+                            updatePlantObject['crop'] = [{
+                                "id": this.cropToIDMap.get(updateObject['crop']),
+                                "resource": "taxonomy_term"
+                            }]
+                        }
+                        else if (keys[i] == 'area'){
+                            updateSeedingObject['movement'] = { 'area': [{
+                                "id": this.areaToIDMap.get(updateObject['area']),
+                                "resource": "taxonomy_term",}]
+                            }
+                        }
+                        else if(keys[i] == 'Hours'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Labor')].value = updateObject['Hours']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
+                        }
+                        else if(keys[i] == 'Num Workers'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Workers')].value = updateObject['Num Workers']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Num Workers']
+                        }
+                        else if(keys[i] == 'Comments'){
+                            updateSeedingObject['notes'] = {'value': updateObject['Comments'],
+                                'format': 'farm_format'}
+                        }
+                        else if(keys[i] == 'User'){
+                            updateSeedingObject['uid'] = {
+                                'id': this.userToIDMap.get(updateObject['User']),
+                                'resource': 'user'
+                            }
+                            updatePlantObject['uid'] = {
+                                'id': this.userToIDMap.get(updateObject['User']),
+                                'resource': 'user'
+                            }
+                        }
+                        else if(keys[i] == 'Row/Bed'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
+                        }
+                        else if(keys[i] == 'Row Feet'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Amount planted')].value = updateObject['Row Feet']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Amount planted')].value = updateObject['Row Feet']
+                        }
+                        else if(keys[i] == 'Tray Seeds'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Seeds planted')].value = updateObject['Tray Seeds']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Seeds planted')].value = updateObject['Tray Seeds']
+                        }
+                        else if(keys[i] == '# of Trays'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Flats used')].value = updateObject['# of Trays']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats used')].value = updateObject['# of Trays']
+                        }
+                        else if(keys[i] == 'Cells Per Tray'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Cells/Flat')].value = updateObject['Cells Per Tray']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Cells/Flat')].value = updateObject['Cells Per Tray']
+                        }   
+                    }
+                    //replace old update log with current update log
+                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
+                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
+                        keys.includes('Cells Per Tray')){
+                        for(var i=0; i < this.transplantingLogs.length; i++){
+                            if(this.transplantingLogs[i].id === id){
+                                this.transplantingLogs.splice(i, this.updateLog)
+                            }
+                        }    
+                    }
+                    
+                    let seedingUrl = '/log/' + id
+                    let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
+                    //call updateRecord function to update planting log
+                    if(!(Object.entries(updatePlantObject).length === 0)){
+                        updateRecord(plantingUrl, updatePlantObject, this.sessionToken)
+                    }
+                    //call updateRecord function to update seeding log
+                    if(!(Object.entries(updateSeedingObject).length === 0)){
+                        updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                    }
+                    this.rowBeingEdited = false
+                },
+                /**
+                 * Uses deleteRecord function to delete the record in the database. Also deletes the record from the current logs that are in transplantingLogs
+                 */
+                deleteRowLog(logID) {
+                    let url = '/log/' + logID
+                    deleteRecord(url, this.sessionToken)
+                    for(var i=0; i < this.transplantingLogs.length; i++){
+                        if(this.transplantingLogs[i].id === logID){
+                            this.transplantingLogs.splice(i, 1)
+                        }
+                    }
+                },
+                disableFilters() {
+                    this.rowBeingEdited = true
+                },
+                enableFilters(){
+                    this.rowBeingEdited = false
+                },
+                hideBanner(){
+                    this.errBanner = false
+                },
+            },
+            computed: {
+                /**
+                 * tableRows() filters though transplantingLogs to get all the logs that have the correct crop, area, and/or type of seeding that has been selected by the user. Then takes the remaining logs and formats it so that the table component gets the necessary info
+                 */ 
+                tableRows() {
+                    let filterRows = this.transplantingLogs.filter((x) => x)
+
+                    if(this.selectedArea != 'All'){
+                        filterRows = filterRows.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    }
+                    if(this.selectedCrop != 'All'){
+                        filterRows = filterRows.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
+                    }
+                    if(this.selectedSeeding != 'All'){
+                        filterRows = filterRows.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+                    let $vm = this
+                    let rows = filterRows.map(function(h) {
+                        let rowBed = 0
+                        let rowFeet = 0
+                        let bedFeet = 0
+                        let traySeeds = 0
+                        let numOfTrays = 0
+                        let cellsPerTray = 0
+                        let hours = 0
+                        let numWorkers = 0
+
+                        hours = h.quantity[3].value
+                        numWorkers = h.quantity[4].value
+                        return{
+                            id: h.id,
+                            data: [
+                                dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
+                                $vm.idToCropMap.get(h.data.crop_tid),
+                                h.movement.area[0].name, 
+                                h.log_category[0].name.substring(0, h.log_category[0].name.indexOf(' ')), 
+                                rowFeet = h.quantity[0].value,
+                                bedFeet,
+                                rowBed,
+                                numOfTrays = h.quantity[2].value,
+                                cellsPerTray,
+                                (Math.round(numWorkers*100))/100,
+                                ((Math.round(hours*100))/100).toFixed(2),
+                                h.lot_number,
+                                h.notes.value,
+                                $vm.idToUserMap.get(h.uid.id)
+                            ]
+                        }
+                    })
+                    rows.sort(function compareNumbers(a, b) {
+                        return new Date(a.data[0]).getTime() - new Date(b.data[0]).getTime();
+                    })   
+                    return rows
+                },
+                getTableOneType(){
+                    let currentType = this.tableRows[0].data[3]
+                    for (i = 0 ; i < this.tableRows.length ; i ++){
+                        if (this.tableRows[i].data[3] == currentType){
+                            currentType = this.tableRows[i].data[3]
+                        }else{
+                            return false
+                        }
+                    }
+                    return currentType
+                },
+                /**
+                 * returns a sorted array of all the crops in the current logs. If area or type of seeding does not equal 'All' then the array will only contain crops that have the selected area and/or type of seeding
+                 */ 
+                cropList(){
+                    let seedFilter = []
+                    if(this.selectedSeeding != 'All'){
+                        seedFilter = this.transplantingLogs.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+                    else{
+                        seedFilter = this.transplantingLogs.filter((x) => x)
+                    }
+                    let cropArray = []
+                    if(this.selectedArea != 'All'){
+                        let areaFilter = seedFilter.filter((x) => x.movement.area[0].name === this.selectedArea)
+                        cropArray = areaFilter.map(h => 
+                            this.idToCropMap.get(h.data.crop_tid)
+                        )
+                    }
+                    else{
+                        cropArray = seedFilter.map(h=> 
+                            this.idToCropMap.get(h.data.crop_tid)
+                        )
+                    }
+
+                    let crops = new Set(cropArray)
+                    let newCropArray = Array.from(crops)
+                    return newCropArray.sort()
+                },
+                /**
+                 * returns a sorted array of all the areas in the current logs. If a crop or type of seeding does not equal 'All' then the array will only contain areas that have the selected crop and/or type of seeding
+                 */ 
+                areaList(){
+                    let seedFilter = []
+                    if(this.selectedSeeding != 'All'){
+                        seedFilter = this.transplantingLogs.filter((x) => x.log_category[0].name === this.selectedSeeding)
+                    }
+                    else{
+                        seedFilter = this.transplantingLogs.filter((x) => x)
+                    }
+                    let areaArray = []
+                    if(this.selectedCrop != 'All'){
+                        let cropFilter = seedFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
+                        areaArray = cropFilter.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    else{
+                        areaArray = seedFilter.map(h =>
+                            h.movement.area[0].name
+                        )
+                    }
+                    let areas = new Set(areaArray)
+                    let newAreaArray = Array.from(areas)
+                    return newAreaArray.sort()
+                },
+                /**
+                 * returns a sorted array of all the types of seeding in the current logs. If the area or crop does not equal 'All' then the array will only contain types of seeding that have the selected area and/or crop
+                 */ 
+                seedingTypeList(){
+                    let areaFilter = []
+                    if(this.selectedArea != 'All'){
+                        areaFilter = this.transplantingLogs.filter((x) => x.movement.area[0].name === this.selectedArea)
+                    }
+                    else{
+                        areaFilter = this.transplantingLogs.filter((x) => x)
+                    }
+                    let seedingTypeArray = []
+                    if(this.selectedCrop != 'All'){
+                        let cropFilter = areaFilter.filter((x) => this.idToCropMap.get(x.data.crop_tid) === this.selectedCrop)
+                        seedingTypeArray = cropFilter.map(h =>
+                            h.log_category[0].name
+                        )
+                    }
+                    else{
+                        seedingTypeArray = areaFilter.map(h => 
+                            h.log_category[0].name
+                        )
+                    }
+                    let seedingsType = new Set(seedingTypeArray)
+                    let newSeedingTypeArray = Array.from(seedingsType)
+                    return newSeedingTypeArray.sort()
+                },
+                /**
+                 * returns the total row feet for Direct Seeding
+                 */ 
+                totalRowFeet(){
+                    let tableData = this.tableRows
+                    let sumRowFeet = 0
+                    tableData.map(h => {
+                        sumRowFeet = sumRowFeet + parseInt(h.data[4])
+                    })
+                    return (Math.round(sumRowFeet*100))/100
+                },
+                /**
+                 * returns the total bed feet for Direct Seeding
+                 */ 
+                totalBedFeet(){
+                    let tableData = this.tableRows
+                    let sumBedFeet = 0
+                    tableData.map(h => {
+                        sumBedFeet = sumBedFeet + parseInt(h.data[5])
+                    })
+                    return sumBedFeet
+                },
+                /**
+                 * returns the total hours worked for direct seedings. Calculated by mulpitplying hours by workers for each log
+                 */ 
+                totalDirectSeedingHours(){
+                    let tableData = this.tableRows
+                    let filteredTableData = tableData.filter((x) => x.data[3] === 'Direct')
+                    let sumHours = 0
+                    filteredTableData.map(h => {
+                        sumHours = sumHours + h.data[10]//*h.data[11])
+                    })
+                    return (Math.round(sumHours*100))/100
+                },
+                /**
+                 * returns the bed feet per hour for the direct seedings. Calculated by dividing total bedfeet by total hours 
+                 */ 
+                totalBedFeetPerHour(){
+                    let bedFeet = this.totalBedFeet
+                    let hours = this.totalDirectSeedingHours
+                    return (Math.round((bedFeet/hours)*100))/100
+                },
+                /**
+                 * returns the row feet per hour for the direct seedings. Calculated by dividing total rowfeet by total hours
+                 */ 
+                totalRowFeetPerHour(){
+                    let rowFeet = this.totalRowFeet
+                    let hours = this.totalDirectSeedingHours
+                    return (Math.round((rowFeet/hours)*100))/100
+                },
+                /**
+                 * returns the total number of seeds planted for the tray seeding logs
+                 */ 
+                traySeedsPlanted(){
+                    let tableData = this.tableRows
+                    let totalTraySeeds = 0
+                    tableData.map(h =>
+                        totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
+                    )
+                    return totalTraySeeds
+                },
+                /**
+                 * returns the total number of trays(flats) for the Tray Seedings logs
+                 */ 
+                totalNumTrays(){
+                    let tableData = this.tableRows
+                    let totalTrays = 0
+                    tableData.map(h =>
+                        totalTrays = totalTrays + parseFloat(h.data[8])
+                    )
+                    return (Math.round(totalTrays*100))/100
+                },
+                /**
+                 * returns the total hours worked for the Tray Seeding logs. Calculated by multiplying the hours and workers for each log
+                 */ 
+                totalTraySeedingHours(){
+                    let tableData = this.tableRows
+                    let filteredTableData = tableData.filter((x) => x.data[3] === 'Tray')
+                    let sumHours = 0
+                    filteredTableData.map(h => {
+                        sumHours = sumHours + (parseFloat(h.data[10])*parseFloat(h.data[11]))
+                    })
+                    return (Math.round(sumHours*100))/100
+                },
+                /**
+                 * returns the average amount of seeds planted per hour. Calculated by having the total seedings planted divided by the total hours worked
+                 */ 
+                aveSeedsPerHour(){
+                    let seedsPlanted = this.traySeedsPlanted
+                    let hours = this.totalTraySeedingHours
+                    return (Math.round((seedsPlanted/hours)*100))/100
+                },
+                /**
+                 * returns the structure for updating the quantity section of the Direct Seeding Logs. The values have not been updated yet.
+                 */
+                quantityDirectSeeding(){
+                    return [
+                        {
+                            "measure": "length", 
+                            "value": this.updateLog[0].quantity[0].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('ROW FEET'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": this.updateLog[0].quantity[1].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('ROWS/BED'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": this.updateLog[0].quantity[2].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('HOURS'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.updateLog[0].quantity[3].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('PEOPLE'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                },
+                /**
+                 * returns the structure for updating the quantity section of the Tray Seeding Logs. The values have not been updated yet.
+                 */
+                quantityTraySeeding(){
+                    return [
+                        {
+                            "measure": "count", 
+                            "value": this.updateLog[0].quantity[0].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('SEEDS'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Seeds planted"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.updateLog[0].quantity[1].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('FLATS'), 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Flats used" //also known as trays used
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": this.updateLog[0].quantity[2].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('CELLS/FLAT'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Cells/Flat"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": this.updateLog[0].quantity[3].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('HOURS'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": this.updateLog[0].quantity[4].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('PEOPLE'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ]
+                },
+                /**
+                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
+                 */ 
+                columnInputs(){
+                    let userNameArray = []
+                    const userKeyIterator = this.userToIDMap.keys()
+                    for(i=0; i < this.userToIDMap.size; i++){
+                        userNameArray.push(userKeyIterator.next().value)
+                    }
+                    let cropNameArray = []
+                    for(let [key, info] of this.cropToIDMap){
+                        cropNameArray.push(key)
+                    }
+                    let areaNameArray = []
+                    const areaKeyIterator = this.areaToIDMap.keys()
+                    for(i=0; i < this.areaToIDMap.size; i++){
+                        areaNameArray.push(areaKeyIterator.next().value)
+                    }
+                    return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
+                }
+            },
+            created() {
+                getSessionToken()
+                    .then((response) => {
+                        this.sessionToken = response
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getIDToCropMap()
+                    .then((response) => {
+                        this.idToCropMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getCropToIDMap()
+                    .then((response) => {
+                        this.cropToIDMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getIDToUserMap()
+                    .then((response) => {
+                        this.idToUserMap = new Map (response)
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getUserToIDMap()
+                    .then((response) => {
+                        this.userToIDMap = new Map (response)
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getAreaToIDMap()
+                    .then((response) => {
+                        this.areaToIDMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getUnitToIDMap()
+                    .then((response) => {
+                        this.unitToIDMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                getConfiguration()
+                    .then((response) => {
+                        this.configToIDMap = response.data
+                        if(this.configToIDMap.labor == "hidden") {
+                            this.visibleColumns[10] = false
+                            this.visibleColumns[11] = false
+                        }
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+            }
+        })
+        Vue.config.devtools = true;
+    </script>
+</body>
