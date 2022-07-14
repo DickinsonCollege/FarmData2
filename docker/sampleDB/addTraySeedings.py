@@ -85,6 +85,9 @@ def addSeedings(row, plantingID, seedingTypeID):
 
     totalFlats = float(row[5])
     totalSeeds = int(row[4])
+    if type(totalSeeds) != int or type(totalSeeds) != float:
+        totalSeeds = 0
+
     if totalSeeds == 0:  
         # If seed count not given, assume one seed per tray cell.
         cellsPerFlat = int(row[6])
