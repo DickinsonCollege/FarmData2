@@ -233,6 +233,7 @@
                             }
                         }
                         else if(keys[i] == 'Hours'){
+                            
                             updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Labor')].value = updateObject['Hours']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
@@ -494,7 +495,23 @@
                     let tableData = this.tableRows
                     let sumRowFeet = 0
                     tableData.map(h => {
-                        sumRowFeet = sumRowFeet + parseInt(h.data[4])
+                        sumRowFeet = sumRowFeet + parseFloat(h.data[4])
+                    })
+                    return (Math.round(sumRowFeet*100))/100
+                },
+                /**
+                 * returns the total row feet for Direct Seeding
+                 */ 
+                totalRowFeetNoLabor(){
+                    let tableData = this.tableRows
+                    let sumRowFeet = 0
+                    tableData.map(h => {
+                        if(parseFloat(h.data[10]) == 0 && parseFloat(h.data[11]) == 0) {
+                            sumRowFeet = sumRowFeet
+                        } else {
+
+                            sumRowFeet = sumRowFeet + parseFloat(h.data[5])
+                        }
                     })
                     return (Math.round(sumRowFeet*100))/100
                 },
@@ -505,7 +522,23 @@
                     let tableData = this.tableRows
                     let sumBedFeet = 0
                     tableData.map(h => {
-                        sumBedFeet = sumBedFeet + parseInt(h.data[5])
+                        sumBedFeet = sumBedFeet + parseFloat(h.data[5])
+                    })
+                    return sumBedFeet
+                },
+                /**
+                 * returns the total bed feet for Direct Seeding excluding the logs without labor data
+                 */
+                totalBedFeetNoLabor(){
+                    let tableData = this.tableRows
+                    let sumBedFeet = 0
+                    tableData.map(h => {
+                        if(parseFloat(h.data[10]) == 0 && parseFloat(h.data[11]) == 0) {
+                            sumBedFeet = sumBedFeet
+                        } else {
+
+                            sumBedFeet = sumBedFeet + parseFloat(h.data[5])
+                        }
                     })
                     return sumBedFeet
                 },
@@ -517,7 +550,7 @@
                     let filteredTableData = tableData.filter((x) => x.data[3] === 'Direct')
                     let sumHours = 0
                     filteredTableData.map(h => {
-                        sumHours = sumHours + h.data[10]//*h.data[11])
+                        sumHours = sumHours + (h.data[10]*parseFloat(h.data[11]))
                     })
                     return (Math.round(sumHours*100))/100
                 },
@@ -525,7 +558,7 @@
                  * returns the bed feet per hour for the direct seedings. Calculated by dividing total bedfeet by total hours 
                  */ 
                 totalBedFeetPerHour(){
-                    let bedFeet = this.totalBedFeet
+                    let bedFeet = this.totalBedFeetNoLabor
                     let hours = this.totalDirectSeedingHours
                     return (Math.round((bedFeet/hours)*100))/100
                 },
@@ -533,7 +566,7 @@
                  * returns the row feet per hour for the direct seedings. Calculated by dividing total rowfeet by total hours
                  */ 
                 totalRowFeetPerHour(){
-                    let rowFeet = this.totalRowFeet
+                    let rowFeet = this.totalRowFeetNoLabor
                     let hours = this.totalDirectSeedingHours
                     return (Math.round((rowFeet/hours)*100))/100
                 },
