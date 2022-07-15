@@ -93,7 +93,10 @@ def addSeedings(row, plantingID, seedingTypeID):
         cellsPerFlat = int(row[6])
         totalSeeds = totalFlats*cellsPerFlat
 
+    # avoid cases where division by zero is possible
     seedsPerFlat = totalSeeds/totalFlats 
+    if seedsPerFlat == 0:
+        seedsPerFlat = 1
 
     for seeding in seedings:
         if (seeding.startswith('Seed Code:')):
@@ -105,9 +108,9 @@ def addSeedings(row, plantingID, seedingTypeID):
                 seedCode = details[i][11:].strip()
                 seedCount = details[i+1][:details[i+1].index(' ')]
 
-                #print(seedCode + " *** " + seedCount)
+                print(seedCode + " *** " + seedCount)
 
-                row[4] = seedCount
+                row[4] = int(seedCount)
                 if seedCount == 0: 
                     # If seed counts are 0, ssume equally distributed across seedings.
                     seedCount = str(totalSeeds / len(seedings)) 
@@ -118,6 +121,10 @@ def addSeedings(row, plantingID, seedingTypeID):
                 # Not rounding results in <500> response status.
                 row[5] = str(round(int(seedCount) / seedsPerFlat,2))
 
+                print("Number of seedings: " + str(row[4]))
+                print("Number of Cells/Tray: " + row[6])
+
+                
                 addSeeding(row, plantingID, seedingTypeID)
         else:
             print("Bad seed variety format")
@@ -132,6 +139,9 @@ def addSeeding(row, plantingID, seedingTypeID):
     # Pick some random values for things not in FarmData.
     randomHours = random.randrange(1,15, 1)/10.0  # 0.1...1.5 hours
     randomGreenhouseID = random.choice(greenhouseIDs)
+
+    if row[4] == 0 or row[6] == 0:
+        return
 
     seeding = {
         "name": row[2] + " " + row[3],
