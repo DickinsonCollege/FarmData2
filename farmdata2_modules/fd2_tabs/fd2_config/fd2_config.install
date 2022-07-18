@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ * Defines the database table and schema for the config.
+ */
+function fd2_config_schema() {
+
+  $schema = array();
+
+  $schema['fd2_config'] = array(
+    'description' => 'The configruation information for FarmData2',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary key of the configuration',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'labor' => array(
+        'description' => 'Is labor data required, optional or hidden?',
+        'type' => 'varchar',
+        'length' => 10,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  return $schema;
+}
+
+/*
+ * Hook that inserts the default configuation values.
+ */
+function fd2_config_install() {
+  $values = db_insert('fd2_config')
+    ->fields(array(
+        'labor' => 'Required',
+    ))
+    ->execute();
+}

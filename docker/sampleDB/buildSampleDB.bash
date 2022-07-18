@@ -25,12 +25,14 @@ echo "Set."
 echo "Enabling restws basic authentication..."
 # Adds query parameter criteron for [gt], [lt], etc...
 docker exec -it fd2_farmdata2 drush en restws_basic_auth -y
-echo "restws enabled."
+echo "restws basic authentication enabled."
 
 echo "Enabling FarmData2 modules..."
 docker exec -it fd2_farmdata2 drush en fd2_example -y
 docker exec -it fd2_farmdata2 drush en fd2_barn_kit -y
 docker exec -it fd2_farmdata2 drush en fd2_field_kit -y
+docker exec -it fd2_farmdata2 drush en fd2_config -y
+docker exec -it fd2_farmdata2 drush en fd2_school -y
 echo "Enabled."
 
 echo "Enabling the Field UI module..."
@@ -41,14 +43,21 @@ echo "Enabled."
 # Create the 'people' (i.e. users) in the sample FarmData2 database.
 source ./addPeople.bash
 
+# Give logged in users permission to access the fd2_config module.
+echo "Adding permissions for fd2_config API..."
+docker exec -it fd2_farmdata2 drush role-add-perm "authenticated user" --module=restws "access resource fd2_config"
+echo "Permissions added."
+
 # Add custom FarmData2 fields to the Drupal entities.
+echo "Adding FarmData2 custom fields..."
 docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampleDB
+echod "Fields added."
 
 # Create the vocabularies
   # Add the units used for quantities
   ./addUnits.py
   # Add the crop families and crops.
-  ./addCrops.py  
+  ./addCrops.py
   # Add the farm areas (fields, greenhouses, beds)
   ./addAreas.py
 
@@ -60,7 +69,7 @@ docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampl
   ./addTransplantings.py
   # Add the harvests
   ./addHarvests.py
-  
+
 echo "Compressing the sample database..."
 cd ..
 rm -f db.sample.tar.bz2

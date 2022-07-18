@@ -1,4 +1,5 @@
 import {mount} from '@cypress/vue'
+import { shallowMount } from '@vue/test-utils'
 
 var CustTable = require("./CustomTableComponent.js")
 var CustomTableComponent = CustTable.CustomTableComponent
@@ -22,6 +23,11 @@ describe('custom table component', () => {
         it('the table exists', () => {
             cy.get('[data-cy=table]')
                 .should('exist')
+        })
+
+        it('the csv button does not exist', () => {
+            cy.get('[data-cy=export-btn')
+                .should('not.exist')
         })
 
         it('Displays headers in first row', () => {
@@ -435,7 +441,7 @@ describe('custom table component', () => {
             })
         })
 
-        it('confirms that row is not deletedd if "cancel" is clicked', () => {
+        it('confirms that row is not deleted if "cancel" is clicked', () => {
             const spy = cy.spy()
             Cypress.vue.$on('row-deleted', spy)
             cy.get('[data-cy=delete-button-r1]')
@@ -447,5 +453,112 @@ describe('custom table component', () => {
                 expect(spy).to.not.be.called
             })
         })
+    })
+
+    context('watch prop changes', () => {
+        let comp;
+        beforeEach(() => {
+            // shallowMount to test prop changes
+            comp = shallowMount(CustomTableComponent, {
+                propsData: {
+                    rows: [ {id: 10, data: [12, 3, 'answome']},
+                    {id: 11, data: [19, 3, 'and'],},
+                    {id: 12, data: [12, 12, 'answome12'],}, 
+                    ],
+                    headers: ['cool', 'works?', 'hello'],
+                    canDelete: true,
+                    visibleColumns: [true, true, false],
+                }
+            })
+        })
+
+        it('checking prop changes for visibleColumns', () => {
+            // deep equal to compare key value pairs instead of references
+            expect(comp.vm.visibleColumns).to.deep.equal([true, true, false])
+            cy.wrap(comp.setProps({ visibleColumns: [false, true, false]}))
+            .then(() => {
+                //checking both prop and the computed property
+                expect(comp.vm.visibleColumns).to.deep.equal([false, true, false])
+                expect(comp.vm.isVisible).to.deep.equal([false, true, false])
+            })
+        })
+
+        it('checking prop changes for visibleColumns to null then back to a non-null array', () => {
+            // deep equal to compare key value pairs instead of references
+            expect(comp.vm.visibleColumns).to.deep.equal([true, true, false])
+            cy.wrap(comp.setProps({ visibleColumns: null}))
+            .then(() => {
+                // checking both prop and the computed property
+                expect(comp.vm.visibleColumns).to.deep.equal(null)          // prop is passed in as null
+                expect(comp.vm.isVisible).to.deep.equal([true, true, true]) // computed property is set as an array of trues when null is passed as arg
+                cy.wrap(comp.setProps({ visibleColumns: [false, true, true]}))
+                .then(() => {
+                    // now going back to a non-null array
+                    expect(comp.vm.visibleColumns).to.deep.equal([false, true, true]) 
+                    expect(comp.vm.isVisible).to.deep.equal([false, true, true])
+                })
+            })    
+        })
+
+        it('checking prop changes for visibleColumns when the element is directly modified', () => {
+            expect(comp.vm.visibleColumns).to.deep.equal([true, true, false])
+            cy.wrap(comp.vm.visibleColumns[0] = false)
+            cy.wrap(comp.vm.visibleColumns[2] = true)
+            .then(() => {
+                expect(comp.vm.visibleColumns).to.deep.equal([false, true, true])
+                expect(comp.vm.isVisible).to.deep.equal([false, true, true])
+            })
+        })
+    })
+
+    context('export csv file', () => {
+        const path = require("path");
+        const downloadsFolder = 'cypress/downloads'
+        let comp;
+        beforeEach(() => {
+            comp = mount(CustomTableComponent, {
+                propsData: {
+                    rows: [ {id: 10, data: [12, 3, 'answome']},
+                    {id: 11, data: [19, 3, 'and'],},
+                    {id: 12, data: [12, 12, 'answome12'],}, 
+                    ],
+                    headers: ['cool', 'works?', 'hello'],
+                    canDelete: true,
+                    visibleColumns: [true, true, false],
+                    csvName: 'seedingReport_'
+                }
+            })
+        })
+
+        it('assure the button exists', () => {
+            cy.get('[data-cy=export-btn')
+            .should('have.exist')
+        })
+
+        it('verifies download', () => {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+            today = mm + dd + yyyy;
+            cy.get('[data-cy=export-btn]')
+                .click();
+
+            cy.readFile(path.join(downloadsFolder, 'seedingReport_' + today + '.csv')).should("exist");
+
+        });
+
+        it('verifies content of csv', () => {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+            today = mm + dd + yyyy;
+            cy.get('[data-cy=export-btn]')
+                .click();
+
+            cy.readFile(path.join(downloadsFolder, 'seedingReport_' + today + '.csv')).should("eq", "cool,works?\n12,3\n19,3\n12,12");
+            cy.exec("rm -r " + downloadsFolder)
+        });
     })
 })

@@ -29,7 +29,7 @@ catch(err) {
 let DateRangeSelectionComponent = {
     template: `<div>
                 <date-selection data-cy="start-date-select" :setDate="setStartDate" :latestDate="latestStartDate" @date-changed="startDateChange" 
-                @click="click" :disabled="isDisabled">>
+                @click="click" :disabled="isDisabled">
                     Start Date:
                 </date-selection>
                 <br>
