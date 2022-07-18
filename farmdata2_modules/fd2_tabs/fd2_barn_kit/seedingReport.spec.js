@@ -1317,7 +1317,7 @@ describe('Testing for the seeding report page', () => {
         // })
     })
 
-    context.only('Configuration tests', () => {
+    context('Configuration tests', () => {
         before(() =>{
             cy.login('manager1', 'farmdata2')
             .then(() => {
