@@ -251,7 +251,7 @@ describe('Testing for the seeding report page', () => {
                 .should('have.value', 'SEEDING BENCH')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
                 .children() 
-                .should('have.length', '12')
+                .should('have.length', '8')
         })
     })
 
@@ -490,15 +490,15 @@ describe('Testing for the seeding report page', () => {
         it('filters by field', () => {
             let area = null
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .select('CHUAU')
-                .should('have.value', 'CHUAU')
+                .select('SEEDING BENCH')
+                .should('have.value', 'SEEDING BENCH')
 
-            for(let r = 0; r < 8; r++){
+            for(let r = 0; r < 27; r++){
                 cy.get('[data-cy=r' + r + 'c2')
                     .invoke('text')
                     .then(actualArea => {
                         area = actualArea
-                        expect(area, 'CHUAU')
+                        expect(area, 'SEEDING BENCH')
                     })
             }
             
@@ -543,10 +543,10 @@ describe('Testing for the seeding report page', () => {
             .should('have.text', '212.5')
     
             cy.get('[data-cy=tray-total-seeds-hour]')
-            .should('have.text', '20.1')
+            .should('have.text', '8.1')
     
             cy.get('[data-cy=tray-avg-seeds-hour]')
-            .should('have.text', '836.22')
+            .should('have.text', '2075.06')
         })
     })
 
@@ -820,8 +820,6 @@ describe('Testing for the seeding report page', () => {
                     .next()
                         .should('have.value', 'A')
                     .next()
-                        .should('have.value', 'CHUAU')
-                    .next()
                         .should('have.value', 'CHUAU-3')
                     .next()
                         .should('have.value', 'SEEDING BENCH')
@@ -845,8 +843,6 @@ describe('Testing for the seeding report page', () => {
                 .children()
                     .first()
                         .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'CHUAU')
                     .next()
                         .should('have.value', 'SEEDING BENCH')
 
@@ -873,8 +869,6 @@ describe('Testing for the seeding report page', () => {
                     .next()
                         .should('have.value', 'A')
                     .next()
-                        .should('have.value', 'CHUAU')
-                    .next()
                         .should('have.value', 'CHUAU-3')
                     .next()
                         .should('have.value', 'SEEDING BENCH')
@@ -895,7 +889,7 @@ describe('Testing for the seeding report page', () => {
                     .first()
                         .should('have.value', 'All')
                     .next()
-                        .should('have.value', 'CHUAU')
+                        .should('have.value', 'SEEDING BENCH')
 
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .select('All')
