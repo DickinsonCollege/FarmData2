@@ -576,9 +576,9 @@
                 traySeedsPlanted(){
                     let tableData = this.tableRows
                     let totalTraySeeds = 0
-                    tableData.map(h =>
+                    tableData.map(h => {
                         totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
-                    )
+                    })
                     return totalTraySeeds
                 },
                 /**
