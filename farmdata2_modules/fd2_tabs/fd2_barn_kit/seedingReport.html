@@ -536,7 +536,6 @@
                         if(parseFloat(h.data[10]) == 0 && parseFloat(h.data[11]) == 0) {
                             sumBedFeet = sumBedFeet
                         } else {
-
                             sumBedFeet = sumBedFeet + parseFloat(h.data[5])
                         }
                     })
@@ -560,6 +559,9 @@
                 totalBedFeetPerHour(){
                     let bedFeet = this.totalBedFeetNoLabor
                     let hours = this.totalDirectSeedingHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((bedFeet/hours)*100))/100
                 },
                 /**
@@ -568,7 +570,26 @@
                 totalRowFeetPerHour(){
                     let rowFeet = this.totalRowFeetNoLabor
                     let hours = this.totalDirectSeedingHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((rowFeet/hours)*100))/100
+                },
+
+                /**
+                 * returns the total number of seeds planted for the tray seeding logs excluding the logs without labor data
+                 */ 
+                traySeedsPlantedNoLabor(){
+                    let tableData = this.tableRows
+                    let totalTraySeeds = 0
+                    tableData.map(h => {
+                        if(parseFloat(h.data[10]) == 0 && parseFloat(h.data[11]) == 0) {
+                            totalTraySeeds = totalTraySeeds
+                        } else {
+                            totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
+                        }
+                    })
+                    return totalTraySeeds
                 },
                 /**
                  * returns the total number of seeds planted for the tray seeding logs
@@ -608,8 +629,11 @@
                  * returns the average amount of seeds planted per hour. Calculated by having the total seedings planted divided by the total hours worked
                  */ 
                 aveSeedsPerHour(){
-                    let seedsPlanted = this.traySeedsPlanted
+                    let seedsPlanted = this.traySeedsPlantedNoLabor
                     let hours = this.totalTraySeedingHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((seedsPlanted/hours)*100))/100
                 },
                 /**
