@@ -168,7 +168,7 @@ describe('Testing for the transplanting report page', () => {
         }) 
     })
 
-    context.only('assures filters are actually populated', () => {
+    context('assures filters are actually populated', () => {
 
         it('test if crops are correctly loaded to the filter dropdown', () => {
             cy.get('[data-cy=start-date-select]')
@@ -638,7 +638,7 @@ describe('Testing for the transplanting report page', () => {
         })
     })
 
-    context('edit and delete buttons work', () => {
+    context.only('edit and delete buttons work', () => {
         let logID = 0
 
         beforeEach(() => {
@@ -812,7 +812,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the session token API: outside of 2xx error code', () => {
             cy.intercept('GET', 'restws/session/token', { statusCode: 500 }).as('failedSessionTok')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedSessionTok')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -827,7 +827,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the session token API: network error', () => {
             cy.intercept('GET', 'restws/session/token', { forceNetworkError: true }).as('failedSessionTok')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedSessionTok')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -847,7 +847,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the crop map API: outside of 2xx error code', () => {
             cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1', { statusCode: 500 }).as('failedCropMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedCropMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -862,7 +862,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the crop map API: network error', () => {
             cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1', { forceNetworkError: true }).as('failedCropMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedCropMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -882,7 +882,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the user map API: outside of 2xx error code', () => {
             cy.intercept('GET', 'user', { statusCode: 500 }).as('failedUserMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')         
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')         
             cy.wait('@failedUserMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -897,7 +897,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the user map API: network error', () => {
             cy.intercept('GET', 'user', { forceNetworkError: true }).as('failedUserMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')         
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')         
             cy.wait('@failedUserMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -917,7 +917,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the area map API: outside of 2xx error code', () => {
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { statusCode: 500 }).as('failedAreaMap') 
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedAreaMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -932,7 +932,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the area map API: outside of network error', () => {
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { forceNetworkError: true }).as('failedAreaMap') 
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedAreaMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -952,7 +952,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the unit map API: outside of 2xx error code', () => {
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units', { statusCode: 500 }).as('failedUnitMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedUnitMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -967,7 +967,7 @@ describe('Testing for the transplanting report page', () => {
         it('fail the unit map API: network error', () => {
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units', { forceNetworkError: true }).as('failedUnitMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
             cy.wait('@failedUnitMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -1030,7 +1030,7 @@ describe('Testing for the transplanting report page', () => {
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')            
             cy.intercept('GET', '/fd2_config/1').as('getConfigMap')       
             
-            cy.visit('/farm/fd2-barn-kit/seedingReport')
+            cy.visit('/farm/fd2-barn-kit/transplantingReport')
 
             cy.wait(['@cropmap', '@areamap', '@cropmap', '@usermap', '@areamap', '@unitmap',])
         })
@@ -1044,7 +1044,7 @@ describe('Testing for the transplanting report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-04-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
             cy.get('[data-cy=h0]')
@@ -1054,28 +1054,20 @@ describe('Testing for the transplanting report page', () => {
             cy.get('[data-cy=h2]')
                 .should('have.text', 'Area')
             cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
+                .should('have.text', 'Bed Feet')
             cy.get('[data-cy=h4]')
-                .should('not.exist')
+                .should('have.text', 'Row Feet')
             cy.get('[data-cy=h5]')
-                .should('not.exist')
+                .should('have.text', 'Rows/Bed')
             cy.get('[data-cy=h6]')
-                .should('not.exist')
+                .should('have.text', 'Trays')
             cy.get('[data-cy=h7]')
-                .should('not.exist')
-            cy.get('[data-cy=h8]')
-                .should('not.exist')
-            cy.get('[data-cy=h9]')
-                .should('not.exist')
-            cy.get('[data-cy=h10]')
                 .should('have.text', 'Workers')
-            cy.get('[data-cy=h11]')
+            cy.get('[data-cy=h8]')
                 .should('have.text', 'Hours')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
+            cy.get('[data-cy=h9]')
                 .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
+            cy.get('[data-cy=h10]')
                 .should('have.text', 'User')
             cy.get('[data-cy=edit-header]')
                 .should('have.text', 'Edit')
@@ -1100,38 +1092,30 @@ describe('Testing for the transplanting report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-04-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
-            cy.get('[data-cy=h0]')
+                cy.get('[data-cy=h0]')
                 .should('have.text', 'Date')
             cy.get('[data-cy=h1]')
                 .should('have.text', 'Crop')
             cy.get('[data-cy=h2]')
                 .should('have.text', 'Area')
             cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
+                .should('have.text', 'Bed Feet')
             cy.get('[data-cy=h4]')
-                .should('not.exist')
+                .should('have.text', 'Row Feet')
             cy.get('[data-cy=h5]')
-                .should('not.exist')
+                .should('have.text', 'Rows/Bed')
             cy.get('[data-cy=h6]')
-                .should('not.exist')
+                .should('have.text', 'Trays')
             cy.get('[data-cy=h7]')
-                .should('not.exist')
-            cy.get('[data-cy=h8]')
-                .should('not.exist')
-            cy.get('[data-cy=h9]')
-                .should('not.exist')
-            cy.get('[data-cy=h10]')
                 .should('have.text', 'Workers')
-            cy.get('[data-cy=h11]')
+            cy.get('[data-cy=h8]')
                 .should('have.text', 'Hours')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
+            cy.get('[data-cy=h9]')
                 .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
+            cy.get('[data-cy=h10]')
                 .should('have.text', 'User')
             cy.get('[data-cy=edit-header]')
                 .should('have.text', 'Edit')
@@ -1156,38 +1140,30 @@ describe('Testing for the transplanting report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-04-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
-            cy.get('[data-cy=h0]')
+                cy.get('[data-cy=h0]')
                 .should('have.text', 'Date')
             cy.get('[data-cy=h1]')
                 .should('have.text', 'Crop')
             cy.get('[data-cy=h2]')
                 .should('have.text', 'Area')
             cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
+                .should('have.text', 'Bed Feet')
             cy.get('[data-cy=h4]')
-                .should('not.exist')
+                .should('have.text', 'Row Feet')
             cy.get('[data-cy=h5]')
-                .should('not.exist')
+                .should('have.text', 'Rows/Bed')
             cy.get('[data-cy=h6]')
-                .should('not.exist')
+                .should('have.text', 'Trays')
             cy.get('[data-cy=h7]')
                 .should('not.exist')
             cy.get('[data-cy=h8]')
                 .should('not.exist')
             cy.get('[data-cy=h9]')
-                .should('not.exist')
-            cy.get('[data-cy=h10]')
-                .should('not.exist')
-            cy.get('[data-cy=h11]')
-                .should('not.exist')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
                 .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
+            cy.get('[data-cy=h10]')
                 .should('have.text', 'User')
             cy.get('[data-cy=edit-header]')
                 .should('have.text', 'Edit')

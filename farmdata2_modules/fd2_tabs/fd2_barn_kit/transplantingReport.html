@@ -145,8 +145,8 @@
                 },
                 configChange(){
                     if(this.configToIDMap.labor == 'Hidden') {
-                        this.visibleColumns[10] = false
-                        this.visibleColumns[11] = false
+                        this.visibleColumns[7] = false
+                        this.visibleColumns[8] = false
                     }
                 },
                 /**
@@ -601,9 +601,9 @@
                 getConfiguration()
                     .then((response) => {
                         this.configToIDMap = response.data
-                        if(this.configToIDMap.labor == "hidden") {
-                            this.visibleColumns[10] = false
-                            this.visibleColumns[11] = false
+                        if(this.configToIDMap.labor == "Hidden") {
+                            this.visibleColumns[7] = false
+                            this.visibleColumns[8] = false
                         }
                     })
                     .catch((err) => { 
