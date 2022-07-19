@@ -506,11 +506,8 @@
                     let tableData = this.tableRows
                     let sumRowFeet = 0
                     tableData.map(h => {
-                        if(parseFloat(h.data[10]) == 0 && parseFloat(h.data[11]) == 0) {
-                            sumRowFeet = sumRowFeet
-                        } else {
-
-                            sumRowFeet = sumRowFeet + parseFloat(h.data[5])
+                        if(parseFloat(h.data[10]) != 0 && parseFloat(h.data[11]) != 0) {
+                            sumRowFeet = sumRowFeet + parseFloat(h.data[5])        
                         }
                     })
                     return (Math.round(sumRowFeet*100))/100
@@ -533,9 +530,7 @@
                     let tableData = this.tableRows
                     let sumBedFeet = 0
                     tableData.map(h => {
-                        if(parseFloat(h.data[10]) == 0 && parseFloat(h.data[11]) == 0) {
-                            sumBedFeet = sumBedFeet
-                        } else {
+                        if(parseFloat(h.data[10]) != 0 && parseFloat(h.data[11]) != 0) {
                             sumBedFeet = sumBedFeet + parseFloat(h.data[5])
                         }
                     })
@@ -583,9 +578,7 @@
                     let tableData = this.tableRows
                     let totalTraySeeds = 0
                     tableData.map(h => {
-                        if(parseFloat(h.data[10]) == 0 && parseFloat(h.data[11]) == 0) {
-                            totalTraySeeds = totalTraySeeds
-                        } else {
+                        if(parseFloat(h.data[10]) != 0 && parseFloat(h.data[11]) != 0) {
                             totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
                         }
                     })
