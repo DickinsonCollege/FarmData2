@@ -1,9 +1,9 @@
 <body>
     <div id="seedingReport" v-cloak>
-        <h1 class="text-center">Seeding Report</h1>
+        <h1 class="text-center">Transplanting Report</h1>
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-                Error Processing Request. This may be an intermittent network issue. Please try again later. 
+                Error Processing Requt. This may be an intermittent network issue. Please try again later. 
             </div>
         </div>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
@@ -39,7 +39,7 @@
             <div v-if="!stillLoading && transplantingLogs.length != 0">
                 <br>
                 <div style="display: flex; width: 100%;">
-                    <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;">
+                    <fieldset data-cy="transplanting-summary" class="center-block panel panel-default" style="width: 50%;">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Transplanting Summary</legend>
                         <div>
                             <p style="margin-left: 5%;">Total Row Feet Planted: <b><span data-cy='transplant-total-rowft'>{{ totalRowFeet }}</span></b></p>
@@ -246,7 +246,7 @@
                     if(!(Object.entries(updatePlantObject).length === 0)){
                         updateRecord(plantingUrl, updatePlantObject, this.sessionToken)
                     }
-                    //call updateRecord function to update seeding log
+                    //call updateRecord function to update transplanting log
                     if(!(Object.entries(updateSeedingObject).length === 0)){
                         updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
                     }
@@ -325,7 +325,7 @@
                 },
 
                 /**
-                 * returns a sorted array of all the crops in the current logs. If area or type of seeding does not equal 'All' then the array will only contain crops that have the selected area and/or type of seeding
+                 * returns a sorted array of all the crops in the current logs. If area does not equal 'All' then the array will only contain crops that have the selected area 
                  */ 
                 cropList(){
                     let cropArray = []
@@ -346,7 +346,7 @@
                     return newCropArray.sort()
                 },
                 /**
-                 * returns a sorted array of all the areas in the current logs. If a crop or type of seeding does not equal 'All' then the array will only contain areas that have the selected crop and/or type of seeding
+                 * returns a sorted array of all the areas in the current logs. If a crop does not equal 'All' then the array will only contain areas that have the selected crop
                  */ 
                 areaList(){
                     let areaArray = []
@@ -383,7 +383,7 @@
                     let tableData = this.tableRows
                     let sumBedFeet = 0
                     tableData.map(h => {
-                        sumBedFeet = sumBedFeet + parseInt(h.data[5])
+                        sumBedFeet = sumBedFeet + parseInt(h.data[3])
                     })
                     return sumBedFeet
                 },
@@ -394,9 +394,10 @@
                     let tableData = this.tableRows
                     let sumHours = 0
                     tableData.map(h => {
-                        hours = parseFloat(h.data[9]);
+                        hours = parseFloat(h.data[7]);
                         sumHours = sumHours + hours
                     })
+                    // console.log(sumHours)
                     return (Math.round(sumHours*100))/100
                 },
                 /**
@@ -404,7 +405,7 @@
                  */ 
                 totalBedFeetPerHour(){
                     let bedFeet = this.totalBedFeet
-                    let hours = this.totalDirectSeedingHours
+                    let hours = this.totalHours
                     return (Math.round((bedFeet/hours)*100))/100
                 },
                 /**
@@ -412,19 +413,8 @@
                  */ 
                 totalRowFeetPerHour(){
                     let rowFeet = this.totalRowFeet
-                    let hours = this.totalDirectSeedingHours
+                    let hours = this.totalHours
                     return (Math.round((rowFeet/hours)*100))/100
-                },
-                /**
-                 * returns the total number of seeds planted for the tray seeding logs
-                 */ 
-                traySeedsPlanted(){
-                    let tableData = this.tableRows
-                    let totalTraySeeds = 0
-                    tableData.map(h =>
-                        totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
-                    )
-                    return totalTraySeeds
                 },
                 /**
                  * returns the total number of trays(flats) for the Tray Seedings logs
@@ -433,7 +423,7 @@
                     let tableData = this.tableRows
                     let totalTrays = 0
                     tableData.map(h =>
-                        totalTrays = totalTrays + parseFloat(h.data[8])
+                        totalTrays = totalTrays + parseFloat(h.data[6])
                     )
                     return (Math.round(totalTrays*100))/100
                 },

@@ -12,7 +12,7 @@ var deleteRecord = FarmOSAPI.deleteRecord
 var getConfiguration = FarmOSAPI.getConfiguration
 var setConfiguration = FarmOSAPI.setConfiguration
 
-describe('Testing for the seeding report page', () => {
+describe('Testing for the transplanting report page', () => {
     let cropToIDMap = null
     let IDToCropMap = null
     let areaToIDMap = null
@@ -56,7 +56,7 @@ describe('Testing for the seeding report page', () => {
         cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitMap') 
         
         // cy.restoreLocalStorage()
-        cy.visit('/farm/fd2-barn-kit/seedingReport')
+        cy.visit('/farm/fd2-barn-kit/transplantingReport')
     
         // Wait here for the maps to load in the page.   
         cy.wait(['@cropmap', '@areamap', '@IDCropMap', '@userMap', '@unitMap'])
@@ -97,10 +97,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=report-table]')
                 .should('exist')
 
-            cy.get('[data-cy=direct-summary]')
-                .should('exist')
-
-            cy.get('[data-cy=tray-summary]')
+            cy.get('[data-cy=transplanting-summary]')
                 .should('exist')
         })
 
@@ -114,7 +111,7 @@ describe('Testing for the seeding report page', () => {
                 .should('exist')
                 .type('2019-03-01')
 
-            cy.intercept('GET', '/log.json?type=farm_seeding&timestamp[ge]=1546300800&timestamp[le]=1551398400', { statusCode: 500 })
+            cy.intercept('GET', '/log.json?type=farm_transplanting&timestamp[ge]=1546300800&timestamp[le]=1551398400', { statusCode: 500 })
             .as('getAPIFailure')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
@@ -133,10 +130,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=report-table]')
                 .should('not.exist')
 
-            cy.get('[data-cy=direct-summary]')
-                .should('not.exist')
-
-            cy.get('[data-cy=tray-summary]')
+                cy.get('[data-cy=transplanting-summary]')
                 .should('not.exist')
         }) 
 
@@ -150,7 +144,7 @@ describe('Testing for the seeding report page', () => {
                 .should('exist')
                 .type('2019-03-01')
 
-            cy.intercept('GET', '/log.json?type=farm_seeding&timestamp[ge]=1546300800&timestamp[le]=1551398400', { forceNetworkError: true })
+            cy.intercept('GET', '/log.json?type=farm_transplanting&timestamp[ge]=1546300800&timestamp[le]=1551398400', { forceNetworkError: true })
             .as('getAPIFailure')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
@@ -169,46 +163,18 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=report-table]')
                 .should('not.exist')
 
-            cy.get('[data-cy=direct-summary]')
-                .should('not.exist')
-
-            cy.get('[data-cy=tray-summary]')
+            cy.get('[data-cy=transplanting-summary]')
                 .should('not.exist')
         }) 
     })
 
-    context('assures filters are actually populated', () => {
-
-        it('test if seeding type are correctly loaded to the filter dropdown', () => {
-            cy.get('[data-cy=start-date-select]')
-                .type('2019-01-01')
-            cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
-            cy.get('[data-cy=generate-rpt-btn]').click()
-
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
-                .first()
-                .should('have.value', 'All')
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
-                .first()  
-                .next()
-                .should('have.value', 'Direct Seedings')
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
-                .last()
-                .should('have.value', 'Tray Seedings')
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
-                .should('have.length', '3')
-        })
+    context.only('assures filters are actually populated', () => {
 
         it('test if crops are correctly loaded to the filter dropdown', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
 
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
@@ -219,21 +185,21 @@ describe('Testing for the seeding report page', () => {
                 .children() 
                 .first()  
                 .next()
-                .should('have.value', 'ARUGULA')
+                .should('have.value', 'BOKCHOY')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .children() 
                 .last()
                 .should('have.value', 'SCALLION')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .children() 
-                .should('have.length', '22')
+                .should('have.length', '19')
         })
 
         it('test if areas are correctly loaded to the filter dropdown', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
 
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
@@ -244,14 +210,14 @@ describe('Testing for the seeding report page', () => {
                 .children() 
                 .first()  
                 .next()
-                .should('have.value', 'A')
+                .should('have.value', 'CHUAU-2')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
                 .children() 
                 .last()
-                .should('have.value', 'SEEDING BENCH')
+                .should('have.value', 'T')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
                 .children() 
-                .should('have.length', '12')
+                .should('have.length', '8')
         })
     })
 
@@ -261,7 +227,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-08-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
             cy.get('[data-cy=loader]').should('be.visible')
         })
@@ -270,10 +236,10 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-02-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
             cy.get('[data-cy=report-table]').find('tr').its('length').then(length =>{
-                expect(length).to.equal(3)
+                expect(length).to.equal(30)
                 cy.get('[data-cy=loader]').should('not.exist')
             }) 
         })
@@ -282,7 +248,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-03')
+                .type('2019-08-03')
             cy.get('[data-cy=generate-rpt-btn]').click()
             cy.get('[data-cy=loader]').should('be.visible')
         })
@@ -290,11 +256,10 @@ describe('Testing for the seeding report page', () => {
 
     context('clicking on date ranges hides report', () => {
         beforeEach(() => {
-            //cy.visit('/farm/fd2-barn-kit/seedingReport')
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
         })
@@ -338,7 +303,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]').click()
             cy.get('[data-cy=no-logs-message]').should('not.exist')
         })
@@ -353,54 +318,24 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context('can see summary tables at appropriate times and displays appropriate message', () => {
+    context('can see the summary table at appropriate times and displays appropriate message', () => {
         beforeEach(() => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
         })
 
         it('does not immediately display summary tables', () => {
-            cy.get('[data-cy=tray-summary]').should('not.exist')
-            cy.get('[data-cy=direct-summary]').should('not.exist')
+            cy.get('[data-cy=transplanting-summary]').should('not.exist')
         })
 
         it('shows summary tables after table is fully loaded', () => {
             cy.get('[data-cy=report-table]')
-            cy.get('[data-cy=tray-summary]',).should('be.visible')
-            cy.get('[data-cy=direct-summary]').should('be.visible')
+            cy.get('[data-cy=transplanting-summary]').should('be.visible')
         }) 
-
-        it('show tray seeding message when only direct seeding', () => {
-            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .select('CARROT')
-            cy.get('[data-cy=tray-no-logs')
-                .should('have.text', 'There are no Tray Seeding logs with these parameters')
-        })
-
-        it('show direct seeding message when only tray seeding', () => {
-            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .select('BOKCHOY')
-            cy.get('[data-cy=direct-no-logs')
-                .should('have.text', 'There are no Direct Seeding logs with these parameters')
-            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .select('All')
-        })
-
-        it('show one summary table with specific seeding type', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-            .select('Direct Seedings')
-            cy.get('[data-cy=direct-summary').should('exist')
-            cy.get('[data-cy=tray-summary]').should('not.exist')
-
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-            .select('Tray Seedings')
-            cy.get('[data-cy=direct-summary').should('not.exist')
-            cy.get('[data-cy=tray-summary]').should('exist')
-        })
     })
 
     context('displays the right information in the table', () => {
@@ -408,22 +343,22 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
 
             cy.get('[data-cy=report-table]').find('tr').its('length')
                 .then(length =>{
-                    expect(length).to.equal(35)
+                    expect(length).to.equal(30)
                 })
         })
 
         it('requests and displays logs that fall between the specified dates', () => {
             let currentTimestamp = null
             const startTimestamp = dayjs('2019-01-01').unix()
-            const endTimestamp = dayjs('2019-03-01').unix()
+            const endTimestamp = dayjs('2019-05-01').unix()
 
-            for(let r = 0; r < 34; r++){
+            for(let r = 0; r < 28; r++){
                 cy.get('[data-cy=r' + r + 'c0')
                     .invoke('text')
                     .then(dateText => {
@@ -433,52 +368,19 @@ describe('Testing for the seeding report page', () => {
             }
         })
 
-        it('filters by type of seeding', () => {
-            let typeSeeding = null
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('Direct Seedings')
-                .should('have.value', 'Direct Seedings')
-
-            for(let r = 0; r < 7; r++){
-                cy.get('[data-cy=r' + r + 'c3')
-                    .invoke('text')
-                    .then(seeding => {
-                        typeSeeding = seeding
-                        expect(typeSeeding, 'Direct')
-                    })
-            }
-
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('Tray Seedings')
-                .should('have.value', 'Tray Seedings')
-
-            for(let r = 0; r < 27; r++){
-                cy.get('[data-cy=r' + r + 'c3')
-                    .invoke('text')
-                    .then(seeding => {
-                        typeSeeding = seeding
-                        expect(typeSeeding, 'Tray')
-                    })
-            }
-
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('All')
-                .should('have.value', 'All')
-        })
-
         it('filters by crop', () => {
             let crop = null
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .select('LEEK')
-                .should('have.value', 'LEEK')
+                .select('BROCCOLI')
+                .should('have.value', 'BROCCOLI')
 
 
-            for(let r = 0; r < 3; r++){
+            for(let r = 0; r < 2; r++){
                 cy.get('[data-cy=r' + r + 'c1')
                     .invoke('text')
                     .then(actualCrop => {
                         crop = actualCrop
-                        expect(crop, 'LEEK')
+                        expect(crop, 'BROCCOLI')
                     })
             }
 
@@ -490,15 +392,15 @@ describe('Testing for the seeding report page', () => {
         it('filters by field', () => {
             let area = null
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .select('CHUAU')
-                .should('have.value', 'CHUAU')
+                .select('CHUAU-4')
+                .should('have.value', 'CHUAU-4')
 
-            for(let r = 0; r < 8; r++){
+            for(let r = 0; r < 4; r++){
                 cy.get('[data-cy=r' + r + 'c2')
                     .invoke('text')
                     .then(actualArea => {
                         area = actualArea
-                        expect(area, 'CHUAU')
+                        expect(area, 'CHUAU-4')
                     })
             }
             
@@ -508,61 +410,48 @@ describe('Testing for the seeding report page', () => {
             })
         })
 
-    context('has the correct totals in the seeding summary tables', () => {
+    context('has the correct totals in the transplanting summary tables', () => {
         beforeEach(() => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
         })
 
-        it('verify all values in the direct seeding summary', () => {
-            cy.get('[data-cy=direct-total-rowft]')
-            .should('have.text', '26177')
-
-            cy.get('[data-cy=direct-total-bedft]')
-            .should('have.text', '8803')
-
-            cy.get('[data-cy=direct-total-hours]')
-            .should('have.text', '7')
-
-            cy.get('[data-cy=direct-total-rowft-hour]')
-            .should('have.text', '3739.57')
-
-            cy.get('[data-cy=direct-total-bedfr-hour]')
-            .should('have.text', '1257.57')
-            })
-
-        it('verify all values in the tray seeding summary', () => {
-            cy.get('[data-cy=tray-total-seeds]')
-            .should('have.text', '16808')
+        it('verify all values in the transplanting seeding summary', () => {
+            cy.get('[data-cy=transplant-total-rowft]')
+            .should('have.text', '9674')
     
-            cy.get('[data-cy=tray-total-trays]')
-            .should('have.text', '212.5')
+            cy.get('[data-cy=transplant-total-bedft]')
+            .should('have.text', '3778')
     
-            cy.get('[data-cy=tray-total-seeds-hour]')
-            .should('have.text', '20.1')
+            cy.get('[data-cy=transplant-total-numTrays]')
+            .should('have.text', '92')
     
-            cy.get('[data-cy=tray-avg-seeds-hour]')
-            .should('have.text', '836.22')
+            cy.get('[data-cy=transplant-total-hours]')
+            .should('have.text', '29')
+
+            cy.get('[data-cy=transplant-total-rowft-hour]')
+            .should('have.text', '333.59')
+
+            cy.get('[data-cy=transplant-total-bedfr-hour]')
+            .should('have.text', '130.28')
         })
     })
 
-    context('changing the type of seeding changes the visible columns', () => {
+    context('displays only relevant columns under certain conditions', () => {
         beforeEach(() => {
             cy.get('[data-cy=start-date-select]')
                 .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-03-01')
+                .type('2019-05-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
         })
 
-        it('displays only columns relevant to both seedings when "All" is selected', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .should('have.value', 'All')
+        it('displays only relevant columns', () => {
             cy.get('[data-cy=h0]')
                 .should('have.text', 'Date')
             cy.get('[data-cy=h1]')
@@ -570,84 +459,29 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=h2]')
                 .should('have.text', 'Area')
             cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
-            cy.get('[data-cy=h4]')
-                .should('not.exist')
-            cy.get('[data-cy=h5]')
-                .should('not.exist')
-            cy.get('[data-cy=h6]')
-                .should('not.exist')
-            cy.get('[data-cy=h7]')
-                .should('not.exist')
-            cy.get('[data-cy=h8]')
-                .should('not.exist')
-            cy.get('[data-cy=h9]')
-                .should('not.exist')
-            cy.get('[data-cy=h10]')
-                .should('have.text', 'Workers')
-            cy.get('[data-cy=h11]')
-                .should('have.text', 'Hours')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
-                .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
-                .should('have.text', 'User')
-            cy.get('[data-cy=edit-header]')
-                .should('have.text', 'Edit')
-            cy.get('[data-cy=delete-header]')
-                .should('have.text', 'Delete')
-        })
-
-        it('displays columns relevant to direct seedings when "Direct Seedings" is selected', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('Direct Seedings')
-                .should('have.value', 'Direct Seedings')
-            cy.get('[data-cy=h0]')
-                .should('have.text', 'Date')
-            cy.get('[data-cy=h1]')
-                .should('have.text', 'Crop')
-            cy.get('[data-cy=h2]')
-                .should('have.text', 'Area')
-            cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
+                .should('have.text', 'Bed Feet')
             cy.get('[data-cy=h4]')
                 .should('have.text', 'Row Feet')
             cy.get('[data-cy=h5]')
-                .should('have.text', 'Bed Feet')
-            cy.get('[data-cy=h6]')
                 .should('have.text', 'Rows/Bed')
+            cy.get('[data-cy=h6]')
+                .should('have.text', 'Trays')
             cy.get('[data-cy=h7]')
-                .should('not.exist')
-            cy.get('[data-cy=h8]')
-                .should('not.exist')
-            cy.get('[data-cy=h9]')
-                .should('not.exist')
-            cy.get('[data-cy=h10]')
                 .should('have.text', 'Workers')
-            cy.get('[data-cy=h11]')
+            cy.get('[data-cy=h8]')
                 .should('have.text', 'Hours')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
+            cy.get('[data-cy=h9]')
                 .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
+            cy.get('[data-cy=h10]')
                 .should('have.text', 'User')
             cy.get('[data-cy=edit-header]')
                 .should('have.text', 'Edit')
             cy.get('[data-cy=delete-header]')
                 .should('have.text', 'Delete')
-            cy.get('[data-cy=save-header]')
-                .should('not.exist')
-            cy.get('[data-cy=cancel-header]')
-                .should('not.exist')
         })
 
-        it('displays columns relevant to direct seedings when "Direct Seedings" is selected and in edit mode', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('Direct Seedings')
-                .should('have.value', 'Direct Seedings')
-            cy.get('[data-cy=edit-button-r0]').first()
+        it('displays only relevant columns when in edit mode', () => {
+            cy.get('[data-cy=edit-button-r0]')
                 .click()
             cy.get('[data-cy=h0]')
                 .should('have.text', 'Date')
@@ -656,28 +490,20 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=h2]')
                 .should('have.text', 'Area')
             cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
+                .should('have.text', 'Bed Feet')
             cy.get('[data-cy=h4]')
                 .should('have.text', 'Row Feet')
             cy.get('[data-cy=h5]')
-                .should('have.text', 'Bed Feet')
-            cy.get('[data-cy=h6]')
                 .should('have.text', 'Rows/Bed')
+            cy.get('[data-cy=h6]')
+                .should('have.text', 'Trays')
             cy.get('[data-cy=h7]')
-                .should('not.exist')
-            cy.get('[data-cy=h8]')
-                .should('not.exist')
-            cy.get('[data-cy=h9]')
-                .should('not.exist')
-            cy.get('[data-cy=h10]')
                 .should('have.text', 'Workers')
-            cy.get('[data-cy=h11]')
+            cy.get('[data-cy=h8]')
                 .should('have.text', 'Hours')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
+            cy.get('[data-cy=h9]')
                 .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
+            cy.get('[data-cy=h10]')
                 .should('have.text', 'User')
             cy.get('[data-cy=edit-header]')
                 .should('not.exist')
@@ -685,98 +511,6 @@ describe('Testing for the seeding report page', () => {
                 .should('not.exist')
             cy.get('[data-cy=save-header]')
                 .should('have.text', 'Save')
-            cy.get('[data-cy=cancel-header]')
-                .should('have.text', 'Cancel')
-
-            //Force the action to occur because in the viewport isn't big enough for the 
-            //button to be clickable
-            cy.get('[data-cy=cancel-button-r0]')
-                .click({force:true})
-        })
-
-        it('displays columns relevant to tray seedings when "Tray Seedings" is selected', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('Tray Seedings')
-                .should('have.value', 'Tray Seedings')
-                cy.get('[data-cy=h1]')
-                .should('have.text', 'Crop')
-            cy.get('[data-cy=h2]')
-                .should('have.text', 'Area')
-            cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
-            cy.get('[data-cy=h4]')
-                .should('not.exist')
-            cy.get('[data-cy=h5]')
-                .should('not.exist')
-            cy.get('[data-cy=h6]')
-                .should('not.exist')
-            cy.get('[data-cy=h7]')
-                .should('have.text', 'Seeds')
-            cy.get('[data-cy=h8]')
-                .should('have.text', 'Trays')
-            cy.get('[data-cy=h9]')
-                .should('have.text', 'Cells/Tray')
-            cy.get('[data-cy=h10]')
-                .should('have.text', 'Workers')
-            cy.get('[data-cy=h11]')
-                .should('have.text', 'Hours')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
-                .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
-                .should('have.text', 'User')
-            cy.get('[data-cy=edit-header]')
-                .should('have.text', 'Edit')
-            cy.get('[data-cy=delete-header]')
-                .should('have.text', 'Delete')
-            cy.get('[data-cy=save-header]')
-                .should('not.exist')
-            cy.get('[data-cy=cancel-header]')
-                .should('not.exist')
-        })
-
-        it('displays columns relevant to tray seedings when "Tray Seedings" is selected and in edit mode', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('Tray Seedings')
-                .should('have.value', 'Tray Seedings')
-            cy.get('[data-cy=edit-button-r0]').first()
-                .click()
-            cy.get('[data-cy=h1]')
-                .should('have.text', 'Crop')
-            cy.get('[data-cy=h2]')
-                .should('have.text', 'Area')
-            cy.get('[data-cy=h3]')
-                .should('have.text', 'Seeding')
-            cy.get('[data-cy=h4]')
-                .should('not.exist')
-            cy.get('[data-cy=h5]')
-                .should('not.exist')
-            cy.get('[data-cy=h6]')
-                .should('not.exist')
-            cy.get('[data-cy=h7]')
-                .should('have.text', 'Seeds')
-            cy.get('[data-cy=h8]')
-                .should('have.text', 'Trays')
-            cy.get('[data-cy=h9]')
-                .should('have.text', 'Cells/Tray')
-            cy.get('[data-cy=h10]')
-                .should('have.text', 'Workers')
-            cy.get('[data-cy=h11]')
-                .should('have.text', 'Hours')
-            cy.get('[data-cy=h12]')
-                .should('have.text', 'Varieties')
-            cy.get('[data-cy=h13]')
-                .should('have.text', 'Comments')
-            cy.get('[data-cy=h14]')
-                .should('have.text', 'User')
-            cy.get('[data-cy=edit-header]')
-                .should('not.exist')
-            cy.get('[data-cy=delete-header]')
-                .should('not.exist')
-            cy.get('[data-cy=save-header]')
-                .should('have.text', 'Save')
-
             cy.get('[data-cy=cancel-header]')
                 .should('have.text', 'Cancel')
 
@@ -790,162 +524,77 @@ describe('Testing for the seeding report page', () => {
     context('date picker and filter behavior', () => {
         beforeEach(() => {
             cy.get('[data-cy=start-date-select]')
-                .type('2019-02-13')
+                .type('2019-01-01')
             cy.get('[data-cy=end-date-select]')
-                .type('2019-02-16')
+                .type('2019-04-01')
             cy.get('[data-cy=generate-rpt-btn]')
                 .click()
         })
 
-        it('updates crop and area options when a new seeding type has been selected', () => {
-            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'ARUGULA')
-                    .next()
-                        .should('have.value', 'CARROT')
-                    .next()
-                        .should('have.value', 'CHARD')
-                    .next()
-                        .should('have.value', 'ONION-FRESH')
-                    .next()
-                        .should('have.value', 'SCALLION')
-
+        it('updates area options when a new crop has been selected', () => {
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
                 .children()
                     .first()
                         .should('have.value', 'All')
                     .next()
-                        .should('have.value', 'A')
+                        .should('have.value', 'CHUAU-2')
                     .next()
-                        .should('have.value', 'CHUAU')
+                        .should('have.value', 'CHUAU-4')
                     .next()
-                        .should('have.value', 'CHUAU-3')
-                    .next()
-                        .should('have.value', 'SEEDING BENCH')
-
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('Tray Seedings')
-                .should('have.value', 'Tray Seedings')
-
-            cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'CHARD')
-                    .next()
-                        .should('have.value', 'ONION-FRESH')
-                    .next()
-                        .should('have.value', 'SCALLION')
-
-            cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'CHUAU')
-                    .next()
-                        .should('have.value', 'SEEDING BENCH')
-
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .select('All')
-                .should('have.value', 'All')
-
-        })
-
-        it('updates seeding type and area options when a new crop has been selected', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'Direct Seedings')
-                    .next()
-                        .should('have.value', 'Tray Seedings')
-
-            cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'A')
-                    .next()
-                        .should('have.value', 'CHUAU')
-                    .next()
-                        .should('have.value', 'CHUAU-3')
-                    .next()
-                        .should('have.value', 'SEEDING BENCH')
+                        .should('have.value', 'JASMINE-1')
 
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .select('SCALLION')
                 .should('have.value', 'SCALLION')
 
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'Tray Seedings')
-
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
                 .children()
                     .first()
                         .should('have.value', 'All')
                     .next()
-                        .should('have.value', 'CHUAU')
+                        .should('have.value', 'CHUAU-2')
 
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .select('All')
                 .should('have.value', 'All')
         })
 
-        it('updates seeding type and crop options when a new area has been selected', () => {
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'Direct Seedings')
-                    .next()
-                        .should('have.value', 'Tray Seedings')
-
+        it('updates crop options when a new area has been selected', () => {
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .children()
                     .first()
                         .should('have.value', 'All')
                     .next()
-                        .should('have.value', 'ARUGULA')
-                    .next()
-                        .should('have.value', 'CARROT')
-                    .next()
                         .should('have.value', 'CHARD')
                     .next()
-                        .should('have.value', 'ONION-FRESH')
+                        .should('have.value', 'COLLARDS')
+                    .next()
+                        .should('have.value', 'KALE')
+                    .next()
+                        .should('have.value', 'LETTUCE-GREEN')
+                    .next()
+                        .should('have.value', 'LETTUCE-RED')
+                    .next()
+                        .should('have.value', 'LETTUCE-ROMAINE')
                     .next()
                         .should('have.value', 'SCALLION')
 
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .select('CHUAU')
-                .should('have.value', 'CHUAU')
-
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children()
-                    .first()
-                        .should('have.value', 'All')
-                    .next()
-                        .should('have.value', 'Tray Seedings')
+                .select('CHUAU-4')
+                .should('have.value', 'CHUAU-4')
 
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .children()
                     .first()
                         .should('have.value', 'All')
                     .next()
-                        .should('have.value', 'ONION-FRESH')
+                        .should('have.value', 'CHARD')
                     .next()
-                        .should('have.value', 'SCALLION')
+                        .should('have.value', 'COLLARDS')
+                    .next()
+                        .should('have.value', 'KALE')
+                    .next()
+                        .should('have.value', 'LETTUCE-RED')
 
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
                 .select('All')
@@ -956,8 +605,6 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=edit-button-r0]')
                 .click()
 
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .should('be.disabled')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .should('be.disabled')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
@@ -971,8 +618,6 @@ describe('Testing for the seeding report page', () => {
                 .should('exist')
                 .click()
             
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .should('not.be.disabled')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .should('not.be.disabled')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
@@ -986,8 +631,6 @@ describe('Testing for the seeding report page', () => {
                 .should('exist')
                 .click()
             
-            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .should('not.be.disabled')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
                 .should('not.be.disabled')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
@@ -1010,9 +653,9 @@ describe('Testing for the seeding report page', () => {
                         'X-CSRF-TOKEN' : token,
                     },
                     body: {
-                        "name": "TEST SEEDING",
-                        "type": "farm_seeding",
-                        "timestamp": dayjs('2001-09-20').unix(),
+                        "name": "TEST TRANSPLANTING",
+                        "type": "farm_transplanting",
+                        "timestamp": dayjs('2019-01-20').unix(),
                         "done": "1",  //any seeding recorded is done.
                         "notes": {
                             "value": "This is a test log",
@@ -1034,38 +677,57 @@ describe('Testing for the seeding report page', () => {
                         },
                         "quantity": [
                             {
-                                "measure": "length", 
-                                "value": "5",  //total row feet
+                                "measure": "length",
+                                "value": "150",
                                 "unit": {
-                                    "id": "20", 
-                                    "resource": "taxonomy_term"
+                                    "uri": "http://localhost/taxonomy_term/20",
+                                    "id": "20",
+                                    "resource": "taxonomy_term",
+                                    "name": "ROW FEET"
                                 },
                                 "label": "Amount planted"
                             },
                             {
-                                "measure": "ratio", 
-                                "value": "38",
+                                "measure": "ratio",
+                                "value": "5",
                                 "unit": {
+                                    "uri": "http://localhost/taxonomy_term/38",
                                     "id": "38",
-                                    "resource": "taxonomy_term"
+                                    "resource": "taxonomy_term",
+                                    "name": "ROWS/BED"
                                 },
                                 "label": "Rows/Bed"
                             },
                             {
-                                "measure": "time", 
-                                "value": "0.5", 
+                                "measure": "count",
+                                "value": "4",
                                 "unit": {
+                                    "uri": "http://localhost/taxonomy_term/12",
+                                    "id": "12",
+                                    "resource": "taxonomy_term",
+                                    "name": "FLATS"
+                                },
+                                "label": "Flats"
+                            },
+                            {
+                                "measure": "time",
+                                "value": "2",
+                                "unit": {
+                                    "uri": "http://localhost/taxonomy_term/29",
                                     "id": "29",
-                                    "resource": "taxonomy_term"
+                                    "resource": "taxonomy_term",
+                                    "name": "HOURS"
                                 },
                                 "label": "Labor"
                             },
                             {
-                                "measure": "count", 
-                                "value": "1", 
+                                "measure": "count",
+                                "value": "1",
                                 "unit": {
+                                    "uri": "http://localhost/taxonomy_term/15",
                                     "id": "15",
-                                    "resource": "taxonomy_term"
+                                    "resource": "taxonomy_term",
+                                    "name": "PEOPLE"
                                 },
                                 "label": "Workers"
                             },
@@ -1085,10 +747,10 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=start-date-select]')
                 .should('exist')
-                .type('2001-01-25')
+                .type('2019-01-25')
             cy.get('[data-cy=end-date-select]')
                 .should('exist')
-                .type('2001-12-25')
+                .type('2019-04-01')
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
         })
@@ -1102,12 +764,18 @@ describe('Testing for the seeding report page', () => {
                 .select('TOMATO')
             cy.get('[data-cy=dropdown-input-r0c2]')
                 .select('A')
-            cy.get('[data-cy=number-input-r0c10]')
-                .type('4')
-            cy.get('[data-cy=number-input-r0c11]')
-                .type('0.25')
+            cy.get('[data-cy=number-input-r0c3]')
+                .type('40')
+            cy.get('[data-cy=number-input-r0c4]')
+                .type('120')
+            cy.get('[data-cy=number-input-r0c6]')
+                .type('6')
+            cy.get('[data-cy=number-input-r0c7]')
+                .type('2')
+            cy.get('[data-cy=number-input-r0c8]')
+                .type('3.00')
 
-            cy.get('[data-cy=text-input-r0c13]')
+            cy.get('[data-cy=text-input-r0c9]')
                 .type('New Comment')
                 .blur()
 
@@ -1115,7 +783,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=save-button-r0]')
                 .click({force:true})
 
-            cy.wrap(getRecord('/log.json?type=farm_seeding&id=' + logID)).as('check')
+            cy.wrap(getRecord('/log.json?type=farm_transplanting&id=' + logID)).as('check')
             cy.get('@check').should(function(response) {
                 expect(response.data.list[0].name).to.equal('TEST SEEDING')
             })
