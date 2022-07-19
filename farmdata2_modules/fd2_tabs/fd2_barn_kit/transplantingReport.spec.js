@@ -655,7 +655,7 @@ describe('Testing for the transplanting report page', () => {
                     body: {
                         "name": "TEST TRANSPLANTING",
                         "type": "farm_transplanting",
-                        "timestamp": dayjs('2019-01-20').unix(),
+                        "timestamp": dayjs('2001-09-20').unix(),
                         "done": "1",  //any seeding recorded is done.
                         "notes": {
                             "value": "This is a test log",
@@ -677,63 +677,52 @@ describe('Testing for the transplanting report page', () => {
                         },
                         "quantity": [
                             {
-                                "measure": "length",
-                                "value": "150",
+                                "measure": "length", 
+                                "value": "5",  //total row feet
                                 "unit": {
-                                    "uri": "http://localhost/taxonomy_term/20",
-                                    "id": "20",
-                                    "resource": "taxonomy_term",
-                                    "name": "ROW FEET"
+                                    "id": "20", 
+                                    "resource": "taxonomy_term"
                                 },
                                 "label": "Amount planted"
                             },
                             {
-                                "measure": "ratio",
-                                "value": "5",
+                                "measure": "ratio", 
+                                "value": "38",
                                 "unit": {
-                                    "uri": "http://localhost/taxonomy_term/38",
                                     "id": "38",
-                                    "resource": "taxonomy_term",
-                                    "name": "ROWS/BED"
+                                    "resource": "taxonomy_term"
                                 },
                                 "label": "Rows/Bed"
                             },
                             {
-                                "measure": "count",
-                                "value": "4",
+                                "measure": "count", 
+                                "value": "10",
                                 "unit": {
-                                    "uri": "http://localhost/taxonomy_term/12",
-                                    "id": "12",
-                                    "resource": "taxonomy_term",
-                                    "name": "FLATS"
+                                    "id": "10",
+                                    "resource": "taxonomy_term"
                                 },
                                 "label": "Flats"
-                            },
+                            },         
                             {
-                                "measure": "time",
-                                "value": "2",
+                                "measure": "time", 
+                                "value": "0.5", 
                                 "unit": {
-                                    "uri": "http://localhost/taxonomy_term/29",
                                     "id": "29",
-                                    "resource": "taxonomy_term",
-                                    "name": "HOURS"
+                                    "resource": "taxonomy_term"
                                 },
                                 "label": "Labor"
                             },
                             {
-                                "measure": "count",
-                                "value": "1",
+                                "measure": "count", 
+                                "value": "1", 
                                 "unit": {
-                                    "uri": "http://localhost/taxonomy_term/15",
                                     "id": "15",
-                                    "resource": "taxonomy_term",
-                                    "name": "PEOPLE"
+                                    "resource": "taxonomy_term"
                                 },
                                 "label": "Workers"
                             },
                         ],
                         "created": dayjs().unix(),
-                        "lot_number": "N/A (No Variety)",
                         "data": "1"
                     }
                 }
@@ -750,7 +739,7 @@ describe('Testing for the transplanting report page', () => {
                 .type('2019-01-25')
             cy.get('[data-cy=end-date-select]')
                 .should('exist')
-                .type('2019-04-01')
+                .type('2019-05-25')
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
         })
@@ -765,19 +754,16 @@ describe('Testing for the transplanting report page', () => {
             cy.get('[data-cy=dropdown-input-r0c2]')
                 .select('A')
             cy.get('[data-cy=number-input-r0c3]')
+                .clear()
                 .type('40')
             cy.get('[data-cy=number-input-r0c4]')
-                .type('120')
-            cy.get('[data-cy=number-input-r0c6]')
-                .type('6')
-            cy.get('[data-cy=number-input-r0c7]')
-                .type('2')
-            cy.get('[data-cy=number-input-r0c8]')
-                .type('3.00')
+                .clear()
+                .type('100')
 
-            cy.get('[data-cy=text-input-r0c9]')
-                .type('New Comment')
-                .blur()
+            // cy.get('[data-cy=text-input-r0c9]')
+            //     .clear()
+            //     .type('New Comment')
+            //     .blur()
 
             // Button is actionable, unfortunately it's not in view
             cy.get('[data-cy=save-button-r0]')
@@ -785,12 +771,12 @@ describe('Testing for the transplanting report page', () => {
 
             cy.wrap(getRecord('/log.json?type=farm_transplanting&id=' + logID)).as('check')
             cy.get('@check').should(function(response) {
-                expect(response.data.list[0].name).to.equal('TEST SEEDING')
+                expect(response.data.list[0].name).to.equal('TEST TRANSPLANTING')
             })
                 .then(() => {
-                    cy.wrap(deleteRecord("/log/" + logID , token)).as('seedingDelete')
+                    cy.wrap(deleteRecord("/log/" + logID , token)).as('transplantingDelete')
                 })
-            cy.get('@seedingDelete').should((response) => {
+            cy.get('@transplantingDelete').should((response) => {
                 expect(response.status).to.equal(200)
             })
         })
