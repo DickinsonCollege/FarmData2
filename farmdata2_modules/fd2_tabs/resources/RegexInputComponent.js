@@ -32,9 +32,9 @@ let RegexInputComponent = {
       `<span data-cy='regex-input'>
       <input data-cy='text-input' v-model='val' :style='inputStyle' :min='setMin' :max='setMax' :step='setStep' 
       :title='setTitle' :disabled="isDisabled" :type='setType' @click="clickEventHandler($event)" @blur="blurEventHandler($event)">
-       </span>`, 
+      </span>`, 
 
-       props: {
+      props: {
           regExp: {
             type: RegExp,
             default: null
@@ -85,7 +85,7 @@ let RegexInputComponent = {
             InputType : this.setType,
             isMatch: false,
             isDisabled: this.disabled,
-
+            regex: this.regExp,
             inputStyle: {
               backgroundColor: "white",
               height: this.setHeight,
@@ -108,7 +108,7 @@ let RegexInputComponent = {
           },
 
           validateVal(inputVal){
-            const re = new RegExp(this.regExp)
+            const re = new RegExp(this.regex)
             const temp = this.isMatch
             this.isMatch = re.test(inputVal)
             this.$emit('input-changed', inputVal)
@@ -145,6 +145,10 @@ let RegexInputComponent = {
         },
         disabled(newBool) {
           this.isDisabled = newBool;
+        },
+        regExp(newReg) {
+          this.regex = newReg;
+          this.validateVal(this.val)
         }
       }
     }
