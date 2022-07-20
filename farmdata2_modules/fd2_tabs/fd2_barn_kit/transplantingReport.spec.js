@@ -441,7 +441,7 @@ describe('Testing for the transplanting report page', () => {
         })
     })
 
-    context.only('has the correct totals in the seeding summary tables with hidden labor config', () => {
+    context('has the correct totals in the seeding summary tables with hidden labor config', () => {
         let logID = 0
         let logID2 = 0
         let logIDTransplant = 0
@@ -1130,158 +1130,7 @@ describe('Testing for the transplanting report page', () => {
         })
     })
 
-    // context.only('edit and delete buttons work', () => {
-    //     let logID = 0
-
-    //     beforeEach(() => {
-    //         cy.wrap(getSessionToken())
-    //         .then(sessionToken => {
-    //             token = sessionToken
-    //             req = {
-    //                 url: '/log',
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'X-Requested-With': 'XMLHttpRequest',
-    //                     'X-CSRF-TOKEN' : token,
-    //                 },
-    //                 body: {
-    //                     "name": "TEST TRANSPLANTING",
-    //                     "type": "farm_transplanting",
-    //                     "timestamp": dayjs('2001-09-20').unix(),
-    //                     "done": "1",  //any seeding recorded is done.
-    //                     "notes": {
-    //                         "value": "This is a test log",
-    //                         "format": "farm_format"
-    //                     },
-    //                     "asset": [{ 
-    //                         "id": "1",   //Associated planting
-    //                         "resource": "farm_asset"
-    //                     }],
-    //                     "log_category": [{
-    //                         "id": "242",
-    //                         "resource": "taxonomy_term"
-    //                     }],
-    //                     "movement": {
-    //                         "area": [{
-    //                             "id": "233",
-    //                             "resource": "taxonomy_term"
-    //                         }]
-    //                     },
-    //                     "quantity": [
-    //                         {
-    //                             "measure": "length", 
-    //                             "value": "5",  //total row feet
-    //                             "unit": {
-    //                                 "id": "20", 
-    //                                 "resource": "taxonomy_term"
-    //                             },
-    //                             "label": "Amount planted"
-    //                         },
-    //                         {
-    //                             "measure": "ratio", 
-    //                             "value": "38",
-    //                             "unit": {
-    //                                 "id": "38",
-    //                                 "resource": "taxonomy_term"
-    //                             },
-    //                             "label": "Rows/Bed"
-    //                         },
-    //                         {
-    //                             "measure": "count", 
-    //                             "value": "2",
-    //                             "unit": {
-    //                                 "id": "12",
-    //                                 "resource": "taxonomy_term"
-    //                             },
-    //                             "label": "Flats"
-    //                         },         
-    //                         {
-    //                             "measure": "time", 
-    //                             "value": "0.5", 
-    //                             "unit": {
-    //                                 "id": "29",
-    //                                 "resource": "taxonomy_term"
-    //                             },
-    //                             "label": "Labor"
-    //                         },
-    //                         {
-    //                             "measure": "count", 
-    //                             "value": "1", 
-    //                             "unit": {
-    //                                 "id": "15",
-    //                                 "resource": "taxonomy_term"
-    //                             },
-    //                             "label": "Workers"
-    //                         },
-    //                     ],
-    //                     "created": dayjs().unix(),
-    //                     "data": "1"
-    //                 }
-    //             }
-
-    //             cy.request(req).as('create')
-    //             cy.get('@create').should(function(response) {
-    //                 expect(response.status).to.equal(201)
-    //                 logID = response.body.id
-    //             })
-    //         })
-
-    //         cy.get('[data-cy=start-date-select]')
-    //             .should('exist')
-    //             .type('2019-01-25')
-    //         cy.get('[data-cy=end-date-select]')
-    //             .should('exist')
-    //             .type('2019-05-25')
-    //         cy.get('[data-cy=generate-rpt-btn]').first()
-    //             .click()
-    //     })
-
-    //     it('edits the database when a row is edited in the table', () => {
-    //         cy.get('[data-cy=edit-button-r0]')
-    //             .click()   
-    //         cy.get('[data-cy=date-input-r0c0]')
-    //             .type('2001-09-28')  
-    //         cy.get('[data-cy=dropdown-input-r0c1]')
-    //             .select('TOMATO')
-    //         cy.get('[data-cy=dropdown-input-r0c2]')
-    //             .select('A')
-    //         cy.get('[data-cy=number-input-r0c3]')
-    //             .clear()
-    //             .type('40')
-    //         cy.get('[data-cy=number-input-r0c4]')
-    //             .clear()
-    //             .type('100')
-
-    //         // cy.get('[data-cy=text-input-r0c9]')
-    //         //     .clear()
-    //         //     .type('New Comment')
-    //         //     .blur()
-
-    //         // Button is actionable, unfortunately it's not in view
-    //         cy.get('[data-cy=save-button-r0]')
-    //             .click({force:true})
-
-    //         cy.wrap(getRecord('/log.json?type=farm_transplanting&id=' + logID)).as('check')
-    //         cy.get('@check').should(function(response) {
-    //             expect(response.data.list[0].name).to.equal('TEST TRANSPLANTING')
-    //         })
-    //             .then(() => {
-    //                 cy.wrap(deleteRecord("/log/" + logID , token)).as('transplantingDelete')
-    //             })
-    //         cy.get('@transplantingDelete').should((response) => {
-    //             expect(response.status).to.equal(200)
-    //         })
-    //     })
-
-    //     it('deletes a log from the database when the delete button is pressed', () => {
-    //         cy.get('[data-cy=delete-button-r0]')
-    //             .click((response) => {
-    //                 expect(response.status).to.equal(200)
-    //             })
-    //     })
-    // })
-
-    context('edit and delete buttons work', () => {
+    context.only('edit and delete buttons work', () => {
         let logID = 0
 
         beforeEach(() => {
@@ -1400,21 +1249,21 @@ describe('Testing for the transplanting report page', () => {
                 .click()   
             cy.get('[data-cy=date-input-r0c0]')
                 .type('2001-09-28')  
-            // cy.get('[data-cy=dropdown-input-r0c1]')
-            //     .select('TOMATO')
-            // cy.get('[data-cy=dropdown-input-r0c2]')
-            //     .select('A')
+            cy.get('[data-cy=dropdown-input-r0c1]')
+                .select('TOMATO')
+            cy.get('[data-cy=dropdown-input-r0c2]')
+                .select('A')
             cy.get('[data-cy=number-input-r0c3]')
                 .clear()
                 .type('40')
-            // cy.get('[data-cy=number-input-r0c4]')
-            //     .clear()
-            //     .type('100')
+            cy.get('[data-cy=number-input-r0c4]')
+                .clear()
+                .type('100')
 
-            // cy.get('[data-cy=text-input-r0c9]')
-            //     .clear()
-            //     .type('New Comment')
-            //     .blur()
+            cy.get('[data-cy=text-input-r0c9]')
+                .clear()
+                .type('New Comment')
+                .blur()
 
             // Button is actionable, unfortunately it's not in view
             cy.get('[data-cy=save-button-r0]')
@@ -1539,7 +1388,7 @@ describe('Testing for the transplanting report page', () => {
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
                     .should('be.visible')
-                    cy.window().its('scrollY').should('equal', 0)
+                    cy.window().its('scrollY').should('equal', 78)
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
@@ -1598,15 +1447,7 @@ describe('Testing for the transplanting report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                    .then(() => {
-                        cy.get('[data-cy=alert-err-handler]')
-                        .should('be.visible')
-                        cy.window().its('scrollY').should('equal', 0)
-                        cy.get('[data-cy=alert-err-handler]')
-                        .click()
-                        .should('not.visible')
-                    }) 
-            })
+            }) 
         })
     
             it('fail the session token API: network error', () => {
