@@ -441,6 +441,498 @@ describe('Testing for the transplanting report page', () => {
         })
     })
 
+    context.only('has the correct totals in the seeding summary tables with hidden labor config', () => {
+        let logID = 0
+        let logID2 = 0
+        let logIDTransplant = 0
+        beforeEach(() =>{
+            cy.login('manager1', 'farmdata2')
+            .then(() => {
+                cy.wrap(getConfiguration()).as('def')
+                cy.wrap(getSessionToken()).as('token')
+            }) 
+            cy.get('@token').should(function(token) {
+                sessionToken = token
+            })
+            cy.get('@def').should(function(map) {
+                configMap = map.data
+                defaultConfig = configMap
+            })
+        })
+        beforeEach(() =>{
+            cy.wrap(getSessionToken())
+            .then(sessionToken => {
+                token = sessionToken
+                req = {
+                    url: '/log',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "2019-03-27 TESTING CHUAU-2",
+                        "type": "farm_transplanting",
+                        "timestamp": dayjs('2001-10-16').unix(),
+                        "done": "1", 
+                        "notes": {
+                            "value": "<p>Testing Transplanting Report</p>\n",
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": "235",
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": "242",
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": "182",
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": [
+                            {
+                                "measure": "length", 
+                                "value": "3",  
+                                "unit": {
+                                    "id": "20", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Amount planted"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": "3", 
+                                "unit": {
+                                    "id": "38",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Rows/Bed"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "2", 
+                                "unit": {
+                                    "id": "12",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Flats"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": "0",  
+                                "unit": {
+                                    "id": "29",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "0",
+                                "unit": {
+                                    "id": "15",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ],
+                        "created": dayjs().unix(),
+                        "uid": {
+                            "id": "11",
+                            "resource": "user"
+                        },
+                        "log_owner": [{
+                            "id": "11",
+                            "resource": "user"
+                        }],
+                        "data": "{\"crop_tid\": \"166\"}"
+                    }
+                }
+                
+                reqTransplant = {
+                    url: '/log',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "2019-03-27 TESTING CHUAU-2",
+                        "type": "farm_transplanting",
+                        "timestamp": dayjs('2001-10-16').unix(),
+                        "done": "1", 
+                        "notes": {
+                            "value": "<p>Testing Transplanting Report</p>\n",
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": "235",
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": "242",
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": "182",
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": [
+                            {
+                                "measure": "length", 
+                                "value": "3",  
+                                "unit": {
+                                    "id": "20", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Amount planted"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": "3", 
+                                "unit": {
+                                    "id": "38",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Rows/Bed"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "2", 
+                                "unit": {
+                                    "id": "12",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Flats"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": "0",  
+                                "unit": {
+                                    "id": "29",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "0",
+                                "unit": {
+                                    "id": "15",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ],
+                        "created": dayjs().unix(),
+                        "uid": {
+                            "id": "11",
+                            "resource": "user"
+                        },
+                        "log_owner": [{
+                            "id": "11",
+                            "resource": "user"
+                        }],
+                        "data": "{\"crop_tid\": \"166\"}"
+                    }
+                }
+                cy.request(req).as('create')
+                cy.get('@create').should(function(response) {
+                    expect(response.status).to.equal(201)
+                    logID = response.body.id
+                })
+                cy.request(reqTransplant).as('create2')
+                cy.get('@create2').should(function(response) {
+                    expect(response.status).to.equal(201)
+                    logIDTransplant = response.body.id
+                })
+            })
+            requiredConfig = {id: 1, labor: 'Required'}
+            cy.wrap(setConfiguration(requiredConfig, sessionToken)).as('updateConfig')
+            cy.get('@updateConfig')
+            .then(() => {
+                cy.reload()
+            })
+
+        })
+
+
+        afterEach(() => {
+            cy.wrap(setConfiguration(defaultConfig, sessionToken)).as('resetConfig')
+            cy.get('@resetConfig').should((response) => {
+                expect(response.status).to.equal(200)  // 201
+            }) 
+            cy.wrap(deleteRecord("/log/" + logID , sessionToken)).as('transplantingDelete1')
+            cy.get('@transplantingDelete1').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            })
+
+            cy.wrap(deleteRecord("/log/" + logIDTransplant , sessionToken)).as('transplantingDelete2')
+            cy.get('@transplantingDelete2').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            })
+
+        })
+
+        it('test summary table values when all logs have no labor data', () => {
+            req2 = {
+                url: '/log',
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : token,
+                },
+                body: {
+                    "name": "2019-03-27 TESTING CHUAU-2",
+                    "type": "farm_transplanting",
+                    "timestamp": dayjs('2001-10-16').unix(),
+                    "done": "1", 
+                    "notes": {
+                        "value": "<p>Testing Transplanting Report</p>\n",
+                        "format": "farm_format"
+                    },
+                    "asset": [{ 
+                        "id": "235",
+                        "resource": "farm_asset"
+                    }],
+                    "log_category": [{
+                        "id": "242",
+                        "resource": "taxonomy_term"
+                    }],
+                    "movement": {
+                        "area": [{
+                            "id": "182",
+                            "resource": "taxonomy_term"
+                        }]
+                    },
+                    "quantity": [
+                        {
+                            "measure": "length", 
+                            "value": "3",  
+                            "unit": {
+                                "id": "20", 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": "3", 
+                            "unit": {
+                                "id": "38",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": "2", 
+                            "unit": {
+                                "id": "12",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Flats"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": "0",  
+                            "unit": {
+                                "id": "29",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": "0",
+                            "unit": {
+                                "id": "15",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ],
+                    "created": dayjs().unix(),
+                    "uid": {
+                        "id": "11",
+                        "resource": "user"
+                    },
+                    "log_owner": [{
+                        "id": "11",
+                        "resource": "user"
+                    }],
+                    "data": "{\"crop_tid\": \"166\"}"
+                }
+            }
+            cy.request(req2).as('create')
+                cy.get('@create').should(function(response) {
+                    expect(response.status).to.equal(201)
+                    logID2 = response.body.id
+                })
+
+            cy.get('[data-cy=start-date-select]')
+            .type('2001-10-16')
+            cy.get('[data-cy=end-date-select]')
+            .type('2001-10-17')
+            cy.get('[data-cy=generate-rpt-btn]')
+            .click()
+
+            cy.get('[data-cy=transplant-total-rowft]')
+                .should('have.text', '9')
+            cy.get('[data-cy=transplant-total-bedft]')
+            .should('have.text', '3')
+            cy.get('[data-cy=transplant-total-numTrays]')
+            .should('have.text', '6')
+            cy.get('[data-cy=transplant-total-hours]')
+            .should('have.text', '0')
+            cy.get('[data-cy=transplant-total-rowft-hour]')
+            .should('have.text', 'N/A')
+            cy.get('[data-cy=transplant-total-bedfr-hour]')
+            .should('have.text', 'N/A')
+            .then(() => {
+                cy.wrap(deleteRecord("/log/" + logID2 , sessionToken)).as('seedingDelete2')
+            })
+            cy.get('@seedingDelete2').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            })
+        })
+
+        it('test summary table values when there are mixed labor data', () => {
+            req2 = {
+                url: '/log',
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : token,
+                },
+                body: {
+                    "name": "2019-03-27 TESTING CHUAU-2",
+                    "type": "farm_transplanting",
+                    "timestamp": dayjs('2001-10-16').unix(),
+                    "done": "1", 
+                    "notes": {
+                        "value": "<p>Testing Transplanting Report</p>\n",
+                        "format": "farm_format"
+                    },
+                    "asset": [{ 
+                        "id": "235",
+                        "resource": "farm_asset"
+                    }],
+                    "log_category": [{
+                        "id": "242",
+                        "resource": "taxonomy_term"
+                    }],
+                    "movement": {
+                        "area": [{
+                            "id": "182",
+                            "resource": "taxonomy_term"
+                        }]
+                    },
+                    "quantity": [
+                        {
+                            "measure": "length", 
+                            "value": "3",  
+                            "unit": {
+                                "id": "20", 
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Amount planted"
+                        },
+                        {
+                            "measure": "ratio", 
+                            "value": "3", 
+                            "unit": {
+                                "id": "38",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Rows/Bed"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": "2", 
+                            "unit": {
+                                "id": "12",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Flats"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": "3",  
+                            "unit": {
+                                "id": "29",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Labor"
+                        },
+                        {
+                            "measure": "count", 
+                            "value": "2",
+                            "unit": {
+                                "id": "15",
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Workers"
+                        },
+                    ],
+                    "created": dayjs().unix(),
+                    "uid": {
+                        "id": "11",
+                        "resource": "user"
+                    },
+                    "log_owner": [{
+                        "id": "11",
+                        "resource": "user"
+                    }],
+                    "data": "{\"crop_tid\": \"166\"}"
+                }
+            }
+
+            cy.request(req2).as('create')
+                cy.get('@create').should(function(response) {
+                    expect(response.status).to.equal(201)
+                    logID2 = response.body.id
+                })
+
+            cy.get('[data-cy=start-date-select]')
+            .type('2001-10-16')
+            cy.get('[data-cy=end-date-select]')
+            .type('2001-10-17')
+            cy.get('[data-cy=generate-rpt-btn]')
+            .click()
+        
+            cy.get('[data-cy=transplant-total-rowft]')
+                .should('have.text', '9')
+
+            cy.get('[data-cy=transplant-total-bedft]')
+            .should('have.text', '3')
+
+            cy.get('[data-cy=transplant-total-numTrays]')
+            .should('have.text', '6')
+
+            cy.get('[data-cy=transplant-total-hours]')
+            .should('have.text', '2')
+
+            cy.get('[data-cy=transplant-total-rowft-hour]')
+            .should('have.text', '4.5')
+
+            cy.get('[data-cy=transplant-total-bedfr-hour]')
+            .should('have.text', '1.5')
+            .then(() => {
+                cy.wrap(deleteRecord("/log/" + logID2 , sessionToken)).as('seedingDelete2')
+            })
+            cy.get('@seedingDelete2').should((response) => {
+                expect(response.status).to.equal(200)  // 200 - OK/success
+            })
+        })
+    })
+
     context('displays only relevant columns under certain conditions', () => {
         beforeEach(() => {
             cy.get('[data-cy=start-date-select]')
@@ -638,7 +1130,158 @@ describe('Testing for the transplanting report page', () => {
         })
     })
 
-    context.only('edit and delete buttons work', () => {
+    // context.only('edit and delete buttons work', () => {
+    //     let logID = 0
+
+    //     beforeEach(() => {
+    //         cy.wrap(getSessionToken())
+    //         .then(sessionToken => {
+    //             token = sessionToken
+    //             req = {
+    //                 url: '/log',
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'X-Requested-With': 'XMLHttpRequest',
+    //                     'X-CSRF-TOKEN' : token,
+    //                 },
+    //                 body: {
+    //                     "name": "TEST TRANSPLANTING",
+    //                     "type": "farm_transplanting",
+    //                     "timestamp": dayjs('2001-09-20').unix(),
+    //                     "done": "1",  //any seeding recorded is done.
+    //                     "notes": {
+    //                         "value": "This is a test log",
+    //                         "format": "farm_format"
+    //                     },
+    //                     "asset": [{ 
+    //                         "id": "1",   //Associated planting
+    //                         "resource": "farm_asset"
+    //                     }],
+    //                     "log_category": [{
+    //                         "id": "242",
+    //                         "resource": "taxonomy_term"
+    //                     }],
+    //                     "movement": {
+    //                         "area": [{
+    //                             "id": "233",
+    //                             "resource": "taxonomy_term"
+    //                         }]
+    //                     },
+    //                     "quantity": [
+    //                         {
+    //                             "measure": "length", 
+    //                             "value": "5",  //total row feet
+    //                             "unit": {
+    //                                 "id": "20", 
+    //                                 "resource": "taxonomy_term"
+    //                             },
+    //                             "label": "Amount planted"
+    //                         },
+    //                         {
+    //                             "measure": "ratio", 
+    //                             "value": "38",
+    //                             "unit": {
+    //                                 "id": "38",
+    //                                 "resource": "taxonomy_term"
+    //                             },
+    //                             "label": "Rows/Bed"
+    //                         },
+    //                         {
+    //                             "measure": "count", 
+    //                             "value": "2",
+    //                             "unit": {
+    //                                 "id": "12",
+    //                                 "resource": "taxonomy_term"
+    //                             },
+    //                             "label": "Flats"
+    //                         },         
+    //                         {
+    //                             "measure": "time", 
+    //                             "value": "0.5", 
+    //                             "unit": {
+    //                                 "id": "29",
+    //                                 "resource": "taxonomy_term"
+    //                             },
+    //                             "label": "Labor"
+    //                         },
+    //                         {
+    //                             "measure": "count", 
+    //                             "value": "1", 
+    //                             "unit": {
+    //                                 "id": "15",
+    //                                 "resource": "taxonomy_term"
+    //                             },
+    //                             "label": "Workers"
+    //                         },
+    //                     ],
+    //                     "created": dayjs().unix(),
+    //                     "data": "1"
+    //                 }
+    //             }
+
+    //             cy.request(req).as('create')
+    //             cy.get('@create').should(function(response) {
+    //                 expect(response.status).to.equal(201)
+    //                 logID = response.body.id
+    //             })
+    //         })
+
+    //         cy.get('[data-cy=start-date-select]')
+    //             .should('exist')
+    //             .type('2019-01-25')
+    //         cy.get('[data-cy=end-date-select]')
+    //             .should('exist')
+    //             .type('2019-05-25')
+    //         cy.get('[data-cy=generate-rpt-btn]').first()
+    //             .click()
+    //     })
+
+    //     it('edits the database when a row is edited in the table', () => {
+    //         cy.get('[data-cy=edit-button-r0]')
+    //             .click()   
+    //         cy.get('[data-cy=date-input-r0c0]')
+    //             .type('2001-09-28')  
+    //         cy.get('[data-cy=dropdown-input-r0c1]')
+    //             .select('TOMATO')
+    //         cy.get('[data-cy=dropdown-input-r0c2]')
+    //             .select('A')
+    //         cy.get('[data-cy=number-input-r0c3]')
+    //             .clear()
+    //             .type('40')
+    //         cy.get('[data-cy=number-input-r0c4]')
+    //             .clear()
+    //             .type('100')
+
+    //         // cy.get('[data-cy=text-input-r0c9]')
+    //         //     .clear()
+    //         //     .type('New Comment')
+    //         //     .blur()
+
+    //         // Button is actionable, unfortunately it's not in view
+    //         cy.get('[data-cy=save-button-r0]')
+    //             .click({force:true})
+
+    //         cy.wrap(getRecord('/log.json?type=farm_transplanting&id=' + logID)).as('check')
+    //         cy.get('@check').should(function(response) {
+    //             expect(response.data.list[0].name).to.equal('TEST TRANSPLANTING')
+    //         })
+    //             .then(() => {
+    //                 cy.wrap(deleteRecord("/log/" + logID , token)).as('transplantingDelete')
+    //             })
+    //         cy.get('@transplantingDelete').should((response) => {
+    //             expect(response.status).to.equal(200)
+    //         })
+    //     })
+
+    //     it('deletes a log from the database when the delete button is pressed', () => {
+    //         cy.get('[data-cy=delete-button-r0]')
+    //             .click((response) => {
+    //                 expect(response.status).to.equal(200)
+    //             })
+    //     })
+    // })
+
+    context('edit and delete buttons work', () => {
         let logID = 0
 
         beforeEach(() => {
@@ -653,32 +1296,32 @@ describe('Testing for the transplanting report page', () => {
                         'X-CSRF-TOKEN' : token,
                     },
                     body: {
-                        "name": "TEST TRANSPLANTING",
+                        "name": "2019-03-27 TESTING CHUAU-2",
                         "type": "farm_transplanting",
-                        "timestamp": dayjs('2001-09-20').unix(),
-                        "done": "1",  //any seeding recorded is done.
+                        "timestamp": "1553644800",
+                        "done": "1", 
                         "notes": {
-                            "value": "This is a test log",
+                            "value": "<p>Testing Transplanting Report</p>\n",
                             "format": "farm_format"
                         },
                         "asset": [{ 
-                            "id": "1",   //Associated planting
+                            "id": "235",
                             "resource": "farm_asset"
                         }],
                         "log_category": [{
-                            "id": "240",
+                            "id": "242",
                             "resource": "taxonomy_term"
                         }],
                         "movement": {
                             "area": [{
-                                "id": "233",
+                                "id": "182",
                                 "resource": "taxonomy_term"
                             }]
                         },
                         "quantity": [
                             {
                                 "measure": "length", 
-                                "value": "5",  //total row feet
+                                "value": "3",  
                                 "unit": {
                                     "id": "20", 
                                     "resource": "taxonomy_term"
@@ -687,7 +1330,7 @@ describe('Testing for the transplanting report page', () => {
                             },
                             {
                                 "measure": "ratio", 
-                                "value": "38",
+                                "value": "3", 
                                 "unit": {
                                     "id": "38",
                                     "resource": "taxonomy_term"
@@ -696,16 +1339,16 @@ describe('Testing for the transplanting report page', () => {
                             },
                             {
                                 "measure": "count", 
-                                "value": "10",
+                                "value": "2", 
                                 "unit": {
-                                    "id": "10",
+                                    "id": "12",
                                     "resource": "taxonomy_term"
                                 },
                                 "label": "Flats"
-                            },         
+                            },
                             {
                                 "measure": "time", 
-                                "value": "0.5", 
+                                "value": "1",  
                                 "unit": {
                                     "id": "29",
                                     "resource": "taxonomy_term"
@@ -714,7 +1357,7 @@ describe('Testing for the transplanting report page', () => {
                             },
                             {
                                 "measure": "count", 
-                                "value": "1", 
+                                "value": "1",
                                 "unit": {
                                     "id": "15",
                                     "resource": "taxonomy_term"
@@ -722,8 +1365,16 @@ describe('Testing for the transplanting report page', () => {
                                 "label": "Workers"
                             },
                         ],
-                        "created": dayjs().unix(),
-                        "data": "1"
+                        "created": "1553644800",
+                        "uid": {
+                            "id": "11",
+                            "resource": "user"
+                        },
+                        "log_owner": [{
+                            "id": "11",
+                            "resource": "user"
+                        }],
+                        "data": "{\"crop_tid\": \"166\"}"
                     }
                 }
 
@@ -731,15 +1382,15 @@ describe('Testing for the transplanting report page', () => {
                 cy.get('@create').should(function(response) {
                     expect(response.status).to.equal(201)
                     logID = response.body.id
+                    console.log(logID)
                 })
             })
-
             cy.get('[data-cy=start-date-select]')
                 .should('exist')
-                .type('2019-01-25')
+                .type('2019-03-27')
             cy.get('[data-cy=end-date-select]')
                 .should('exist')
-                .type('2019-05-25')
+                .type('2019-03-27')
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
         })
@@ -749,16 +1400,16 @@ describe('Testing for the transplanting report page', () => {
                 .click()   
             cy.get('[data-cy=date-input-r0c0]')
                 .type('2001-09-28')  
-            cy.get('[data-cy=dropdown-input-r0c1]')
-                .select('TOMATO')
-            cy.get('[data-cy=dropdown-input-r0c2]')
-                .select('A')
+            // cy.get('[data-cy=dropdown-input-r0c1]')
+            //     .select('TOMATO')
+            // cy.get('[data-cy=dropdown-input-r0c2]')
+            //     .select('A')
             cy.get('[data-cy=number-input-r0c3]')
                 .clear()
                 .type('40')
-            cy.get('[data-cy=number-input-r0c4]')
-                .clear()
-                .type('100')
+            // cy.get('[data-cy=number-input-r0c4]')
+            //     .clear()
+            //     .type('100')
 
             // cy.get('[data-cy=text-input-r0c9]')
             //     .clear()
@@ -771,7 +1422,7 @@ describe('Testing for the transplanting report page', () => {
 
             cy.wrap(getRecord('/log.json?type=farm_transplanting&id=' + logID)).as('check')
             cy.get('@check').should(function(response) {
-                expect(response.data.list[0].name).to.equal('TEST TRANSPLANTING')
+                expect(response.data.list[0].name).to.equal('2019-03-27 TESTING CHUAU-2')
             })
                 .then(() => {
                     cy.wrap(deleteRecord("/log/" + logID , token)).as('transplantingDelete')
@@ -947,6 +1598,25 @@ describe('Testing for the transplanting report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
+                    .then(() => {
+                        cy.get('[data-cy=alert-err-handler]')
+                        .should('be.visible')
+                        cy.window().its('scrollY').should('equal', 0)
+                        cy.get('[data-cy=alert-err-handler]')
+                        .click()
+                        .should('not.visible')
+                    }) 
+            })
+        })
+    
+            it('fail the session token API: network error', () => {
+                cy.intercept('GET', 'restws/session/token', { forceNetworkError: true }).as('failedSessionTok')
+    
+                cy.visit('/farm/fd2-barn-kit/transplantingReport')
+                cy.wait('@failedSessionTok')
+                    .then(() => {
+                        cy.get('[data-cy=alert-err-handler]')
+        
                 }) 
         })
 

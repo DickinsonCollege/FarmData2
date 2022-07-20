@@ -163,12 +163,7 @@
                     let keys = Object.keys(updateObject)
                     if(keys.includes('Hours') || keys.includes('Workers') || keys.includes('Bed Feet') || keys.includes('Row Feet') ||
                         keys.includes('Rows/Bed') ||   keys.includes('Trays')){
-                        if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
-                            updateSeedingObject['quantity'] = this.quantityDirectSeeding
-                        }
-                        else{
                             updateSeedingObject['quantity'] = this.quantityTransplantSeeding
-                        }
                     }
                     
                     for(i=0; i < keys.length; i++){
@@ -194,9 +189,9 @@
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
                         }
                         else if(keys[i] == 'Workers'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Workers')].value = updateObject['Num Workers']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Workers')].value = updateObject['Workers']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Num Workers']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Workers']
                         }
                         else if(keys[i] == 'Comments'){
                             updateSeedingObject['notes'] = {'value': updateObject['Comments'],
@@ -213,9 +208,9 @@
                             }
                         }
                         else if(keys[i] == 'Row/Bed'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
                         }
                         else if(keys[i] == 'Row Feet'){
                             updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Amount planted')].value = updateObject['Row Feet']
@@ -223,9 +218,9 @@
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Amount planted')].value = updateObject['Row Feet']
                         }
                         else if(keys[i] == '# of Trays'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Flats used')].value = updateObject['# of Trays']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Flats')].value = updateObject['Trays']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats used')].value = updateObject['# of Trays']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats')].value = updateObject['Trays']
                         } 
                     }
                     //replace old update log with current update log
@@ -240,7 +235,7 @@
                         }    
                     }
                     
-                    let seedingUrl = '/log/' + id
+                    let transplantUrl = '/log/' + id
                     let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
                     //call updateRecord function to update planting log
                     if(!(Object.entries(updatePlantObject).length === 0)){
@@ -248,7 +243,7 @@
                     }
                     //call updateRecord function to update transplanting log
                     if(!(Object.entries(updateSeedingObject).length === 0)){
-                        updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                        updateRecord(transplantUrl, updateSeedingObject,this.sessionToken)
                     }
                     this.rowBeingEdited = false
                 },
@@ -406,6 +401,9 @@
                 totalBedFeetPerHour(){
                     let bedFeet = this.totalBedFeet
                     let hours = this.totalHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((bedFeet/hours)*100))/100
                 },
                 /**
@@ -414,6 +412,9 @@
                 totalRowFeetPerHour(){
                     let rowFeet = this.totalRowFeet
                     let hours = this.totalHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((rowFeet/hours)*100))/100
                 },
                 /**
@@ -432,6 +433,11 @@
                  * returns the structure for updating the quantity section of the Transplanting Seeding Logs. The values have not been updated yet.
                  */
                 quantityTransplantSeeding(){
+                    console.log("0: " + this.updateLog[0].quantity[0].value)
+                    console.log("1: " + this.updateLog[0].quantity[1].value)
+                    console.log("2: " + this.updateLog[0].quantity[2].value)
+                    console.log("3: " + this.updateLog[0].quantity[3].value)
+                    console.log("4: " + this.updateLog[0].quantity[4].value)
                     return [
                         {
                             "measure": "length", 
@@ -452,8 +458,17 @@
                             "label": "Rows/Bed"
                         },
                         {
-                            "measure": "time", 
+                            "measure": "count", 
                             "value": this.updateLog[0].quantity[2].value,
+                            "unit": {
+                                "id": this.unitToIDMap.get('FLATS'),
+                                "resource": "taxonomy_term"
+                            },
+                            "label": "Flats"
+                        },
+                        {
+                            "measure": "time", 
+                            "value": this.updateLog[0].quantity[3].value,
                             "unit": {
                                 "id": this.unitToIDMap.get('HOURS'),
                                 "resource": "taxonomy_term"
@@ -462,7 +477,7 @@
                         },
                         {
                             "measure": "count", 
-                            "value": this.updateLog[0].quantity[3].value,
+                            "value": this.updateLog[0].quantity[4].value,
                             "unit": {
                                 "id": this.unitToIDMap.get('PEOPLE'),
                                 "resource": "taxonomy_term"
