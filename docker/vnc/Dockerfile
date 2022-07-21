@@ -9,56 +9,72 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update
-
-RUN apt install sudo -y
+RUN apt update \
+ && apt install -y --no-install-recommends \
+        sudo
 
 # Install the desktop environment.
-RUN apt install xfce4 xfce4-goodies xfce4-terminal -y
+# Note: Power management does not work inside docker so it is removed.
+RUN apt install -y --no-install-recommends \
+        xfce4=4.16 \
+        xfce4-goodies=4.14.0 \
+        xfce4-terminal=0.8.10-1 -y \
+ && apt autoremove -y \
+        xfce4-power-manager
 
-# Install Tiger VNC server.
-RUN apt install tigervnc-standalone-server tigervnc-common tigervnc-tools -y
+# Install the Tiger VNC server, the noVNC server and dbus-x11 depndency.
+RUN apt install -y --no-install-recommends \
+        tigervnc-standalone-server=1.12.0+dfsg-4 \
+        tigervnc-common=1.12.0+dfsg-4 \
+        tigervnc-tools=1.12.0+dfsg-4 \
+        dbus-x11 \
+        novnc
 
-# Create the non-root user "farmdev" with sudo in the container.
+
+
+                    # Install basic tools
+                        #  VSCode, gEdit, nano, atom
+                        #  Meld
+                        #  git
+                        #  npm, node.js
+                        #  browsers (chrome, firefox)
+
+                    # Cypress
+
+
+
+# Create the non-root user "farmdev" with sudo privileges in the container.
 ARG USERNAME=farmdev
 ARG PASSWD=farmdev
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME -p "$(openssl passwd -1 $PASSWD)"
-RUN usermod -G sudo $USERNAME
-
-# Install the noVNC application
-RUN apt install novnc -y
+ && useradd --uid $USER_UID --gid $USER_GID \
+    -m $USERNAME -p "$(openssl passwd -1 $PASSWD)" \
+    -s /bin/bash \
+    -G sudo
 
 # Configure the VNC server.
 RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users
 USER $USERNAME
 WORKDIR /home/$USERNAME
-RUN /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd"; echo;
+RUN touch .Xauthority \
+ && /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd"; echo;
 COPY ./xstartup .vnc/xstartup
-RUN touch .Xauthority
-#USER root
-#RUN chmod +x .vnc/xstartup
-#USER $USERNAME
 
-
-
-# Install basic tools
-    #  VSCode, gEdit, nano, atom
-    #  Meld
-    #  git
-    #  npm, node.js
-    #  browsers (chrome, firefox)
-
-# Cypress
-
-# Stuff to add to reduce image size.
-#&& apt autoclean -y \
-#&& apt autoremove -y \
-#&& rm -rf /var/lib/apt/lists/*
+# Stuff to reduce image size.
+USER root
+RUN apt autoclean -y \
+ && apt autoremove -y \
+ && rm -rf /var/lib/apt/lists/*
+USER $USERNAME
 
 # Launch the servers!
 RUN mkdir .fd2
 COPY ./startup.bash ./.fd2/startup.bash
+USER root
+RUN chmod +x .vnc/xstartup \
+ && chmod +x .fd2/startup.bash
+USER $USERNAME
+
 CMD ./.fd2/startup.bash
