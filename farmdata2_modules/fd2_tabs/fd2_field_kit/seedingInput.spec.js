@@ -382,7 +382,7 @@ describe('Test the seeding input page', () => {
             it('invalid Cells/Tray input test', () => {
                 cy.get('[data-cy=num-cell-input] > [data-cy=text-input]')
                     .clear()
-                    .type('asdf')
+                    .type('1.11')
                     .blur()
                     .should('have.css', 'background-color')
                     .and('eq', 'rgb(255, 192, 203)')
@@ -415,7 +415,7 @@ describe('Test the seeding input page', () => {
             it('invalid Tray input test', () => {
                 cy.get('[data-cy=num-tray-input] > [data-cy=text-input]')
                     .clear()
-                    .type('asdf')
+                    .type('1.11')
                     .blur()
                     .should('have.css', 'background-color')
                     .and('eq', 'rgb(255, 192, 203)')
@@ -447,7 +447,7 @@ describe('Test the seeding input page', () => {
             it('invalid Seed input test', () => {
                 cy.get('[data-cy=num-seed-input] > [data-cy=text-input]')
                     .clear()
-                    .type('asdf')
+                    .type('1.11')
                     .blur()
                     .should('have.css', 'background-color')
                     .and('eq', 'rgb(255, 192, 203)')
@@ -491,7 +491,7 @@ describe('Test the seeding input page', () => {
             it('invalid Row/Bed input test', () => {
                 cy.get('[data-cy=num-rowbed-input] > [data-cy=text-input]')
                     .clear()
-                    .type('asdf')
+                    .type('1.11')
                     .blur()
                     .should('have.css', 'background-color')
                     .and('eq', 'rgb(255, 192, 203)')
@@ -525,7 +525,7 @@ describe('Test the seeding input page', () => {
             it('invalid Feet input test', () => {
                 cy.get('[data-cy=num-feet-input] > [data-cy=text-input]')
                     .clear()
-                    .type('asdf')
+                    .type('1.11')
                     .blur()
                     .should('have.css', 'background-color')
                     .and('eq', 'rgb(255, 192, 203)')
@@ -568,7 +568,7 @@ describe('Test the seeding input page', () => {
             it('invalid Worker input test', () => {
                 cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
                     .clear()
-                    .type('asdf')
+                    .type('1.11')
                     .blur()
                     .should('have.css', 'background-color')
                     .and('eq', 'rgb(255, 192, 203)')
@@ -608,7 +608,7 @@ describe('Test the seeding input page', () => {
                     .then(() => {
                         cy.get('[data-cy=minute-input] > [data-cy=text-input]')
                             .clear()
-                            .type('asdf')
+                            .type('1.11')
                             .blur()
                             .should('have.css', 'background-color')
                             .and('eq', 'rgb(255, 192, 203)')
@@ -669,7 +669,7 @@ describe('Test the seeding input page', () => {
                     .then(() => {
                         cy.get('[data-cy=hour-input] > [data-cy=text-input]')
                             .clear()
-                            .type('asdf')
+                            .type('-124.3')
                             .blur()
                             .should('have.css', 'background-color')
                             .and('eq', 'rgb(255, 192, 203)')
@@ -1721,7 +1721,7 @@ describe('Test the seeding input page', () => {
         // })   
     })
 
-    context('Configuration tests', () => {
+    context.only('Configuration tests', () => {
         before(() =>{
             cy.login('manager1', 'farmdata2')
             .then(() => {
@@ -1881,6 +1881,18 @@ describe('Test the seeding input page', () => {
                 .should('be.visible')
             cy.get('[data-cy=submit-button]')
                 .should('not.be.disabled')
+
+            cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+            .type('2')
+            .blur()
+            cy.get('[data-cy=submit-button]')
+            .should('be.disabled')
+            
+            cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+            .clear()
+            .blur()
+            cy.get('[data-cy=submit-button]')
+            .should('not.be.disabled')
         })
 
         
