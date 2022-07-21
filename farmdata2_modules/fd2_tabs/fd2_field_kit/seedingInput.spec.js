@@ -1721,7 +1721,7 @@ describe('Test the seeding input page', () => {
         // })   
     })
 
-    context('Configuration tests', () => {
+    context.only('Configuration tests', () => {
         before(() =>{
             cy.login('manager1', 'farmdata2')
             .then(() => {
@@ -1881,6 +1881,18 @@ describe('Test the seeding input page', () => {
                 .should('be.visible')
             cy.get('[data-cy=submit-button]')
                 .should('not.be.disabled')
+
+            cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+            .type('2')
+            .blur()
+            cy.get('[data-cy=submit-button]')
+            .should('be.disabled')
+            
+            cy.get('[data-cy=num-worker-input] > [data-cy=text-input]')
+            .clear()
+            .blur()
+            cy.get('[data-cy=submit-button]')
+            .should('not.be.disabled')
         })
 
         

@@ -172,12 +172,39 @@
                     this.numFeet = newNumFeet
                 },
                 setNewNumWorkers(newNumWorkers) {
+                    if(this.configToIDMap.labor == "Optional") {
+                        if (newNumWorkers == "" || newNumWorkers == null) {
+                            this.regMin = "|^[1-9]+[0-9]*$"
+                            this.regHour = "|^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                        } else {
+                            this.regMin = "^[1-9]+[0-9]*$"
+                            this.regHour = "^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                            
+                        }                
+                    }
                     this.numWorkers = newNumWorkers
+
                 },
                 setMinute(newMinute) {
+                    
+                    if(this.configToIDMap.labor == "Optional") {
+                        if (newMinute == "" || newMinute == null) {
+                            this.regNumWorker = "|^[1-9]+[0-9]*$"
+                        } else {
+                            this.regNumWorker = "^[1-9]+[0-9]*$"
+                        }
+
+                    }
                     this.minute = newMinute
                 },
                 setHour(newHour) {
+                    if(this.configToIDMap.labor == "Optional"){
+                        if (newHour == "" || newHOur == null) {
+                            this.regNumWorker = "|^[1-9]+[0-9]*$"
+                        } else {
+                            this.regNumWorker = "^[1-9]+[0-9]*$"
+                        }
+                    }
                     this.hour = newHour
                 },
                 clearFields(){
@@ -313,23 +340,13 @@
                     }
                     if(this.configToIDMap.labor == "Optional") {
                         if(this.selectedTimeUnit == 'minutes'){
-                            if((this.numWorkers == "" || this.numWorkers == null) ^ (this.minute == "" || this.minute == null)){
-                                this.regNumWorker = "^[1-9]+[0-9]*$"
-                                this.regMin = "^[1-9]+[0-9]*$"
+                            if(!this.validMap['validMinute'] ^ !this.validMap['validNumWorkers']){
                                 return true
-                            } else {
-                                this.regNumWorker = "|^[1-9]+[0-9]*$"
-                                this.regMin = "|^[1-9]+[0-9]*$"
                             }
                         }
                         if(this.selectedTimeUnit == 'hours'){
-                            if((this.numWorkers == "" || this.numWorkers == null) ^ (this.hour == "" || this.hour == null)){
-                                this.regNumWorker = "^[1-9]+[0-9]*$"
-                                this.regHour = "^[1-9]+[0-9]*$"
+                            if(!this.validMap['validHours'] ^ !this.validMap['validNumWorkers']){
                                 return true
-                            } else {
-                                this.regNumWorker = "|^[1-9]+[0-9]*$"
-                                this.regHour = "|^[1-9]+[0-9]*$"
                             }
                         }
                     }

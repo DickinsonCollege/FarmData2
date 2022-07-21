@@ -270,7 +270,6 @@ describe('RegexInput Component', () => {
             cy.wrap(comp.setProps({ regExp: '|^[1-9]+[0-9]*$' })).then(() => {
                 expect(comp.vm.regex).to.equal('|^[1-9]+[0-9]*$')
             })
-
         })
 
     })
