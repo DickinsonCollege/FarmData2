@@ -1721,7 +1721,7 @@ describe('Test the seeding input page', () => {
         // })   
     })
 
-    context.only('Configuration tests', () => {
+    context('Configuration tests', () => {
         before(() =>{
             cy.login('manager1', 'farmdata2')
             .then(() => {
