@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# From: https://askubuntu.com/questions/1285420/how-to-properly-configure-xstartup-file-for-tightvnc-with-ubuntu-20-04-lts-gnome
+
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+
+export XKL_XMODMAP_DISABLE=1
+export XDG_CURRENT_DESKTOP="GNOME-Flashback:GNOME"
+export XDG_MENU_PREFIX="gnome-flashback-"
+
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+xsetroot -solid grey
+vncconfig -iconic &
+
+gnome-session --builtin --session=gnome-flashback-metacity --disable-acceleration-check --debug &
+nautilus &
+gnome-terminal &
