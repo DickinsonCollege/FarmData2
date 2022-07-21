@@ -1,7 +1,11 @@
 FROM ubuntu:22.04
 
-# Install and configuration of TigerVNC is generally based on:
+# Contents of this Dockerfile were informed by:
 # https://www.howtoforge.com/how-to-install-vnc-server-ubuntu-22-04/
+# https://github.com/u1i/ubuntu-novnc
+# https://installati.one/ubuntu/20.04/novnc/
+# https://github.com/accetto/ubuntu-vnc-xfce-g3
+# https://github.com/novnc/noVNC
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,8 +15,6 @@ RUN apt install sudo -y
 
 # Install the desktop environment.
 RUN apt install xfce4 xfce4-goodies xfce4-terminal -y
-#RUN apt install ubuntu-desktop-minimal -y
-#RUN apt install dbus-x11 -y
 
 # Install Tiger VNC server.
 RUN apt install tigervnc-standalone-server tigervnc-common tigervnc-tools -y
@@ -26,20 +28,21 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME -p "$(openssl passwd -1 $PASSWD)"
 RUN usermod -G sudo $USERNAME
 
+# Install the noVNC application
+RUN apt install novnc -y
+
 # Configure the VNC server.
 RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users
 USER $USERNAME
 WORKDIR /home/$USERNAME
 RUN /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd"; echo;
-COPY ./xstartup-xfce4 .vnc/xstartup
-#COPY ./xstartup-gnome .vnc/xstartup
+COPY ./xstartup .vnc/xstartup
 RUN touch .Xauthority
-USER root
-RUN chmod +x .vnc/xstartup
-USER $USERNAME
+#USER root
+#RUN chmod +x .vnc/xstartup
+#USER $USERNAME
 
-# Install the noVNC application
-RUN apt install novnc -y
+
 
 # Install basic tools
     #  VSCode, gEdit, nano, atom
@@ -55,7 +58,7 @@ RUN apt install novnc -y
 #&& apt autoremove -y \
 #&& rm -rf /var/lib/apt/lists/*
 
-
-CMD /bin/bash
-
-#CMD vncserver -localhost no
+# Launch the servers!
+RUN mkdir .fd2
+COPY ./startup.bash ./.fd2/startup.bash
+CMD ./.fd2/startup.bash
