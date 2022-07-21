@@ -1,5 +1,5 @@
 <body>
-    <div id="seedingReport" v-cloak>
+    <div id="transplantingReport" v-cloak>
         <h1 class="text-center">Transplanting Report</h1>
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
@@ -67,8 +67,8 @@
         </div>
     </div>
     <script>
-        var seedingReport = new Vue ({
-            el: '#seedingReport',
+        var transplantingReport = new Vue ({
+            el: '#transplantingReport',
             components: {
                 'custom-table': CustomTableComponent,
                 'date-range-selection': DateRangeSelectionComponent,
@@ -143,18 +143,12 @@
                 areaChange(selectedArea){
                     this.selectedArea = selectedArea
                 },
-                configChange(){
-                    if(this.configToIDMap.labor == 'Hidden') {
-                        this.visibleColumns[7] = false
-                        this.visibleColumns[8] = false
-                    }
-                },
                 /**
                  * updates the log that the user saved
                  */
                 updateRow(updateObject, id){
                     this.updateLog = this.transplantingLogs.filter((x) => x.id === id)
-                    let updateSeedingObject = {}
+                    let updateTransplantingObject = {}
                     let updatePlantObject = {}
                     
                     /**
@@ -163,42 +157,42 @@
                     let keys = Object.keys(updateObject)
                     if(keys.includes('Hours') || keys.includes('Workers') || keys.includes('Bed Feet') || keys.includes('Row Feet') ||
                         keys.includes('Rows/Bed') ||   keys.includes('Trays')){
-                            updateSeedingObject['quantity'] = this.quantityTransplantSeeding
+                            updateTransplantingObject['quantity'] = this.quantityTransplantSeeding
                     }
                     
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'date'){
-                            updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
+                            updateTransplantingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
                         }
                         else if(keys[i] == 'crop'){
-                            updateSeedingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
+                            updateTransplantingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
                             updatePlantObject['crop'] = [{
                                 "id": this.cropToIDMap.get(updateObject['crop']),
                                 "resource": "taxonomy_term"
                             }]
                         }
                         else if (keys[i] == 'area'){
-                            updateSeedingObject['movement'] = { 'area': [{
+                            updateTransplantingObject['movement'] = { 'area': [{
                                 "id": this.areaToIDMap.get(updateObject['area']),
                                 "resource": "taxonomy_term",}]
                             }
                         }
                         else if(keys[i] == 'Hours'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Labor')].value = updateObject['Hours']
+                            updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Labor')].value = updateObject['Hours']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
                         }
                         else if(keys[i] == 'Workers'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Workers')].value = updateObject['Workers']
+                            updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Workers')].value = updateObject['Workers']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Workers']
                         }
                         else if(keys[i] == 'Comments'){
-                            updateSeedingObject['notes'] = {'value': updateObject['Comments'],
+                            updateTransplantingObject['notes'] = {'value': updateObject['Comments'],
                                 'format': 'farm_format'}
                         }
                         else if(keys[i] == 'User'){
-                            updateSeedingObject['uid'] = {
+                            updateTransplantingObject['uid'] = {
                                 'id': this.userToIDMap.get(updateObject['User']),
                                 'resource': 'user'
                             }
@@ -208,17 +202,17 @@
                             }
                         }
                         else if(keys[i] == 'Row/Bed'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
+                            updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
                         }
                         else if(keys[i] == 'Row Feet'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Amount planted')].value = updateObject['Row Feet']
+                            updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Amount planted')].value = updateObject['Row Feet']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Amount planted')].value = updateObject['Row Feet']
                         }
                         else if(keys[i] == '# of Trays'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Flats')].value = updateObject['Trays']
+                            updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Flats')].value = updateObject['Trays']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats')].value = updateObject['Trays']
                         } 
@@ -242,8 +236,8 @@
                         updateRecord(plantingUrl, updatePlantObject, this.sessionToken)
                     }
                     //call updateRecord function to update transplanting log
-                    if(!(Object.entries(updateSeedingObject).length === 0)){
-                        updateRecord(transplantUrl, updateSeedingObject,this.sessionToken)
+                    if(!(Object.entries(updateTransplantingObject).length === 0)){
+                        updateRecord(transplantUrl, updateTransplantingObject,this.sessionToken)
                     }
                     this.rowBeingEdited = false
                 },
@@ -390,7 +384,7 @@
                     let sumHours = 0
                     tableData.map(h => {
                         hours = parseFloat(h.data[7]);
-                        sumHours = sumHours + hours
+                        sumHours = sumHours + (h.data[7]*parseFloat(h.data[8]))
                     })
                     // console.log(sumHours)
                     return (Math.round(sumHours*100))/100
@@ -433,11 +427,6 @@
                  * returns the structure for updating the quantity section of the Transplanting Seeding Logs. The values have not been updated yet.
                  */
                 quantityTransplantSeeding(){
-                    console.log("0: " + this.updateLog[0].quantity[0].value)
-                    console.log("1: " + this.updateLog[0].quantity[1].value)
-                    console.log("2: " + this.updateLog[0].quantity[2].value)
-                    console.log("3: " + this.updateLog[0].quantity[3].value)
-                    console.log("4: " + this.updateLog[0].quantity[4].value)
                     return [
                         {
                             "measure": "length", 
@@ -505,7 +494,7 @@
                         areaNameArray.push(areaKeyIterator.next().value)
                     }
                     return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
-                }
+                },
             },
             created() {
                 getSessionToken()

@@ -431,13 +431,13 @@ describe('Testing for the transplanting report page', () => {
             .should('have.text', '92')
     
             cy.get('[data-cy=transplant-total-hours]')
-            .should('have.text', '29')
+            .should('have.text', '48.92')
 
             cy.get('[data-cy=transplant-total-rowft-hour]')
-            .should('have.text', '333.59')
+            .should('have.text', '197.75')
 
             cy.get('[data-cy=transplant-total-bedfr-hour]')
-            .should('have.text', '130.28')
+            .should('have.text', '77.23')
         })
     })
 
@@ -917,13 +917,13 @@ describe('Testing for the transplanting report page', () => {
             .should('have.text', '6')
 
             cy.get('[data-cy=transplant-total-hours]')
-            .should('have.text', '2')
+            .should('have.text', '6')
 
             cy.get('[data-cy=transplant-total-rowft-hour]')
-            .should('have.text', '4.5')
+            .should('have.text', '1.5')
 
             cy.get('[data-cy=transplant-total-bedfr-hour]')
-            .should('have.text', '1.5')
+            .should('have.text', '0.5')
             .then(() => {
                 cy.wrap(deleteRecord("/log/" + logID2 , sessionToken)).as('seedingDelete2')
             })
@@ -1130,7 +1130,7 @@ describe('Testing for the transplanting report page', () => {
         })
     })
 
-    context.only('edit and delete buttons work', () => {
+    context('edit and delete buttons work', () => {
         let logID = 0
 
         beforeEach(() => {
@@ -1231,7 +1231,6 @@ describe('Testing for the transplanting report page', () => {
                 cy.get('@create').should(function(response) {
                     expect(response.status).to.equal(201)
                     logID = response.body.id
-                    console.log(logID)
                 })
             })
             cy.get('[data-cy=start-date-select]')
