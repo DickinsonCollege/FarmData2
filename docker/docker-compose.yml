@@ -48,24 +48,37 @@ services:
     links:
      - 'db'
 
-  vnc:
-    image: vnc:fd2.1
-    container_name: fd2_vnc
+  dev:
+    image: dev:fd2.1
+    container_name: fd2_dev
     init: true
     build:
-      context: ./vnc
+      context: ./dev
       dockerfile: Dockerfile
-      args:
-        HOST_UID: ${HOST_UID}
-        HOST_GID: ${HOST_GID}
-        HOST_USER: ${HOST_USER}
-        HOST_GROUP: ${HOST_GROUP}
-    #user: ${HOST_USER}
     volumes:
-     - ..:/home/FarmData2
+     - ..:/home/farmdev/FarmData2
     ports:
-     - 5900:5900
-     - 6080:80
+     - 5901:5901
+     - 6901:6901
+
+#  vnc:
+#    image: vnc:fd2.1
+#    container_name: fd2_vnc
+#    init: true
+#    build:
+#      context: ./vnc
+#      dockerfile: Dockerfile
+#      args:
+#        HOST_UID: ${HOST_UID}
+#        HOST_GID: ${HOST_GID}
+#        HOST_USER: ${HOST_USER}
+#        HOST_GROUP: ${HOST_GROUP}
+#    #user: ${HOST_USER}
+#    volumes:
+#     - ..:/home/FarmData2
+#    ports:
+#     - 5900:5900
+#     - 6080:80
 
 #  theiaide:
     # If there are changes to the Dockerfile update the tag

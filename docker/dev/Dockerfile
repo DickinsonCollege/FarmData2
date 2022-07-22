@@ -1,22 +1,11 @@
-FROM ubuntu:22.04
-
-# Contents of this Dockerfile were informed by:
-# https://www.howtoforge.com/how-to-install-vnc-server-ubuntu-22-04/
-# https://github.com/u1i/ubuntu-novnc
-# https://installati.one/ubuntu/20.04/novnc/
-# https://github.com/accetto/ubuntu-vnc-xfce-g3
-# https://github.com/novnc/noVNC
+FROM cypress/included:10.3.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install base dependencies
 RUN apt update \
  && apt install -y --no-install-recommends \
-        software-properties-common gnupg2
-
-# Add Repositories for non-stock software
-# For Atom editor
-
+        software-properties-common
 
 # Install the desktop environment.
 # Note: Power management does not work inside docker so it is removed.
@@ -29,44 +18,26 @@ RUN apt install -y --no-install-recommends \
 
 # Install the Tiger VNC server, the noVNC server and dbus-x11 depndency.
 RUN apt install -y --no-install-recommends \
-        tigervnc-standalone-server=1.12.0+dfsg-4 \
-        tigervnc-common=1.12.0+dfsg-4 \
-        tigervnc-tools=1.12.0+dfsg-4 \
+        tigervnc-standalone-server \
+        tigervnc-common \
+#        tigervnc-tools \
         dbus-x11 \
-        novnc
+        novnc \
+        net-tools
 
-# Install some standard tools and browsers
-# Note: chrome is not available for arm64 so using chromium as stock.
+# Install some standard tools
 RUN apt install -y --no-install-recommends \
         sudo git nano gedit meld
 
-COPY firefox.bash .
-RUN ./firefox.bash \
- && rm firefox.bash
-
-COPY chromium.bash .
- RUN ./chromium.bash \
-  && rm chromium.bash
-
-
-
-
-
-
-
-
-# Install basic tools
-#  VSCode,
-
-
-#  npm, node.js
-# Cypress
-
+# Install Firefox
+#COPY firefox.bash .
+#RUN ./firefox.bash \
+# && rm firefox.bash
 
 # Create the non-root user "farmdev" with sudo privileges in the container.
 ARG USERNAME=farmdev
 ARG PASSWD=farmdev
-ARG USER_UID=1000
+ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
  && useradd --uid $USER_UID --gid $USER_GID \
@@ -81,8 +52,6 @@ WORKDIR /home/$USERNAME
 RUN touch .Xauthority \
  && /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd"; echo;
 COPY ./xstartup .vnc/xstartup
-
-
 
 ####### IS THERE OTHER STUFF TO DO HERE?
 ####### purge the cache? get rid of package files?
@@ -101,4 +70,4 @@ RUN chmod +x .vnc/xstartup \
  && chmod +x .fd2/startup.bash
 USER $USERNAME
 
-CMD ./.fd2/startup.bash
+ENTRYPOINT ./.fd2/startup.bash
