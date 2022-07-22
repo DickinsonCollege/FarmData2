@@ -253,5 +253,27 @@ describe('RegexInput Component', () => {
                 })
         })
     })
+    context('prop changes test', () => {
+        let comp;
+        beforeEach(() => {
+            // Use shallowMount here so we can use setProp in its
+            comp = shallowMount(RegexInputComponent, {
+                propsData: {
+                    regExp: "^[1-9]+[0-9]*$",
+                    defaultVal: "",
+                },
+            })
+        })
+
+        it('change regExp', () => {
+            expect(comp.vm.regex).to.equal('^[1-9]+[0-9]*$')
+            cy.wrap(comp.setProps({ regExp: '|^[1-9]+[0-9]*$' })).then(() => {
+                expect(comp.vm.regex).to.equal('|^[1-9]+[0-9]*$')
+            })
+
+        })
+
+    })
+    
 })
 
