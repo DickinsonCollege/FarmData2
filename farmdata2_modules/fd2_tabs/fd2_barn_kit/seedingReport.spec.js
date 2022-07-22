@@ -1662,7 +1662,7 @@ describe('Testing for the seeding report page', () => {
         })
     })
 
-    context('edit and delete buttons work', () => {
+    context.only('edit and delete buttons work', () => {
         let logID = 0
 
         beforeEach(() => {
@@ -1679,7 +1679,7 @@ describe('Testing for the seeding report page', () => {
                     body: {
                         "name": "TEST SEEDING",
                         "type": "farm_seeding",
-                        "timestamp": dayjs('2001-09-20').unix(),
+                        "timestamp": dayjs('2022-07-21').unix(),
                         "done": "1",  //any seeding recorded is done.
                         "notes": {
                             "value": "This is a test log",
@@ -1711,7 +1711,7 @@ describe('Testing for the seeding report page', () => {
                             },
                             {
                                 "measure": "ratio", 
-                                "value": "38",
+                                "value": "5",
                                 "unit": {
                                     "id": "38",
                                     "resource": "taxonomy_term"
@@ -1720,7 +1720,7 @@ describe('Testing for the seeding report page', () => {
                             },
                             {
                                 "measure": "time", 
-                                "value": "0.5", 
+                                "value": "1", 
                                 "unit": {
                                     "id": "29",
                                     "resource": "taxonomy_term"
@@ -1739,7 +1739,7 @@ describe('Testing for the seeding report page', () => {
                         ],
                         "created": dayjs().unix(),
                         "lot_number": "N/A (No Variety)",
-                        "data": "1"
+                        "data": "{\"crop_tid\":\"142\"}"
                     }
                 }
 
@@ -1747,44 +1747,65 @@ describe('Testing for the seeding report page', () => {
                 cy.get('@create').should(function(response) {
                     expect(response.status).to.equal(201)
                     logID = response.body.id
+                    console.log(logID)
                 })
             })
 
             cy.get('[data-cy=start-date-select]')
                 .should('exist')
-                .type('2001-01-25')
+                .type('2022-07-21')
             cy.get('[data-cy=end-date-select]')
                 .should('exist')
-                .type('2001-12-25')
+                .type('2022-07-21')
             cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
         })
 
         it('edits the database when a row is edited in the table', () => {
+            cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
+            .select('Direct Seedings')
+
             cy.get('[data-cy=edit-button-r0]')
                 .click()   
             cy.get('[data-cy=date-input-r0c0]')
-                .type('2001-09-28')  
+                .type('2022-07-20')  
             cy.get('[data-cy=dropdown-input-r0c1]')
                 .select('TOMATO')
-            cy.get('[data-cy=dropdown-input-r0c2]')
-                .select('A')
+            // cy.get('[data-cy=dropdown-input-r0c2]')
+            //     .select('A')
+            cy.get('[data-cy=number-input-r0c4]')
+                .type('2')
+
             cy.get('[data-cy=number-input-r0c10]')
                 .type('4')
             cy.get('[data-cy=number-input-r0c11]')
-                .type('0.25')
+                .type('2')
 
             cy.get('[data-cy=text-input-r0c13]')
-                .type('New Comment')
+                .type('Testing edit functionality')
                 .blur()
+
+
+            cy.intercept('PUT', 'log/' + logID).as('logUpdate')
 
             // Button is actionable, unfortunately it's not in view
             cy.get('[data-cy=save-button-r0]')
-                .click({force:true})
+                .click({force:true})   
 
+            cy.wait('@logUpdate') // wait for the log update
+            .then(interception => {
+                // read the response
+                expect(interception.response.statusCode).to.eq(200)
+            })
+
+            console.log(logID)
             cy.wrap(getRecord('/log.json?type=farm_seeding&id=' + logID)).as('check')
             cy.get('@check').should(function(response) {
                 expect(response.data.list[0].name).to.equal('TEST SEEDING')
+                expect(response.data.list[0].quantity[0].value).to.equal('5')
+                expect(response.data.list[0].quantity[1].value).to.equal('5')
+                expect(response.data.list[0].quantity[2].value).to.equal('1')
+                expect(response.data.list[0].quantity[3].value).to.equal('1')
             })
                 .then(() => {
                     cy.wrap(deleteRecord("/log/" + logID , token)).as('seedingDelete')
