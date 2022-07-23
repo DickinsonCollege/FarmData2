@@ -6,7 +6,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update \
  && apt install -y --no-install-recommends \
         software-properties-common \
-        atfs
+        atfs \
+        libsecret-1-0
 
 # Install the desktop environment.
 # Note: Power management does not work inside docker so it is removed.
@@ -29,6 +30,11 @@ RUN apt install -y --no-install-recommends \
 RUN apt install -y --no-install-recommends \
         sudo git nano meld \
  && npm install -g @vue/cli
+
+# Install VSCode
+COPY vscode.bash .
+RUN ./vscode.bash \
+ && rm vscode.bash
 
 # Install Firefox (Not currently working with Alpine image)
 #COPY firefox.bash .
