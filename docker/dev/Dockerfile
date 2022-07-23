@@ -1,11 +1,12 @@
-FROM cypress/included:10.3.0
+FROM cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install base dependencies
+# Install some base dependencies
 RUN apt update \
  && apt install -y --no-install-recommends \
-        software-properties-common
+        software-properties-common \
+        atfs
 
 # Install the desktop environment.
 # Note: Power management does not work inside docker so it is removed.
@@ -20,16 +21,16 @@ RUN apt install -y --no-install-recommends \
 RUN apt install -y --no-install-recommends \
         tigervnc-standalone-server \
         tigervnc-common \
-#        tigervnc-tools \
         dbus-x11 \
         novnc \
         net-tools
 
 # Install some standard tools
 RUN apt install -y --no-install-recommends \
-        sudo git nano gedit meld
+        sudo git nano meld \
+ && npm install -g @vue/cli
 
-# Install Firefox
+# Install Firefox (Not currently working with Alpine image)
 #COPY firefox.bash .
 #RUN ./firefox.bash \
 # && rm firefox.bash
@@ -45,13 +46,48 @@ RUN groupadd --gid $USER_GID $USERNAME \
     -s /bin/bash \
     -G sudo
 
+##
+## From here down need to manage USERNAME
+## switching to/from root as necessary.
+##
+
+# Install necessary dependencies for Vue/Cypress testing.
+USER $USERNAME
+WORKDIR /home/$USERNAME
+### MAY NEED A RETRY SCRIPT HERE
+### Fails sometimes with:
+###    Your connection to the default yarn registry seems to be slow.
+RUN vue create --no-git --bare --packageManager npm --preset 'Default (Vue 2)' fd2test
+WORKDIR /home/$USERNAME/fd2test
+RUN npm install -d \
+        cypress \
+        webpack \
+        @cypress/webpack-dev-server \
+        @cypress/vue2 \
+        path \
+        axios
+
+# Need to figure out how to set default editor for Cypress to /usr/bin/mousepad
+
+
+
 # Configure the VNC server.
-RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users
 USER $USERNAME
 WORKDIR /home/$USERNAME
 RUN touch .Xauthority \
- && /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd"; echo;
+ && mkdir .vnc \
+ && /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd; echo;"
 COPY ./xstartup .vnc/xstartup
+USER root
+RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
+ && chmod +x .vnc/xstartup
+
+# Get the script in place to start the servers.
+USER $USERNAME
+RUN mkdir .fd2
+COPY ./startup.bash ./.fd2/startup.bash
+USER root
+RUN chmod +x .fd2/startup.bash
 
 ####### IS THERE OTHER STUFF TO DO HERE?
 ####### purge the cache? get rid of package files?
@@ -60,14 +96,8 @@ USER root
 RUN apt autoclean -y \
  && apt autoremove -y \
  && rm -rf /var/lib/apt/lists/*
-USER $USERNAME
 
-# Launch the servers!
-RUN mkdir .fd2
-COPY ./startup.bash ./.fd2/startup.bash
-USER root
-RUN chmod +x .vnc/xstartup \
- && chmod +x .fd2/startup.bash
+# Setup the initial container environment.
 USER $USERNAME
-
+WORKDIR /home/$USERNAME
 ENTRYPOINT ./.fd2/startup.bash
