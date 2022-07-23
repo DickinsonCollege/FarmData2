@@ -40,11 +40,11 @@ describe('API Request Functions', () => {
                 requests++  // count requests made on this route.
             })
             .then(() => {
-                // wrap and alias the getAllPages here.  
-                // It returns a promise that resolves when all pages have been 
+                // wrap and alias the getAllPages here.
+                // It returns a promise that resolves when all pages have been
                 // fetched into the array.
                 cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=50', testArray))
-                .as('done') 
+                .as('done')
             })
 
             // Wait here for all pages to be fetched.
@@ -74,7 +74,7 @@ describe('API Request Functions', () => {
                 cy.wrap(getAllPages("/log?type=farm_seeding&page=5", testArray))
                 .as('done')
             })
-        
+
             cy.get('@done').should(() => {
                 expect(firstCalls).to.equal(1)
                 expect(secondCalls).to.equal(1)
@@ -89,10 +89,10 @@ describe('API Request Functions', () => {
             cy.get('@cropMap').then((theMap) => {
                 cropToIDMap = theMap
             })
-            
+
             //let testArray
             cy.wrap(getAllPages('/log?type=farm_seeding&id[le]=150'))
-                .as('done') 
+                .as('done')
 
             // Wait here for all pages to be fetched.
             cy.get('@done')
@@ -108,7 +108,7 @@ describe('API Request Functions', () => {
             // Assets do not have data properties so this fails
             // if that isn't handled properly
             cy.wrap(getAllPages('/farm_asset?type=planting&id[le]=75'))
-            .as('done') 
+            .as('done')
 
             // Wait here for all pages to be fetched.
             cy.get('@done')
@@ -119,7 +119,7 @@ describe('API Request Functions', () => {
         })
 
         it('failed request', () => {
-            cy.intercept('GET', '/fail', 
+            cy.intercept('GET', '/fail',
                 // stub an error response so it looks like the request failed.
                 {
                     statusCode: 500,
@@ -138,14 +138,14 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                ).as('fail') 
+                ).as('fail')
             })
 
             // Wait for everything to finish.
             cy.get('@fail')
         })
     })
-    
+
     context('test maping functions', () => {
         it('User map functions get the proper name/id for the users', () => {
             let manager1ID = -1
@@ -185,7 +185,7 @@ describe('API Request Functions', () => {
         it('map failure', () => {
             // All of the get functions for maps use the same
             // helper function so only need to test the failure once.
-            cy.intercept('GET', '/user', 
+            cy.intercept('GET', '/user',
                 {
                     statusCode: 500,
                     body: '500 Interal Server Error!',
@@ -260,11 +260,11 @@ describe('API Request Functions', () => {
                 expect(areaToIDMap).to.be.a('Map')
                 expect(areaToIDMap.size).to.equal(70)
 
-                aID = areaToIDMap.get('A')  
+                aID = areaToIDMap.get('A')
                 zID = areaToIDMap.get('Z')
-                chuauID = areaToIDMap.get('CHUAU')  
-                chuau1ID = areaToIDMap.get('CHUAU-1') 
-                chuau5ID = areaToIDMap.get('CHUAU-5')           
+                chuauID = areaToIDMap.get('CHUAU')
+                chuau1ID = areaToIDMap.get('CHUAU-1')
+                chuau5ID = areaToIDMap.get('CHUAU-5')
             })
             .then(() => {
                 cy.wrap(getIDToAreaMap()).as('idMap')
@@ -362,7 +362,7 @@ describe('API Request Functions', () => {
         })
 
         it('fail to get token', () => {
-            cy.intercept('GET', '/restws/session/token', 
+            cy.intercept('GET', '/restws/session/token',
                 // stub an error response so it looks like the request failed.
                 {
                     statusCode: 500,
@@ -381,9 +381,9 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                ).as('fail') 
+                ).as('fail')
             })
-            
+
             // Wait for everything to finish.
             cy.get('@fail')
         })
@@ -439,7 +439,7 @@ describe('API Request Functions', () => {
         })
 
         it('test record without a data property', () => {
-            // Assets do not have a data property.  This would fail 
+            // Assets do not have a data property.  This would fail
             // due to an error if the getRecord function did not handle
             // that condition properly.
             cy.wrap(getRecord('/farm_asset/1')).as('done')
@@ -449,7 +449,7 @@ describe('API Request Functions', () => {
         })
 
         it('fail to get a log', () => {
-            cy.intercept('GET', '/log/12345', 
+            cy.intercept('GET', '/log/12345',
                 // stub an error response so it looks like the request failed.
                 {
                     statusCode: 500,
@@ -468,7 +468,7 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                ).as('fail') 
+                ).as('fail')
             })
 
             // Wait for everything to finish.
@@ -488,8 +488,8 @@ describe('API Request Functions', () => {
             cy.wrap(getSessionToken())
             .then(sessionToken => {
                 token = sessionToken
-     
-                req = {
+
+                let req = {
                     url: '/log',
                     method: 'POST',
                     headers: {
@@ -533,7 +533,7 @@ describe('API Request Functions', () => {
         })
 
         it('failed delete', () => {
-            cy.intercept('DELETE', '/log/12345', 
+            cy.intercept('DELETE', '/log/12345',
                 // stub an error response so it looks like the request failed.
                 {
                     statusCode: 500,
@@ -552,7 +552,7 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                ).as('fail') 
+                ).as('fail')
             })
 
             // Wait for everything to finish.
@@ -574,7 +574,7 @@ describe('API Request Functions', () => {
             .then((sessionToken) => {
                 token = sessionToken
 
-                newLog = {
+                let newLog = {
                     "name": "Create Test",
                     "type": "farm_observation",
                     "timestamp": "123",
@@ -582,7 +582,7 @@ describe('API Request Functions', () => {
 
                 cy.wrap(createRecord('/log', newLog, token)).as('create')
             })
-              
+
             cy.get('@create').should((response) => {
                 logID = response.data.id
                 expect(response.status).to.equal(201)
@@ -613,7 +613,7 @@ describe('API Request Functions', () => {
             .then((sessionToken) => {
                 token = sessionToken
 
-                newLog = {
+                let newLog = {
                     "name": "Create Test",
                     "type": "farm_observation",
                     "timestamp": "123",
@@ -646,7 +646,7 @@ describe('API Request Functions', () => {
         })
 
         it('failed create', () => {
-            cy.intercept('POST', '/log', 
+            cy.intercept('POST', '/log',
                 // stub an error response so it looks like the request failed.
                 {
                     statusCode: 500,
@@ -665,13 +665,13 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                ).as('fail') 
+                ).as('fail')
             })
 
             // Wait for everything to finish.
             cy.get('@fail')
         })
-    })    
+    })
 
     context('update function testing', () => {
         it('change the name of an observation log', () => {
@@ -687,7 +687,7 @@ describe('API Request Functions', () => {
             .then((sessionToken) => {
                 token = sessionToken
 
-                newLog = {
+                let newLog = {
                     "name": "Update Test",
                     "type": "farm_observation",
                     "timestamp": "123",
@@ -701,7 +701,7 @@ describe('API Request Functions', () => {
                 expect(response.status).to.equal(201)
             })
             .then(() => {
-                update = {
+                let update = {
                     "name": "Update Test Updated"
                 }
 
@@ -737,7 +737,7 @@ describe('API Request Functions', () => {
             .then((sessionToken) => {
                 token = sessionToken
 
-                newLog = {
+                let newLog = {
                     "name": "Update Test",
                     "type": "farm_observation",
                     "timestamp": "123",
@@ -752,7 +752,7 @@ describe('API Request Functions', () => {
                 expect(response.status).to.equal(201)
             })
             .then(() => {
-                update = {
+                let update = {
                     "name": "Update Test Updated",
                     "data": { crop_tid: 234 }
                 }
@@ -783,7 +783,7 @@ describe('API Request Functions', () => {
         })
 
         it('failed update', () => {
-            cy.intercept('PUT', '/log', 
+            cy.intercept('PUT', '/log',
                 // stub an error response so it looks like the request failed.
                 {
                     statusCode: 500,
@@ -802,7 +802,7 @@ describe('API Request Functions', () => {
                     .catch((err) => {
                         expect(err.response.status).to.equal(500)
                     })
-                ).as('fail') 
+                ).as('fail')
             })
 
             // Wait for everything to finish.
@@ -812,16 +812,16 @@ describe('API Request Functions', () => {
 
     context('test quantity location function', () => {
             let quantity = [{
-                "measure": "length", 
+                "measure": "length",
                 "value": 5,
                 "unit": {
-                    "id": "1987", 
+                    "id": "1987",
                     "resource": "taxonomy_term"
                 },
                 "label": "Amount planted"
             },
             {
-                "measure": "ratio", 
+                "measure": "ratio",
                 "value": 19,
                 "unit": {
                     "id": "98",
@@ -830,7 +830,7 @@ describe('API Request Functions', () => {
                 "label": "Rows/Bed"
             },
             {
-                "measure": "time", 
+                "measure": "time",
                 "value": 178,
                 "unit": {
                     "id": "80",
@@ -839,7 +839,7 @@ describe('API Request Functions', () => {
                 "label": "Labor"
             },
             {
-                "measure": "count", 
+                "measure": "count",
                 "value": 1,
                 "unit": {
                     "id": "90",
@@ -858,9 +858,8 @@ describe('API Request Functions', () => {
                 expect(quantityLocation(quantity, 'Yeehaw')).to.equal(-1)
             })
         })
-    
-    context.only('test configuration functions', () => {
-        
+
+    context('test configuration functions', () => {
         it('gets an existing configuration log', () => {
             cy.wrap(getConfiguration()).as('done')
 
@@ -871,19 +870,20 @@ describe('API Request Functions', () => {
             })
         })
 
-        it('sets labor to optional, then back to Required', () => {           
+        it('sets labor to optional, then back to Required', () => {
+            let token = null
             cy.wrap(getSessionToken())
             // First request for the session token.
             .then((sessionToken) => {
-                token = sessionToken     
+                token = sessionToken
             })
             // Then update the log using the token
             .then(() => {
-                updateData =
+                let updateData =
                     {
                         "id" : "1",
                         "labor":"Optional"
-                    } 
+                    }
                 cy.wrap(setConfiguration(updateData , token)).as('update')
             })
             cy.get('@update').should((response) => {
@@ -900,13 +900,12 @@ describe('API Request Functions', () => {
             })
             // If the change was successful, change it back to required
             .then(() => {
-                
-                resetData =
+                let resetData =
                     {
                         "id" : "1",
                         "labor":"Required"
-                    } 
-                        
+                    }
+
                 cy.wrap(setConfiguration(resetData, token)).as('default')
             })
             cy.get('@default').should((response) => {
@@ -921,6 +920,6 @@ describe('API Request Functions', () => {
                 expect(response.data.labor).to.equal('Required')
             })
         })
-        
+
     })
 })

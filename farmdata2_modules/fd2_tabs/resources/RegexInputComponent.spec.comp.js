@@ -1,4 +1,4 @@
-import { mount } from '@cypress/vue'
+import { mount } from '@cypress/vue2'
 import { shallowMount } from '@vue/test-utils'
 
 var RegexInputComp = require("./RegexInputComponent.js")
@@ -61,7 +61,7 @@ describe('RegexInput Component', () => {
                 .blur()
                 .then(() => {
                     expect(spy).to.be.called
-                })     
+                })
         })
         it('does not emit the isMatch value after blur if it does not change', () => {
             const spy = cy.spy()
@@ -71,7 +71,7 @@ describe('RegexInput Component', () => {
                 .blur()
                 .then(() => {
                     expect(spy).not.to.be.called
-                })  
+                })
         })
         it('emits the new value after blur', () => {
             const spy = cy.spy()
@@ -85,7 +85,7 @@ describe('RegexInput Component', () => {
         })
     })
 
-    context('testing disabled option', () => {  
+    context('testing disabled option', () => {
         it('checking if the input box is disabled', () => {
             mount(RegexInputComponent, {
                 propsData: {
@@ -98,8 +98,8 @@ describe('RegexInput Component', () => {
             .should('be.disabled')
         })
         it('checking disabled when prop changes', () => {
-            let comp; 
-            comp = shallowMount(RegexInputComponent, { 
+            let comp;
+            comp = shallowMount(RegexInputComponent, {
                 propsData: {
                     regExp: null,
                     defaultVal: null,
@@ -254,4 +254,3 @@ describe('RegexInput Component', () => {
         })
     })
 })
-
