@@ -2,7 +2,7 @@ try {
     FarmData2
 }
 catch {
-    axios = require('axios')
+    var axios = require('axios')
 }
 
 // A collection of functions for interacting with the

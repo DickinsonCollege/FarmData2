@@ -1,11 +1,13 @@
 FROM cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/New_York
 
 # Install some base dependencies
 RUN apt update \
  && apt install -y --no-install-recommends \
         software-properties-common \
+        gnupg2 \
         atfs \
         libsecret-1-0
 
@@ -36,10 +38,10 @@ COPY vscode.bash .
 RUN ./vscode.bash \
  && rm vscode.bash
 
-# Install Firefox (Not currently working with Alpine image)
-#COPY firefox.bash .
-#RUN ./firefox.bash \
-# && rm firefox.bash
+# Install Firefox
+COPY firefox.bash .
+RUN ./firefox.bash \
+ && rm firefox.bash
 
 # Create the non-root user "farmdev" with sudo privileges in the container.
 ARG USERNAME=farmdev
@@ -63,7 +65,13 @@ WORKDIR /home/$USERNAME
 ### MAY NEED A RETRY SCRIPT HERE
 ### Fails sometimes with:
 ###    Your connection to the default yarn registry seems to be slow.
-RUN vue create --no-git --bare --packageManager npm --preset 'Default (Vue 2)' fd2test
+RUN vue create \
+        --no-git \
+        --bare \
+        --skipGetStarted \
+        --packageManager npm \
+        --preset 'Default (Vue 2)' \
+        fd2test
 WORKDIR /home/$USERNAME/fd2test
 RUN npm install -d \
         cypress \
@@ -72,10 +80,6 @@ RUN npm install -d \
         @cypress/vue2 \
         path \
         axios
-
-# Need to figure out how to set default editor for Cypress to /usr/bin/mousepad
-
-
 
 # Configure the VNC server.
 USER $USERNAME
@@ -95,8 +99,6 @@ COPY ./startup.bash ./.fd2/startup.bash
 USER root
 RUN chmod +x .fd2/startup.bash
 
-####### IS THERE OTHER STUFF TO DO HERE?
-####### purge the cache? get rid of package files?
 # Stuff to reduce image size.
 USER root
 RUN apt autoclean -y \

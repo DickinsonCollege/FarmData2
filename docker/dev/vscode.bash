@@ -26,5 +26,4 @@ rm vscode.deb
 mv /usr/bin/code /usr/bin/code-orig
 echo "/usr/bin/code-orig --no-sandbox" > /usr/bin/code
 chmod 755 /usr/bin/code
-
 sed -i 's+usr/share/code+usr/bin/code --no-sandbox+g' /usr/share/applications/code.desktop

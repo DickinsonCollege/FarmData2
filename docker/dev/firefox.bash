@@ -1,23 +1,23 @@
 #!/bin/bash
 
 # Install a deb version of firefox.
-# The default is now to use snap.
-# But snap does not run in docker.
 
-# This approach from:
-# https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
+# The standard install now uses snap, which doesn't work in docker.
+# So download the deb file manually.
 
-add-apt-repository ppa:mozillateam/ppa
+ARCH=$(uname -m)
 
-echo '
-Package:  *
-Pin: release o=LP-PPA-mozillateam
-Pin-Priority: -10
+if [ "$ARCH" = "aarch64" ]
+then
+  echo "Installing for arm64"
+  wget -O firefox.deb "http://ports.ubuntu.com/pool/main/f/firefox/firefox_102.0+build2-0ubuntu0.20.04.1_arm64.deb"
 
-Package: *firefox*
-Pin: release o=LP-PPA-mozillateam
-Pin-Priority: 1001
-' > /etc/apt/preferences.d/mozilla-firefox
+else
+  echo "Installing for amd64"
+  wget -O firefox.deb "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_102.0+build2-0ubuntu0.20.04.1_amd64.deb"
+fi
 
 apt install -y --no-install-recommends \
-    firefox
+    ./firefox.deb
+
+rm firefox.deb

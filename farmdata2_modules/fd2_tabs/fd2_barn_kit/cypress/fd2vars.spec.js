@@ -20,7 +20,7 @@ describe('Check the JS vars defined by module', () => {
     cy.login('manager1', 'farmdata2')
 
     cy.visit('/farm/fd2-barn-kit')
-    cy.window().its('fd2UserID').should('equal',3);
+    cy.window().its('fd2UserID').should('equal',6);
     cy.window().its('fd2UserName').should('equal','manager1');
   })
 
@@ -28,7 +28,7 @@ describe('Check the JS vars defined by module', () => {
     cy.login('worker1', 'farmdata2')
 
     cy.visit('/farm/fd2-barn-kit')
-    cy.window().its('fd2UserID').should('equal',5);
+    cy.window().its('fd2UserID').should('equal',8);
     cy.window().its('fd2UserName').should('equal','worker1');
   })
 })

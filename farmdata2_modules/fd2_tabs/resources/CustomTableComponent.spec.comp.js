@@ -1,4 +1,4 @@
-import {mount} from '@cypress/vue2'
+import { mount } from '@cypress/vue2'
 import { shallowMount } from '@vue/test-utils'
 
 var CustTable = require("./CustomTableComponent.js")
@@ -512,7 +512,7 @@ describe('custom table component', () => {
     })
 
     context('export csv file', () => {
-        const path = require("path");
+        //const path = require("path");
         const downloadsFolder = 'cypress/downloads'
         let comp;
         beforeEach(() => {
@@ -561,4 +561,5 @@ describe('custom table component', () => {
             cy.exec("rm -r " + downloadsFolder)
         });
     })
+
 })

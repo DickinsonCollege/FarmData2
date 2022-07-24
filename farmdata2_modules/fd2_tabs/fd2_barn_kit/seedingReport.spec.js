@@ -47,18 +47,18 @@ describe('Testing for the seeding report page', () => {
         cy.get('@unitMap').should(function(map) {
             unitToIDMap = map
         })
-        
+
         // Setting up wait for the request in the created() to complete.
         cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-        cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+        cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')
         cy.intercept('GET', '/taxonomy_term.json?bundle=farm_crops').as('IDCropMap')
-        cy.intercept('GET', 'user').as('userMap') 
-        cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitMap') 
-        
+        cy.intercept('GET', 'user').as('userMap')
+        cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitMap')
+
         // cy.restoreLocalStorage()
         cy.visit('/farm/fd2-barn-kit/seedingReport')
-    
-        // Wait here for the maps to load in the page.   
+
+        // Wait here for the maps to load in the page.
         cy.wait(['@cropmap', '@areamap', '@IDCropMap', '@userMap', '@unitMap'])
     })
 
@@ -75,7 +75,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=end-date-select]')
                 .should('exist')
                 .type('2019-03-01')
-                
+
             cy.get('[data-cy=date-select]')
                 .each(($el, index, $all) => {
                     if (index == 0) {
@@ -126,7 +126,7 @@ describe('Testing for the seeding report page', () => {
                 .should('be.visible')
                 .click()
                 .should('not.visible')
-            }) 
+            })
             cy.get('[data-cy=filters-panel]')
                 .should('not.exist')
 
@@ -138,7 +138,7 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=tray-summary]')
                 .should('not.exist')
-        }) 
+        })
 
         it('generate report experiences API error: network error', () => {
             cy.get('[data-cy=date-range-selection]')
@@ -162,7 +162,7 @@ describe('Testing for the seeding report page', () => {
                 .should('be.visible')
                 .click()
                 .should('not.visible')
-            }) 
+            })
             cy.get('[data-cy=filters-panel]')
                 .should('not.exist')
 
@@ -174,7 +174,7 @@ describe('Testing for the seeding report page', () => {
 
             cy.get('[data-cy=tray-summary]')
                 .should('not.exist')
-        }) 
+        })
     })
 
     context('assures filters are actually populated', () => {
@@ -187,20 +187,20 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]').click()
 
             cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .first()
                 .should('have.value', 'All')
             cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
-                .first()  
+                .children()
+                .first()
                 .next()
                 .should('have.value', 'Direct Seedings')
             cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .last()
                 .should('have.value', 'Tray Seedings')
             cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .should('have.length', '3')
         })
 
@@ -212,20 +212,20 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]').click()
 
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .first()
                 .should('have.value', 'All')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .children() 
-                .first()  
+                .children()
+                .first()
                 .next()
                 .should('have.value', 'ARUGULA')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .last()
                 .should('have.value', 'SCALLION')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .should('have.length', '22')
         })
 
@@ -237,20 +237,20 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=generate-rpt-btn]').click()
 
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .first()
                 .should('have.value', 'All')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .children() 
-                .first()  
+                .children()
+                .first()
                 .next()
                 .should('have.value', 'A')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .last()
                 .should('have.value', 'SEEDING BENCH')
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
-                .children() 
+                .children()
                 .should('have.length', '8')
         })
     })
@@ -275,7 +275,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=report-table]').find('tr').its('length').then(length =>{
                 expect(length).to.equal(3)
                 cy.get('[data-cy=loader]').should('not.exist')
-            }) 
+            })
         })
 
         it('spinner reappears after changing values and clicking again', () => {
@@ -372,7 +372,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=report-table]')
             cy.get('[data-cy=tray-summary]',).should('be.visible')
             cy.get('[data-cy=direct-summary]').should('be.visible')
-        }) 
+        })
 
         it('show tray seeding message when only direct seeding', () => {
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
@@ -501,7 +501,7 @@ describe('Testing for the seeding report page', () => {
                         expect(area, 'SEEDING BENCH')
                     })
             }
-            
+
             cy.get('[data-cy=area-dropdown] > [data-cy=dropdown-input]')
                 .select('All')
                 .should('have.value', 'All')
@@ -538,13 +538,13 @@ describe('Testing for the seeding report page', () => {
         it('verify all values in the tray seeding summary', () => {
             cy.get('[data-cy=tray-total-seeds]')
             .should('have.text', '16808')
-    
+
             cy.get('[data-cy=tray-total-trays]')
             .should('have.text', '212.5')
-    
+
             cy.get('[data-cy=tray-total-seeds-hour]')
             .should('have.text', '8.1')
-    
+
             cy.get('[data-cy=tray-avg-seeds-hour]')
             .should('have.text', '2075.06')
         })
@@ -688,7 +688,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=cancel-header]')
                 .should('have.text', 'Cancel')
 
-            //Force the action to occur because in the viewport isn't big enough for the 
+            //Force the action to occur because in the viewport isn't big enough for the
             //button to be clickable
             cy.get('[data-cy=cancel-button-r0]')
                 .click({force:true})
@@ -780,7 +780,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=cancel-header]')
                 .should('have.text', 'Cancel')
 
-            //Force the action to occur because in the viewport isn't big enough for the 
+            //Force the action to occur because in the viewport isn't big enough for the
             //button to be clickable
             cy.get('[data-cy=cancel-button-r0]')
                 .click({force:true})
@@ -964,7 +964,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=cancel-button-r0]')
                 .should('exist')
                 .click()
-            
+
             cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
                 .should('not.be.disabled')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
@@ -979,7 +979,7 @@ describe('Testing for the seeding report page', () => {
             cy.get('[data-cy=save-button-r0]')
                 .should('exist')
                 .click()
-            
+
             cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
                 .should('not.be.disabled')
             cy.get('[data-cy=crop-dropdown] > [data-cy=dropdown-input]')
@@ -991,6 +991,8 @@ describe('Testing for the seeding report page', () => {
 
     context('edit and delete buttons work', () => {
         let logID = 0
+        let token = null
+        let req = null
 
         beforeEach(() => {
             cy.wrap(getSessionToken())
@@ -1012,7 +1014,7 @@ describe('Testing for the seeding report page', () => {
                             "value": "This is a test log",
                             "format": "farm_format"
                         },
-                        "asset": [{ 
+                        "asset": [{
                             "id": "1",   //Associated planting
                             "resource": "farm_asset"
                         }],
@@ -1028,16 +1030,16 @@ describe('Testing for the seeding report page', () => {
                         },
                         "quantity": [
                             {
-                                "measure": "length", 
+                                "measure": "length",
                                 "value": "5",  //total row feet
                                 "unit": {
-                                    "id": "20", 
+                                    "id": "20",
                                     "resource": "taxonomy_term"
                                 },
                                 "label": "Amount planted"
                             },
                             {
-                                "measure": "ratio", 
+                                "measure": "ratio",
                                 "value": "38",
                                 "unit": {
                                     "id": "38",
@@ -1046,8 +1048,8 @@ describe('Testing for the seeding report page', () => {
                                 "label": "Rows/Bed"
                             },
                             {
-                                "measure": "time", 
-                                "value": "0.5", 
+                                "measure": "time",
+                                "value": "0.5",
                                 "unit": {
                                     "id": "29",
                                     "resource": "taxonomy_term"
@@ -1055,8 +1057,8 @@ describe('Testing for the seeding report page', () => {
                                 "label": "Labor"
                             },
                             {
-                                "measure": "count", 
-                                "value": "1", 
+                                "measure": "count",
+                                "value": "1",
                                 "unit": {
                                     "id": "15",
                                     "resource": "taxonomy_term"
@@ -1089,9 +1091,9 @@ describe('Testing for the seeding report page', () => {
 
         it('edits the database when a row is edited in the table', () => {
             cy.get('[data-cy=edit-button-r0]')
-                .click()   
+                .click()
             cy.get('[data-cy=date-input-r0c0]')
-                .type('2001-09-28')  
+                .type('2001-09-28')
             cy.get('[data-cy=dropdown-input-r0c1]')
                 .select('TOMATO')
             cy.get('[data-cy=dropdown-input-r0c2]')
@@ -1132,9 +1134,9 @@ describe('Testing for the seeding report page', () => {
     context('make sure any APIs that fail on page load make the API failed alert appear', () => {
         beforeEach(() => {
             cy.login('manager1', 'farmdata2')
-            
+
         })
-        
+
         it('fail the session token API: outside of 2xx error code', () => {
             cy.intercept('GET', 'restws/session/token', { statusCode: 500 }).as('failedSessionTok')
 
@@ -1147,7 +1149,7 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
 
         it('fail the session token API: network error', () => {
@@ -1162,13 +1164,8 @@ describe('Testing for the seeding report page', () => {
                     .should('be.visible')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
-
-        // if something else happens while setting up the request
-        // then it would also be handled here. 
-        // it('fail the session token API: something happened that triggered an error', () => {
-        // })
 
         it('fail the crop map API: outside of 2xx error code', () => {
             cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1', { statusCode: 500 }).as('failedCropMap')
@@ -1182,7 +1179,7 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
 
         it('fail the crop map API: network error', () => {
@@ -1197,18 +1194,13 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
-
-        // if something else happens while setting up the request
-        // then it would also be handled here. 
-        // it('fail the crop map API: something happened that triggered an error', () => {
-        // })
 
         it('fail the user map API: outside of 2xx error code', () => {
             cy.intercept('GET', 'user', { statusCode: 500 }).as('failedUserMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')         
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
             cy.wait('@failedUserMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -1217,13 +1209,13 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
 
         it('fail the user map API: network error', () => {
             cy.intercept('GET', 'user', { forceNetworkError: true }).as('failedUserMap')
 
-            cy.visit('/farm/fd2-barn-kit/seedingReport')         
+            cy.visit('/farm/fd2-barn-kit/seedingReport')
             cy.wait('@failedUserMap')
                 .then(() => {
                     cy.get('[data-cy=alert-err-handler]')
@@ -1232,16 +1224,11 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
 
-        // if something else happens while setting up the request
-        // then it would also be handled here. 
-        // it('fail the user map API: something happened that triggered an error', () => {
-        // })
-        
         it('fail the area map API: outside of 2xx error code', () => {
-            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { statusCode: 500 }).as('failedAreaMap') 
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { statusCode: 500 }).as('failedAreaMap')
 
             cy.visit('/farm/fd2-barn-kit/seedingReport')
             cy.wait('@failedAreaMap')
@@ -1252,11 +1239,11 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
 
         it('fail the area map API: outside of network error', () => {
-            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { forceNetworkError: true }).as('failedAreaMap') 
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas', { forceNetworkError: true }).as('failedAreaMap')
 
             cy.visit('/farm/fd2-barn-kit/seedingReport')
             cy.wait('@failedAreaMap')
@@ -1267,13 +1254,8 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
-
-        // if something else happens while setting up the request
-        // then it would also be handled here. 
-        // it('fail the area map API: something happened that triggered an error', () => {
-        // })
 
         it('fail the unit map API: outside of 2xx error code', () => {
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units', { statusCode: 500 }).as('failedUnitMap')
@@ -1287,7 +1269,7 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
 
         it('fail the unit map API: network error', () => {
@@ -1302,13 +1284,8 @@ describe('Testing for the seeding report page', () => {
                     cy.get('[data-cy=alert-err-handler]')
                     .click()
                     .should('not.visible')
-                }) 
+                })
         })
-
-        // if something else happens while setting up the request
-        // then it would also be handled here. 
-        // it('fail the unit map API: something happened that triggered an error', () => {
-        // })
     })
 
     context('Configuration tests', () => {
@@ -1317,7 +1294,7 @@ describe('Testing for the seeding report page', () => {
             .then(() => {
                 cy.wrap(getConfiguration()).as('def')
                 cy.wrap(getSessionToken()).as('token')
-            }) 
+            })
             cy.get('@token').should(function(token) {
                 sessionToken = token
             })
@@ -1338,24 +1315,24 @@ describe('Testing for the seeding report page', () => {
             .then(() => {
                 cy.wrap(setConfiguration(testConfig, sessionToken)).as('updateConfig')
             })
-            cy.get('@updateConfig') 
+            cy.get('@updateConfig')
             .then(() => {
                 cy.wrap(getConfiguration()).as('getNewConfigMap')
-            })          
+            })
             // set up intercept for setting up the configuration
             cy.get('@getNewConfigMap').should(function(map) {
                 configMap = map.data
             })
-            
+
             // Setting up wait for the request in the created() to complete.
             cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
             cy.intercept('GET', 'restws/session/token').as('sessiontok')
             cy.intercept('GET', 'user').as('usermap')
-            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')        
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')
             cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitmap')
-            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')            
-            cy.intercept('GET', '/fd2_config/1').as('getConfigMap')       
-            
+            cy.intercept('GET', 'taxonomy_term.json?bundle=farm_log_categories').as('logtypemap')
+            cy.intercept('GET', '/fd2_config/1').as('getConfigMap')
+
             cy.visit('/farm/fd2-barn-kit/seedingReport')
 
             cy.wait(['@cropmap', '@areamap', '@cropmap', '@usermap', '@areamap', '@unitmap',])
@@ -1416,7 +1393,7 @@ describe('Testing for the seeding report page', () => {
             .then(() => {
                 cy.reload()
             })
-            
+
             // Setting up wait for the request in the created() to complete.
             cy.intercept('GET', 'restws/session/token').as('sessiontok')
             cy.intercept('GET', 'user').as('usermap')
@@ -1472,7 +1449,7 @@ describe('Testing for the seeding report page', () => {
             .then(() => {
                 cy.reload()
             })
-            
+
             // Setting up wait for the request in the created() to complete.
             cy.intercept('GET', 'restws/session/token').as('sessiontok')
             cy.intercept('GET', 'user').as('usermap')
