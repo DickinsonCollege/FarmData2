@@ -1796,7 +1796,7 @@ describe('Testing for the seeding report page', () => {
                 .blur()
 
             cy.get('[data-cy=dropdown-input-r0c14]')
-                .select('Anonymous')
+                .select('worker1')
                 .blur()
 
 
