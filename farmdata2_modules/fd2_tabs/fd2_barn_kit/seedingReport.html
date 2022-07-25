@@ -108,6 +108,7 @@
                 visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
 
                 idToCropMap: new Map(),
+                idToAreaMap: new Map(),
                 cropToIDMap: new Map(),
                 idToUserMap: new Map(),
                 userToIDMap: new Map(),
@@ -218,6 +219,9 @@
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'Date'){
                             updateSeedingObject['timestamp'] = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
+
+                            this.updateLog[0].timestamp = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
+
                         }
                         else if(keys[i] == 'Crop'){
                             updateSeedingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
@@ -225,9 +229,16 @@
                                 "id": this.cropToIDMap.get(updateObject['Crop']),
                                 "resource": "taxonomy_term"
                             }]
+
+                            this.updateLog[0].data = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
                         }
                         else if (keys[i] == 'Area'){
                             updateSeedingObject['movement'] = { 'area': [{
+                                "id": this.areaToIDMap.get(updateObject['Area']),
+                                "resource": "taxonomy_term"}]
+                            }
+
+                            this.updateLog[0].movement = { 'area': [{
                                 "id": this.areaToIDMap.get(updateObject['Area']),
                                 "resource": "taxonomy_term"}]
                             }
@@ -246,13 +257,22 @@
                         else if(keys[i] == 'Comments'){
                             updateSeedingObject['notes'] = {'value': updateObject['Comments'],
                                 'format': 'farm_format'}
+
+                            this.updateLog[0].notes = {'value': updateObject['Comments'],
+                                'format': 'farm_format'}
                         }
                         else if(keys[i] == 'User'){
                             updateSeedingObject['uid'] = {
                                 'id': this.userToIDMap.get(updateObject['User']),
                                 'resource': 'user'
                             }
+
                             updatePlantObject['uid'] = {
+                                'id': this.userToIDMap.get(updateObject['User']),
+                                'resource': 'user'
+                            }
+
+                            this.updateLog[0].uid = {
                                 'id': this.userToIDMap.get(updateObject['User']),
                                 'resource': 'user'
                             }
@@ -294,9 +314,6 @@
                             }
                         }    
                     }
-
-                    //console.log(JSON.stringify(updateSeedingObject.movement))
-                    console.log(keys)
                     
                     let seedingUrl = '/log/' + id
                     let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
@@ -306,9 +323,20 @@
                     }
                     //call updateRecord function to update seeding log
                     if(!(Object.entries(updateSeedingObject).length === 0)){
-                        console.log("This is the updateSeedingObject being PUT: \n" + JSON.stringify(updateSeedingObject))
-                        console.log("This is the seeding URL: " + seedingUrl)
-                        updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                        //updates quantities and area separately because backend doesn't allow for one updateRecord call with both changes
+                        if(keys.includes("Area") && (keys.includes("Row Feet") || keys.includes("Bed Feet") || keys.includes("Seeds") 
+                            || keys.includes("Trays") || keys.includes("Cells/Tray") || keys.includes("Workers") || keys.includes("Hours"))){
+                            delete updateSeedingObject.movement
+                            let updateArea = {"movement":{"area":[{"id":this.areaToIDMap.get(updateObject['Area']),"resource":"taxonomy_term"}]}}
+
+                            updateRecord(seedingUrl, updateArea,this.sessionToken)
+                            .then(() =>{
+                                updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                            })
+                        }
+                        else{
+                            updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                        }
                     }
                     this.rowBeingEdited = false
                 },
@@ -379,7 +407,7 @@
                             data: [
                                 dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
                                 $vm.idToCropMap.get(h.data.crop_tid),
-                                h.movement.area[0].name, 
+                                $vm.idToAreaMap.get(h.movement.area[0].id),
                                 h.log_category[0].name.substring(0, h.log_category[0].name.indexOf(' ')), 
                                 rowFeet,
                                 bedFeet,
@@ -829,6 +857,21 @@
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = new Map(response)
+                    })
+                    .catch((err) => { 
+                        this.errBanner = true
+                        var errorBanner = document.getElementById('scrollBanners')
+                        var pageHeader = document.getElementById('navbar')
+                        var headerBounds = pageHeader.getBoundingClientRect()
+                        var alertBounds = errorBanner.getBoundingClientRect()
+                        scrollBy({
+                            top: alertBounds.top - headerBounds.bottom,
+                            behavior: 'smooth'
+                        })
+                    })
+                    getIDToAreaMap()
+                    .then((response) => {
+                        this.idToAreaMap = new Map(response)
                     })
                     .catch((err) => { 
                         this.errBanner = true

@@ -1,4 +1,5 @@
 const dayjs = require('dayjs')
+const { getIDToAreaMap } = require('../resources/FarmOSAPI.js')
 var FarmOSAPI = require('../resources/FarmOSAPI.js')
 var getSessionToken = FarmOSAPI.getSessionToken
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
@@ -16,6 +17,7 @@ describe('Testing for the seeding report page', () => {
     let cropToIDMap = null
     let IDToCropMap = null
     let areaToIDMap = null
+    let IDToAreaMap = null
     let userToIDMap = null
     let unitToIDMap = null
     let defaultConfig = null
@@ -27,6 +29,7 @@ describe('Testing for the seeding report page', () => {
                 // Using wrap to wait for the asynchronus API request.
                 cy.wrap(getCropToIDMap()).as('cropMap')
                 cy.wrap(getAreaToIDMap()).as('areaMap')
+                cy.wrap(getIDToAreaMap()).as('IDAreaMap')
                 cy.wrap(getIDToCropMap()).as('IDCropMap')
                 cy.wrap(getUserToIDMap()).as('userMap')
                 cy.wrap(getUnitToIDMap()).as('unitMap')
@@ -42,6 +45,9 @@ describe('Testing for the seeding report page', () => {
         cy.get('@areaMap').should(function(map) {
             areaToIDMap = map
         })
+        cy.get('@IDAreaMap').should(function(map) {
+            IDToAreaMap = map
+        })
         cy.get('@IDCropMap').should(function(map) {
             IDToCropMap = map
         })
@@ -55,6 +61,7 @@ describe('Testing for the seeding report page', () => {
         // Setting up wait for the request in the created() to complete.
         cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
         cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap') 
+        cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('IDAreaMap') 
         cy.intercept('GET', '/taxonomy_term.json?bundle=farm_crops').as('IDCropMap')
         cy.intercept('GET', 'user').as('userMap') 
         cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitMap') 
@@ -63,7 +70,7 @@ describe('Testing for the seeding report page', () => {
         cy.visit('/farm/fd2-barn-kit/seedingReport')
     
         // Wait here for the maps to load in the page.   
-        cy.wait(['@cropmap', '@areamap', '@IDCropMap', '@userMap', '@unitMap'])
+        cy.wait(['@cropmap', '@areamap', '@IDAreaMap', '@IDCropMap', '@userMap', '@unitMap'])
     })
 
     context('can set dates and then render the report', () => {
@@ -1761,7 +1768,7 @@ describe('Testing for the seeding report page', () => {
                 .click()
         })
 
-        it('edits the database when a row is edited in the table', () => {
+        it.only('edits a direct seeding in the database', () => {
             cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
             .select('Direct Seedings')
 
@@ -1771,18 +1778,25 @@ describe('Testing for the seeding report page', () => {
                 .type('2022-07-20')  
             cy.get('[data-cy=dropdown-input-r0c1]')
                 .select('TOMATO')
-            // cy.get('[data-cy=dropdown-input-r0c2]')
-            //     .select('A')
+            cy.get('[data-cy=dropdown-input-r0c2]')
+                .select('A')
             cy.get('[data-cy=number-input-r0c4]')
+                .clear()
                 .type('2')
 
             cy.get('[data-cy=number-input-r0c10]')
+                .clear()
                 .type('4')
             cy.get('[data-cy=number-input-r0c11]')
+                .clear()
                 .type('2')
 
             cy.get('[data-cy=text-input-r0c13]')
                 .type('Testing edit functionality')
+                .blur()
+
+            cy.get('[data-cy=dropdown-input-r0c14]')
+                .select('Anonymous')
                 .blur()
 
 
@@ -1801,18 +1815,21 @@ describe('Testing for the seeding report page', () => {
             console.log(logID)
             cy.wrap(getRecord('/log.json?type=farm_seeding&id=' + logID)).as('check')
             cy.get('@check').should(function(response) {
-                expect(response.data.list[0].name).to.equal('TEST SEEDING')
-                expect(response.data.list[0].quantity[0].value).to.equal('5')
-                expect(response.data.list[0].quantity[1].value).to.equal('5')
-                expect(response.data.list[0].quantity[2].value).to.equal('1')
-                expect(response.data.list[0].quantity[3].value).to.equal('1')
+                expect(response.data.list[0].name).to.equal('TEST SEEDING')     // name of the log
+                expect(response.data.list[0].changed).to.equal('1658772729')    // date changed
+                expect(response.data.list[0].movement.area[0].name).to.equal('A')    // area changed
+                expect(response.data.list[0].quantity[0].value).to.equal('2')   // Row Feet changed
+                expect(response.data.list[0].quantity[1].value).to.equal('5')   // Rows/Bed unchanged
+                expect(response.data.list[0].quantity[2].value).to.equal('2')   // Time changed
+                expect(response.data.list[0].quantity[3].value).to.equal('4')   // Workers changed
+                expect(response.data.list[0].notes.value).to.equal('<p>This is a test log<br />\nTesting edit functionality</p>\n')
             })
-                .then(() => {
-                    cy.wrap(deleteRecord("/log/" + logID , token)).as('seedingDelete')
-                })
-            cy.get('@seedingDelete').should((response) => {
-                expect(response.status).to.equal(200)
-            })
+                // .then(() => {
+                //     cy.wrap(deleteRecord("/log/" + logID , token)).as('seedingDelete')
+                //     cy.get('@seedingDelete').should((response) => {
+                //         expect(response.status).to.equal(200)
+                //     })
+                // })
         })
 
         it('deletes a log from the database when the delete button is pressed', () => {
