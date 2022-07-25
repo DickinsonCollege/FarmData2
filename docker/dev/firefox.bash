@@ -19,4 +19,5 @@ then
 fi
 
 # Ensure that the launcher icon for the browser starts firefox.
-sed -i 's+debian-sensible-browser+usr/bin/firefox+g' /etc/xdg/xfce4/helpers.rc
+# This works on both arm64 and amd64.
+sed -i 's+debian-sensible-browser+firefox+g' /etc/xdg/xfce4/helpers.rc

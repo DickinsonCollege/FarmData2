@@ -43,6 +43,12 @@ COPY firefox.bash .
 RUN ./firefox.bash \
  && rm firefox.bash
 
+# Clean up the xfce Applications menu because browser links don't work.
+# Would be nice to make these work instead...
+RUN rm /usr/share/applications/firefox.desktop \
+ && rm /usr/share/applications/google-chrome.desktop \
+ && rm /usr/share/applications/microsoft-edge-dev.desktop
+
 # Create the non-root user "farmdev" with sudo privileges in the container.
 ARG USERNAME=farmdev
 ARG PASSWD=farmdev
