@@ -129,10 +129,11 @@
                     "validNumRowBed": false,
                     "validNumFeet": false,
                 },
-                regPosInt: "^[1-9]+[0-9]*$",
-                regMin: "^[1-9]+[0-9]*$",
-                regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
-                regNumWorker: "^[1-9]+[0-9]*$",
+                regexMap : regexMap,
+                regPosInt: regexMap.regPosInt,
+                regMin: regexMap.regPosInt,
+                regHour:regexMap.regPosFloatTwoDigit,
+                regNumWorker: regexMap.regPosInt,
                 errBanner: null,
                 configToIDMap: new Map(),
             },
@@ -174,11 +175,11 @@
                 setNewNumWorkers(newNumWorkers) {
                     if(this.configToIDMap.labor == "Optional") {
                         if (newNumWorkers == "" || newNumWorkers == null) {
-                            this.regMin = "|^[1-9]+[0-9]*$"
-                            this.regHour = "|^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                            this.regMin = "|" + regexMap.regPosInt
+                            this.regHour = "|" + regexMap.regPosFloatTwoDigit
                         } else {
-                            this.regMin = "^[1-9]+[0-9]*$"
-                            this.regHour = "^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                            this.regMin = regexMap.regPosInt
+                            this.regHour = regexMap.regPosFloatTwoDigit
                             
                         }                
                     }
@@ -189,9 +190,9 @@
                     
                     if(this.configToIDMap.labor == "Optional") {
                         if (newMinute == "" || newMinute == null) {
-                            this.regNumWorker = "|^[1-9]+[0-9]*$"
+                            this.regNumWorker = "|" + regexMap.regPosInt
                         } else {
-                            this.regNumWorker = "^[1-9]+[0-9]*$"
+                            this.regNumWorker = regexMap.regPosInt
                         }
 
                     }
@@ -200,9 +201,9 @@
                 setHour(newHour) {
                     if(this.configToIDMap.labor == "Optional"){
                         if (newHour == "" || newHour == null) {
-                            this.regNumWorker = "|^[1-9]+[0-9]*$"
+                            this.regNumWorker = "|" + regexMap.regPosInt
                         } else {
-                            this.regNumWorker = "^[1-9]+[0-9]*$"
+                            this.regNumWorker = regexMap.regPosInt
                         }
                     }
                     this.hour = newHour
@@ -701,9 +702,9 @@
                     .then((response) => {
                         this.configToIDMap = response.data
                         if(this.configToIDMap.labor == "Optional") {
-                            this.regNumWorker = "|^[1-9]+[0-9]*$"
-                            this.regMin = "|^[1-9]+[0-9]*$"
-                            this.regHour = "|^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
+                            this.regNumWorker = "|" + regexMap.regPosInt
+                            this.regMin = "|" + regexMap.regPosInt
+                            this.regHour = "|" + regexMap.regPosFloatTwoDigit
                         }
                     })
                     .catch((err) => { 

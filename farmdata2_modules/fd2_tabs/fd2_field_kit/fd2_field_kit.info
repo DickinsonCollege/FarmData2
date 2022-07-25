@@ -3,5 +3,3 @@ description = A collection of forms for fast and accurate data entry in the fiel
 core = 7.x
 package = FarmData2
 
-scripts[] = '../resources/FarmData2.js'
-scripts[] = '../resources/RegexInputComponent.js'
