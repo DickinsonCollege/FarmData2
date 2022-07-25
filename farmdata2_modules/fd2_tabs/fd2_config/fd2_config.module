@@ -82,7 +82,7 @@ function fd2_config_entity_property_info() {
   );
 
   $info['fd2_config']['properties']['labor'] = array(
-    'labor' => t('Labor data configuration'),
+    'label' => t('Labor data configuration'),
     'description' => t('Whether labor data is Required, Optional or Hidden'),
     'type' => 'text',
     'schema field' => 'labor',
