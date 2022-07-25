@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Install a deb version of firefox.
-
-# The standard install now uses snap, which doesn't work in docker.
-# So download the deb file manually.
+# Install a deb version of firefox for arm64
+# Note: Base Cypress container has browsers for amd64
+# So this only necessary on arm64 processors (i.e. M1)
+# Hopefully the base image for arm64 will include browsers soon.
 
 ARCH=$(uname -m)
 
@@ -12,12 +12,11 @@ then
   echo "Installing for arm64"
   wget -O firefox.deb "http://ports.ubuntu.com/pool/main/f/firefox/firefox_102.0+build2-0ubuntu0.20.04.1_arm64.deb"
 
-else
-  echo "Installing for amd64"
-  wget -O firefox.deb "http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_102.0+build2-0ubuntu0.20.04.1_amd64.deb"
+  apt install -y --no-install-recommends \
+      ./firefox.deb
+
+  rm firefox.deb
 fi
 
-apt install -y --no-install-recommends \
-    ./firefox.deb
-
-rm firefox.deb
+# Ensure that the launcher icon for the browser starts firefox.
+sed -i 's+debian-sensible-browser+usr/bin/firefox+g' /etc/xdg/xfce4/helpers.rc
