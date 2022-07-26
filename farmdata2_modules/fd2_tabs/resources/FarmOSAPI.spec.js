@@ -859,7 +859,7 @@ describe('API Request Functions', () => {
             })
         })
     
-    context.only('test configuration functions', () => {
+    context('test configuration functions', () => {
         
         it('gets an existing configuration log', () => {
             cy.wrap(getConfiguration()).as('done')
