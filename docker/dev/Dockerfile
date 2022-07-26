@@ -43,6 +43,11 @@ COPY firefox.bash .
 RUN ./firefox.bash \
  && rm firefox.bash
 
+# Install Docker
+ COPY docker.bash .
+ RUN ./docker.bash \
+  && rm docker.bash
+
 # Clean up the xfce Applications menu because browser links don't work.
 # Would be nice to make these work instead...
 RUN rm -f /usr/share/applications/firefox.desktop \
@@ -58,7 +63,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
  && useradd --uid $USER_UID --gid $USER_GID \
     -m $USERNAME -p "$(openssl passwd -1 $PASSWD)" \
     -s /bin/bash \
-    -G sudo
+    -G sudo,docker
 
 ##
 ## From here down need to manage USERNAME

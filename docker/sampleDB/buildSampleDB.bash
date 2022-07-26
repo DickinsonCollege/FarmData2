@@ -10,10 +10,16 @@
 
 echo "Switching to empty db image..."
 cd ..
-./fd2-down.bash
+echo "  Stopping FarmData2..."
+docker stop fd2_farmdata2
+echo "  Stopping Mariadb..."
+docker stop fd2_mariadb
 sudo rm -rf db
 tar -xjf db.empty.tar.bz2
-./fd2-up.bash
+echo "  Restarting Mariadb..."
+docker start fd2_mariadb
+echo "  Restarting FarmData2..."
+docker start fd2_farmdata2
 cd sampleDB
 echo "Switched to empty db image."
 

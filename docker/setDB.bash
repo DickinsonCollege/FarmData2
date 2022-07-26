@@ -27,7 +27,10 @@ else
   if [ $FD2_RUNNING -eq 1 ]
   then
     echo "  Stopping FarmData2..."
-    ./fd2-down.bash
+    docker stop fd2_farmdata2
+    echo "  Stopping mariadb..."
+    docker stop fd2_mariadb
+    #./fd2-down.bash
     echo "  Stopped."
   fi
 
@@ -38,14 +41,17 @@ else
     echo "  Removed."
   fi
 
-  echo "  Extracting new database image..." 
+  echo "  Extracting new database image..."
   tar -xjf $FILE
   echo "  Extracted."
 
   if [ $FD2_RUNNING -eq 1 ]
   then
+    echo "  Restarting mariadb..."
+    docker start fd2_mariadb
     echo "  Restarting FarmData2..."
-    ./fd2-up.bash
+    docker start fd2_farmdata2
+    #./fd2-up.bash
     echo "  Restarted."
   fi
 

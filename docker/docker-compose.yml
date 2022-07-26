@@ -60,6 +60,7 @@ services:
      - ../farmdata2_modules:/home/farmdev/fd2test/farmdata2_modules
      - ../farmdata2_modules/cypress:/home/farmdev/fd2test/cypress
      - ../farmdata2_modules/cypress.config.js:/home/farmdev/fd2test/cypress.config.js
+     - /var/run/docker.sock:/var/run/docker.sock
     ports:
      - 5901:5901
      - 6901:6901
