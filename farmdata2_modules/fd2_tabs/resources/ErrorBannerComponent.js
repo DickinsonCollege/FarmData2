@@ -10,8 +10,8 @@
  * </tbody>
  * </table>
  * 
- * @vue-prop {String} [errMessage] - The message to display in the alert banner. Required. 
- * @vue-prop {Boolean} [visible=false] - true to show the alert banner. False by default. 
+ * @vue-prop {String} errMessage - The message to display in the alert banner. Required. 
+ * @vue-prop {Boolean} visible=false - true to show the alert banner. False by default. 
  */ 
 let ErrorBannerComponent = {
     template: 
