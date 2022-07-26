@@ -10,8 +10,8 @@
  * </tbody>
  * </table>
  * 
- * @vue-prop {String} errMessage - The message to display in the alert banner. Required. 
- * @vue-prop {Boolean} visible=false - true to show the alert banner. False by default. 
+ * @vue-prop {String} [errMessage="Error Processing Request. This may be an intermittent network issue. Please try again later."] - The message to display in the alert banner.
+ * @vue-prop {Boolean} [visible=false] - true to show the alert banner. False by default. 
  */ 
 let ErrorBannerComponent = {
     template: 
@@ -21,11 +21,10 @@ let ErrorBannerComponent = {
     props: {
         errMessage: {
             type: String,
-            required: true,
+            default: "Error Processing Request. This may be an intermittent network issue. Please try again later."
         },
         visible: {
             type: Boolean,
-            required: true,
             default: false,
         }
     },
