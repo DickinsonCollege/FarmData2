@@ -24,11 +24,10 @@ services:
      dockerfile: Dockerfile
     container_name: fd2_farmdata2
     volumes:
-      - './settings.php:/var/www/html/sites/default/settings.php:delegated'
+      - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
       - './logo:/var/www/html/sites/default/files:cached'
       - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:cached'
       - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:cached'
-      - './sampleDB:/sampleDB'
     ports:
       - '80:80'
     environment:
@@ -61,6 +60,10 @@ services:
      - ../farmdata2_modules/cypress:/home/farmdev/fd2test/cypress
      - ../farmdata2_modules/cypress.config.js:/home/farmdev/fd2test/cypress.config.js
      - /var/run/docker.sock:/var/run/docker.sock
+     - test:/home/farmdev/test
     ports:
      - 5901:5901
      - 6901:6901
+
+volumes:
+  test:
