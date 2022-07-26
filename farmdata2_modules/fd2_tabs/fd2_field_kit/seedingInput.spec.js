@@ -1215,7 +1215,7 @@ describe('Test the seeding input page', () => {
         
     })
 
-    context('Log Creation tests', () => {
+    context.only('Log Creation tests', () => {
         let seedingLog = []
         let plantingAsset = []
         beforeEach(() => {
