@@ -25,6 +25,25 @@ describe('ErrorBannerComponent tests', () => {
         })
     })
 
+<<<<<<< HEAD
+=======
+    context('test methods', () => {
+        beforeEach(() => {
+            mount(ErrorBannerComponent, {
+                propsData: {
+                    errMessage: 'test message',
+                    visible: true,
+                }
+            })
+        })
+
+        it('test hide banner', () => {
+            cy.get('[data-cy=alert-err-handler]').click()
+            .should('not.be.visible')
+        })
+    })
+
+>>>>>>> main
     context('test prop changes', () => {
         let comp;
         beforeEach(() => {
