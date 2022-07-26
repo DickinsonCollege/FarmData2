@@ -3,10 +3,6 @@
         <h1 style='text-align:center;'>Seeding Input Log</h1> 
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <error-banner :visible="errBannerVisibility" err-message="Error Processing Request. This may be an intermittent network issue. Please try again later." ></error-banner>
-            
-            <!-- <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBannerVisibility == true" @click="hideBanner">
-                Error Processing Request. This may be an intermittent network issue. Please try again later. 
-            </div> -->
             <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
