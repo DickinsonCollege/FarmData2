@@ -95,7 +95,22 @@ function getAllPages(endpoint, arr=[]) {
  * // Note that the Map will not be available until the then() executes.
  */
 function getIDToUserMap(){
-    return getMap('/user', 'uid', 'name')
+    return new Promise((resolve, reject) => {
+        getAllPages('/user')
+        .then(
+            (list) => {
+                resolve(
+                    temp = new Map(list.map(h =>
+                        [h['uid'], h['name']]
+                        )),
+                    temp = temp.delete(null)
+                )
+            },
+            (error) => {
+                reject(error)
+            }
+        )
+    })
 }
 
 /**
@@ -116,7 +131,22 @@ function getIDToUserMap(){
  * // Note that the Map will not be available until the then() executes.
  */
 function getUserToIDMap(){
-    return getMap('/user', 'name', 'uid')
+    return new Promise((resolve, reject) => {
+        getAllPages('/user')
+        .then(
+            (list) => {
+                resolve(
+                    temp = new Map(list.map(h =>
+                        [h['name'], h['uid']]
+                        )),
+                    temp = temp.delete('Anonymous')
+                )
+            },
+            (error) => {
+                reject(error)
+            }
+        )
+    })
 }
 
 /**
