@@ -19,6 +19,6 @@ apt install -y --no-install-recommends \
     docker-compose-plugin
 
 # Ensure we have the correct permissions on the sock!
-touch /var/run/docker.sock
-chgrp docker /var/run/docker.sock
-chmod 775 /var/run/docker.sock
+#touch /var/run/docker.sock
+#chgrp docker /var/run/docker.sock
+#chmod 775 /var/run/docker.sock
