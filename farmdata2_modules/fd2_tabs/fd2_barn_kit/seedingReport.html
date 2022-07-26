@@ -1,7 +1,7 @@
 <body>
     <div id="seedingReport" v-cloak>
         <h1 class="text-center">Seeding Report</h1>
-        <error-banner :visible="errBannerVisibility" err-message="Error Processing Request. This may be an intermittent network issue. Please try again later." ></error-banner>
+        <error-banner :visible="errBannerVisibility"></error-banner>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
@@ -112,7 +112,7 @@
                 configToIDMap: new Map(),
 
                 rowBeingEdited: false,
-                errBannerVisibility: null,
+                errBannerVisibility: false,
 
                 isMobile: false,
             },
