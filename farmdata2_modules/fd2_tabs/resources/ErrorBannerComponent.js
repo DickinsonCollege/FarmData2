@@ -1,3 +1,18 @@
+/**
+ * A Vue component for a error banner that is displayed when an error occurs.
+ * 
+ * <p><b>data-cy attributes</b></p>
+ * <table>
+ * <thead><tr><th>Value</th>        <th>Descripion</th></tr></thead>
+ * <tbody>
+ * <tr><td>alert-err-handler</td>   <td>div containing bootstrap alert banner</td></tr>
+ * <tr><td>alert-err-message</td>   <td>The message displayed inside the alert banner</td></tr>
+ * </tbody>
+ * </table>
+ * 
+ * @vue-prop {String} [errMessage] - The message to display in the alert banner. Required. 
+ * @vue-prop {Boolean} [visible=false] - true to show the alert banner. False by default. 
+ */ 
 let ErrorBannerComponent = {
     template: 
         `<div data-cy='alert-err-handler' class="alert alert-danger" id="banner" role="alert" v-show="isVisible" @click="hideBanner">
