@@ -25,8 +25,6 @@ describe('ErrorBannerComponent tests', () => {
         })
     })
 
-<<<<<<< HEAD
-=======
     context('test methods', () => {
         beforeEach(() => {
             mount(ErrorBannerComponent, {
@@ -43,7 +41,6 @@ describe('ErrorBannerComponent tests', () => {
         })
     })
 
->>>>>>> main
     context('test prop changes', () => {
         let comp;
         beforeEach(() => {

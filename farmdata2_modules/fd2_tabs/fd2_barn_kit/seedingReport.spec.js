@@ -66,7 +66,7 @@ describe('Testing for the seeding report page', () => {
         cy.wait(['@cropmap', '@areamap', '@IDCropMap', '@userMap', '@unitMap'])
     })
 
-    context('can set dates and then render the report', () => {
+    context.only('can set dates and then render the report', () => {
 
         it('allows user input of the start and end dates', () => {
             cy.get('[data-cy=date-range-selection]')
