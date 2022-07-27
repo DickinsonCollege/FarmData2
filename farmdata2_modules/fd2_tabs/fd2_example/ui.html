@@ -42,9 +42,9 @@
             :disabled="disabledMap['RegexInputComponent']">
         </regex-input>
         <button data-cy='choose-positive-decimals' 
-            @click='updateRegexMap("pos_decimals")'>Only Positive Decimals</button>
+            @click='updateRegexMap("regPosFloatTwoDigit")'>Only Positive Decimals</button>
         <button data-cy='choose-positive-ints' 
-            @click='updateRegexMap("pos_ints")'>Only Positive Integers</button>
+            @click='updateRegexMap("regPosInt")'>Only Positive Integers</button>
         <button data-cy='reset-input-val' 
             @click='resetRegexVal'>Reset Input</button>
         <button data-cy='btn-input-disable' v-show="!disabledMap['RegexInputComponent']"
@@ -173,9 +173,7 @@
     </UL>
 
     <p><b>API Error Handling</b></p>
-    <div data-cy='alert-err-handler'class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-        Error Processing Request. This may be an intermittent network issue. Please try again later. 
-    </div>
+    <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
     <UL>
         <button data-cy='fetch-err-api'
             :disabled='waitingOnLogs' 
@@ -205,6 +203,7 @@ new Vue({
         'date-range-selection': DateRangeSelectionComponent,
         'custom-table': CustomTableComponent,
         'regex-input': RegexInputComponent,
+        'error-banner': ErrorBannerComponent,
     },
     data: {
         // The predefined FarmData2 variables.
@@ -242,17 +241,14 @@ new Vue({
 
         waitingOnLogs: false,
         waitingOnErr: false,
-        errBanner: false,
+        errBannerVisibility: false,
         seedingLogs: [],
 
         regularExp: null,
         selectedRegOpt: null,
         regexInputVal: null,
         regexMatchVal: false,
-        regexMap: {
-            "pos_ints": "^[1-9]+[0-9]*$",
-            "pos_decimals": "^[1-9]+[0-9]*(\.[0-9]{1,2}){0,1}$|^[0]{0,1}\.[1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
-        },
+        regexMap: regexMap,
         disabledMap: {
             "DropdownWithAllComponent": false,
             "RegexInputComponent": false,
@@ -368,7 +364,7 @@ new Vue({
                 if (err.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    this.errBanner = true
+                    this.errBannerVisibility = true
                     this.waitingOnErr = false
                     console.log('Error code that falls out of 2xx.')
                 } 
@@ -376,20 +372,17 @@ new Vue({
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    this.errBanner = true
+                    this.errBannerVisibility = true
                     this.waitingOnErr = false
                     console.log('No response was received');
                 } 
                 else {
                     // Something happened in setting up the request that triggered an Error
-                    this.errBanner = true
+                    this.errBannerVisibility = true
                     this.waitingOnErr = false
                     console.log('Error Message: ', err.message);
                 }
             })
-        },
-        hideBanner(){
-            this.errBanner = false
         },
     },
     computed: {

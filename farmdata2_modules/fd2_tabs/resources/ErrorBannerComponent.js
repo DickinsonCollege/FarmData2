@@ -15,7 +15,7 @@
  */ 
 let ErrorBannerComponent = {
     template: 
-        `<div data-cy='alert-err-handler' class="alert alert-danger" id="banner" role="alert" v-show="isVisible" @click="hideBanner">
+        `<div data-cy='alert-err-handler' class="alert alert-danger" ref="banner" role="alert" v-show="isVisible" @click="hideBanner">
             <p data-cy='alert-err-message'>{{ message }}</p>
         </div>`,
     props: {
@@ -37,7 +37,9 @@ let ErrorBannerComponent = {
     watch: {
         visible(newbool) {
             this.isVisible = newbool;
-            this.ScrollToBanner()
+            this.$nextTick(function () { // this allows the DOM to be updated so that the page only scrolls after this component is rendered
+                this.ScrollToBanner()
+            })
         },
         errMessage(newString) {
             this.message = newString;
@@ -48,7 +50,7 @@ let ErrorBannerComponent = {
             this.isVisible = false
         },
         ScrollToBanner() {
-            var errorBanner = document.getElementById('banner')
+            var errorBanner = this.$refs.banner;
             var pageHeader = document.getElementById('navbar')
             var headerBounds = pageHeader.getBoundingClientRect()
             var alertBounds = errorBanner.getBoundingClientRect()

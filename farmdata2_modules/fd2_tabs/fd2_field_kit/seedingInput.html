@@ -2,9 +2,7 @@
     <div id='seedingInput'>
         <h1 style='text-align:center;'>Seeding Input Log</h1> 
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
-            <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-                Error Processing Request. This may be an intermittent network issue. Please try again later. 
-            </div>
+            <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
             <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
@@ -89,6 +87,7 @@
                 'date-selection': DateSelectionComponent,
                 'dropdown-with-all': DropdownWithAllComponent,
                 'regex-input': RegexInputComponent,
+                'error-banner': ErrorBannerComponent,
             },
             data:{
                 sessionToken: null,
@@ -134,7 +133,7 @@
                 regMin: regexMap.regPosInt,
                 regHour:regexMap.regPosFloatTwoDigit,
                 regNumWorker: regexMap.regPosInt,
-                errBanner: null,
+                errBannerVisibility: false,
                 configToIDMap: new Map(),
             },
             methods:{
@@ -253,15 +252,7 @@
                             }, 3000)     
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 },
                 cancelLog() {
@@ -278,9 +269,6 @@
                     setTimeout(() => { 
                         this.isConfirmed = null
                     }, 3000)
-                },
-                hideBanner(){
-                    this.errBanner = false
                 },
             },
             computed: {
@@ -543,15 +531,7 @@
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }else{
                     this.cropArray = JSON.parse(localStorage.getItem('crops'))
@@ -561,15 +541,7 @@
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }
                 if(localStorage.getItem('areas') == null){
@@ -578,15 +550,7 @@
                             localStorage.setItem('areas', JSON.stringify(this.areaResponse))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
@@ -596,16 +560,7 @@
                             localStorage.setItem('areas', JSON.stringify(resp))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }
                 getSessionToken()
@@ -613,90 +568,42 @@
                         this.sessionToken = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getCropToIDMap()
                     .then((response) => {
                         this.cropToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getUserToIDMap()
                     .then((response) => {
                         this.userToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getUnitToIDMap()
                     .then((response) => {
                         this.unitToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getLogTypeToIDMap()
                     .then((response) => {
                         this.logTypeToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getConfiguration()
                     .then((response) => {
@@ -708,15 +615,7 @@
                         }
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
             }
         })
