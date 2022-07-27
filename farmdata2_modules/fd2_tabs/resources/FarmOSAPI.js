@@ -96,20 +96,14 @@ function getAllPages(endpoint, arr=[]) {
  */
 function getIDToUserMap(){
     return new Promise((resolve, reject) => {
-        getAllPages('/user')
-        .then(
-            (list) => {
-                resolve(
-                    temp = new Map(list.map(h =>
-                        [h['uid'], h['name']]
-                        )),
-                    temp = temp.delete(null)
-                )
-            },
-            (error) => {
-                reject(error)
-            }
-        )
+        getMap('/user', 'uid', 'name')
+        .then((map) => {
+            map.delete(null);
+            resolve(map)
+        },
+        (error) => {
+            reject(error);
+        })
     })
 }
 
@@ -132,20 +126,14 @@ function getIDToUserMap(){
  */
 function getUserToIDMap(){
     return new Promise((resolve, reject) => {
-        getAllPages('/user')
-        .then(
-            (list) => {
-                resolve(
-                    temp = new Map(list.map(h =>
-                        [h['name'], h['uid']]
-                        )),
-                    temp = temp.delete('Anonymous')
-                )
-            },
-            (error) => {
-                reject(error)
-            }
-        )
+        getMap('/user', 'name', 'uid')
+        .then((map) => {
+            map.delete('Anonymous');
+            resolve(map)
+        },
+        (error) => {
+            reject(error);
+        })
     })
 }
 
@@ -449,7 +437,7 @@ function getRecord(url) {
  * // Note that the response will not be available until the then() executes.
  */
 function getConfiguration() {
-  return getRecord('/fd2_config/1')
+    return getRecord('/fd2_config/1')
 }
 
 /**
@@ -605,7 +593,7 @@ function updateRecord(url, updateData, sessionToken){
  * // Note that the record will not have been updated until the then() executes.
  */
 function setConfiguration(updateData, sessionToken) {
-  return updateRecord('/fd2_config/1', updateData, sessionToken)
+    return updateRecord('/fd2_config/1', updateData, sessionToken)
 }
 
 /**
