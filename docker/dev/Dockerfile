@@ -107,6 +107,7 @@ RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
 USER $USERNAME
 RUN mkdir .fd2
 COPY ./startup.bash ./.fd2/startup.bash
+COPY ./.bash_aliases ./.bash_aliases
 USER root
 RUN chmod +x .fd2/startup.bash
 

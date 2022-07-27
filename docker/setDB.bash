@@ -14,11 +14,10 @@ if [ ! -e $FILE ]
 then
   echo "Usage: setDB.bash <db>"
   echo "    <db>: The unique part of the database image filename to use."
-  echo "            - empty - a db with no data"
-  echo "            - sample - the sample db for development"
-  echo "               - see docker/sampleDB/README.md "
-  echo "            - orig - the original development db"
-  echo "               - deprecated and will go away."
+  echo "            - empty - a db with no data."
+  echo "               - used mostly as a base for building the sample db."
+  echo "            - sample - the sample db for development."
+  echo "               - see docker/sampleDB/README.md."
 else
 
   echo "Switching to the "$FILE" database..."
@@ -30,7 +29,6 @@ else
     docker stop fd2_farmdata2
     echo "  Stopping mariadb..."
     docker stop fd2_mariadb
-    #./fd2-down.bash
     echo "  Stopped."
   fi
 
@@ -51,7 +49,6 @@ else
     docker start fd2_mariadb
     echo "  Restarting FarmData2..."
     docker start fd2_farmdata2
-    #./fd2-up.bash
     echo "  Restarted."
   fi
 
