@@ -33,15 +33,15 @@ RUN apt install -y --no-install-recommends \
         sudo git nano meld \
  && npm install -g @vue/cli
 
+# Install Firefox
+ COPY firefox.bash .
+ RUN ./firefox.bash \
+  && rm firefox.bash
+
 # Install VSCode
 COPY vscode.bash .
 RUN ./vscode.bash \
  && rm vscode.bash
-
-# Install Firefox
-COPY firefox.bash .
-RUN ./firefox.bash \
- && rm firefox.bash
 
 # Install Docker
  COPY docker.bash .
@@ -104,15 +104,18 @@ RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
  && chmod +x .vnc/xstartup
 USER $USERNAME
 
-# Install some standard VSCode extensions.
-RUN code --install-extension ecmel.vscode-html-css \
- && code --install-extension Vue.volar \
- && code --install-extension ms-python.python \
- && code --install-extension esbenp.prettier-vscode \
- && code --install-extension shakram02.bash-beautify \
- && code --install-extension dbaeumer.vscode-eslint \
- && code --install-extension kokororin.vscode-phpfmt \
- && code --install-extension ms-azuretools.vscode-docker
+# Install some standard VSCode extensions
+# Some extension seemed to be making VSCode unstable... so omit for now.
+# Note: echo "y" is needed in WSL installs where code wants
+#       you to use the WSL version and not the version in the container.
+#RUN echo "y" | code --install-extension ecmel.vscode-html-css \
+# && echo "y" | code --install-extension Vue.volar \
+# && echo "y" | code --install-extension ms-python.python \
+# && echo "y" | code --install-extension esbenp.prettier-vscode \
+# && echo "y" | code --install-extension shakram02.bash-beautify \
+# && echo "y" | code --install-extension dbaeumer.vscode-eslint \
+# && echo "y" | code --install-extension kokororin.vscode-phpfmt \
+# && echo "y" | code --install-extension ms-azuretools.vscode-docker
 
 # Add some scripts for the running container.
 RUN mkdir .fd2 \

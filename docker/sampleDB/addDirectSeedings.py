@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Creates the Planting assets and Seeding logs for all of the 
+# Creates the Planting assets and Seeding logs for all of the
 # direct seedings in the sample data.
 # The data for the plantings and seeding is in the sampleData/directSeedings.csv file.
 
@@ -11,6 +11,10 @@ import json
 from csv import reader
 from utils import *
 import sys
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 # Get lists of all of the recognized crops, fields and users for validation.
 cropMap = getCropMap()
@@ -38,7 +42,7 @@ def main():
             plantingID = addPlanting(row)
             addSeedings(row, plantingID, directSeedingCatID)
             line+=1
-    
+
     print("Direct Seedings added.")
 
 def validateRow(line, row):
@@ -48,7 +52,7 @@ def validateRow(line, row):
     row[3] = validateArea(line, area, areaMap)
     user = row[11]
     row[11] = validateUser(line, user, userMap)
-    
+
 def addPlanting(row):
     planting = {
         "name": row[1] + " " + row[2] + " " + row[3],
@@ -105,7 +109,7 @@ def addSeedings(row, plantingID, seedingTypeID):
         print("No seeding data for this record")
         sys.exit(-1)
 
- 
+
 def addSeeding(row, plantingID, seedingTypeID):
     seeding = {
         "name": row[1] + " " + row[2] + " " + row[3],
@@ -116,7 +120,7 @@ def addSeeding(row, plantingID, seedingTypeID):
             "value": row[16],
             "format": "farm_format"
         },
-        "asset": [{ 
+        "asset": [{
             "id": plantingID,   # Associated planting
             "resource": "farm_asset"
         }],
@@ -132,16 +136,16 @@ def addSeeding(row, plantingID, seedingTypeID):
         },
         "quantity": [
             {
-                "measure": "length", 
+                "measure": "length",
                 "value": row[6],  # total row feet
                 "unit": {
-                    "id": rowFtID, 
+                    "id": rowFtID,
                     "resource": "taxonomy_term"
                 },
                 "label": "Amount planted"
             },
             {
-                "measure": "ratio", 
+                "measure": "ratio",
                 "value": row[5],  # rows per bed
                                   # Bed feet = row feet / rows/bed
                 "unit": {
@@ -151,7 +155,7 @@ def addSeeding(row, plantingID, seedingTypeID):
                 "label": "Rows/Bed"
             },
             {
-                "measure": "time", 
+                "measure": "time",
                 "value": row[8],  # hours worked
                 "unit": {
                     "id": hoursID,
@@ -160,7 +164,7 @@ def addSeeding(row, plantingID, seedingTypeID):
                 "label": "Labor"
             },
             {
-                "measure": "count", 
+                "measure": "count",
                 "value": 1,  # number of people (x Time = Total Time)
                              # default 1 here because FarmData didn't record this.
                              # Workers x Labor gives total time
@@ -181,8 +185,8 @@ def addSeeding(row, plantingID, seedingTypeID):
             "resource": "user"
         }],
         "lot_number": row[15],
-        "data": json.dumps({ 
-            "crop_tid": cropMap[row[2]] 
+        "data": json.dumps({
+            "crop_tid": cropMap[row[2]]
         })
     }
 

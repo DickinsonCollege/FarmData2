@@ -2,6 +2,10 @@ import requests
 from requests.auth import HTTPBasicAuth
 import sys
 from datetime import datetime
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 # The username and password for the authorized basic authentication user
 # See addPeople.bash.
@@ -38,22 +42,22 @@ def getAllPages(url, theList=[], page=0):
         nextURL = url + '&page=' + str(page+1)
         theList.extend(getAllPages(nextURL, theList, page+1))
         return theList
- 
+
 # Get the ID of a specific vocabulary in the taxonomy.
 def getVocabularyID(vocab):
-    response = requests.get("http://localhost/taxonomy_vocabulary.json?machine_name=" + vocab, 
+    response = requests.get("http://" + host + "/taxonomy_vocabulary.json?machine_name=" + vocab,
         auth=HTTPBasicAuth(user, passwd))
     return response.json()['list'][0]['vid']
 
 # Get the ID of a specific vocabulary term.
 def getTermID(term):
-    response = requests.get("http://localhost/taxonomy_term.json?name=" + term, 
+    response = requests.get("http://" + host + "/taxonomy_term.json?name=" + term,
         auth=HTTPBasicAuth(user, passwd))
     return response.json()['list'][0]['tid']
 
 # Get a vocbulary term with the specified tid.
 def getTerm(tid):
-    response = requests.get("http://localhost/taxonomy_term.json?tid=" + tid, 
+    response = requests.get("http://" + host + "/taxonomy_term.json?tid=" + tid,
         auth=HTTPBasicAuth(user, passwd))
     return response.json()['list'][0]
 
@@ -74,9 +78,9 @@ def addSeedingCategory(category):
         }],
     }
     return addVocabTerm(cat)
-    
-def deleteSeedingCategory(category): 
-    response = requests.get("http://localhost/taxonomy_term.json?&name=" + category
+
+def deleteSeedingCategory(category):
+    response = requests.get("http://" + host + "/taxonomy_term.json?&name=" + category
     , auth=HTTPBasicAuth(user, passwd))
     catJson = response.json()['list']
     if (len(catJson) > 0):
@@ -91,10 +95,10 @@ def deleteAllAssets(url):
     while moreExist:
         assets = getAllPages(url)
         moreExist = (len(assets) > 0)
-        
+
         for asset in assets:
             assetID = asset['id']
-            response = requests.delete("http://localhost/farm_asset/" + assetID, 
+            response = requests.delete("http://" + host + "/farm_asset/" + assetID,
                 auth=HTTPBasicAuth(user, passwd))
 
             if(response.status_code == 200):
@@ -102,7 +106,7 @@ def deleteAllAssets(url):
 
 # Adds the asset indicated by the data object.
 def addAsset(data):
-    response = requests.post('http://localhost/farm_asset', 
+    response = requests.post("http://" + host + "/farm_asset",
         json=data, auth=HTTPBasicAuth(user, passwd))
 
     if(response.status_code == 201):
@@ -120,19 +124,19 @@ def deleteAllLogs(url):
     while moreExist:
         logs = getAllPages(url)
         moreExist = (len(logs) > 0)
-        
+
         for log in logs:
             logID = log['id']
-            response = requests.delete("http://localhost/log/" + logID, 
+            response = requests.delete("http://" + host + "/log/" + logID,
                 auth=HTTPBasicAuth(user, passwd))
 
             if(response.status_code == 200):
                 print("Deleted Log: " + log['name'] + " with id " + logID)
-    
+
 
 # Add the log indicated by the data object.
 def addLog(data):
-    response = requests.post('http://localhost/log', 
+    response = requests.post("http://" + host + "/log",
         json=data, auth=HTTPBasicAuth(user, passwd))
 
     if(response.status_code == 201):
@@ -154,7 +158,7 @@ def deleteAllVocabTerms(url):
 
         for term in terms:
             termID = term['tid']
-            response = requests.delete("http://localhost/taxonomy_term/" + termID, 
+            response = requests.delete("http://" + host + "/taxonomy_term/" + termID,
                 auth=HTTPBasicAuth(user, passwd))
 
             if(response.status_code == 200):
@@ -162,7 +166,7 @@ def deleteAllVocabTerms(url):
 
 # Delete a single vocabulary term by its id/
 def deleteVocabTerm(termID, term):
-    response = requests.delete("http://localhost/taxonomy_term/" + termID, 
+    response = requests.delete("http://" + host + "/taxonomy_term/" + termID,
             auth=HTTPBasicAuth(user, passwd))
 
     if(response.status_code == 200):
@@ -170,7 +174,7 @@ def deleteVocabTerm(termID, term):
 
 # Add a new vocabulary term to the vocabulary indicated in the data object.
 def addVocabTerm(data):
-    response = requests.post('http://localhost/taxonomy_term', 
+    response = requests.post("http://" + host + "/taxonomy_term",
         json=data, auth=HTTPBasicAuth(user, passwd))
 
     if(response.status_code == 201):
@@ -234,18 +238,18 @@ def translateCrop(line, crop):
         errPrint("  Add a translation for " + crop + " in translateCrop in utils.py")
         sys.exit(-1)
 
-# Validate and possibly remap the crops 
+# Validate and possibly remap the crops
 def validateCrop(line, crop, cropMap):
     if crop in cropMap:
         return crop
     else:
         return translateCrop(line, crop)
 
-# Get a map from crop name to id. Create compund names for the ones with 
+# Get a map from crop name to id. Create compund names for the ones with
 # parents (e.g. LETTUCE-RED)
 def getCropMap():
     cropVocabID = getVocabularyID('farm_crops')
-    allCrops = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + cropVocabID)
+    allCrops = getAllPages("http://" + host + "/taxonomy_term.json?vocabulary=" + cropVocabID)
     cropMap = {}
 
     for crop in allCrops:
@@ -274,7 +278,7 @@ def translateArea(line, area):
         errPrint("  Add a translation for " + area + " in translateArea in utils.py")
         sys.exit(-1)
 
-# Validate and possibly remap the area 
+# Validate and possibly remap the area
 def validateArea(line, area, areaMap):
     if area in areaMap:
         return area
@@ -284,7 +288,7 @@ def validateArea(line, area, areaMap):
 # Get a map of the Areas that maps from name to id.
 def getAreaMap():
     areasVocabID = getVocabularyID('farm_areas')
-    allAreas = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + areasVocabID)
+    allAreas = getAllPages("http://" + host + "/taxonomy_term.json?vocabulary=" + areasVocabID)
     areaMap = {}
 
     for area in allAreas:
@@ -293,7 +297,7 @@ def getAreaMap():
 
     return areaMap
 
-# Perform translations on user names so that the users in the 
+# Perform translations on user names so that the users in the
 # data match users in the sample data base.
 def translateUser(line, user):
     translations = {
@@ -321,7 +325,7 @@ def translateUser(line, user):
         errPrint("  Add a translation for " + user + " in translateUser in utils.py")
         sys.exit(-1)
 
-# Validate and possibly remap a user 
+# Validate and possibly remap a user
 def validateUser(line, user, userMap):
     if user in userMap:
         return user
@@ -330,7 +334,7 @@ def validateUser(line, user, userMap):
 
 # Get a map of users from name to id.
 def getUserMap():
-    allUsers = getAllPages("http://localhost/user.json?")
+    allUsers = getAllPages("http://" + host + "/user.json?")
     userMap = {}
 
     for user in allUsers:
@@ -339,7 +343,7 @@ def getUserMap():
 
     return userMap
 
-# Perform translations on unit names so that the units in the 
+# Perform translations on unit names so that the units in the
 # data match units in the sample data base.
 def translateUnit(line, unit):
     translations = {
@@ -363,7 +367,7 @@ def validateUnit(line, unit, unitMap):
 # Get a map of the units from name to id.
 def getUnitsMap():
     unitsVocabID = getVocabularyID('farm_quantity_units')
-    allUnits = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + unitsVocabID)
+    allUnits = getAllPages("http://" + host + "/taxonomy_term.json?vocabulary=" + unitsVocabID)
     unitsMap = {}
 
     for unit in allUnits:
@@ -376,7 +380,7 @@ def getUnitsMap():
 # The measure is the parent in the unit and needs to be made lowercase.
 def getMeasuresMap():
     unitsVocabID = getVocabularyID('farm_quantity_units')
-    allUnits = getAllPages("http://localhost/taxonomy_term.json?vocabulary=" + unitsVocabID)
+    allUnits = getAllPages("http://" + host + "/taxonomy_term.json?vocabulary=" + unitsVocabID)
     measuresMap = {}
 
     for unit in allUnits:

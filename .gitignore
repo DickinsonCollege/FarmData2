@@ -7,11 +7,6 @@ docker/logo/.htaccess
 .config/*
 .npm/*
 
-.theia/logs/*
-.theia/workspace-storage/*
-.theia/globalStorage/*
-.theia/recentworkspace.json
-
 farmdata2_modules/**/cypress/screenshots/*
 farmdata2_modules/**/cypress/videos/*
 

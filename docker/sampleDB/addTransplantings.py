@@ -10,6 +10,10 @@ import json
 from csv import reader
 from utils import *
 import sys
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 # Get lists of all of the recognized crops, fields and users for validation.
 cropMap = getCropMap()
@@ -51,7 +55,7 @@ def validateRow(line, row):
 
 def getPlanting(row):
     name = row[4] + " " + row[3]
-    response = requests.get("http://localhost/farm_asset.json?type=planting&name=" + name, 
+    response = requests.get("http://" + host + "/farm_asset.json?type=planting&name=" + name,
         auth=HTTPBasicAuth(user, passwd))
 
     if (len(response.json()['list']) == 1):
@@ -82,12 +86,12 @@ def getPlanting(row):
 def addPlanting(row):
 
     # Most of these have a seeding date 0000-00-00
-    # In that case we assume the crop arrived at the farm in a tray 
+    # In that case we assume the crop arrived at the farm in a tray
     # and thus was just transplanted without having a seeding date.
-    # Some of the original data may have had a seeding date, but 
+    # Some of the original data may have had a seeding date, but
     # there wasn't a record for it in the seeding data so the seeding date was
     # hand modified in the sample data to be 0000-00-00 (see above)
-    # In practice those with seeding dates may have been ones where there 
+    # In practice those with seeding dates may have been ones where there
     # was a planting but it was not recoreded.  There seems to be no
     # real harm here in treating them like the other 0000-00-00's for the sample data.
 
@@ -119,7 +123,7 @@ def addTransplanting(row, plantingID):
             "value": row[13],
             "format": "farm_format"
         },
-        "asset": [{ 
+        "asset": [{
             "id": plantingID,   # Associated planting
             "resource": "farm_asset"
         }],
@@ -135,16 +139,16 @@ def addTransplanting(row, plantingID):
         },
         "quantity": [
             {
-                "measure": "length", 
+                "measure": "length",
                 "value": row[7],  # total row feet
                 "unit": {
-                    "id": rowFtID, 
+                    "id": rowFtID,
                     "resource": "taxonomy_term"
                 },
                 "label": "Amount planted"
             },
             {
-                "measure": "ratio", 
+                "measure": "ratio",
                 "value": row[6],  # rows per bed
                                   # Bed feet = row feet / rows/bed
                 "unit": {
@@ -154,7 +158,7 @@ def addTransplanting(row, plantingID):
                 "label": "Rows/Bed"
             },
             {
-                "measure": "count", 
+                "measure": "count",
                 "value": row[10],  # flats transplanted
                 "unit": {
                     "id": flatsID,
@@ -163,7 +167,7 @@ def addTransplanting(row, plantingID):
                 "label": "Flats"
             },
             {
-                "measure": "time", 
+                "measure": "time",
                 "value": row[12],  # hours worked
                 "unit": {
                     "id": hoursID,
@@ -172,7 +176,7 @@ def addTransplanting(row, plantingID):
                 "label": "Labor"
             },
             {
-                "measure": "count", 
+                "measure": "count",
                 "value": 1,  # number of people (x Time = Total Time)
                              # default 1 here because FarmData didn't record this.
                              # Workers x Labor gives total time
@@ -192,13 +196,13 @@ def addTransplanting(row, plantingID):
             "id": userMap[row[1]],
             "resource": "user"
         }],
-        "data": json.dumps({ 
-            "crop_tid": cropMap[row[3]] 
+        "data": json.dumps({
+            "crop_tid": cropMap[row[3]]
         })
     }
 
     return addLog(transplanting)
-    
+
 
 if __name__ == "__main__":
     main()

@@ -14,7 +14,9 @@ echo "  Stopping FarmData2..."
 docker stop fd2_farmdata2
 echo "  Stopping Mariadb..."
 docker stop fd2_mariadb
+echo "  Deleting current db..."
 sudo rm -rf db
+echo "  Extracting empty db..."
 tar -xjf db.empty.tar.bz2
 echo "  Restarting Mariadb..."
 docker start fd2_mariadb
@@ -23,10 +25,12 @@ docker start fd2_farmdata2
 cd sampleDB
 echo "Switched to empty db image."
 
+sleep 5  # make sure drupal is fully up before starting.
+
 echo "Setting farm info..."
 docker exec -it fd2_farmdata2 drush vset site_name "Sample Farm"
 docker exec -it fd2_farmdata2 drush vset site_slogan "Farm with sample data for development and testing."
-echo "Set."
+echo "Farm info set."
 
 echo "Enabling restws basic authentication..."
 # Adds query parameter criteron for [gt], [lt], etc...
@@ -57,7 +61,17 @@ echo "Permissions added."
 # Add custom FarmData2 fields to the Drupal entities.
 echo "Adding FarmData2 custom fields..."
 docker exec -it fd2_farmdata2 drush scr addDrupalFields.php --script-path=/sampleDB
-echod "Fields added."
+echo "Fields added."
+
+echo "Checking for FarmData2 host..."
+echo -e "GET http://localhost HTTP/1.0\n\n" | nc localhost 80 > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  echo "  Host is localhost."
+  export FD2_HOST="localhost"  # Running build script on host.
+else
+  echo "  Host is fd2_farmdata2 container."
+  export FD2_HOST="fd2_farmdata2"  # Running build script in container.
+fi
 
 # Create the vocabularies
   # Add the units used for quantities

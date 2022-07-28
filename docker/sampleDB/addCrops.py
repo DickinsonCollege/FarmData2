@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Creates the Crop Families and Crops/Varieties vocabularies used 
+# Creates the Crop Families and Crops/Varieties vocabularies used
 # by the FarmData2 sample database.
 # The families and crops are defined in the sampleData/cropFamilies.csv file.
 
@@ -10,6 +10,10 @@ import json
 from csv import reader
 from utils import *
 import sys
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 # Get lists of all of the recognized crops, fields and users for validation.
 unitsMap = getUnitsMap()
@@ -55,7 +59,7 @@ def main():
 
                 # Add the conversions for the crop.
                 crop['quantity'] = getConversions(row[3:], line)
-                
+
                 parentCropID = addVocabTerm(crop)
                 parentCropName = row[1]
                 cropWeight+=1
@@ -96,10 +100,10 @@ def getConversions(row, line):
 
         conversions.append(
             {
-                "measure": measure, 
+                "measure": measure,
                 "value": row[i+1],
                 "unit": {
-                    "id": unitsMap[validateUnit(line, row[i], unitsMap)], 
+                    "id": unitsMap[validateUnit(line, row[i], unitsMap)],
                     "resource": "taxonomy_term",
                 },
             },

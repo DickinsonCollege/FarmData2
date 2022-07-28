@@ -3,15 +3,19 @@
 # Deletes all of the Transplanting logs and possibly the Planting assets.
 
 # Most transplantings rely on existing Plantings from traySeedings
-# By default those Plantings are not deleted.  
+# By default those Plantings are not deleted.
 # This allows the addTransplantings.py script to be run again.
 # However, plantings created for directly transplanted crops that arrived in trays
 # will be deleted by default, because they are recreated by the addTransplantings.py script.
 
-# Addng the command line argument "all" will cause this script to also 
+# Addng the command line argument "all" will cause this script to also
 # delete the preexisting Planting assets from the traySeedings.
 
 from utils import *
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 def main():
 
@@ -23,13 +27,13 @@ def main():
         delAllPlantings = True
 
     # Delete any transplantings that exist.
-    deleteAllLogs('http://localhost/log.json?type=farm_transplanting')
+    deleteAllLogs('http://" + host + "/log.json?type=farm_transplanting')
 
     # Delete all of the Plantings created specifically for transplantings
-    deleteAllAssets('http://localhost/farm_asset.json?type=planting&name[sw]=0000-00-00')
+    deleteAllAssets('http://" + host + "/farm_asset.json?type=planting&name[sw]=0000-00-00')
 
     if delAllPlantings:
-        deleteAllAssets('http://localhost/farm_asset.json?type=planting')
+        deleteAllAssets('http://" + host + "/farm_asset.json?type=planting')
 
     # Delete the transplanting category that was added.
     deleteSeedingCategory("Transplantings")
