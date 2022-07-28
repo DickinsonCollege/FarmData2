@@ -1,4 +1,5 @@
 const dayjs = require('dayjs')
+const { getIDToAreaMap } = require('../resources/FarmOSAPI.js')
 var FarmOSAPI = require('../resources/FarmOSAPI.js')
 var getSessionToken = FarmOSAPI.getSessionToken
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
@@ -1663,13 +1664,42 @@ describe('Testing for the seeding report page', () => {
     })
 
     context('edit and delete buttons work', () => {
-        let logID = 0
 
-        beforeEach(() => {
+        it('edits a direct seeding in the database', () => {
+            let directLogID = 0
+            let directAssetID = 0
             cy.wrap(getSessionToken())
             .then(sessionToken => {
                 token = sessionToken
-                req = {
+                directAsset = {
+                    url: 'farm_asset/',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "TEST DIRECT ASSET",
+                        "type": "planting",
+                        "crop": [{
+                            "id": 142,
+                            "resource": "taxonomy_term"
+                        }],
+                        "created": dayjs('2001-10-16').unix(),
+                        "uid": {
+                            "id": 7,
+                            "resource": "user"
+                        }
+                    }
+                }
+                cy.request(directAsset).as('directAssetCreate')
+            })
+            cy.get('@directAssetCreate').should(function(response) {
+                expect(response.status).to.equal(201)
+                directAssetID = response.body.id
+            })
+            .then(() => {
+                reqDirect = {
                     url: '/log',
                     method: 'POST',
                     headers: {
@@ -1677,9 +1707,9 @@ describe('Testing for the seeding report page', () => {
                         'X-CSRF-TOKEN' : token,
                     },
                     body: {
-                        "name": "TEST SEEDING",
+                        "name": "TEST DIRECT SEEDING",
                         "type": "farm_seeding",
-                        "timestamp": dayjs('2001-09-20').unix(),
+                        "timestamp": dayjs('2001-10-16').unix(),
                         "done": "1",  //any seeding recorded is done.
                         "notes": {
                             "value": "This is a test log",
@@ -1711,7 +1741,7 @@ describe('Testing for the seeding report page', () => {
                             },
                             {
                                 "measure": "ratio", 
-                                "value": "38",
+                                "value": "5",
                                 "unit": {
                                     "id": "38",
                                     "resource": "taxonomy_term"
@@ -1720,7 +1750,7 @@ describe('Testing for the seeding report page', () => {
                             },
                             {
                                 "measure": "time", 
-                                "value": "0.5", 
+                                "value": "1", 
                                 "unit": {
                                     "id": "29",
                                     "resource": "taxonomy_term"
@@ -1739,62 +1769,595 @@ describe('Testing for the seeding report page', () => {
                         ],
                         "created": dayjs().unix(),
                         "lot_number": "N/A (No Variety)",
-                        "data": "1"
+                        "data": "{\"crop_tid\":\"142\"}",
+                        "asset": [ 
+                            {
+                            "uri": "http://localhost/farm_asset/" + directAssetID,
+                            "id": directAssetID,
+                            "resource": "farm_asset"
+                            }
+                        ]
                     }
                 }
-
-                cy.request(req).as('create')
-                cy.get('@create').should(function(response) {
-                    expect(response.status).to.equal(201)
-                    logID = response.body.id
-                })
+                cy.request(reqDirect).as('directLogCreate')
             })
-
-            cy.get('[data-cy=start-date-select]')
+            cy.get('@directLogCreate').should(function(response) {
+                expect(response.status).to.equal(201)
+                directLogID = response.body.id
+            })
+            .then(() => {
+                cy.get('[data-cy=start-date-select]')
                 .should('exist')
-                .type('2001-01-25')
-            cy.get('[data-cy=end-date-select]')
+                .type('2001-10-01')
+                cy.get('[data-cy=end-date-select]')
                 .should('exist')
-                .type('2001-12-25')
-            cy.get('[data-cy=generate-rpt-btn]').first()
+                .type('2001-10-17')
+                cy.get('[data-cy=generate-rpt-btn]').first()
                 .click()
-        })
+                cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
+                .select('Direct Seedings')
+    
+                cy.get('[data-cy=edit-button-r0]')
+                    .click()   
+                cy.get('[data-cy=date-input-r0c0]')
+                    .type('2001-10-26')  
+                cy.get('[data-cy=dropdown-input-r0c1]')
+                    .select('TOMATO')
+                cy.get('[data-cy=dropdown-input-r0c2]')
+                    .select('A')
+                cy.get('[data-cy=number-input-r0c4]')
+                    .clear()
+                    .type('2')
+    
+                cy.get('[data-cy=number-input-r0c10]')
+                    .clear()
+                    .type('4')
+                cy.get('[data-cy=number-input-r0c11]')
+                    .clear()
+                    .type('2')
+    
+                cy.get('[data-cy=text-input-r0c13]')
+                    .clear()
+                    .type('Testing edit functionality')
+                    .blur()
+    
+                cy.get('[data-cy=dropdown-input-r0c14]')
+                    .select('worker1')
+                    .blur()
 
-        it('edits the database when a row is edited in the table', () => {
-            cy.get('[data-cy=edit-button-r0]')
-                .click()   
-            cy.get('[data-cy=date-input-r0c0]')
-                .type('2001-09-28')  
-            cy.get('[data-cy=dropdown-input-r0c1]')
-                .select('TOMATO')
-            cy.get('[data-cy=dropdown-input-r0c2]')
-                .select('A')
-            cy.get('[data-cy=number-input-r0c10]')
-                .type('4')
-            cy.get('[data-cy=number-input-r0c11]')
-                .type('0.25')
+                cy.intercept('PUT', 'log/' + directLogID).as('logUpdate')
+    
+                // Button is actionable, unfortunately it's not in view
+                cy.get('[data-cy=save-button-r0]')
+                    .click({force:true}) 
 
-            cy.get('[data-cy=text-input-r0c13]')
-                .type('New Comment')
-                .blur()
-
-            // Button is actionable, unfortunately it's not in view
-            cy.get('[data-cy=save-button-r0]')
-                .click({force:true})
-
-            cy.wrap(getRecord('/log.json?type=farm_seeding&id=' + logID)).as('check')
-            cy.get('@check').should(function(response) {
-                expect(response.data.list[0].name).to.equal('TEST SEEDING')
+                cy.get('[data-cy=r0c0]')
+                    .should('have.text','2001-10-26')  
+                cy.get('[data-cy=r0c1]')
+                    .should('have.text', 'TOMATO')
+                cy.get('[data-cy=r0c2]')
+                    .should('have.text', 'A')
+                cy.get('[data-cy=r0c4]')
+                    .should('have.text', '2')
+                cy.get('[data-cy=r0c10]')
+                    .should('have.text', '4')
+                cy.get('[data-cy=r0c11]')
+                    .should('have.text', '2.00')
+                cy.get('[data-cy=r0c13]')
+                    .should('have.text', 'Testing edit functionality')
+                cy.get('[data-cy=r0c14]')
+                    .should('have.text', 'worker1')
             })
-                .then(() => {
-                    cy.wrap(deleteRecord("/log/" + logID , token)).as('seedingDelete')
+                // wait for the log update
+                cy.wait('@logUpdate') 
+                .should((update) => {
+                    expect(update.response.statusCode).to.equal(200)
+
                 })
-            cy.get('@seedingDelete').should((response) => {
-                expect(response.status).to.equal(200)
-            })
+
+                .then(() => {
+                    //Forced to reload, otherwise getRecord fetches old log not updated log.
+                    //Unclear why this happens but is an observed behavior.
+                    cy.reload()
+                })
+                .then(() => {
+                    cy.wrap(getRecord('/log/' + directLogID)).as('updatedLog')
+                    cy.wrap(getRecord('/farm_asset/' + directAssetID)).as('updatedAsset')
+                })
+                
+                cy.get('@updatedLog').should(function(log) {
+                    expect(log.status).to.eq(200)
+                    expect(log.data.name).to.equal('TEST DIRECT SEEDING')     // name of the log
+                    expect(dayjs.unix(log.data.timestamp).format('YYYY-MM-DD')).to.equal('2001-10-26')    // date changed
+                    expect(log.data.data.crop_tid).to.equal('72')
+                    expect(log.data.movement.area[0].name).to.equal('A')    // area changed
+                    expect(log.data.quantity[0].value).to.equal('2')   // Row Feet changed
+                    expect(log.data.quantity[1].value).to.equal('5')   // Rows/Bed unchanged
+                    expect(log.data.quantity[2].value).to.equal('2')   // Time changed
+                    expect(log.data.quantity[3].value).to.equal('4')   // Workers changed
+                    expect(log.data.notes.value).to.equal('<p>Testing edit functionality</p>\n')
+                })
+    
+                
+                cy.get('@updatedAsset').should(function(asset){
+                    expect(asset.status).to.eq(200)
+                    expect(asset.data.name).to.equal('TEST DIRECT ASSET')
+                    expect(asset.data.crop[0].name).to.equal('TOMATO')
+                    expect(asset.data.location[0].name).to.equal('A')
+                })
+    
+                .then(() => {
+                    cy.wrap(deleteRecord("/log/" + directLogID , token)).as('seedingDelete')
+                })
+                cy.get('@seedingDelete').should((response) => {
+                    expect(response.status).to.equal(200)
+                })
+                .then(() => {
+                    cy.wrap(deleteRecord("/farm_asset/" + directAssetID , token)).as('assetDelete')  
+
+                })      
+                cy.get('@assetDelete').should((response) => {
+                    expect(response.status).to.equal(200)
+                })                 
         })
 
-        it('deletes a log from the database when the delete button is pressed', () => {
+        it('edits a tray seeding in the database', () => {
+            let trayLogID = 0
+            let trayAssetID = 0
+            cy.wrap(getSessionToken())
+            .then(sessionToken => {
+                token = sessionToken
+                trayAsset = {
+                    url: 'farm_asset/',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "TEST TRAY ASSET",
+                        "type": "planting",
+                        "crop": [{
+                            "id": 142,
+                            "resource": "taxonomy_term"
+                        }],
+                        "created": dayjs('2001-10-16').unix(),
+                        "uid": {
+                            "id": 7,
+                            "resource": "user"
+                        }
+                    }
+                }
+                cy.request(trayAsset).as('trayAssetCreate')
+            })
+            cy.get('@trayAssetCreate').should(function(response) {
+                expect(response.status).to.equal(201)
+                trayAssetID = response.body.id
+            })
+            .then(() => {
+                reqTray = {
+                    url: '/log',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "TEST TRAY SEEDING",
+                        "type": "farm_seeding",
+                        "timestamp": dayjs('2001-10-16').unix(),
+                        "done": "1",  //any seeding recorded is done.
+                        "notes": {
+                            "value": "This is a test log",
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": "1",   //Associated planting
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": "241",    //Tray Seeding
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": "178",
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": [
+                            {
+                                "measure": "count", 
+                                "value": "5",  //cells per tray
+                                "unit": {
+                                    "id": "17", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Seeds planted"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "5",
+                                "unit": {
+                                    "id": "12", //Flats used
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Flats used"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": "5",
+                                "unit": {
+                                    "id": "37", //Cells per flat
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Cells/Flat"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": "0", 
+                                "unit": {
+                                    "id": "29",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "0", 
+                                "unit": {
+                                    "id": "15",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ],
+                        "created": dayjs().unix(),
+                        "lot_number": "N/A (No Variety)",
+                        "data": "1",
+                        "asset": [ 
+                            {
+                                "uri": "http://localhost/farm_asset/" + trayAssetID,
+                                "id": trayAssetID,
+                                "resource": "farm_asset"
+                            }
+                        ]
+                    }
+                }
+                cy.request(reqTray).as('trayLogCreate')
+            })
+            cy.get('@trayLogCreate').should(function(response) {
+                expect(response.status).to.equal(201)
+                trayLogID = response.body.id
+            })
+            .then(() => {
+                cy.get('[data-cy=start-date-select]')
+                .should('exist')
+                .type('2001-10-01')
+                cy.get('[data-cy=end-date-select]')
+                .should('exist')
+                .type('2001-10-17')
+                cy.get('[data-cy=generate-rpt-btn]').first()
+                .click()
+                cy.get('[data-cy=seeding-type-dropdown] > [data-cy=dropdown-input]')
+                .select('Tray Seedings')
+    
+                cy.get('[data-cy=edit-button-r0]')
+                    .click()   
+                cy.get('[data-cy=date-input-r0c0]')
+                    .type('2001-10-26')  
+                cy.get('[data-cy=dropdown-input-r0c1]')
+                    .select('TOMATO')
+                cy.get('[data-cy=dropdown-input-r0c2]')
+                    .select('A')
+                cy.get('[data-cy=number-input-r0c7]')
+                    .clear()
+                    .type('2')
+                cy.get('[data-cy=number-input-r0c8]')
+                    .clear()
+                    .type('3')
+                cy.get('[data-cy=number-input-r0c9]')
+                    .clear()
+                    .type('4')
+    
+                cy.get('[data-cy=number-input-r0c10]')
+                    .clear()
+                    .type('5')
+                cy.get('[data-cy=number-input-r0c11]')
+                    .clear()
+                    .type('2')
+    
+                cy.get('[data-cy=text-input-r0c13]')
+                    .clear()
+                    .type('Testing edit functionality')
+                    .blur()
+    
+                cy.get('[data-cy=dropdown-input-r0c14]')
+                    .select('worker1')
+                    .blur()
+
+                cy.intercept('PUT', 'log/' + trayLogID).as('logUpdate')
+    
+                // Button is actionable, unfortunately it's not in view
+                cy.get('[data-cy=save-button-r0]')
+                    .click({force:true}) 
+
+                cy.get('[data-cy=r0c0]')
+                    .should('have.text','2001-10-26')  
+                cy.get('[data-cy=r0c1]')
+                    .should('have.text', 'TOMATO')
+                cy.get('[data-cy=r0c2]')
+                    .should('have.text', 'A')
+                cy.get('[data-cy=r0c7]')
+                    .should('have.text', '2')
+                cy.get('[data-cy=r0c8]')
+                    .should('have.text', '3')
+                cy.get('[data-cy=r0c9]')
+                    .should('have.text', '4')
+                cy.get('[data-cy=r0c10]')
+                    .should('have.text', '5')
+                cy.get('[data-cy=r0c11]')
+                    .should('have.text', '2.00')
+                cy.get('[data-cy=r0c13]')
+                    .should('have.text', 'Testing edit functionality')
+                cy.get('[data-cy=r0c14]')
+                    .should('have.text', 'worker1')
+            })
+                // wait for the log update
+                cy.wait('@logUpdate') 
+                .should((update) => {
+                    expect(update.response.statusCode).to.equal(200)
+
+                })
+
+                .then(() => {
+                    //Forced to reload, otherwise getRecord fetches old log not updated log.
+                    //Unclear why this happens but is an observed behavior.
+                    cy.reload()
+                })
+                .then(() => {
+                    cy.wrap(getRecord('/log/' + trayLogID)).as('updatedLog')
+                    cy.wrap(getRecord('/farm_asset/' + trayAssetID)).as('updatedAsset')
+                })
+                
+                cy.get('@updatedLog').should(function(log) {
+                    expect(log.status).to.eq(200)
+                    expect(log.data.name).to.equal('TEST TRAY SEEDING')     // name of the log
+                    expect(dayjs.unix(log.data.timestamp).format('YYYY-MM-DD')).to.equal('2001-10-26')    // date changed
+                    expect(log.data.data.crop_tid).to.equal('72')
+                    expect(log.data.movement.area[0].name).to.equal('A')    // area changed
+                    expect(log.data.quantity[0].value).to.equal('2')   // Seeds changed
+                    expect(log.data.quantity[1].value).to.equal('3')   // Flats [Trays] unchanged
+                    expect(log.data.quantity[2].value).to.equal('4')   // Cells/Flat changed
+                    expect(log.data.quantity[3].value).to.equal('2')   // Hours changed
+                    expect(log.data.quantity[4].value).to.equal('5')   // Workers changed
+                    expect(log.data.notes.value).to.equal('<p>Testing edit functionality</p>\n')
+                })
+    
+                
+                cy.get('@updatedAsset').should(function(asset){
+                    expect(asset.status).to.eq(200)
+                    expect(asset.data.name).to.equal('TEST TRAY ASSET')
+                    expect(asset.data.crop[0].name).to.equal('TOMATO')
+                    expect(asset.data.location[0].name).to.equal('A')
+                })
+    
+                .then(() => {
+                    cy.wrap(deleteRecord("/log/" + trayLogID , token)).as('seedingDelete')
+                })
+                cy.get('@seedingDelete').should((response) => {
+                    expect(response.status).to.equal(200)
+                })
+                .then(() => {
+                    cy.wrap(deleteRecord("/farm_asset/" + trayAssetID , token)).as('assetDelete')  
+
+                })      
+                cy.get('@assetDelete').should((response) => {
+                    expect(response.status).to.equal(200)
+                })                 
+        })
+
+        it('deletes a direct seeding log from the database when the delete button is pressed', () => {
+            let directLogID = 0
+            cy.wrap(getSessionToken())
+            .then(sessionToken => {
+                token = sessionToken
+                reqDirect = {
+                    url: '/log',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "TEST DIRECT SEEDING",
+                        "type": "farm_seeding",
+                        "timestamp": dayjs('2001-10-16').unix(),
+                        "done": "1",  //any seeding recorded is done.
+                        "notes": {
+                            "value": "This is a test log",
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": "1",   //Associated planting
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": "240",
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": "233",
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": [
+                            {
+                                "measure": "length", 
+                                "value": "5",  //total row feet
+                                "unit": {
+                                    "id": "20", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Amount planted"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": "5",
+                                "unit": {
+                                    "id": "38",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Rows/Bed"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": "1", 
+                                "unit": {
+                                    "id": "29",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "1", 
+                                "unit": {
+                                    "id": "15",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ],
+                        "created": dayjs().unix(),
+                        "lot_number": "N/A (No Variety)",
+                        "data": "{\"crop_tid\":\"142\"}",
+                    }
+                }
+                cy.request(reqDirect).as('directLogCreate')
+            })
+            cy.get('@directLogCreate').should(function(response) {
+                expect(response.status).to.equal(201)
+                directLogID = response.body.id
+            })
+            cy.get('[data-cy=start-date-select]')
+            .should('exist')
+            .type('2001-10-01')
+            cy.get('[data-cy=end-date-select]')
+            .should('exist')
+            .type('2001-10-17')
+            cy.get('[data-cy=generate-rpt-btn]').first()
+            .click()
+
+            cy.get('[data-cy=delete-button-r0]')
+                .click((response) => {
+                    expect(response.status).to.equal(200)
+                })
+        })
+
+        it('deletes a tray seeding log from the database when the delete button is pressed', () => {
+            let trayLogID = 0
+            cy.wrap(getSessionToken())
+            .then(sessionToken => {
+                token = sessionToken
+                reqTray = {
+                    url: '/log',
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : token,
+                    },
+                    body: {
+                        "name": "TEST TRAY SEEDING",
+                        "type": "farm_seeding",
+                        "timestamp": dayjs('2001-10-16').unix(),
+                        "done": "1",  //any seeding recorded is done.
+                        "notes": {
+                            "value": "This is a test log",
+                            "format": "farm_format"
+                        },
+                        "asset": [{ 
+                            "id": "1",   //Associated planting
+                            "resource": "farm_asset"
+                        }],
+                        "log_category": [{
+                            "id": "241",    //Tray Seeding
+                            "resource": "taxonomy_term"
+                        }],
+                        "movement": {
+                            "area": [{
+                                "id": "178",
+                                "resource": "taxonomy_term"
+                            }]
+                        },
+                        "quantity": [
+                            {
+                                "measure": "count", 
+                                "value": "5",  //cells per tray
+                                "unit": {
+                                    "id": "17", 
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Seeds planted"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "5",
+                                "unit": {
+                                    "id": "12", //Flats used
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Flats used"
+                            },
+                            {
+                                "measure": "ratio", 
+                                "value": "5",
+                                "unit": {
+                                    "id": "37", //Cells per flat
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Cells/Flat"
+                            },
+                            {
+                                "measure": "time", 
+                                "value": "0", 
+                                "unit": {
+                                    "id": "29",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Labor"
+                            },
+                            {
+                                "measure": "count", 
+                                "value": "0", 
+                                "unit": {
+                                    "id": "15",
+                                    "resource": "taxonomy_term"
+                                },
+                                "label": "Workers"
+                            },
+                        ],
+                        "created": dayjs().unix(),
+                        "lot_number": "N/A (No Variety)",
+                        "data": "1",
+                    }
+                }
+                cy.request(reqTray).as('trayLogCreate')
+            })
+            cy.get('@trayLogCreate').should(function(response) {
+                expect(response.status).to.equal(201)
+                trayLogID = response.body.id
+            })
+            cy.get('[data-cy=start-date-select]')
+            .should('exist')
+            .type('2001-10-01')
+            cy.get('[data-cy=end-date-select]')
+            .should('exist')
+            .type('2001-10-17')
+            cy.get('[data-cy=generate-rpt-btn]').first()
+            .click()
+            
             cy.get('[data-cy=delete-button-r0]')
                 .click((response) => {
                     expect(response.status).to.equal(200)
