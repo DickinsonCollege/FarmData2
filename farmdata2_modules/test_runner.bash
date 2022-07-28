@@ -42,5 +42,6 @@ then
     npx cypress run --component $BROWSER
 else
     echo "Running all tests"
-    npx cypress run --component --e2e $BROWSER
+    npx cypress run --component $BROWSER
+    npx cypress run --e2e $BROWSER
 fi
