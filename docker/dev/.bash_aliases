@@ -19,8 +19,9 @@ code ()
   /usr/bin/code --no-sandbox $@
 }
 
-# Aliases for the testing scripts
-alias guitest="cd ~/FarmData2/farmdata2_modules && ./test_runner.bash"
-alias e2etests="cd ~/FarmData2/farmdata2_modules && ./test_runner.bash e2e"
-alias ctests="cd ~/FarmData2/farmdata2_modules && ./test_runner.bash ct"
-alias alltests="cd ~/FarmData2/farmdata2_modules && ./test_runner.bash all"
+# Alias for running the test script
+test_runner ()
+{
+  cd ~/FarmData2/farmdata2_modules
+  ./test_runner.bash $1
+}
