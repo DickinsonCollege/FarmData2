@@ -115,17 +115,22 @@ RUN code --install-extension ecmel.vscode-html-css \
  && code --install-extension ms-azuretools.vscode-docker
 
 # Add some scripts for the running container.
-RUN mkdir .fd2
+RUN mkdir .fd2 \
+ && mkdir -p .config/autostart
 COPY --chown=farmdev:farmdev ./startup.bash ./.fd2/startup.bash
 COPY --chown=farmdev:farmdev ./.bash_aliases ./.bash_aliases
 COPY --chown=farmdev:farmdev ./panel.bash ./.fd2/panel.bash
-RUN chmod +x .fd2/startup.bash
+COPY --chown=farmdev:farmdev ./panel.desktop ./.config/autostart/panel.desktop
+RUN chmod +x .fd2/startup.bash \
+ && chmod +x .fd2/panel.bash \
+ && chmod +x .config/autostart/panel.desktop
 
 # Stuff to reduce image size.
 USER root
 RUN apt autoclean -y \
  && apt autoremove -y \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* \
+ && rm /libappindicator3-1_0.4.92-7_amd64.deb
 USER $USERNAME
 
 # Setup the initial container environment.
