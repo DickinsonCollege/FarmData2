@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Cleanup from past vnc session that may hav been running in the container.
-# This clean-up is not done when the container is stopped.
+# This clean-up is not done when the container is stopped (not deleted).
 rm /tmp/.X11-unix/X1
 rm /tmp/.X1-lock
 

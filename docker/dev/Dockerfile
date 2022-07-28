@@ -66,17 +66,18 @@ RUN groupadd --gid $USER_GID $USERNAME \
     -G sudo,docker
 
 ##
-## From here down need to manage USERNAME
-## switching to/from root as necessary.
+## From here down each section assumes that it starts with
+## the non-root user and with the working directory being that
+## users home directory.  If a user or directory change is made
+## in a section it should restore these assumptions.
 ##
-
-# Install necessary dependencies for Vue/Cypress testing.
 USER $USERNAME
 WORKDIR /home/$USERNAME
-### MAY NEED A RETRY SCRIPT HERE
-### Fails sometimes with:
+
+# Install necessary dependencies for Vue/Cypress testing.
+### The echo "y" handles issues when vue create fails due to:
 ###    Your connection to the default yarn registry seems to be slow.
-RUN vue create \
+RUN echo "y" | vue create \
         --no-git \
         --bare \
         --skipGetStarted \
@@ -91,24 +92,33 @@ RUN npm install -d \
         @cypress/vue2 \
         path \
         axios
+WORKDIR /home/$USERNAME
 
 # Configure the VNC server.
-USER $USERNAME
-WORKDIR /home/$USERNAME
 RUN touch .Xauthority \
  && mkdir .vnc \
  && /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd; echo;"
-COPY ./xstartup .vnc/xstartup
+COPY --chown=farmdev:farmdev ./xstartup .vnc/xstartup
 USER root
 RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
  && chmod +x .vnc/xstartup
-
-# Get the script in place to start the servers.
 USER $USERNAME
+
+# Install some standard VSCode extensions.
+RUN code --install-extension ecmel.vscode-html-css \
+ && code --install-extension Vue.volar \
+ && code --install-extension ms-python.python \
+ && code --install-extension esbenp.prettier-vscode \
+ && code --install-extension shakram02.bash-beautify \
+ && code --install-extension dbaeumer.vscode-eslint \
+ && code --install-extension kokororin.vscode-phpfmt \
+ && code --install-extension ms-azuretools.vscode-docker
+
+# Add some scripts for the running container.
 RUN mkdir .fd2
-COPY ./startup.bash ./.fd2/startup.bash
-COPY ./.bash_aliases ./.bash_aliases
-USER root
+COPY --chown=farmdev:farmdev ./startup.bash ./.fd2/startup.bash
+COPY --chown=farmdev:farmdev ./.bash_aliases ./.bash_aliases
+COPY --chown=farmdev:farmdev ./panel.bash ./.fd2/panel.bash
 RUN chmod +x .fd2/startup.bash
 
 # Stuff to reduce image size.
@@ -116,8 +126,7 @@ USER root
 RUN apt autoclean -y \
  && apt autoremove -y \
  && rm -rf /var/lib/apt/lists/*
+USER $USERNAME
 
 # Setup the initial container environment.
-USER $USERNAME
-WORKDIR /home/$USERNAME
 ENTRYPOINT ./.fd2/startup.bash
