@@ -8,6 +8,13 @@
 # uses, terms and data that make up the sample database.
 # It can be reconstructed at any time by running this script.
 
+HOST=$(docker inspect -f '{{.Name}}' $HOSTNAME 2> /dev/null)
+if [ "$HOST" != "/fd2_dev" ];
+then
+  echo "Error: The buildSampleDB script must be run in the dev container."
+  exit -1
+fi
+
 echo "Switching to empty db image..."
 cd ..
 echo "  Stopping FarmData2..."
@@ -15,9 +22,11 @@ docker stop fd2_farmdata2
 echo "  Stopping Mariadb..."
 docker stop fd2_mariadb
 echo "  Deleting current db..."
-sudo rm -rf db
+cd db
+sudo rm -rf *
 echo "  Extracting empty db..."
-tar -xjf db.empty.tar.bz2
+sudo tar -xjf ../db.empty.tar.bz2
+cd ..
 echo "  Restarting Mariadb..."
 docker start fd2_mariadb
 echo "  Restarting FarmData2..."
@@ -94,6 +103,7 @@ echo "Compressing the sample database..."
 cd ..
 rm -f db.sample.tar.bz2
 docker exec -it fd2_farmdata2 drush cc all
-sudo tar cjvf db.sample.tar.bz2 db
-cd sampleDB
+cd db
+sudo tar cjvf ../db.sample.tar.bz2 *
+cd ../sampleDB
 echo "Compressed the sample database."

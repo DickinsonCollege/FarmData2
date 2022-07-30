@@ -8,6 +8,13 @@
 #  - restarts FarmData2 (if it was running)
 #  - clears the drupal cache (if running)
 
+HOST=$(docker inspect -f '{{.Name}}' $HOSTNAME 2> /dev/null)
+if [ "$HOST" != "/fd2_dev" ];
+then
+  echo "Error: The setDB script must be run in the dev container."
+  exit -1
+fi
+
 FILE="db.$1.tar.bz2"
 
 if [ ! -e $FILE ]
@@ -25,8 +32,8 @@ else
   FD2_RUNNING=$(docker ps | grep fd2_farmdata2 | wc -l)
   if [ $FD2_RUNNING -eq 1 ]
   then
-    echo "  Stopping FarmData2..."
-    docker stop fd2_farmdata2
+#    echo "  Stopping FarmData2..."
+#    docker stop fd2_farmdata2
     echo "  Stopping mariadb..."
     docker stop fd2_mariadb
     echo "  Stopped."
@@ -35,21 +42,27 @@ else
   if [ -d "db" ]
   then
     echo "  Removing old database..."
-    sudo rm -rf db
+    cd db
+    sudo rm -rf *
+    cd ..
     echo "  Removed."
   fi
 
   echo "  Extracting new database image..."
-  tar -xjf $FILE
+  cd db
+  sudo tar -xjf ../$FILE
+  cd ..
   echo "  Extracted."
 
   if [ $FD2_RUNNING -eq 1 ]
   then
     echo "  Restarting mariadb..."
     docker start fd2_mariadb
-    echo "  Restarting FarmData2..."
-    docker start fd2_farmdata2
     echo "  Restarted."
+    echo "  Clearing farmOS Drupal cache..."
+    sleep 2
+    docker exec -it fd2_farmdata2 drush cc all
+    echo "  Cleared"
   fi
 
   echo "Switched to "$FILE" database."
