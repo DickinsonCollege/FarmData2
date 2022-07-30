@@ -9,7 +9,8 @@ RUN apt update \
         software-properties-common \
         gnupg2 \
         atfs \
-        libsecret-1-0
+        libsecret-1-0 \
+        wget
 
 # Install the desktop environment.
 # Note: Power management does not work inside docker so it is removed.
@@ -26,7 +27,8 @@ RUN apt install -y --no-install-recommends \
         tigervnc-common \
         dbus-x11 \
         novnc \
-        net-tools
+        net-tools \
+ && cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html
 
 # Install some standard tools
 RUN apt install -y --no-install-recommends \

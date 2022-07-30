@@ -10,7 +10,7 @@ ARCH=$(uname -m)
 if [ "$ARCH" = "aarch64" ]
 then
   echo "Installing for arm64"
-  wget -O firefox.deb "http://ports.ubuntu.com/pool/main/f/firefox/firefox_102.0+build2-0ubuntu0.20.04.1_arm64.deb"
+  wget -O firefox.deb "http://ports.ubuntu.com/pool/main/f/firefox/firefox_88.0+build2-0ubuntu0.16.04.1_arm64.deb"
 
   apt install -y --no-install-recommends \
       ./firefox.deb
