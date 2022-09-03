@@ -4,7 +4,7 @@ services:
     image: mariadb:10.7.4
     container_name: fd2_mariadb
     volumes:
-      - farmos_db:/var/lib/mysql
+      - farmos_db:/var/lib/mysql  # use a docker volume here for performance.
     ports:
       - '3306:3306'
     environment:
