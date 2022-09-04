@@ -13,10 +13,10 @@ setDB ()
 # Clear the drupal cache in the fd2_farmdata2 container.
 alias clearDupalCache="docker exec -it fd2_farmdata2 drush cc all"
 
-# Alias code for running VSCode with no-sandbox.
-code ()
+# Alias codium for running VSCodium with no-sandbox.
+codium ()
 {
-  /usr/bin/code --no-sandbox $@
+  /usr/bin/codium --no-sandbox $@
 }
 
 # Alias for running the test script

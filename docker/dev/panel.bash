@@ -10,14 +10,14 @@
 if [ ! -e /home/farmdev/.config/xfce4/panel/launcher-50 ];
 then
   mkdir -p /home/farmdev/.config/xfce4/panel/launcher-50
-  cp /usr/share/applications/code.desktop /home/farmdev/.config/xfce4/panel/launcher-50
+  cp /usr/share/applications/codium.desktop /home/farmdev/.config/xfce4/panel/launcher-50
 
   mkdir -p /home/farmdev/.config/xfce4/panel/launcher-51
   cp /usr/share/applications/mousepad.desktop /home/farmdev/.config/xfce4/panel/launcher-51
 
   xfce4-panel -r
   xfconf-query -c xfce4-panel -p /plugins/plugin-50 -t string -s "launcher" --create
-  xfconf-query -c xfce4-panel -p /plugins/plugin-50/items -t string -s "code.desktop" -a --create
+  xfconf-query -c xfce4-panel -p /plugins/plugin-50/items -t string -s "codium.desktop" -a --create
 
   xfconf-query -c xfce4-panel -p /plugins/plugin-51 -t string -s "launcher" --create
   xfconf-query -c xfce4-panel -p /plugins/plugin-51/items -t string -s "mousepad.desktop" -a --create
