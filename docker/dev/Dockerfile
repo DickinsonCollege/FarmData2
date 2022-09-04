@@ -36,10 +36,10 @@ RUN apt install -y --no-install-recommends \
         sudo git nano meld \
  && npm install -g @vue/cli
 
-# Install VSCode
-COPY vscode.bash .
-RUN ./vscode.bash \
- && rm vscode.bash
+# Install VSCodium
+COPY vscodium.bash .
+RUN ./vscodium.bash \
+ && rm vscodium.bash
 
 # Install Docker
  COPY docker.bash .
