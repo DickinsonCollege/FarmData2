@@ -18,4 +18,4 @@ apt update
 apt install -y codium
 
 # Patch the xfce menu item for VS Code so it runs correctly.
-sed -i 's+usr/share/codium/code+/usr/bin/codium --no-sandbox+g' /usr/share/applications/codium.desktop
+sed -i 's+/usr/share/codium/codium+/usr/bin/codium --no-sandbox+g' /usr/share/applications/codium.desktop
