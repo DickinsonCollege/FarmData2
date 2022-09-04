@@ -54,12 +54,12 @@ services:
      - ../farmdata2_modules/cypress.config.js:/home/farmdev/fd2test/cypress.config.js
      - /var/run/docker.sock:/var/run/docker.sock
      - //var/run/docker.sock:/var/run/docker.sock  # for Windows hosts.
-     - farmdev_home:/home/farmdev  # preserve home dir on volume.
+     - farmdev_home_fd2.1:/home/farmdev  # preserve home dir on volume.
      - farmos_db:/home/farmdev/FarmData2/docker/db
     ports:
      - 5901:5901
      - 6901:6901
 
 volumes:
-  farmdev_home:
+  farmdev_home_fd2.1:
   farmos_db:
