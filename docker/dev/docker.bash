@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Install docker in docker so we can control the host engine.
 # This allow us to shutdown and restart containers when
 # doing things like building the database.

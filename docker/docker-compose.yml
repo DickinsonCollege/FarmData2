@@ -13,7 +13,7 @@ services:
       MYSQL_USER: farm
       MYSQL_PASSWORD: farm
 
-  www:
+  farmos:
     depends_on:
       - db
     # If there are changes to the Dockerfile bump the tag
@@ -48,13 +48,10 @@ services:
     links:
      - 'db'
 
-  dev:
-    image: dev:fd2.1
+  fd2dev:
+    image: farmdata2/dev:fd2.1
     container_name: fd2_dev
     init: true
-    build:
-      context: ./dev
-      dockerfile: Dockerfile
     volumes:
      - ..:/home/farmdev/FarmData2
      - ../farmdata2_modules:/home/farmdev/fd2test/farmdata2_modules

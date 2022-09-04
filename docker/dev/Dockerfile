@@ -10,7 +10,8 @@ RUN apt update \
         gnupg2 \
         atfs \
         libsecret-1-0 \
-        wget
+        wget \
+        firefox-esr
 
 # Install the desktop environment.
 # Note: Power management does not work inside docker so it is removed.
@@ -34,11 +35,6 @@ RUN apt install -y --no-install-recommends \
 RUN apt install -y --no-install-recommends \
         sudo git nano meld \
  && npm install -g @vue/cli
-
-# Install Firefox
- COPY firefox.bash .
- RUN ./firefox.bash \
-  && rm firefox.bash
 
 # Install VSCode
 COPY vscode.bash .

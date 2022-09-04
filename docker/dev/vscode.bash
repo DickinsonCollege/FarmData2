@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Approach from:
-#  https://github.com/accetto/ubuntu-vnc-xfce-g3/blob/master/docker/xfce-firefox/README.md
+# https://code.visualstudio.com/docs/setup/linux
 
 # Install VS Code.
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg && \

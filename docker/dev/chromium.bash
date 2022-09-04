@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## This currently does not work.
 ## There are issues with gpu and with the dbus.
 
