@@ -16,12 +16,7 @@ services:
   farmos:
     depends_on:
       - db
-    # If there are changes to the Dockerfile bump the tag
-    # number here to force a new build on the next start.
-    image: farmos:fd2.6
-    build:
-     context: ./farmOS
-     dockerfile: Dockerfile
+    image: farmdata2/farmos:fd2.6
     container_name: fd2_farmdata2
     volumes:
       - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
