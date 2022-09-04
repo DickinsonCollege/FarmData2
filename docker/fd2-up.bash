@@ -14,9 +14,8 @@ echo "Starting containers..."
 # Useful for: --force-recreate in particular.
 docker compose up -d "$@"
 
-sleep 3  # give site time to come up before clearing the cache.
-
 echo "Clearing drupal cache..."
+sleep 3  # give site time to come up before clearing the cache.
 docker exec -it fd2_farmdata2 drush cc all
 
 echo "Done."
