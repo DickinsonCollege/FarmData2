@@ -49,8 +49,8 @@ let NewCustomTableComponent = {
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
                         <th v-for="(header, hi) in columns"
-                        v-if="column[hi]" 
-                        :data-cy="'h'+hi">{{ header }}</th>
+                        v-if="columns[hi].visible" 
+                        :data-cy="'h'+hi">{{ header.header }}</th>
                         <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                         <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
                         <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
@@ -62,51 +62,51 @@ let NewCustomTableComponent = {
                     v-for="(row, ri) in rows"
                     :data-cy="'r'+ri">
                         <td v-for="(item, ci) in row.data"
-                        v-if="column[ci]"
+                        v-if="columns[ci].visible"
                         :data-cy="'td-r'+ri+'c'+ci">
-                            <div v-if="rowToEditIndex!=ri || inputType[ci].type == 'no input'"
+                            <div v-if="rowToEditIndex!=ri || columns[ci].inputType.type == 'no input'"
                             :data-cy="'r'+ri+'c'+ci"
                             v-html='item'></div>
                                         
                             <textarea 
                             :data-cy="'text-input-r'+ri+'c'+ci"
-                            v-if="rowToEditIndex==ri && inputType[ci].type == 'text'" 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'text'" 
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)"></textarea>
                                         
                             <select 
                             :data-cy="'dropdown-input-r'+ri+'c'+ci"
-                            v-if="rowToEditIndex==ri && inputType[ci].type == 'dropdown'" 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'dropdown'" 
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
-                                <option v-for="option in inputType[ci].value">{{ option }}</option>
+                                <option v-for="option in columns[ci].inputType.value">{{ option }}</option>
                             </select>
                                         
                             <input 
                             :data-cy="'date-input-r'+ri+'c'+ci"
                             type="date" 
-                            v-if="rowToEditIndex==ri && inputType[ci].type == 'date'" 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'date'" 
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
                                         
-                            <input 
-                            :data-cy="'number-input-r'+ri+'c'+ci" 
-                            type="number" step="0.001" style="width: 70px;" 
-                            v-if="rowToEditIndex==ri && inputType[ci].type == 'number'"
+                            <regex-input 
+                            :data-cy="'regex-input-r'+ri+'c'+ci" 
+                            :reg-exp="'columns[ci].inputType.regex'"
+                            :default-val='rows[ri].data[4]'
+                            set-type='number' 
+                            style="width: 70px;" 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'regex'"
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
-                        </td>
-                        <td v-if="canEdit"> 
-                            <button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
-                            @click="editRow(ri)" 
-                            v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
-                                <span class="glyphicon glyphicon-pencil"></span>
+                            </regex-input>
+
+                            <button class="table-button btn btn-info" 
+                            :data-cy="'button-r'+ri" 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'button'"
+                            v-model="editedRowData.data[ci]" 
+                            @focusout="changedCell(ci)">
+                                <span :class="columns[ci].inputType.value"></span>
                             </button> 
-                            <button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
-                            v-if="rowToEditIndex==ri" 
-                            @click="finishRowEdit(row.id, row)">
-                                <span class="glyphicon glyphicon-check"></span>
-                            </button>
                         </td>
                         <td v-if="canDelete"> 
                             <button class="table-button btn btn-danger" 
@@ -149,6 +149,9 @@ let NewCustomTableComponent = {
             default: ''
         }
     },
+    components: {
+        'regex-input': RegexInputComponent,
+    },
     data() {
         return {
             rowToEditIndex: null,
@@ -179,7 +182,7 @@ let NewCustomTableComponent = {
             
             let jsonObject = {}
             for(i=0; i < this.indexesToChange.length; i ++){
-                let key = this.headers[this.indexesToChange[i]]
+                let key = this.columns[this.indexesToChange[i]]
                 jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
             }
 
@@ -223,16 +226,16 @@ let NewCustomTableComponent = {
             let headerTemp = []
             let rowTemp = []
 
-            for(let i = 0; i < this.headers.length; i++){
-                if(this.visibleColumns[i]){
-                    headerTemp.push(this.headers[i])
+            for(let i = 0; i < this.columns.length; i++){
+                if(this.columns[i].visible){
+                    headerTemp.push(this.columns[i].header)
                 }
             }
             csvInfoArr.push(headerTemp)
 
             for(let i = 0; i < this.rows.length; i++){
-                for(let j = 0; j < this.visibleColumns.length; j++){
-                    if(this.visibleColumns[j]){
+                for(let j = 0; j < this.columns.length; j++){
+                    if(this.columns[j].visible){
                         if(typeof this.rows[i].data[j] === 'string'){
                             cleanHTML = this.rows[i].data[j].replaceAll(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
                             cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, "-")
@@ -279,8 +282,8 @@ let NewCustomTableComponent = {
         },
         isVisible() {
             tempArr = []
-            if (this.updatedVis == null) {
-                for (i = 0; i < this.headers.length; i++) {
+            if (this.columns == null) {
+                for (i = 0; i < this.columns.length; i++) {
                     tempArr.push(true);
                 }
             } else {
@@ -291,7 +294,7 @@ let NewCustomTableComponent = {
         inputType() {
             let typeArray = []
             if (this.inputOptions == null) {
-                for (i = 0; i < this.headers.length; i++) {
+                for (i = 0; i < this.columns.length; i++) {
                     typeArray.push({'type': 'text'});
                 }
             }
