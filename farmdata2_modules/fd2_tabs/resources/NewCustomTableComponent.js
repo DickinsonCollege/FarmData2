@@ -49,8 +49,13 @@ let NewCustomTableComponent = {
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
                         <th v-for="(header, hi) in columns"
-                        v-if="columns[hi].visible" 
+                        v-if="columns[hi].visible && header.header != null" 
                         :data-cy="'h'+hi">{{ header.header }}</th>
+                        <th v-for="(header, hi) in columns"
+                        v-if="columns[hi].visible && header.header == null"
+                        style="text-align:center"
+                        width=55
+                        :data-cy="'h'+hi"><input type="checkbox"></th>
                         <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                         <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
                         <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
@@ -100,6 +105,13 @@ let NewCustomTableComponent = {
                             @focusout="changedCell(ci)">
                             </regex-input>
 
+                            <input 
+                            :data-cy="'number-input-r'+ri+'c'+ci" 
+                            type="checkbox" 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'boolean'"
+                            v-model="editedRowData.data[ci]" 
+                            @focusout="changedCell(ci)">
+
                             <button class="table-button btn btn-info" 
                             :data-cy="'button-r'+ri" 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'button'"
@@ -107,6 +119,18 @@ let NewCustomTableComponent = {
                             @focusout="changedCell(ci)">
                                 <span :class="columns[ci].inputType.value"></span>
                             </button> 
+                        </td>
+                        <td v-if="canEdit"> 
+                        <button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
+                        @click="editRow(ri)" 
+                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button> 
+                        <button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
+                        v-if="rowToEditIndex==ri" 
+                        @click="finishRowEdit(row.id, row)">
+                            <span class="glyphicon glyphicon-check"></span>
+                        </button>
                         </td>
                         <td v-if="canDelete"> 
                             <button class="table-button btn btn-danger" 
