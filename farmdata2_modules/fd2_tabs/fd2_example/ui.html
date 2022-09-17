@@ -107,7 +107,6 @@
     <p><b>CustomTableComponent</b></p>
     <UL>
         <custom-table data-cy="test-table"
-            can-delete 
             can-edit
             csv-name="UI_example_"
             :headers="tableHeaders" 
@@ -130,7 +129,6 @@
     <p><b>NewCustomTableComponent</b></p>
     <UL>
         <newcustom-table data-cy="test-table"
-            can-delete 
             can-edit
             csv-name="UI_example_"
             :columns="newColumns"
@@ -261,7 +259,6 @@ new Vue({
         ],
         tableVisibleColumns: [true, true, false, true, true, true],
 
-        // {"header": 'Edit', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-pencil', 'box': 'table-button btn btn-info'}},
         // For NewCustomTableComponent
         newColumns: [
             {"header": "ID", "visible": true, "inputType": {'type': 'no input'}},
@@ -270,13 +267,14 @@ new Vue({
             {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
             {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*'}},
             {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
-            {"header": null, "visible": true, "inputType": {'type': 'boolean'}},
+            {"header": null, "visible": true, "inputType": {'type': 'boolean', 'selectAllAllowed': true, 'selectAllEvent': 'hello', 'selectEvent': 'goodbye'}},
+            {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning'}},
         ],
 
         newTableData: [
-            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01']},
-            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01']},
-            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01']},
+            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01', "boolean", "button"]},
+            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', "boolean", "button"]},
+            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01', "boolean", "button"]},
         ],
 
         

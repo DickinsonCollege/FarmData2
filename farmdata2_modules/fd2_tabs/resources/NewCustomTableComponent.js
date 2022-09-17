@@ -48,14 +48,20 @@ let NewCustomTableComponent = {
             <table data-cy="table" style="width:100%;" class="table table-bordered table-striped">
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
-                        <th v-for="(header, hi) in columns"
-                        v-if="columns[hi].visible && header.header != null" 
-                        :data-cy="'h'+hi">{{ header.header }}</th>
-                        <th v-for="(header, hi) in columns"
-                        v-if="columns[hi].visible && header.header == null"
+                        <th v-for="(column, hi) in columns"
+                        v-if="columns[hi].visible && column.inputType.type != 'boolean' && column.inputType.type != 'button'" 
+                        :data-cy="'h'+hi"
+                        style="text-align:center">{{ column.header }}</th>
+                        <th v-for="(column, hi) in columns"
+                        v-if="columns[hi].visible && column.inputType.type == 'boolean'"
                         style="text-align:center"
                         width=55
                         :data-cy="'h'+hi"><input type="checkbox"></th>
+                        <th v-for="(column, hi) in columns"
+                        v-if="columns[hi].visible && column.inputType.type == 'button'"
+                        style="text-align:center"
+                        width=55
+                        :data-cy="'h'+hi"> {{ column.header }} </th>
                         <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                         <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
                         <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
@@ -68,7 +74,8 @@ let NewCustomTableComponent = {
                     :data-cy="'r'+ri">
                         <td v-for="(item, ci) in row.data"
                         v-if="columns[ci].visible"
-                        :data-cy="'td-r'+ri+'c'+ci">
+                        :data-cy="'td-r'+ri+'c'+ci"
+                        style="text-align:center">
                             <div v-if="rowToEditIndex!=ri || columns[ci].inputType.type == 'no input'"
                             :data-cy="'r'+ri+'c'+ci"
                             v-html='item'></div>
@@ -106,17 +113,15 @@ let NewCustomTableComponent = {
                             </regex-input>
 
                             <input 
-                            :data-cy="'number-input-r'+ri+'c'+ci" 
+                            :data-cy="'checkbox-input-r'+ri+'c'+ci" 
                             type="checkbox" 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'boolean'"
                             v-model="editedRowData.data[ci]" 
-                            @focusout="changedCell(ci)">
+                            >
 
-                            <button class="table-button btn btn-info" 
+                            <button :class="columns[ci].inputType.box" 
                             :data-cy="'button-r'+ri" 
-                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'button'"
-                            v-model="editedRowData.data[ci]" 
-                            @focusout="changedCell(ci)">
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'button'">
                                 <span :class="columns[ci].inputType.value"></span>
                             </button> 
                         </td>
