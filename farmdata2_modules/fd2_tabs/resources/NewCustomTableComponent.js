@@ -52,16 +52,26 @@ let NewCustomTableComponent = {
                         v-if="columns[hi].visible && column.inputType.type != 'boolean' && column.inputType.type != 'button'" 
                         :data-cy="'h'+hi"
                         style="text-align:center">{{ column.header }}</th>
+
                         <th v-for="(column, hi) in columns"
-                        v-if="columns[hi].visible && column.inputType.type == 'boolean'"
+                        v-if="columns[hi].visible && column.inputType.type == 'boolean' && column.inputType.selectAllAllowed == 'true'"
                         style="text-align:center"
                         width=55
-                        :data-cy="'h'+hi"><input type="checkbox"></th>
+                        :data-cy="'h'+hi"><input type="checkbox"
+                        @click="selectAll(column.inputType.selectAllEvent)"></th>
+
+                        <th v-for="(column, hi) in columns"
+                        v-if="columns[hi].visible && column.inputType.type == 'boolean' && column.inputType.selectAllAllowed == 'false'"
+                        style="text-align:center"
+                        width=55
+                        :data-cy="'h'+hi">{{ column.header }}</th>
+
                         <th v-for="(column, hi) in columns"
                         v-if="columns[hi].visible && column.inputType.type == 'button'"
                         style="text-align:center"
                         width=55
                         :data-cy="'h'+hi"> {{ column.header }} </th>
+
                         <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                         <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
                         <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
@@ -115,13 +125,14 @@ let NewCustomTableComponent = {
                             <input 
                             :data-cy="'checkbox-input-r'+ri+'c'+ci" 
                             type="checkbox" 
-                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'boolean'"
-                            v-model="editedRowData.data[ci]" 
+                            v-if="columns[ci].inputType.type == 'boolean'" 
+                            unchecked
                             >
 
-                            <button :class="columns[ci].inputType.box" 
+                            <button 
+                            :class="columns[ci].inputType.box" 
                             :data-cy="'button-r'+ri" 
-                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'button'">
+                            v-if="columns[ci].inputType.type == 'button'">
                                 <span :class="columns[ci].inputType.value"></span>
                             </button> 
                         </td>
@@ -192,6 +203,36 @@ let NewCustomTableComponent = {
         }
     },
     methods: {
+
+        selectAll: function(selectAllEvent){
+            console.log("This is the selectAllEvent value [before]: " + selectAllEvent)
+            for(let i = 0; i < this.rows.length; i++){
+                for(let j = 0; j < this.columns.length; j++){
+                    if(this.columns[j].inputType.type == 'boolean' && selectAllEvent == 'false'){
+                        this.rows[i].data[j] = true
+                        console.log("Row: " + i + ", value: " + this.rows[i].data[6])
+                        if(i + 1 == this.rows.length){
+                            this.columns[j].inputType.selectAllEvent = true
+                            console.log("This is the selectAllEvent value [after]: " + this.columns[j].inputType.selectAllEvent)
+                            return
+                        }
+                    }
+                    else if(this.columns[j].inputType.type == 'boolean' && selectAllEvent == 'true'){
+                        this.rows[i].data[j] = false
+                        console.log("Row: " + i + ", value: " + this.rows[i].data[6])
+                        if(i + 1 == this.rows.length){
+                            this.columns[j].inputType.selectAllEvent = false
+                            console.log("This is the selectAllEvent value [after]: " + this.columns[j].inputType.selectAllEvent)
+                            return
+                        }
+                    }
+                    // else{
+                    //     alert("Your selectAllEvent data property has an invalid input")
+                    //     return
+                    // }
+                }
+            }   
+        },
         editRow: function(index){
             this.rowToEditIndex = index
             this.currentlyEditing = true
