@@ -52,9 +52,9 @@ RUN rm -f /usr/share/applications/firefox.desktop \
  && rm -f /usr/share/applications/google-chrome.desktop \
  && rm -f /usr/share/applications/microsoft-edge-dev.desktop
 
-# Create the non-root user "farmdev" with sudo privileges in the container.
-ARG USERNAME=farmdev
-ARG PASSWD=farmdev
+# Create the non-root user "fd2dev" with sudo privileges in the container.
+ARG USERNAME=fd2dev
+ARG PASSWD=fd2dev
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -96,7 +96,7 @@ WORKDIR /home/$USERNAME
 RUN touch .Xauthority \
  && mkdir .vnc \
  && /bin/bash -c "echo -e '$PASSWD\n$PASSWD\nn' | vncpasswd; echo;"
-COPY --chown=farmdev:farmdev ./xstartup .vnc/xstartup
+COPY --chown=$USERNAME:$USERNAME ./xstartup .vnc/xstartup
 USER root
 RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
  && chmod +x .vnc/xstartup
@@ -105,10 +105,10 @@ USER $USERNAME
 # Add some scripts for the running container.
 RUN mkdir .fd2 \
  && mkdir -p .config/autostart
-COPY --chown=farmdev:farmdev ./startup.bash ./.fd2/startup.bash
-COPY --chown=farmdev:farmdev ./.bash_aliases ./.bash_aliases
-COPY --chown=farmdev:farmdev ./panel.bash ./.fd2/panel.bash
-COPY --chown=farmdev:farmdev ./panel.desktop ./.config/autostart/panel.desktop
+COPY --chown=$USERNAME:$USERNAME ./startup.bash ./.fd2/startup.bash
+COPY --chown=$USERNAME:$USERNAME ./.bash_aliases ./.bash_aliases
+COPY --chown=$USERNAME:$USERNAME ./panel.bash ./.fd2/panel.bash
+COPY --chown=$USERNAME:$USERNAME ./panel.desktop ./.config/autostart/panel.desktop
 RUN chmod +x .fd2/startup.bash \
  && chmod +x .fd2/panel.bash \
  && chmod +x .config/autostart/panel.desktop
