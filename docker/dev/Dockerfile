@@ -34,6 +34,7 @@ RUN apt install -y --no-install-recommends \
 # Install some standard tools
 RUN apt install -y --no-install-recommends \
         sudo git nano meld \
+ && git config --global credential.helper store \
  && npm install -g @vue/cli
 
 # Install VSCodium
