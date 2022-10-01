@@ -59,9 +59,11 @@ This command will start up the docker containers that are used by FarmData2. The
 FarmData2 started.
 ```
 
-### Connecting to the Development Environment ###
+### Connecting to the FarmData2 Development Environment ###
 
-The FarmData2 development environment is running inside one of the Docker containers that was started by the `./fd2-up.bash` script.
+FarmData2 provides a full featured Debian Linux based development environment.  This development environment is automatically running inside one of the Docker containers that was started by the `./fd2-up.bash` script. 
+
+**All of the FarmData2 instructions and documentation assume that you are working within the FarmData2 development environment.** That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors.
 
 You can connect to the FarmData2 development environment using the TigerVNC Viewer as follows:
 1. Run your TigerVNC Viewer
@@ -78,30 +80,30 @@ The `fd2dev` is a member of the groups:
 * `sudo`
 * `docker`
 
-### Configure git in the Development Environment ###
+### Configure `git` in the Development Environment ###
 
 Configure the git CLI within the FarmData2 development environment by:
-1. `git config --global user.email "you@your.email"`
-2. `git config --global user.name "your github username"`
-3. [Create a personal access token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) in GitHub.
-4. `git push upstream 
+1. Open a Terminal
+2. `git config --global user.email "you@your.email"`
+3. `git config --global user.name "your github username"`
+4. [Create a personal access token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) in GitHub.
+   * Set the "Expiration" to a reasonable duration.
+   * Select the "repo" scope when creating the token.
+   * Copy the token to the clipboard.
+5. `git push origin main`
+   * Enter your GitHub username
+   * Paste in your personal access token.
 
-
-
-     - You will also probably want to [Store your GitHub Credentials with the Git Credential Helper](https://techexpertise.medium.com/storing-git-credentials-with-git-credential-helper-33d22a6b5ce7) to avoid retyping the token for every operation.
+Note: The git client in the FarmData2 development environment is set "store" your git credentials. This makes it so you do not have to re-enter your username and personal access token every time you `push`.  The "store" option is generally safe if you are using your own computer or working within a password protected account. The [Store your GitHub Credentials with the Git Credential Helper](https://techexpertise.medium.com/storing-git-credentials-with-git-credential-helper-33d22a6b5ce7) page contains more information about the "store" option and other options for how to manage your git credentials.
 
 ### Install the Sample Database Image ###
 
-The FarmData2 repository contains a sample database with anonymized data from several years of operation of the [Dickinson College Farm](https://www.dickinson.edu/farm). This database is in the compressed file `docker/db.sample.tar.bz2` and needs to be expanded before it can be used.  Change into the `docker` directory in the repository and use the command below:
-```
-./setDB.bash sample
-```
+The FarmData2 repository contains a sample database with anonymized data from several years of operation of the [Dickinson College Farm](https://www.dickinson.edu/farm). This database is in the compressed file `docker/db.sample.tar.bz2` and needs to be expanded before it can be used. To install the sample database image:
+1. Open a Terminal
+2. `cd FarmDat2/docker`
+3. `./setDB.bash sample`
 
 When this command completes there should be a `db` directory in the `docker` directory.  The files in this `db` directory are a mySQL database that contain the sample data.  Note that you will only need to do this step once. But the above command can be used at any time to reset the database to its initial state.
-
-
-You now have a fully functional FarmData2 development environment.  All of the instructions and documentation within FarmData2 assume that you are working within this environment.  
-
 
 ### Logging Into FarmData2 ###
 
@@ -128,33 +130,20 @@ If everything has worked you will see the FarmData2 login screen.
        * Username: `guest`
        * Password: `farmdata2`
 
-
-
-### Development Platform ###
-
-FarmData2 includes a fully condfigured Debian Linux based development environment.  This development environment will start automaticnd provides the quickest and easiest way to get started with FarmData2 development. All development can be done within this environment and it is started automatically with FarmData2. This envoriment 
-
-We recommend Ubuntu Linux as the development platform for FarmData2.  It is the development platform used by the core team and thus is the most well understood and most fully tested. Users of Windows and MacOS should consider using Ubuntu Linux within [Virtual Box](https://www.virtualbox.org/) as their development platform.  
-
-That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors.
-
-
 ### Editing Code & Documentation ###
 
-The code and documentation can be edited with any editor.  For convenience, the FarmData2 installation includes a browser-based integrated development environment (IDE). To use this IDE open a browser tab and go to:
-```
-http://localhost:3000
-```
-When the IDE opens:
-  1. Click "Open Workspace"
-  1. Select the `FarmData2` directory
-  1. Click "Open"
+The FarmData2 developer environment includes the VSCodium IDE.  This IDE is pre-configured with all of the extensions necessary for FarmData2 development. You can open this IDE and the FarmData2 project by:
+1. Clicking the VSCodium icon dock at the bottom of the desktop.
+2. Choosing "Open Folder" from the "File" menu.
+3. Selecting "FarmDat2".
+4. Clicking the "Open" button.
+5. Choose "Explorer" from the "View" menu to see the `FarmData2` file tree.
 
-The explorer on the left will show the contents and structure of the FarmData2 repository. More information about getting started working on the FarmData2 code and documentation can be found in the [CONTRIBUTING](CONTRIBUTING.md) document.
+If you are using your own VSCode or VSCodium installation please refer to the [docker/dev/vscodium.bash](docker/dev/vscodium.bash) file for information about the extensions that are being used by the FarmData2 development environment. 
 
 ### Stopping and Starting FarmData2 ###
 
-The above process of installing FarmData2 only needs to be completed once.  Now you will need only to start and stop the docker containers before and after each work session.
+The above process of installing and stetting up the FarmData2 development environment only needs to be completed once.  Once it is completed you will only need to start and stop the docker containers before and after each work session.
 
 From the `docker` directory in the repository you can:
 
@@ -168,27 +157,41 @@ From the `docker` directory in the repository you can:
   ./fd2-up.bash
   ```
 
-#### A Note on Persistence ####
+## Technical Details ##
 
-The `fd2-up.bash` and `fd2-down.bash` scripts use `docker-compose` to start all of the FarmData2 containers.  When `./fd2-down.bash` is run `docker-compose` removes all of the containers, including their writeable layers.  The containers are all recreated, including blank writeable layers, each time the `fd2-up.bash` is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses. You can find all of the details of the mounted volumes in the `docker-compose.yml` file.
+Below are some additional details that may be important for advanced development but, at least at first, may be ignored.
 
-The FarmData2 database, that we expanded earlier, is mounted into the container from the directory:
-  * `docker/db`
+### Availability of phpMyAdmin ###
 
-The FarmData2 code is mounted into the container from the directories:
-  * `contrib_modules`
-  * `farmdata2_modules`
+For developers working on back-end services and the FarmData2 data model there is a phpMyAdmin service running in a container at:
 
-Changes to the code in these directories on the development machine will be reflected by the instance of FarmData2 running in the container.
+```
+localhost:8181
+```  
 
-#### Availability of phpMyAdmin ####
+To see the live database being used log into phpMyAdmin using the credentials:
+  * Username: `farm`
+  * Password: `farm`
 
-For developers working on back-end services and the FarmData2 data model the installation starts a phpMyAdmin service that is available at `localhost:8181`.  
-
-You can connect to this service as an administrator using the credentials:
+You can also connect to phpMyAdmin as an administrator using the credentials:
   * Username: `root`
   * Password: `farm`
 
-To see the live database in use you will use the credentials:
-  * Username: `farm`
-  * Password: `farm`
+### Persistence ###
+
+The [`docker/fd2-up.bash`](docker/fd2-up.bash) and [`docker/fd2-down.bash`](docker/fd2-down.bash) scripts start and stop all of the containers necessary for FarmData2. Some key points about how information is persisted between container starts and stops are described below.  The full details can be found in the [`docke/docker-compose.yml`](docker/docker-compose.yml) file.
+
+#### Writeable Layers ####
+When `./fd2-down.bash` is run `docker-compose` removes all of the containers, including their writeable layers.  The containers are all recreated, including blank writeable layers, each time the `fd2-up.bash` is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses. You can find all of the details of the mounted volumes in the `docker-compose.yml` file.
+
+#### The FarmData2 Repository ####
+
+The `FarmData2` repository on the host machine is mounted into `/home/fd2dev/FarmData2` in the FarmData2 development container.  The `FarmData2/contrib_modules` and the `FarmData2/farmdata2_modules` directories are mounted into the appropriate locations in the farmOS container. Thus, any changes made to the contents of the these directories either in the FarmData2 development environment or on the host machine will be reflected in the containers.
+
+#### The Database ####
+
+The farmOS/drupal database used by FarmData2 is stored in a Docker volume (`docker_farmos_db`)that is mounted into the FarmData2 development environment at `docker/db` and into the Maria DB container at `/var/lib/mysql`.  Using the Docker volume rather than the host filesystem to persist the database provides a significant performance boost.
+
+#### The Dev Environment ####
+
+The `home/fd2dev` directory in the FarmData2 development development environment is stored in a Docker volume (`docker_farmdev_home_fd2.x`).  In addition, the `fd2_dev` container is not deleted by `fd2-up.bash` or `fd2-down.bash`.  This allows individual customizations of the development environment to persist across runs. However, if it is necessary to make breaking changes to the development environment the version number of the container and the volume will be bumped in the `docker/docker-compose.yml` file which will create a new container and use a new blank volume.
