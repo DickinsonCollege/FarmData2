@@ -17,5 +17,5 @@ echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https:/
 apt update
 apt install -y codium
 
-# Patch the xfce menu item for VS Code so it runs correctly.
+# Patch the xfce menu item for VS Codium so it runs correctly.
 sed -i 's+/usr/share/codium/codium+/usr/bin/codium --no-sandbox+g' /usr/share/applications/codium.desktop
