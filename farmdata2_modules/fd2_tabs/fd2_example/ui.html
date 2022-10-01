@@ -132,6 +132,7 @@
             can-edit
             csv-name="UI_example_"
             :columns="newColumns"
+            :custom-buttons="myButtons"
             :rows="newTableData" 
             @row-deleted="deleteTableRow"
             @row-edited="updateTableRow">
@@ -267,14 +268,17 @@ new Vue({
             {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
             {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*'}},
             {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
-            {"header": "Select", "visible": true, "inputType": {'type': 'boolean', 'selectAllAllowed': 'true', 'selectAllEvent': 'false', 'selected': 'false'}},
-            {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning'}},
+            {"header": "Harvested", "visible": true, "inputType": {'type': 'boolean'}},
         ],
 
         newTableData: [
-            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01', false, "button"]},
-            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', false, "button"]},
-            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01', false, "button"]},
+            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01', true,]},
+            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', false]},
+            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01', false]},
+        ],
+
+        myButtons: [
+        {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning'}},
         ],
 
         
@@ -377,7 +381,7 @@ new Vue({
             Vue.set(this.tableVisibleColumns, 2, false)     // reactive changes to arrays must be implemented this way (this.tableVisibleColumns[2] = false does not work)
         },
         addNewDataRow() {
-            this.newTableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', '', '']})
+            this.newTableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', false]})
         },
         addDataRow() {
             this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01']})

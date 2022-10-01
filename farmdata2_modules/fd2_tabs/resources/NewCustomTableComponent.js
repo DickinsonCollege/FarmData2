@@ -41,37 +41,48 @@
 let NewCustomTableComponent = {
     template:
     `<span>
-        <button data-cy="export-btn" 
-            style="float: right; float: top;" class="btn fd2-red-button" @click="exportCSV" v-if="csvName != ''">Export
-        </button>
+        <div style="display: flex; justify-content: flex-end">
+            <button 
+            title="Export"
+            data-cy="export-btn" 
+            class="table-button btn btn-primary"
+            @click="exportCSV" 
+            :disabled="editDeleteDisabled"
+            v-if="csvName != ''">
+            <span class="glyphicon glyphicon-download"></span>
+            </button>
+
+            <button v-for="(button, hi) in customButtons"
+            v-if="customButtons[hi].visible && button.inputType.type == 'button'"
+            :title="button.header"
+            :data-cy="'h'+hi"
+            :class="button.inputType.box"
+            :disabled="editDeleteDisabled">
+                <span :class="button.inputType.value"></span>
+            </button>
+        </div>
         <div class="sticky-table">
             <table data-cy="table" style="width:100%;" class="table table-bordered table-striped">
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
-                        <th v-for="(column, hi) in columns"
-                        v-if="columns[hi].visible && column.inputType.type != 'boolean' && column.inputType.type != 'button'" 
+                        <tr class="sticky-header table-text" data-cy="table-headers">
+                        <th v-for="(buttons, hi) in customButtons"
+                        v-if="customButtons[hi].visible && buttons.inputType.type == 'button'" 
                         :data-cy="'h'+hi"
-                        style="text-align:center">{{ column.header }}</th>
+                        style="text-align:center"><input type="checkbox"
+                        @click="selectAll(buttons.inputType.selectAllEvent)"
+                        :disabled="editDeleteDisabled"></th>
 
                         <th v-for="(column, hi) in columns"
-                        v-if="columns[hi].visible && column.inputType.type == 'boolean' && column.inputType.selectAllAllowed == 'true'"
-                        style="text-align:center"
-                        width=55
-                        :data-cy="'h'+hi"><input type="checkbox"
-                        @click="selectAll(column.inputType.selectAllEvent)"
-                        :disabled="editDeleteDisabled"></th>
+                        v-if="columns[hi].visible && column.inputType.type != 'button'" 
+                        :data-cy="'h'+hi"
+                        style="text-align:center">{{ column.header }}</th>
 
                         <th v-for="(column, hi) in columns"
                         v-if="columns[hi].visible && column.inputType.type == 'boolean' && column.inputType.selectAllAllowed == 'false'"
                         style="text-align:center"
                         width=55
                         :data-cy="'h'+hi">{{ column.header }}</th>
-
-                        <th v-for="(column, hi) in columns"
-                        v-if="columns[hi].visible && column.inputType.type == 'button'"
-                        style="text-align:center"
-                        width=55
-                        :data-cy="'h'+hi"> {{ column.header }} </th>
 
                         <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                         <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
@@ -83,10 +94,20 @@ let NewCustomTableComponent = {
                     <tr class="table-text" 
                     v-for="(row, ri) in rows"
                     :data-cy="'r'+ri">
+                        <td
+                        :data-cy="'r'+ri+'cbutton'+ri"
+                        style="text-align:center">
+                            <input 
+                            type="checkbox" 
+                            v-if="customButtons.length > 0" 
+                            @click="select(ri)"
+                            >
+                        </td>
                         <td v-for="(item, ci) in row.data"
                         v-if="columns[ci].visible"
                         :data-cy="'td-r'+ri+'c'+ci"
                         style="text-align:center">
+                        
                             <div v-if="(rowToEditIndex!=ri || columns[ci].inputType.type == 'no input') && (columns[ci].inputType.type != 'boolean' && columns[ci].inputType.type != 'button')"
                             :data-cy="'r'+ri+'c'+ci"
                             v-html='item'></div>
@@ -114,46 +135,23 @@ let NewCustomTableComponent = {
                                         
                             <regex-input 
                             :data-cy="'regex-input-r'+ri+'c'+ci" 
-                            :reg-exp="'columns[ci].inputType.regex'"
-                            :default-val='rows[ri].data[4]'
-                            set-type='number' 
-                            style="width: 70px;" 
+                            :reg-exp="columns[ci].inputType.regex"
+                            :default-val="rows[ri].data[ci]"
+                            set-type="number"
+                            style="width: 120px;" 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'regex'"
-                            v-model="editedRowData.data[ci]" 
-                            @focusout="changedCell(ci)">
+                            >
                             </regex-input>
 
                             <input 
                             :data-cy="'checkbox-input-r'+ri+'c'+ci" 
                             type="checkbox" 
-                            :disabled="editDeleteDisabled"
-                            v-if="rowToEditIndex!=ri && columns[ci].inputType.type == 'boolean'" 
-                            @click="select(columns[ci].inputType.type, row.id, rowselected)"
+                            :disabled="rowToEditIndex!=ri || !editDeleteDisabled"
+                            v-if="columns[ci].inputType.type == 'boolean'" 
+                            v-model="rows[ri].data[ci]" 
+                            @click="select(ri, ci)"
                             >
 
-                            <input 
-                            :data-cy="'checkbox-input-r'+ri+'c'+ci" 
-                            type="checkbox" 
-                            :disabled="editDeleteDisabled"
-                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'boolean'" 
-                            @click="select(columns[ci].inputType.type, row.id, rowselected)"
-                            >
-
-                            <button 
-                            :class="columns[ci].inputType.box" 
-                            :data-cy="'button-r'+ri" 
-                            :disabled="editDeleteDisabled"
-                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'button'">
-                                <span :class="columns[ci].inputType.value"></span>
-                            </button> 
-
-                            <button 
-                            :class="columns[ci].inputType.box" 
-                            :data-cy="'button-r'+ri" 
-                            :disabled="editDeleteDisabled"
-                            v-if="rowToEditIndex!=ri && columns[ci].inputType.type == 'button'">
-                                <span :class="columns[ci].inputType.value"></span>
-                            </button> 
                         </td>
                         <td v-if="canEdit"> 
                         <button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
@@ -195,6 +193,9 @@ let NewCustomTableComponent = {
             type: Array,
             required: true
         },
+        customButtons: {
+            type: Array
+        },
         canEdit: {
             type: Boolean,
             default: false
@@ -218,31 +219,26 @@ let NewCustomTableComponent = {
             editedRowData: {},
             originalRow: {},
             currentlyEditing: false,
+            isMatch: false,
             updatedVis: this.visibleColumns,
         }
     },
     methods: {
 
         selectAll: function(selectAllEvent){
-            //console.log("This is the selectAllEvent value [before]: " + selectAllEvent)
             for(let i = 0; i < this.rows.length; i++){
                 for(let j = 0; j < this.columns.length; j++){
-                    //console.log(this.columns[j].inputType.type)
                     if(this.columns[j].inputType.type == 'boolean' && selectAllEvent == 'false'){
                         this.rows[i].data[j] = true
-                        console.log("Row: " + i + ", value: " + this.rows[i].data[6])
                         if(i + 1 == this.rows.length){
                             this.columns[j].inputType.selectAllEvent = 'true'
-                            //console.log("This is the selectAllEvent value [after]: " + this.columns[j].inputType.selectAllEvent)
                             return
                         }
                     }
                     else if(this.columns[j].inputType.type == 'boolean' && selectAllEvent == 'true'){
                         this.rows[i].data[j] = false
-                        console.log("Row: " + i + ", value: " + this.rows[i].data[6])
                         if(i + 1 == this.rows.length){
                             this.columns[j].inputType.selectAllEvent = 'false'
-                            //console.log("This is the selectAllEvent value [after]: " + this.columns[j].inputType.selectAllEvent)
                             return
                         }
                     }
@@ -250,9 +246,14 @@ let NewCustomTableComponent = {
             }        
         },
 
-        select: function(column, rowID, selected){
-            console.log(column, rowID, selected)
-
+        select: function(rowIndex, colIndex){
+            console.log(this.rows[rowIndex].data[colIndex])
+            if(this.rows[rowIndex].data[colIndex] == false){
+                this.rows[rowIndex].data[colIndex] = true
+            }
+            else if(this.rows[rowIndex].data[colIndex] == true) {
+                this.rows[rowIndex].data[colIndex] = false
+            }
         },
 
         editRow: function(index){
