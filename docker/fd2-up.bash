@@ -1,9 +1,8 @@
 #!/bin/bash
-#docker rm $(docker ps -a -q -f name=fd2_) > /dev/null 2>&1
 
-# Delete any of the existing containers (except dev)
 echo "Starting FarmData2..."
 
+# Delete any of the existing containers (except dev)
 echo "Removing any stale containers..."
 docker rm fd2_mariadb &> /dev/null
 docker rm fd2_phpmyadmin &> /dev/null
@@ -18,4 +17,4 @@ echo "Clearing drupal cache..."
 sleep 3  # give site time to come up before clearing the cache.
 docker exec -it fd2_farmdata2 drush cc all
 
-echo "Done."
+echo "FarmData2 started."
