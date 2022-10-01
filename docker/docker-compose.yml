@@ -56,14 +56,14 @@ services:
     networks:
       - fd2
     volumes:
-      - ..:/home/farmdev/FarmData2
-      - ../farmdata2_modules:/home/farmdev/fd2test/farmdata2_modules
-      - ../farmdata2_modules/cypress:/home/farmdev/fd2test/cypress
-      - ../farmdata2_modules/cypress.config.js:/home/farmdev/fd2test/cypress.config.js
+      - ..:/home/fd2dev/FarmData2
+      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
+      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
+      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
       - /var/run/docker.sock:/var/run/docker.sock
       - //var/run/docker.sock:/var/run/docker.sock  # for Windows hosts.
-      - farmdev_home_fd2.1:/home/farmdev  # preserve home dir on volume.
-      - farmos_db:/home/farmdev/FarmData2/docker/db
+      - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
+      - farmos_db:/home/fd2dev/FarmData2/docker/db
     ports:
       - 5901:5901
       - 6901:6901
