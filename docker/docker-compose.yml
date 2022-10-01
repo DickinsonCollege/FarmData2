@@ -3,6 +3,8 @@ services:
   db:
     image: farmdata2/mariadb:fd2.1
     container_name: fd2_mariadb
+    networks:
+      - fd2
     volumes:
       - farmos_db:/var/lib/mysql  # use a docker volume here for performance.
     ports:
@@ -18,6 +20,8 @@ services:
       - db
     image: farmdata2/farmos:fd2.6
     container_name: fd2_farmdata2
+    networks:
+      - fd2
     volumes:
       - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
       - './logo:/var/www/html/sites/default/files:cached'
@@ -34,6 +38,8 @@ services:
       - db
     image: farmdata2/phpmyadmin:fd2.1
     container_name: fd2_phpmyadmin
+    networks:
+      - fd2
     environment:
       PMA_HOST: "db"
     ports:
@@ -41,25 +47,31 @@ services:
     volumes:
       - /sessions
     links:
-     - 'db'
+      - 'db'
 
   fd2dev:
     image: farmdata2/dev:fd2.1
     container_name: fd2_dev
     init: true
+    networks:
+      - fd2
     volumes:
-     - ..:/home/farmdev/FarmData2
-     - ../farmdata2_modules:/home/farmdev/fd2test/farmdata2_modules
-     - ../farmdata2_modules/cypress:/home/farmdev/fd2test/cypress
-     - ../farmdata2_modules/cypress.config.js:/home/farmdev/fd2test/cypress.config.js
-     - /var/run/docker.sock:/var/run/docker.sock
-     - //var/run/docker.sock:/var/run/docker.sock  # for Windows hosts.
-     - farmdev_home_fd2.1:/home/farmdev  # preserve home dir on volume.
-     - farmos_db:/home/farmdev/FarmData2/docker/db
+      - ..:/home/farmdev/FarmData2
+      - ../farmdata2_modules:/home/farmdev/fd2test/farmdata2_modules
+      - ../farmdata2_modules/cypress:/home/farmdev/fd2test/cypress
+      - ../farmdata2_modules/cypress.config.js:/home/farmdev/fd2test/cypress.config.js
+      - /var/run/docker.sock:/var/run/docker.sock
+      - //var/run/docker.sock:/var/run/docker.sock  # for Windows hosts.
+      - farmdev_home_fd2.1:/home/farmdev  # preserve home dir on volume.
+      - farmos_db:/home/farmdev/FarmData2/docker/db
     ports:
-     - 5901:5901
-     - 6901:6901
+      - 5901:5901
+      - 6901:6901
 
 volumes:
   farmdev_home_fd2.1:
   farmos_db:
+
+networks:
+  fd2:
+    name: farmdata
