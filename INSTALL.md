@@ -108,9 +108,9 @@ When this command completes there should be a `db` directory in the `docker` dir
 
 ### Logging Into FarmData2 ###
 
-Open a browser and go to:
+Open a browser within the FarmData2 development environment and go to:
 ```
-http://localhost
+http://fd2_farmdata2
 ```
 If everything has worked you will see the FarmData2 login screen.
 
@@ -130,6 +130,11 @@ If everything has worked you will see the FarmData2 login screen.
      * Guest:
        * Username: `guest`
        * Password: `farmdata2`
+
+Note: You may also connect to the running FarmData2 instance from a browser in your host OS (e.g. MacOS, Windows, Linux) using the URL:
+```
+http://localhost
+```
 
 ### Editing Code & Documentation ###
 
@@ -161,14 +166,14 @@ From the `docker` directory in the repository you can:
 
 ## Technical Details ##
 
-Below are some additional details that may be important for advanced development but, at least at first, may be ignored.
+Below are some additional details that may be important for advanced development but, at least at first, may be safely ignored.
 
 ### Availability of phpMyAdmin ###
 
-For developers working on back-end services and the FarmData2 data model there is a phpMyAdmin service running in a container at:
+For developers working on back-end services and the FarmData2 data model there is a phpMyAdmin service that can be connected to via a browser in the FarmData2 development environment at:
 
 ```
-localhost:8181
+http://fd2_phpmyadmin
 ```  
 
 To see the live database being used log into phpMyAdmin using the credentials:
@@ -178,6 +183,11 @@ To see the live database being used log into phpMyAdmin using the credentials:
 You can also connect to phpMyAdmin as an administrator using the credentials:
   * Username: `root`
   * Password: `farm`
+
+Note: You may also connect to the phpMyAdmin service from a browser in your host OS (e.g. MacOS, Windows, Linux) using the URL:
+```
+http://localhost:8181
+```
 
 ### Persistence ###
 
