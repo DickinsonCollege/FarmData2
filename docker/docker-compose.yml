@@ -24,10 +24,10 @@ services:
       - fd2
     volumes:
       - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
-      - './logo:/var/www/html/sites/default/files:cached'
-      - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:cached'
-      - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:cached'
-      - ./sampleDB:/sampleDB:cached  # Needed for building the db!
+      - './logo:/var/www/html/sites/default/files:delegated'
+      - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:delegated'
+      - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:delegated'
+      - ./sampleDB:/sampleDB:delegated  # Needed for building the db!
     ports:
       - '80:80'
     environment:
@@ -56,10 +56,10 @@ services:
     networks:
       - fd2
     volumes:
-      - ..:/home/fd2dev/FarmData2
-      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
-      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
-      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
+      - ..:/home/fd2dev/FarmData2:delegated
+      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules:delegated
+      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress:delegated
+      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js:delegated
       - /var/run/docker.sock:/var/run/docker.sock
       - //var/run/docker.sock:/var/run/docker.sock  # for Windows hosts.
       - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
