@@ -67,7 +67,7 @@ To add a new sub-tab to the `xyz` module:
 1. Clear the Drupal cache:
    - `docker exec -it fd2_farmdata2 drush cc all`
 1. Visit the FarmData2 home page when logged in as a _Farm Worker_, a _Farm Manager_ or as `admin`.  Your new sub-tab should now be visible under the _FD2 Example_ tab.  You can find the login credentials that are available in the developement environment on the [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) page.
-   - If your tab does not appear, there are likely syntax errors in the `fd2_example.module` file or in your `.html` file.  You can check the Drupal error logs for helpful information: http://localhost/admin/reports
+   - If your tab does not appear, there are likely syntax errors in the `fd2_example.module` file or in your `.html` file.  You can log into FarmData2 as `admin` and check the Drupal error logs on the `admin/reports` page.
 1. Replace the _dummy code_ in your `.html` file with the code for your new sub-tab. This file can contain any valid html code including CSS, JavaScript, Vue.js, etc...
    - Sub-tabs typically (e.g. `ui.html`) use Vue.js, Axios and the FarmOS API to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
 
