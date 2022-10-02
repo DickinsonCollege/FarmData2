@@ -105,6 +105,9 @@ USER $USERNAME
 # Configure git to store credentials.
 RUN git config --global credential.helper store
 
+# Install some useful VSCodium extensions
+RUN codium --install-extension streetsidesoftware.code-spell-checker
+
 # Add some scripts for the running container.
 RUN mkdir .fd2 \
  && mkdir -p .config/autostart
