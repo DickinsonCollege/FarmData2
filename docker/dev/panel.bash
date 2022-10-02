@@ -7,13 +7,13 @@
 # Run by the panel.desktop item that is placed
 # into the .config/autostart directory by the Dockerfile.
 
-if [ ! -e /home/farmdev/.config/xfce4/panel/launcher-50 ];
+if [ ! -e /home/fd2dev/.config/xfce4/panel/launcher-50 ];
 then
-  mkdir -p /home/farmdev/.config/xfce4/panel/launcher-50
-  cp /usr/share/applications/codium.desktop /home/farmdev/.config/xfce4/panel/launcher-50
+  mkdir -p /home/fd2dev/.config/xfce4/panel/launcher-50
+  cp /usr/share/applications/codium.desktop /home/fd2dev/.config/xfce4/panel/launcher-50
 
-  mkdir -p /home/farmdev/.config/xfce4/panel/launcher-51
-  cp /usr/share/applications/mousepad.desktop /home/farmdev/.config/xfce4/panel/launcher-51
+  mkdir -p /home/fd2dev/.config/xfce4/panel/launcher-51
+  cp /usr/share/applications/mousepad.desktop /home/fd2dev/.config/xfce4/panel/launcher-51
 
   xfce4-panel -r
   xfconf-query -c xfce4-panel -p /plugins/plugin-50 -t string -s "launcher" --create

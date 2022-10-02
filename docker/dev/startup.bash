@@ -7,8 +7,8 @@ rm /tmp/.X1-lock
 
 # Ensure that the permissions on the mounted /var/run/docker.sock
 # are setup for docker in docker.
-echo "farmdev" | sudo -S chgrp docker /var/run/docker.sock
-echo "farmdev" | sudo -S chmod 775 /var/run/docker.sock
+echo "fd2dev" | sudo -S chgrp docker /var/run/docker.sock
+echo "fd2dev" | sudo -S chmod 775 /var/run/docker.sock
 
 # Launch the VNC server
 vncserver \
