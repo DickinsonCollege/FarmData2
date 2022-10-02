@@ -34,7 +34,6 @@ RUN apt install -y --no-install-recommends \
 # Install some standard tools
 RUN apt install -y --no-install-recommends \
         sudo git nano meld \
- && git config --global credential.helper store \
  && npm install -g @vue/cli
 
 # Install VSCodium
@@ -102,6 +101,9 @@ USER root
 RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
  && chmod +x .vnc/xstartup
 USER $USERNAME
+
+# Configure git to store credentials.
+RUN git config --global credential.helper store
 
 # Add some scripts for the running container.
 RUN mkdir .fd2 \
