@@ -17,7 +17,7 @@ then
   echo "Please specify one or more images to build."
   echo "E.g. build-images.bash dev farmOS"
   echo "  Valid images to build are the directories in the docker folder"
-  echo "  that contain a Dockerfile."
+  echo "  that contain a Dockerfile. (e.g. dev farmos mariaDB phpmyadmin).
   exit -1
 fi
 
