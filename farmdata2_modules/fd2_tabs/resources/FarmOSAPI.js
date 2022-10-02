@@ -95,7 +95,16 @@ function getAllPages(endpoint, arr=[]) {
  * // Note that the Map will not be available until the then() executes.
  */
 function getIDToUserMap(){
-    return getMap('/user', 'uid', 'name')
+    return new Promise((resolve, reject) => {
+        getMap('/user', 'uid', 'name')
+        .then((map) => {
+            map.delete(null);
+            resolve(map)
+        },
+        (error) => {
+            reject(error);
+        })
+    })
 }
 
 /**
@@ -116,7 +125,16 @@ function getIDToUserMap(){
  * // Note that the Map will not be available until the then() executes.
  */
 function getUserToIDMap(){
-    return getMap('/user', 'name', 'uid')
+    return new Promise((resolve, reject) => {
+        getMap('/user', 'name', 'uid')
+        .then((map) => {
+            map.delete('Anonymous');
+            resolve(map)
+        },
+        (error) => {
+            reject(error);
+        })
+    })
 }
 
 /**
@@ -419,7 +437,7 @@ function getRecord(url) {
  * // Note that the response will not be available until the then() executes.
  */
 function getConfiguration() {
-  return getRecord('/fd2_config/1')
+    return getRecord('/fd2_config/1')
 }
 
 /**
@@ -575,7 +593,7 @@ function updateRecord(url, updateData, sessionToken){
  * // Note that the record will not have been updated until the then() executes.
  */
 function setConfiguration(updateData, sessionToken) {
-  return updateRecord('/fd2_config/1', updateData, sessionToken)
+    return updateRecord('/fd2_config/1', updateData, sessionToken)
 }
 
 /**

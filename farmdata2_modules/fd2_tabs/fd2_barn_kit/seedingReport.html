@@ -1,11 +1,7 @@
 <body>
     <div id="seedingReport" v-cloak>
         <h1 class="text-center">Seeding Report</h1>
-        <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
-            <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-                Error Processing Request. This may be an intermittent network issue. Please try again later. 
-            </div>
-        </div>
+        <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
             <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
@@ -88,7 +84,8 @@
             components: {
                 'custom-table': CustomTableComponent,
                 'date-range-selection': DateRangeSelectionComponent,
-                'dropdown-with-all': DropdownWithAllComponent
+                'dropdown-with-all': DropdownWithAllComponent,
+                'error-banner' : ErrorBannerComponent
             },
             data: {
                 startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
@@ -116,7 +113,7 @@
                 configToIDMap: new Map(),
 
                 rowBeingEdited: false,
-                errBanner: null,
+                errBannerVisibility: false,
 
                 isMobile: false,
             },
@@ -144,15 +141,7 @@
                             this.stillLoading = false
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                     this.stillLoading = true
                 },
@@ -203,10 +192,10 @@
                      * The Table component returns an object with the cells that were updated. We don't know how many or wich ones where updated, so we check for all possible cells that could have been updated.
                      */
                     let keys = Object.keys(updateObject)
-                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
-                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
-                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
-                        keys.includes('Cells Per Tray')){
+                    if(keys.includes('Hours') || keys.includes('Workers') || 
+                        keys.includes('Rows/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Seeds') || keys.includes('Trays') ||
+                        keys.includes('Cells/Tray')){
                         if(this.updateLog[0].log_category[0].name == 'Direct Seedings'){
                             updateSeedingObject['quantity'] = this.quantityDirectSeeding
                         }
@@ -216,34 +205,50 @@
                     }
                     
                     for(i=0; i < keys.length; i++){
-                        if(keys[i] == 'date'){
-                            updateSeedingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
+                        if(keys[i] == 'Date'){
+                            updateSeedingObject['timestamp'] = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
+
+                            this.updateLog[0].timestamp = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
+
                         }
-                        else if(keys[i] == 'crop'){
-                            updateSeedingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
+                        else if(keys[i] == 'Crop'){
+                            updateSeedingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
                             updatePlantObject['crop'] = [{
-                                "id": this.cropToIDMap.get(updateObject['crop']),
+                                "id": this.cropToIDMap.get(updateObject['Crop']),
                                 "resource": "taxonomy_term"
                             }]
+
+                            this.updateLog[0].data = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
                         }
-                        else if (keys[i] == 'area'){
+                        else if (keys[i] == 'Area'){
                             updateSeedingObject['movement'] = { 'area': [{
-                                "id": this.areaToIDMap.get(updateObject['area']),
-                                "resource": "taxonomy_term",}]
+                                "id": this.areaToIDMap.get(updateObject['Area']),
+                                "resource": "taxonomy_term"}],
+                            }
+
+                            this.updateLog[0].movement = { 'area': [{
+                                "uri": "http://localhost/taxonomy_term/" + this.areaToIDMap.get(updateObject['Area']), 
+                                "id": this.areaToIDMap.get(updateObject['Area']),
+                                "resource": "taxonomy_term",
+                                "name": updateObject['Area']}]
                             }
                         }
                         else if(keys[i] == 'Hours'){
+                            
                             updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Labor')].value = updateObject['Hours']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Labor')].value = updateObject['Hours']
                         }
-                        else if(keys[i] == 'Num Workers'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Workers')].value = updateObject['Num Workers']
+                        else if(keys[i] == 'Workers'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Workers')].value = updateObject['Workers']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Num Workers']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Workers')].value = updateObject['Workers']
                         }
                         else if(keys[i] == 'Comments'){
                             updateSeedingObject['notes'] = {'value': updateObject['Comments'],
+                                'format': 'farm_format'}
+
+                            this.updateLog[0].notes = {'value': updateObject['Comments'],
                                 'format': 'farm_format'}
                         }
                         else if(keys[i] == 'User'){
@@ -251,42 +256,48 @@
                                 'id': this.userToIDMap.get(updateObject['User']),
                                 'resource': 'user'
                             }
+
                             updatePlantObject['uid'] = {
+                                'id': this.userToIDMap.get(updateObject['User']),
+                                'resource': 'user'
+                            }
+
+                            this.updateLog[0].uid = {
                                 'id': this.userToIDMap.get(updateObject['User']),
                                 'resource': 'user'
                             }
                         }
                         else if(keys[i] == 'Row/Bed'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Row/Bed']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
                         }
                         else if(keys[i] == 'Row Feet'){
                             updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Amount planted')].value = updateObject['Row Feet']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Amount planted')].value = updateObject['Row Feet']
                         }
-                        else if(keys[i] == 'Tray Seeds'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Seeds planted')].value = updateObject['Tray Seeds']
+                        else if(keys[i] == 'Seeds'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Seeds planted')].value = updateObject['Seeds']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Seeds planted')].value = updateObject['Tray Seeds']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Seeds planted')].value = updateObject['Seeds']
                         }
-                        else if(keys[i] == '# of Trays'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Flats used')].value = updateObject['# of Trays']
+                        else if(keys[i] == 'Trays'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Flats used')].value = updateObject['Trays']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats used')].value = updateObject['# of Trays']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats used')].value = updateObject['Trays']
                         }
-                        else if(keys[i] == 'Cells Per Tray'){
-                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Cells/Flat')].value = updateObject['Cells Per Tray']
+                        else if(keys[i] == 'Cells/Tray'){
+                            updateSeedingObject.quantity[quantityLocation(updateSeedingObject.quantity, 'Cells/Flat')].value = updateObject['Cells/Tray']
 
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Cells/Flat')].value = updateObject['Cells Per Tray']
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Cells/Flat')].value = updateObject['Cells/Tray']
                         }   
                     }
                     //replace old update log with current update log
-                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
-                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
-                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
-                        keys.includes('Cells Per Tray')){
+                    if(keys.includes('Hours') || keys.includes('Workers') || 
+                        keys.includes('Rows/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Seeds') || keys.includes('Trays') ||
+                        keys.includes('Cells/Tray')){
                         for(var i=0; i < this.seedingLogs.length; i++){
                             if(this.seedingLogs[i].id === id){
                                 this.seedingLogs.splice(i, this.updateLog)
@@ -302,7 +313,20 @@
                     }
                     //call updateRecord function to update seeding log
                     if(!(Object.entries(updateSeedingObject).length === 0)){
-                        updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                        //updates quantities and area separately because backend doesn't allow for one updateRecord call with both changes
+                        if(keys.includes("Area") && (keys.includes("Row Feet") || keys.includes("Bed Feet") || keys.includes("Seeds") 
+                            || keys.includes("Trays") || keys.includes("Cells/Tray") || keys.includes("Workers") || keys.includes("Hours"))){
+                            delete updateSeedingObject.movement
+                            let updateArea = {"movement":{"area":[{"id":this.areaToIDMap.get(updateObject['Area']),"resource":"taxonomy_term"}]}}
+
+                            updateRecord(seedingUrl, updateArea,this.sessionToken)
+                            .then(() =>{
+                                updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                            })
+                        }
+                        else{
+                            updateRecord(seedingUrl, updateSeedingObject,this.sessionToken)
+                        }
                     }
                     this.rowBeingEdited = false
                 },
@@ -323,9 +347,6 @@
                 },
                 enableFilters(){
                     this.rowBeingEdited = false
-                },
-                hideBanner(){
-                    this.errBanner = false
                 },
             },
             computed: {
@@ -373,7 +394,7 @@
                             data: [
                                 dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
                                 $vm.idToCropMap.get(h.data.crop_tid),
-                                h.movement.area[0].name, 
+                                h.movement.area[0].name,
                                 h.log_category[0].name.substring(0, h.log_category[0].name.indexOf(' ')), 
                                 rowFeet,
                                 bedFeet,
@@ -494,7 +515,20 @@
                     let tableData = this.tableRows
                     let sumRowFeet = 0
                     tableData.map(h => {
-                        sumRowFeet = sumRowFeet + parseInt(h.data[4])
+                        sumRowFeet = sumRowFeet + parseFloat(h.data[4])
+                    })
+                    return (Math.round(sumRowFeet*100))/100
+                },
+                /**
+                 * returns the total row feet for Direct Seeding
+                 */ 
+                totalRowFeetNoLabor(){
+                    let tableData = this.tableRows
+                    let sumRowFeet = 0
+                    tableData.map(h => {
+                        if(parseFloat(h.data[10]) != 0 && parseFloat(h.data[11]) != 0) {
+                            sumRowFeet = sumRowFeet + parseFloat(h.data[5])        
+                        }
                     })
                     return (Math.round(sumRowFeet*100))/100
                 },
@@ -505,7 +539,20 @@
                     let tableData = this.tableRows
                     let sumBedFeet = 0
                     tableData.map(h => {
-                        sumBedFeet = sumBedFeet + parseInt(h.data[5])
+                        sumBedFeet = sumBedFeet + parseFloat(h.data[5])
+                    })
+                    return sumBedFeet
+                },
+                /**
+                 * returns the total bed feet for Direct Seeding excluding the logs without labor data
+                 */
+                totalBedFeetNoLabor(){
+                    let tableData = this.tableRows
+                    let sumBedFeet = 0
+                    tableData.map(h => {
+                        if(parseFloat(h.data[10]) != 0 && parseFloat(h.data[11]) != 0) {
+                            sumBedFeet = sumBedFeet + parseFloat(h.data[5])
+                        }
                     })
                     return sumBedFeet
                 },
@@ -517,7 +564,7 @@
                     let filteredTableData = tableData.filter((x) => x.data[3] === 'Direct')
                     let sumHours = 0
                     filteredTableData.map(h => {
-                        sumHours = sumHours + h.data[10]//*h.data[11])
+                        sumHours = sumHours + (h.data[10]*parseFloat(h.data[11]))
                     })
                     return (Math.round(sumHours*100))/100
                 },
@@ -525,17 +572,37 @@
                  * returns the bed feet per hour for the direct seedings. Calculated by dividing total bedfeet by total hours 
                  */ 
                 totalBedFeetPerHour(){
-                    let bedFeet = this.totalBedFeet
+                    let bedFeet = this.totalBedFeetNoLabor
                     let hours = this.totalDirectSeedingHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((bedFeet/hours)*100))/100
                 },
                 /**
                  * returns the row feet per hour for the direct seedings. Calculated by dividing total rowfeet by total hours
                  */ 
                 totalRowFeetPerHour(){
-                    let rowFeet = this.totalRowFeet
+                    let rowFeet = this.totalRowFeetNoLabor
                     let hours = this.totalDirectSeedingHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((rowFeet/hours)*100))/100
+                },
+
+                /**
+                 * returns the total number of seeds planted for the tray seeding logs excluding the logs without labor data
+                 */ 
+                traySeedsPlantedNoLabor(){
+                    let tableData = this.tableRows
+                    let totalTraySeeds = 0
+                    tableData.map(h => {
+                        if(parseFloat(h.data[10]) != 0 && parseFloat(h.data[11]) != 0) {
+                            totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
+                        }
+                    })
+                    return totalTraySeeds
                 },
                 /**
                  * returns the total number of seeds planted for the tray seeding logs
@@ -543,9 +610,9 @@
                 traySeedsPlanted(){
                     let tableData = this.tableRows
                     let totalTraySeeds = 0
-                    tableData.map(h =>
+                    tableData.map(h => {
                         totalTraySeeds = totalTraySeeds + parseFloat(h.data[7])
-                    )
+                    })
                     return totalTraySeeds
                 },
                 /**
@@ -575,8 +642,11 @@
                  * returns the average amount of seeds planted per hour. Calculated by having the total seedings planted divided by the total hours worked
                  */ 
                 aveSeedsPerHour(){
-                    let seedsPlanted = this.traySeedsPlanted
+                    let seedsPlanted = this.traySeedsPlantedNoLabor
                     let hours = this.totalTraySeedingHours
+                    if (hours == 0) {
+                        return "N/A"
+                    }
                     return (Math.round((seedsPlanted/hours)*100))/100
                 },
                 /**
@@ -701,105 +771,49 @@
                         this.sessionToken = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getIDToCropMap()
                     .then((response) => {
                         this.idToCropMap = new Map(response)
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getCropToIDMap()
                     .then((response) => {
                         this.cropToIDMap = new Map(response)
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getIDToUserMap()
                     .then((response) => {
                         this.idToUserMap = new Map (response)
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getUserToIDMap()
                     .then((response) => {
                         this.userToIDMap = new Map (response)
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = new Map(response)
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getUnitToIDMap()
                     .then((response) => {
                         this.unitToIDMap = new Map(response)
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getConfiguration()
                     .then((response) => {
@@ -810,15 +824,7 @@
                         }
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 if (window.screen.width < 900 || window.screen.height < 900) {
                     this.isMobile = true

@@ -2,9 +2,7 @@
     <div id='seedingInput'>
         <h1 style='text-align:center;'>Seeding Input Log</h1> 
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
-            <div data-cy='alert-err-handler' class="alert alert-danger" style="display: none;" role="alert" v-show="errBanner == true" @click="hideBanner">
-                Error Processing Request. This may be an intermittent network issue. Please try again later. 
-            </div>
+            <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
             <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
                 Log submission canceled by user. The log is <strong>NOT</strong> saved.  
             </div>
@@ -58,10 +56,10 @@
             <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
                 <label style='color: #da4f3f' v-show="configToIDMap.labor == 'Required'">*&nbsp;</label>
-                <regex-input data-cy='num-worker-input' :reg-exp="regPosInt" :default-val="numWorkers" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumWorkers" @match-changed="(newBool) => updateValidMap('validNumWorkers', newBool)"></regex-input>                                                
+                <regex-input data-cy='num-worker-input' :reg-exp="regNumWorker" :default-val="numWorkers" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumWorkers" @match-changed="(newBool) => updateValidMap('validNumWorkers', newBool)"></regex-input>                                                
                 <label>&nbsp; Worker(s) for </label> 
                 <label><label style='color: #da4f3f' v-show="configToIDMap.labor == 'Required'">*</label> 
-                <regex-input data-cy='minute-input' v-show='selectedTimeUnit == "minutes"' :reg-exp='regPosInt' :default-val="minute" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setMinute" @match-changed="(newBool) => updateValidMap('validMinute', newBool)"></regex-input>                                                
+                <regex-input data-cy='minute-input' v-show='selectedTimeUnit == "minutes"' :reg-exp='regMin' :default-val="minute" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setMinute" @match-changed="(newBool) => updateValidMap('validMinute', newBool)"></regex-input>                                                
                 <regex-input data-cy='hour-input' v-show='selectedTimeUnit == "hours"' :reg-exp='regHour' :default-val="hour" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setHour" @match-changed="(newBool) => updateValidMap('validHour', newBool)"></regex-input>                                                
                 <dropdown-with-all data-cy='time-unit' style='text-align:center;' :selected-val='selectedTimeUnit' :dropdown-list='timeUnits' @selection-changed='setNewTimeUnit' :disabled='submitInProgress'></dropdown-with-all></label>
             </div>
@@ -89,6 +87,7 @@
                 'date-selection': DateSelectionComponent,
                 'dropdown-with-all': DropdownWithAllComponent,
                 'regex-input': RegexInputComponent,
+                'error-banner': ErrorBannerComponent,
             },
             data:{
                 sessionToken: null,
@@ -129,9 +128,12 @@
                     "validNumRowBed": false,
                     "validNumFeet": false,
                 },
-                regPosInt: "^[1-9]+[0-9]*$",
-                regHour:"^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$",
-                errBanner: null,
+                regexMap : regexMap,
+                regPosInt: regexMap.regPosInt,
+                regMin: regexMap.regPosInt,
+                regHour:regexMap.regPosFloatTwoDigit,
+                regNumWorker: regexMap.regPosInt,
+                errBannerVisibility: false,
                 configToIDMap: new Map(),
             },
             methods:{
@@ -170,12 +172,39 @@
                     this.numFeet = newNumFeet
                 },
                 setNewNumWorkers(newNumWorkers) {
+                    if(this.configToIDMap.labor == "Optional") {
+                        if (newNumWorkers == "" || newNumWorkers == null) {
+                            this.regMin = "|" + regexMap.regPosInt
+                            this.regHour = "|" + regexMap.regPosFloatTwoDigit
+                        } else {
+                            this.regMin = regexMap.regPosInt
+                            this.regHour = regexMap.regPosFloatTwoDigit
+                            
+                        }                
+                    }
                     this.numWorkers = newNumWorkers
+
                 },
                 setMinute(newMinute) {
+                    
+                    if(this.configToIDMap.labor == "Optional") {
+                        if (newMinute == "" || newMinute == null) {
+                            this.regNumWorker = "|" + regexMap.regPosInt
+                        } else {
+                            this.regNumWorker = regexMap.regPosInt
+                        }
+
+                    }
                     this.minute = newMinute
                 },
                 setHour(newHour) {
+                    if(this.configToIDMap.labor == "Optional"){
+                        if (newHour == "" || newHour == null) {
+                            this.regNumWorker = "|" + regexMap.regPosInt
+                        } else {
+                            this.regNumWorker = regexMap.regPosInt
+                        }
+                    }
                     this.hour = newHour
                 },
                 clearFields(){
@@ -223,15 +252,7 @@
                             }, 3000)     
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 },
                 cancelLog() {
@@ -248,9 +269,6 @@
                     setTimeout(() => { 
                         this.isConfirmed = null
                     }, 3000)
-                },
-                hideBanner(){
-                    this.errBanner = false
                 },
             },
             computed: {
@@ -306,7 +324,19 @@
                             }
                         }
                         if(!this.validMap["validNumWorkers"]){
-                        return true
+                            return true
+                        }
+                    }
+                    if(this.configToIDMap.labor == "Optional") {
+                        if(this.selectedTimeUnit == 'minutes'){
+                            if(!this.validMap['validMinute'] ^ !this.validMap['validNumWorkers']){
+                                return true
+                            }
+                        }
+                        if(this.selectedTimeUnit == 'hours'){
+                            if(!this.validMap['validHours'] ^ !this.validMap['validNumWorkers']){
+                                return true
+                            }
                         }
                     }
                     if(this.selectedSeedingType == 'Direct Seedings'){
@@ -501,15 +531,7 @@
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }else{
                     this.cropArray = JSON.parse(localStorage.getItem('crops'))
@@ -519,15 +541,7 @@
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }
                 if(localStorage.getItem('areas') == null){
@@ -536,15 +550,7 @@
                             localStorage.setItem('areas', JSON.stringify(this.areaResponse))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
@@ -554,16 +560,7 @@
                             localStorage.setItem('areas', JSON.stringify(resp))
                         })
                         .catch((err) => { 
-                            this.errBanner = true
-                            this.errBanner = true
-                            var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                            scrollBy({
-                                top: alertBounds.top - headerBounds.bottom,
-                                behavior: 'smooth'
-                            })
+                            this.errBannerVisibility = true
                         })
                 }
                 getSessionToken()
@@ -571,105 +568,54 @@
                         this.sessionToken = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getCropToIDMap()
                     .then((response) => {
                         this.cropToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                            var pageHeader = document.getElementById('navbar')
-                            var headerBounds = pageHeader.getBoundingClientRect()
-                            var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getUserToIDMap()
                     .then((response) => {
                         this.userToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getUnitToIDMap()
                     .then((response) => {
                         this.unitToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getLogTypeToIDMap()
                     .then((response) => {
                         this.logTypeToIDMap = response
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
                 getConfiguration()
                     .then((response) => {
                         this.configToIDMap = response.data
+                        if(this.configToIDMap.labor == "Optional") {
+                            this.regNumWorker = "|" + regexMap.regPosInt
+                            this.regMin = "|" + regexMap.regPosInt
+                            this.regHour = "|" + regexMap.regPosFloatTwoDigit
+                        }
                     })
                     .catch((err) => { 
-                        this.errBanner = true
-                        var errorBanner = document.getElementById('scrollBanners')
-                        var pageHeader = document.getElementById('navbar')
-                        var headerBounds = pageHeader.getBoundingClientRect()
-                        var alertBounds = errorBanner.getBoundingClientRect()
-                        scrollBy({
-                            top: alertBounds.top - headerBounds.bottom,
-                            behavior: 'smooth'
-                        })
+                        this.errBannerVisibility = true
                     })
             }
         })

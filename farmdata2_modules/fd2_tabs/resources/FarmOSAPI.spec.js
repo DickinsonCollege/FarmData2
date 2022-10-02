@@ -158,7 +158,7 @@ describe('API Request Functions', () => {
             cy.get('@nameMap').should(function(nameToIdMap) {
                 expect(nameToIdMap).to.not.be.null
                 expect(nameToIdMap).to.be.a('Map')
-                expect(nameToIdMap.size).to.equal(11)
+                expect(nameToIdMap.size).to.equal(10)
 
                 manager1ID = nameToIdMap.get('manager1')
                 adminID = nameToIdMap.get('admin')
@@ -171,7 +171,7 @@ describe('API Request Functions', () => {
                 cy.get('@idMap').should(function(idToNameMap) {
                     expect(idToNameMap).to.not.be.null
                     expect(idToNameMap).to.be.a('Map')
-                    expect(idToNameMap.size).to.equal(11)
+                    expect(idToNameMap.size).to.equal(10)
 
                     expect(idToNameMap.get(manager1ID)).to.equal('manager1')
                     expect(idToNameMap.get(adminID)).to.equal('admin')
@@ -858,8 +858,9 @@ describe('API Request Functions', () => {
                 expect(quantityLocation(quantity, 'Yeehaw')).to.equal(-1)
             })
         })
-
+    
     context('test configuration functions', () => {
+        
         it('gets an existing configuration log', () => {
             cy.wrap(getConfiguration()).as('done')
 

@@ -244,9 +244,9 @@ let CustomTableComponent = {
                 for(let j = 0; j < this.visibleColumns.length; j++){
                     if(this.visibleColumns[j]){
                         if(typeof this.rows[i].data[j] === 'string'){
-                            cleanHTML = this.rows[i].data[j].replace(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
-                            cleanHTML = cleanHTML.replace(/(\r\n|\n|\r)/gm, "-")
-                            cleanHTML = cleanHTML.replace(',', "--")
+                            cleanHTML = this.rows[i].data[j].replaceAll(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
+                            cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, "-")
+                            cleanHTML = cleanHTML.replaceAll(',', "--")
                             rowTemp.push(cleanHTML)
                         }
                         else{
