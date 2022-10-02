@@ -6,6 +6,7 @@ if [[ $# == 0 ]];
 then
     echo "Running Cypress Testing GUI"
     npx cypress open &> /dev/null
+    exit 0
 fi
 
 if [[ "$1" != "e2e" && "$1" != "ct" && "$1" != "all" ]];
