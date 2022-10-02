@@ -3,7 +3,7 @@
 # Build and push to DockerHub multi architecture images
 # for all of the containers used by FarmData2.
 
-LOGGED_IN=$(cat ~/.docker/config.json | grep "index.docker.io" | wc -l | cut -f 8 -d ' ')
+LOGGED_IN=$(cat ~/.docker/config.json 2> /dev/null | grep "index.docker.io" | wc -l | cut -f 8 -d ' ')
 if [ "$LOGGED_IN" == "0" ];
 then
   echo "Please log into Docker Hub before building images."
