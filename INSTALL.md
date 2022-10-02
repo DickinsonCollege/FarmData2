@@ -61,7 +61,7 @@ FarmData2 started.
 
 ### Connecting to the FarmData2 Development Environment ###
 
-FarmData2 provides a full featured Debian Linux based development environment.  This development environment is automatically running inside one of the Docker containers that was started by the `./fd2-up.bash` script. 
+FarmData2 provides a full featured Debian Linux based development environment.  This development environment is automatically running inside one of the Docker containers that was started by the `./fd2-up.bash` script.
 
 **All of the FarmData2 instructions and documentation assume that you are working within the FarmData2 development environment.** That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors.
 
@@ -70,7 +70,7 @@ You can connect to the FarmData2 development environment using the TigerVNC View
 2. Set the "VNC Server" field to: `localhost:5901`
 3. Click "Connect"
 
-When the TigerVNC Viewer connects to the FarmData2 Development environment a window will open displaying the Desktop of the Debian Linux system that is running in the docker container. 
+When the TigerVNC Viewer connects to the FarmData2 Development environment a window will open displaying the Desktop of the Debian Linux system that is running in the docker container.
 
 Your user credentials within the FarmData2 Development environment are:
 * Username: `fd2dev`
@@ -143,10 +143,10 @@ The FarmData2 developer environment includes the VSCodium IDE.  This IDE is pre-
 2. Choosing "Open Folder" from the "File" menu.
 3. Selecting "FarmDat2".
 4. Clicking the "Open" button.
-5. Confirm that you trust the authors of the code in the folder, if asked.
+5. Confirm that you "trust the authors of the files in this folder", if asked.
 6. Choose "Explorer" from the "View" menu to see the `FarmData2` file tree.
 
-If you are using your own VSCode or VSCodium installation please refer to the [docker/dev/vscodium.bash](docker/dev/vscodium.bash) file for information about the extensions that are being used by the FarmData2 development environment. 
+If you are using your own VSCode or VSCodium installation please refer to [docker/dev/Dockerfile](docker/dev/Dockerfile) file for information about the VSCodium extensions that are being used by the FarmData2 development environment.
 
 ### Stopping and Starting FarmData2 ###
 
