@@ -24,6 +24,7 @@ FarmData2 relies on a few prerequisites that will need to be installed on your c
 Full installation details for these tools can be obtained from the projects themselves on the following sites:
 
   * [Get Docker](https://docs.docker.com/get-docker/)
+    * For Windows installs follow the "WSL 2 backend" directions (not the "Hyper-V backend").
     * Test your install using the command: `docker run hello-world`
     * You should be able to run this command without `root` or `admin` privileges.
   * [Installing git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
