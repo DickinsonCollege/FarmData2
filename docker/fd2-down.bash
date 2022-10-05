@@ -12,5 +12,5 @@ docker rm fd2_phpmyadmin --volumes  # remove /sessions volume created.
 docker rm fd2_farmdata2
 
 echo "Stopping dev container..."
-docker compose stop
+docker compose --profile windows,unix stop
 echo "Done."
