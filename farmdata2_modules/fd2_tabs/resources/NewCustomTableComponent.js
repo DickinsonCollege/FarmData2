@@ -57,7 +57,8 @@ let NewCustomTableComponent = {
             :title="button.header"
             :data-cy="'h'+hi"
             :class="button.inputType.box"
-            :disabled="editDeleteDisabled">
+            :disabled="editDeleteDisabled || rowIndicesArr.length == 0"
+            @click="(buttonEventHandler(customButtons[hi].inputType.event))">
                 <span :class="button.inputType.value"></span>
             </button>
         </div>
@@ -66,12 +67,15 @@ let NewCustomTableComponent = {
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
                         <tr class="sticky-header table-text" data-cy="table-headers">
-                        <th v-for="(buttons, hi) in customButtons"
-                        v-if="customButtons[hi].visible && buttons.inputType.type == 'button'" 
-                        :data-cy="'h'+hi"
-                        style="text-align:center"><input type="checkbox"
-                        @click="selectAll(buttons.inputType.selectAllEvent)"
-                        :disabled="editDeleteDisabled"></th>
+                            <th v-for="(buttons, hi) in customButtons"
+                            v-if="customButtons[hi].visible && buttons.inputType.type == 'button'" 
+                            :data-cy="'h'+hi"
+                            style="text-align:center">
+                            <input type="checkbox"
+                            title="Select All"
+                            @click="selectAll(selectAllEvent)"
+                            :disabled="editDeleteDisabled">
+                        </th>
 
                         <th v-for="(column, hi) in columns"
                         v-if="columns[hi].visible && column.inputType.type != 'button'" 
@@ -94,15 +98,18 @@ let NewCustomTableComponent = {
                     <tr class="table-text" 
                     v-for="(row, ri) in rows"
                     :data-cy="'r'+ri">
+
                         <td
                         :data-cy="'r'+ri+'cbutton'+ri"
                         style="text-align:center">
                             <input 
                             type="checkbox" 
                             v-if="customButtons.length > 0" 
-                            @click="select(ri)"
+                            v-model="selectAllEvent || customButtons.length == 0"
+                            @click="addRow(ri)"
                             >
                         </td>
+
                         <td v-for="(item, ci) in row.data"
                         v-if="columns[ci].visible"
                         :data-cy="'td-r'+ri+'c'+ci"
@@ -216,8 +223,10 @@ let NewCustomTableComponent = {
         return {
             rowToEditIndex: null,
             indexesToChange: [],
+            rowIndicesArr: [],
             editedRowData: {},
             originalRow: {},
+            selectAllEvent: false,
             currentlyEditing: false,
             isMatch: false,
             updatedVis: this.visibleColumns,
@@ -225,25 +234,18 @@ let NewCustomTableComponent = {
     },
     methods: {
 
-        selectAll: function(selectAllEvent){
-            for(let i = 0; i < this.rows.length; i++){
-                for(let j = 0; j < this.columns.length; j++){
-                    if(this.columns[j].inputType.type == 'boolean' && selectAllEvent == 'false'){
-                        this.rows[i].data[j] = true
-                        if(i + 1 == this.rows.length){
-                            this.columns[j].inputType.selectAllEvent = 'true'
-                            return
-                        }
-                    }
-                    else if(this.columns[j].inputType.type == 'boolean' && selectAllEvent == 'true'){
-                        this.rows[i].data[j] = false
-                        if(i + 1 == this.rows.length){
-                            this.columns[j].inputType.selectAllEvent = 'false'
-                            return
-                        }
-                    }
+        selectAll: function(allChecked){
+            console.log("hello, this is the selectAll function")
+            this.rowIndicesArr = []
+            if(!allChecked){
+                for(let i = 0; i < this.rows.length; i++){
+                    this.rowIndicesArr.push(i)
                 }
-            }        
+                this.selectAllEvent = true
+            }
+            else{
+                this.selectAllEvent = false
+            }
         },
 
         select: function(rowIndex, colIndex){
@@ -253,7 +255,24 @@ let NewCustomTableComponent = {
             }
             else if(this.rows[rowIndex].data[colIndex] == true) {
                 this.rows[rowIndex].data[colIndex] = false
+            }    
+        },
+
+        addRow: function(rowIndex){
+            console.log(rowIndex)
+            for(let i = 0; i < this.rowIndicesArr.length; i++){
+                if(this.rowIndicesArr[i] == rowIndex){
+                    console.log("Entered conditional: \n")
+                    this.rowIndicesArr.splice(i, 1)
+                    return
+                }
             }
+            this.rowIndicesArr.push(rowIndex)
+        },
+
+        buttonEventHandler(event){
+            console.log("Emitting custom button event: " + event)
+            this.$emit('custom-event', event, this.rowIndicesArr)
         },
 
         editRow: function(index){

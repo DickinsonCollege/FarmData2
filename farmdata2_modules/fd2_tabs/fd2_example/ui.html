@@ -135,7 +135,8 @@
             :custom-buttons="myButtons"
             :rows="newTableData" 
             @row-deleted="deleteTableRow"
-            @row-edited="updateTableRow">
+            @row-edited="updateTableRow"
+            @custom-event="buttonEvents">
         </newcustom-table>
         <button data-cy='show-column' 
             v-show='!newColumns[2].visible'
@@ -268,7 +269,7 @@ new Vue({
             {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
             {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*'}},
             {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
-            {"header": "Harvested", "visible": true, "inputType": {'type': 'boolean'}},
+            {"header": "Purchased", "visible": true, "inputType": {'type': 'boolean'}},
         ],
 
         newTableData: [
@@ -278,7 +279,7 @@ new Vue({
         ],
 
         myButtons: [
-        {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning'}},
+        {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning', 'event': 'cloneEvent'}},
         ],
 
         
@@ -365,8 +366,21 @@ new Vue({
                     }
                 }
             }
+          // Would also need to update data in the db via API here.
+        },
 
-            // Would also need to update data in the db via API here.
+        // Helper method for custom button events
+        buttonEvents(event, rowIndicesArr){
+            if(event == "cloneEvent"){
+                this.cloneEvent(rowIndicesArr)
+            }
+        },
+        cloneEvent(theseRows){
+            for(let i = 0; i < theseRows.length; i++){
+                clonedRow = structuredClone(this.newTableData[theseRows[i]])
+                this.newTableData.push(clonedRow)
+
+            }
         },
         showColumn() {
             Vue.set(this.tableVisibleColumns, 2, true)      // reactive changes to arrays must be implemented this way (this.tableVisibleColumns[2] = true does not work)
