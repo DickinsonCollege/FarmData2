@@ -11,6 +11,7 @@ RUN apt update \
         atfs \
         libsecret-1-0 \
         wget \
+        libpci3 \
         firefox-esr
 
 # Install the desktop environment.
