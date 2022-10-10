@@ -53,16 +53,20 @@ RUN rm -f /usr/share/applications/firefox.desktop \
  && rm -f /usr/share/applications/google-chrome.desktop \
  && rm -f /usr/share/applications/microsoft-edge-dev.desktop
 
-# Create the non-root user "fd2dev" with sudo privileges in the container.
-ARG USERNAME=fd2dev
-ARG PASSWD=fd2dev
-ARG USER_UID=1001
-ARG USER_GID=$USER_UID
-RUN groupadd --gid $USER_GID $USERNAME \
+# Create the "fd2grp" and the non-root user "fd2dev" in the container.
+USERNAME=fd2dev
+PASSWD=fd2dev
+USER_UID=1001
+USER_GID=$USER_UID
+GROUP=fd2grp
+GROUP_GID=23432
+
+RUN groupadd --gid $GROUP_GID $GROUP \
+ && groupadd --gid $USER_GID $USERNAME \
  && useradd --uid $USER_UID --gid $USER_GID \
     -m $USERNAME -p "$(openssl passwd -1 $PASSWD)" \
     -s /bin/bash \
-    -G sudo,docker
+    -G sudo,docker,$GROUP
 
 ##
 ## From here down each section assumes that it starts with
@@ -119,6 +123,10 @@ COPY --chown=$USERNAME:$USERNAME ./panel.desktop ./.config/autostart/panel.deskt
 RUN chmod +x .fd2/startup.bash \
  && chmod +x .fd2/panel.bash \
  && chmod +x .config/autostart/panel.desktop
+
+# Update permissions on the fd2test directory so that Linux users can RW
+RUN chgrp -R $GROUP /home/$USER/fd2test \
+ && chmod -R g+rw /home/$USER/fd2test
 
 # Stuff to reduce image size.
 USER root
