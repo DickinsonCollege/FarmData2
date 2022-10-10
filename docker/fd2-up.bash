@@ -32,7 +32,7 @@ then
   fi
 
   echo "FarmDat2 needs to create a new group fd2grp on your machine."
-  echo "Your user "$(whoamni)" will be added to the group fd2grp."
+  echo "Your user "$(whoami)" will be added to the group fd2grp."
   echo "The FarmData2 directory will be added to the group fd2grp."
   echo "This allows the FarmData2 direcotry to be RW within the development environment."
   echo "Enter your sudo password to continue or CTRL-C to quit."
