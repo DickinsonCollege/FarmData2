@@ -19,37 +19,42 @@ then
   # Otherwise we create the group on the host. We then give that group RW access to 
   # everything in the FarmData2 directory. The user (fd2dev) in the container is also 
   # in the group (fd2grp, GID=23432) so then it may RW all of the mounted FarmData2 direcotry.
-  GRP_EXISTS=$(grep ":23432:" /etc/group)
-  if [ "$GRP_EXISTS" != "" ]
-  then
-    echo "Your Linux host has an existing group with GID 23432."
-    echo "FarmData2 is trying to use this GID."
-    echo "This is an unlikekly situation that we have not yet dealt with."
-    echo "If you encountere this message, please contact us."
-    echo "We will work to resolve it."
-    exit -1
+  IN_FD2_GRP=$(groups | grep "fd2grp" | wc -l)
+  if [ "$IN_FD2_GRP" == 0 ]
+    # Current user is no in the fd2grp so we need to do all of this...
+    GRP_EXISTS=$(grep ":23432:" /etc/group)
+    if [ "$GRP_EXISTS" != "" ]
+    then
+      echo "Your Linux host has an existing group with GID 23432."
+      echo "FarmData2 is trying to use this GID."
+      echo "This is an unlikekly situation that we have not yet dealt with."
+      echo "If you encountere this message, please contact us."
+      echo "We will work to resolve it."
+      exit -1
+    fi
+
+    echo "FarmDat2 needs to create a new group fd2grp on your machine."
+    echo "Your user "$(whoami)" will be added to the group fd2grp."
+    echo "The FarmData2 directory will be added to the group fd2grp."
+    echo "This allows the FarmData2 direcotry to be RW within the development environment."
+    echo ""
+    echo "Continue [Y/n]?"
+    read CONT 
+
+    if [ "$CONT" != "Y" ]
+    then 
+      echo "Canceled."
+      exit -1
+    fi
+
+    sudo groupadd -g 23432 fd2grp
+    sudo usermod -a -G 23432 $(whoami)
+    sudo chgrp -R fd2grp ~/FarmData2
+    sudo chmod -R g+rw ~/FarmData2
+    newgrp fd2grp
+
+    PROFILE=unix
   fi
-
-  echo "FarmDat2 needs to create a new group fd2grp on your machine."
-  echo "Your user "$(whoami)" will be added to the group fd2grp."
-  echo "The FarmData2 directory will be added to the group fd2grp."
-  echo "This allows the FarmData2 direcotry to be RW within the development environment."
-  echo ""
-  echo "Continue [Y/n]?"
-  read CONT 
-
-  if [ "$CONT" != "Y" ]
-  then 
-    echo "Canceled."
-    exit -1
-  fi
-
-  sudo groupadd -g 23432 fd2grp
-  sudo usermod -a -G 23432 $(whoami)
-  sudo chgrp -R fd2grp ~/FarmData2
-  sudo chmod -R g+rw ~/FarmData2
-
-  PROFILE=unix
 else
   PROFILE=windows
 fi
