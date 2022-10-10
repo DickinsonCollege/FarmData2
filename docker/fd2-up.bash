@@ -20,8 +20,9 @@ then
   # everything in the FarmData2 directory. The user (fd2dev) in the container is also 
   # in the group (fd2grp, GID=23432) so then it may RW all of the mounted FarmData2 direcotry.
   IN_FD2_GRP=$(groups | grep "fd2grp" | wc -l)
-  if [ "$IN_FD2_GRP" == 0 ]
+  if [ "$IN_FD2_GRP" == "0" ]
     # Current user is no in the fd2grp so we need to do all of this...
+    # otherwise it has all already been done.
     GRP_EXISTS=$(grep ":23432:" /etc/group)
     if [ "$GRP_EXISTS" != "" ]
     then
