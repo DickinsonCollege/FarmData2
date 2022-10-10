@@ -11,8 +11,7 @@ then
   PROFILE=unix
 elif [ "$OS" == "Linux" ]
 then
-  PROFILE=unix
-  
+
   # Linux uses the host UID/GID values from mounted directories in the container.
   # So we need to ensure that the fd2user user in the container can RW the FarmData2 direcotry.
   # We do so by creating a group (fd2grp, GID=23432) on the host and in the container.
@@ -35,14 +34,31 @@ then
   echo "Your user "$(whoami)" will be added to the group fd2grp."
   echo "The FarmData2 directory will be added to the group fd2grp."
   echo "This allows the FarmData2 direcotry to be RW within the development environment."
-  echo "Enter your sudo password to continue or CTRL-C to quit."
+  echo ""
+  echo "Continue [Y/n]?"
+  read CONT 
+
+  if [ "$CONT" != "Y" ]
+  then 
+    echo "Canceled."
+    exit -1
+  fi
 
   sudo groupadd -g 23432 fd2grp
   sudo usermod -a -G 23432 $(whoami)
   sudo chgrp -R fd2grp ~/FarmData2
   sudo chmod -R g+rw ~/FarmData2
+
+  PROFILE=unix
 else
   PROFILE=windows
+fi
+
+if [ "$PROFILE" == "" ]
+then
+  echo "Operating system $OS was not recognized."
+  echo "Plese file an issue on the FarmData2 issue tracker."
+  exit -1 
 fi
 echo "Running on "$PROFILE
 
