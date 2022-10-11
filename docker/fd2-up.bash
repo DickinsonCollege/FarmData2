@@ -4,12 +4,17 @@ echo "Starting FarmData2..."
 
 echo "Detecting Operating System..."
 # Note: Profiles are defined in docker-compose.yml.
-OS=$(uname)
+OS=$(uname -a)
 PROFILE=
-if [ "$OS" == "Darwin" ]
+if [[ "$OS" == *"Darwin"* ]];
 then
   PROFILE=unix
-elif [ "$OS" == "Linux" ]
+elif [[ "$OS" == *"Microsoft"* ]];
+then
+  # Note that this is before Linux because if running in WSL
+  # uname -a reports Linux, but also has Microsoft later in the output.
+  PROFILE=windows
+elif [ "$OS" == *"Linux"* ]
 then
 
   # Linux uses the host UID/GID values from mounted directories in the container.
@@ -57,8 +62,6 @@ then
 
     PROFILE=unix
   fi
-else
-  PROFILE=windows
 fi
 
 if [ "$PROFILE" == "" ]
