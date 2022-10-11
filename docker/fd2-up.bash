@@ -9,12 +9,12 @@ PROFILE=
 if [[ "$OS" == *"Darwin"* ]];
 then
   PROFILE=unix
-elif [[ "$OS" == *"Microsoft"* ]];
+elif [[ "$OS" == *"microsoft"* ]] || [[ "$OS" == *"Microsoft"* ]];
 then
   # Note that this is before Linux because if running in WSL
   # uname -a reports Linux, but also has Microsoft later in the output.
   PROFILE=windows
-elif [ "$OS" == *"Linux"* ]
+elif [[ "$OS" == *"Linux"* ]]
 then
 
   # Linux uses the host UID/GID values from mounted directories in the container.
