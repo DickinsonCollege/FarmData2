@@ -108,6 +108,7 @@
     <UL>
         <custom-table data-cy="test-table"
             can-edit
+            can-delete
             csv-name="UI_example_"
             :headers="tableHeaders" 
             :input-options="tableinputTypes"
@@ -130,13 +131,16 @@
     <UL>
         <newcustom-table data-cy="test-table"
             can-edit
+            can-delete
             csv-name="UI_example_"
             :columns="newColumns"
             :custom-buttons="myButtons"
             :rows="newTableData" 
-            @row-deleted="deleteTableRow"
-            @row-edited="updateTableRow"
-            @custom-event="buttonEvents">
+            @clone-event="cloneEvent"
+            @row-deleted="deleteNewTableRow"
+            @row-edited="updateNewTableRow"
+
+            >
         </newcustom-table>
         <button data-cy='show-column' 
             v-show='!newColumns[2].visible'
@@ -267,19 +271,19 @@ new Vue({
             {"header": 'Item', "visible": true, "inputType": {'type': 'text'}},
             {"header": 'Size', "visible": false, "inputType": {'type': 'dropdown','value': ['S', 'M', 'L']}},
             {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
-            {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*'}},
+            {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*', 'match': 'false'}},
             {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
             {"header": "Purchased", "visible": true, "inputType": {'type': 'boolean'}},
         ],
 
         newTableData: [
             {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01', true,]},
-            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', false]},
+            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', true]},
             {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01', false]},
         ],
 
         myButtons: [
-        {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning', 'event': 'cloneEvent'}},
+        {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning', 'event': 'clone'}},
         ],
 
         
@@ -358,6 +362,18 @@ new Vue({
 
             // Would also need to delete data from the db via API here.
         },
+        deleteNewTableRow(rowIDs) {
+        console.log("Deleting time")
+        for(let i = 0; i < rowIDs.length; i++){
+            for(var j = 0; j < this.newTableData.length; j++){
+                if(this.newTableData[j].id == rowIDs[i]){
+                    this.newTableData.splice(j, 1)
+                }
+            }
+        }
+
+            // Would also need to delete data from the db via API here.
+        },
         updateTableRow(edits, rowID) {
             for(var i=0; i < this.tableData.length; i++){
                 if(this.tableData[i].id == rowID){
@@ -369,15 +385,20 @@ new Vue({
           // Would also need to update data in the db via API here.
         },
 
-        // Helper method for custom button events
-        buttonEvents(event, rowIndicesArr){
-            if(event == "cloneEvent"){
-                this.cloneEvent(rowIndicesArr)
+        updateNewTableRow(edits, rowID) {
+            for(var i=0; i < this.newTableData.length; i++){
+                if(this.newTableData[i].id == rowID){
+                    for( const [key, value] of Object.entries(edits)) {
+                        this.newTableData[key] = value
+                    }
+                }
             }
+          // Would also need to update data in the db via API here.
         },
-        cloneEvent(theseRows){
-            for(let i = 0; i < theseRows.length; i++){
-                clonedRow = structuredClone(this.newTableData[theseRows[i]])
+
+        cloneEvent(rowsToClone){
+            for(let i = 0; i < rowsToClone.length; i++){
+                clonedRow = structuredClone(this.newTableData[rowsToClone[i]])
                 this.newTableData.push(clonedRow)
 
             }

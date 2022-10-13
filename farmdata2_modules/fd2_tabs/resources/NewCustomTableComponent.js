@@ -52,12 +52,28 @@ let NewCustomTableComponent = {
             <span class="glyphicon glyphicon-download"></span>
             </button>
 
+            <button class="table-button btn btn-danger" 
+            title="Delete"
+            data-cy="delete-button" 
+            @click="deleteRow()" 
+            v-if="(rowToEditIndex==null)" 
+            :disabled="indexesToAction.length == 0">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            <button class="table-button btn btn-danger"
+            title="Cancel"
+            data-cy="cancel-button"
+            @click="cancelRowEdit()" 
+            v-if="(rowToEditIndex!=null)">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+            
             <button v-for="(button, hi) in customButtons"
             v-if="customButtons[hi].visible && button.inputType.type == 'button'"
             :title="button.header"
             :data-cy="'h'+hi"
             :class="button.inputType.box"
-            :disabled="editDeleteDisabled || rowIndicesArr.length == 0"
+            :disabled="editDeleteDisabled || indexesToAction.length == 0"
             @click="(buttonEventHandler(customButtons[hi].inputType.event))">
                 <span :class="button.inputType.value"></span>
             </button>
@@ -73,6 +89,7 @@ let NewCustomTableComponent = {
                             style="text-align:center">
                             <input type="checkbox"
                             title="Select All"
+                            v-model="selectAllEvent"
                             @click="selectAll(selectAllEvent)"
                             :disabled="editDeleteDisabled">
                         </th>
@@ -90,8 +107,6 @@ let NewCustomTableComponent = {
 
                         <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                         <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
-                        <th data-cy="delete-header" width=55 v-if="canDelete && !currentlyEditing">Delete</th>
-                        <th data-cy="cancel-header" width=55 v-if="canDelete && currentlyEditing">Cancel</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,7 +121,7 @@ let NewCustomTableComponent = {
                             type="checkbox" 
                             v-if="customButtons.length > 0" 
                             v-model="selectAllEvent || customButtons.length == 0"
-                            @click="addRow(ri)"
+                            @click="addRow(row.id, selectAllEvent)"
                             >
                         </td>
 
@@ -115,7 +130,7 @@ let NewCustomTableComponent = {
                         :data-cy="'td-r'+ri+'c'+ci"
                         style="text-align:center">
                         
-                            <div v-if="(rowToEditIndex!=ri || columns[ci].inputType.type == 'no input') && (columns[ci].inputType.type != 'boolean' && columns[ci].inputType.type != 'button')"
+                            <div v-if="(rowToEditIndex!=ri || columns[ci].inputType.type == 'no input') && (columns[ci].inputType.type != 'boolean')"
                             :data-cy="'r'+ri+'c'+ci"
                             v-html='item'></div>
                                         
@@ -144,10 +159,11 @@ let NewCustomTableComponent = {
                             :data-cy="'regex-input-r'+ri+'c'+ci" 
                             :reg-exp="columns[ci].inputType.regex"
                             :default-val="rows[ri].data[ci]"
-                            set-type="number"
-                            style="width: 120px;" 
+                            set-min="0"
+                            set-type="number" 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'regex'"
-                            >
+                            v-model.number="editedRowData.data[ci]"
+                            @focusout="changedCell(ci)">
                             </regex-input>
 
                             <input 
@@ -172,36 +188,22 @@ let NewCustomTableComponent = {
                             <span class="glyphicon glyphicon-check"></span>
                         </button>
                         </td>
-                        <td v-if="canDelete"> 
-                            <button class="table-button btn btn-danger" 
-                            :data-cy="'delete-button-r'+ri" 
-                            @click="deleteRow(row.id)" 
-                            v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                            <button class="table-button btn btn-danger"
-                            :data-cy="'cancel-button-r'+ri"
-                            @click="cancelRowEdit(ri)" 
-                            v-if="(rowToEditIndex==ri)">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </span>`,
     props: { 
-        rows: {
-            type: Array,
-            required: true
+        customButtons: {
+            type: Array
         },
         columns: {
             type: Array,
             required: true
         },
-        customButtons: {
-            type: Array
+        rows: {
+            type: Array,
+            required: true
         },
         canEdit: {
             type: Boolean,
@@ -223,7 +225,7 @@ let NewCustomTableComponent = {
         return {
             rowToEditIndex: null,
             indexesToChange: [],
-            rowIndicesArr: [],
+            indexesToAction: [],
             editedRowData: {},
             originalRow: {},
             selectAllEvent: false,
@@ -235,11 +237,10 @@ let NewCustomTableComponent = {
     methods: {
 
         selectAll: function(allChecked){
-            console.log("hello, this is the selectAll function")
-            this.rowIndicesArr = []
+            this.indexesToAction = []
             if(!allChecked){
                 for(let i = 0; i < this.rows.length; i++){
-                    this.rowIndicesArr.push(i)
+                    this.indexesToAction.push(this.rows[i].id)
                 }
                 this.selectAllEvent = true
             }
@@ -249,7 +250,6 @@ let NewCustomTableComponent = {
         },
 
         select: function(rowIndex, colIndex){
-            console.log(this.rows[rowIndex].data[colIndex])
             if(this.rows[rowIndex].data[colIndex] == false){
                 this.rows[rowIndex].data[colIndex] = true
             }
@@ -258,21 +258,18 @@ let NewCustomTableComponent = {
             }    
         },
 
-        addRow: function(rowIndex){
-            console.log(rowIndex)
-            for(let i = 0; i < this.rowIndicesArr.length; i++){
-                if(this.rowIndicesArr[i] == rowIndex){
-                    console.log("Entered conditional: \n")
-                    this.rowIndicesArr.splice(i, 1)
+        addRow: function(rowIndex, check){
+            for(let i = 0; i < this.indexesToAction.length; i++){
+                if(this.indexesToAction[i] == rowIndex){
+                    this.indexesToAction.splice(i, 1)
                     return
                 }
             }
-            this.rowIndicesArr.push(rowIndex)
+            this.indexesToAction.push(rowIndex)
         },
 
         buttonEventHandler(event){
-            console.log("Emitting custom button event: " + event)
-            this.$emit('custom-event', event, this.rowIndicesArr)
+            this.$emit(event + "-event", this.indexesToAction)
         },
 
         editRow: function(index){
@@ -284,10 +281,11 @@ let NewCustomTableComponent = {
             }))
             this.editedRowData = { 
                 'id': this.rows[index].id,
-                'data': this.rows[index].data
+                'data': this.rows[index].data    
             }
             this.$emit('edit-clicked')
         },
+
         finishRowEdit: function(id){
             this.rowToEditIndex = null
             this.currentlyEditing = false
@@ -296,6 +294,7 @@ let NewCustomTableComponent = {
             for(i=0; i < this.indexesToChange.length; i ++){
                 let key = this.columns[this.indexesToChange[i]]
                 jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
+                console.log("Hello!")
             }
 
             this.indexesToChange = []
@@ -303,22 +302,27 @@ let NewCustomTableComponent = {
 
             this.$emit('row-edited', jsonObject, id)
         },
+
         cancelRowEdit: function(index){
+
+            this.rows[this.rowToEditIndex].data = this.originalRow.data
+
             this.rowToEditIndex = null
             this.currentlyEditing = false
-            
-            this.rows[index].data = this.originalRow.data
-            
+    
             this.indexesToChange = []
             this.editedRowData = {}
 
             this.$emit('row-canceled')
         },
+
         deleteRow: function(id){
             if(confirm("Would you like to delete this log?")){
-                this.$emit('row-deleted', id)
+                this.$emit('row-deleted', this.indexesToAction)
+                this.selectAllEvent = false
             }
         },
+
         changedCell: function(itemIndex){
             if(!this.indexesToChange.includes(itemIndex)){
                 if(this.editedRowData.data[itemIndex] != this.originalRow.data[itemIndex]) {

@@ -95,7 +95,7 @@ let CustomTableComponent = {
                             :data-cy="'number-input-r'+ri+'c'+ci" 
                             type="number" step="0.001" style="width: 70px;" 
                             v-if="rowToEditIndex==ri && inputType[ci].type == 'number'"
-                            v-model="editedRowData.data[ci]" 
+                            v-model.number="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
                         </td>
                         <td v-if="canEdit"> 
@@ -186,11 +186,19 @@ let CustomTableComponent = {
         finishRowEdit: function(id){
             this.rowToEditIndex = null
             this.currentlyEditing = false
-            
             let jsonObject = {}
+            
             for(i=0; i < this.indexesToChange.length; i ++){
                 let key = this.headers[this.indexesToChange[i]]
-                jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
+                console.log("Input type: " + this.inputOptions[this.indexesToChange[i]].type + " || Header: " + this.headers[this.indexesToChange[i]] + " || The value of i: " + i)
+                if(this.inputOptions[this.indexesToChange[i]].type == 'number'){
+                    console.log("Entered number conditional")
+                    jsonObject[key] = Number(this.editedRowData.data[this.indexesToChange[i]])
+                    console.log(typeof Number(jsonObject[key]))
+                }
+                else{
+                    jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
+                }
             }
 
             this.indexesToChange = []
@@ -199,6 +207,7 @@ let CustomTableComponent = {
             this.$emit('row-edited', jsonObject, id)
         },
         cancelRowEdit: function(index){
+            console.log("This is the index: " + index + " || This is the rowToEditIndex" + this.rowToEditIndex )
             this.rowToEditIndex = null
             this.currentlyEditing = false
             

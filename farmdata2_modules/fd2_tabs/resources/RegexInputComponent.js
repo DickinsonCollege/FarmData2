@@ -97,6 +97,7 @@ let RegexInputComponent = {
           // Handles validation of the input value
           blurEventHandler: function (e) {
             const inputVal = e.target.value;
+            console.log(inputVal)
             this.validateVal(inputVal) 
         },
 
@@ -111,6 +112,7 @@ let RegexInputComponent = {
             const re = new RegExp(this.regex)
             const temp = this.isMatch
             this.isMatch = re.test(inputVal)
+            console.log("This is the regular expression: " + re + " || This is the match value: " + temp + " || This is the input value: " + inputVal)
             this.$emit('input-changed', inputVal)
             this.updateColor(this.isMatch)
             if(this.isMatch != temp){
