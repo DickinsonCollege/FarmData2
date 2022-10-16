@@ -69,7 +69,8 @@ services:
       - 5901:5901
       - 6901:6901
     profiles:
-      - unix
+      - macos
+      - linux
 
   fd2dev-win:
     image: farmdata2/dev:fd2.1
