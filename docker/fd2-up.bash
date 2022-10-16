@@ -4,7 +4,8 @@ echo "Starting FarmData2..."
 
 # Checking for docker.sock
 echo "Checking for docker..."
-if [ ! -L /var/run/docker.sock ];
+DOCKER_SOCK_EXISTS=$(ls /var/run/docker.sock 2> /dev/null)
+if [ -z "$DOCKER_SOCK_EXISTS" ];
 then
   echo "  Docker socket at /var/run/docker.sock not found."
   echo "  Ensure that the docker engine or Docker desktop is installed and running."
