@@ -2,6 +2,15 @@
 
 echo "Starting FarmData2..."
 
+# Checking for docker.sock
+echo "Checking for docker..."
+if [ ! -e /var/run/docker.sock ];
+then
+  echo "  Docker socket at /var/run/docker.sock not found."
+  echo "  Ensure that the docker engine or Docker desktop is installed and running."
+  exit -1
+fi
+
 # Get the name of the directory containing the FarmData2 repo.
 # This is the FarmData2 directory by default, but may have been
 # changed by the user.
