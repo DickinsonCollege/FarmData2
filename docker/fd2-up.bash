@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Function that checks if prior operation succeded and
+# terminates if not.  Used throughout to avoid continuing
+# if an operation fails.
+function error_check {
+  if [ "$?" != "0" ];
+  then
+    echo "** Terminating: Error in last operation."
+    exit -1
+  fi
+}
+
 # Ensuring this script is not being run as root.
 RUNNING_AS_ROOT=$(id -un | grep "root" )
 if [ -n "$RUNNING_AS_ROOT" ];
@@ -9,16 +20,26 @@ then
   exit -1
 fi
 
+# Ensure that this script is run from within the docker directory
+DOCKER_PATH=$(pwd)
+DOCKER_BASE=$(basename $DOCKER_PATH)
+if [ "$DOCKER_BASE" != "docker" ];
+then
+  echo "The fd2-up.bash script must be run from the docker directory."
+  echo "Change to the FarmData2 docker directory and try again."
+  exit -1
+fi
+
 echo "Starting FarmData2..."
 
 # Get the name of the directory containing the FarmData2 repo.
 # This is the FarmData2 directory by default, but may have been
 # changed by the user.
 cd ..
-DOCKER_DIR=$(pwd)
-FD2_DIR=$(basename $DOCKER_DIR)
+FD2_PATH=$(pwd)
+FD2_DIR=$(basename $FD2_PATH)
 cd docker
-echo "  Starting from $DOCKER_DIR in repo $FD2_DIR."
+echo "  Starting from $FD2_PATH in repo $FD2_DIR."
 
 # Checking for docker.sock
 echo "Checking for docker..."
@@ -92,34 +113,53 @@ then
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
   if [ -z "$DOCKER_GRP_EXISTS" ];
   then
-    echo "  Docker group does not exit on host."
+    echo "  Creating new docker group on host."
+    sudo groupadd docker
+    error_check
+    DOCKER_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
+    echo "  docker group created with GID=$DOCKER_GID."
   else 
-    echo "  Docker group exists on host."
+    echo "  docker group exists on host."
   fi
 
   # If the current user is not in the docker group add them.
   USER_IN_DOCKER_GRP=$(groups | grep "docker")
   if [ -z "$USER_IN_DOCKER_GRP" ];
   then 
-    echo "  User $(id -un) is not in docker group."
+    echo "  Adding user $(id -un) to the docker group."
+    sudo usermod -a -G docker $(id -un)
+    error_check
+    echo "  User $(id -un) added to the docker group."
+    echo ""
+    echo "  *** Run the command: "
+    echo "  ***    exec newgrp docker"
+    echo ""
+    echo "  *** Then run the ./fd2-up.bash script again."
+    exit -1
   else
     echo "  User $(id -un) is in docker group."
   fi
 
-  # If the /var/run/docker.sock is not in the docker group add it.
+  # If the /var/run/docker.sock does not belong to the docker group assign it.
   SOCK_IN_DOCKER_GRP=$(ls -l /var/run/docker.sock | grep " docker ")
   if [ -z "$SOCK_IN_DOCKER_GRP" ];
   then
-    echo "  /var/run/docker.sock is not in docker group."
+    echo "  Assigning /var/run/docker.sock to the docker group."
+    sudo chgrp docker /var/run/docker.sock
+    error_check
+    echo "  /var/run/docker.sock assigned to docker group."
   else
-    echo "  /var/run/docker.sock is in docker group."
+    echo "  /var/run/docker.sock belongs to docker group."
   fi
 
   # If the docker group does not have write permission to docker.sock add it.
   DOCKER_GRP_RW_SOCK=$(ls -l /var/run/docker.sock | cut -c 5-6 | grep "rw")
   if [ -z "$DOCKER_GRP_RW_SOCK" ];
   then
-    echo "  docker group does not have RW access to /var/run/docker.sock."
+    echo "  Granting docker group RW access to /var/run/docker.sock."
+    sudo chmod g+rw /var/run/docker.sock
+    error_check
+    echo "  docker group granted RW access to /var/run/docker.sock."
   else 
     echo "  docker group has RW access to /var/run/docker.sock."
   fi
@@ -207,7 +247,6 @@ docker rm fd2_farmdata2 &> /dev/null
 
 echo "Starting containers..."
 # Note: Any command line args are passed to the docker-compose up command
-# Useful for: --force-recreate in particular.
 docker compose --profile $PROFILE up -d "$@"
 
 echo "Clearing drupal cache..."
