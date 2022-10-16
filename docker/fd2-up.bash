@@ -99,11 +99,7 @@ echo "  Running on a "$PROFILE" host."
 #        handled by the dev/startup.bash script that runs when the
 #        container starts.
 
-# default value for MacOS
-DOCKER_GRP_GID=23432
-FD2_GRP_GID=23433
-
-if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ] ;
+if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
 then
   echo "Configuring Windows (WSL 2) or Linux host..."
 
@@ -220,19 +216,32 @@ then
   fi
 fi
 
-exit -1
-
 # Put GID's of docker and fd2grp groups into files in ~/.fd2 on host
 # These will be used by the startup.bash script in the dev container
 # to ensure that the fd2dev user in the container has permissions to
 # RW the FarmData2 files and /var/run/docker.sock.
+echo "Passing GID's to development envornment container..."
+if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
+then
+ DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
+ FD2_GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
+elif [ "$profile" == "macos" ];
+then
+  # On macos the GIDs do not depend upon those on the host. 
+  # So just use some default values so that the code in 
+  # startup.bash can run the same regardless of the host OS.
+  DOCKER_GRP_GID=23432
+  FD2_GRP_GID=23433
+fi
+
+echo "  The docker GID=$DOCKER_GRP_GID."
+echo "  The fd2grp GID=$FD2_GRP_GID."
 
 
 
 
 
-
-
+exit -1
 
 # Delete any of the existing containers (except dev)
 echo "Removing any stale containers..."
