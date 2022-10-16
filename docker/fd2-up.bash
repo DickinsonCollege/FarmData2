@@ -163,63 +163,63 @@ then
   else 
     echo "  docker group has RW access to /var/run/docker.sock."
   fi
-fi
 
-echo "Configuring FarmData2 group (fd2grp)..."
-# If group fd2grp does not exist on host create it
-FD2GRP_EXISTS=$(grep "fd2grp" /etc/group)
-if [ -z "$FD2GRP_EXISTS" ];
-then
-  echo "  Creating fd2grp group on host."
-    sudo groupadd fd2grp
+  echo "Configuring FarmData2 group (fd2grp)..."
+  # If group fd2grp does not exist on host create it
+  FD2GRP_EXISTS=$(grep "fd2grp" /etc/group)
+  if [ -z "$FD2GRP_EXISTS" ];
+  then
+    echo "  Creating fd2grp group on host."
+      sudo groupadd fd2grp
+      error_check
+      FD2GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
+      echo "  fd2grp group created with GID=$FD2GRP_GID."
+    echo "  fd2grp created on host."
+  else
+    echo "  fd2grp group exists on host."
+  fi
+
+  # If the current user is not in the fd2grp then add them.
+  USER_IN_FD2GRP=$(groups | grep "fd2grp")
+  if [ -z "$USER_IN_FD2GRP" ];
+  then
+    echo "  Adding user $(id -un) to the fd2grp group."
+    sudo usermod -a -G fd2grp $(id -un)
     error_check
-    FD2GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
-    echo "  fd2grp group created with GID=$FD2GRP_GID."
-  echo "  fd2grp created on host."
-else
-  echo "  fd2grp group exists on host."
-fi
+    echo "  User user $(id -un) added to the fd2grp group."
+    echo ""
+    echo "  *** Run the command: "
+    echo "  ***    exec newgrp fd2grp"
+    echo ""
+    echo "  *** Then run the ./fd2-up.bash script again."
+    exit -1
+  else
+    echo "  User $(id -un) is in fd2grp group."
+  fi
 
-# If the current user is not in the fd2grp then add them.
-USER_IN_FD2GRP=$(groups | grep "fd2grp")
-if [ -z "$USER_IN_FD2GRP" ];
-then
-  echo "  Adding user $(id -un) to the fd2grp group."
-  sudo usermod -a -G fd2grp $(id -un)
-  error_check
-  echo "  User user $(id -un) added to the fd2grp group."
-  echo ""
-  echo "  *** Run the command: "
-  echo "  ***    exec newgrp fd2grp"
-  echo ""
-  echo "  *** Then run the ./fd2-up.bash script again."
-  exit -1
-else
-  echo "  User $(id -un) is in fd2grp group."
-fi
+  # If the FarmData2 directory is not in the fd2grp then set it.
+  FD2GRP_OWNS_FD2=$(ls -ld ../../$FD2_DIR | grep " fd2grp ")
+  if [ -z "$FD2GRP_OWNS_FD2" ];
+  then
+    echo "  Assigning $FD2_DIR to the fd2grp group."
+    sudo chgrp -R fd2grp ../../$FD2_DIR
+    error_check
+    echo "  $FD2_DIR assigned to the fd2grp group."
+  else
+    echo "  $FD2_DIR is in fd2grp group."
+  fi
 
-# If the FarmData2 directory is not in the fd2grp then set it.
-FD2GRP_OWNS_FD2=$(ls -ld ../../$FD2_DIR | grep " fd2grp ")
-if [ -z "$FD2GRP_OWNS_FD2" ];
-then
-  echo "  Assigning $FD2_DIR to the fd2grp group."
-  sudo chgrp -R fd2grp ../../$FD2_DIR
-  error_check
-  echo "  $FD2_DIR assigned to the fd2grp group."
-else
-  echo "  $FD2_DIR is in fd2grp group."
-fi
-
-# If the fd2grp does not have RW access to FarmData2 change it.
-FD2GRP_RW_FD2=$(ls -ld ../../$FD2_DIR | cut -c 5-6 | grep "rw")
-if [ -z "$FD2GRP_RW_FD2" ];
-then
-  echo "  Granting fd2grp RW access to $FD2_DIR."
-  sudo chmod -R g+rw ../../$FD2_DIR
-  error_check
-  echo "  fd2grp granted RW access to $FD2_DIR."
-else
-  echo "  fd2grp has RW access to $FD2_DIR."
+  # If the fd2grp does not have RW access to FarmData2 change it.
+  FD2GRP_RW_FD2=$(ls -ld ../../$FD2_DIR | cut -c 5-6 | grep "rw")
+  if [ -z "$FD2GRP_RW_FD2" ];
+  then
+    echo "  Granting fd2grp RW access to $FD2_DIR."
+    sudo chmod -R g+rw ../../$FD2_DIR
+    error_check
+    echo "  fd2grp granted RW access to $FD2_DIR."
+  else
+    echo "  fd2grp has RW access to $FD2_DIR."
+  fi
 fi
 
 exit -1
