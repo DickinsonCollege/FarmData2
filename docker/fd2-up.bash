@@ -7,8 +7,9 @@ echo "Starting FarmData2..."
 # changed by the user.
 cd ..
 DOCKER_DIR=$(pwd)
-FD2_DIR=$(basename $DOCKERDIR)
+FD2_DIR=$(basename $DOCKER_DIR)
 cd docker
+echo "  Starting from $DOCKER_DIR in repo $FD2_DIR."
 
 # Determine the host operating system.  This allows us to do different
 # things based on the host, both in this script and in the startup.bash
@@ -32,12 +33,20 @@ else
   echo "Plese file an issue on the FarmData2 issue tracker."
   exit -1 
 fi
-echo "Running on a "$PROFILE" host."
+echo "  Running on a "$PROFILE" host."
 
-# Setup to pass some GID information into the dev container.  
-# This is necessary because on Linux systems (and windows under WSL)
-# docker manages permissions in the container based on the UID/GID
-# values from the host.
+exit -1
+
+# Make sure that things are in order so that the user in the 
+# development container will be able to access the docker.sock
+# file and all of the FarmData2 files.
+#
+# This is done by making sure that for Windows/Linux hosts: 
+#   * There is a docker group.
+#   * The current user is in the docker group. 
+#   * The docker.sock file is in the docker group.
+#   * The docker group has RW access to docker.sock
+#
 
 # default value for MacOS
 DOCKER_GID=23432
@@ -83,7 +92,7 @@ then
 fi
 
 # If the FarmData2 directory is not in the gd2grp then set it.
-FD2GRP_OWNS_FD2=$(ls -ld ../../FarmData2 | grep " fd2grp ")
+FD2GRP_OWNS_FD2=$(ls -ld ../../$FD2_DIR | grep " fd2grp ")
 if ! $FD2GRP_OWNS_FD2 ;
 then
 fi
@@ -93,6 +102,7 @@ fi
 # to ensure that the fd2dev user in the container has permissions to
 # RW the FarmData2 files and /var/run/docker.sock.
 
+exit -1
 
 
 
