@@ -2,20 +2,101 @@
 
 echo "Starting FarmData2..."
 
+# Get the name of the directory containing the FarmData2 repo.
+# This is the FarmData2 directory by default, but may have been
+# changed by the user.
+cd ..
+DOCKER_DIR=$(pwd)
+FD2_DIR=$(basename $DOCKERDIR)
+cd docker
+
+# Determine the host operating system.  This allows us to do different
+# things based on the host, both in this script and in the startup.bash
+# script that runs in the dev container when it starts.
 echo "Detecting Operating System..."
-# Note: Profiles are defined in docker-compose.yml.
 OS=$(uname -a)
 PROFILE=
 if [[ "$OS" == *"Darwin"* ]];
 then
-  PROFILE=unix
+  PROFILE=macos
 elif [[ "$OS" == *"microsoft"* ]] || [[ "$OS" == *"Microsoft"* ]];
 then
   # Note that this is before Linux because if running in WSL
-  # uname -a reports Linux, but also has Microsoft later in the output.
+  # uname -a reports Linux, but also has microsoft later in the output.
   PROFILE=windows
-elif [[ "$OS" == *"Linux"* ]]
+elif [[ "$OS" == *"Linux"* ]];
 then
+  PROFILE=linux
+else
+  echo "Your host operating system $OS was not recognized."
+  echo "Plese file an issue on the FarmData2 issue tracker."
+  exit -1 
+fi
+echo "Running on a "$PROFILE" host."
+
+# Setup to pass some GID information into the dev container.  
+# This is necessary because on Linux systems (and windows under WSL)
+# docker manages permissions in the container based on the UID/GID
+# values from the host.
+
+# default value for MacOS
+DOCKER_GID=23432
+FD2_GID=23433
+
+if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
+
+  # If the docker group doesn't exist, create it.
+  DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
+  if ! $DOCKER_GRP_EXISTS ;
+  then
+  fi
+
+  # If the current user is not in the docker group add them.
+  IN_DOCKER_GRP=$(groups | grep "docker")
+  if ! $IN_DOCKER_GRP ;
+  then 
+  fi
+
+  # If the /var/run/docker.sock is not in the docker group add it.
+  SOCK_IN_DOCKER=$(ls -l /var/run/docker.sock | grep " docker ")
+  if ! $SOCK_IN_DOCKER ;
+  then
+  fi
+
+  # If the docker group does not have write permission to docker.sock add it.
+  DOCKER_RW_SOCK=$(ls -l /var/run/docker.sock | cut -c 5-6 | grep "rw")
+  if ! $DOCKER_RW_SOCK ;
+  then
+  fi
+fi 
+
+# If group fd2grp does not exist on host create it
+FD2GRP_EXISTS=$(grep "fd2grp" /etc/group)
+if ! "$FD2GRP_EXISTS" ;
+then
+fi
+
+# If the current user is not in the fd2grp then add them.
+IN_FD2GRP=$(groups | grep "fd2grp")
+if ! "$IN_FD2GRP" ;
+then
+fi
+
+# If the FarmData2 directory is not in the gd2grp then set it.
+FD2GRP_OWNS_FD2=$(ls -ld ../../FarmData2 | grep " fd2grp ")
+if ! $FD2GRP_OWNS_FD2 ;
+then
+fi
+
+# Put GID's of docker and fd2grp groups into files in ~/.fd2 on host
+# These will be used by the startup.bash script in the dev container
+# to ensure that the fd2dev user in the container has permissions to
+# RW the FarmData2 files and /var/run/docker.sock.
+
+
+
+
+if [ "$PROFILE" == "windows" ] 
 
   # Linux uses the host UID/GID values from mounted directories in the container.
   # So we need to ensure that the fd2user user in the container can RW the FarmData2 direcotry.
@@ -64,13 +145,7 @@ then
   fi
 fi
 
-if [ "$PROFILE" == "" ]
-then
-  echo "Operating system $OS was not recognized."
-  echo "Plese file an issue on the FarmData2 issue tracker."
-  exit -1 
-fi
-echo "Running on "$PROFILE
+
 
 # Delete any of the existing containers (except dev)
 echo "Removing any stale containers..."
