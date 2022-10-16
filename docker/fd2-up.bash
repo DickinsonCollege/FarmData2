@@ -225,7 +225,7 @@ if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
 then
  DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
  FD2_GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
-elif [ "$profile" == "macos" ];
+elif [ "$PROFILE" == "macos" ];
 then
   # On macos the GIDs do not depend upon those on the host. 
   # So just use some default values so that the code in 
