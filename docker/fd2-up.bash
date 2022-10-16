@@ -20,6 +20,15 @@ then
   exit -1
 fi
 
+# Ensure that this script is not being run in the development container.
+HOST=$(docker inspect -f '{{.Name}}' $HOSTNAME 2> /dev/null)
+if [ "$HOST" == "/fd2_dev" ];
+then
+  echo "The fd2-up.bash script should not be run in the dev container."
+  echo "Always run fd2-up.bash on your host OS."
+  exit -1
+fi
+
 # Ensure that this script is run from within the docker directory
 DOCKER_PATH=$(pwd)
 DOCKER_BASE=$(basename $DOCKER_PATH)
@@ -237,7 +246,9 @@ fi
 echo "  The docker GID=$DOCKER_GRP_GID."
 echo "  The fd2grp GID=$FD2_GRP_GID."
 
-
+rmdir -rf ~/.fd2 &> /dev/null
+mkdir ~/.fd2
+echo "$DOCKER_GRP_GID" > ~/.fd2/
 
 
 
