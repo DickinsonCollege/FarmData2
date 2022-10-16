@@ -64,7 +64,8 @@ services:
       - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js:delegated
       - /var/run/docker.sock:/var/run/docker.sock
       - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
-      - farmos_db:/home/fd2dev/FarmData2/docker/db
+      - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for perrformance.
+      - ~/.fd2:/.fd2  # mount GID information.
     ports:
       - 5901:5901
       - 6901:6901
@@ -85,7 +86,8 @@ services:
       - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js:delegated
       - //var/run/docker.sock:/var/run/docker.sock
       - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
-      - farmos_db:/home/fd2dev/FarmData2/docker/db
+      - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for perrformance.
+      - ~/.fd2:/.fd2  # mount GID information.
     ports:
       - 5901:5901
       - 6901:6901
