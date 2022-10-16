@@ -2,16 +2,6 @@
 
 echo "Starting FarmData2..."
 
-# Checking for docker.sock
-echo "Checking for docker..."
-DOCKER_SOCK_EXISTS=$(ls /var/run/docker.sock 2> /dev/null)
-if [ -z "$DOCKER_SOCK_EXISTS" ];
-then
-  echo "  Docker socket at /var/run/docker.sock not found."
-  echo "  Ensure that the docker engine or Docker desktop is installed and running."
-  exit -1
-fi
-
 # Get the name of the directory containing the FarmData2 repo.
 # This is the FarmData2 directory by default, but may have been
 # changed by the user.
@@ -20,6 +10,18 @@ DOCKER_DIR=$(pwd)
 FD2_DIR=$(basename $DOCKER_DIR)
 cd docker
 echo "  Starting from $DOCKER_DIR in repo $FD2_DIR."
+
+# Checking for docker.sock
+echo "Checking for docker..."
+DOCKER_SOCK_EXISTS=$(ls /var/run/docker.sock 2> /dev/null)
+if [ -z "$DOCKER_SOCK_EXISTS" ];
+then
+  echo "  Docker socket not found at /var/run/docker.sock."
+  echo "  Ensure that the docker engine or Docker desktop is installed and running."
+  exit -1
+else
+  echo "  Docker socket found at /var/run/docker.sock."
+fi
 
 # Determine the host operating system.  This allows us to do different
 # things based on the host, both in this script and in the startup.bash
