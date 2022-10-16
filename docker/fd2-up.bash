@@ -35,49 +35,68 @@ else
 fi
 echo "  Running on a "$PROFILE" host."
 
-exit -1
-
 # Make sure that things are in order so that the user in the 
 # development container will be able to access the docker.sock
-# file and all of the FarmData2 files.
+# file and all of the FarmData2 files. This is done by making 
+# sure that...
 #
-# This is done by making sure that for Windows/Linux hosts: 
+# For Windows/Linux hosts: 
 #   * There is a docker group.
 #   * The current user is in the docker group. 
 #   * The docker.sock file is in the docker group.
 #   * The docker group has RW access to docker.sock
+# 
+# For all hosts:
+#   * There is an fd2grp group.
+#   * That the current user is in the fd2grp
+#   * The fd2grp has W access to to everything in FarmData2
 #
+# When the development environment container starts:
+#   * There is a fd2grp with the same GID as on the host.
+#   * The fd2dev user is in the fd2grp group
+#   * The contents of fd2test are RW for the fd2grp.
+#  Note: The pieces in the development environment container are
+#        handled by the dev/startup.bash script that runs when the
+#        container starts.
 
 # default value for MacOS
 DOCKER_GID=23432
 FD2_GID=23433
 
-if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
+if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ] ;
+then
+  echo "Configuring windows (WSL) or Linux host..."
 
   # If the docker group doesn't exist, create it.
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
-  if ! $DOCKER_GRP_EXISTS ;
+  if [ -z "$DOCKER_GRP_EXISTS" ];
   then
+    echo "  Docker group does not exits on host."
   fi
 
   # If the current user is not in the docker group add them.
-  IN_DOCKER_GRP=$(groups | grep "docker")
-  if ! $IN_DOCKER_GRP ;
+  USER_IN_DOCKER_GRP=$(groups | grep "docker")
+  if [ -z "$USER_IN_DOCKER_GRP" ];
   then 
+    echo "  Current user $(id -un) is not in the docker group."
   fi
 
   # If the /var/run/docker.sock is not in the docker group add it.
-  SOCK_IN_DOCKER=$(ls -l /var/run/docker.sock | grep " docker ")
-  if ! $SOCK_IN_DOCKER ;
+  SOCK_IN_DOCKER_GRP=$(ls -l /var/run/docker.sock | grep " docker ")
+  if [ -z "$SOCK_IN_DOCKER_GRP" ];
   then
+    echo "  The /var/run/docker.sock file is not in the docker group."
   fi
 
   # If the docker group does not have write permission to docker.sock add it.
-  DOCKER_RW_SOCK=$(ls -l /var/run/docker.sock | cut -c 5-6 | grep "rw")
-  if ! $DOCKER_RW_SOCK ;
+  DOCKER_GRP_RW_SOCK=$(ls -l /var/run/docker.sock | cut -c 5-6 | grep "rw")
+  if [ -z "$DOCKER_GRP_RW_SOCK" ];
   then
+    echo "  The docker group does not have RW access to /var/run/docker.sock."
   fi
-fi 
+fi
+
+exit -1
 
 # If group fd2grp does not exist on host create it
 FD2GRP_EXISTS=$(grep "fd2grp" /etc/group)
