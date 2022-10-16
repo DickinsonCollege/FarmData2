@@ -133,15 +133,14 @@ then
     sudo usermod -a -G docker $(id -un)
     error_check
     echo "  User $(id -un) added to the docker group."
-    echo ""
-    echo "  *** Run the command: "
-    echo "  ***    exec newgrp docker"
-    echo ""
-    echo "  *** Then run the ./fd2-up.bash script again."
-    exit -1
+    echo "  ***"
+    echo "  *** Run the ./fd2-up.bash script again to continue."
+    echo "  ***"
+    exec newgrp docker
   else
     echo "  User $(id -un) is in docker group."
   fi
+  exit -1
 
   # If the /var/run/docker.sock does not belong to the docker group assign it.
   SOCK_IN_DOCKER_GRP=$(ls -l /var/run/docker.sock | grep " docker ")
@@ -190,12 +189,10 @@ then
     sudo usermod -a -G fd2grp $(id -un)
     error_check
     echo "  User user $(id -un) added to the fd2grp group."
-    echo ""
-    echo "  *** Run the command: "
-    echo "  ***    exec newgrp fd2grp"
-    echo ""
-    echo "  *** Then run the ./fd2-up.bash script again."
-    exit -1
+    echo "  ***"
+    echo "  *** Run the ./fd2-up.bash script again to continue."
+    echo "  ***"
+    exec newgrp fd2grp
   else
     echo "  User $(id -un) is in fd2grp group."
   fi
@@ -251,6 +248,7 @@ mkdir ~/.fd2
 echo "$DOCKER_GRP_GID" > ~/.fd2/docker.gid 
 echo "$FD2_GRP_GID" > ~/.fd2/fd2grp.gid
 
+# Now finally... actually start the containers...
 
 # Delete any of the existing containers (except dev)
 echo "Removing any stale containers..."
