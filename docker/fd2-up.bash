@@ -229,7 +229,7 @@ fi
 # These will be used by the startup.bash script in the dev container
 # to ensure that the fd2dev user in the container has permissions to
 # RW the FarmData2 files and /var/run/docker.sock.
-echo "Passing GID's to development envornment container..."
+echo "Preparing to pass GID's to the dev container..."
 if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
 then
  DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
@@ -246,13 +246,11 @@ fi
 echo "  The docker GID=$DOCKER_GRP_GID."
 echo "  The fd2grp GID=$FD2_GRP_GID."
 
-rmdir -rf ~/.fd2 &> /dev/null
+rm -rf ~/.fd2 &> /dev/null
 mkdir ~/.fd2
-echo "$DOCKER_GRP_GID" > ~/.fd2/
+echo "$DOCKER_GRP_GID" > ~/.fd2/docker.gid 
+echo "$FD2_GRP_GID" > ~/.fd2/fd2grp.gid
 
-
-
-exit -1
 
 # Delete any of the existing containers (except dev)
 echo "Removing any stale containers..."
