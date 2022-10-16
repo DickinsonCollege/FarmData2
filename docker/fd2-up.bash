@@ -87,8 +87,6 @@ echo "  Running on a "$PROFILE" host."
 #   * The current user is in the docker group. 
 #   * The docker.sock file is in the docker group.
 #   * The docker group has RW access to docker.sock
-# 
-# For all hosts:
 #   * There is an fd2grp group.
 #   * That the current user is in the fd2grp
 #   * The fd2grp has W access to to everything in FarmData2
@@ -102,8 +100,8 @@ echo "  Running on a "$PROFILE" host."
 #        container starts.
 
 # default value for MacOS
-DOCKER_GID=23432
-FD2_GID=23433
+DOCKER_GRP_GID=23432
+FD2_GRP_GID=23433
 
 if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ] ;
 then
@@ -116,8 +114,8 @@ then
     echo "  Creating new docker group on host."
     sudo groupadd docker
     error_check
-    DOCKER_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
-    echo "  docker group created with GID=$DOCKER_GID."
+    DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
+    echo "  docker group created with GID=$DOCKER_GRP_GID."
   else 
     echo "  docker group exists on host."
   fi
@@ -172,8 +170,8 @@ then
     echo "  Creating fd2grp group on host."
       sudo groupadd fd2grp
       error_check
-      FD2GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
-      echo "  fd2grp group created with GID=$FD2GRP_GID."
+      FD2_GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
+      echo "  fd2grp group created with GID=$FD2_GRP_GID."
     echo "  fd2grp created on host."
   else
     echo "  fd2grp group exists on host."
