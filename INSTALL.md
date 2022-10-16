@@ -96,7 +96,7 @@ Configure the git CLI within the FarmData2 development environment by:
    * Enter your GitHub username
    * Paste in your personal access token.
 
-Note: The git client in the FarmData2 development environment is set "store" your git credentials. This makes it so you do not have to re-enter your username and personal access token every time you `push`.  The "store" option is generally safe if you are using your own computer or working within a password protected account. The [Store your GitHub Credentials with the Git Credential Helper](https://techexpertise.medium.com/storing-git-credentials-with-git-credential-helper-33d22a6b5ce7) page contains more information about the "store" option and other options for how to manage your git credentials.
+Note: The git client in the FarmData2 development environment is set "store" your git credentials. This makes it so you do not have to re-enter your username and personal access token every time you `push`.  The "store" option saves your GitHub password in plain text in your account. This is generally safe if you are using your own computer within a password protected account. The [Store your GitHub Credentials with the Git Credential Helper](https://techexpertise.medium.com/storing-git-credentials-with-git-credential-helper-33d22a6b5ce7) page gives more information about the "store" option and other more secure options for how to manage your git credentials.
 
 ### Install the Sample Database Image ###
 
