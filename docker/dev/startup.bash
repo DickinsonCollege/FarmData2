@@ -5,10 +5,24 @@
 rm /tmp/.X11-unix/X1
 rm /tmp/.X1-lock
 
-# Ensure that the permissions on the mounted /var/run/docker.sock
-# are setup for docker in docker.
+# Create the docker group and ensure that the docker.sock 
+# has the appropriate permissions.
+echo "fd2dev" | sudo -S groupdel docker 
+echo "fd2dev" | sudo -S groupadd --GID $(cat /.fd2/docker.gid) docker
+echo "fd2dev" | sudo -S usermod -a -G docker fd2dev
 echo "fd2dev" | sudo -S chgrp docker /var/run/docker.sock
 echo "fd2dev" | sudo -S chmod 775 /var/run/docker.sock
+
+# Create the fd2grp group and ensure that the contents of the
+# FarmData2 and fd2test files and directories all have the 
+# correct permissions.
+echo "fd2dev" | sudo -S groupdel fd2grp
+echo "fd2dev" | sudo -S groupadd --GID $(cat /.fd2/fd2grp.gid) fd2grp
+echo "fd2dev" | sudo -S usermod -a -G fd2grp fd2dev
+echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/FarmData2
+echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/FarmData2
+echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/fd2test
+echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/fd2test
 
 # Launch the VNC server
 vncserver \
