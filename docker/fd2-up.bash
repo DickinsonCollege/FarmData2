@@ -140,7 +140,6 @@ then
   else
     echo "  User $(id -un) is in docker group."
   fi
-  exit -1
 
   # If the /var/run/docker.sock does not belong to the docker group assign it.
   SOCK_IN_DOCKER_GRP=$(ls -l /var/run/docker.sock | grep " docker ")
