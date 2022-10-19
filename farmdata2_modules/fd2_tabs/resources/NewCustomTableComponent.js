@@ -56,16 +56,8 @@ let NewCustomTableComponent = {
             title="Delete"
             data-cy="delete-button" 
             @click="deleteRow()" 
-            v-if="(rowToEditIndex==null)" 
             :disabled="indexesToAction.length == 0">
                 <span class="glyphicon glyphicon-trash"></span>
-            </button>
-            <button class="table-button btn btn-danger"
-            title="Cancel"
-            data-cy="cancel-button"
-            @click="cancelRowEdit()" 
-            v-if="(rowToEditIndex!=null)">
-                <span class="glyphicon glyphicon-remove"></span>
             </button>
             
             <button v-for="(button, hi) in customButtons"
@@ -87,12 +79,12 @@ let NewCustomTableComponent = {
                             v-if="customButtons[hi].visible && buttons.inputType.type == 'button'" 
                             :data-cy="'h'+hi"
                             style="text-align:center">
-                            <input type="checkbox"
-                            title="Select All"
-                            v-model="selectAllEvent"
-                            @click="selectAll(selectAllEvent)"
-                            :disabled="editDeleteDisabled">
-                        </th>
+                                <input type="checkbox"
+                                title="Select All"
+                                v-model="selectAllEvent"
+                                @click="selectAll(selectAllEvent)"
+                                :disabled="editDeleteDisabled">
+                            </th>
 
                         <th v-for="(column, hi) in columns"
                         v-if="columns[hi].visible && column.inputType.type != 'button'" 
@@ -117,11 +109,13 @@ let NewCustomTableComponent = {
                         <td
                         :data-cy="'r'+ri+'cbutton'+ri"
                         style="text-align:center">
-                            <input 
-                            type="checkbox" 
+                            <input
+                            :data-cy="'r'+ri+'cbuttonCheckbox'"
+                            type="checkbox"
+                            :value="row.id" 
                             v-if="customButtons.length > 0" 
-                            v-model="selectAllEvent || customButtons.length == 0"
-                            @click="addRow(row.id, selectAllEvent)"
+                            v-model="indexesToAction"
+                            @click="updateSelectAll(row.id, selectAllEvent)"
                             >
                         </td>
 
@@ -186,6 +180,13 @@ let NewCustomTableComponent = {
                         v-if="rowToEditIndex==ri" 
                         @click="finishRowEdit(row.id, row)">
                             <span class="glyphicon glyphicon-check"></span>
+                        </button>
+                        <button class="table-button btn btn-danger"
+                        title="Cancel"
+                        data-cy="cancel-button"
+                        @click="cancelRowEdit()" 
+                        v-if="(rowToEditIndex==ri)">
+                            <span class="glyphicon glyphicon-remove"></span>
                         </button>
                         </td>
                     </tr>
@@ -258,18 +259,20 @@ let NewCustomTableComponent = {
             }    
         },
 
-        addRow: function(rowIndex, check){
+        updateSelectAll: function(rowID, check){
             for(let i = 0; i < this.indexesToAction.length; i++){
-                if(this.indexesToAction[i] == rowIndex){
+                if(this.indexesToAction[i] == rowID && check){
                     this.indexesToAction.splice(i, 1)
+                    this.selectAllEvent = false
                     return
                 }
             }
-            this.indexesToAction.push(rowIndex)
         },
 
         buttonEventHandler(event){
             this.$emit(event + "-event", this.indexesToAction)
+            this.selectAllEvent = false
+            this.indexesToAction = []
         },
 
         editRow: function(index){
@@ -294,7 +297,6 @@ let NewCustomTableComponent = {
             for(i=0; i < this.indexesToChange.length; i ++){
                 let key = this.columns[this.indexesToChange[i]]
                 jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
-                console.log("Hello!")
             }
 
             this.indexesToChange = []
@@ -303,7 +305,7 @@ let NewCustomTableComponent = {
             this.$emit('row-edited', jsonObject, id)
         },
 
-        cancelRowEdit: function(index){
+        cancelRowEdit: function(){
 
             this.rows[this.rowToEditIndex].data = this.originalRow.data
 

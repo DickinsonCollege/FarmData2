@@ -396,11 +396,18 @@ new Vue({
           // Would also need to update data in the db via API here.
         },
 
-        cloneEvent(rowsToClone){
-            for(let i = 0; i < rowsToClone.length; i++){
-                clonedRow = structuredClone(this.newTableData[rowsToClone[i]])
-                this.newTableData.push(clonedRow)
-
+        cloneEvent(IDsToClone){
+            for(let i = 0; i < IDsToClone.length; i++){
+                for(let j = 0; j < this.newTableData.length; j++){
+                    if(this.newTableData[j].id == IDsToClone[i]){
+                        clonedRow = structuredClone(this.newTableData[j])
+                        // Prevents buttons sharing same row.id and thus clicking one
+                        // ticks another one 
+                        clonedRow.id = this.newTableData.length + 1
+                        this.newTableData.push(clonedRow)
+                        break
+                    }
+                }
             }
         },
         showColumn() {
