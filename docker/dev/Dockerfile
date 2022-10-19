@@ -12,6 +12,7 @@ RUN apt update \
         libsecret-1-0 \
         wget \
         curl \
+        man \
         libpci3 \
         firefox-esr
 
@@ -131,7 +132,7 @@ RUN chgrp -R $GROUP /home/fd2dev/fd2test \
  && chmod -R g+rw /home/fd2dev/fd2test
 USER $USERNAME
 
-# Augment the .bashrc file so that anytime a terminal is opened in the 
+# Augment the .bashrc file so that anytime a terminal is opened in the
 # development environemnt it is ensured that the user is in a group
 # that has the permissions to use the docker.sock.
 COPY --chown=$USERNAME:$USERNAME ./bashrc_addition ./.fd2/bashrc_addition
