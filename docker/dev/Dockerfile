@@ -62,13 +62,12 @@ RUN rm -f /usr/share/applications/firefox.desktop \
 ARG USERNAME=fd2dev
 ARG PASSWD=fd2dev
 ARG GROUP=fd2grp
-COPY fd2grp.gid makefd2dev.bash .
 RUN groupadd --gid $(cat ./fd2grp.gid) $GROUP \
  && useradd \
     -m $USERNAME -p "$(openssl passwd -1 $PASSWD)" \
     -s /bin/bash \
     -G sudo fd2grp \
- && rm fd2grp.gid makefd2dev.bash
+ && rm fd2grp.gid
 
 ##
 ## From here down each section assumes that it starts with
