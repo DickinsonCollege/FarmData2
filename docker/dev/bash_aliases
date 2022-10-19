@@ -1,8 +1,5 @@
 # Bash aliases that are installed into the dev container.
 
-# Shutdown FarmData2
-alias fd2-down="cd ~/FarmData2/docker && ./fd2-down.bash"
-
 # Change the database used for FarmData2
 setDB ()
 {

@@ -96,6 +96,7 @@ echo "  Running on a "$PROFILE" host."
 #   * The current user is in the docker group. 
 #   * The docker.sock file is in the docker group.
 #   * The docker group has RW access to docker.sock
+#
 #   * There is an fd2grp group.
 #   * That the current user is in the fd2grp
 #   * The fd2grp has W access to to everything in FarmData2
@@ -104,6 +105,7 @@ echo "  Running on a "$PROFILE" host."
 #   * There is a fd2grp with the same GID as on the host.
 #   * The fd2dev user is in the fd2grp group
 #   * The contents of fd2test are RW for the fd2grp.
+#
 #  Note: The pieces in the development environment container are
 #        handled by the dev/startup.bash script that runs when the
 #        container starts.
@@ -112,7 +114,7 @@ if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
 then
   echo "Configuring Windows (WSL 2) or Linux host..."
 
-  # If the docker group doesn't exist, create it.
+  # If the docker group doesn't exist on the host, create it.
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
   if [ -z "$DOCKER_GRP_EXISTS" ];
   then
@@ -171,11 +173,21 @@ then
   if [ -z "$FD2GRP_EXISTS" ];
   then
     echo "  Creating fd2grp group on host."
-      sudo groupadd fd2grp
-      error_check
-      FD2_GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
-      echo "  fd2grp group created with GID=$FD2_GRP_GID."
-    echo "  fd2grp created on host."
+    
+    FD2GRP_GID=$(cat ./dev/fd2grp.gid)
+    FD2GRP_GID_EXISTS=$(grep ":$FD2GRP_GID:" /etc/group)
+    if [ -z "$FD2GRP_GID_EXISTS" ];
+    then
+      echo "Attempted to create the fd2grp with GID=$FD2GRP_GID."
+      echo "Host machine already has a group with that GID."
+      echo "Change the group number in docker/dev/f2grp.gid to an unused GID."
+      echo "Then run fd2-up.bash again."
+      exit -1
+    fi
+
+    sudo -S groupadd --gid $FD2GRP_GID fd2grp
+    error_check
+    echo "  fd2grp group created on host with GID=$FD2GRP_GID."
   else
     echo "  fd2grp group exists on host."
   fi
@@ -226,20 +238,10 @@ fi
 # to ensure that the fd2dev user in the container has permissions to
 # RW the FarmData2 files and /var/run/docker.sock.
 echo "Preparing to pass GID's to the dev container..."
-if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
-then
- DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
- FD2_GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
-elif [ "$PROFILE" == "macos" ];
-then
-  # On macos the GIDs do not depend upon those on the host. 
-  # So just use some default values so that the code in 
-  # startup.bash can run the same regardless of the host OS.
-  DOCKER_GRP_GID=23432
-  FD2_GRP_GID=23433
-fi
 
+DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
 echo "  The docker GID=$DOCKER_GRP_GID."
+FD2_GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
 echo "  The fd2grp GID=$FD2_GRP_GID."
 
 rm -rf ~/.fd2 &> /dev/null

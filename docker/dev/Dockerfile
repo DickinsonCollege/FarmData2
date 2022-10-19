@@ -54,13 +54,20 @@ RUN rm -f /usr/share/applications/firefox.desktop \
  && rm -f /usr/share/applications/google-chrome.desktop \
  && rm -f /usr/share/applications/microsoft-edge-dev.desktop
 
-# Create the "fd2grp" and the non-root user "fd2dev" in the container.
+# Create the "fd2dev" user and "fd2grp" group in the container.
+# The GID of the group is read from the fd2grp.gid file.  That
+# allows the GID to be easily changed in the event a user already
+# has a group with the GID on their host (see fd2-up.bash).
 ARG USERNAME=fd2dev
 ARG PASSWD=fd2dev
-RUN useradd \
+ARG GROUP=fd2grp
+COPY fd2grp.gid makefd2dev.bash .
+RUN groupadd --gid $(cat ./fd2grp.gid) $GROUP \
+ && useradd \
     -m $USERNAME -p "$(openssl passwd -1 $PASSWD)" \
     -s /bin/bash \
-    -G sudo
+    -G sudo fd2grp \
+ && rm fd2grp.gid makefd2dev.bash
 
 ##
 ## From here down each section assumes that it starts with
@@ -111,12 +118,24 @@ RUN codium --install-extension streetsidesoftware.code-spell-checker
 RUN mkdir .fd2 \
  && mkdir -p .config/autostart
 COPY --chown=$USERNAME:$USERNAME ./startup.bash ./.fd2/startup.bash
-COPY --chown=$USERNAME:$USERNAME ./.bash_aliases ./.bash_aliases
+COPY --chown=$USERNAME:$USERNAME ./bash_aliases ./.bash_aliases
 COPY --chown=$USERNAME:$USERNAME ./panel.bash ./.fd2/panel.bash
 COPY --chown=$USERNAME:$USERNAME ./panel.desktop ./.config/autostart/panel.desktop
 RUN chmod +x .fd2/startup.bash \
  && chmod +x .fd2/panel.bash \
  && chmod +x .config/autostart/panel.desktop
+
+# Set permissions on the test directory in the container.
+USER root
+RUN chgrp -R $GROUP /home/fd2dev/fd2test \
+ && chmod -R g+rw /home/fd2dev/fd2test
+USER $USERNAME
+
+# Augment the .bashrc file so that anytime a terminal is opened in the 
+# development environemnt it is ensured that the user is in a group
+# that has the permissions to use the docker.sock.
+COPY --chown=$USERNAME:$USERNAME ./bashrc_addition ./.fd2/bashrc_addition
+RUN cat .fd2/bashrc_addition >> .bashrc
 
 # Stuff to reduce image size.
 USER root
