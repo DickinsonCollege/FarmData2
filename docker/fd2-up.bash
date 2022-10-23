@@ -91,7 +91,7 @@ echo "  Running on a "$PROFILE" host."
 # file and all of the FarmData2 files. This is done by making 
 # sure that...
 #
-# For Windows/Linux hosts: 
+# For Linux hosts: 
 #   * There is a docker group.
 #   * The current user is in the docker group. 
 #   * The docker.sock file is in the docker group.
@@ -99,7 +99,7 @@ echo "  Running on a "$PROFILE" host."
 #
 #   * There is an fd2grp group.
 #   * That the current user is in the fd2grp
-#   * The fd2grp has W access to to everything in FarmData2
+#   * The fd2grp has RW access to to everything in FarmData2
 #
 # When the development environment container starts:
 #   * There is a fd2grp with the same GID as on the host.
@@ -110,9 +110,9 @@ echo "  Running on a "$PROFILE" host."
 #        handled by the dev/startup.bash script that runs when the
 #        container starts.
 
-if [ "$PROFILE" == "windows" ] || [ "$PROFILE" == "linux" ];
+if [ "$PROFILE" == "linux" ];
 then
-  echo "Configuring Windows (WSL 2) or Linux host..."
+  echo "Configuring Linux host..."
 
   # If the docker group doesn't exist on the host, create it.
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
@@ -239,10 +239,21 @@ fi
 # RW the FarmData2 files and /var/run/docker.sock.
 echo "Preparing to pass GID's to the dev container..."
 
-DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
+if [ "$PROFILE" == "macos" || "$PROFILE" == "windows" ];
+then
+  # For macos and windows use default values because they do not
+  # have to match the host.
+  FD2GRP_GID=$(cat dev/fd2grp.gid)
+  DOCKER_GRP_GID=$(( $FD2GRP_GID + 1 ))
+else
+  # For linux use the values that were obtained above so that
+  # those in the container match those on the host.
+  DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
+  FD2GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
+fi
+
 echo "  The docker GID=$DOCKER_GRP_GID."
-FD2_GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
-echo "  The fd2grp GID=$FD2_GRP_GID."
+echo "  The fd2grp GID=$FD2GRP_GID."
 
 rm -rf ~/.fd2 &> /dev/null
 mkdir ~/.fd2

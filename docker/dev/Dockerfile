@@ -58,17 +58,30 @@ RUN rm -f /usr/share/applications/firefox.desktop \
 # Create the "fd2dev" user and "fd2grp" group in the container.
 # The GID of the group is read from the fd2grp.gid file.  That
 # allows the GID to be easily changed in the event a user already
-# has a group with the GID on their host (see fd2-up.bash).
+# has a group with the GID on their host (see fd2-up.bash).  Also,
+# ensure that the fd2dev user's primary group has the GID so that
+# new files and dirs are created with the right permissions.
 ARG USERNAME=fd2dev
 ARG PASSWD=fd2dev
 ARG GROUP=fd2grp
+COPY ./fd2grp.gid .
 RUN groupadd --gid $(cat ./fd2grp.gid) $GROUP \
  && useradd \
     -m $USERNAME -p "$(openssl passwd -1 $PASSWD)" \
+    -g $GROUP \  
     -s /bin/bash \
-    -G sudo fd2grp \
+    -G sudo \
  && rm fd2grp.gid
 
+# Modify the default umask for the sytsem so that when files
+# or directories are created the group has RW permisison as
+# well as the owner.  That will ensure tha that any new files
+# or directories created in the container are writeable on
+# the host.
+RUN grep -n "^UMASK.*022$" /etc/login.defs | cut -d: -f1 \
+ && sudo sed -i '151 s/022/002/' /etc/login.defs
+
+##
 ##
 ## From here down each section assumes that it starts with
 ## the non-root user and with the working directory being that
