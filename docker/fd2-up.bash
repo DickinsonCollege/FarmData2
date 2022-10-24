@@ -239,7 +239,7 @@ fi
 # RW the FarmData2 files and /var/run/docker.sock.
 echo "Preparing to pass GID's to the dev container..."
 
-if [ "$PROFILE" == "macos" || "$PROFILE" == "windows" ];
+if [ "$PROFILE" == "macos" ] || [ "$PROFILE" == "windows" ];
 then
   # For macos and windows use default values because they do not
   # have to match the host.
@@ -255,10 +255,10 @@ fi
 echo "  The docker GID=$DOCKER_GRP_GID."
 echo "  The fd2grp GID=$FD2GRP_GID."
 
-rm -rf ~/.fd2 &> /dev/null
-mkdir ~/.fd2
-echo "$DOCKER_GRP_GID" > ~/.fd2/docker.gid 
-echo "$FD2_GRP_GID" > ~/.fd2/fd2grp.gid
+rm -rf ~/.fd2gids &> /dev/null
+mkdir ~/.fd2gids
+echo "$FD2GRP_GID" > ~/.fd2gids/fd2grp.gid
+echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid 
 
 # Now finally... actually start the containers...
 

@@ -61,6 +61,8 @@ RUN rm -f /usr/share/applications/firefox.desktop \
 # has a group with the GID on their host (see fd2-up.bash).  Also,
 # ensure that the fd2dev user's primary group has the GID so that
 # new files and dirs are created with the right permissions.
+# NOTE: These ARGS are used here, but may be hard coded in other
+#       files in this dev directory.  Change them with caution.
 ARG USERNAME=fd2dev
 ARG PASSWD=fd2dev
 ARG GROUP=fd2grp
@@ -78,8 +80,9 @@ RUN groupadd --gid $(cat ./fd2grp.gid) $GROUP \
 # well as the owner.  That will ensure tha that any new files
 # or directories created in the container are writeable on
 # the host.
-RUN grep -n "^UMASK.*022$" /etc/login.defs | cut -d: -f1 \
- && sudo sed -i '151 s/022/002/' /etc/login.defs
+COPY ./umask.bash .
+RUN ./umask.bash \
+ && rm ./umask.bash
 
 ##
 ##
@@ -140,8 +143,8 @@ RUN chmod +x .fd2/startup.bash \
 
 # Set permissions on the test directory in the container.
 USER root
-RUN chgrp -R $GROUP /home/fd2dev/fd2test \
- && chmod -R g+rw /home/fd2dev/fd2test
+RUN chgrp -R $GROUP /home/$USERNAME/fd2test \
+ && chmod -R g+rw /home/$USERNAME/fd2test
 USER $USERNAME
 
 # Augment the .bashrc file so that anytime a terminal is opened in the
