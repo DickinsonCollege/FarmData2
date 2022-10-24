@@ -58,10 +58,10 @@ services:
     networks:
       - fd2
     volumes:
-      - ..:/home/fd2dev/FarmData2:delegated
-      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules:delegated
-      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress:delegated
-      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js:delegated
+      - ..:/home/fd2dev/FarmData2
+      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
+      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
+      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
       - /var/run/docker.sock:/var/run/docker.sock
       - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
       - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for perrformance.
@@ -80,10 +80,10 @@ services:
     networks:
       - fd2
     volumes:
-      - ..:/home/fd2dev/FarmData2:delegated
-      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules:delegated
-      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress:delegated
-      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js:delegated
+      - ..:/home/fd2dev/FarmData2
+      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
+      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
+      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
       - //var/run/docker.sock:/var/run/docker.sock
       - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
       - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for perrformance.
