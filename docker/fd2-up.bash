@@ -176,7 +176,7 @@ then
     
     FD2GRP_GID=$(cat ./dev/fd2grp.gid)
     FD2GRP_GID_EXISTS=$(grep ":$FD2GRP_GID:" /etc/group)
-    if [ -z "$FD2GRP_GID_EXISTS" ];
+    if [ -n "$FD2GRP_GID_EXISTS" ];
     then
       echo "Attempted to create the fd2grp with GID=$FD2GRP_GID."
       echo "Host machine already has a group with that GID."
