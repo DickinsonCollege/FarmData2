@@ -24,7 +24,7 @@ DOCKER_GID=$(cat ~/.fd2/gids/docker.gid)
 DOCKER_GROUP=$(getent group $DOCKER_GID | cut -d':' -f1)
 
 USER_IN_DOCKER_GRP=$(groups | grep "$DOCKER_GROUP")
-USER_IN_FD2GRP=$(groups | grep "fd2grp")
+USER_IN_FD2GRP=$(groups | grep "^fd2grp ")
 if [ -z "$USER_IN_DOCKER_GRP" ];
 then 
   exec newgrp $DOCKER_GROUP
