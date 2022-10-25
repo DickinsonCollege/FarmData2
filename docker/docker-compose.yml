@@ -50,7 +50,8 @@ services:
       - 'db'
 
   # Note: Separate profiles for unix vs windows systems
-  #       Necessary to mount /var/run/docker.sock
+  #       Necessary to mount /var/run/docker.sock due to 
+  #       absolute path syntax on windows.
   fd2dev-unix:
     image: farmdata2/dev:fd2.1
     container_name: fd2_dev
@@ -93,7 +94,6 @@ services:
       - 6901:6901
     profiles:
       - windows
-
 
 volumes:
   farmdev_home_fd2.1:
