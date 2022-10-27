@@ -3,13 +3,17 @@
 # Deletes all of the harvest logs.
 
 from utils import *
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 def main():
 
     print("Deleting Harvests...")
 
     # Delete any harvests that exist.
-    deleteAllLogs('http://localhost/log.json?type=farm_harvest')
+    deleteAllLogs("http://" + host + "/log.json?type=farm_harvest")
 
     print("Harvests deleted.")
 

@@ -1,11 +1,11 @@
-import {mount} from '@cypress/vue'
+import { mount } from '@cypress/vue2'
 import { shallowMount } from '@vue/test-utils'
 
 var CustTable = require("./CustomTableComponent.js")
 var CustomTableComponent = CustTable.CustomTableComponent
 
 describe('custom table component', () => {
-    
+
     context('when edit and delete buttons are not there', () => {
         let prop= {
             rows: [ {id: 10, data: [12, 3, 'answome']},
@@ -17,7 +17,7 @@ describe('custom table component', () => {
         beforeEach(() => {
             mount(CustomTableComponent, {
                 propsData: prop
-            }) 
+            })
         })
 
         it('the table exists', () => {
@@ -68,7 +68,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0c1]').should('have.text', '10')
             cy.get('[data-cy=r0c2]').should('have.text', 'Wahooo')
         })
-        
+
         it('renders HTML elements found in strings', () => {
             prop.rows[0].data = [ 5, 10, '<p>html baby!</p>' ]
             cy.get('[data-cy=r0c2]').should('have.text', 'html baby!')
@@ -90,9 +90,9 @@ describe('custom table component', () => {
         beforeEach(() => {
             mount(CustomTableComponent, {
                 propsData: prop
-            })  
+            })
         })
-        
+
         it('can edit a row using the edit button', () => {
             cy.get('[data-cy=edit-button-r0]')
                 .should('exist')
@@ -203,7 +203,7 @@ describe('custom table component', () => {
         beforeEach(() => {
             mount(CustomTableComponent, {
                 propsData: prop
-            })  
+            })
         })
 
         it('cancel button is there when a row is being edited', () => {
@@ -223,7 +223,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=text-input-r1c1]')
                 .clear()
                 .type('hey')
-            
+
             cy.get('[data-cy=cancel-button-r1]')
                 .click()
 
@@ -243,7 +243,7 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=edit-button-r0')
                 .click()
-            
+
             cy.get('[data-cy=edit-header')
                 .should('not.exist')
             cy.get('[data-cy=delete-header')
@@ -280,7 +280,7 @@ describe('custom table component', () => {
         beforeEach(() => {
             mount(CustomTableComponent, {
                 propsData: prop
-            }) 
+            })
         })
 
         it('only headers with corresponsing true property', () => {
@@ -294,7 +294,7 @@ describe('custom table component', () => {
 
         it('only displays colums with corresponsing true property', () => {
             // need to test this way because columns are still
-            // numbered in r0c0, r0c1, r0c2 even if c1 is not 
+            // numbered in r0c0, r0c1, r0c2 even if c1 is not
             // displayed.
             cy.get('[data-cy=r0]')  // <tr>
                 .children()         // all <td>s
@@ -331,7 +331,7 @@ describe('custom table component', () => {
         beforeEach(() => {
             mount(CustomTableComponent, {
                 propsData: prop
-            }) 
+            })
         })
 
         it('correct input types are provided', () => {
@@ -414,7 +414,7 @@ describe('custom table component', () => {
         let prop= {
             rows: [ {id: 10, data: [12, 3, 'answome']},
                     {id: 11, data: [19, 3, 'and'],},
-                    {id: 12, data: [12, 12, 'answome12'],}, 
+                    {id: 12, data: [12, 12, 'answome12'],},
             ],
             headers: ['cool', 'works?', 'hello'],
             canDelete: true,
@@ -423,7 +423,7 @@ describe('custom table component', () => {
         beforeEach(() => {
             mount(CustomTableComponent, {
                 propsData: prop
-            }) 
+            })
         })
 
         it('OK" is clicked', () => {
@@ -448,8 +448,8 @@ describe('custom table component', () => {
                 .click()
 
             cy.on("window:confirm", () => false)
-            
-            cy.wait(100).then(() => { 
+
+            cy.wait(100).then(() => {
                 expect(spy).to.not.be.called
             })
         })
@@ -463,7 +463,7 @@ describe('custom table component', () => {
                 propsData: {
                     rows: [ {id: 10, data: [12, 3, 'answome']},
                     {id: 11, data: [19, 3, 'and'],},
-                    {id: 12, data: [12, 12, 'answome12'],}, 
+                    {id: 12, data: [12, 12, 'answome12'],},
                     ],
                     headers: ['cool', 'works?', 'hello'],
                     canDelete: true,
@@ -494,10 +494,10 @@ describe('custom table component', () => {
                 cy.wrap(comp.setProps({ visibleColumns: [false, true, true]}))
                 .then(() => {
                     // now going back to a non-null array
-                    expect(comp.vm.visibleColumns).to.deep.equal([false, true, true]) 
+                    expect(comp.vm.visibleColumns).to.deep.equal([false, true, true])
                     expect(comp.vm.isVisible).to.deep.equal([false, true, true])
                 })
-            })    
+            })
         })
 
         it('checking prop changes for visibleColumns when the element is directly modified', () => {
@@ -512,7 +512,7 @@ describe('custom table component', () => {
     })
 
     context('export csv file', () => {
-        const path = require("path");
+        //const path = require("path");
         const downloadsFolder = 'cypress/downloads'
         let comp;
         beforeEach(() => {
@@ -520,7 +520,7 @@ describe('custom table component', () => {
                 propsData: {
                     rows: [ {id: 10, data: [12, 3, 'answome']},
                     {id: 11, data: [19, 3, 'and'],},
-                    {id: 12, data: [12, 12, 'answome12'],}, 
+                    {id: 12, data: [12, 12, 'answome12'],},
                     ],
                     headers: ['cool', 'works?', 'hello'],
                     canDelete: true,
@@ -538,7 +538,7 @@ describe('custom table component', () => {
         it('verifies download', () => {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
             var yyyy = today.getFullYear();
             today = mm + dd + yyyy;
             cy.get('[data-cy=export-btn]')
@@ -551,7 +551,7 @@ describe('custom table component', () => {
         it('verifies content of csv', () => {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
             var yyyy = today.getFullYear();
             today = mm + dd + yyyy;
             cy.get('[data-cy=export-btn]')
@@ -561,4 +561,5 @@ describe('custom table component', () => {
             cy.exec("rm -r " + downloadsFolder)
         });
     })
+
 })

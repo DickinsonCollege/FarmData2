@@ -1,0 +1,34 @@
+
+# This code is added to the end of the .bashrc file
+# in the fd2dev account in the development environment
+# container.  It ensures tha the fd2dev user is in the
+# docker group anytime a terminal is opened.
+
+# It uses the GID of the docker group on the host to ensure
+# that the fd2dev user is in a group with GID.  If the user
+# is already in the group then nothing is done.  If the user
+# is not in the group the a new shell process is started
+# to replace the current one, but with the user in the group. 
+
+# Then if the user is not in the fd2grp another shell is started
+# to ensure that the user is in that group.  
+
+# The end result is that when a terminal is opened the fd2dev user 
+# will be in both the fd2dev group and the docker group.  
+# Also, the default group for fd2dev will be fd2grp which ensures 
+# that new files are created with the proper group permissions.
+
+clear
+
+DOCKER_GID=$(cat ~/.fd2/gids/docker.gid)
+DOCKER_GROUP=$(getent group $DOCKER_GID | cut -d':' -f1)
+
+USER_IN_DOCKER_GRP=$(groups | grep "$DOCKER_GROUP")
+USER_IN_FD2GRP=$(groups | grep "^fd2grp ")
+if [ -z "$USER_IN_DOCKER_GRP" ];
+then 
+  exec newgrp $DOCKER_GROUP
+elif [ -z "$USER_IN_FD2GRP" ];
+then
+  exec newgrp fd2grp
+fi

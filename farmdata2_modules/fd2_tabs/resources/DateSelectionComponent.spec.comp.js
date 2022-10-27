@@ -1,4 +1,4 @@
-import { mount } from '@cypress/vue'
+import { mount } from '@cypress/vue2'
 import { shallowMount } from '@vue/test-utils'
 
 var DateComps = require("./DateSelectionComponent.js")
@@ -14,7 +14,7 @@ describe('date selection component', () => {
                     earliestDate: "2021-01-01"
                 }
             })
-        }) 
+        })
 
         it('sets to a default date', () => {
             cy.get('[data-cy=date-select]')
@@ -40,7 +40,7 @@ describe('date selection component', () => {
                 .blur()
                 .should('have.value', '2021-01-01')
         })
-        
+
         it('emits on click', () => {
             const spy = cy.spy()
             Cypress.vue.$on('click', spy)
@@ -50,7 +50,7 @@ describe('date selection component', () => {
                         expect(spy).to.be.called
                     })
         })
-    
+
 
         it('emits date after input type date is blurred', () => {
             const spy = cy.spy()
@@ -65,7 +65,7 @@ describe('date selection component', () => {
     })
 
     context('testing disabled option', () => {
-        
+
         it('checking if the datePicker is disabled', () => {
             mount(DateSelectionComponent, {
                 propsData: {
@@ -81,7 +81,7 @@ describe('date selection component', () => {
 
         it('checking disabled when prop changes', () => {
             let comp;
-            comp = shallowMount(DateSelectionComponent, { 
+            comp = shallowMount(DateSelectionComponent, {
                 propsData: {
                     setDate: "2021-06-09",
                     latestDate: "2021-12-31",
@@ -95,10 +95,10 @@ describe('date selection component', () => {
             })
         })
     })
-        
+
     context('watch prop change tests', () => {
         let comp;
-        beforeEach(() => {  
+        beforeEach(() => {
             // Use shallowMount here so we can use setProp
             comp = shallowMount(DateSelectionComponent, {
                 propsData: {
@@ -108,7 +108,7 @@ describe('date selection component', () => {
                 },
             })
         })
-        
+
         it ('change setDate prop to 2021-08-09', () => {
             expect(comp.vm.selectedDate).to.equal('2021-07-09')
             cy.wrap(comp.setProps({ setDate: '2021-08-09' }))
@@ -153,7 +153,7 @@ describe('date selection component', () => {
             earliestDate: "2021-01-01"
         }
 
-        it('emits date after the component is mounted', () => {   
+        it('emits date after the component is mounted', () => {
             const spy = cy.spy()
             mount(DateSelectionComponent, {
                 propsData: prop,
@@ -166,7 +166,7 @@ describe('date selection component', () => {
             })
         })
 
-        it('emits correct date after the component is mounted with invalid date(< than earliestDate)', () => {   
+        it('emits correct date after the component is mounted with invalid date(< than earliestDate)', () => {
             const spy = cy.spy()
             mount(DateSelectionComponent, {
                 propsData: propInvalidEarliest,
@@ -179,7 +179,7 @@ describe('date selection component', () => {
             })
         })
 
-        it('emits correct date after the component is mounted with invalid date(> than latestDate)', () => {   
+        it('emits correct date after the component is mounted with invalid date(> than latestDate)', () => {
             const spy = cy.spy()
             mount(DateSelectionComponent, {
                 propsData: propInvalidLatest,
@@ -192,7 +192,7 @@ describe('date selection component', () => {
             })
         })
 
-        it('emits date after the prop is changed', () => {   
+        it('emits date after the prop is changed', () => {
             const spy = cy.spy()
             let comp = shallowMount(DateSelectionComponent, {
                 propsData: prop,
@@ -206,7 +206,7 @@ describe('date selection component', () => {
             })
         })
 
-        it('emits correct date after the prop is changed to invalid date(< than earliestDate)', () => {   
+        it('emits correct date after the prop is changed to invalid date(< than earliestDate)', () => {
             const spy = cy.spy()
             let comp = shallowMount(DateSelectionComponent, {
                 propsData: prop,
@@ -220,8 +220,8 @@ describe('date selection component', () => {
             })
         })
 
-        it('emits correct date after the prop is changed to invalid date(> than latestDate)', () => {   
-            const spy = cy.spy()    
+        it('emits correct date after the prop is changed to invalid date(> than latestDate)', () => {
+            const spy = cy.spy()
             let comp = shallowMount(DateSelectionComponent, {
                 propsData: prop,
                 listeners: {

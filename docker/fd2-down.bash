@@ -1,8 +1,26 @@
 #!/bin/bash
+# Take all of the containers down
 
-export HOST_UID=$(id -u)
-export HOST_GID=$(id -g)
-export HOST_USER=$(id -nu)
-export HOST_GROUP=$(id -ng)
+# Ensure that this script is not being run in the development container.
+HOST=$(docker inspect -f '{{.Name}}' $HOSTNAME 2> /dev/null)
+if [ "$HOST" == "/fd2_dev" ];
+then
+  echo "The fd2-down.bash script should not be run in the dev container."
+  echo "Always run fd2-down.bash on your host OS."
+  exit -1
+fi
 
-docker-compose down
+echo "Stopping Containers..."
+docker stop fd2_phpmyadmin
+docker stop fd2_farmdata2
+docker stop fd2_mariadb
+docker stop fd2_dev
+
+echo "Deleting containers..."
+docker rm fd2_mariadb
+docker rm fd2_phpmyadmin --volumes  # remove /sessions volume created.
+docker rm fd2_farmdata2
+
+# Note don't delete fd2_dev so that customizations persist.
+
+echo "Done."

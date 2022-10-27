@@ -11,6 +11,10 @@ from csv import reader
 from utils import *
 import sys
 import random
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 # Get lists of all of the recognized crops, fields and users for validation.
 cropMap = getCropMap()
@@ -68,7 +72,7 @@ def addHarvest(row, plantingID):
                 "label": "Harvest"
             },
             {
-                "measure": "time", 
+                "measure": "time",
                 "value": row[8],  # hours worked
                 "unit": {
                     "id": hoursID,
@@ -77,7 +81,7 @@ def addHarvest(row, plantingID):
                 "label": "Labor"
             },
             {
-                "measure": "count", 
+                "measure": "count",
                 "value": 1,  # number of people (x Time = Total Time)
                              # default 1 here because FarmData didn't record this.
                              # Workers x Labor gives total time
@@ -118,8 +122,8 @@ def addHarvest(row, plantingID):
                 "resource": "taxonomy_term",
             }
         ],
-        "data": json.dumps({ 
-            "crop_tid": cropMap[row[5]] 
+        "data": json.dumps({
+            "crop_tid": cropMap[row[5]]
         })
     }
 
@@ -150,12 +154,12 @@ def getPlanting(row):
 
     # Only look for plantings before the harvest.  Note: limiting the time frame
     # before the harvest didn't effectively reduce multiple matches so not bothering.
-    # Note also there are a few plantings on the date of the harvest - planting must 
-    # never have been entered and put in later so it could be harvested.  So use le 
+    # Note also there are a few plantings on the date of the harvest - planting must
+    # never have been entered and put in later so it could be harvested.  So use le
     # in the searches to catch these.
     time = YYYYMMDDtoTimestamp(row[3])
 
-    response = requests.get("http://localhost/farm_asset.json?type=planting&name[ct]=" + name 
+    response = requests.get("http://" + host + "/farm_asset.json?type=planting&name[ct]=" + name
         + "&created[le]=" + str(time),
         auth=HTTPBasicAuth(user, passwd))
 
@@ -169,9 +173,9 @@ def getPlanting(row):
 def getPlantingFromTransplanting(row):
     name = row[5] + " " + row[4]
     time = YYYYMMDDtoTimestamp(row[3])
-       
-    response = requests.get("http://localhost/log.json?type=farm_transplanting&name[ct]=" + name
-        + "&created[le]=" + str(time), 
+
+    response = requests.get("http://" + host + "/log.json?type=farm_transplanting&name[ct]=" + name
+        + "&created[le]=" + str(time),
         auth=HTTPBasicAuth(user, passwd))
 
     if (len(response.json()['list']) == 1):
@@ -181,14 +185,14 @@ def getPlantingFromTransplanting(row):
         return random.choice(response.json()['list'])['asset'][0]['id']
     else:
         # No transplantings match
-        return -1    
+        return -1
 
 def getPlantingFromSeeding(row):
     name = row[5] + " " + row[4]
     time = YYYYMMDDtoTimestamp(row[3])
-       
-    response = requests.get("http://localhost/log.json?type=farm_seeding&name[ct]=" + name
-        + "&created[le]=" + str(time), 
+
+    response = requests.get("http://" + host + "/log.json?type=farm_seeding&name[ct]=" + name
+        + "&created[le]=" + str(time),
         auth=HTTPBasicAuth(user, passwd))
 
     if (len(response.json()['list']) == 1):
@@ -198,7 +202,7 @@ def getPlantingFromSeeding(row):
         return random.choice(response.json()['list'])['asset'][0]['id']
     else:
         # No plantings match
-        return -1    
+        return -1
 
 
 if __name__ == "__main__":
