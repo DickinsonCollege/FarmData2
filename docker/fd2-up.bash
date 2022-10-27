@@ -181,7 +181,7 @@ then
       echo "Attempted to create the fd2grp with GID=$FD2GRP_GID."
       echo "Host machine already has a group with that GID."
       echo "Change the group number in docker/dev/f2grp.gid to an unused GID."
-      echo "Then run fd2-up.bash again."
+      echo "Then run ./fd2-up.bash again."
       exit -1
     fi
 
@@ -233,10 +233,11 @@ then
   fi
 fi
 
-# Put GID's of docker and fd2grp groups into files in ~/.fd2 on host
-# These will be used by the startup.bash script in the dev container
+# Put GID's of docker and fd2grp groups into files in ~/.fd2gids on host.
+# This directory is mounted into the dev container as ~/.fd2gids:/home/fd2dev/.fd2/gids.
+# These GIDs will be used by the startup.bash script in the dev container
 # to ensure that the fd2dev user in the container has permissions to
-# RW the FarmData2 files and /var/run/docker.sock.
+# RW FarmData2, fd2test and /var/run/docker.sock.
 echo "Preparing to pass GID's to the dev container..."
 
 if [ "$PROFILE" == "macos" ] || [ "$PROFILE" == "windows" ];
@@ -262,7 +263,8 @@ echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid
 
 # Now finally... actually start the containers...
 
-# Delete any of the existing containers (except dev)
+# Delete any of the existing containers (except dev so that its writeable
+# layer - and thus any installed software or configuration - is preserved.)
 echo "Removing any stale containers..."
 docker rm fd2_mariadb &> /dev/null
 docker rm fd2_phpmyadmin &> /dev/null

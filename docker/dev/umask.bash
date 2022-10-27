@@ -20,5 +20,4 @@ sed -i "$UMASK_LINE s/022/002/" /etc/login.defs
 
 # This part changes the umask used by apps launched from the xfce4 desktop.
 # As per: https://forums.debian.net/viewtopic.php?p=706423
-#cp /etc/xdg/xfce4/xinitrc /home/fd2dev/.config/xfce4/xinitrc
 sed -i '2 i umask 002' /etc/xdg/xfce4/xinitrc

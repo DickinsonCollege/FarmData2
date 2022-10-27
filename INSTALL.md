@@ -64,22 +64,37 @@ FarmData2 started.
 
 FarmData2 provides a full featured Debian Linux based development environment.  This development environment is automatically running inside one of the Docker containers that was started by the `./fd2-up.bash` script.
 
-**All of the FarmData2 instructions and documentation assume that you are working within the FarmData2 development environment.** That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors.
+**All of the FarmData2 instructions and documentation assume that you are working within the FarmData2 development environment.** That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors (with a few exceptions where the development environment is required).
+
+#### Connecting via TigerVNC Viewer ####
 
 You can connect to the FarmData2 development environment using the TigerVNC Viewer as follows:
 1. Run your TigerVNC Viewer
 2. Set the "VNC Server" field to: `localhost:5901`
 3. Click "Connect"
 
+#### Connecting via a Browser ####
+
+You can also connect to the FarmData2 development environment using a browser. 
+1. Open a browser on the host OS
+2. Visit the URL: `localhost:6901`
+3. Click "Connect"
+4. Use the NoVNC settiings (on the left) to set the "Scaling Mode" to "Remote Resizing"
+
+Note: When accessing the development environment via the broswer, copying and pasting between the host OS and the development enviornment is tedious. However, if you work entirely inside the development enviornemnt it is quite functional.
+
 When the TigerVNC Viewer connects to the FarmData2 Development environment a window will open displaying the Desktop of the Debian Linux system that is running in the docker container.
+
+#### Development Environment Credentials ####
 
 Your user credentials within the FarmData2 Development environment are:
 * Username: `fd2dev`
 * Password: `fd2dev`
 
 The `fd2dev` is a member of the groups:
+* `fd2grp`
+* `fd2docker`
 * `sudo`
-* `docker`
 
 ### Configure `git` in the Development Environment ###
 
@@ -147,7 +162,7 @@ The FarmData2 developer environment includes the VSCodium IDE.  This IDE is pre-
 5. Confirm that you "trust the authors of the files in this folder", if asked.
 6. Choose "Explorer" from the "View" menu to see the `FarmData2` file tree.
 
-If you are using your own VSCode or VSCodium installation please refer to [docker/dev/Dockerfile](docker/dev/Dockerfile) file for information about the VSCodium extensions that are being used by the FarmData2 development environment.
+If you are using your own VSCode or VSCodium installation on your host OS your can refer to the [docker/dev/Dockerfile](docker/dev/Dockerfile) file for information about the VSCodium extensions that are being used by the FarmData2 development environment.
 
 ### Stopping and Starting FarmData2 ###
 
@@ -195,6 +210,7 @@ http://localhost:8181
 The [`docker/fd2-up.bash`](docker/fd2-up.bash) and [`docker/fd2-down.bash`](docker/fd2-down.bash) scripts start and stop all of the containers necessary for FarmData2. Some key points about how information is persisted between container starts and stops are described below.  The full details can be found in the [`docke/docker-compose.yml`](docker/docker-compose.yml) file.
 
 #### Writeable Layers ####
+
 When `./fd2-down.bash` is run `docker-compose` removes all of the containers, including their writeable layers.  The containers are all recreated, including blank writeable layers, each time the `fd2-up.bash` is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses. You can find all of the details of the mounted volumes in the `docker-compose.yml` file.
 
 #### The FarmData2 Repository ####
