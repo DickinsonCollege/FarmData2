@@ -155,8 +155,9 @@ let NewCustomTableComponent = {
                             :default-val="rows[ri].data[ci]"
                             set-min="0"
                             set-type="number" 
+                            @match-changed="setMatchVal"
+                            @input-changed="(newVal) => setNewRegexVal(ci, newVal)"
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'regex'"
-                            v-model.number="editedRowData.data[ci]"
                             @focusout="changedCell(ci)">
                             </regex-input>
 
@@ -178,6 +179,7 @@ let NewCustomTableComponent = {
                         </button> 
                         <button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
                         v-if="rowToEditIndex==ri" 
+                        :disabled="!isMatch"
                         @click="finishRowEdit(row.id, row)">
                             <span class="glyphicon glyphicon-check"></span>
                         </button>
@@ -231,7 +233,7 @@ let NewCustomTableComponent = {
             originalRow: {},
             selectAllEvent: false,
             currentlyEditing: false,
-            isMatch: false,
+            isMatch: true,
             updatedVis: this.visibleColumns,
         }
     },
@@ -275,6 +277,21 @@ let NewCustomTableComponent = {
             this.indexesToAction = []
         },
 
+        setMatchVal(newBool){
+            if(newBool){
+                this.isMatch = true
+            }
+            else{
+                this.isMatch = false
+            }
+        },
+
+        setNewRegexVal(colIndex, value){
+            if(this.isMatch){
+                this.editedRowData.data[colIndex] = value
+            }
+        },
+
         editRow: function(index){
             this.rowToEditIndex = index
             this.currentlyEditing = true
@@ -297,7 +314,7 @@ let NewCustomTableComponent = {
             for(i=0; i < this.indexesToChange.length; i ++){
                 let key = this.columns[this.indexesToChange[i]]
                 jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
-            }
+                }
 
             this.indexesToChange = []
             this.editedRowData = {}
@@ -315,6 +332,7 @@ let NewCustomTableComponent = {
             this.indexesToChange = []
             this.editedRowData = {}
 
+            this.isMatch = true
             this.$emit('row-canceled')
         },
 

@@ -271,7 +271,7 @@ new Vue({
             {"header": 'Item', "visible": true, "inputType": {'type': 'text'}},
             {"header": 'Size', "visible": false, "inputType": {'type': 'dropdown','value': ['S', 'M', 'L']}},
             {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
-            {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*', 'match': 'false'}},
+            {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*$', 'match': 'false'}},
             {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
             {"header": "Purchased", "visible": true, "inputType": {'type': 'boolean'}},
         ],
@@ -363,7 +363,6 @@ new Vue({
             // Would also need to delete data from the db via API here.
         },
         deleteNewTableRow(rowIDs) {
-        console.log("Deleting time")
         for(let i = 0; i < rowIDs.length; i++){
             for(var j = 0; j < this.newTableData.length; j++){
                 if(this.newTableData[j].id == rowIDs[i]){

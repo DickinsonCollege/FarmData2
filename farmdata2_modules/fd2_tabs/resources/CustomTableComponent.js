@@ -207,7 +207,6 @@ let CustomTableComponent = {
             this.$emit('row-edited', jsonObject, id)
         },
         cancelRowEdit: function(index){
-            console.log("This is the index: " + index + " || This is the rowToEditIndex" + this.rowToEditIndex )
             this.rowToEditIndex = null
             this.currentlyEditing = false
             
