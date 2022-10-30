@@ -83,7 +83,7 @@ let RegexInputComponent = {
           return {
             val: this.defaultVal,
             InputType : this.setType,
-            isMatch: false,
+            isMatch: null,
             isDisabled: this.disabled,
             regex: this.regExp,
             inputStyle: {
@@ -111,12 +111,11 @@ let RegexInputComponent = {
             const re = new RegExp(this.regex)
             const temp = this.isMatch
             this.isMatch = re.test(inputVal)
-            this.$emit('input-changed', inputVal)
             this.updateColor(this.isMatch)
-            this.$emit('match-changed', this.isMatch)
-            // if(this.isMatch != temp){
-            //   this.$emit('match-changed', this.isMatch)
-            // }
+            if(this.isMatch != temp){
+              this.$emit('match-changed', this.isMatch)
+            }
+            this.$emit('input-changed', inputVal)
           },
 
           updateColor(matches){

@@ -152,7 +152,7 @@ let NewCustomTableComponent = {
                             <regex-input 
                             :data-cy="'regex-input-r'+ri+'c'+ci" 
                             :reg-exp="columns[ci].inputType.regex"
-                            :default-val="rows[ri].data[ci]"
+                            :default-val="editedRowData.data[ci]"
                             set-min="0"
                             set-type="number" 
                             @match-changed="setMatchVal"
@@ -278,16 +278,14 @@ let NewCustomTableComponent = {
         },
 
         setMatchVal(newBool){
-            if(newBool){
-                this.isMatch = true
-            }
-            else{
-                this.isMatch = false
-            }
+            this.isMatch = newBool
+            console.log("New value passed to isMatch: " + this.isMatch)
         },
 
         setNewRegexVal(colIndex, value){
             if(this.isMatch){
+                console.log("Value of match: " + this.isMatch)
+                console.log("Value being saved into the editedRowData: " + value)
                 this.editedRowData.data[colIndex] = value
             }
         },
