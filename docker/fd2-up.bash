@@ -91,7 +91,7 @@ echo "  Running on a "$PROFILE" host."
 # file and all of the FarmData2 files. This is done by making 
 # sure that...
 #
-# For Linux hosts: 
+# For Linux and Windows (WSL) hosts: 
 #   * There is a docker group.
 #   * The current user is in the docker group. 
 #   * The docker.sock file is in the docker group.
@@ -110,9 +110,9 @@ echo "  Running on a "$PROFILE" host."
 #        handled by the dev/startup.bash script that runs when the
 #        container starts.
 
-if [ "$PROFILE" == "linux" ];
+if [ "$PROFILE" == "linux" ] || [ "$PROFILE" == "windows" ];
 then
-  echo "Configuring Linux host..."
+  echo "Configuring Linux or Windows (WSL) host..."
 
   # If the docker group doesn't exist on the host, create it.
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
@@ -240,14 +240,14 @@ fi
 # RW FarmData2, fd2test and /var/run/docker.sock.
 echo "Preparing to pass GID's to the dev container..."
 
-if [ "$PROFILE" == "macos" ] || [ "$PROFILE" == "windows" ];
+if [ "$PROFILE" == "macos" ];
 then
-  # For macos and windows use default values because they do not
+  # For macos use default values because they do not
   # have to match the host.
   FD2GRP_GID=$(cat dev/fd2grp.gid)
   DOCKER_GRP_GID=$(( $FD2GRP_GID + 1 ))
 else
-  # For linux use the values that were obtained above so that
+  # For linux or WSL use the values that were obtained above so that
   # those in the container match those on the host.
   DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
   FD2GRP_GID=$(cat /etc/group | grep "^fd2grp:" | cut -d':' -f3)
