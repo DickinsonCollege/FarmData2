@@ -1,34 +1,33 @@
 version: '2.2'
 services:
   db:
-    image: mariadb:10.5.8
+    image: farmdata2/mariadb:fd2.1
     container_name: fd2_mariadb
+    networks:
+      - fd2
     volumes:
-      - './db:/var/lib/mysql:delegated'
+      - farmos_db:/var/lib/mysql  # use a docker volume here for performance.
     ports:
       - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: farm
-      MYSQL_DATABASE: farmd
+      MYSQL_DATABASE: farm
       MYSQL_USER: farm
       MYSQL_PASSWORD: farm
 
-  www:
+  farmos:
     depends_on:
       - db
-    # If there are changes to the Dockerfile update the tag
-    # here to force a new build when main is updated.
-    image: farmos:fd2.5
-    build:
-     context: ./farmOS
-     dockerfile: Dockerfile
+    image: farmdata2/farmos:fd2.6
     container_name: fd2_farmdata2
+    networks:
+      - fd2
     volumes:
-      - './settings.php:/var/www/html/sites/default/settings.php:delegated'
-      - './logo:/var/www/html/sites/default/files:cached'
-      - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:cached'
-      - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:cached'
-      - './sampleDB:/sampleDB'
+      - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
+      - './logo:/var/www/html/sites/default/files:delegated'
+      - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:delegated'
+      - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:delegated'
+      - ./sampleDB:/sampleDB:delegated  # Needed for building the db!
     ports:
       - '80:80'
     environment:
@@ -37,8 +36,10 @@ services:
   phpmyadmin:
     depends_on:
       - db
-    image: phpmyadmin:5.0.4-apache
+    image: farmdata2/phpmyadmin:fd2.1
     container_name: fd2_phpmyadmin
+    networks:
+      - fd2
     environment:
       PMA_HOST: "db"
     ports:
@@ -46,24 +47,58 @@ services:
     volumes:
       - /sessions
     links:
-     - 'db'
+      - 'db'
 
-#  theiaide:
-#    # If there are changes to the Dockerfile update the tag
-#    # here to force a new build when main is updated.
-#    image: theiaide:fd2.1
-#    container_name: fd2_theiaide
-#    init: true
-#    build:
-#     context: ./theia
-#     dockerfile: Dockerfile
-#     args:
-#      HOST_UID: ${HOST_UID}
-#      HOST_GID: ${HOST_GID}
-#      HOST_USER: ${HOST_USER}
-#      HOST_GROUP: ${HOST_GROUP}
-#    user: ${HOST_USER}
-#    volumes:
-#     - ..:/home/${HOST_USER}/FarmData2
-#    ports:
-#     - 3000:3000
+  # Note: Separate profiles for unix vs windows systems
+  #       Necessary to mount /var/run/docker.sock due to 
+  #       absolute path syntax on windows.
+  fd2dev-unix:
+    image: farmdata2/dev:fd2.1
+    container_name: fd2_dev
+    init: true
+    networks:
+      - fd2
+    volumes:
+      - ..:/home/fd2dev/FarmData2
+      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
+      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
+      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
+      - /var/run/docker.sock:/var/run/docker.sock
+      - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
+      - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for performance.
+      - ~/.fd2gids:/home/fd2dev/.fd2/gids  # mount GID information.
+    ports:
+      - 5901:5901
+      - 6901:6901
+    profiles:
+      - macos
+      - linux
+
+  fd2dev-win:
+    image: farmdata2/dev:fd2.1
+    container_name: fd2_dev
+    init: true
+    networks:
+      - fd2
+    volumes:
+      - ..:/home/fd2dev/FarmData2
+      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
+      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
+      - ../farmdata2_modules/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
+      - //var/run/docker.sock:/var/run/docker.sock
+      - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
+      - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for performance.
+      - ~/.fd2gids:/home/fd2dev/.fd2/gids  # mount GID information.
+    ports:
+      - 5901:5901
+      - 6901:6901
+    profiles:
+      - windows
+
+volumes:
+  farmdev_home_fd2.1:
+  farmos_db:
+
+networks:
+  fd2:
+    name: farmdata2

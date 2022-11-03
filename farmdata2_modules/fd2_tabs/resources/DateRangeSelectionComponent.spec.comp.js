@@ -1,4 +1,4 @@
-import { mount } from '@cypress/vue'
+import { mount } from '@cypress/vue2'
 import { shallowMount } from '@vue/test-utils'
 
 var DateComps = require("./DateRangeSelectionComponent.js")
@@ -21,7 +21,7 @@ describe('date range selection component', () => {
 
             cy.get('[data-cy=end-date-select]')
                 .should('exist')
-        }) 
+        })
 
         it('fail to change start date to after end date', () => {
             cy.get('[data-cy=start-date-select]')
@@ -94,7 +94,7 @@ describe('date range selection component', () => {
 
         it('checking disabled when prop changes', () => {
             let comp;
-            comp = shallowMount(DateRangeSelectionComponent, { 
+            comp = shallowMount(DateRangeSelectionComponent, {
                 propsData: {
                     setStartDate: "2021-01-01",
                     setEndDate: "2021-12-01",
@@ -110,13 +110,13 @@ describe('date range selection component', () => {
 
     context('watch prop change test', () => {
         let comp;
-        beforeEach(() => {  
+        beforeEach(() => {
             // Use shallowMount here so we can use setProp
             comp = shallowMount(DateRangeSelectionComponent, {
                 propsData: {
                     setStartDate: "2021-01-01",
-                    setEndDate: "2021-12-31"    
-                }   
+                    setEndDate: "2021-12-31"
+                }
             })
         })
 
@@ -135,16 +135,16 @@ describe('date range selection component', () => {
                 expect(comp.vm.latestStartDate).to.equal('2021-09-09')
             })
         })
-        
+
     })
 
     context('emitted event test', () => {
         let prop = {
             setStartDate: "2021-01-01",
             setEndDate: "2021-12-31"
-        }   
-        
-        it('emits date after the component is mounted', () => {   
+        }
+
+        it('emits date after the component is mounted', () => {
             const spyStartDate = cy.spy()
             const spyEndDate = cy.spy()
             mount(DateRangeSelectionComponent, {
@@ -160,7 +160,7 @@ describe('date range selection component', () => {
             })
         })
 
-        it('emits start and end dates after the prop is changed', () => {   
+        it('emits start and end dates after the prop is changed', () => {
             const spyStartDate = cy.spy()
             const spyEndDate = cy.spy()
             let comp = shallowMount(DateRangeSelectionComponent, {

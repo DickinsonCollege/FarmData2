@@ -1,4 +1,4 @@
-import { mount } from '@cypress/vue'
+import { mount } from '@cypress/vue2'
 import { shallowMount } from '@vue/test-utils'
 
 var DropdownComp = require("./DropdownWithAllComponent.js")
@@ -14,11 +14,11 @@ describe('Field and Crop Dropdowns', () => {
                 }
             })
         })
-        
+
         it('renders the dropdown menu', () => {
             cy.get('[data-cy=dropdown-component]').should('exist')
         })
-    
+
         it('contains the right crops and excludes all', () => {
             cy.get('[data-cy=option0]')
             .should('have.text', 'Beans')
@@ -177,7 +177,7 @@ describe('Field and Crop Dropdowns', () => {
         })
 
         context('testing disabled option', () => {
-            
+
             it('checking if the dropdown is disabled', () => {
                 mount(DropdownWithAllComponent, {
                     propsData: {
@@ -193,7 +193,7 @@ describe('Field and Crop Dropdowns', () => {
 
             it('checking disabled when prop changes', () => {
                 let comp;
-                comp = shallowMount(DropdownWithAllComponent, { 
+                comp = shallowMount(DropdownWithAllComponent, {
                     propsData: {
                         dropdownList: ['Corn', 'Beans', 'Peas'],
                         includesAll: true,
@@ -207,12 +207,12 @@ describe('Field and Crop Dropdowns', () => {
                 })
             })
         })
-        
+
         context('changing prop emits event', () => {
             // Would be nice to do these tests with a mount so that
             // we could check that the drop down actually changes
             // to display the correct value.
-    
+
             let comp;
             beforeEach(() => {
                 // Use shallowMount here so we can use setProp in its
@@ -228,7 +228,7 @@ describe('Field and Crop Dropdowns', () => {
                     },
                 })
             })
-    
+
 
             it('emits event when prop changed to corn', () => {
                 const spySelected = cy.spy()

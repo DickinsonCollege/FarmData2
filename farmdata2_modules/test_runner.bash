@@ -1,47 +1,48 @@
 #!/bin/bash
 
-xhost + > /dev/null
+cd ~/fd2test
 
-# If Dockerfile in docker/cypress is changed update
-# the version number here to the next increment so that 
-# it will rebuild for anyone using it.
-FD_VER=fd2.3
-
-if [ $# -ne 1 ] || [ "$1" != "e2e" -a "$1" != "ct" ]
+if [[ $# == 0 ]];
 then
-  echo "Usage: test_runner.bash <type>"
-  echo "  <type>: e2e - to run the end to end tests (*.spec.js)"
-  echo "          ct  - to run the component tests (*.spec.comp.js)"
+    echo "Running Cypress Testing GUI"
+    npx cypress open &> /dev/null
+    exit 0
+fi
+
+if [[ "$1" != "e2e" && "$1" != "ct" && "$1" != "all" ]];
+then
+  echo "Usage: test_runner.bash [<arg> [<browser>]]"
+  echo "  Run the Cypress test suite."
+  echo "    <arg>:"
+  echo "      If no <arg> is provided the Cypress GUI test runner will be opened."
+  echo "      If <arg> is provided the terminal-based Cypress test runner is used:"
+  echo "        e2e - to run the end to end tests headless (*.spec.js)."
+  echo "        ct  - to run the component tests headless (*.spec.comp.js)."
+  echo "        all - to run both the end-to-end and component tests in sequence."
+  echo "    <browser>:"
+  echo "       Ignored if no <arg> is provided."
+  echo "       If no <browser> is specified the default Electron browser will be used."
+  echo "       <browser> may be any valid browser for Cypress testing."
+  echo "         electron | firefox | chrome"
   exit -1
 fi
 
-TEST_CMD="open"
-if [ "$1" = "ct" ]
+BROWSER=""
+if [[ $# == 2 ]];
 then
-  TEST_CMD="open-ct"
+  BROWSER="--browser $2"
 fi
 
-# There is a timeout on the yarn command use by
-# npm in the Dockerfile that causes this script to fail if 
-# it doesn't connect quickly enough.  But typically it will
-# go through after a few tries.
-INSTALLED=-1
-while [ $INSTALLED -ne 0 ]
-do 
-  docker build -f ../docker/cypress/Dockerfile -t cypress:$FD_VER .
-  INSTALLED=$?
-  sleep 2s
-done
-
-docker run -it \
-  -v $PWD:/fd2test/farmdata2_modules \
-  -v $PWD/cypress:/fd2test/cypress \
-  -v $PWD/cypress.json:/fd2test/cypress.json \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -w /fd2test \
-  --rm \
-  -e DISPLAY=$DISPLAY \
-  --name fd2_cypress \
-  --network docker_default \
-  --entrypoint npx \
-  cypress:$FD_VER cypress $TEST_CMD --project .
+if [[ "$1" == "e2e" ]];
+then
+    echo "Running e2e Tests"
+    npx cypress run --e2e $BROWSER
+elif [[ "$1" == "ct" ]];
+then
+    echo "Running Component Tests"
+    npx cypress run --component $BROWSER
+else
+    echo "Running all tests"
+    npx cypress run --component $BROWSER
+    npx cypress run --e2e $BROWSER
+fi

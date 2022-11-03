@@ -39,4 +39,4 @@ docker exec -it fd2_farmdata2 drush urol "Farm Worker" --name="restws1"
 docker exec -it fd2_farmdata2 drush urol "Farm Viewer" --name="restws1"
 echo ""
 
-echo "'People' created and Roles assigned."
+echo "'People created and Roles assigned."

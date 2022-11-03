@@ -2,7 +2,7 @@ try {
     FarmData2
 }
 catch {
-    axios = require('axios')
+    var axios = require('axios')
 }
 
 // A collection of functions for interacting with the
@@ -609,7 +609,7 @@ function setConfiguration(updateData, sessionToken) {
  * let index = quantityLocation(seedingLog.quantity, 'Amount planted')
  */
 function quantityLocation(quantity, label){
-    for(i=0; i < quantity.length; i++){
+    for(let i=0; i < quantity.length; i++){
         if(quantity[i].label == label){
             return i
         }

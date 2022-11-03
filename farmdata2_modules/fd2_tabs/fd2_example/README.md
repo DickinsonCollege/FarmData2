@@ -1,6 +1,6 @@
 # FarmData2 Modules #
 
-FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. The _FD2 Example_ tab is created by a sample module and provides cannonical examples of many of the operations and UI elements used in the _FieldKit_ and _BarnKit_ tabs.
+FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. The _FD2 Example_ tab is created by a sample module and provides canonical examples of many of the operations and UI elements used in the _FieldKit_ and _BarnKit_ tabs.
 
 ## FarmData2 Module Structure ##
 
@@ -37,7 +37,7 @@ To add a new sub-tab to the `xyz` module:
    <?php
    // ... omitted code ...
    function fd2_example_menu() {
-       
+
        // ... omitted code ...
 
        $items['farm/fd2-example/ui'] = array(
@@ -67,7 +67,7 @@ To add a new sub-tab to the `xyz` module:
 1. Clear the Drupal cache:
    - `docker exec -it fd2_farmdata2 drush cc all`
 1. Visit the FarmData2 home page when logged in as a _Farm Worker_, a _Farm Manager_ or as `admin`.  Your new sub-tab should now be visible under the _FD2 Example_ tab.  You can find the login credentials that are available in the developement environment on the [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) page.
-   - If your tab does not appear, there are likely syntax errors in the `fd2_example.module` file or in your `.html` file.  You can check the Drupal error logs for helpful information: http://localhost/admin/reports
+   - If your tab does not appear, there are likely syntax errors in the `fd2_example.module` file or in your `.html` file.  You can log into FarmData2 as `admin` and check the Drupal error logs on the `admin/reports` page.
 1. Replace the _dummy code_ in your `.html` file with the code for your new sub-tab. This file can contain any valid html code including CSS, JavaScript, Vue.js, etc...
    - Sub-tabs typically (e.g. `ui.html`) use Vue.js, Axios and the FarmOS API to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
 
@@ -105,7 +105,7 @@ Vue Components help to reduce code duplication, speed up development, and create
 
 Custom Vue Components used in FarmData2 are contained in the `fd2_tabs/resources` folder.  Each component is defined in a `.js` file. The filename for components should match `*Component.js` (e.g. `dropdownWithAllComponent.js`)  Each component is also accompanied by a file with a name of the same prefx but with the suffix `.spec.comp.js` that contains Cypress component tests for the component (e.g. `dropdownWithAllComponent.spec.comp.js`).  See below for more information on the component tests.
 
-### Creating Vue Components ### 
+### Creating Vue Components ###
 
 In addition to the standard implementation of a Vue Component as a JavaScript object (see `DropdownWithAllComponent.js`) each Vue Component for FarmData2 exports the object as a [CommonJS Module](https://flaviocopes.com/commonjs/) so that it can be imported into the Cypress Component test framework. For example, the snippet of code below appears at the bottom of the `DropdownWithAllComponent.js` file to export the `DropdownWithAllComponent`.
 
@@ -143,7 +143,7 @@ To use a Vue component within a sub-tab, the `.js` file for the component must b
 scripts[] = '../resources/dropdownWithAllComponent.js'
 ```
 
-#### Using Nested Vue Components #### 
+#### Using Nested Vue Components ####
 
 If a Vue component contains a nested Vue compnent then both the nested component and the parent component must be added to the `scripts[]`. The nested component must be listed before the parent component.  For example, the following lines make the `DateSelectionComponent` and the `DateRandeSelectionComponent` available on the `FD2 Example` tab:
 ```php
@@ -183,9 +183,9 @@ FarmData2 modules, sub-tabs and components are all tested using the Cypress test
 
 ### End-to-End Testing ###
 
-Cypress end-to-end tests are used to confirm that modules and sub-tabs operate correctly. They do this by interacting with the live development instance of FarmData2.  Cypress end-to-end tests will typically log into FarmData2 as a specific user, visit a specific page, interact with the elements of that page (e.g. click buttons, enter text, etc) and then make assertions about the resulting changes to the page. 
+Cypress end-to-end tests are used to confirm that modules and sub-tabs operate correctly. They do this by interacting with the live development instance of FarmData2.  Cypress end-to-end tests will typically log into FarmData2 as a specific user, visit a specific page, interact with the elements of that page (e.g. click buttons, enter text, etc) and then make assertions about the resulting changes to the page.
 
-Each sub-tab will have have an associated set of end-to-end tests. For example, `fd2vars.spec.js` file contains the end-to-end tests for the sub-tab defined by the `fd2vars.html` file (i.e. the _Vars_ sub-tab on the _FD2 Example_ tab). Note that, by convention, the name of the `spec` file has the same prefix as the sub-tab's `.html` file.  If there are multiple test files for the same `html` file use additional prefixes to identify their purpose (i.e. `fd2vars.pqr.spec.js`, where `pqr` would provide addtional clarifying information about the tests in that file.
+Each sub-tab will have have an associated set of end-to-end tests. For example, `fd2vars.spec.js` file contains the end-to-end tests for the sub-tab defined by the `fd2vars.html` file (i.e. the _Vars_ sub-tab on the _FD2 Example_ tab). Note that, by convention, the name of the `spec` file has the same prefix as the sub-tab's `.html` file.  If there are multiple test files for the same `html` file use additional prefixes to identify their purpose (i.e. `fd2vars.pqr.spec.js`, where `pqr` would provide additional clarifying information about the tests in that file.
 
 The `cypress` directory within a module directory (e.g.`fd2_example/cypress`) will contain _module-level_ tests. These are tests that apply to the main tab rather than to individual sub-tabs.  For example, in the `fd2_example` module:
    - `visibility.spec.js` tests that the _FD2 Example_ tab is visible for the _admin_, _manager_ and _worker_ users but not for a _guest_.
@@ -194,10 +194,9 @@ Resources and references for writing Cypress end-to-end tests can be found in th
 
 #### Running the End-To-End Tests ####
 
-FarmData2 provides support for running the end-to-end tests using the Cypress test runner in a Docker container. The Cypress end-to-end test runner is launched from the `farmdata2_modules` directory using the command:
-   - `./test_runner.bash e2e`  
-
-Note that the Docker image for the Cypress test runner will be built the first time it is launched. This may take a number of minutes while the base image is fetched and its contents customized for running Cypress tests. A cached docker image will be used for subsequent launches, which will be much faster.
+The FarmData2 development environment provides support for running the end-to-end tests using the Cypress test runner. The Cypress end-to-end test runner can be launched from the `farmdata2_modules` directory in an interactive GUI or a non-interactive terminal-based mode:
+   - GUI: `./test_runner.bash`
+   - Headless:  `./test_runner.bash e2e`  
 
 ### Component Testing ###
 
@@ -209,7 +208,6 @@ Resources and references for writing Cypress tests for Vue Components can be fou
 
 #### Running the Component Tests ####
 
-The Cypress test runner (discussed above) also provides support for running Vue Component tests in the same Docker container. The Vue Component tests are run from the `farmdata2_modules` directory using the command:
-   - `./test_runner.bash ct`  
-
-As noted above, if this is the first time the Cypress test runner is launched it will take a number of minutes. Subsequent launches will be much faster.
+The Cypress test runner (discussed above) also provides support for running Vue Component tests in the same Docker container. The Vue Component tests are run from the `farmdata2_modules` directory in an interactive GUI or a non-interactive terminal-based mode:
+   - GUI: `./test_runner.bash`
+   - Headless:  `./test_runner.bash ct`

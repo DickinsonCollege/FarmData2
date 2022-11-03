@@ -9,6 +9,10 @@ import json
 from csv import reader
 from utils import *
 import sys
+import os
+
+# Get the hostname of the farmOS server.
+host = os.getenv('FD2_HOST')
 
 def main():
     print("Adding Farm Quantity Units...")
