@@ -235,14 +235,14 @@ let NewCustomTableComponent = {
 
         selectAll: function(allChecked){
             this.indexesToAction = []
-            if(!allChecked){
+            if(allChecked){
+                this.selectAllEvent = false
+            }
+            else{
                 for(let i = 0; i < this.rows.length; i++){
                     this.indexesToAction.push(this.rows[i].id)
                 }
                 this.selectAllEvent = true
-            }
-            else{
-                this.selectAllEvent = false
             }
         },
 
@@ -261,13 +261,10 @@ let NewCustomTableComponent = {
 
         setMatchVal(newBool){
             this.isMatch = newBool
-            console.log("New value passed to isMatch: " + this.isMatch)
         },
 
         setNewRegexVal(colIndex, value){
             if(this.isMatch){
-                console.log("Value of match: " + this.isMatch)
-                console.log("Value being saved into the editedRowData: " + value)
                 this.editedRowData.data[colIndex] = value
             }
         },
