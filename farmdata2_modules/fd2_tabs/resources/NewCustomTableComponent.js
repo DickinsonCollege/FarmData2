@@ -44,7 +44,7 @@ let NewCustomTableComponent = {
         <div style="display: flex; justify-content: flex-end">
             <button 
             title="Export"
-            data-cy="export-btn" 
+            data-cy="export-button" 
             class="table-button btn btn-primary"
             @click="exportCSV" 
             :disabled="editDeleteDisabled"
@@ -62,9 +62,9 @@ let NewCustomTableComponent = {
             
             <button v-for="(button, hi) in customButtons"
             v-if="customButtons[hi].visible && button.inputType.type == 'button'"
-            :title="button.header"
-            :data-cy="'h'+hi"
-            :class="button.inputType.box"
+            :title="button.hoverTip"
+            :data-cy="button.hoverTip.toLowerCase() + '-button'"
+            :class="button.inputType.buttonClass"
             :disabled="editDeleteDisabled || indexesToAction.length == 0"
             @click="(buttonEventHandler(customButtons[hi].inputType.event))">
                 <span :class="button.inputType.value"></span>
@@ -74,28 +74,21 @@ let NewCustomTableComponent = {
             <table data-cy="table" style="width:100%;" class="table table-bordered table-striped">
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
-                        <tr class="sticky-header table-text" data-cy="table-headers">
-                            <th v-for="(buttons, hi) in customButtons"
-                            v-if="customButtons[hi].visible && buttons.inputType.type == 'button'" 
-                            :data-cy="'h'+hi"
-                            style="text-align:center">
-                                <input type="checkbox"
-                                title="Select All"
-                                v-model="selectAllEvent"
-                                @click="selectAll(selectAllEvent)"
-                                :disabled="editDeleteDisabled">
-                            </th>
+                        <th
+                        v-if="canDelete || customButtons.length > 0"  
+                        :data-cy="'selectAll-checkbox'"
+                        style="text-align:center">
+                            <input type="checkbox"
+                            title="Select All"
+                            v-model="selectAllEvent"
+                            @click="selectAll(selectAllEvent)"
+                            :disabled="editDeleteDisabled">
+                        </th>
 
                         <th v-for="(column, hi) in columns"
-                        v-if="columns[hi].visible && column.inputType.type != 'button'" 
+                        v-if="columns[hi].visible" 
                         :data-cy="'h'+hi"
                         style="text-align:center">{{ column.header }}</th>
-
-                        <th v-for="(column, hi) in columns"
-                        v-if="columns[hi].visible && column.inputType.type == 'boolean' && column.inputType.selectAllAllowed == 'false'"
-                        style="text-align:center"
-                        width=55
-                        :data-cy="'h'+hi">{{ column.header }}</th>
 
                         <th data-cy="edit-header" width=55 v-if="canEdit && !currentlyEditing">Edit</th>
                         <th data-cy="save-header" width=55 v-if="canEdit && currentlyEditing">Save</th>
@@ -105,89 +98,89 @@ let NewCustomTableComponent = {
                     <tr class="table-text" 
                     v-for="(row, ri) in rows"
                     :data-cy="'r'+ri">
-
                         <td
                         :data-cy="'r'+ri+'cbutton'+ri"
                         style="text-align:center">
                             <input
+                            v-if="customButtons.length > 0 || canDelete" 
                             :data-cy="'r'+ri+'cbuttonCheckbox'"
                             type="checkbox"
                             :value="row.id" 
-                            v-if="customButtons.length > 0" 
                             v-model="indexesToAction"
-                            @click="updateSelectAll(row.id, selectAllEvent)"
+                            @click="updateSelectAll()"
                             >
                         </td>
-
                         <td v-for="(item, ci) in row.data"
                         v-if="columns[ci].visible"
                         :data-cy="'td-r'+ri+'c'+ci"
                         style="text-align:center">
                         
-                            <div v-if="(rowToEditIndex!=ri || columns[ci].inputType.type == 'no input') && (columns[ci].inputType.type != 'boolean')"
-                            :data-cy="'r'+ri+'c'+ci"
+                            <div 
+                            v-if="(rowToEditIndex!=ri || columns[ci].inputType.type == 'no input') && (columns[ci].inputType.type != 'boolean')"
+                            :data-cy="'r'+ri+'-'+columns[ci].header"
                             v-html='item'></div>
                                         
                             <textarea 
-                            :data-cy="'text-input-r'+ri+'c'+ci"
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'text'" 
+                            :data-cy="'text-input-r'+ri+'c'+ci"
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)"></textarea>
                                         
                             <select 
-                            :data-cy="'dropdown-input-r'+ri+'c'+ci"
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'dropdown'" 
+                            :data-cy="'dropdown-input-r'+ri+'c'+ci"
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
                                 <option v-for="option in columns[ci].inputType.value">{{ option }}</option>
                             </select>
                                         
                             <input 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'date'" 
                             :data-cy="'date-input-r'+ri+'c'+ci"
                             type="date" 
-                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'date'" 
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
                                         
                             <regex-input 
+                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'regex'"
                             :data-cy="'regex-input-r'+ri+'c'+ci" 
                             :reg-exp="columns[ci].inputType.regex"
                             :default-val="editedRowData.data[ci]"
-                            set-min="0"
                             set-type="number" 
                             @match-changed="setMatchVal"
                             @input-changed="(newVal) => setNewRegexVal(ci, newVal)"
-                            v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'regex'"
                             @focusout="changedCell(ci)">
                             </regex-input>
 
                             <input 
-                            :data-cy="'checkbox-input-r'+ri+'c'+ci" 
+                            v-if="columns[ci].inputType.type == 'boolean'" 
+                            :data-cy="'boolean-r'+ri+'c'+ci" 
                             type="checkbox" 
                             :disabled="rowToEditIndex!=ri || !editDeleteDisabled"
-                            v-if="columns[ci].inputType.type == 'boolean'" 
                             v-model="rows[ri].data[ci]" 
-                            @click="select(ri, ci)"
                             >
 
                         </td>
                         <td v-if="canEdit"> 
-                        <button class="table-button btn btn-info" :data-cy="'edit-button-r'+ri" 
+                        <button class="table-button btn btn-info" 
+                        v-if="!(rowToEditIndex==ri)" 
+                        :data-cy="'edit-button-r'+ri" 
                         @click="editRow(ri)" 
-                        v-if="!(rowToEditIndex==ri)" :disabled="editDeleteDisabled">
+                        :disabled="editDeleteDisabled">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button> 
-                        <button class="table-button btn btn-success" :data-cy="'save-button-r'+ri"
+                        <button class="table-button btn btn-success" 
                         v-if="rowToEditIndex==ri" 
+                        :data-cy="'save-button-r'+ri"
                         :disabled="!isMatch"
                         @click="finishRowEdit(row.id, row)">
                             <span class="glyphicon glyphicon-check"></span>
                         </button>
                         <button class="table-button btn btn-danger"
-                        title="Cancel"
+                        v-if="(rowToEditIndex==ri)"
                         data-cy="cancel-button"
-                        @click="cancelRowEdit()" 
-                        v-if="(rowToEditIndex==ri)">
+                        title="Cancel"
+                        @click="cancelRowEdit()"> 
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                         </td>
@@ -198,7 +191,8 @@ let NewCustomTableComponent = {
     </span>`,
     props: { 
         customButtons: {
-            type: Array
+            type: Array,
+            required: true
         },
         columns: {
             type: Array,
@@ -252,27 +246,15 @@ let NewCustomTableComponent = {
             }
         },
 
-        select: function(rowIndex, colIndex){
-            if(this.rows[rowIndex].data[colIndex] == false){
-                this.rows[rowIndex].data[colIndex] = true
-            }
-            else if(this.rows[rowIndex].data[colIndex] == true) {
-                this.rows[rowIndex].data[colIndex] = false
-            }    
-        },
-
-        updateSelectAll: function(rowID, check){
-            for(let i = 0; i < this.indexesToAction.length; i++){
-                if(this.indexesToAction[i] == rowID && check){
-                    this.indexesToAction.splice(i, 1)
-                    this.selectAllEvent = false
-                    return
-                }
+        updateSelectAll: function(){
+            if((this.indexesToAction).length <= (this.rows).length){
+                this.selectAllEvent = false
             }
         },
 
         buttonEventHandler(event){
-            this.$emit(event + "-event", this.indexesToAction)
+            let payload = this.indexesToAction.slice()
+            this.$emit(event, payload)
             this.selectAllEvent = false
             this.indexesToAction = []
         },
@@ -414,38 +396,17 @@ let NewCustomTableComponent = {
                 return false
             }
         },
-        isVisible() {
-            tempArr = []
-            if (this.columns == null) {
-                for (i = 0; i < this.columns.length; i++) {
-                    tempArr.push(true);
-                }
-            } else {
-                tempArr = this.updatedVis
-            }
-            return tempArr;
-        },
-        inputType() {
-            let typeArray = []
-            if (this.inputOptions == null) {
-                for (i = 0; i < this.columns.length; i++) {
-                    typeArray.push({'type': 'text'});
-                }
-            }
-            else {
-                typeArray = this.inputOptions
-            }
-            return typeArray;
-        }
     },
     watch: {
-        columns: {
-            // using deep watch to track nested property changes
-            handler(newArr) {
-                this.updatedVis = newArr
-            },
-            deep: true
-        }
+        // Leaving this uncommented code in here until I try this out with something
+        // more complex than the simple UI page
+        // columns: {
+        //     // using deep watch to track nested property changes
+        //     handler(newArr) {
+        //         this.updatedVis = newArr
+        //     },
+        //     deep: true
+        // }
     } 
 }
 

@@ -136,7 +136,7 @@
             :columns="newColumns"
             :custom-buttons="myButtons"
             :rows="newTableData" 
-            @clone-event="cloneEvent"
+            @clone="cloneEvent"
             @row-deleted="deleteNewTableRow"
             @row-edited="updateNewTableRow"
 
@@ -271,7 +271,7 @@ new Vue({
             {"header": 'Item', "visible": true, "inputType": {'type': 'text'}},
             {"header": 'Size', "visible": false, "inputType": {'type': 'dropdown','value': ['S', 'M', 'L']}},
             {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
-            {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*$', 'match': 'false'}},
+            {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
             {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
             {"header": "Purchased", "visible": true, "inputType": {'type': 'boolean'}},
         ],
@@ -283,7 +283,7 @@ new Vue({
         ],
 
         myButtons: [
-        {"header": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'box': 'table-button btn btn-warning', 'event': 'clone'}},
+        {"hoverTip": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'buttonClass': 'table-button btn btn-warning', 'event': 'clone'}},
         ],
 
         

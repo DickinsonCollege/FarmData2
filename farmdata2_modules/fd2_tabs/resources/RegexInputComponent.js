@@ -83,7 +83,7 @@ let RegexInputComponent = {
           return {
             val: this.defaultVal,
             InputType : this.setType,
-            isMatch: null,
+            isMatch: null,  // default null to evaluate initial inputted value
             isDisabled: this.disabled,
             regex: this.regExp,
             inputStyle: {
