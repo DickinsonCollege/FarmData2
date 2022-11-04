@@ -110,38 +110,15 @@
             can-edit
             can-delete
             csv-name="UI_example_"
-            :headers="tableHeaders" 
-            :input-options="tableinputTypes"
-            :rows="tableData" 
-            :visible-columns="tableVisibleColumns" 
-            @row-deleted="deleteTableRow"
-            @row-edited="updateTableRow">
-        </custom-table>
-        <button data-cy='show-column' 
-            v-show='!tableVisibleColumns[2]'
-            @click='showColumn'>Show Column</button>
-        <button data-cy='hide-column' 
-            v-show='tableVisibleColumns[2]'
-            @click='hideColumn'>Hide Column</button>
-        <button data-cy='add-data' 
-            @click='addDataRow'>Add Data Row</button>
-    </UL>
-
-    <p><b>NewCustomTableComponent</b></p>
-    <UL>
-        <newcustom-table data-cy="test-table"
-            can-edit
-            can-delete
-            csv-name="UI_example_"
-            :columns="newColumns"
+            :columns="columns"
             :custom-buttons="myButtons"
-            :rows="newTableData" 
+            :rows="tableData" 
             @clone="cloneEvent"
-            @row-deleted="deleteNewTableRow"
-            @row-edited="updateNewTableRow"
+            @row-deleted="deleteTableRow"
+            @row-edited="updateTableRow"
 
             >
-        </newcustom-table>
+        </custom-table>
         <button data-cy='show-column' 
             v-show='!newColumns[2].visible'
             @click='newShowColumn'>Show Column</button>
@@ -227,7 +204,6 @@ new Vue({
         'date-selection': DateSelectionComponent,
         'date-range-selection': DateRangeSelectionComponent,
         'custom-table': CustomTableComponent,
-        'newcustom-table': NewCustomTableComponent,
         'regex-input': RegexInputComponent,
         'error-banner': ErrorBannerComponent,
     },
@@ -249,24 +225,7 @@ new Vue({
         
         leftButtonDisabled: false,
 
-        tableHeaders: ['ID', 'Item', 'Size', 'Color', 'Count', 'Date'],
-        tableinputTypes: [
-            {'type': 'no input'},
-            {'type': 'text'},
-            {'type': 'dropdown', 'value': ['S', 'M', 'L']},
-            {'type': 'dropdown', 'value': ['Green', 'Blue', 'Black', 'Red']},
-            {'type': 'number'},
-            {'type': 'date'}
-        ],
-        tableData: [
-            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01']},
-            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01']},
-            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01']},
-        ],
-        tableVisibleColumns: [true, true, false, true, true, true],
-
-        // For NewCustomTableComponent
-        newColumns: [
+        columns: [
             {"header": "ID", "visible": true, "inputType": {'type': 'no input'}},
             {"header": 'Item', "visible": true, "inputType": {'type': 'text'}},
             {"header": 'Size', "visible": false, "inputType": {'type': 'dropdown','value': ['S', 'M', 'L']}},
@@ -276,7 +235,7 @@ new Vue({
             {"header": "Purchased", "visible": true, "inputType": {'type': 'boolean'}},
         ],
 
-        newTableData: [
+        tableData: [
             {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01', true,]},
             {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', true]},
             {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01', false]},
@@ -353,16 +312,8 @@ new Vue({
         button2Clicked() {
             this.leftButtonDisabled = false
         },
-        deleteTableRow(rowID) {
-            for(var i=0; i < this.tableData.length; i++){
-                if(this.tableData[i].id == rowID){
-                    this.tableData.splice(i, 1)
-                }
-            }
 
-            // Would also need to delete data from the db via API here.
-        },
-        deleteNewTableRow(rowIDs) {
+        deleteTableRow(rowIDs) {
         for(let i = 0; i < rowIDs.length; i++){
             for(var j = 0; j < this.newTableData.length; j++){
                 if(this.newTableData[j].id == rowIDs[i]){
@@ -373,18 +324,8 @@ new Vue({
 
             // Would also need to delete data from the db via API here.
         },
-        updateTableRow(edits, rowID) {
-            for(var i=0; i < this.tableData.length; i++){
-                if(this.tableData[i].id == rowID){
-                    for( const [key, value] of Object.entries(edits)) {
-                        this.tableData[key] = value
-                    }
-                }
-            }
-          // Would also need to update data in the db via API here.
-        },
 
-        updateNewTableRow(edits, rowID) {
+        updateTableRow(edits, rowID) {
             for(var i=0; i < this.newTableData.length; i++){
                 if(this.newTableData[i].id == rowID){
                     for( const [key, value] of Object.entries(edits)) {
