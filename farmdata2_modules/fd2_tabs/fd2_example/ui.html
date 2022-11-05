@@ -120,13 +120,13 @@
             >
         </custom-table>
         <button data-cy='show-column' 
-            v-show='!newColumns[2].visible'
-            @click='newShowColumn'>Show Column</button>
+            v-show='!columns[2].visible'
+            @click='showColumn'>Show Column</button>
         <button data-cy='hide-column' 
-            v-show='newColumns[2].visible'
-            @click='newHideColumn'>Hide Column</button>
+            v-show='columns[2].visible'
+            @click='hideColumn'>Hide Column</button>
         <button data-cy='add-data' 
-            @click='addNewDataRow'>Add Data Row</button>
+            @click='addDataRow'>Add Data Row</button>
     </UL>
 
     <p><b>FieldSets & Buttons</b></p>
@@ -350,23 +350,14 @@ new Vue({
                 }
             }
         },
-        showColumn() {
-            Vue.set(this.tableVisibleColumns, 2, true)      // reactive changes to arrays must be implemented this way (this.tableVisibleColumns[2] = true does not work)
-        },
-        newShowColumn(){
+        showColumn(){
             Vue.set(this.newColumns[2], "visible", true)
         },
-        newHideColumn(){
+        hideColumn(){
             Vue.set(this.newColumns[2], "visible", false)
         },
-        hideColumn() {
-            Vue.set(this.tableVisibleColumns, 2, false)     // reactive changes to arrays must be implemented this way (this.tableVisibleColumns[2] = false does not work)
-        },
-        addNewDataRow() {
-            this.newTableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', false]})
-        },
         addDataRow() {
-            this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01']})
+            this.newTableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', false]})
         },
         fetchSeedingLogs() {
             // To display the spinner

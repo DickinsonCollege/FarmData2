@@ -42,7 +42,7 @@
  * @vue-event {Array[]} row-deleted - Emitted when the delete button is clicked if any of the checkboxes on the lefthand side of a row are selected. Emits an array of all the IDs that were deleted for the page to make the appropriate API request to have those records deleted.
  * @vue-event {Array[]} event - Emits an 'event', name of event depends on the button's event name, with a payload of row IDs for the parent page to handle. 
  */
-let NewCustomTableComponent = {
+let CustomTableComponent = {
     template:
     `<span>
         <div style="display: flex; justify-content: flex-end">
@@ -412,7 +412,7 @@ let NewCustomTableComponent = {
 
 try {
     module.exports = {
-        NewCustomTableComponent: NewCustomTableComponent
+        CustomTableComponent: CustomTableComponent
     }
 }
 catch {}
