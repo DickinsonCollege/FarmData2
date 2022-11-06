@@ -10,11 +10,11 @@ To see the documentation open `doc/index.html` in a browser.
 
 The documentation for the Javascript library functions are generated using [JSDoc](https://github.com/jsdoc/jsdoc) and the documentation for the VueJS components is also generated using JSDoc with the [JSDoc for VueJS Plugin](https://github.com/Kocal/jsdoc-vuejs/tree/3.x).
 
-To install the necessary tools:
+The following versions are installed in the Development Environment:
 
-1. `sudo apt install npm`  (if not already installed)
-2. Change into the `resources` directory
-3. `npm install -prefix . --no-package-lock --no-save jsdoc@3.6.7 jsdoc-vuejs@3.0.9 vue-template-compiler@2.6.14`
+* jsdoc@3.6.7 
+* jsdoc-vuejs@3.0.9 
+* vue-template-compiler@2.6.14`
 
 ### Generating Documentation
 
