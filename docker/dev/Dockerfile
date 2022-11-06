@@ -41,8 +41,15 @@ RUN apt install -y --no-install-recommends \
 
 # Install some standard tools that are used in FarmData2 development.
 RUN apt install -y --no-install-recommends \
-        sudo git nano meld \
- && npm install -g @vue/cli
+        sudo \
+        git \
+        nano \
+        meld \
+ && npm install -g \
+        @vue/cli@5.0.8 \
+        jsdoc@3.6.7 \
+        jsdoc-vuejs@3.0.9 \
+        vue-template-compiler@2.6.14
 
 # Install VSCodium.  Note: Extensions are installed later so that
 # they are installed just for the fd2dev user.

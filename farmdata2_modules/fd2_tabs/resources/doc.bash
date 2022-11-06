@@ -6,7 +6,7 @@
 if ! command -v jsdoc -c JSDoc.json &> /dev/null
 then
     echo "JSDoc is not fully installed."
-    echo "See directions in the README.md file."
+    echo "See necessary modules listed in the README.md file."
     exit
 fi
 
