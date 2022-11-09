@@ -1,3 +1,11 @@
+try {
+    FarmData2
+}
+catch(err) {
+    var RegexComp = require("./RegexInputComponent.js")
+    RegexInputComponent = RegexComp.RegexInputComponent
+}
+
 /**
  * A Vue component for FarmData2 report tables. The table ensures a consistent styling, and provides the row-based edit/delete and export functionalities that are common to all reports.
  * 
