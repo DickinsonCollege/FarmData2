@@ -111,8 +111,8 @@
             can-delete
             csv-name="UI_example_"
             :columns="columns"
-            :custom-buttons="myButtons"
             :rows="tableData" 
+            :custom-buttons="myButtons"
             @clone="cloneEvent"
             @row-deleted="deleteTableRow"
             @row-edited="updateTableRow"
@@ -242,7 +242,7 @@ new Vue({
         ],
 
         myButtons: [
-        {"hoverTip": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'buttonClass': 'table-button btn btn-warning', 'event': 'clone'}},
+            {"hoverTip": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'buttonClass': 'table-button btn btn-warning', 'event': 'clone'}},
         ],
 
         
@@ -315,9 +315,9 @@ new Vue({
 
         deleteTableRow(rowIDs) {
         for(let i = 0; i < rowIDs.length; i++){
-            for(var j = 0; j < this.newTableData.length; j++){
-                if(this.newTableData[j].id == rowIDs[i]){
-                    this.newTableData.splice(j, 1)
+            for(var j = 0; j < this.tableData.length; j++){
+                if(this.tableData[j].id == rowIDs[i]){
+                    this.tableData.splice(j, 1)
                 }
             }
         }
@@ -326,10 +326,10 @@ new Vue({
         },
 
         updateTableRow(edits, rowID) {
-            for(var i=0; i < this.newTableData.length; i++){
-                if(this.newTableData[i].id == rowID){
+            for(var i=0; i < this.tableData.length; i++){
+                if(this.tableData[i].id == rowID){
                     for( const [key, value] of Object.entries(edits)) {
-                        this.newTableData[key] = value
+                        this.tableData[key] = value
                     }
                 }
             }
@@ -338,13 +338,13 @@ new Vue({
 
         cloneEvent(IDsToClone){
             for(let i = 0; i < IDsToClone.length; i++){
-                for(let j = 0; j < this.newTableData.length; j++){
-                    if(this.newTableData[j].id == IDsToClone[i]){
-                        clonedRow = structuredClone(this.newTableData[j])
+                for(let j = 0; j < this.tableData.length; j++){
+                    if(this.tableData[j].id == IDsToClone[i]){
+                        clonedRow = structuredClone(this.tableData[j])
                         // Prevents buttons sharing same row.id and thus clicking one
                         // ticks another one 
-                        clonedRow.id = this.newTableData.length + 1
-                        this.newTableData.push(clonedRow)
+                        clonedRow.id = this.tableData.length + 1
+                        this.tableData.push(clonedRow)
                         break
                     }
                 }
@@ -357,7 +357,7 @@ new Vue({
             Vue.set(this.newColumns[2], "visible", false)
         },
         addDataRow() {
-            this.newTableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', false]})
+            this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', false]})
         },
         fetchSeedingLogs() {
             // To display the spinner

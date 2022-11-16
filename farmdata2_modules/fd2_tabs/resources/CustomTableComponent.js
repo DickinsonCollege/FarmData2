@@ -65,15 +65,17 @@ let CustomTableComponent = {
             </button>
 
             <button class="table-button btn btn-danger" 
+            v-if="canDelete"
             title="Delete"
-            data-cy="delete-button" 
+            data-cy="delete-button"
             @click="deleteRow()" 
-            :disabled="indexesToAction.length == 0">
+            :disabled="indexesToAction.length == 0 || editDeleteDisabled">
                 <span class="glyphicon glyphicon-trash"></span>
             </button>
             
-            <button v-for="(button, hi) in customButtons"
-            v-if="customButtons[hi].visible && button.inputType.type == 'button'"
+            <button 
+            v-if="customButtons.length > 0 && customButtons[hi].visible"
+            v-for="(button, hi) in customButtons"
             :title="button.hoverTip"
             :data-cy="button.hoverTip.toLowerCase() + '-button'"
             :class="button.inputType.buttonClass"
@@ -111,11 +113,12 @@ let CustomTableComponent = {
                     v-for="(row, ri) in rows"
                     :data-cy="'r'+ri">
                         <td
+                        v-if="customButtons.length > 0 || canDelete" 
                         :data-cy="'r'+ri+'cbutton'+ri"
                         style="text-align:center">
                             <input
-                            v-if="customButtons.length > 0 || canDelete" 
-                            :data-cy="'r'+ri+'cbuttonCheckbox'"
+                            :disabled="editDeleteDisabled"
+                            :data-cy="'r'+ri+'-cbuttonCheckbox'"
                             type="checkbox"
                             :value="row.id" 
                             v-model="indexesToAction"
@@ -203,7 +206,7 @@ let CustomTableComponent = {
     props: { 
         customButtons: {
             type: Array,
-            required: true
+            required: false
         },
         columns: {
             type: Array,
@@ -306,7 +309,6 @@ let CustomTableComponent = {
 
             this.indexesToChange = []
             this.editedRowData = {}
-
             this.$emit('row-edited', jsonObject, id)
         },
 
@@ -324,7 +326,7 @@ let CustomTableComponent = {
             this.$emit('row-canceled')
         },
 
-        deleteRow: function(id){
+        deleteRow: function(){
             if(confirm("Would you like to delete the selected log(s)?")){
                 this.$emit('row-deleted', this.indexesToAction)
                 this.selectAllEvent = false

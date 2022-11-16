@@ -115,7 +115,7 @@ let RegexInputComponent = {
             if(this.isMatch != temp){
               this.$emit('match-changed', this.isMatch)
             }
-            this.$emit('input-changed', inputVal)
+              this.$emit('input-changed', inputVal)
           },
 
           updateColor(matches){
