@@ -207,23 +207,41 @@ describe('custom table component', () => {
                 .should('be.disabled')
         })
 
-        // Needs to be looked at closely
-        // it('save button emits changes when clicked', () => {
-        //     const spy = cy.spy()
-        //     Cypress.vue.$on('row-edited', spy)
-        //     cy.get('[data-cy=r0-edit-button]')
-        //         .click()
+        it('save button emits changes when clicked', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('row-edited', spy)
+            cy.get('[data-cy=r0-edit-button]')
+                .click()
 
-        //     cy.get('[data-cy=r0-text-input]')
-        //         .clear()
-        //         .type('Hoodie')
+            cy.get('[data-cy=r0-text-input]')
+                .clear()
+                .type('Hoodie')
 
-        //     cy.get('[data-cy=r0-save-button]')
-        //         .click()
-        //         .then(() => {
-        //             expect(spy).to.be.calledWith({"[object object]": 'Hoodie'}, 1)
-        //         })
-        // })
+            cy.get('[data-cy=r0-save-button]')
+                .click()
+                .then(() => {
+                    expect(spy).to.be.calledWith({"Item": 'Hoodie'}, 1)
+                })
+        })
+
+        it('custom button disabled when no checkboxes are checked', () => {
+            cy.get('[data-cy=clone-button]')
+                .should('be.disabled')
+        })
+
+        it('custom button performs action only on checked row', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('clone', spy)
+            cy.get('[data-cy=r0-cbuttonCheckbox]')
+                .check()
+
+            cy.get('[data-cy=clone-button]')
+            .click()
+            .then(() => {
+                expect(spy).to.be.calledWith([1]) // returns an array of the row's ID
+                // custom button events are handled on the page side so no action is performed
+            })
+        })
 
         it('delete button disabled when no checkboxes are checked', () => {
             cy.get('[data-cy=delete-button]')
@@ -285,24 +303,24 @@ describe('custom table component', () => {
         })
 
         // Same object call problem as the other save 
-        // it('emits with an empty object payload when a cell gets changed back during editing', () => {
-        //     const spy = cy.spy()
-        //     Cypress.vue.$on('row-edited', spy)
-        //     cy.get('[data-cy=r0-edit-button]')
-        //         .click()
+        it('emits with an empty object payload when a cell gets changed back during editing', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('row-edited', spy)
+            cy.get('[data-cy=r0-edit-button]')
+                .click()
 
-        //     cy.get('[data-cy=r0-text-input]')
-        //         .clear()
-        //         .type('not-answome')
-        //         .clear()
-        //         .type('answome')
+            cy.get('[data-cy=r0-text-input]')
+                .clear()
+                .type('Bomber Jacket')
+                .clear()
+                .type('Joggers')
 
-        //     cy.get('[data-cy=r0-save-button]')
-        //         .click()
-        //         .then(() => {
-        //             expect(spy).to.be.calledWith({}, 10)
-        //         })
-        // })
+            cy.get('[data-cy=r0-save-button]')
+                .click()
+                .then(() => {
+                    expect(spy).to.be.calledWith({"Item": 'Joggers'}, 1)
+                })
+        })
     })
 
     context('Cancel button tests', () => {
@@ -591,54 +609,61 @@ describe('custom table component', () => {
         })
     })
 
-    // context('export csv file', () => {
-    //     const path = require("path");
-    //     const downloadsFolder = 'cypress/downloads'
-    //     let comp;
-    //     beforeEach(() => {
-    //         comp = mount(CustomTableComponent, {
-    //             propsData: {
-    //                 rows: [ {id: 10, data: [12, 3, 'answome']},
-    //                 {id: 11, data: [19, 3, 'and'],},
-    //                 {id: 12, data: [12, 12, 'answome12'],}, 
-    //                 ],
-    //                 headers: ['cool', 'works?', 'hello'],
-    //                 canDelete: true,
-    //                 visibleColumns: [true, true, false],
-    //                 csvName: 'seedingReport_'
-    //             }
-    //         })
-    //     })
+    context('export csv file', () => {
+        const downloadsFolder = '/home/fd2dev/FarmData2/farmdata2_modules/cypress/downloads/'
+        let comp;
+        beforeEach(() => {
+            comp = mount(CustomTableComponent, {
+                propsData: {
+                    rows: [            
+                        {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01', true]},
+                        {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', true]},
+                    ],
+                    columns: [
+                        {"header": "ID", "visible": true, "inputType": {'type': 'no input'}},
+                        {"header": 'Item', "visible": true, "inputType": {'type': 'text'}},
+                        {"header": 'Size', "visible": false, "inputType": {'type': 'dropdown','value': ['S', 'M', 'L']}},
+                        {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
+                        {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                        {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
+                        {"header": "Purchased", "visible": true, "inputType": {'type': 'boolean'}},
+                    ],
+                    csvName: "unitTest_"
+                }
+            })
+        })
 
-    //     it('assure the button exists', () => {
-    //         cy.get('[data-cy=export-btn')
-    //         .should('have.exist')
-    //     })
+        it('assure the button exists', () => {
+            cy.get('[data-cy=export-button')
+            .should('have.exist')
+        })
 
-    //     it('verifies download', () => {
-    //         var today = new Date();
-    //         var dd = String(today.getDate()).padStart(2, '0');
-    //         var mm = String(today.getMonth() + 1).padStart(2, '0'); 
-    //         var yyyy = today.getFullYear();
-    //         today = mm + dd + yyyy;
-    //         cy.get('[data-cy=export-btn]')
-    //             .click();
+        it('verifies download', () => {
+            var today = new Date()
+            var dd = String(today.getDate()).padStart(2, '0')
+            var mm = String(today.getMonth() + 1).padStart(2, '0')
+            var yyyy = today.getFullYear()
+            today = mm + dd + yyyy;
+            cy.get('[data-cy=export-button]')
+                .click();
 
-    //         cy.readFile(path.join(downloadsFolder, 'seedingReport_' + today + '.csv')).should("exist");
+            cy.readFile(downloadsFolder + 'unitTest_' + today + '.csv').should("exist")
+            cy.exec("rm -r " + downloadsFolder)
+        })
 
-    //     });
+        it('verifies content of csv', () => {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0')
+            var mm = String(today.getMonth() + 1).padStart(2, '0') 
+            var yyyy = today.getFullYear()
+            today = mm + dd + yyyy;
+            cy.get('[data-cy=export-button]')
+                .click();
 
-    //     it('verifies content of csv', () => {
-    //         var today = new Date();
-    //         var dd = String(today.getDate()).padStart(2, '0');
-    //         var mm = String(today.getMonth() + 1).padStart(2, '0'); 
-    //         var yyyy = today.getFullYear();
-    //         today = mm + dd + yyyy;
-    //         cy.get('[data-cy=export-btn]')
-    //             .click();
-
-    //         cy.readFile(path.join(downloadsFolder, 'seedingReport_' + today + '.csv')).should("eq", "cool,works?\n12,3\n19,3\n12,12");
-    //         cy.exec("rm -r " + downloadsFolder)
-    //     });
-    // })
+            cy.readFile(downloadsFolder + 'unitTest_' + today + '.csv')
+                .should("exist")
+                .should("eq", "ID,Item,Color,Count,Date,Purchased\n1,Shirt,Green,5,2020-01-01,true\n5,Pants,Blue,12,2020-05-01,true")
+            cy.exec("rm -r " + downloadsFolder)
+        })
+    })
 })

@@ -328,7 +328,7 @@ new Vue({
         updateTableRow(edits, rowID) {
             for(var i=0; i < this.tableData.length; i++){
                 if(this.tableData[i].id == rowID){
-                    for( const [key, value] of Object.entries(edits)) {
+                    for(const [key, value] of Object.entries(edits)) {
                         this.tableData[key] = value
                     }
                 }
@@ -351,10 +351,10 @@ new Vue({
             }
         },
         showColumn(){
-            Vue.set(this.newColumns[2], "visible", true)
+            Vue.set(this.columns[2], "visible", true)
         },
         hideColumn(){
-            Vue.set(this.newColumns[2], "visible", false)
+            Vue.set(this.columns[2], "visible", false)
         },
         addDataRow() {
             this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', false]})

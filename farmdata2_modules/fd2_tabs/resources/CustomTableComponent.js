@@ -206,7 +206,8 @@ let CustomTableComponent = {
     props: { 
         customButtons: {
             type: Array,
-            required: false
+            required: false,
+            default: () => []
         },
         columns: {
             type: Array,
@@ -300,10 +301,10 @@ let CustomTableComponent = {
         finishRowEdit: function(id){
             this.rowToEditIndex = null
             this.currentlyEditing = false
-            
+
             let jsonObject = {}
             for(i=0; i < this.indexesToChange.length; i ++){
-                let key = this.columns[this.indexesToChange[i]]
+                let key = this.columns[[this.indexesToChange[i]]].header
                 jsonObject[key] = this.editedRowData.data[this.indexesToChange[i]]
                 }
 
@@ -405,7 +406,7 @@ let CustomTableComponent = {
             }else{
                 return false
             }
-        },
+        },           
     },
     watch: {
         // Leaving this uncommented code in here until I try this out with something

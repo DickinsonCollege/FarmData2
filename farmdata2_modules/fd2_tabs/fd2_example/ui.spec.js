@@ -187,7 +187,7 @@ describe('Test the UI component', () => {
             cy.get('[data-cy=start-date-select] > [data-cy=date-select]').should('not.be.disabled')
             cy.get('[data-cy=end-date-select] > [data-cy=date-select]').should('not.be.disabled')
         })
-     })
+    })
 
     context('check the sample buttons', () => {
 
@@ -218,41 +218,48 @@ describe('Test the UI component', () => {
     context('check the table component', () => {
 
         it('table data is loaded', () => {
-            cy.get('[data-cy=r0c0]')
+            cy.get('[data-cy=r0-ID]')
                 .should('have.text', '1')
-            cy.get('[data-cy=r1c1]')
-                .should('have.text', 'Pants')
-
-            // Note: There is a hidden column are counted - so r2c5
-            cy.get('[data-cy=r2c5]')
-                .should('have.text', '2020-03-01')
+            cy.get('[data-cy=r0-Item]')
+                .should('have.text', 'Shirt')
+            cy.get('[data-cy=r0-Color]')
+                .should('have.text', 'Green')
+            cy.get('[data-cy=r0-Count]')
+                .should('have.text', '5')
+            cy.get('[data-cy=r0-boolean-input]')
+                .should('be.checked')
         })
 
         it('table row is deleted', () => {
-            cy.get('[data-cy=r1c0]')
+            cy.get('[data-cy=r1-ID]')
                 .should('have.text', '5')
 
-            cy.get('[data-cy=delete-button-r1')
+            cy.get('[data-cy=delete-button')
+                .should('be.disabled')
+            
+            cy.get('[data-cy=r0-cbuttonCheckbox')
+                .check()
+
+                cy.get('[data-cy=delete-button')
+                .should('be.enabled')
                 .click()
             
-            cy.get('[data-cy=r1c0]')
+            cy.get('[data-cy=r1-ID]')
                 .should('have.text', '9')
         })
 
         it('table row is edited', () => {
-            cy.get('[data-cy=edit-button-r1')
+            cy.get('[data-cy=r0-edit-button')
                 .click()
 
-            cy.get('[data-cy=text-input-r1c1')
+            cy.get('[data-cy=r0-text-input')
                 .clear()
                 .type('Tee Shirts')
             
-            cy.get('[data-cy=save-button-r1]')
+            cy.get('[data-cy=r0-save-button]')
                 .click()
-
-            cy.on("window:confirm", () => true)
             
-            cy.get('[data-cy=r1c1]')
+            cy.get('[data-cy=r0-Item]')
                 .should('have.text','Tee Shirts')
         })
 
@@ -260,11 +267,11 @@ describe('Test the UI component', () => {
             cy.get('[data-cy=add-data')
                 .click()
             
-            cy.get('[data-cy=r3c0]')
+            cy.get('[data-cy=r3-ID]')
                 .should('have.text', '12')
         })
 
-        it('size column shows when show column is clicked, hides when hide column is clicked', () => {
+        it('clicking show column reveals hidden column', () => {
             cy.get('[data-cy=table-headers]').children()
                 .should('not.contain', 'Size')
             cy.get('[data-cy=show-column')
