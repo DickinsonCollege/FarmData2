@@ -585,7 +585,7 @@
                     let sumRowFeet = 0
                     tableData.map(h => {
                         if(parseFloat(h.data[10]) != 0 && parseFloat(h.data[11]) != 0) {
-                            sumRowFeet = sumRowFeet + parseFloat(h.data[5])        
+                            sumRowFeet = sumRowFeet + parseFloat(h.data[4])        
                         }
                     })
                     return (Math.round(sumRowFeet*100))/100
