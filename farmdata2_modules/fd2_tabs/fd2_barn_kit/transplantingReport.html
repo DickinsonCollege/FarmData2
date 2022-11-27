@@ -25,7 +25,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows='tableRows' :headers='headers' :input-options='columnInputs' csv-name="transplantingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
+                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="transplantingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
             </div>
@@ -84,6 +84,20 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
 
+                tableColumns: [
+                    {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
+                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', value: this.cropNameArray}}, 
+                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', value: this.areaNameArray}}, 
+                    {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
+                    {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
+                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', value: this.userNameArray}},
+                ],
+
                 headers: ['Date', 'Crop', 'Area', 'Bed Feet', 'Row Feet', 'Rows/Bed', 'Trays', 'Workers', 'Hours','Comments','User'],
                 visibleColumns: [true, true, true, true, true, true, true, true, true, true, true],
 
@@ -119,9 +133,11 @@
 
                     getAllPages(link, this.transplantingLogs)
                         .then(() => {
+                            console.log("Hellow man! This passed.")
                             this.stillLoading = false
                         })
                         .catch((err) => { 
+                            console.log("Hello! Error occurred.")
                             this.errBannerVisibility = true
                         })
                     this.stillLoading = true
@@ -461,26 +477,51 @@
                         },
                     ]
                 },
-                /**
-                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
-                 */ 
-                columnInputs(){
+
+                cropNameArray(){
+                    let cropNameArray = []
+                    for(let [key, info] of this.cropToIDMap){
+                        cropNameArray.push(key)
+                    }
+                    return cropNameArray
+                },
+
+                areaNameArray(){
+                    let cropNameArray = []
+                    for(let [key, info] of this.cropToIDMap){
+                        cropNameArray.push(key)
+                    }
+                    return cropNameArray
+                },
+
+                userNameArray(){
                     let userNameArray = []
                     const userKeyIterator = this.userToIDMap.keys()
                     for(i=0; i < this.userToIDMap.size; i++){
                         userNameArray.push(userKeyIterator.next().value)
                     }
-                    let cropNameArray = []
-                    for(let [key, info] of this.cropToIDMap){
-                        cropNameArray.push(key)
-                    }
-                    let areaNameArray = []
-                    const areaKeyIterator = this.areaToIDMap.keys()
-                    for(i=0; i < this.areaToIDMap.size; i++){
-                        areaNameArray.push(areaKeyIterator.next().value)
-                    }
-                    return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
-                },
+                    return userNameArray
+                }
+                /**
+                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
+                 */ 
+                // columnInputs(){
+                //     let userNameArray = []
+                //     const userKeyIterator = this.userToIDMap.keys()
+                //     for(i=0; i < this.userToIDMap.size; i++){
+                //         userNameArray.push(userKeyIterator.next().value)
+                //     }
+                //     let cropNameArray = []
+                //     for(let [key, info] of this.cropToIDMap){
+                //         cropNameArray.push(key)
+                //     }
+                //     let areaNameArray = []
+                //     const areaKeyIterator = this.areaToIDMap.keys()
+                //     for(i=0; i < this.areaToIDMap.size; i++){
+                //         areaNameArray.push(areaKeyIterator.next().value)
+                //     }
+                //     return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
+                // },
             },
             created() {
                 getSessionToken()
