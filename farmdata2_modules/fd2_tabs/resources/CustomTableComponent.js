@@ -164,7 +164,7 @@ let CustomTableComponent = {
                             set-type="number" 
                             @match-changed="setMatchVal"
                             @input-changed="(newVal) => setNewRegexVal(ci, newVal)"
-                            @focusout="changedCell(ci)">
+                            >
                             </regex-input>
 
                             <input 
@@ -173,8 +173,8 @@ let CustomTableComponent = {
                             type="checkbox" 
                             :disabled="rowToEditIndex!=ri || !editDeleteDisabled"
                             v-model="rows[ri].data[ci]">
-
                         </td>
+
                         <td v-if="canEdit"> 
                         <button class="table-button btn btn-info" 
                         v-if="!(rowToEditIndex==ri)" 
@@ -281,6 +281,7 @@ let CustomTableComponent = {
         setNewRegexVal(colIndex, value){
             if(this.isMatch){
                 this.editedRowData.data[colIndex] = value
+                this.changedCell(colIndex)
             }
         },
 
@@ -310,6 +311,7 @@ let CustomTableComponent = {
 
             this.indexesToChange = []
             this.editedRowData = {}
+
             this.$emit('row-edited', jsonObject, id)
         },
 

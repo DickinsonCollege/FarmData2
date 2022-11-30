@@ -84,23 +84,6 @@
                 selectedCrop: 'All',
                 selectedArea: 'All',
 
-                tableColumns: [
-                    {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
-                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', value: this.cropNameArray}}, 
-                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', value: this.areaNameArray}}, 
-                    {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
-                    {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
-                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', value: this.userNameArray}},
-                ],
-
-                headers: ['Date', 'Crop', 'Area', 'Bed Feet', 'Row Feet', 'Rows/Bed', 'Trays', 'Workers', 'Hours','Comments','User'],
-                visibleColumns: [true, true, true, true, true, true, true, true, true, true, true],
-
                 idToCropMap: new Map(),
                 cropToIDMap: new Map(),
                 idToUserMap: new Map(),
@@ -250,11 +233,13 @@
                  * Uses deleteRecord function to delete the record in the database. Also deletes the record from the current logs that are in transplantingLogs
                  */
                 deleteRowLog(logID) {
-                    let url = '/log/' + logID
-                    deleteRecord(url, this.sessionToken)
-                    for(var i=0; i < this.transplantingLogs.length; i++){
-                        if(this.transplantingLogs[i].id === logID){
-                            this.transplantingLogs.splice(i, 1)
+                    for(let i = 0; i < logID.length; i++) {
+                        let url = '/log/' + logID[i]
+                        deleteRecord(url, this.sessionToken)
+                        for(let j = 0; j < this.seedingLogs.length; j++){
+                            if(this.seedingLogs[j].id == logID[i]){
+                                this.seedingLogs.splice(j, 1)
+                            }
                         }
                     }
                 },
@@ -478,50 +463,38 @@
                     ]
                 },
 
-                cropNameArray(){
-                    let cropNameArray = []
-                    for(let [key, info] of this.cropToIDMap){
-                        cropNameArray.push(key)
-                    }
-                    return cropNameArray
-                },
-
-                areaNameArray(){
-                    let cropNameArray = []
-                    for(let [key, info] of this.cropToIDMap){
-                        cropNameArray.push(key)
-                    }
-                    return cropNameArray
-                },
-
-                userNameArray(){
+                /**
+                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
+                 */ 
+                tableColumns(){
                     let userNameArray = []
                     const userKeyIterator = this.userToIDMap.keys()
                     for(i=0; i < this.userToIDMap.size; i++){
                         userNameArray.push(userKeyIterator.next().value)
                     }
-                    return userNameArray
+                    let cropNameArray = []
+                    for(let [key, info] of this.cropToIDMap){
+                        cropNameArray.push(key)
+                    }
+                    let areaNameArray = []
+                    const areaKeyIterator = this.areaToIDMap.keys()
+                    for(i=0; i < this.areaToIDMap.size; i++){
+                        areaNameArray.push(areaKeyIterator.next().value)
+                    }
+                    return [
+                    {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
+                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', value: cropNameArray}}, 
+                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', value: areaNameArray}}, 
+                    {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
+                    {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$'}},
+                    {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
+                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': userNameArray}},
+                ]
                 }
-                /**
-                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
-                 */ 
-                // columnInputs(){
-                //     let userNameArray = []
-                //     const userKeyIterator = this.userToIDMap.keys()
-                //     for(i=0; i < this.userToIDMap.size; i++){
-                //         userNameArray.push(userKeyIterator.next().value)
-                //     }
-                //     let cropNameArray = []
-                //     for(let [key, info] of this.cropToIDMap){
-                //         cropNameArray.push(key)
-                //     }
-                //     let areaNameArray = []
-                //     const areaKeyIterator = this.areaToIDMap.keys()
-                //     for(i=0; i < this.areaToIDMap.size; i++){
-                //         areaNameArray.push(areaKeyIterator.next().value)
-                //     }
-                //     return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
-                // },
             },
             created() {
                 getSessionToken()
