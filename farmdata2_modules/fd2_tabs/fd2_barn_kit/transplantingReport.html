@@ -116,11 +116,9 @@
 
                     getAllPages(link, this.transplantingLogs)
                         .then(() => {
-                            console.log("Hellow man! This passed.")
                             this.stillLoading = false
                         })
                         .catch((err) => { 
-                            console.log("Hello! Error occurred.")
                             this.errBannerVisibility = true
                         })
                     this.stillLoading = true
@@ -373,7 +371,6 @@
                         hours = parseFloat(h.data[7]);
                         sumHours = sumHours + (h.data[7]*parseFloat(h.data[8]))
                     })
-                    // console.log(sumHours)
                     return (Math.round(sumHours*100))/100
                 },
                 /**
