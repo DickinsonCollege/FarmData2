@@ -234,11 +234,17 @@
                     for(let i = 0; i < logID.length; i++) {
                         let url = '/log/' + logID[i]
                         deleteRecord(url, this.sessionToken)
-                        for(let j = 0; j < this.seedingLogs.length; j++){
+                        .then(() => {
+                            for(let j = 0; j < this.seedingLogs.length; j++){
                             if(this.seedingLogs[j].id == logID[i]){
                                 this.seedingLogs.splice(j, 1)
                             }
-                        }
+                        } 
+                        })
+                        .catch((err => {
+                            this.errBannerVisibility = true
+                        }))
+
                     }
                 },
                 disableFilters() {

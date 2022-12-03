@@ -313,13 +313,23 @@ new Vue({
             this.leftButtonDisabled = false
         },
 
+        // backend needs to be updated when deleting a row
         deleteTableRow(rowIDs) {
         for(let i = 0; i < rowIDs.length; i++){
-            for(var j = 0; j < this.tableData.length; j++){
+            // delete record
+            let url = ""
+            deleteRecord(url, this.sessionToken)
+            .then(() => {
+                for(var j = 0; j < this.tableData.length; j++){
                 if(this.tableData[j].id == rowIDs[i]){
                     this.tableData.splice(j, 1)
                 }
             }
+            })
+            .catch((err => {
+                this.errBannerVisibility = true
+            }))
+
         }
 
             // Would also need to delete data from the db via API here.

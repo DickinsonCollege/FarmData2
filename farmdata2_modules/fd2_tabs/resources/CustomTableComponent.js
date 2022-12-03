@@ -413,13 +413,14 @@ let CustomTableComponent = {
     watch: {
         // Leaving this uncommented code in here until I try this out with something
         // more complex than the simple UI page
-        // columns: {
-        //     // using deep watch to track nested property changes
-        //     handler(newArr) {
-        //         this.updatedVis = newArr
-        //     },
-        //     deep: true
-        // }
+        columns: {
+            // using deep watch to track nested property changes
+            handler(newArr) {
+                console.log("Hey!")
+                this.columns = newArr
+            },
+            deep: true
+        }
     } 
 }
 
