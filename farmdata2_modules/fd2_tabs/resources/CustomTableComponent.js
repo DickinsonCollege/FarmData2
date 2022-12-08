@@ -243,7 +243,7 @@ let CustomTableComponent = {
             selectAllEvent: false,
             currentlyEditing: false,
             isMatch: true,
-            updatedVis: this.visibleColumns,
+            updatedColumns: this.columns,
         }
     },
     methods: {
@@ -399,7 +399,10 @@ let CustomTableComponent = {
 
             // This will download the csv file named "seedingReport_(today).csv"
             link.click()
-        }
+        },
+        updateColumns(newArr){
+            this.columns = newArr
+        } 
     },
     computed: {
         editDeleteDisabled() {
@@ -408,20 +411,24 @@ let CustomTableComponent = {
             }else{
                 return false
             }
-        },           
-    },
-    watch: {
-        // Leaving this uncommented code in here until I try this out with something
-        // more complex than the simple UI page
-        columns: {
-            // using deep watch to track nested property changes
-            handler(newArr) {
-                console.log("Hey!")
-                this.columns = newArr
-            },
-            deep: true
+        },   
+        dropdownOptions() {
+            tempArr = []
+            return tempArr
         }
-    } 
+    },
+    // watch: {
+    //     // Leaving this uncommented code in here until I try this out with something
+    //     // more complex than the simple UI page
+    //     columns: {
+    //         // using deep watch to track nested property changes
+    //         handler(newArr) {
+    //             console.log("Hey!")
+    //             this.updatedColumns = newArr
+    //         },
+    //         deep: true
+    //     }
+    // } 
 }
 
 try {

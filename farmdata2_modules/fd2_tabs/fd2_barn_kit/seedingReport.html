@@ -102,23 +102,23 @@
                 selectedSeeding: 'All',
 
 
-                tableColumns: [
-                    {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, // 
-                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.cropNameArray}}, //
-                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.areaNameArray}}, //
-                    {"header": 'Seeding', "visible": true, "inputType" : {'type': 'no input'}},
-                    {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
-                    {"header": 'Seeds', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Cells/Tray', "visible": false, "inputType" : {'type': 'dropdown'}},
-                    {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Varieties', "visible": true, "inputType" : {'type': 'no input'}},
-                    {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
-                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
-                ],
+                // tableColumns: [
+                //     {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
+                //     {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.cropNameArray}}, 
+                //     {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.areaNameArray}}, 
+                //     {"header": 'Seeding', "visible": true, "inputType" : {'type': 'no input'}},
+                //     {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                //     {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                //     {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
+                //     {"header": 'Seeds', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                //     {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                //     {"header": 'Cells/Tray', "visible": false, "inputType" : {'type': 'dropdown'}},
+                //     {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                //     {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                //     {"header": 'Varieties', "visible": true, "inputType" : {'type': 'no input'}},
+                //     {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
+                //     {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
+                // ],
 
                 idToCropMap: new Map(),
                 cropToIDMap: new Map(),
@@ -187,7 +187,6 @@
 
                         if(this.isMobile) {
                             this.tableColumns[3].visible = false
-                            this.visibleColumns[3] = false
                         }
                     }
                     else if(selectedSeeding == 'Tray Seedings'){
@@ -818,39 +817,39 @@
                 /**
                  * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
                  */ 
-                // tableColumns(){
-                //     // let userNameArray = []
-                //     // const userKeyIterator = this.userToIDMap.keys()
-                //     // for(i=0; i < this.userToIDMap.size; i++){
-                //     //     userNameArray.push(userKeyIterator.next().value)
-                //     // }
-                //     // let cropNameArray = []
-                //     // for(let [key, info] of this.cropToIDMap){
-                //     //     cropNameArray.push(key)
-                //     // }
-                //     // let areaNameArray = []
-                //     // const areaKeyIterator = this.areaToIDMap.keys()
-                //     // for(i=0; i < this.areaToIDMap.size; i++){
-                //     //     areaNameArray.push(areaKeyIterator.next().value)
-                //     // }
-                //     return [
-                //     {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, // 
-                //     {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.cropNameArray}}, //
-                //     {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.areaNameArray}}, //
-                //     {"header": 'Seeding', "visible": true, "inputType" : {'type': 'no input'}},
-                //     {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                //     {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                //     {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
-                //     {"header": 'Seeds', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                //     {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                //     {"header": 'Cells/Tray', "visible": false, "inputType" : {'type': 'dropdown'}},
-                //     {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                //     {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$'}},
-                //     {"header": 'Varieties', "visible": true, "inputType" : {'type': 'no input'}},
-                //     {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
-                //     {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
-                //     ]
-                // }
+                tableColumns(){
+                    // let userNameArray = []
+                    // const userKeyIterator = this.userToIDMap.keys()
+                    // for(i=0; i < this.userToIDMap.size; i++){
+                    //     userNameArray.push(userKeyIterator.next().value)
+                    // }
+                    // let cropNameArray = []
+                    // for(let [key, info] of this.cropToIDMap){
+                    //     cropNameArray.push(key)
+                    // }
+                    // let areaNameArray = []
+                    // const areaKeyIterator = this.areaToIDMap.keys()
+                    // for(i=0; i < this.areaToIDMap.size; i++){
+                    //     areaNameArray.push(areaKeyIterator.next().value)
+                    // }
+                    return [
+                    {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
+                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.cropNameArray}}, 
+                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.areaNameArray}}, 
+                    {"header": 'Seeding', "visible": true, "inputType" : {'type': 'no input'}},
+                    {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
+                    {"header": 'Seeds', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Cells/Tray', "visible": false, "inputType" : {'type': 'dropdown'}},
+                    {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$'}},
+                    {"header": 'Varieties', "visible": true, "inputType" : {'type': 'no input'}},
+                    {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
+                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
+                    ]
+                }
             },
             created() {
                 getSessionToken()
