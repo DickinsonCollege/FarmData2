@@ -243,7 +243,7 @@ let CustomTableComponent = {
             selectAllEvent: false,
             currentlyEditing: false,
             isMatch: true,
-            updatedColumns: this.columns,
+            //updatedColumns: this.columns,
         }
     },
     methods: {
@@ -417,18 +417,7 @@ let CustomTableComponent = {
             return tempArr
         }
     },
-    // watch: {
-    //     // Leaving this uncommented code in here until I try this out with something
-    //     // more complex than the simple UI page
-    //     columns: {
-    //         // using deep watch to track nested property changes
-    //         handler(newArr) {
-    //             console.log("Hey!")
-    //             this.updatedColumns = newArr
-    //         },
-    //         deep: true
-    //     }
-    // } 
+
 }
 
 try {
