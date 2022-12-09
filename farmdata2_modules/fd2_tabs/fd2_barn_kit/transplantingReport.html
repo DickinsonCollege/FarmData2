@@ -72,7 +72,7 @@
                 'error-banner' : ErrorBannerComponent
             },
             data: {
-                startDate:'2020-05-01',//dayjs().startOf('year').format('YYYY-MM-DD').toString(),
+                startDate:'2020-05-01', //dayjs().startOf('year').format('YYYY-MM-DD').toString(),
                 endDate: dayjs().format('YYYY-MM-DD').toString(),
 
                 stillLoading: true,
@@ -466,28 +466,40 @@
                     ]
                 },
 
-                /**
-                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
-                 */ 
-                tableColumns(){
+                userNameArray(){
                     let userNameArray = []
                     const userKeyIterator = this.userToIDMap.keys()
-                    for(i=0; i < this.userToIDMap.size; i++){
+                    for(i = 0; i < this.userToIDMap.size; i++){
                         userNameArray.push(userKeyIterator.next().value)
                     }
+                    return userNameArray
+                },
+
+                areaNameArray(){
+                    let areaNameArray = []
+                    const areaKeyIterator = this.areaToIDMap.keys()
+                    for(i = 0; i < this.areaToIDMap.size; i++){
+                        areaNameArray.push(areaKeyIterator.next().value)
+                    }
+                    return areaNameArray
+                },
+
+                cropNameArray(){
                     let cropNameArray = []
                     for(let [key, info] of this.cropToIDMap){
                         cropNameArray.push(key)
                     }
-                    let areaNameArray = []
-                    const areaKeyIterator = this.areaToIDMap.keys()
-                    for(i=0; i < this.areaToIDMap.size; i++){
-                        areaNameArray.push(areaKeyIterator.next().value)
-                    }
+                    return cropNameArray
+                },
+
+                /**
+                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
+                 */ 
+                tableColumns(){
                     return [
                     {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
-                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', value: cropNameArray}}, 
-                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', value: areaNameArray}}, 
+                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', value: this.cropNameArray}}, 
+                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', value: this.areaNameArray}}, 
                     {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
                     {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
                     {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
@@ -495,7 +507,7 @@
                     {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
                     {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$'}},
                     {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
-                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': userNameArray}},
+                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
                 ]
                 }
             },
