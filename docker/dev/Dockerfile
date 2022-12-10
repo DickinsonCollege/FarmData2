@@ -131,12 +131,12 @@ RUN echo "y" | vue create \
         fd2test
 WORKDIR /home/$USERNAME/fd2test
 RUN npm install -d \
-        cypress \
-        webpack \
-        @cypress/webpack-dev-server \
-        @cypress/vue2 \
-        path \
-        axios
+        cypress@10.11.0 \
+        webpack@5.74.0 \
+        @cypress/webpack-dev-server@2.5.0 \
+        @cypress/vue2@1.1.2 \
+        path@0.12.7 \
+        axios@1.1.3
 WORKDIR /home/$USERNAME
 
 # Configure the VNC server so that it allows fd2dev to connect without
