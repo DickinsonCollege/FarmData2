@@ -150,8 +150,11 @@ RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
  && chmod +x .vnc/xstartup
 USER $USERNAME
 
-# Configure git to store credentials.
-RUN git config --global credential.helper store
+# Do some basic git configuration.
+RUN git config --global credential.helper store \
+ && git config --global merge.conflictstyle diff3 \
+ && git config --global merge.tool meld \
+ && git config --global mergetool.keepBackup false
 
 # Install some useful VSCodium extensions
 RUN codium --install-extension streetsidesoftware.code-spell-checker
