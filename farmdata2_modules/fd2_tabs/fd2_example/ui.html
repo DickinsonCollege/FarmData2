@@ -107,21 +107,23 @@
     <p><b>CustomTableComponent</b></p>
     <UL>
         <custom-table data-cy="test-table"
-            can-delete 
             can-edit
+            can-delete
             csv-name="UI_example_"
-            :headers="tableHeaders" 
-            :input-options="tableinputTypes"
+            :columns="columns"
             :rows="tableData" 
-            :visible-columns="tableVisibleColumns" 
+            :custom-buttons="myButtons"
+            @clone="cloneEvent"
             @row-deleted="deleteTableRow"
-            @row-edited="updateTableRow">
+            @row-edited="updateTableRow"
+
+            >
         </custom-table>
         <button data-cy='show-column' 
-            v-show='!tableVisibleColumns[2]'
+            v-show='!columns[2].visible'
             @click='showColumn'>Show Column</button>
         <button data-cy='hide-column' 
-            v-show='tableVisibleColumns[2]'
+            v-show='columns[2].visible'
             @click='hideColumn'>Hide Column</button>
         <button data-cy='add-data' 
             @click='addDataRow'>Add Data Row</button>
@@ -223,21 +225,27 @@ new Vue({
         
         leftButtonDisabled: false,
 
-        tableHeaders: ['ID', 'Item', 'Size', 'Color', 'Count', 'Date'],
-        tableinputTypes: [
-            {'type': 'no input'},
-            {'type': 'text'},
-            {'type': 'dropdown', 'value': ['S', 'M', 'L']},
-            {'type': 'dropdown', 'value': ['Green', 'Blue', 'Black', 'Red']},
-            {'type': 'number'},
-            {'type': 'date'}
+        columns: [
+            {"header": 'ID', "visible": true, "inputType": {'type': 'no input'}},
+            {"header": 'Item', "visible": true, "inputType": {'type': 'text'}},
+            {"header": 'Size', "visible": false, "inputType": {'type': 'dropdown','value': ['S', 'M', 'L']}},
+            {"header": 'Color', "visible": true, "inputType": {'type': 'dropdown','value': ['Green', 'Blue', 'Black', 'Red']}},
+            {"header": 'Count', "visible": true, "inputType": {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+            {"header": 'Date', "visible": true, "inputType": {'type': 'date'}},
+            {"header": "Purchased", "visible": true, "inputType": {'type': 'boolean'}},
         ],
+
         tableData: [
-            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01']},
-            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01']},
-            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01']},
+            {id: 1, data: ['1', 'Shirt', 'S', 'Green', 5, '2020-01-01', true,]},
+            {id: 2, data: ['5', 'Pants', 'L', 'Blue', 12, '2020-05-01', true]},
+            {id: 3, data: ['9', 'Hat', 'M', 'Black', 8, '2020-03-01', false]},
         ],
-        tableVisibleColumns: [true, true, false, true, true, true],
+
+        myButtons: [
+            {"hoverTip": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'buttonClass': 'table-button btn btn-warning', 'event': 'clone'}},
+        ],
+
+        
 
         waitingOnLogs: false,
         waitingOnErr: false,
@@ -304,34 +312,62 @@ new Vue({
         button2Clicked() {
             this.leftButtonDisabled = false
         },
-        deleteTableRow(rowID) {
-            for(var i=0; i < this.tableData.length; i++){
-                if(this.tableData[i].id == rowID){
-                    this.tableData.splice(i, 1)
+
+        // backend needs to be updated when deleting a row
+        deleteTableRow(rowIDs) {
+        for(let i = 0; i < rowIDs.length; i++){
+            // delete record
+            let url = ""
+            deleteRecord(url, this.sessionToken)
+            .then(() => {
+                for(var j = 0; j < this.tableData.length; j++){
+                if(this.tableData[j].id == rowIDs[i]){
+                    this.tableData.splice(j, 1)
                 }
             }
+            })
+            .catch((err => {
+                this.errBannerVisibility = true
+            }))
+
+        }
 
             // Would also need to delete data from the db via API here.
         },
+
         updateTableRow(edits, rowID) {
             for(var i=0; i < this.tableData.length; i++){
                 if(this.tableData[i].id == rowID){
-                    for( const [key, value] of Object.entries(edits)) {
+                    for(const [key, value] of Object.entries(edits)) {
                         this.tableData[key] = value
                     }
                 }
             }
+          // Would also need to update data in the db via API here.
+        },
 
-            // Would also need to update data in the db via API here.
+        cloneEvent(IDsToClone){
+            for(let i = 0; i < IDsToClone.length; i++){
+                for(let j = 0; j < this.tableData.length; j++){
+                    if(this.tableData[j].id == IDsToClone[i]){
+                        clonedRow = structuredClone(this.tableData[j])
+                        // Prevents buttons sharing same row.id and thus clicking one
+                        // ticks another one 
+                        clonedRow.id = this.tableData.length + 1
+                        this.tableData.push(clonedRow)
+                        break
+                    }
+                }
+            }
         },
-        showColumn() {
-            Vue.set(this.tableVisibleColumns, 2, true)      // reactive changes to arrays must be implemented this way (this.tableVisibleColumns[2] = true does not work)
+        showColumn(){
+            Vue.set(this.columns[2], "visible", true)
         },
-        hideColumn() {
-            Vue.set(this.tableVisibleColumns, 2, false)     // reactive changes to arrays must be implemented this way (this.tableVisibleColumns[2] = false does not work)
+        hideColumn(){
+            Vue.set(this.columns[2], "visible", false)
         },
         addDataRow() {
-            this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01']})
+            this.tableData.push({id: 4, data: ['12', 'Socks', 'L', 'Red', 22, '2020-04-01', false]})
         },
         fetchSeedingLogs() {
             // To display the spinner

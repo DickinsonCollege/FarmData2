@@ -27,7 +27,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :visible-columns='visibleColumns' :rows='tableRows' :headers='headers' :input-options='columnInputs' csv-name="seedingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' :can-edit='!isMobile' :can-delete='!isMobile'></custom-table>
+                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="seedingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' :can-edit='!isMobile' :can-delete='!isMobile'></custom-table>
 
                 <br>
             </div>
@@ -101,9 +101,6 @@
                 selectedArea: 'All',
                 selectedSeeding: 'All',
 
-                headers: ['Date', 'Crop', 'Area', 'Seeding', 'Row Feet', 'Bed Feet', 'Rows/Bed', 'Seeds', 'Trays', 'Cells/Tray', 'Workers', 'Hours','Varieties', 'Comments','User'],
-                visibleColumns: [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true],
-
                 idToCropMap: new Map(),
                 cropToIDMap: new Map(),
                 idToUserMap: new Map(),
@@ -135,7 +132,6 @@
                 seedingLogRequestWithDates(){
                     this.reportVisible = true
                     let link = '/log.json?type=farm_seeding&timestamp[ge]=' + dayjs(this.startDate).unix() + '&timestamp[le]=' + dayjs(this.endDate).unix()
-
                     getAllPages(link, this.seedingLogs)
                         .then(() => {
                             this.stillLoading = false
@@ -154,30 +150,49 @@
                 seedingChange(selectedSeeding){
                     this.selectedSeeding = selectedSeeding
                     if(selectedSeeding == 'All'){
-                        this.visibleColumns = [true, true, true, true, false, false, false, false, false, false, true, true, true, true, true]
+                        this.tableColumns[4].visible = false
+                        this.tableColumns[5].visible = false
+                        this.tableColumns[6].visible = false
+                        this.tableColumns[7].visible = false
+                        this.tableColumns[8].visible = false
+                        this.tableColumns[9].visible = false
                     }
                     else if(selectedSeeding == 'Direct Seedings'){
-                        this.visibleColumns = [true, true, true, true, true, true, true, false, false, false, true, true, true, true, true]
+                        this.tableColumns[7].visible = false
+                        this.tableColumns[8].visible = false
+                        this.tableColumns[9].visible = false
+
+                        this.tableColumns[4].visible = true
+                        this.tableColumns[5].visible = true
+                        this.tableColumns[6].visible = true
+
                         if(this.isMobile) {
-                        this.visibleColumns[3] = false
+                            this.tableColumns[3].visible = false
                         }
                     }
                     else if(selectedSeeding == 'Tray Seedings'){
-                        this.visibleColumns = [true, true, true, true, false, false, false, true, true, true,  true, true, true, true, true]
+                        this.tableColumns[4].visible = false
+                        this.tableColumns[5].visible = false
+                        this.tableColumns[6].visible = false
+
+                        this.tableColumns[7].visible = true
+                        this.tableColumns[8].visible = true
+                        this.tableColumns[9].visible = true
+                        
                         if(this.isMobile) {
-                        this.visibleColumns[3] = false
+                            this.tableColumns[3].visible = false
                         }
                     }
                     if(this.configToIDMap.labor == 'Hidden') {
-                        this.visibleColumns[10] = false
-                        this.visibleColumns[11] = false
+                        this.tableColumns[10].visible = false
+                        this.tableColumns[11].visible = false
                     }
                     if(this.isMobile) {
-                        this.visibleColumns[10] = false
-                        this.visibleColumns[11] = false
-                        this.visibleColumns[12] = false
-                        this.visibleColumns[13] = false
-                        this.visibleColumns[14] = false
+                        this.tableColumns[10].visible = false
+                        this.tableColumns[11].visible = false
+                        this.tableColumns[12].visible = false
+                        this.tableColumns[13].visible = false
+                        this.tableColumns[14].visible = false
                     }
                 },
                 /**
@@ -192,6 +207,7 @@
                      * The Table component returns an object with the cells that were updated. We don't know how many or wich ones where updated, so we check for all possible cells that could have been updated.
                      */
                     let keys = Object.keys(updateObject)
+
                     if(keys.includes('Hours') || keys.includes('Workers') || 
                         keys.includes('Rows/Bed') || keys.includes('Row Feet') ||
                         keys.includes('Seeds') || keys.includes('Trays') ||
@@ -334,12 +350,20 @@
                  * Uses deleteRecord function to delete the record in the database. Also deletes the record from the current logs that are in seedingLogs
                  */
                 deleteRowLog(logID) {
-                    let url = '/log/' + logID
-                    deleteRecord(url, this.sessionToken)
-                    for(var i=0; i < this.seedingLogs.length; i++){
-                        if(this.seedingLogs[i].id === logID){
-                            this.seedingLogs.splice(i, 1)
-                        }
+                    for(let i = 0; i < logID.length; i++) {
+                        let url = '/log/' + logID[i]
+                        deleteRecord(url, this.sessionToken)
+                        .then(() => {
+                            for(let j = 0; j < this.seedingLogs.length; j++){
+                            if(this.seedingLogs[j].id == logID[i]){
+                                this.seedingLogs.splice(j, 1)
+                            }
+                        } 
+                        })
+                        .catch((err => {
+                            this.errBannerVisibility = true
+                        }))
+
                     }
                 },
                 disableFilters() {
@@ -744,25 +768,54 @@
                         },
                     ]
                 },
-                /**
-                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
-                 */ 
-                columnInputs(){
+
+                userNameArray(){
                     let userNameArray = []
                     const userKeyIterator = this.userToIDMap.keys()
-                    for(i=0; i < this.userToIDMap.size; i++){
+                    for(i = 0; i < this.userToIDMap.size; i++){
                         userNameArray.push(userKeyIterator.next().value)
                     }
+                    return userNameArray
+                },
+
+                areaNameArray(){
+                    let areaNameArray = []
+                    const areaKeyIterator = this.areaToIDMap.keys()
+                    for(i = 0; i < this.areaToIDMap.size; i++){
+                        areaNameArray.push(areaKeyIterator.next().value)
+                    }
+                    return areaNameArray
+                },
+
+                cropNameArray(){
                     let cropNameArray = []
                     for(let [key, info] of this.cropToIDMap){
                         cropNameArray.push(key)
                     }
-                    let areaNameArray = []
-                    const areaKeyIterator = this.areaToIDMap.keys()
-                    for(i=0; i < this.areaToIDMap.size; i++){
-                        areaNameArray.push(areaKeyIterator.next().value)
-                    }
-                    return [{type:'date'}, {type:'dropdown', value: cropNameArray}, {type:'dropdown', value: areaNameArray}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'number'}, {type:'no input'}, {type:'text'}, {type:'dropdown', value: userNameArray}]
+                    return cropNameArray
+                },
+
+                /**
+                 * returns the input options for each column in the table. Uses the maps in created to get the all crops, areas, and users in the database, in order to create respective dropdowns.
+                 */ 
+                tableColumns(){
+                    return [
+                    {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
+                    {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.cropNameArray}}, 
+                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.areaNameArray}}, 
+                    {"header": 'Seeding', "visible": true, "inputType" : {'type': 'no input'}},
+                    {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
+                    {"header": 'Seeds', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Cells/Tray', "visible": false, "inputType" : {'type': 'dropdown'}},
+                    {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$'}},
+                    {"header": 'Varieties', "visible": true, "inputType" : {'type': 'no input'}},
+                    {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
+                    {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
+                    ]
                 }
             },
             created() {
@@ -783,6 +836,10 @@
                 getCropToIDMap()
                     .then((response) => {
                         this.cropToIDMap = new Map(response)
+                        this.cropNameArray = []
+                        for(let [key, info] of this.cropToIDMap){
+                            this.cropNameArray.push(key)
+                        }
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -819,8 +876,8 @@
                     .then((response) => {
                         this.configToIDMap = response.data
                         if(this.configToIDMap.labor == "hidden") {
-                            this.visibleColumns[10] = false
-                            this.visibleColumns[11] = false
+                            this.tableColumns[10].visible = false
+                            this.tableColumns[11].visible = false
                         }
                     })
                     .catch((err) => { 
