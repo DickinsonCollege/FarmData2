@@ -59,7 +59,7 @@ let CustomTableComponent = {
             data-cy="export-button" 
             class="table-button btn btn-primary"
             @click="exportCSV" 
-            :disabled="editDeleteDisabled"
+            :disabled="indexesToAction.length == 0 || editDeleteDisabled"
             v-if="csvName != ''">
             <span class="glyphicon glyphicon-download"></span>
             </button>
@@ -364,10 +364,10 @@ let CustomTableComponent = {
 
             for(let i = 0; i < this.rows.length; i++){
                 for(let j = 0; j < this.columns.length; j++){
-                    if(this.columns[j].visible){
+                    if(this.columns[j].visible && this.indexesToAction.includes(this.rows[i].id)){
                         if(typeof this.rows[i].data[j] === 'string'){
                             cleanHTML = this.rows[i].data[j].replaceAll(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
-                            cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, "-")
+                            cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, "")
                             cleanHTML = cleanHTML.replaceAll(',', "--")
                             rowTemp.push(cleanHTML)
                         }
