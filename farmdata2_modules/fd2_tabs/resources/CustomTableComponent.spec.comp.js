@@ -609,7 +609,7 @@ describe('custom table component', () => {
         })
     })
 
-    context.only('export csv file', () => {
+    context('export csv file', () => {
         const downloadsFolder = '/home/fd2dev/FarmData2/farmdata2_modules/cypress/downloads/'
         let comp;
         beforeEach(() => {
