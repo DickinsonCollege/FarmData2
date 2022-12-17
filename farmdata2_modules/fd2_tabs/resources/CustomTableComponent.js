@@ -296,7 +296,7 @@ let CustomTableComponent = {
                 'id': this.rows[index].id,
                 'data': this.rows[index].data    
             }
-            this.$emit('edit-clicked')
+            this.$emit('edit-clicked', this.rows[index].data)
         },
 
         finishRowEdit: function(id){

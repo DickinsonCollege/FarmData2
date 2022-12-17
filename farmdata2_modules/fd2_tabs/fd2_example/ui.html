@@ -116,7 +116,7 @@
             @clone="cloneEvent"
             @row-deleted="deleteTableRow"
             @row-edited="updateTableRow"
-
+            @edit-clicked="printRow"
             >
         </custom-table>
         <button data-cy='show-column' 
@@ -333,6 +333,11 @@ new Vue({
         }
 
             // Would also need to delete data from the db via API here.
+        },
+
+        printRow(row){
+            // Use this information for any variety of purposes (filtering).
+            console.log(row)
         },
 
         updateTableRow(edits, rowID) {
