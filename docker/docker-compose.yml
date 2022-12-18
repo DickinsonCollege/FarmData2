@@ -1,10 +1,27 @@
 version: '2.2'
 services:
+  express:
+    image: farmdata2/express-api:fd2.1
+    # build:
+    #   context: ../farmdata2_api
+    #   dockerfile: ../../../../docker/express/Dockerfile
+    container_name: fd2_api
+    ports:
+      - "8000:8000"
+    depends_on: 
+      - db
+    volumes:
+      - '../farmdata2_api:/app'
+    networks:
+      - fd2
+      - fd2_api
+
   db:
     image: farmdata2/mariadb:fd2.1
     container_name: fd2_mariadb
     networks:
       - fd2
+      - fd2_api
     volumes:
       - farmos_db:/var/lib/mysql  # use a docker volume here for performance.
     ports:
@@ -22,6 +39,7 @@ services:
     container_name: fd2_farmdata2
     networks:
       - fd2
+      - fd2_api
     volumes:
       - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
       - './logo:/var/www/html/sites/default/files:delegated'
@@ -40,6 +58,7 @@ services:
     container_name: fd2_phpmyadmin
     networks:
       - fd2
+      - fd2_api
     environment:
       PMA_HOST: "db"
     ports:
@@ -102,3 +121,6 @@ volumes:
 networks:
   fd2:
     name: farmdata2
+  fd2_api:
+    name: farmdata2_api
+    internal: true
