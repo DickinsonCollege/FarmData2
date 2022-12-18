@@ -7,13 +7,13 @@ const app = express()
 // Home Route
 app.get("/", async (req, res) => {
   res.json({
-    message: "FarmData server",
+    message: "FarmData2 API server",
   });
 });
 app.use(cors())
 app.use(express.json());
 
-const port = process.env.PORT || 8000;
+const port = 80;
 
 // Listening Server
 app.listen(port, () => {
