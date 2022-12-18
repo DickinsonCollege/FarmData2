@@ -20,24 +20,6 @@ app.listen(port, () => {
   console.log(`Server is up at port:${port}`);
 });
 
-// app.get("/test", async (req, res) => {
-//   let conn;
-//   try {
-//     conn = await pool.getConnection();
-
-//     let sql = `SELECT * FROM farm_asset`;
-//     let result = await conn.query(sql);
-//     result = res.json(res);
-//     res.send(result);
-//   } catch (error) {
-//     throw error;
-//   } finally {
-//     if (conn) {
-//       conn.release();
-//     }
-//   }
-// });
-
 // use : to specify route parameters
 app.get("/user/:userid?", async (req, res) => {
   let conn;
@@ -134,67 +116,3 @@ app.get("/log/:type/:start_time-:end_time", async (req, res) => {
     }
   }
 });
-
-//debug
-// app.get("/log/:type?", async (req, res) => {
-//   let conn;
-//   const logType = req.params.type;
-//   try {
-//     conn = await pool.getConnection();
-//     var sql = 'SELECT * FROM log WHERE (type = ' + logType + ')';
-//     let obj = await conn.query(sql);
-    
-//     res.json(obj);
-//   } catch (error) {
-//     throw error;
-//   } finally {
-//     if (conn) {
-//       conn.release();
-//     }
-//   }
-// });
-
-
-// use : to specify route parameters
-// app.get("/assetbywhom/:username?", async (req, res) => {
-//   let conn;
-//   try {
-//     conn = await pool.getConnection();
-//     if (req.params.userid == null) {
-//       var sql = `SELECT farm_asset.id, farm_asset.name AS assetname, users.name AS username FROM farm_asset INNER JOIN users ON users.uid = farm_asset.uid`;
-//     } else {
-//       var sql = `SELECT farm_asset.id, farm_asset.name AS assetname, users.name AS username FROM farm_asset INNER JOIN users ON users.uid = farm_asset.uid WHERE users.name = ${req.params.username}`;
-//     }
-//     let result = await conn.query(sql);
-
-//     res.send(result);
-//   } catch (error) {
-//     throw error;
-//   } finally {
-//     if (conn) {
-//       conn.release();
-//     }
-//   }
-
-    // app.get("/logsbytime/:timestamp?", async (req, res) => {
-    //   let conn;
-    //   try {
-    //     conn = await pool.getConnection();
-    //     if (req.params.userid == null) {
-    //       var sql = `SELECT farm_asset.id, farm_asset.name AS assetname, users.name AS username FROM farm_asset INNER JOIN users ON users.uid = farm_asset.uid`;
-    //     } else {
-    //       var sql = `SELECT farm_asset.id, farm_asset.name AS assetname, users.name AS username FROM farm_asset INNER JOIN users ON users.uid = farm_asset.uid WHERE users.name = ${req.params.username}`;
-    //     }
-    //     let result = await conn.query(sql);
-    //     result = res.json(result);
-
-    //     res.send(result);
-    //   } catch (error) {
-    //     throw error;
-    //   } finally {
-    //     if (conn) {
-    //       conn.release();
-    //     }
-    //   }
-    // });
-// });

@@ -2,12 +2,9 @@ version: '2.2'
 services:
   express:
     image: farmdata2/express-api:fd2.1
-    # build:
-    #   context: ../farmdata2_api
-    #   dockerfile: ../../../../docker/express/Dockerfile
     container_name: fd2_api
     ports:
-      - "8000:8000"
+      - 8000:80
     depends_on: 
       - db
     volumes:
