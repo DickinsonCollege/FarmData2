@@ -17,7 +17,8 @@ RUN apt update \
         curl \
         man \
         libpci3 \
-        firefox-esr
+        firefox-esr \
+        chromium
 
 # Install the XFCE4 desktop environment.
 # Note: Power management does not work inside docker so it is removed.
@@ -67,6 +68,7 @@ RUN ./vscodium.bash \
 # Clean up the xfce Applications menu because browser links don't work.
 # Would be nice to make these work instead...
 RUN rm -f /usr/share/applications/firefox.desktop \
+ && rm -r /usr/share/applications/chromium.desktop \
  && rm -f /usr/share/applications/google-chrome.desktop \
  && rm -f /usr/share/applications/microsoft-edge-dev.desktop
 
@@ -131,12 +133,12 @@ RUN echo "y" | vue create \
         fd2test
 WORKDIR /home/$USERNAME/fd2test
 RUN npm install -d \
-        cypress \
-        webpack \
-        @cypress/webpack-dev-server \
-        @cypress/vue2 \
-        path \
-        axios
+        cypress@10.11.0 \
+        webpack@5.74.0 \
+        @cypress/webpack-dev-server@2.5.0 \
+        @cypress/vue2@1.1.2 \
+        path@0.12.7 \
+        axios@1.1.3
 WORKDIR /home/$USERNAME
 
 # Configure the VNC server so that it allows fd2dev to connect without
@@ -150,8 +152,11 @@ RUN echo ":1=$USERNAME" >> /etc/tigervnc/vncserver.users \
  && chmod +x .vnc/xstartup
 USER $USERNAME
 
-# Configure git to store credentials.
-RUN git config --global credential.helper store
+# Do some basic git configuration.
+RUN git config --global credential.helper store \
+ && git config --global merge.conflictstyle diff3 \
+ && git config --global merge.tool meld \
+ && git config --global mergetool.keepBackup false
 
 # Install some useful VSCodium extensions
 RUN codium --install-extension streetsidesoftware.code-spell-checker

@@ -72,6 +72,7 @@ You can connect to the FarmData2 development environment using the TigerVNC View
 1. Run your TigerVNC Viewer
 2. Set the "VNC Server" field to: `localhost:5901`
 3. Click "Connect"
+4. If nothing happens and the TigerVNC Viewer quits, wait a moment and try again.  Sometimes it takes a few moments for the VNC server in the container to start.
 
 #### Connecting via a Browser ####
 
@@ -79,9 +80,9 @@ You can also connect to the FarmData2 development environment using a browser.
 1. Open a browser on the host OS
 2. Visit the URL: `localhost:6901`
 3. Click "Connect"
-4. Use the NoVNC settiings (on the left) to set the "Scaling Mode" to "Remote Resizing"
+4. Use the NoVNC settings (on the left) to set the "Scaling Mode" to "Remote Resizing"
 
-Note: When accessing the development environment via the broswer, copying and pasting between the host OS and the development enviornment is tedious. However, if you work entirely inside the development enviornemnt it is quite functional.
+Note: When accessing the development environment via the browser, copying and pasting between the host OS and the development environment is tedious. However, if you work entirely inside the development environment it is quite functional.
 
 When the TigerVNC Viewer connects to the FarmData2 Development environment a window will open displaying the Desktop of the Debian Linux system that is running in the docker container.
 
@@ -107,7 +108,7 @@ Configure the git CLI within the FarmData2 development environment by:
    * Select the "repo" scope when creating the token.
    * Copy the token to the clipboard.
 5. `cd FarmData2`
-5. `git push origin main`
+6. `git push origin main`
    * Enter your GitHub username
    * Paste in your personal access token.
 
