@@ -22,6 +22,7 @@ There are 5 containers involved in the FarmData2 system:
   * The actual database files used by MariaDB are stored in a external Docker Volume for performance and persistence.
 * `fd2_api`
   * An custom api for FarmData2 that accesses the farmOS database in the `fd2_mariaDB` container.  This api provides api endpoints that are specialized for FarmData2 and supplement the more general farmOS api endpoints.
+  * The api code is mounted from the FarmData2 repository into this container and is monitored for changes so that they are reflected in the endpoints avaialble and the results returned.
   * This api is accssible at `fd2_api` in the FarmData2 development enviornment.  It is also exposed on port 8080 of the `localhost`.  
 * `fd2_phpmyadmin`
   * A PHPMyAdmin service runs in this container to assist developers with backend API development.
