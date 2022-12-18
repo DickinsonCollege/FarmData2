@@ -17,7 +17,6 @@ services:
     image: farmdata2/mariadb:fd2.1
     container_name: fd2_mariadb
     networks:
-      - fd2_public
       - fd2_private
     volumes:
       - farmos_db:/var/lib/mysql  # use a docker volume here for performance.
@@ -55,6 +54,7 @@ services:
     container_name: fd2_phpmyadmin
     networks:
       - fd2_public
+      - fd2_private
     environment:
       PMA_HOST: "db"
     ports:
