@@ -1,7 +1,7 @@
 import mariadb from 'mariadb'
 
-const pool = mariadb.createPool({
-    host: '172.18.0.2',  
+const pool = mariadb.createPool({ 
+    host: `fd2_mariadb`,
     user: 'farm',
     password: 'farm',
     database: 'farm'
