@@ -27,6 +27,9 @@ echo "fd2dev" | sudo -S chmod 775 /var/run/docker.sock
 echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/FarmData2
 echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/FarmData2
 
+# Ensure that the dbus service is running.
+echo "fd2dev" | sudo /etc/init.d/dbus restart
+
 # Launch the VNC server
 vncserver \
   -localhost no \

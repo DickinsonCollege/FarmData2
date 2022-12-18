@@ -17,7 +17,8 @@ RUN apt update \
         curl \
         man \
         libpci3 \
-        firefox-esr
+        firefox-esr \
+        chromium
 
 # Install the XFCE4 desktop environment.
 # Note: Power management does not work inside docker so it is removed.
@@ -67,6 +68,7 @@ RUN ./vscodium.bash \
 # Clean up the xfce Applications menu because browser links don't work.
 # Would be nice to make these work instead...
 RUN rm -f /usr/share/applications/firefox.desktop \
+ && rm -r /usr/share/applications/chromium.desktop \
  && rm -f /usr/share/applications/google-chrome.desktop \
  && rm -f /usr/share/applications/microsoft-edge-dev.desktop
 
