@@ -1,10 +1,23 @@
 version: '2.2'
 services:
+  express:
+    image: farmdata2/api:fd2.1
+    container_name: fd2_api
+    ports:
+      - 8080:80
+    depends_on: 
+      - db
+    volumes:
+      - '../farmdata2_api/src:/app/src'
+    networks:
+      - fd2_public  # Okay for dev, but need to remove for production!
+      - fd2_private
+
   db:
     image: farmdata2/mariadb:fd2.1
     container_name: fd2_mariadb
     networks:
-      - fd2
+      - fd2_private
     volumes:
       - farmos_db:/var/lib/mysql  # use a docker volume here for performance.
     ports:
@@ -21,7 +34,8 @@ services:
     image: farmdata2/farmos:fd2.6
     container_name: fd2_farmdata2
     networks:
-      - fd2
+      - fd2_public
+      - fd2_private
     volumes:
       - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
       - './logo:/var/www/html/sites/default/files:delegated'
@@ -30,8 +44,8 @@ services:
       - ./sampleDB:/sampleDB:delegated  # Needed for building the db!
     ports:
       - '80:80'
-    environment:
-      XDEBUG_CONFIG: remote_host=172.17.0.1
+    #environment:
+    #  XDEBUG_CONFIG: remote_host=172.17.0.1
 
   phpmyadmin:
     depends_on:
@@ -39,7 +53,8 @@ services:
     image: farmdata2/phpmyadmin:fd2.1
     container_name: fd2_phpmyadmin
     networks:
-      - fd2
+      - fd2_public
+      - fd2_private
     environment:
       PMA_HOST: "db"
     ports:
@@ -57,7 +72,8 @@ services:
     container_name: fd2_dev
     init: true
     networks:
-      - fd2
+      - fd2_public
+      - fd2_private
     volumes:
       - ..:/home/fd2dev/FarmData2
       - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
@@ -79,7 +95,8 @@ services:
     container_name: fd2_dev
     init: true
     networks:
-      - fd2
+      - fd2_public
+      - fd2_private
     volumes:
       - ..:/home/fd2dev/FarmData2
       - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
@@ -100,5 +117,10 @@ volumes:
   farmos_db:
 
 networks:
-  fd2:
+  # This network is exposed to the outside.
+  fd2_public:   
     name: farmdata2
+  # This network is available only to containers defined here.
+  fd2_private:  
+    name: farmdata2_api
+    internal: true

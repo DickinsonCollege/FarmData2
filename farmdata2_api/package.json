@@ -1,0 +1,18 @@
+{
+  "name": "fd2_api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Express API endpoints for FarmData2",
+  "main": "app.js",
+  "scripts": {
+    "start":"nodemon --es-module-specifier-resolution=node src/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mariadb": "^3.0.2",
+    "nodemon": "^2.0.20"
+  }
+}

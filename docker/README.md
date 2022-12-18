@@ -4,15 +4,29 @@ FarmData2 uses Docker containers to run all of the elements of the system and th
 
 ## The Containers
 
-There are 4 containers involved in the FarmData2 system:
+There are 5 containers involved in the FarmData2 system:
 * `fd2_dev`
-  * The FarmData2 development environment runs in this container.  This includes the VNC server, the VSCodium IDE, the Cypress testing framework, etc.  Developers connect to this container using the TigerVNC Viewer. The FarmData2 repository from the host machine is mounted into this container for development work.
+  * The FarmData2 development environment runs in this container.  
+  * This container provides:
+    * A VNC server accessible via port 5901 on the `localhost`.
+    * A noVNC server accessible via port 6901 on the `localhost`.
+    * An XFCE4 desktop with many standard development tools.
+    * The Cypress testing framework configured for the FarmData2 project.
+  * The FarmData2 repository from the host machine is mounted into the default user's home direcotry in this container.
 * `fd2_farmdata2`
-  * FarmData2 runs in this container.  Code from the FarmData2 repository is also mounted into this container and runs on the underlying farmOS and Drupal services.
+  * FarmData2 runs in this container.  
+  * The server is accessible at `fd2_farmdata2` in the FarmData2 development enviornment.  It is also exposed on port 80 of the `localhost`.  
+  * The code from the FarmData2 repository is mounted into this container and runs on the underlying farmOS and Drupal services.
 * `fd2_mariaDB`
-  * The MariaDB Database service that manages all of the FarmData2 data runs in this container.  The actual database files are stored in a external Docker Volume.
+  * The MariaDB Database service that manages all of the FarmData2 data runs in this container.  
+  * The actual database files used by MariaDB are stored in a external Docker Volume for performance and persistence.
+* `fd2_api`
+  * An custom api for FarmData2 that accesses the farmOS database in the `fd2_mariaDB` container.  This api provides api endpoints that are specialized for FarmData2 and supplement the more general farmOS api endpoints.
+  * The api code is mounted from the FarmData2 repository into this container and is monitored for changes so that they are reflected in the endpoints avaialble and the results returned.
+  * This api is accssible at `fd2_api` in the FarmData2 development enviornment.  It is also exposed on port 8080 of the `localhost`.  
 * `fd2_phpmyadmin`
   * A PHPMyAdmin service runs in this container to assist developers with backend API development.
+  * The PHPMyadmin service is accessible at `fd2_phpmyadmin` in the FarmData2 development enviornment.  It is also exposed on port 8181 of the `localhost`.  
 
 ## The Images
 
@@ -24,16 +38,19 @@ The images that are used are specified in the `docker/docker-compose.yml` file.
 
 ## Building the Images
 
-Each image that can be build has its own directory in the `docker` directory (e.g. `dev`, `farmos`, `mariaDB`, `phpmyadmin`).  Each of those directories contains a `Dockerfile` and any additional files that are needed to build the image.  In addition, each of these directories contains a `repo.txt` file that specifies the image name and tag to be used for the image when it is built and pushed to the [farmdata2](https://hub.docker.com/u/farmdata2) dockerhub repository.  
-
 The `docker/build-images.bash` script builds the images and pushes them to dockerhub. Run this script with no parameters to see a *usage* message describing how to build and push an image.
+
+Each image that can be build has its own directory in the `docker` directory (e.g. `api`, `dev`, `farmos`, `mariaDB`, `phpmyadmin`).  Each of those directories contains a `Dockerfile` and any additional files that are needed to build the image.  In addition, each of these directories contains the following files:
+* `repo.txt`: required file that specifies the image name and tag to be used for the image when it is built and pushed to the [farmdata2](https://hub.docker.com/u/farmdata2) dockerhub repository.  
+* `before.bash`: Optional script that is run by `build-images.bash` just before the image is built.  This is useful for adding files from outside the build context into the build context.
+* `after.bash`: Optinal script that is run by `build-images.bash` just after the image is built. This is useful for doing any cleanup from operations performed by the `before.bash` script.
 
 Note: In order to push the images it is necessary to log in to dockerhub with an account with write permission to the [farmdata2](https://hub.docker.com/u/farmdata2) dockerhub repository.
 
 ### Updating Images
 
-When an image is modified the tag in its `repo.txt` file must be incremented.  For example, if `repo.txt` contains `dev:fd2.1` and a new version is being created, this file should be edited to contain `dev:fd2.2`.  This will cause a new image with the new tag to be built and pushed to dockerhub.
+When an image is modified the tag in its `repo.txt` file should be incremented.  For example, if `repo.txt` contains `dev:fd2.1` and a new version is being created, this file should be edited to contain `dev:fd2.2`.  This will cause a new image with the new tag to be built and pushed to dockerhub.
 
-When a new tag is created and pushed, the `docker-compose.yml` file should also be updated to use the new tag for the image.  This ensures that the latest images will be pulled for developers when they synch with the upstream repository.
+When a new tag is created and pushed, the `docker-compose.yml` file should also be updated to use the new tag for the image.  This ensures that the latest images will be pulled for developers the next time they start FarmData2 after they synch with the upstream repository.
 
-If significant changes are made to the `dev` container then it may also be necessary to bump the version number of the Docker volumes that is used to store the fd2dev user's home directory.
+If significant changes are made to the `dev` container then it may also be necessary to bump the version number of the Docker volume that is used to store the fd2dev user's home directory.
