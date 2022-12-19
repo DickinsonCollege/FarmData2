@@ -401,7 +401,7 @@ let CustomTableComponent = {
             link.setAttribute('download', this.csvName + today + ".csv")
             link.textContent = 'Click to Download'
 
-            // // This will download the csv file named "propName_(today).csv"
+            // This will download the csv file named "propName_(today).csv"
             link.click()
         },
         updateColumns(newArr){
