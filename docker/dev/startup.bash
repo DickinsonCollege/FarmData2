@@ -5,6 +5,14 @@
 rm /tmp/.X11-unix/X1
 rm /tmp/.X1-lock
 
+# Ensure that the fd2grp has RW access to mounted FarmData2 and .fd2 directories.
+# This probably is not necessary as in linux the group will reflect
+# the host group.  But it does make things consistent across macOS and linux.
+echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/FarmData2
+echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/FarmData2
+echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/.fd2
+echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/.fd2
+
 # Ensure that the fd2dev user is in a group that has RW permission to
 # the docker.sock file.  This will allow fd2dev to use the docker on docker
 # to interact with containers within the development environment.
@@ -20,14 +28,6 @@ fi
 echo "fd2dev" | sudo -S usermod -a -G $HOST_DOCKER_GID fd2dev
 echo "fd2dev" | sudo -S chgrp +$HOST_DOCKER_GID /var/run/docker.sock
 echo "fd2dev" | sudo -S chmod 775 /var/run/docker.sock
-
-# Ensure that the fd2grp has RW access to mounted FarmData2 and .fd2 directories.
-# This probably is not necessary as in linux the group will reflect
-# the host group.  But it does make things consistent across macOS and linux.
-echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/FarmData2
-echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/FarmData2
-echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/.fd2
-echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/.fd2
 
 # Ensure that the dbus service is running.
 echo "fd2dev" | sudo /etc/init.d/dbus restart
