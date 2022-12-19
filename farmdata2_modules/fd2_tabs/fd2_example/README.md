@@ -1,17 +1,18 @@
 # FarmData2 Modules #
 
-FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. The _FD2 Example_ tab is created by a sample module and provides canonical examples of many of the operations and UI elements used in the _FieldKit_ and _BarnKit_ tabs.
+FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. The _FD2 Example_ tab is created by a sample module and provides canonical examples of many of the operations and UI elements used in the _FieldKit_ and _BarnKit_ tabs.  The _FD2 School_ tab is created by a module used just for the FarmData2 School onboarding materials.
 
 ## FarmData2 Module Structure ##
 
 As mentioned, each of the tabs in the FarmData2 interface are created by Drupal modules. Each FarmData2 module is defined in its own directory within the `farmdata2_modules/fd2_tabs` directory (e.g. `fd2_barn_kit`, `fd2_example`, `fd2_field_kit`).
 
-A FarmData2 module named `xyz` would include a folder within `farmdata2_modules/fd2_tabs` named `xyz`. That folder will contain at least the following files and directories, where `xyz`, `abc` and `pqr` are simply place holders and should be replaced with module-specific names.
-- `fd2_xyz.info`: Defines the module `xyz` so that it is recognized by Drupal.
-- `fd2_xyz.module`: Contains the PHP implementation of the `xyz` module. This code determines where and when the tab is visible based on the user's role (e.g. `admin`, _manager_, _worker_ or _guest_). It also defines the sub-tabs and their content.
-- `abc.html`: The content for a sub-tab `abc` within the `xyz` module (e.g. `info.html`, `ex1.html`).
-- `abc.spec.js`: A test file containing end-to-end tests for the `abc.html` page.  The end-to-end tests are written using the Cypress testing tools (more info below). If multiple test files are used for the `abc.html` file, they should be named `abc.pqr.spec.js` where `pqr` clarifies the testing performed by the file. Multiple additional periods and names can be used as necessary, but the filename of the test must end with `.spec.js` in order to be recognized by the FarmData2 Cypress configuration.
-- `cypress`: A directory containing additional module-level end-to-end tests for the `xyz` module. These are tests that are important for the module but that are not associated with a specific sub-tab (i.e. `html` file). These  test files must also be named `*.spec.js` to be recognized by the FarmData2 Cypress configuration.
+A FarmData2 module named `fd2_xyz` would include a folder within `farmdata2_modules/fd2_tabs` named `fd2_xyz`. That folder will contain at least the following files and directories, where `fd2_xyz`, `abc` and `pqr` are simply place holders and should be replaced with module-specific names.
+- `fd2_xyz.info`: Defines the module `fd2_xyz` so that it is recognized by Drupal.
+- `fd2_xyz.module`: Contains the PHP implementation of the `fd2_xyz` module. This code determines where and when the tab is visible based on the user's role (e.g. `admin`, `manager`, `worker` or `guest`). It also defines the sub-tabs and their content.
+- A folder for each sub-tab in the module.  For example for a sub-tab `abc` there will be a folder named `abc` with the following contents:
+  - `abc.html`: The content for a sub-tab `abc` within the `fd2_xyz` module (e.g. `info.html`, `api.html`). 
+  - `abc.spec.js`: Test file containing end-to-end tests for the `abc.html` page.  The end-to-end tests are written using the Cypress testing tools (more info below). If multiple test files are used for the `abc.html` file, they should be named `abc.pqr.spec.js` where `pqr` clarifies the testing performed by the file. Multiple additional periods and names can be used as necessary, but the filename of the test must end with `.spec.js` in order to be recognized by the FarmData2 Cypress configuration.
+- `cypress`: A directory containing additional module-level end-to-end tests for the `fd2_xyz` module. These are tests that are important for the module but that are not associated with a specific sub-tab. These  test files must also be named `*.spec.js` to be recognized by the FarmData2 Cypress configuration.
 
 ### Hiding the _FD2 Example_ Tab ###
 
@@ -30,7 +31,7 @@ When returning to the home screen the _FD2 Example_ tab should no longer be visi
 
 Most FarmData2 front-end development will consist of adding a new sub-tab to one of the FarmData2 tabs (i.e. the _Field Kit_ or the _Barn Kit_).  This section discusses how to add such a sub-tab.
 
-To add a new sub-tab to the `xyz` module:
+To add a new sub-tab to the `fd2_xyz` module:
 1. Ensure that a development instance of FarmData2 is up and running. See [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) for full instructions.
 1. Edit the `fd2_xyz.module` file to add a new `array` to the `$items` array for the new sub-tab.  The `array` for the _UI_ tab (shown below) is a good example to work from:
    ```php
@@ -44,7 +45,7 @@ To add a new sub-tab to the `xyz` module:
          'title' => 'UI',
          'type' => MENU_LOCAL_TASK,
          'page callback' => 'fd2_example_view',
-         'page arguments' => array('ui.html'),
+         'page arguments' => array('ui'),
          'access arguments' => array('View FD2 Example'),
          'weight' => 120,
        );
@@ -55,11 +56,13 @@ To add a new sub-tab to the `xyz` module:
    ```
    - Four elements of the `array` must be customized for your new sub-tab:
      - `farm/fd2-example/ui`: This is the URL to directly access the _UI_ sub-tab. Replace `ui` with the URL you want for your sub-tab.
-       - Note: This string also controls the placement of the _FD2 Example_ and _UI_ tabs. The _FD2 Example_ tab will appear on the _Farm_ menu, which is where the _Dashboard_ tab also appears. The _UI_ tab will appear as a sub-tab on the _FD2 Example_ tab. The value `farm` cannot be changed. But, `fd2-example` and `UI` can.  In particular, they are not required to match the filenames. For example, `fd2-example` does not have to match the filename `fd2_example.module` and `UI` does not have to correspond to `ui.html`. However, it is a good convention to follow.
+       - Note: This string also controls the placement of the _FD2 Example_ and _UI_ tabs. The _FD2 Example_ tab will appear on the _Farm_ menu, which is where the _Dashboard_ tab also appears. The _UI_ tab will appear as a sub-tab on the _FD2 Example_ tab. The value `farm` cannot be changed. But, `fd2-example` and `ui` can.  In particular, they are not required to match the filenames. For example, `fd2-example` does not have to match the filename `fd2_example.module` and `ui` does not have to correspond to `ui.html`. However, it is a good convention to follow.
      - `title`: This defines the name of the sub-tab that appears in the _Example_ module's tab.  Replace `UI` with the text you want to appear as the sub-tab title.
-     - `page arguments`: This is the file that provides the content for the sub-tab. Replace `ui.html` with the name of the `.html` file that contains the code for your new sub-tab.
+     - `page arguments`: This is the name of the directory that contains the content for the sub-tab. Replace `ui` with the name of the folder file that contains the code for your new sub-tab.
      - `weight`: The weight controls the placement of the sub-tabs with respect to the others that appear.  Sub-tabs with lower weights appear further left and those with higher weights appear further right.
-1. Create the `.html` file you named in the `page arguments` above. Insert some _dummy code_ for now just to get the sub-tab up and visible. For example:
+1. Create a folder for the sub-tab that you named in the `page arguments` above. 
+1. Create a `.html` file using the same base name as the folder (e.g. `abc.html`).
+1. Insert some _dummy code_ into the `.html` file for now just to get the sub-tab up and visible. For example:
    ```html
     <p>This is my sub-tab</p>
    ```
@@ -71,17 +74,9 @@ To add a new sub-tab to the `xyz` module:
 1. Replace the _dummy code_ in your `.html` file with the code for your new sub-tab. This file can contain any valid html code including CSS, JavaScript, Vue.js, etc...
    - Sub-tabs typically (e.g. `ui.html`) use Vue.js, Axios and the FarmOS API to interact with the FarmData2 database. More information on these tools and resources for getting started with them are available in the [ONBOARDING.md](https://github.com/DickinsonCollege/FarmData2/blob/main/ONBOARDING.md) file.
 
-### JavaScript and CSS Libraries ###
+#### Local JavaScript and CSS Libraries ####
 
-JavaScript and CSS libraries can be included in a module by adding them to the module configuration files (i.e. `.info` and `.module`).  
-
-#### Local Libraries ####
-
-Local libraries, such as those in the `fd2_tabs/resources` directory, are included by adding them to the `.info` file. For example, in the `fd2_example.info` file the following lines add a css library and a JavaScript library for a Vue Component:
-```php
-stylesheets[all][] = '../resources/fd2.css'
-scripts[] = '../resources/dropdownWithAllComponent.js'
-```
+Local libraries, such as those in the `fd2_tabs/resources` directory, are included by adding them to the `.info` configuration file of the `fd2_config` module (i.e. `fd2_config/fd2_config.info`).  A file added to the `fd2_config` module will be availble to all other modules.
 
 #### Remote or CDN Libraries ####
 
@@ -90,6 +85,8 @@ Libraries such as those served from Content Delivery Networks (CDN) are included
 drupal_add_js('https://unpkg.com/vue/dist/vue.min.js','external');
 drupal_add_js('https://unpkg.com/axios/dist/axios.min.js','external');
 ```
+
+The lines for external libraries must be included in each module's `.module` file.
 
 ### Pre-defined Module Variables ###
 

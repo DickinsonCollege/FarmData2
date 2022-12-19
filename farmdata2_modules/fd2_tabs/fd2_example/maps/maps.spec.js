@@ -1,4 +1,4 @@
-var FarmOSAPI = require('../resources/FarmOSAPI.js')
+var FarmOSAPI = require('../../resources/FarmOSAPI.js')
 
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
 var getUserToIDMap = FarmOSAPI.getUserToIDMap

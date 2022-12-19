@@ -46,7 +46,7 @@ function fd2_example_menu() {
   $items['farm/fd2-example'] = array(                 // Put the example in the farm menu
     'title' => 'FD2 Example',                         // Put FD2 Example on the tab
     'page callback' => 'fd2_example_view',            // The function that will provide the content
-    'page arguments' => array('info.html'),           // The html file with the default content for the tab
+    'page arguments' => array('info'),                // The html file with the default content for the tab
     'access arguments' => array('view fd2 example'),  // permissions required to view the tab
     'type' => MENU_LOCAL_TASK,                        // Put it on the menu
     'weight' => -30,                                  // larger weights appear further right.
@@ -67,7 +67,7 @@ function fd2_example_menu() {
     'title' => 'Vars',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_example_view',
-    'page arguments' => array('vars.html'),
+    'page arguments' => array('vars'),
     'access arguments' => array('view fd2 example'),
     'weight' => 100,
   );
@@ -76,7 +76,7 @@ function fd2_example_menu() {
     'title' => 'Maps',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_example_view',
-    'page arguments' => array('maps.html'),
+    'page arguments' => array('maps'),
     'access arguments' => array('view fd2 example'),
     'weight' => 105,
   );
@@ -85,7 +85,7 @@ function fd2_example_menu() {
     'title' => 'API',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_example_view',
-    'page arguments' => array('api.html'),
+    'page arguments' => array('api'),
     'access arguments' => array('view fd2 example'),
     'weight' => 110,
   );
@@ -94,7 +94,7 @@ function fd2_example_menu() {
     'title' => 'Cache',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_example_view',
-    'page arguments' => array('cache.html'),
+    'page arguments' => array('cache'),
     'access arguments' => array('view fd2 example'),
     'weight' => 115,
   );
@@ -103,7 +103,7 @@ function fd2_example_menu() {
     'title' => 'UI',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_example_view',
-    'page arguments' => array('ui.html'),
+    'page arguments' => array('ui'),
     'access arguments' => array('view fd2 example'),
     'weight' => 120,
   );
@@ -115,7 +115,7 @@ function fd2_example_menu() {
 // It must be renamed in each module.
 function fd2_example_view($subtab_content) {
   $dir=dirname(__FILE__);
-  $html=$dir."/".$subtab_content;
+  $html=$dir."/".$subtab_content."/".$subtab_content.".html";
   $code=file_get_contents($html);
   return $code;
 };

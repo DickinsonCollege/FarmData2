@@ -1,5 +1,5 @@
 const dayjs = require('dayjs')
-var FarmOSAPI = require('../resources/FarmOSAPI.js')
+var FarmOSAPI = require('../../resources/FarmOSAPI.js')
 
 var createRecord = FarmOSAPI.createRecord
 var updateRecord = FarmOSAPI.updateRecord

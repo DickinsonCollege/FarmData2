@@ -1,6 +1,6 @@
 const dayjs = require('dayjs')
 
-var FarmOSAPI = require('../resources/FarmOSAPI.js')
+var FarmOSAPI = require('../../resources/FarmOSAPI.js')
 var getSessionToken = FarmOSAPI.getSessionToken
 var getConfiguration = FarmOSAPI.getConfiguration
 var setConfiguration = FarmOSAPI.setConfiguration
