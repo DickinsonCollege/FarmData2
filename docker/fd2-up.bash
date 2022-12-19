@@ -269,7 +269,8 @@ echo "  fd2 gid files created."
 if [ "$PROFILE" == "linux" ] || [ "$PROFILE" == "windows" ];
 then
   echo "  Assigning .fd2gids to fd2grp group..."
-  sudo chmod -R g+rw ~/.fd2gids
+  chgrp -R fd2grp ~/.fd2gids
+  chmod -R g+rw ~/.fd2gids
   echo "  .fd2gids assigned to fd2grp group."
 fi
 
