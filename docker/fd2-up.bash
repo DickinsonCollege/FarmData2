@@ -118,7 +118,7 @@ then
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
   if [ -z "$DOCKER_GRP_EXISTS" ];
   then
-    echo "  Creating new docker group on host."
+    echo "  Creating new docker group on host..."
     sudo groupadd docker
     error_check
     DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
@@ -131,7 +131,7 @@ then
   USER_IN_DOCKER_GRP=$(groups | grep "docker")
   if [ -z "$USER_IN_DOCKER_GRP" ];
   then 
-    echo "  Adding user $(id -un) to the docker group."
+    echo "  Adding user $(id -un) to the docker group..."
     sudo usermod -a -G docker $(id -un)
     error_check
     echo "  User $(id -un) added to the docker group."
@@ -147,7 +147,7 @@ then
   SOCK_IN_DOCKER_GRP=$(ls -l /var/run/docker.sock | grep " docker ")
   if [ -z "$SOCK_IN_DOCKER_GRP" ];
   then
-    echo "  Assigning /var/run/docker.sock to the docker group."
+    echo "  Assigning /var/run/docker.sock to the docker group..."
     sudo chgrp docker /var/run/docker.sock
     error_check
     echo "  /var/run/docker.sock assigned to docker group."
@@ -159,7 +159,7 @@ then
   DOCKER_GRP_RW_SOCK=$(ls -l /var/run/docker.sock | cut -c 5-6 | grep "rw")
   if [ -z "$DOCKER_GRP_RW_SOCK" ];
   then
-    echo "  Granting docker group RW access to /var/run/docker.sock."
+    echo "  Granting docker group RW access to /var/run/docker.sock..."
     sudo chmod g+rw /var/run/docker.sock
     error_check
     echo "  docker group granted RW access to /var/run/docker.sock."
@@ -172,16 +172,18 @@ then
   FD2GRP_EXISTS=$(grep "fd2grp" /etc/group)
   if [ -z "$FD2GRP_EXISTS" ];
   then
-    echo "  Creating fd2grp group on host."
+    echo "  Creating fd2grp group on host..."
     
     FD2GRP_GID=$(cat ./dev/fd2grp.gid)
     FD2GRP_GID_EXISTS=$(grep ":$FD2GRP_GID:" /etc/group)
     if [ -n "$FD2GRP_GID_EXISTS" ];
     then
-      echo "Attempted to create the fd2grp with GID=$FD2GRP_GID."
-      echo "Host machine already has a group with that GID."
-      echo "Change the group number in docker/dev/f2grp.gid to an unused GID."
-      echo "Then run ./fd2-up.bash again."
+      echo "  ***"
+      echo "  *** Attempted to create the fd2grp with GID=$FD2GRP_GID."
+      echo "  *** Host machine already has a group with that GID."
+      echo "  *** Change the group number in docker/dev/f2grp.gid to an unused GID."
+      echo "  *** Then run ./fd2-up.bash again."
+      echo "  ***"
       exit -1
     fi
 
@@ -196,7 +198,7 @@ then
   USER_IN_FD2GRP=$(groups | grep "fd2grp")
   if [ -z "$USER_IN_FD2GRP" ];
   then
-    echo "  Adding user $(id -un) to the fd2grp group."
+    echo "  Adding user $(id -un) to the fd2grp group..."
     sudo usermod -a -G fd2grp $(id -un)
     error_check
     echo "  User user $(id -un) added to the fd2grp group."
@@ -212,7 +214,7 @@ then
   FD2GRP_OWNS_FD2=$(ls -ld ../../$FD2_DIR | grep " fd2grp ")
   if [ -z "$FD2GRP_OWNS_FD2" ];
   then
-    echo "  Assigning $FD2_DIR to the fd2grp group."
+    echo "  Assigning $FD2_DIR to the fd2grp group..."
     sudo chgrp -R fd2grp ../../$FD2_DIR
     error_check
     echo "  $FD2_DIR assigned to the fd2grp group."
@@ -224,7 +226,7 @@ then
   FD2GRP_RW_FD2=$(ls -ld ../../$FD2_DIR | cut -c 5-6 | grep "rw")
   if [ -z "$FD2GRP_RW_FD2" ];
   then
-    echo "  Granting fd2grp RW access to $FD2_DIR."
+    echo "  Granting fd2grp RW access to $FD2_DIR..."
     sudo chmod -R g+rw ../../$FD2_DIR
     error_check
     echo "  fd2grp granted RW access to $FD2_DIR."
@@ -256,10 +258,20 @@ fi
 echo "  The docker GID=$DOCKER_GRP_GID."
 echo "  The fd2grp GID=$FD2GRP_GID."
 
+echo "  Creating fd2 gid files..."
 rm -rf ~/.fd2gids &> /dev/null
 mkdir ~/.fd2gids
 echo "$FD2GRP_GID" > ~/.fd2gids/fd2grp.gid
 echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid 
+echo "  fd2 gid files created."
+
+# Ensure that these files can be mounted in the home directory in the container.
+if [ "$PROFILE" == "linux" ] || [ "$PROFILE" == "windows" ];
+then
+  echo "  Assigning .fd2gids to fd2grp group..."
+  sudo chmod -R g+rw ~/.fd2gids
+  echo "  .fd2gids assigned to fd2grp group."
+fi
 
 # Now finally... actually start the containers...
 
@@ -269,10 +281,13 @@ echo "Removing any stale containers..."
 docker rm fd2_mariadb &> /dev/null
 docker rm fd2_phpmyadmin &> /dev/null
 docker rm fd2_farmdata2 &> /dev/null
+docker rm fd2_api &> /dev/null
+echo "Stale containers removed."
 
 echo "Starting containers..."
 # Note: Any command line args are passed to the docker-compose up command
 docker compose --profile $PROFILE up -d "$@"
+echo "Containers started."
 
 echo "Clearing drupal cache..."
 sleep 3  # give site time to come up before clearing the cache.
