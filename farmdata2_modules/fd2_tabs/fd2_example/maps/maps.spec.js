@@ -20,10 +20,10 @@ describe('Test the use of maps between farmOS ids and values', () => {
 
         // Wait here for the maps to load in the tests so that they are
         // available as the tests are run.
-        cy.get('@useridmap').should(function(map) {
+        cy.get('@useridmap').then(function(map) {
             userToIDMap = map
         })
-        cy.get('@idusermap').should(function(map) {
+        cy.get('@idusermap').then(function(map) {
             idToUserMap = map
         })
         
@@ -42,21 +42,19 @@ describe('Test the use of maps between farmOS ids and values', () => {
     })
 
     it('check the table rows for map content', () => {
-        keys = Array.from(idToUserMap.keys());
+        let keys = Array.from(idToUserMap.keys());
         keys.sort(function(a,b) { 
             return Number(a) - Number(b);
         })
                
         // Skip the anonymous entry since it has no user id.
-        for (i=1; i<userToIDMap.size; i++) {
+        for (let i=1; i<userToIDMap.size; i++) {
             // Check the user id.
-            attr='[data-cy='+i+'id]'
-            cy.get(attr)
+            cy.get('[data-cy='+i+'id]')
                 .should('have.text', keys[i])
 
             // Check the username
-            attr='[data-cy='+i+'name]'
-            cy.get(attr)
+            cy.get('[data-cy='+i+'name]')
                 .should('have.text', idToUserMap.get(keys[i]))    
         } 
     })
