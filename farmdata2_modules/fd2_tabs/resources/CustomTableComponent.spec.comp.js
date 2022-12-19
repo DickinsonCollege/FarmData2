@@ -638,12 +638,22 @@ describe('custom table component', () => {
             .should('have.exist')
         })
 
-        it('verifies download', () => {
+        it('assure the button cannot be clicked when no row is selected', () => {
+            
+            cy.get('[data-cy=export-button')
+            .should('have.exist')
+            .should("be.disabled")
+        })
+
+        it('verifying download', () => {
             var today = new Date()
             var dd = String(today.getDate()).padStart(2, '0')
             var mm = String(today.getMonth() + 1).padStart(2, '0')
             var yyyy = today.getFullYear()
-            today = mm + dd + yyyy;
+            today = mm + dd + yyyy
+
+            cy.get('[data-cy=r0-cbuttonCheckbox]')
+                .click()
             cy.get('[data-cy=export-button]')
                 .click();
 
@@ -651,18 +661,38 @@ describe('custom table component', () => {
             cy.exec("rm -r " + downloadsFolder)
         })
 
-        it('verifies content of csv', () => {
+        it('verifies only one row was downloaded into csv', () => {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0')
             var mm = String(today.getMonth() + 1).padStart(2, '0') 
             var yyyy = today.getFullYear()
-            today = mm + dd + yyyy;
+            today = mm + dd + yyyy
+
+            cy.get('[data-cy=r0-cbuttonCheckbox]')
+            .click()
+            cy.get('[data-cy=export-button]')
+                .click()
+
+            cy.readFile(downloadsFolder + 'unitTest_' + today + '.csv')
+                .should("exist")
+                .should("eq", "ID,Item,Color,Count,Date,Purchased\n1,Shirt,Green,5,2020-01-01,true\n\n")
+            cy.exec("rm -r " + downloadsFolder)
+        })
+
+        it('verifies all rows were downloaded into csv', () => {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0')
+            var mm = String(today.getMonth() + 1).padStart(2, '0') 
+            var yyyy = today.getFullYear()
+            today = mm + dd + yyyy
+            cy.get('[data-cy=selectAll-checkbox]')
+            .click()
             cy.get('[data-cy=export-button]')
                 .click();
 
             cy.readFile(downloadsFolder + 'unitTest_' + today + '.csv')
                 .should("exist")
-                .should("eq", "ID,Item,Color,Count,Date,Purchased\n1,Shirt,Green,5,2020-01-01,true\n5,Pants,Blue,12,2020-05-01,true")
+                .should("eq", "ID,Item,Color,Count,Date,Purchased\n1,Shirt,Green,5,2020-01-01,true\n5,Pants,Blue,12,2020-05-01,true\n")
             cy.exec("rm -r " + downloadsFolder)
         })
     })

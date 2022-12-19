@@ -59,7 +59,7 @@ let CustomTableComponent = {
             data-cy="export-button" 
             class="table-button btn btn-primary"
             @click="exportCSV" 
-            :disabled="editDeleteDisabled"
+            :disabled="indexesToAction.length == 0 || editDeleteDisabled"
             v-if="csvName != ''">
             <span class="glyphicon glyphicon-download"></span>
             </button>
@@ -89,7 +89,7 @@ let CustomTableComponent = {
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
                         <th
-                        v-if="canDelete || customButtons.length > 0"  
+                        v-if="canDelete || customButtons.length > 0 || csvName != ''"  
                         :data-cy="'selectAll-checkbox'"
                         style="text-align:center">
                             <input type="checkbox"
@@ -113,7 +113,7 @@ let CustomTableComponent = {
                     v-for="(row, ri) in rows"
                     :data-cy="'r'+ri">
                         <td
-                        v-if="customButtons.length > 0 || canDelete" 
+                        v-if="customButtons.length > 0 || canDelete || csvName != ''" 
                         :data-cy="'r'+ri+'cbutton'+ri"
                         style="text-align:center">
                             <input
@@ -364,10 +364,10 @@ let CustomTableComponent = {
 
             for(let i = 0; i < this.rows.length; i++){
                 for(let j = 0; j < this.columns.length; j++){
-                    if(this.columns[j].visible){
+                    if(this.columns[j].visible && this.indexesToAction.includes(this.rows[i].id)){
                         if(typeof this.rows[i].data[j] === 'string'){
                             cleanHTML = this.rows[i].data[j].replaceAll(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
-                            cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, "-")
+                            cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, " -")
                             cleanHTML = cleanHTML.replaceAll(',', "--")
                             rowTemp.push(cleanHTML)
                         }
@@ -380,8 +380,11 @@ let CustomTableComponent = {
                 rowTemp = []
             }
 
-            let csvContent = "data:text/csv;charset=utf-8," 
-            + csvInfoArr.map(e => e.join(",")).join("\n");
+            let csvContent = ''
+            csvInfoArr.forEach(row => {
+                csvContent += row.join(',') + '\n'
+            })
+
 
             // Create a new date used for the file's name
             var today = new Date();
@@ -390,14 +393,15 @@ let CustomTableComponent = {
             var yyyy = today.getFullYear();
             today = mm + dd + yyyy;
 
-            // Required if we want to be able to name the file
-            var encodedUri = encodeURI(csvContent)
-            var link = document.createElement("a")
-            link.setAttribute("href", encodedUri)
-            link.setAttribute("download", this.csvName + today + ".csv")
-            document.body.appendChild(link)
+            // Create a new blob object that will be our csv file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8,' })
+            const objUrl = URL.createObjectURL(blob)        
+            const link = document.createElement('a')
+            link.setAttribute('href', objUrl)
+            link.setAttribute('download', this.csvName + today + ".csv")
+            link.textContent = 'Click to Download'
 
-            // This will download the csv file named "seedingReport_(today).csv"
+            // This will download the csv file named "propName_(today).csv"
             link.click()
         },
         updateColumns(newArr){
