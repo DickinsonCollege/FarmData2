@@ -367,7 +367,7 @@ let CustomTableComponent = {
                     if(this.columns[j].visible && this.indexesToAction.includes(this.rows[i].id)){
                         if(typeof this.rows[i].data[j] === 'string'){
                             cleanHTML = this.rows[i].data[j].replaceAll(/(<p[^>]+?>|<p>|<\/p>|<br \/>)/img, "")
-                            cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, "")
+                            cleanHTML = cleanHTML.replaceAll(/(\r\n|\n|\r)/gm, " -")
                             cleanHTML = cleanHTML.replaceAll(',', "--")
                             rowTemp.push(cleanHTML)
                         }
@@ -401,7 +401,7 @@ let CustomTableComponent = {
             link.setAttribute('download', this.csvName + today + ".csv")
             link.textContent = 'Click to Download'
 
-            // // This will download the csv file named "propName_(today).csv"
+            // This will download the csv file named "propName_(today).csv"
             link.click()
         },
         updateColumns(newArr){
