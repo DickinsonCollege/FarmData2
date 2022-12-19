@@ -56,14 +56,17 @@ describe('Test the values saved by the config module.', () => {
         // Change the config object
         let newConfigObj = { id:1, labor: "Optional"}
         cy.intercept('GET', '/fd2_config/1').as('newconfig')
-        cy.wrap(setConfiguration(newConfigObj, sessionToken))
+        cy.wrap(setConfiguration(newConfigObj, sessionToken)).as(`resetConfig`)
+
+        // read the config map again to verify update
+        cy.get(`@resetConfig`)
         .then(() => {
             cy.wrap(getConfiguration()).as('getNewConfigMap')
         })
-
-        // read the config map again to verify update
+        
         let newConfigMap = null
-        cy.get('@getNewConfigMap').then(function(map) {
+        cy.get('@getNewConfigMap')
+        .then(function(map) {
             newConfigMap = map.data
         })
 
