@@ -138,7 +138,7 @@ RUN npm install -d \
         @cypress/webpack-dev-server@2.5.0 \
         @cypress/vue2@1.1.2 \
         path@0.12.7 \
-        axios@1.1.3
+        axios@0.24.0
 WORKDIR /home/$USERNAME
 
 # Configure the VNC server so that it allows fd2dev to connect without
