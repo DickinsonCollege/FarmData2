@@ -44,9 +44,24 @@ do
     echo "Building $IMAGE..."
 
     cd $IMAGE
+
+    if [ -f before.bash ];
+    then
+      echo "  Running before.bash..."
+      source ./before.bash
+    fi
+
     TAG=$(cat repo.txt)
     REPO="farmdata2/$TAG"
+    echo "  Performing docker build..."
     docker buildx build --platform linux/amd64,linux/arm64 -t $REPO --push .
+
+    if [ -f after.bash ];
+    then
+      echo "  Running after.bash..."
+      source ./after.bash
+    fi 
+
     cd ..
 
     echo "Done building $IMAGE."
