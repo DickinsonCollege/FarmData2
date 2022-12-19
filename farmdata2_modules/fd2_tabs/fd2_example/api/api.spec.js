@@ -25,12 +25,12 @@ describe('test some api calls in a page', () => {
         })
     
         // Wait here for the session token to load in the tests.
-        cy.get('@token').should(function(token) {
+        cy.get('@token').then(function(token) {
             sessionToken = token
         })
 
         // Wait here for the cropToID map to load in the tests.
-        cy.get('@cropMap').should(function(map) {
+        cy.get('@cropMap').then(function(map) {
             cropToIDMap = map
         })
 
@@ -46,12 +46,12 @@ describe('test some api calls in a page', () => {
 
         cy.visit('/farm/fd2-example/api')
     
-        // Wait here for the maps and sesson token to load in the page.
+        // Wait here for the maps and session token to load in the page.
         cy.wait(['@cropmap', '@cropmap', '@sessiontok'])
     })
 
     context('check farm information', () => {
-        it('check farm info is fetched', () => {
+        it('check that farm info is fetched when button is clicked', () => {
             cy.get('[data-cy=farm-name]')
                 .should('have.text','')
 
@@ -61,7 +61,7 @@ describe('test some api calls in a page', () => {
                 .should('have.text','Sample Farm')
         })
 
-        it('check farm info is cleared', () => {
+        it('check that farm info is cleared when button is clicked', () => {
             cy.get('[data-cy=get-farm-info]').click()
             cy.get('[data-cy=farm-name]')
                 .should('have.text','Sample Farm')
@@ -73,7 +73,7 @@ describe('test some api calls in a page', () => {
     })
 
     context('check fetching of a single asset', () => {
-        it('check planting asset is fetched', () => {
+        it('check planting asset is fetched when button is clicked', () => {
             cy.get('[data-cy=fetch-planting]').click()
 
             cy.get('[data-cy=planting-crop]')
@@ -82,7 +82,7 @@ describe('test some api calls in a page', () => {
                 .should('contain.text','2017-08-25 STRAWBERRY SQ10')
         })
 
-        it('check planting asset is cleared', () => {
+        it('check planting asset is cleared when button is clicked', () => {
             cy.get('[data-cy=fetch-planting]').click()
             cy.get('[data-cy=planting-crop]')
                 .should('have.text','STRAWBERRY')
@@ -96,7 +96,7 @@ describe('test some api calls in a page', () => {
     })
 
     context('check fetching of seeding logs', () => {
-        it('spot check first/last row of table', () => {
+        it('spot check first/last row of table when logs are fetched', () => {
             cy.get('[data-cy=fetch-seedings]').click()
 
             cy.get('[data-cy=0date]')
@@ -114,11 +114,13 @@ describe('test some api calls in a page', () => {
                 .should('have.text','ALF-1')
         })
 
-        it('check table is cleared', () => {
+        it('check table is cleared when button is clicked', () => {
+            // load the logs...
             cy.get('[data-cy=fetch-seedings]').click()
             cy.get('[data-cy=13area]')
                 .should('have.text','ALF-1')
-
+        
+            // Then clear them.
             cy.get('[data-cy=clear-seedings]').click()
             cy.get('[data-cy=0date]')
                 .should('not.exist')
@@ -126,14 +128,14 @@ describe('test some api calls in a page', () => {
     })
 
     context('asset creation/modification/deletion', () => {
-        it('new asset is created', () => {
+        it('check that a new asset is created', () => {
             let plantingID = null
             let url = null
 
             // Create the asset by clicking the button.
             cy.get('[data-cy=create-planting]').click()
             cy.get('[data-cy=planting-status]')
-            .should('have.text', '201')  // 201 = created
+                .should('have.text', '201')  // 201 = created
 
             // The asset should have been created, so now request it
             // from the database to ensure that it was created correctly.
@@ -145,7 +147,7 @@ describe('test some api calls in a page', () => {
             })
             
             // Wait here for the asset to be fetched from the database
-            cy.get('@fetch').should((response) => {
+            cy.get('@fetch').then((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
 
                 // Note a small chance of failure here if running around midnight.
@@ -158,24 +160,24 @@ describe('test some api calls in a page', () => {
             })
 
             // Wait here for the record to be deleted and check that it worked.
-            cy.get('@delete').should((response) => {
+            cy.get('@delete').then((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
             })
         })
 
-        it('asset is updated with new crop', () => {
+        it('check that asset is updated with new crop', () => {
             let plantingID = null
             let url = null
 
             // Create the asset by clicking the button.
             cy.get('[data-cy=create-planting]').click()
             cy.get('[data-cy=planting-status]')
-            .should('have.text', '201')  // 201 = created
+                .should('have.text', '201')  // 201 = created
 
             // Update the asset by clicking the button.
             cy.get('[data-cy=update-planting]').click()
             cy.get('[data-cy=planting-status]')
-            .should('have.text', '200')  // 200 - OK/success
+                .should('have.text', '200')  // 200 - OK/success
 
             // Get the record to check the update.
             cy.get('[data-cy=planting-id]')
@@ -186,7 +188,7 @@ describe('test some api calls in a page', () => {
             })
 
             // Check that the crop has been changed from BEET to SPINACH
-            cy.get('@fetch').should((response) => {
+            cy.get('@fetch').then((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
                 expect(response.data.crop[0].id).to.equal(cropToIDMap.get('SPINACH'))
             }) 
@@ -197,12 +199,12 @@ describe('test some api calls in a page', () => {
             })
 
             // Wait here for the record to be deleted and check that it worked.
-            cy.get('@delete').should((response) => {
+            cy.get('@delete').then((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
             })
         })
 
-        it('second update switches toggles crop', () => {
+        it('check that second update toggles crop back', () => {
             let plantingID = null
             let url = null
             
@@ -221,15 +223,14 @@ describe('test some api calls in a page', () => {
             cy.wait(['@asset', '@asset', '@asset'])
 
             // Get the record to check the update.
-            cy.get('[data-cy=planting-id]')
-            .then((id) => {
+            cy.get('[data-cy=planting-id]').then((id) => {
                 plantingID = id.text()
                 url = '/farm_asset/' + plantingID
                 cy.wrap(getRecord(url)).as('fetch')
             })
 
             // Check that the crop has been changed from SPINACH back to BEET
-            cy.get('@fetch').should((response) => {
+            cy.get('@fetch').then((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
                 expect(response.data.crop[0].id).to.equal(cropToIDMap.get('BEET'))
             }) 
@@ -240,7 +241,7 @@ describe('test some api calls in a page', () => {
             })
 
             // Wait here for the record to be deleted and check that it worked.
-            cy.get('@delete').should((response) => {
+            cy.get('@delete').then((response) => {
                 expect(response.status).to.equal(200)  // 200 - OK/success
             })
         })
@@ -249,7 +250,7 @@ describe('test some api calls in a page', () => {
             // Create the asset by clicking the button.
             cy.get('[data-cy=create-planting]').click()
             cy.get('[data-cy=planting-status]')
-            .should('have.text', '201')  // 201 = created
+                .should('have.text', '201')  // 201 = created
 
             // The asset has been created, so now we can
             // delete it by clicking the button
@@ -257,7 +258,7 @@ describe('test some api calls in a page', () => {
 
             // If successfully deleted we should get a 200 status.
             cy.get('[data-cy=planting-status]')
-            .should('have.text', '200')  // 200 - OK/success
+                .should('have.text', '200')  // 200 - OK/success
         })
     })
 })
