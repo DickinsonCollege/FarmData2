@@ -39,7 +39,6 @@ services:
     volumes:
       - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
       - './logo:/var/www/html/sites/default/files:delegated'
-      - '../contrib_modules:/var/www/html/sites/all/modules/contrib_modules:delegated'
       - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:delegated'
       - ./sampleDB:/sampleDB:delegated  # Needed for building the db!
     ports:
