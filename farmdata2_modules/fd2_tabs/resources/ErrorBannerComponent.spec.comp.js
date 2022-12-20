@@ -1,4 +1,4 @@
-import { mount } from '@cypress/vue'
+import { mount } from '@cypress/vue2'
 import { shallowMount } from '@vue/test-utils'
 
 var ErrorBannerComp = require("./ErrorBannerComponent.js")
