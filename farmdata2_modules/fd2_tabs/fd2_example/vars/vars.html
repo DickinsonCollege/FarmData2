@@ -37,6 +37,18 @@
             </tbody>
         </table>
     </UL>
+
+    <!-- This div is used by the Cypress tests to wait until all of the
+         API calls initiated in the created() method have completed.  The
+         pageLoaded value is set by a computed function that checks if the 
+         required number of API calls have completed.  Each API call initiated
+         in created() then increments the this.createdCount variable in data
+         when the call completes (i.e. in its then()).  When all API calls have
+         completed, the pageLoaded value becomes true.  This is then detected
+         by the cy.waitForPage() function that is used in the test.  The 
+         cy.waitForPage() function is defined in the cypress/support/commands.js
+         file.
+    -->
     <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
 </div>
 
@@ -54,7 +66,7 @@ new Vue({
         userID: fd2UserID,
         userName: fd2UserName,
         configObj: {},
-        createdCount: 0,
+        createdCount: 0,  // used in creted and pageLoaded
     },
     computed: {
         keyArray() {
@@ -62,12 +74,14 @@ new Vue({
             return keys
         },
         pageLoaded() {
+            // Check here that the correct number of API calls have completed.
             return this.createdCount == 1
         },
     },
     created() {
         getConfiguration().then((response) => {
             this.configObj = response.data
+            // Increment this in the then() of each API call.
             this.createdCount++
         })
     }
