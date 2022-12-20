@@ -34,20 +34,9 @@ describe('test some api calls in a page', () => {
             cropToIDMap = map
         })
 
-        // The tests make use of the CropToIDMap and the session token in the page
-        // (e.g. by clicking on buttons that use them.) Thus, we need to be sure 
-        // these resources have loaded into the page before the tests continue.
-        // These resources are requested in the created() hook in the page's Vue instance.
-        // So we setup a wait for the requests that load that content to be completed
-        // before going on with the tests.
-        // (see: https://docs.cypress.io/guides/guides/network-requests#Waiting)
-        cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-        cy.intercept('GET', 'restws/session/token').as('sessiontok')
 
         cy.visit('/farm/fd2-example/api')
-    
-        // Wait here for the maps and session token to load in the page.
-        cy.wait(['@cropmap', '@cropmap', '@sessiontok'])
+        cy.waitForPage()
     })
 
     context('check farm information', () => {
