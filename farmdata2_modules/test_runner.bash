@@ -11,38 +11,37 @@ fi
 
 if [[ "$1" != "e2e" && "$1" != "ct" && "$1" != "all" ]];
 then
-  echo "Usage: test_runner.bash [<arg> [<browser>]]"
+  echo "Usage: test_runner.bash [<type> [<args>]]"
   echo "  Run the Cypress test suite."
-  echo "    <arg>:"
-  echo "      If no <arg> is provided the Cypress GUI test runner will be opened."
-  echo "      If <arg> is provided the terminal-based Cypress test runner is used:"
+  echo "    <type>:"
+  echo "      If no <type> is provided the Cypress GUI test runner will be opened."
+  echo "      If <type> is provided the terminal-based Cypress test runner is used:"
   echo "        e2e - to run the end to end tests headless (*.spec.js)."
   echo "        ct  - to run the component tests headless (*.spec.comp.js)."
   echo "        all - to run both the end-to-end and component tests in sequence."
-  echo "    <browser>:"
-  echo "       Ignored if no <arg> is provided."
-  echo "       If no <browser> is specified the default Electron browser will be used."
-  echo "       <browser> may be any valid browser for Cypress testing."
-  echo "         electron | firefox | chrome"
+  echo "    <args>:"
+  echo "       Ignored if no <type> is provided."
+  echo "       Otherwise, all remaining <args> are passed directly to cypress run."
+  echo "         Several useful <args> include:"
+  echo "           --browser <electron | firefox | chrome | chromium | ...>"
+  echo "           --spec <blob>"
+  echo "             e.g. --spec \"**/fd2_example/ui/*.spec.js\""
+  echo "             e.g. --spec \"**/fd2_field_kit/**/*.spec.js\""
   exit -1
 fi
 
-BROWSER=""
-if [[ $# == 2 ]];
-then
-  BROWSER="--browser $2"
-fi
+ARGS=${@:2}
 
 if [[ "$1" == "e2e" ]];
 then
     echo "Running e2e Tests"
-    npx cypress run --e2e $BROWSER
+    npx cypress run --e2e $ARGS
 elif [[ "$1" == "ct" ]];
 then
     echo "Running Component Tests"
-    npx cypress run --component $BROWSER
+    npx cypress run --component $ARGS
 else
     echo "Running all tests"
-    npx cypress run --component $BROWSER
-    npx cypress run --e2e $BROWSER
+    npx cypress run --component $ARGS
+    npx cypress run --e2e $ARGS
 fi
