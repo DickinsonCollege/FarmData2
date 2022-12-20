@@ -291,7 +291,7 @@ new Vue({
             this.cropList.push('ZUCCHINI')
         },
         dateChange(newDate) {
-            this.chosenDate = newDate
+            this.chosenDatableDatate = newDate
         },
         dateClicked() {
             this.dateClicks++   // just count clicks.
@@ -335,9 +335,14 @@ new Vue({
             // Would also need to delete data from the db via API here.
         },
 
-        printRow(row){
+        printRow(rowID){
             // Use this information for any variety of purposes (filtering).
-            console.log(row)
+            console.log("The row ID emitted by edit-clicked: " + rowID)
+            for(let i = 0; i < this.tableData.length; i++){
+                if(this.tableData[i].id == rowID){
+                    console.log("The table row data corresponding to the ID: " + this.tableData[i].data)
+                }
+            }
         },
 
         updateTableRow(edits, rowID) {
