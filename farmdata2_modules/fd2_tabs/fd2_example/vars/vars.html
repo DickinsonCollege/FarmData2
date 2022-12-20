@@ -37,6 +37,7 @@
             </tbody>
         </table>
     </UL>
+    <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
 </div>
 
 <script>
@@ -48,21 +49,26 @@ new Vue({
         // Note: 
         //   The JS variables fd2UserID and fd2UserName are defined in the 
         //   fd2_example.module file.
-        //   They are also defined in the module files for the fd2_barn_kit and fd2_field_kit
-        //   tabs so are avaiable there as well. 
+        //   They are also defined in the module files for the fd2_barn_kit and 
+        //   fd2_field_kit tabs so are available there as well. 
         userID: fd2UserID,
         userName: fd2UserName,
         configObj: {},
+        createdCount: 0,
     },
     computed: {
         keyArray() {
             keys = Array.from(Object.keys(this.configObj));
             return keys
         },
+        pageLoaded() {
+            return this.createdCount == 1
+        },
     },
     created() {
         getConfiguration().then((response) => {
             this.configObj = response.data
+            this.createdCount++
         })
     }
 })
