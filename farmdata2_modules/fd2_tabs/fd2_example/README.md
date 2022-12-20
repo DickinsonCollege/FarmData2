@@ -193,7 +193,9 @@ Resources and references for writing Cypress end-to-end tests can be found in th
 
 The FarmData2 development environment provides support for running the end-to-end tests using the Cypress test runner. The Cypress end-to-end test runner can be launched from the `farmdata2_modules` directory in an interactive GUI or a non-interactive terminal-based mode:
    - GUI: `./test_runner.bash`
-   - Headless:  `./test_runner.bash e2e`  
+   - Headless all tests:  `./test_runner.bash e2e`  
+   - Headless with specific browser: `./test_runner.bash e2e --browser firefox`
+   - Headless select tests: `./test_runner.bash e2e --spec "**/fd2_example/ui/*.spec.js"`
 
 ### Component Testing ###
 
@@ -207,4 +209,6 @@ Resources and references for writing Cypress tests for Vue Components can be fou
 
 The Cypress test runner (discussed above) also provides support for running Vue Component tests in the same Docker container. The Vue Component tests are run from the `farmdata2_modules` directory in an interactive GUI or a non-interactive terminal-based mode:
    - GUI: `./test_runner.bash`
-   - Headless:  `./test_runner.bash ct`
+   - Headless all tests:  `./test_runner.bash ct`
+   - Headless with specific browser: `./test_runner.bash ct --browser firefox`
+   - Headless select tests: `./test_runner.bash ct --spec "**/resources/**/*.spec.comp.js"`
