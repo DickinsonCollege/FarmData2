@@ -1,7 +1,7 @@
 describe('test caching of responses in local storage', () => {
 
     before(() => {
-        // Delete the crops from local storge if it is there
+        // Delete the crops from local storage if it is there
         // before running our tests.  
         localStorage.removeItem('crops')
     })
@@ -50,30 +50,21 @@ describe('test caching of responses in local storage', () => {
     })
 
     it('test clearing the cache', () => {
-
-        // Crops should not be cached to start.
-        let crops = localStorage.getItem('crops')
-        expect(crops).to.not.equal(null)
-
-        // Wait here for the response to come, be cached and fill in the list.
+        // wait for the page to load then click the "Clear the Cache" button.
+        let crops = null
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
         .then(() => {
-            // Now crops should be in the cache.
+            cy.get('[data-cy=clear-cache]').click({force:true})
             crops = localStorage.getItem('crops')
-            expect(crops).to.not.equal(null)
         })
-        
-        // click the "Clear the Cache" button.
-        cy.get('[data-cy=clear-cache]').click()
-
+    
+        // Now crops should not be in the cache
+        expect(crops).to.equal(null)
+   
         // Now reload the page 
         cy.reload(true)
 
-        // Now crops should not be in the cache
-        crops = localStorage.getItem('crops')
-        expect(crops).to.not.equal(null)
-
-        // But once the response returns the crops should be cached again.
+        // Once the response returns the crops should be cached again.
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
         .then(() => {
             crops = localStorage.getItem('crops')
