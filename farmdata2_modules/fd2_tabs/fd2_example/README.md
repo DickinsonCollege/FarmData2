@@ -4,7 +4,7 @@ FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ a
 
 ## FarmData2 Module Structure ##
 
-As mentioned, each of the tabs in the FarmData2 interface are created by Drupal modules. Each FarmData2 module is defined in its own directory within the `farmdata2_modules/fd2_tabs` directory (e.g. `fd2_barn_kit`, `fd2_example`, `fd2_field_kit`).
+As mentioned, each of the tabs in the FarmData2 interface are created by Drupal modules. Each FarmData2 module is defined in its own directory within the `farmdata2_modules/fd2_tabs` directory (e.g. `fd2_barn_kit`, `fd2_example`, `fd2_field_kit`).  All modules should be named with the prefix `fd2_`. This keeps them together and makes them easier to find within the farmOS admin interface.
 
 A FarmData2 module named `fd2_xyz` would include a folder within `farmdata2_modules/fd2_tabs` named `fd2_xyz`. That folder will contain at least the following files and directories, where `fd2_xyz`, `abc` and `pqr` are simply place holders and should be replaced with module-specific names.
 - `fd2_xyz.info`: Defines the module `fd2_xyz` so that it is recognized by Drupal.
