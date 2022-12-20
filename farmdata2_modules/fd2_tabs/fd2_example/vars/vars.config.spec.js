@@ -24,11 +24,11 @@ describe('Test the values saved by the config module.', () => {
         })
         
         // Setting up wait for the request in the created() to complete.
-        cy.intercept('GET', 'restws/session/token').as('sessiontok')
+        //cy.intercept('GET', 'restws/session/token').as('sessiontok')
         cy.intercept('GET', '/fd2_config/1').as('config')
         
         cy.visit('/farm/fd2-example/vars')
-        cy.wait(['@sessiontok', '@config'])
+        cy.wait('@config')
     })
 
     it("check values in the table when the page is loaded", () => {

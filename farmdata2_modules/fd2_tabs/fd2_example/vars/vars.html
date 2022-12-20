@@ -53,7 +53,6 @@ new Vue({
         userID: fd2UserID,
         userName: fd2UserName,
         configObj: {},
-        sessionToken: null,
     },
     computed: {
         keyArray() {
@@ -64,9 +63,6 @@ new Vue({
     created() {
         getConfiguration().then((response) => {
             this.configObj = response.data
-        })
-        getSessionToken().then((response) => {
-            this.sessionToken = response
         })
     }
 })
