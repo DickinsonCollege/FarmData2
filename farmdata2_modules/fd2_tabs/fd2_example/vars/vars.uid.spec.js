@@ -1,5 +1,3 @@
-const dayjs = require('dayjs')
-
 describe('Test the fd2 javascript variables defined by the module', () => {
     context('check vars as the admin user', () => {
         
