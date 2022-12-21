@@ -103,7 +103,7 @@ function fd2_config_menu() {
  $items['farm/fd2-config'] = array(
    'title' => 'FD2 Config',
    'page callback' => 'fd2_config_view',
-   'page arguments' => array('config.html'),
+   'page arguments' => array('config'),
    'access arguments' => array('view fd2 config'),
    'type' => MENU_LOCAL_TASK,
    'weight' => 300,
@@ -112,10 +112,10 @@ function fd2_config_menu() {
  return $items;
 };
 
-// This function Loads the content for the sub-tab from the html file specified in the arguemnt.
+// This function Loads the content for the sub-tab from the html file specified in the argument.
 function fd2_config_view($subtab_content) {
  $dir=dirname(__FILE__);
- $html=$dir."/".$subtab_content;
+ $html=$dir."/".$subtab_content."/".$subtab_content.".html";
  $code=file_get_contents($html);
  return $code;
 };

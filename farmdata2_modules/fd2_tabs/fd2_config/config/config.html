@@ -14,12 +14,16 @@
             <label>Labor Data: 
                 <dropdown-with-all data-cy="labor-dropdown" :selected-val="selectedLaborConfig" :dropdown-list="laborConfigs" @selection-changed='setNewLabor'></dropdown-with-all>
             </label>
-            <button type="button" class="btn" style="background-color:transparent" data-toggle="tooltip" data-placement="right" title="Set the labor data input to required, optional, or hidden (optional and not displayed).">
+            <button type="button" class="btn" style="background-color:transparent" 
+                    data-toggle="tooltip" data-placement="right" 
+                    title="Set the labor data input to required, optional, or hidden (optional and not displayed).">
                 <span class="glyphicon glyphicon-question-sign">
                 </span>
             </button>
         </div>
         <button data-cy="save-button" class="btn center-block" style='background-color: #da4f3f; color: white; font-size: large;' :disabled='configNotReady' @click='saveConfig'>Save</button>
+        
+        <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
     </div>
 
     <script>
@@ -35,6 +39,8 @@
                 laborConfigs: ['Required', 'Optional', "Hidden"],
                 isSaved: false,
                 errBanner: null,
+
+                createdCount: 0, 
             },
             methods: {
                 setNewLabor(newLaborConfig) {
@@ -59,9 +65,10 @@
                             setTimeout(() => { 
                                 this.isConfirmed = null
                             }, 3000)   
-                        
+                            console.log("done")
                         }) 
                         .catch((err) => { 
+                            console.log("should be here!")
                             this.errBanner = true
                             var successBanner = document.getElementById('scrollBanners');
                             var pageHeader = document.getElementById('navbar');
@@ -83,12 +90,15 @@
                         return true
                     }
                     return false
-                }
-            
+                },
+                pageLoaded() {
+                    return this.createdCount == 2
+                },
             },
             created(){
                 getSessionToken().then((response) => {
                     this.sessionToken = response
+                    this.createdCount++
                 })
                 .catch((err) => { 
                     this.errBanner = true
@@ -104,6 +114,7 @@
                 getConfiguration().then((response) => {
                     this.configObj = response.data
                     this.selectedLaborConfig = response.data.labor
+                    this.createdCount++
                 })
                 .catch((err) => { 
                     this.errBanner = true

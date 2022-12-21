@@ -1,7 +1,7 @@
 module.exports = {
-  defaultCommandTimeout: 30000,
-  requestTimeout: 30000,
-  responseTimeout: 30000,
+  defaultCommandTimeout: 10000,
+  requestTimeout: 10000,
+  responseTimeout: 10000,
   video: false,
   screenshotOnRunFailure: false,
   chromeWebSecurity: false,
