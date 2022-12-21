@@ -1,3 +1,8 @@
+/**
+ * This spec tests the behavior of the buttons in the
+ * FieldSets & Buttons section of the UI subtab.
+ */
+
 describe('Test the fieldset and buttons', () => {
 
     beforeEach(() => {

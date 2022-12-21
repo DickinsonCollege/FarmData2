@@ -1,3 +1,8 @@
+/**
+ * This spec tests the behavior of the DateSelection component
+ * on the UI subtab.
+ */
+
 describe('Test the check the date selection component', () => {
 
     beforeEach(() => {

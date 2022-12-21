@@ -1,3 +1,8 @@
+/**
+ * This spec tests the behavior of the RegexInputComponent that 
+ * appears on the UI subtab.
+ */
+
 describe('Test the the regex input ', () => {
 
     beforeEach(() => {

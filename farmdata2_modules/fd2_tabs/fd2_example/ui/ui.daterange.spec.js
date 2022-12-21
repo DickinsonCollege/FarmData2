@@ -1,3 +1,8 @@
+/**
+ * This spec tests the behavior of the DateRangeSelectionComponent
+ * that appears on the UI subtab.
+ */
+
 const dayjs = require('dayjs')
 
 describe('Test the date range component', () => {

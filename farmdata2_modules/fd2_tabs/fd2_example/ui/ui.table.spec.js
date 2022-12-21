@@ -1,3 +1,8 @@
+/**
+ * This spec tests the behavior of the CustomTableComponent
+ * that appears on the UI subtab.
+ */
+
 describe('Test the table component', () => {
 
     beforeEach(() => {

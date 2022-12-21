@@ -1,3 +1,9 @@
+/**
+ * The API Error Handling section of the UI subtab illustrates how
+ * the page should display error banners for network issues.  This
+ * spec tests that the behavior of the error banner is correct
+ * for the UI subtab example.
+ */
 describe('Test the the api error handler example', () => {
 
     beforeEach(() => {

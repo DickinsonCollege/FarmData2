@@ -1,3 +1,10 @@
+/**
+ * When data is loading the FarmData2 pages will display a spinner.
+ * The Loading Spinner section of the UI page gives an example
+ * of how this spinner is to work.  This spec tests the behavior
+ * of the spinner in the UI sub tab.
+ */
+
 describe('Test the content loading spinner', () => {
 
     beforeEach(() => {

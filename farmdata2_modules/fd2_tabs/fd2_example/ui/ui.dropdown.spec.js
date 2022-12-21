@@ -1,3 +1,8 @@
+/**
+ * This spec tests the behavior of the DropdownWithAll component
+ * that appears in the UI subtab.
+ */
+
 describe('Test the the dropdown with all component', () => {
 
     beforeEach(() => {
