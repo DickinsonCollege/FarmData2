@@ -1,16 +1,23 @@
 /**
- * This spec tests the behavior of the CustomTableComponent
- * that appears on the UI subtab.
+ * The CustomTableComponent section of the UI subtab illustrates
+ * some of the ways this component can be used.  This spec tests
+ * that:
+ *   - The table properly displays its data
+ *   - That a selected row can be deleted.
+ *   - That a row can be edited.
+ *   - That a column can be shown or hidden
+ *   - That a row of data can be added.
+ *   - That the custom button (*) works (clones selected rows)
  */
 
-describe('Test the table component', () => {
+describe('Test the behavior of the CustomTableComponent', () => {
 
     beforeEach(() => {
         cy.login('manager1', 'farmdata2')
         cy.visit('/farm/fd2-example/ui')
     })     
 
-    it('table data is loaded', () => {
+    it('Test that table displays its data properly.', () => {
         cy.get('[data-cy=r0-ID]')
             .should('have.text', '1')
         cy.get('[data-cy=r0-Item]')
@@ -23,7 +30,7 @@ describe('Test the table component', () => {
             .should('be.checked')
     })
 
-    it('table row is deleted', () => {
+    it('Select the first item in the table and delete it.', () => {
         cy.get('[data-cy=r1-ID]')
             .should('have.text', '5')
 
@@ -33,7 +40,7 @@ describe('Test the table component', () => {
         cy.get('[data-cy=r0-cbuttonCheckbox')
             .check()
 
-            cy.get('[data-cy=delete-button')
+        cy.get('[data-cy=delete-button')
             .should('be.enabled')
             .click()
         
@@ -41,7 +48,7 @@ describe('Test the table component', () => {
             .should('have.text', '9')
     })
 
-    it('table row is edited', () => {
+    it('Edit the first row in the table.', () => {
         cy.get('[data-cy=r0-edit-button')
             .click()
 
@@ -56,7 +63,7 @@ describe('Test the table component', () => {
             .should('have.text','Tee Shirts')
     })
 
-    it('table row is added', () => {
+    it('Click the Add Row button and ensure that the new row was added.', () => {
         cy.get('[data-cy=add-data')
             .click()
         
@@ -64,7 +71,7 @@ describe('Test the table component', () => {
             .should('have.text', '12')
     })
 
-    it('clicking show column reveals hidden column', () => {
+    it('Click Show/Hide Column and ensure that the size column is shown/hidden', () => {
         cy.get('[data-cy=table-headers]').children()
             .should('not.contain', 'Size')
         cy.get('[data-cy=show-column')

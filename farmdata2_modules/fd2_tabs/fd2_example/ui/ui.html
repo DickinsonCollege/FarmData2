@@ -31,6 +31,7 @@
 
     <p><b>RegexInputComponent</b></p>
     <UL>
+        <p>The input field accepts only positive integers by default. Clicking the buttons changes the types of input allowed.  The displayed results show the payloads from the events emitted when the value is changed. </p>
         <regex-input data-cy='regex-input'
             ref='regexinputfocus'
             :reg-exp='regularExp' 
@@ -42,11 +43,13 @@
             :disabled="disabledMap['RegexInputComponent']">
         </regex-input>
         <button data-cy='choose-positive-decimals' 
-            @click='updateRegexMap("regPosFloatTwoDigit")'>Only Positive Decimals</button>
+            v-show='regularExp==regexMap["regPosInt"]'
+            @click='changeRegex("regPosFloatTwoDigit")'>Allow Pos Decimal (1.##)</button>
         <button data-cy='choose-positive-ints' 
-            @click='updateRegexMap("regPosInt")'>Only Positive Integers</button>
+            v-show='regularExp==regexMap["regPosFloatTwoDigit"]'
+            @click='changeRegex("regPosInt")'>Allow Pos Integers</button>
         <button data-cy='reset-input-val' 
-            @click='resetRegexVal'>Reset Input</button>
+            @click='resetValue'>Reset Input</button>
         <button data-cy='btn-input-disable' v-show="!disabledMap['RegexInputComponent']"
             @click='toggleDisabled("RegexInputComponent")'>Disable</button>
         <button data-cy='btn-input-enable' v-show="disabledMap['RegexInputComponent']"
@@ -252,7 +255,7 @@ new Vue({
         errBannerVisibility: false,
         seedingLogs: [],
 
-        regularExp: null,
+        regularExp: regexMap["regPosInt"],
         selectedRegOpt: null,
         regexInputVal: null,
         regexMatchVal: false,
@@ -277,10 +280,10 @@ new Vue({
         setNewRegexVal(newVal){
             this.regexInputVal = newVal 
         },
-        resetRegexVal(){
+        resetValue(){
             this.regexInputVal = '0' 
         },
-        updateRegexMap(key) {    
+        changeRegex(key) {    
             this.regexInputVal = '0'
             this.regularExp = this.regexMap[key]
         },
