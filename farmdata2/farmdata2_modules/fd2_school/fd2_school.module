@@ -46,7 +46,7 @@ function fd2_school_menu() {
   $items['farm/fd2-school'] = array(                 // Put the school in the farm menu
     'title' => 'FD2 School',                         // Put FD2 School on the tab
     'page callback' => 'fd2_school_view',            // The function that will provide the content
-    'page arguments' => array('info.html'),           // The html file with the default content for the tab
+    'page arguments' => array('info'),               // The html file with the default content for the tab
     'access arguments' => array('view fd2 school'),  // permissions required to view the tab
     'type' => MENU_LOCAL_TASK,                        // Put it on the menu
     'weight' => -30,                                  // larger weights appear further right.
@@ -69,7 +69,7 @@ function fd2_school_menu() {
 // It must be renamed in each module.
 function fd2_school_view($subtab_content) {
   $dir=dirname(__FILE__);
-  $html=$dir."/".$subtab_content;
+  $html=$dir."/".$subtab_content."/".$subtab_content.".html";
   $code=file_get_contents($html);
   return $code;
 };
