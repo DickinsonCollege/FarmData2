@@ -54,7 +54,7 @@
     </UL>
 
     <p><b>Creating/Updating/Deleting an Asset</b></p>
-    <p>The buttons below illustrate how to create, update and delete assets (logs are similar just with a differnt url). The "Make New Asset" button creates a new planting asset for a BEET on today's date by manager1.  The "Update Asset" toggles the planting between BEET and SPINICH.  The "Delete Asset" removes the asset from the database.</p>
+    <p>The buttons below illustrate how to create, update and delete assets (logs are similar just with a different url). The "Make New Asset" button creates a new planting asset for a BEET on today's date by manager1.  The "Update Asset" toggles the planting between BEET and SPINACH.  The "Delete Asset" removes the asset from the database.</p>
     <UL>
         <button data-cy='create-planting' :disabled='plantedCrop!=null' @click='makePlantingAsset'>Make New Asset</button>
         <button data-cy='update-planting' :disabled='plantedCrop==null' @click='updatePlantingAsset'>Update Asset</button>
@@ -77,7 +77,7 @@ new Vue({
         // Provide easy access to the FarmDat2 variables in vue.
         // Note: 
         //   The JS variables fd2UserID and fd2UserName are defined in the fd2_example.module file.
-        //   They are also defined in the fd2_barn_kit and fd2_field_kit so are avaiable there as well. 
+        //   They are also defined in the fd2_barn_kit and fd2_field_kit so are available there as well. 
         userID: fd2UserID,
         userName: fd2UserName,
 
