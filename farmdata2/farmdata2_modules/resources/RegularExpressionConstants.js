@@ -1,4 +1,4 @@
-// Declaring regulart expression variables so that is
+// Declaring regular expression variables so that is
 // defined in all the pages served from out modules.
 
 

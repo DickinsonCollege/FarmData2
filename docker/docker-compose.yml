@@ -8,7 +8,7 @@ services:
     depends_on: 
       - db
     volumes:
-      - '../farmdata2_api/src:/app/src'
+      - '../farmdata2/farmdata2_api/src:/app/src'
     networks:
       - fd2_public  # Okay for dev, but need to remove for production!
       - fd2_private
@@ -39,12 +39,10 @@ services:
     volumes:
       - './farmOS/settings.php:/var/www/html/sites/default/settings.php:delegated'
       - './logo:/var/www/html/sites/default/files:delegated'
-      - '../farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:delegated'
+      - '../farmdata2/farmdata2_modules:/var/www/html/sites/all/modules/farmdata2_modules:delegated'
       - ./sampleDB:/sampleDB:delegated  # Needed for building the db!
     ports:
       - '80:80'
-    #environment:
-    #  XDEBUG_CONFIG: remote_host=172.17.0.1
 
   phpmyadmin:
     depends_on:
@@ -67,7 +65,7 @@ services:
   #       Necessary to mount /var/run/docker.sock due to 
   #       absolute path syntax on windows.
   fd2dev-unix:
-    image: farmdata2/dev:fd2.1
+    image: farmdata2/dev:fd2.2
     container_name: fd2_dev
     init: true
     networks:
@@ -75,11 +73,11 @@ services:
       - fd2_private
     volumes:
       - ..:/home/fd2dev/FarmData2
-      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
-      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
-      - ../farmdata2_modules/cypress/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
+      - ../farmdata2:/home/fd2dev/fd2test/farmdata2
+      - ../farmdata2/farmdata2/cypress:/home/fd2dev/fd2test/cypress
+      - ../farmdata2/cypress/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
       - /var/run/docker.sock:/var/run/docker.sock
-      - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
+      - farmdev_home_fd2.2:/home/fd2dev  # preserve home dir on volume.
       - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for performance.
       - ~/.fd2gids:/home/fd2dev/.fd2/gids  # mount GID information.
     ports:
@@ -90,7 +88,7 @@ services:
       - linux
 
   fd2dev-win:
-    image: farmdata2/dev:fd2.1
+    image: farmdata2/dev:fd2.2
     container_name: fd2_dev
     init: true
     networks:
@@ -98,11 +96,11 @@ services:
       - fd2_private
     volumes:
       - ..:/home/fd2dev/FarmData2
-      - ../farmdata2_modules:/home/fd2dev/fd2test/farmdata2_modules
-      - ../farmdata2_modules/cypress:/home/fd2dev/fd2test/cypress
-      - ../farmdata2_modules/cypress/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
+      - ../farmdata2:/home/fd2dev/fd2test/farmdata2_modules
+      - ../farmdata2/cypress:/home/fd2dev/fd2test/cypress
+      - ../farmdata2/cypress/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
       - //var/run/docker.sock:/var/run/docker.sock
-      - farmdev_home_fd2.1:/home/fd2dev  # preserve home dir on volume.
+      - farmdev_home_fd2.2:/home/fd2dev  # preserve home dir on volume.
       - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for performance.
       - ~/.fd2gids:/home/fd2dev/.fd2/gids  # mount GID information.
     ports:
@@ -112,7 +110,7 @@ services:
       - windows
 
 volumes:
-  farmdev_home_fd2.1:
+  farmdev_home_fd2.2:
   farmos_db:
 
 networks:
