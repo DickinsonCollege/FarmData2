@@ -6,13 +6,14 @@ docker/logo/.htaccess
 .cache/*
 .config/*
 .npm/*
+**/node_modules
 
-farmdata2_modules/**/cypress/screenshots/*
-farmdata2_modules/**/cypress/videos/*
+**/cypress/screenshots/*
+**/cypress/videos/*
 
 **/__pycache__
 
-**/node_modules
+farmdata2/doc/
 
 .DS_Store
 .idea

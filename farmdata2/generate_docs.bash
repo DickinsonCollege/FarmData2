@@ -16,7 +16,7 @@ echo "Generating docs in $SCRIPT_DIR..."
 echo "  Deleting old docs."
 rm -rf $SCRIPT_DIR/doc
 
-JSCONF=$SCRITP_DIR/jsdoc/JSDoc.json
+JSCONF=$SCRIPT_DIR/jsdoc/JSDoc.json
 echo "  Using JSDoc configuration from $JSCONF."
 
 DOC_DIR=$SCRIPT_DIR/doc
