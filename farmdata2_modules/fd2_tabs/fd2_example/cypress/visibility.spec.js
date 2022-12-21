@@ -1,6 +1,6 @@
 describe('Check visibility of FD2 Example tab', () => {
 
-  it('Visible to admin user', () => {
+  it('Login as admin user, should be visible.', () => {
     cy.login('admin', 'farmdata2')
 
     // Due to a Drupal issue an exception is thrown when logged in as admin.
@@ -15,19 +15,19 @@ describe('Check visibility of FD2 Example tab', () => {
     cy.get('.nav-tabs').contains('FD2 Example').should('exist')
   })
 
-  it('Visible to manager', () => {
+  it('Login as manager1, should be visible.', () => {
     cy.login('manager1', 'farmdata2')
     cy.visit('/farm')
     cy.get('.nav-tabs').contains('FD2 Example').should('exist')
   })
 
-  it('Visible to worker', () => {
+  it('Login as worker1, should be visible.', () => {
     cy.login('worker1', 'farmdata2')
     cy.visit('/farm')
     cy.get('.nav-tabs').contains('FD2 Example').should('exist')
   })
 
-  it('Not visible to guest user', () => {
+  it('Login as guest, should not be visible.', () => {
     cy.login('guest', 'farmdata2')
     cy.visit('/farm')
     cy.get('.nav-tabs').contains('FD2 Example').should('not.exist')
