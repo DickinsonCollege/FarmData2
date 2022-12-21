@@ -19,15 +19,18 @@ rm -rf $SCRIPT_DIR/doc
 JSCONF=$SCRIPT_DIR/jsdoc/JSDoc.json
 echo "  Using JSDoc configuration from $JSCONF."
 
+TEMPLATE=$SCRIPT_DIR/node_modules/ink-docstrap/template
+echo "  Using templage $TEMPLATE."
+
 DOC_DIR=$SCRIPT_DIR/doc
 echo "  Sending output to $DOC_DIR."
 
 RESOURCES=$SCRIPT_DIR/farmdata2_modules/resources
 echo "  Generating docs for $RESOURCES."
-jsdoc $RESOURCES -r -c $JSCONF -d $DOC_DIR
+jsdoc $RESOURCES -r -c $JSCONF -t $TEMPLATE -d $DOC_DIR
 
 API=$SCRIPT_DIR/farmdata2_api/src
-echo "  Generating docs for $RESOURCES."
-jsdoc $API -r -c $JSCONF -d $DOC_DIR
+echo "  Generating docs for $API."
+jsdoc $API -r -c $JSCONF -t $TEMPLATE -d $DOC_DIR
 
 echo "Done."
