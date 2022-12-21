@@ -72,7 +72,7 @@ The `fd2_config` module can be updated and extended to add additional configurat
 
 * `fd2_config.install`: Add the new field to the `fd2_config_schema()` function so that it appears in the database table.  Add a default initial value for the field to the `fd2_config_install()` function, which provides the initial record in the database.
 * `fd2_config.module`: Update the `fd2_config_entity_property_info()` function to include the new field in the JSON response from the API call.
-* `config.html`: Modify the code on this page to display a UI element for displaying and modifying the new configuration element.
+* `config/config.html`: Modify the code on this page to display a UI element for displaying and modifying the new configuration element.
 * Rebuild the sample database so that it includes the new options.  See the documentation in  [`/docker/sampleDB/README.md`](https://github.com/DickinsonCollege/FarmData2/tree/main/docker/sampleDB).
 
 NOTE: This works for the development version of FarmData2.  There will need to additional work to develop a migration plan that adds new options to deployed versions of FarmData2.  The Drupal `.install` file in the module seems to have some support for this.
