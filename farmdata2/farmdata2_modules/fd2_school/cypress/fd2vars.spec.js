@@ -1,6 +1,12 @@
-describe('Check the JS vars defined by module', () => {
+/**
+ * The FD2 School .module file defines some variables that are made
+ * available to the scripts in the .html pages.  This spec tests
+ * that those variables are accessible in the page for each of
+ * the users.
+ */
+describe('Check the JS vars defined by the FD2 School module', () => {
 
-  it('Works for admin user', () => {
+  it('Log in as admin user and check tha vars exist.', () => {
     cy.login('admin', 'farmdata2')
 
     // Due to a Drupal issue an exception is thrown when logged in as admin.
@@ -16,19 +22,21 @@ describe('Check the JS vars defined by module', () => {
     cy.window().its('fd2UserName').should('equal','admin');
   })
 
-  it('Works for manager', () => {
+  it('Log in as manager1 and check tha vars exist.', () => {
     cy.login('manager1', 'farmdata2')
 
     cy.visit('/farm/fd2-barn-kit')
-    cy.window().its('fd2UserID').should('equal',6);
+    cy.window().its('fd2UserID').should('equal',3);
     cy.window().its('fd2UserName').should('equal','manager1');
   })
 
-  it('Works for worker', () => {
+  it('Log in as worker1 and check tha vars exist.', () => {
     cy.login('worker1', 'farmdata2')
 
     cy.visit('/farm/fd2-barn-kit')
-    cy.window().its('fd2UserID').should('equal',8);
+    cy.window().its('fd2UserID').should('equal',5);
     cy.window().its('fd2UserName').should('equal','worker1');
   })
+
+  // Currently guest users cannot see any FD2 tabs so no check for them.
 })

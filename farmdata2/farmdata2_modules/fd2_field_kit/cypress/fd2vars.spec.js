@@ -1,10 +1,10 @@
 /**
- * The BarnKit .module file defines some variables that are made
+ * The FieldKit .module file defines some variables that are made
  * available to the scripts in the .html pages.  This spec tests
  * that those variables are accessible in the page for each of
  * the users.
  */
-describe('Check the JS vars defined by the BarnKit module', () => {
+describe('Check the JS vars defined by the FieldKit module', () => {
 
   it('Log in as admin user and check tha vars exist.', () => {
     cy.login('admin', 'farmdata2')
