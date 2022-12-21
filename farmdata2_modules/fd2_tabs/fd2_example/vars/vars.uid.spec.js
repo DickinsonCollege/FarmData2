@@ -1,3 +1,8 @@
+/**
+ * The .module file defines some JS variables that are 
+ * available in each sub-tab. This spec tests that those
+ * variables are available.
+ */
 describe('Test the fd2 javascript variables defined by the module', () => {
     context('check vars as the admin user', () => {
         

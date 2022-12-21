@@ -1,3 +1,10 @@
+/**
+ * The vars.html page loads and displays the contents of 
+ * configuration saved by the fd2_config module.  This spec
+ * verifies that the config is loaded and displayed in the
+ * vars page.
+ */
+
 var FarmOSAPI = require('../../resources/FarmOSAPI.js')
 
 var getSessionToken = FarmOSAPI.getSessionToken
