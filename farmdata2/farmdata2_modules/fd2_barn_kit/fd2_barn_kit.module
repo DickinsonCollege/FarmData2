@@ -44,7 +44,7 @@ function fd2_barn_kit_menu() {
   $items['farm/fd2-barn-kit'] = array(
     'title' => 'BarnKit',
     'page callback' => 'fd2_barn_kit_view',
-    'page arguments' => array('info.html'),
+    'page arguments' => array('info'),
     'access arguments' => array('view fd2 barn kit'),
     'type' => MENU_LOCAL_TASK,
     'weight' => -10,
@@ -60,7 +60,7 @@ function fd2_barn_kit_menu() {
     'title' => 'Seeding Report',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_barn_kit_view',
-    'page arguments' => array('seedingReport.html'),
+    'page arguments' => array('seedingReport'),
     'access arguments' => array('view fd2 barn kit'),
     'weight' => -10,
   );
@@ -69,7 +69,7 @@ function fd2_barn_kit_menu() {
     'title' => 'Transplanting Report',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_barn_kit_view',
-    'page arguments' => array('transplantingReport.html'),
+    'page arguments' => array('transplantingReport'),
     'access arguments' => array('view fd2 barn kit'),
     'weight' => -10,
   );
@@ -81,7 +81,7 @@ function fd2_barn_kit_menu() {
 // file specified in the arguemnt.
 function fd2_barn_kit_view($form_content) {
   $dir=dirname(__FILE__);
-  $html=$dir."/".$form_content;
+  $html=$dir."/".$form_content."/".$form_content.".html";
   $code=file_get_contents($html);
   return $code;
 };

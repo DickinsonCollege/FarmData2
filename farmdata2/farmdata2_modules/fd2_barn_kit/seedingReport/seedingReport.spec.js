@@ -1,13 +1,12 @@
 const dayjs = require('dayjs')
-const { getIDToAreaMap } = require('../resources/FarmOSAPI.js')
-var FarmOSAPI = require('../resources/FarmOSAPI.js')
+
+var FarmOSAPI = require('../../resources/FarmOSAPI.js')
 var getSessionToken = FarmOSAPI.getSessionToken
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
 var getIDToCropMap = FarmOSAPI.getIDToCropMap
 var getAreaToIDMap = FarmOSAPI.getAreaToIDMap
 var getUserToIDMap = FarmOSAPI.getUserToIDMap
 var getUnitToIDMap = FarmOSAPI.getUnitToIDMap
-var createRecord = FarmOSAPI.createRecord
 var getRecord = FarmOSAPI.getRecord
 var deleteRecord = FarmOSAPI.deleteRecord
 var getConfiguration = FarmOSAPI.getConfiguration
