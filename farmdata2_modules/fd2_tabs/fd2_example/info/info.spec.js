@@ -1,6 +1,7 @@
 /**
- * This test just checks to be sure there is some content 
- * in the info sub-tab.
+ * The FD2 Example tab has an Info subtab that describes the purpose
+ * of the module.  This spec checks that the Info subtab has some
+ * appropriate information on it.
  */
 
 describe('Test to make sure the info tab has some content.', () => {
