@@ -1,3 +1,9 @@
+/**
+ * Pages can cache api results so that they can be displayed more
+ * quickly when revisted (e.g. the full list of crops).   This spec
+ * tests the example of caching that is on the cache sub-tab.
+ */
+
 describe('test caching of responses in local storage', () => {
 
     before(() => {
