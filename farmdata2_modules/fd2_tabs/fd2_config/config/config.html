@@ -65,10 +65,8 @@
                             setTimeout(() => { 
                                 this.isConfirmed = null
                             }, 3000)   
-                            console.log("done")
                         }) 
                         .catch((err) => { 
-                            console.log("should be here!")
                             this.errBanner = true
                             var successBanner = document.getElementById('scrollBanners');
                             var pageHeader = document.getElementById('navbar');
