@@ -1,9 +1,7 @@
 const dayjs = require('dayjs')
 
-var FarmOSAPI = require('../resources/FarmOSAPI.js')
+var FarmOSAPI = require('../../resources/FarmOSAPI.js')
 
-var createRecord = FarmOSAPI.createRecord
-var updateRecord = FarmOSAPI.updateRecord
 var deleteRecord = FarmOSAPI.deleteRecord
 var getCropToIDMap = FarmOSAPI.getCropToIDMap
 var getAreaToIDMap = FarmOSAPI.getAreaToIDMap
@@ -12,17 +10,12 @@ var getUnitToIDMap = FarmOSAPI.getUnitToIDMap
 var getRecord = FarmOSAPI.getRecord
 var getSessionToken = FarmOSAPI.getSessionToken
 var getLogTypeToIDMap = FarmOSAPI.getLogTypeToIDMap
-var getAllPages = FarmOSAPI.getAllPages
 var getConfiguration = FarmOSAPI.getConfiguration;
 var setConfiguration = FarmOSAPI.setConfiguration;
 
 describe('Test the seeding input page', () => {
     let sessionToken = null
     let cropToIDMap = null
-    let areaToIDMap = null
-    let userToIDMap = null
-    let unitToIDMap = null
-    let logTypeToIDMap = null
     let configMap = null
     let defaultConfig = null
     let testConfig = { id: "1", labor: 'Required' }

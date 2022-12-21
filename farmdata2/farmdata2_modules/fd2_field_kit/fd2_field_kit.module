@@ -44,7 +44,7 @@ function fd2_field_kit_menu() {
   $items['farm/fd2-field-kit'] = array(
     'title' => 'FieldKit',
     'page callback' => 'fd2_field_kit_view',
-    'page arguments' => array('info.html'),
+    'page arguments' => array('info'),
     'access arguments' => array('view fd2 field kit'),
     'type' => MENU_LOCAL_TASK,
     'weight' => -20,
@@ -60,7 +60,7 @@ function fd2_field_kit_menu() {
     'title' => 'Seeding Input',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'fd2_field_kit_view',
-    'page arguments' => array('seedingInput.html'),
+    'page arguments' => array('seedingInput'),
     'access arguments' => array('view fd2 field kit'),
     'weight' => 100,
   );
@@ -72,7 +72,7 @@ function fd2_field_kit_menu() {
 // file specified in the arguemnt.
 function fd2_field_kit_view($form_content) {
   $dir=dirname(__FILE__);
-  $html=$dir."/".$form_content;
+  $html=$dir."/".$form_content."/".$form_content.".html";
   $code=file_get_contents($html);
   return $code;
 };
