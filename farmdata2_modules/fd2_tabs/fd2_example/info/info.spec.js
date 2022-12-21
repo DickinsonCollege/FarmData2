@@ -5,12 +5,12 @@
 
 describe('Test to make sure the info tab has some content.', () => {
 
-  it('Info tab of the example exists and has content', () => {
+  it('Visit the info subtab and check its contents.', () => {
     cy.login('manager1', 'farmdata2')
     cy.visit('/farm/fd2-example')
 
     // Check that the header has the right text.
-    cy.get('h3').should('have.text', 'FarmData2 Example Module')
+    cy.get('[data-cy=header]').should('have.text', 'FarmData2 Example Module')
 
     // Check that there are at least two paragraphs of information.
     cy.get('p').should('have.length.greaterThan', 1)
