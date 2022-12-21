@@ -1,7 +1,9 @@
 /**
- * Pages can cache api results so that they can be displayed more
- * quickly when revisted (e.g. the full list of crops).   This spec
- * tests the example of caching that is on the cache sub-tab.
+ * The Cache subtab demonstrates how pages can use a local cache to 
+ * store api results locally. This allows pages to be displayed more
+ * quickly when revisted (e.g. the full list of crops) because they do
+ * not have to wait for an API call to return.  This spec tests that the
+ * subtab is using the cache for a list of crops.
  */
 
 describe('test caching of responses in local storage', () => {
@@ -16,13 +18,17 @@ describe('test caching of responses in local storage', () => {
         cy.login('manager1', 'farmdata2')
 
         // Cypress clears the local storage between each test.  
-        // So we need to save it at the end of each test (see afterEach)
-        // and then restore beore each test (here).  
-        // Note: restoreLocalStorage and saveLocalStorage are custom commands 
+        // So we save it at the end of each test (see afterEach) and then restore 
+        // it beore each test (here).  
+        // 
+        // Note: restoreLocalStorage and saveLocalStorage are custom cypress commands 
         // defined in the farmdata2_modules/cypress/support/commands.js file.
         cy.restoreLocalStorage()
 
         cy.visit('/farm/fd2-example/cache')
+
+        // Note: We do not wait for this page to load, because once it has
+        // the cache will have been created.
     })
 
     afterEach(() => {
@@ -32,7 +38,7 @@ describe('test caching of responses in local storage', () => {
         cy.saveLocalStorage()
     })
 
-    it('test the first visit to the page (i.e. no cached crops)', () => {
+    it('Check that the cache does not exist the first time the page is loaded.', () => {
         // This needs to be the first test run to work properly.
 
         // First time through the crops should not be cached.
@@ -40,35 +46,38 @@ describe('test caching of responses in local storage', () => {
         let crops = localStorage.getItem('crops')
         expect(crops).to.equal(null)
 
+        // Spot check some crops once the page actually loads.
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
         cy.get('[data-cy=50crop]').should('have.text','HERB-PARSLEY ROOT')
         cy.get('[data-cy=111crop]').should('have.text','ZUCCHINI')
     })
 
-    it('test a second visit to the page (i.e. with cached crops', () => {
+    it('Check that the cache does exist the second time the page is loaded.', () => {
         // Second time through the crops should be cached.
         let crops = localStorage.getItem('crops')
         expect(crops).to.not.equal(null)
 
+        // Spot check some crops that would have been loaded from the cache.
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
         cy.get('[data-cy=50crop]').should('have.text','HERB-PARSLEY ROOT')
         cy.get('[data-cy=111crop]').should('have.text','ZUCCHINI')
     })
 
-    it('test clearing the cache', () => {
+    it('Click the Clear The Cache button and ensure that the cache is cleared.', () => {
         // wait for the page to load then click the "Clear the Cache" button.
         let crops = null
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
+       
+        // Click the clear cache button.
+        cy.get('[data-cy=clear-cache]').click()
         .then(() => {
-            cy.get('[data-cy=clear-cache]').click({force:true})
             crops = localStorage.getItem('crops')
+            // Now crops should not be in the cache
+            expect(crops).to.equal(null) 
+ 
+            // Reload the page 
+            cy.reload(true)
         })
-    
-        // Now crops should not be in the cache
-        expect(crops).to.equal(null)
-   
-        // Now reload the page 
-        cy.reload(true)
 
         // Once the response returns the crops should be cached again.
         cy.get('[data-cy=1crop]').should('have.text','ARUGULA')
