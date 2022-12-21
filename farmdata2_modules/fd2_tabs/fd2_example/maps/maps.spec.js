@@ -1,3 +1,9 @@
+/**
+ * The maps.html page demonstrates how to use maps and displays
+ * some information from the userToIDMap and the idToUserMap.  This
+ * spec tests that the data displayed in the maps.html page is correct.
+ */
+
 var FarmOSAPI = require('../../resources/FarmOSAPI.js')
 
 var getIDToUserMap = FarmOSAPI.getIDToUserMap
