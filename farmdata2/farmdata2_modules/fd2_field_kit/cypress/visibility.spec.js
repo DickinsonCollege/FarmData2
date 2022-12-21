@@ -1,6 +1,13 @@
-describe('Check visibility of FD2 Field Kit tab', () => {
+/**
+ * farmOS displays the FarmData2 tabs across the main menu 
+ * in the center of the page.  This spec checks that the
+ * FieldKit tab is visible for the admin, manager and worker
+ * users, and that it is not visible for the guest user.
+ */
 
-  it('Visible to admin user', () => {
+describe('Check visibility of the FieldKit tab', () => {
+
+  it('Login as admin user, should be visible.', () => {
     cy.login('admin', 'farmdata2')
 
     // Due to a Drupal issue an exception is thrown when logged in as admin.
@@ -15,19 +22,19 @@ describe('Check visibility of FD2 Field Kit tab', () => {
     cy.get('.nav-tabs').contains('FieldKit').should('exist')
   })
 
-  it('Visible to manager', () => {
+  it('Login as manager1, should be visible.', () => {
     cy.login('manager1', 'farmdata2')
     cy.visit('/farm')
     cy.get('.nav-tabs').contains('FieldKit').should('exist')
   })
 
-  it('Visible to worker', () => {
+  it('Login as worker1, should be visible.', () => {
     cy.login('worker1', 'farmdata2')
     cy.visit('/farm')
     cy.get('.nav-tabs').contains('FieldKit').should('exist')
   })
 
-  it('Not visible to guest user', () => {
+  it('Login as guest, should not be visible.', () => {
     cy.login('guest', 'farmdata2')
     cy.visit('/farm')
     cy.get('.nav-tabs').contains('FieldKit').should('not.exist')

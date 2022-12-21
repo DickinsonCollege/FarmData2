@@ -1,3 +1,10 @@
+/**
+ * farmOS displays the FarmData2 tabs across the main menu 
+ * in the center of the page.  This spec checks that the
+ * FD2 Example tab is visible for the admin, manager and worker
+ * users, and that it is not visible for the guest user.
+ */
+
 describe('Check visibility of FD2 Example tab', () => {
 
   it('Login as admin user, should be visible.', () => {

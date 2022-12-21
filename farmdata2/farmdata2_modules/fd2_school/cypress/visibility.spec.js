@@ -1,11 +1,11 @@
 /**
  * farmOS displays the FarmData2 tabs across the main menu 
  * in the center of the page.  This spec checks that the
- * BarnKit tab is visible for the admin, manager and worker
+ * FD2 School tab is visible for the admin, manager and worker
  * users, and that it is not visible for the guest user.
  */
 
-describe('Check visibility of the BarnKit tab', () => {
+describe('Check visibility of the FD2 School tab', () => {
 
   it('Login as admin user, should be visible.', () => {
     cy.login('admin', 'farmdata2')
@@ -19,24 +19,24 @@ describe('Check visibility of the BarnKit tab', () => {
     })
 
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('BarnKit').should('exist')
+    cy.get('.nav-tabs').contains('FD2 School').should('exist')
   })
 
   it('Login as manager1, should be visible.', () => {
     cy.login('manager1', 'farmdata2')
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('BarnKit').should('exist')
+    cy.get('.nav-tabs').contains('FD2 School').should('exist')
   })
 
   it('Login as worker1, should be visible.', () => {
     cy.login('worker1', 'farmdata2')
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('BarnKit').should('exist')
+    cy.get('.nav-tabs').contains('FD2 School').should('exist')
   })
 
   it('Login as guest, should not be visible.', () => {
     cy.login('guest', 'farmdata2')
     cy.visit('/farm')
-    cy.get('.nav-tabs').contains('BarnKit').should('not.exist')
+    cy.get('.nav-tabs').contains('FD2 School').should('not.exist')
   })
 })

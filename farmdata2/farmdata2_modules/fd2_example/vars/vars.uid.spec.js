@@ -1,7 +1,7 @@
 /**
  * The .module file defines some JS variables that are 
  * available in each subtab. This spec tests that the 
- * Vars subtabp are is able to display those variables.
+ * Vars subtab are is able to display those variables.
  */
 describe('Test that module can access the fd2 javascript variables defined by the module', () => {
     context('Test when logged in as the admin user', () => {
