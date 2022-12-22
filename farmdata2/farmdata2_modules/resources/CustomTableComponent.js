@@ -426,7 +426,7 @@ let CustomTableComponent = {
 
 try {
     module.exports = {
-        CustomTableComponent: CustomTableComponent
+        CustomTableComponent
     }
 }
 catch {}

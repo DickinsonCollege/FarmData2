@@ -1,13 +1,17 @@
+/**
+ * A collection of functions for interacting with the
+ * farmOS API. All pages should use these so that any
+ * updates apply to all pages.
+ * 
+ * @module FarmOSAPI
+ */
+
 try {
     FarmData2
 }
 catch {
     var axios = require('axios')
 }
-
-// A collection of functions for interacting with the
-// farmOS API.  All pages should use these so that any
-// updates apply to all pages.
 
 /**
  * Make a GET request to an API endpoint and retrieve all pages of a multipage responses.
@@ -619,25 +623,25 @@ function quantityLocation(quantity, label){
 
 try {
     module.exports = {
-        getAllPages: getAllPages,
-        getIDToCropMap: getIDToCropMap,
-        getIDToAreaMap: getIDToAreaMap,
-        getIDToUserMap: getIDToUserMap,
-        getCropToIDMap: getCropToIDMap,
-        getAreaToIDMap: getAreaToIDMap,
-        getUserToIDMap: getUserToIDMap,
-        getUnitToIDMap: getUnitToIDMap,
-        getIDToUnitMap: getIDToUnitMap,
-        getIDToLogTypeMap: getIDToLogTypeMap,
-        getLogTypeToIDMap: getLogTypeToIDMap,
-        getSessionToken: getSessionToken,
-        getRecord: getRecord,
-        deleteRecord: deleteRecord,
-        createRecord: createRecord,
-        updateRecord: updateRecord,
-        quantityLocation: quantityLocation,
-        getConfiguration: getConfiguration,
-        setConfiguration: setConfiguration,
+        getAllPages,
+        getIDToCropMap,
+        getIDToAreaMap,
+        getIDToUserMap,
+        getCropToIDMap,
+        getAreaToIDMap,
+        getUserToIDMap,
+        getUnitToIDMap,
+        getIDToUnitMap,
+        getIDToLogTypeMap,
+        getLogTypeToIDMap,
+        getSessionToken,
+        getRecord,
+        deleteRecord,
+        createRecord,
+        updateRecord,
+        quantityLocation,
+        getConfiguration,
+        setConfiguration,
     }
 }
 catch {}

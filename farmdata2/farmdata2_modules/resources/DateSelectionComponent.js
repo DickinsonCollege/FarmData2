@@ -75,7 +75,7 @@ let DateSelectionComponent = {
 
 try {
     module.exports = {
-        DateSelectionComponent: DateSelectionComponent
+        DateSelectionComponent
     }
 }
 catch {}

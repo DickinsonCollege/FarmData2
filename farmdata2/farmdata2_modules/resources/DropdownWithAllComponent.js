@@ -86,7 +86,7 @@ let DropdownWithAllComponent = {
  */
 try {
     module.exports = {
-        DropdownWithAllComponent: DropdownWithAllComponent
+        DropdownWithAllComponent
     }
 }
 catch {}

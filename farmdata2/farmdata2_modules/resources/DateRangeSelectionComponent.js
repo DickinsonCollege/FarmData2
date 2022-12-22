@@ -95,7 +95,7 @@ let DateRangeSelectionComponent = {
 
 try {
     module.exports = {
-        DateRangeSelectionComponent: DateRangeSelectionComponent
+        DateRangeSelectionComponent
     }
 }
 catch {}

@@ -159,7 +159,7 @@ let RegexInputComponent = {
 */
 try {
   module.exports = {
-      RegexInputComponent: RegexInputComponent
+      RegexInputComponent
   }
 }
 catch {}

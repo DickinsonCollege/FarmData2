@@ -67,7 +67,7 @@ let ErrorBannerComponent = {
  */
 try {
     module.exports = {
-        ErrorBannerComponent: ErrorBannerComponent
+        ErrorBannerComponent
     }
 }
 catch {}
