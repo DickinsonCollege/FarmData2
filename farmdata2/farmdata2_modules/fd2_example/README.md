@@ -109,7 +109,7 @@ In addition to the standard implementation of a Vue Component as a JavaScript ob
 ```JavaScript
 try {
     module.exports = {
-        DropdownWithAllComponent: DropdownWithAllComponent
+        DropdownWithAllComponent
     }
 }
 catch {}
@@ -168,7 +168,7 @@ The JavaScript file will also export any variables, objects or functions that it
 ```JavaScript
 try {  
     module.exports = {
-        getAllPages: getAllPages
+        getAllPages
     }
 }
 catch {}
