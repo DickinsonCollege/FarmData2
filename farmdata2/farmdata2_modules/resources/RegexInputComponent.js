@@ -5,9 +5,9 @@
  * 
  * <p><b>data-cy attributes</b></p>
  * <table>
- * <thead><tr><th>Value</th>        <th>Descripion</th></tr></thead>
+ * <thead><tr><th>Value</th>    <th>Description</th></tr></thead>
  * <tbody>
- * <tr><td>regex-input</td>  <td>span containing input element.</td></tr>
+ * <tr><td>regex-input</td>     <td>span containing input element.</td></tr>
  * <tr><td>text-input</td>      <td>The input element.</td></tr>
  * </tbody>
  * </table>

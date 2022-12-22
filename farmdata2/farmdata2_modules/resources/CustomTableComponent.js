@@ -10,36 +10,38 @@ catch(err) {
  * A Vue component for FarmData2 report tables. The table ensures a consistent styling, and provides the row-based edit/delete and export functionalities that are common to all reports.
  * 
  * <p><b>data-cy attributes</b></p>
- * <button></button>                 <button>The export button appears on the top right of the table</button>
- * <button></button>                 <buton>The delete button appear on the top right of the table.</button>
- * <button></button>                 <buton>Any visible custom buttons appear on the top right of the table.</button>
  * <table>
- * <thead><tr><th>Value</th>         <th>Description</th></tr></thead>
+ * <thead>
+ * <tr><th>Value</th>                <th>Description</th></tr>
+ * </thead>
  * <tbody>
  * <tr><td>table</td>                <td>The table element.</td></tr>
  * <tr><td>table-headers</td>        <td>The tr element holding the th elements</td></tr>
- * <tr><td>selectAll-checkbox</td>   <td>The select all checkbox which appears if the table has custom buttons or can delete</td>
- * <tr><td>hi</td>                   <td>The ith th element, i=0,1,2...</td>
- * <tr><td>edit-header</td>          <td>The th element for the edit button column</td>
- * <tr><td>save-header</td>          <td>The th element for the save button column</td>
- * <tr><td>ri</td>                   <td>The tr checkbox element for the ith table row if custom buttons or deleting is enabled, i=0,1,2,...</td>
- * <tr><td>ri</td>                   <td>The tr element for the ith table row, i=0,1,2,...</td>
- * <tr><td>td-ricj</td>              <td>The td element in the ith row and jth column, i,j=0,1,2...</td>
- * <tr><td>ri-columnHeader</td>      <td>The div for plain text in the ith row and jth column, i,j=0,1,2....</td>
- * <tr><td>ri-text-input</td>        <td>The text input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
- * <tr><td>ri-dropdown-input</td>    <td>The select input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
- * <tr><td>ri-date-input</td>        <td>The date input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
- * <tr><td>ri-regex-input</td>       <td>The regex input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
- * <tr><td>ri-boolean-input</td>     <td>The boolean input in the ith row and jth column in edit mode, i,j=0,1,2....</td>
-* <tr><td>ri-edit-button</td>        <td>The edit button in the ith row, i=0,1,2....</td>
-* <tr><td>ri-save-button</td>        <td>The save button in the ith row, i=0,1,2....</td>
-* <tr><td>ri-cancel-button</td>      <td>The cancel button in the ith row, i=0,1,2....</td>
+ * <tr><td>export-button</td>        <td>The export button appears on the top right of the table</td></tr>
+ * <tr><td>delete-button</td>        <td>The delete button appear on the top right of the table.</td></tr>
+ * <tr><td>*-button</td>             <td>A custom button on the top right of the table. * is replaced by the button's hover tip in lower case.</td></tr> 
+ * <tr><td>selectAll-checkbox</td>   <td>The select all checkbox which appears if the table has custom buttons or can delete</td></tr>
+ * <tr><td>hi</td>                   <td>The ith th element, i=0,1,2...</td></tr>
+ * <tr><td>edit-header</td>          <td>The th element for the edit button column</td></tr>
+ * <tr><td>save-header</td>          <td>The th element for the save button column</td></tr>
+ * <tr><td>ri</td>                   <td>The tr checkbox element for the ith table row if custom buttons or deleting is enabled, i=0,1,2,...</td></tr>
+ * <tr><td>ri</td>                   <td>The tr element for the ith table row, i=0,1,2,...</td></tr>
+ * <tr><td>td-ricj</td>              <td>The td element in the ith row and jth column, i,j=0,1,2...</td></tr>
+ * <tr><td>ri-columnHeader</td>      <td>The div for plain text in the ith row and jth column, i,j=0,1,2....</td></tr>
+ * <tr><td>ri-text-input</td>        <td>The text input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
+ * <tr><td>ri-dropdown-input</td>    <td>The select input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
+ * <tr><td>ri-date-input</td>        <td>The date input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
+ * <tr><td>ri-regex-input</td>       <td>The regex input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
+ * <tr><td>ri-boolean-input</td>     <td>The boolean input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
+ * <tr><td>ri-edit-button</td>       <td>The edit button in the ith row, i=0,1,2....</td></tr>
+ * <tr><td>ri-save-button</td>       <td>The save button in the ith row, i=0,1,2....</td></tr>
+ * <tr><td>ri-cancel-button</td>     <td>The cancel button in the ith row, i=0,1,2....</td></tr>
  * </tbody>
  * </table>
  * 
  * @vue-prop {Object[]} rows - The content to be displayed in the table. Each object in the array is a row, and each element in the data property is an individual cell in that row.  For example the following value would provide data for three rows and three columns:<br> <code>[{id: 1, data:[1, 2, 'three']}, {id: 2, data:[4, 5, 'six']}, {id: 3, data:['seven', 8, 9]}]</code><br>  Note: The ID is not displayed, but emitted as a payload with some events to communicate which row is affected.
  * @vue-prop {Object[]} columns - Contains a column's header, visibility, and the input type for that column along with other specified data values for that column
- *  * @vue-prop {Object[]} customButtons - Contains a custom button's hover tip, visibility, and input type specifying the button's icon, class, and event.
+ * @vue-prop {Object[]} customButtons - Contains a custom button's hover tip, visibility, and input type specifying the button's icon, class, and event.
  * @vue-prop {Boolean} [canEdit=false] - true if the table rows should be editable via an edit button that appears in each row.
  * @vue-prop {Boolean} [canDelete=false] - true if the table rows should be able to be deleted via a delete button that appears in each row.
  * @vue-prop {String} [csvName] - A String that assigns the exported CSV file its name. If left empty the export button does not appear. 
@@ -49,7 +51,7 @@ catch(err) {
  * @vue-event row-canceled - Emitted when a row was being edited and the cancel button is clicked.
  * @vue-event {Array[]} row-deleted - Emitted when the delete button is clicked if any of the checkboxes on the lefthand side of a row are selected. Emits an array of all the IDs that were deleted for the page to make the appropriate API request to have those records deleted.
  * @vue-event {Array[]} event - Emits an 'event', name of event depends on the button's event name, with a payload of row IDs for the parent page to handle. 
- */
+*/
 let CustomTableComponent = {
     template:
     `<span>

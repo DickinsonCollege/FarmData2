@@ -2,8 +2,6 @@
  * A collection of functions for interacting with the
  * farmOS API. All pages should use these so that any
  * updates apply to all pages.
- * 
- * @module FarmOSAPI
  */
 
 try {
@@ -17,7 +15,7 @@ catch {
  * Make a GET request to an API endpoint and retrieve all pages of a multipage responses.
  *
  * If there are data properties in the logs, they are parsed into JSON before the response is returned.  Thus, properties in the data field can be accessed normally without parsing when the record is retrieved using this function.
- *
+ * 
  * @param {string} endpoint the API endpoint including any query parameters.  Note: This does not include http://localhost/ or other server address.
  * @param {array} [arr] optionally an array that will be filled with the records as they are returned.  If omitted a new array will be returned when the request completes.
  *
@@ -602,7 +600,8 @@ function setConfiguration(updateData, sessionToken) {
 
 /**
  * Gets the index of a specified quantity object from the quantity array in a log (e.g. a direct or tray seeding, transplanting or harvest log).
- *
+ * @export
+ * 
  * @param {array} quantity an array of quantity objects from a log
  * @param {string} label the value of the label property of which to find the index.
  *
@@ -622,6 +621,9 @@ function quantityLocation(quantity, label){
 }
 
 try {
+    /**
+     * @export
+     */
     module.exports = {
         getAllPages,
         getIDToCropMap,
