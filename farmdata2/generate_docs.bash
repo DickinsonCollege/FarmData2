@@ -25,9 +25,11 @@ echo "  Using JSDoc configuration from $JSCONF."
 DOC_DIR=$SCRIPT_DIR/doc
 echo "  Sending output to $DOC_DIR."
 
+README=$SCRIPT_DIR/jsdoc/README.md
+
 RESOURCES=$SCRIPT_DIR/farmdata2_modules/resources
 echo "  Generating docs for $RESOURCES."
 #jsdoc $RESOURCES -r -c $JSCONF -t $TEMPLATE -d $DOC_DIR
-jsdoc $RESOURCES -r -c $JSCONF -d $DOC_DIR
+jsdoc $RESOURCES -r -c $JSCONF -R $README -d $DOC_DIR
 
 echo "Done."
