@@ -20,6 +20,8 @@
  * @vue-event click - Emits an event with no payload when when the date input element is clicked.  This event does not necessarily indicate a change in date.
  * @vue-event {String} date-changed - Emits the selected date (YYYY-MM-DD) when a date is entered, chosen, setDate in prop is changed by the parent, the component is mounted, and the date input element loses focus.
  * </div>
+ *
+ * @module
 */ 
 let DateSelectionComponent = {
     template: `<span>

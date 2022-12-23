@@ -17,6 +17,8 @@
  * @vue-prop {Boolean} [disabled=false] - true to disable the dropdown, false otherwise.
  * 
  * @vue-event {String} selection-changed - Emits the selected option when the option is changed. Note: This event is also emitted in the mounted lifecycle hook to signal the setting of the initial value.
+ * 
+ * @module 
  */ 
 let DropdownWithAllComponent = {
     template: `<span data-cy="dropdown-component">

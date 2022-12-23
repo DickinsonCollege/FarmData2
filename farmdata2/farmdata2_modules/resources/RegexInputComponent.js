@@ -1,7 +1,6 @@
 /**
  * A Vue component for input HTML elements that use Regex to validate user input <br>
- * Quickstart with some basic regex expressions: <br>
- * <strong>^[1-9]+[0-9]*$<strong> - Positive integers greater than 0.
+ * See the regexMap object for commonly used regular expressions.
  * 
  * <h3 class="subsection-title">data-cy attributes</h3>
  * <table>
@@ -30,6 +29,8 @@
  * @vue-event {Boolean} match-changed - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
  * @vue-event {String} input-changed - Emits String (val) for the parent page to make use of the value stored within the input element. 
  * </div>
+ * 
+ * @module
  */ 
 let RegexInputComponent = {
   template: 

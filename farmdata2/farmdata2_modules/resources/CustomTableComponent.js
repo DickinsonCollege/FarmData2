@@ -7,8 +7,10 @@ catch(err) {
 }
 
 /**
- * A Vue component for FarmData2 report tables. The table ensures a consistent styling, and provides the row-based edit/delete and export functionalities that are common to all reports.
  * 
+ * A Vue component for FarmData2 report tables. 
+ * The table ensures a consistent styling, and provides the row-based edit/delete and export functionalities that are common to all reports.
+ *
  * <h3 class="subsection-title">data-cy attributes</h3>
  * <table>
  * <thead>
@@ -55,6 +57,8 @@ catch(err) {
  * @vue-event {Array[]} row-deleted - Emitted when the delete button is clicked if any of the checkboxes on the lefthand side of a row are selected. Emits an array of all the IDs that were deleted for the page to make the appropriate API request to have those records deleted.
  * @vue-event {Array[]} event - Emits an 'event', name of event depends on the button's event name, with a payload of row IDs for the parent page to handle. 
  * </div>
+ * 
+ * @module
 */
 let CustomTableComponent = {
     template:

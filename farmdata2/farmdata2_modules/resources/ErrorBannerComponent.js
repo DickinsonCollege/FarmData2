@@ -14,6 +14,8 @@
  * @vue-prop {String} [errMessage="Error Processing Request. This may be an intermittent network issue. Please try again later."] - The message to display in the alert banner.
  * @vue-prop {Boolean} [visible=false] - Set to true to show the alert banner. 
  * </div>
+ * 
+ * @module
  */ 
 let ErrorBannerComponent = {
     template: 

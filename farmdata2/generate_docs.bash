@@ -30,9 +30,4 @@ echo "  Generating docs for $RESOURCES."
 #jsdoc $RESOURCES -r -c $JSCONF -t $TEMPLATE -d $DOC_DIR
 jsdoc $RESOURCES -r -c $JSCONF -d $DOC_DIR
 
-API=$SCRIPT_DIR/farmdata2_api/src
-echo "  Generating docs for $API."
-#jsdoc $API -r -c $JSCONF -t $TEMPLATE -d $DOC_DIR
-jsdoc $API -r -c $JSCONF -d $DOC_DIR
-
 echo "Done."
