@@ -53,7 +53,7 @@ do
 
     TAG=$(cat repo.txt)
     REPO="farmdata2/$TAG"
-    echo "  Performing docker build..."
+    echo "  Performing docker build using tag $REPO ..."
     docker buildx build --platform linux/amd64,linux/arm64 -t $REPO --push .
 
     if [ -f after.bash ];

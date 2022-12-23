@@ -133,12 +133,12 @@ RUN echo "y" | vue create \
         fd2test
 WORKDIR /home/$USERNAME/fd2test
 RUN npm install -d \
-        cypress@10.11.0 \
+        cypress@12.2.0 \
         webpack@5.74.0 \
         @cypress/webpack-dev-server@2.5.0 \
         @cypress/vue2@1.1.2 \
         path@0.12.7 \
-        axios@1.1.3
+        axios@0.24.0
 WORKDIR /home/$USERNAME
 
 # Configure the VNC server so that it allows fd2dev to connect without
@@ -176,6 +176,8 @@ COPY --chown=$USERNAME:$USERNAME ./bash_aliases ./.bash_aliases
 COPY --chown=$USERNAME:$USERNAME ./panel.bash ./.fd2/panel.bash
 # panel.desktop ensures that the panel.bash script is run when the XFCE4 desktop is started.
 COPY --chown=$USERNAME:$USERNAME ./panel.desktop ./.config/autostart/panel.desktop
+# terminalrc has the setting that enables unicode in the terminal
+COPY --chown=$USERNAME:$USERNAME ./terminalrc ./.config/xfce4/terminal/terminalrc
 RUN chmod +x .fd2/startup.bash \
  && chmod +x .fd2/panel.bash \
  && chmod +x .config/autostart/panel.desktop
