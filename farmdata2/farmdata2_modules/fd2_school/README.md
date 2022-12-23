@@ -27,7 +27,8 @@ Most FarmData2 front-end development will consist of adding a new sub-tab to one
 Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData2 School Tab. To do this you will need to edit the `fd2_school.module` file. The following steps will guide you through that process.
 
 1. Ensure that a development instance of FarmData2 is up and running. See [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) for full instructions.
-1. Find the `fd2_school` directory in the `farmdata2/farmdata2_modules/` directory.
+1. Change to the `fd2_school` directory in the `farmdata2/farmdata2_modules/` directory.
+1. Create a sub-directory for your new subtab. If your subtab is going to be named `xyz` then make a directory named `xyz`.
 1. Open the the `fd2_school.module` file.
 1. Modify the `fd2_school_menu` function by adding the code that creates the `$items` entry for the `XYZ` sub tab as shown below:  
 
@@ -60,7 +61,7 @@ Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData
      - `title`: This defines the name of the sub-tab that appears in the _FD2 School_ tab.  Replace `XYZ` with the text you want to appear as the sub-tab title (e.g. `HTML` for the first activity).
      - `page arguments`: This is the name of the directory that contains the `.html` file that provides the content for the sub-tab. Replace `xyz` with the name of the directory that contains the `xyz.html` file that contains the code for your new sub-tab. The `xyz` part of the directory name (`xyz`) and the start of the filename (`xyz.html`) must match.  The filename must end with (`.html`).
      - `weight`: The weight controls the placement of the sub-tabs with respect to the others that appear.  Sub-tabs with lower weights appear further left and those with higher weights appear further right.
-1. Create the directory that you named in the `page arguments` above to hold your subtab code.
+1. Change into the directory that you created and named in the `page arguments` above to hold your subtab code.
 1. Create the `.html` file inside the directory you just created. 
 1. Insert some _dummy code_ into the `.html` file for now just to get the sub-tab up and visible. For example:
    ```html
