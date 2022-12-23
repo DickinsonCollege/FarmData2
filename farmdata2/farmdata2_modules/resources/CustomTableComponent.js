@@ -9,7 +9,7 @@ catch(err) {
 /**
  * A Vue component for FarmData2 report tables. The table ensures a consistent styling, and provides the row-based edit/delete and export functionalities that are common to all reports.
  * 
- * <p><b>data-cy attributes</b></p>
+ * <h3 class="subsection-title">data-cy attributes</h3>
  * <table>
  * <thead>
  * <tr><th>Value</th>                <th>Description</th></tr>
@@ -39,18 +39,22 @@ catch(err) {
  * </tbody>
  * </table>
  * 
+ * <div>
  * @vue-prop {Object[]} rows - The content to be displayed in the table. Each object in the array is a row, and each element in the data property is an individual cell in that row.  For example the following value would provide data for three rows and three columns:<br> <code>[{id: 1, data:[1, 2, 'three']}, {id: 2, data:[4, 5, 'six']}, {id: 3, data:['seven', 8, 9]}]</code><br>  Note: The ID is not displayed, but emitted as a payload with some events to communicate which row is affected.
  * @vue-prop {Object[]} columns - Contains a column's header, visibility, and the input type for that column along with other specified data values for that column
  * @vue-prop {Object[]} customButtons - Contains a custom button's hover tip, visibility, and input type specifying the button's icon, class, and event.
  * @vue-prop {Boolean} [canEdit=false] - true if the table rows should be editable via an edit button that appears in each row.
  * @vue-prop {Boolean} [canDelete=false] - true if the table rows should be able to be deleted via a delete button that appears in each row.
  * @vue-prop {String} [csvName] - A String that assigns the exported CSV file its name. If left empty the export button does not appear. 
+ * </div>
  * 
+ * <div>
  * @vue-event edit-clicked - Emitted when an edit button is clicked to indicate that the table is in edit mode.
  * @vue-event {Object|Number} row-edited - Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be <code>{crop: 'KALE'}</code>, and if they also edited the area to Chuau it would be <code>{crop: 'KALE', area: 'CHUAU'}</code>.  The second is a Number that indicates 'id' of the row that was changed. 
  * @vue-event row-canceled - Emitted when a row was being edited and the cancel button is clicked.
  * @vue-event {Array[]} row-deleted - Emitted when the delete button is clicked if any of the checkboxes on the lefthand side of a row are selected. Emits an array of all the IDs that were deleted for the page to make the appropriate API request to have those records deleted.
  * @vue-event {Array[]} event - Emits an 'event', name of event depends on the button's event name, with a payload of row IDs for the parent page to handle. 
+ * </div>
 */
 let CustomTableComponent = {
     template:

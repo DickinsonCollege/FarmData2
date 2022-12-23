@@ -1,5 +1,5 @@
 /**
- * A collection of functions for interacting with the
+ * @file A collection of functions for interacting with the
  * farmOS API. All pages should use these so that any
  * updates apply to all pages.
  */

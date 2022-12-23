@@ -6,7 +6,7 @@
  * Map of common regular expression variables used in RegexInputComponent
  * to validate string input.
  * 
- * <p><b>Regular Expresssion Variables</b></p>
+ * <p><b>Regular Expression Variables</b></p>
  * <table>
  * <thead><tr><th>Variable Name</th>   <th>Regular Expression String</th>     <th>Descripion</th></tr></thead>
  * <tbody>
@@ -22,7 +22,7 @@ var regexMap = {
 
 try {
     module.exports = {
-        regexMap: regexMap
+        regexMap
     }
 }
 catch {}

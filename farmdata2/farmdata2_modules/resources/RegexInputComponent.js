@@ -3,7 +3,7 @@
  * Quickstart with some basic regex expressions: <br>
  * <strong>^[1-9]+[0-9]*$<strong> - Positive integers greater than 0.
  * 
- * <p><b>data-cy attributes</b></p>
+ * <h3 class="subsection-title">data-cy attributes</h3>
  * <table>
  * <thead><tr><th>Value</th>    <th>Description</th></tr></thead>
  * <tbody>
@@ -12,6 +12,7 @@
  * </tbody>
  * </table>
  * 
+ * <div>
  * @vue-prop {RegExp} [regExp] - The regular expression used to validate user inputs.
  * @vue-prop {String} [defaultVal] - Used to clear the page once a log has been submitted.
  * @vue-prop {String} [setType] - Defines the type of input box.
@@ -23,9 +24,12 @@
  * @vue-prop {String} [setStep] - Defines the step increments of the input element. Prop is ignored if the input type does not support those attributes.
  * @vue-prop {String} [setTitle] - Defines the title for a simple hover tip for the input element.
  * @vue-prop {Boolean} [isDisabled] - Makes the element read-only.
+ * </div>
  * 
+ * <div>
  * @vue-event {Boolean} match-changed - Emits boolean (isMatch) for the parent page to make use of the results of the validation. 
  * @vue-event {String} input-changed - Emits String (val) for the parent page to make use of the value stored within the input element. 
+ * </div>
  */ 
 let RegexInputComponent = {
   template: 

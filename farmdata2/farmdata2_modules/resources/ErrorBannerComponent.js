@@ -1,7 +1,7 @@
 /**
  * A Vue component for a error banner that is displayed when an error occurs.
  * 
- * <p><b>data-cy attributes</b></p>
+ * <h3 class="subsection-title">data-cy attributes</h3>
  * <table>
  * <thead><tr><th>Value</th>        <th>Description</th></tr></thead>
  * <tbody>
@@ -10,9 +10,10 @@
  * </tbody>
  * </table>
  * 
+ * <div>
  * @vue-prop {String} [errMessage="Error Processing Request. This may be an intermittent network issue. Please try again later."] - The message to display in the alert banner.
- * @vue-prop {Boolean} [visible=false] - true to show the alert banner. False by default.
-
+ * @vue-prop {Boolean} [visible=false] - Set to true to show the alert banner. 
+ * </div>
  */ 
 let ErrorBannerComponent = {
     template: 

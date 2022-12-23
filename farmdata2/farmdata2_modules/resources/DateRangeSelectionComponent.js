@@ -9,7 +9,7 @@ catch(err) {
 /**
  * A Vue component for selecting a range of dated (i.e. start and end dates).  The component ensures that the user cannot choose a start date after the end date and vice versa.
  * 
- * <p><b>data-cy attributes</b></p>
+ * <h3 class="subsection-title">data-cy attributes</h3>
  * <table>
  * <thead><tr><th>Value</th>        <th>Descripion</th></tr></thead>
  * <tbody>
@@ -18,13 +18,17 @@ catch(err) {
  * </tbody>
  * </table>
  * 
+ * <div>
  * @vue-prop {String} setStartDate - the start date to be displayed (YYYY-MM-DD).
  * @vue-prop {String} setEndDate - the end date to be displayed (YYYY-MM-DD).
  * @vue-prop {Boolean} [disabled=false] - true to disable both start and end date selection elements, false otherwise.
- *
+ * </div>
+ * 
+ * <div>
  * @vue-event click - Emits an event with no payload when when one of the date selection elements is clicked.  This event does not necessarily indicate a change in date.
  * @vue-event {String} start-date-changed - Emits the selected date (YYYY-MM-DD) when a start date is entered, chosen, component is mounted, prop is changed, and the start date selection element loses focus.
  * @vue-event {String} end-date-changed - Emits the selected date (YYYY-MM-DD) when an end date is entered, chosen, component is mounted, prop is changed, and the end date selection element loses focus.
+ * </div>
  */
 let DateRangeSelectionComponent = {
     template: `<div>
