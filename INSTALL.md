@@ -224,4 +224,4 @@ The farmOS/drupal database used by FarmData2 is stored in a Docker volume (`dock
 
 #### The Dev Environment ####
 
-The `home/fd2dev` directory in the FarmData2 development development environment is stored in a Docker volume (`docker_farmdev_home_fd2.x`).  In addition, the `fd2_dev` container is not deleted by `fd2-up.bash` or `fd2-down.bash`.  This allows individual customizations of the development environment to persist across runs. However, if it is necessary to make breaking changes to the development environment the version number of the container and the volume will be bumped in the `docker/docker-compose.yml` file which will create a new container and use a new blank volume.
+The `home/fd2dev` directory in the FarmData2 development development environment is stored in a Docker volume (`docker_farmdev_home_fd2.x`).  If it is necessary to make breaking changes to the development environment the version number of the container and the volume will be bumped in the `docker/docker-compose.yml` file which will create a new container and use a new blank volume the next time `fd2-up.bash` is run.

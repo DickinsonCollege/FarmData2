@@ -21,8 +21,7 @@ echo "Deleting containers..."
 docker rm fd2_mariadb
 docker rm fd2_phpmyadmin --volumes  # remove /sessions volume created.
 docker rm fd2_farmdata2
+docker rm fd2_dev
 docker rm fd2_api
-
-# Note don't delete fd2_dev so that customizations persist.
 
 echo "Done."
