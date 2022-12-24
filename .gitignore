@@ -10,6 +10,7 @@ docker/logo/.htaccess
 
 **/cypress/screenshots/*
 **/cypress/videos/*
+**/cypress/downloads
 
 **/__pycache__
 
