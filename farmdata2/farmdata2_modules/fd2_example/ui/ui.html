@@ -119,7 +119,8 @@
             @clone="cloneEvent"
             @row-deleted="deleteTableRow"
             @row-edited="updateTableRow"
-
+            @edit-clicked="showEditRow"
+            @edit-canceled="cancelEditRow"
             >
         </custom-table>
         <button data-cy='show-column' 
@@ -130,6 +131,11 @@
             @click='hideColumn'>Hide Column</button>
         <button data-cy='add-data' 
             @click='addDataRow'>Add Data Row</button>
+        <br><br>
+        <UL>
+            <LI>ID of row being edited: <span data-cy="edit-row-id">{{ editRowID }}</span></LI>
+        </UL>
+        <br>
     </UL>
 
     <p><b>FieldSets & Buttons</b></p>
@@ -247,8 +253,7 @@ new Vue({
         myButtons: [
             {"hoverTip": 'Clone', "visible": true, "inputType": {'type': 'button', 'value': 'glyphicon glyphicon-asterisk', 'buttonClass': 'table-button btn btn-warning', 'event': 'clone'}},
         ],
-
-        
+        editRowID: "",
 
         waitingOnLogs: false,
         waitingOnErr: false,
@@ -318,24 +323,32 @@ new Vue({
 
         // backend needs to be updated when deleting a row
         deleteTableRow(rowIDs) {
-        for(let i = 0; i < rowIDs.length; i++){
-            // delete record
-            let url = ""
-            deleteRecord(url, this.sessionToken)
-            .then(() => {
-                for(var j = 0; j < this.tableData.length; j++){
-                if(this.tableData[j].id == rowIDs[i]){
-                    this.tableData.splice(j, 1)
+            for(let i = 0; i < rowIDs.length; i++){
+                // delete record
+                let url = ""
+                deleteRecord(url, this.sessionToken)
+                .then(() => {
+                    for(var j = 0; j < this.tableData.length; j++){
+                    if(this.tableData[j].id == rowIDs[i]){
+                        this.tableData.splice(j, 1)
+                    }
                 }
-            }
-            })
-            .catch((err => {
-                this.errBannerVisibility = true
-            }))
+                })
+                .catch((err => {
+                    this.errBannerVisibility = true
+                }))
 
-        }
+            }
 
             // Would also need to delete data from the db via API here.
+        },
+
+        showEditRow(rowID) {
+            this.editRowID = rowID
+        },
+
+        cancelEditRow(rowID) {
+            this.editRowID = ""
         },
 
         updateTableRow(edits, rowID) {
@@ -346,6 +359,9 @@ new Vue({
                     }
                 }
             }
+
+            this.editRowID = ""
+
           // Would also need to update data in the db via API here.
         },
 

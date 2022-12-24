@@ -207,6 +207,16 @@ describe('custom table component', () => {
                 .should('be.disabled')
         })
 
+        it('clicking edit emits row id', () => {
+            const spy = cy.spy()
+            Cypress.vue.$on('edit-clicked', spy)
+            cy.get('[data-cy=r1-edit-button]')
+                .click()
+                .then(() => {
+                    expect(spy).to.be.calledWith(2)
+                })
+        })
+
         it('save button emits changes when clicked', () => {
             const spy = cy.spy()
             Cypress.vue.$on('row-edited', spy)
@@ -395,7 +405,7 @@ describe('custom table component', () => {
 
         it('cancel button emits an event', () => {
             const spy = cy.spy()
-            Cypress.vue.$on('row-canceled', spy)
+            Cypress.vue.$on('edit-canceled', spy)
             cy.get('[data-cy=r0-edit-button')
                 .click()
 
