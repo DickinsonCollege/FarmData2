@@ -28,6 +28,8 @@ describe('Test the behavior of the CustomTableComponent', () => {
             .should('have.text', '5')
         cy.get('[data-cy=r0-boolean-input]')
             .should('be.checked')
+        cy.get('[data-cy=edit-row-id]')
+            .should('have.text','')
     })
 
     it('Select the first item in the table and delete it.', () => {
@@ -56,11 +58,17 @@ describe('Test the behavior of the CustomTableComponent', () => {
             .clear()
             .type('Tee Shirts')
         
+        cy.get('[data-cy=edit-row-id]')
+            .should('have.text','1')
+
         cy.get('[data-cy=r0-save-button]')
             .click()
         
         cy.get('[data-cy=r0-Item]')
             .should('have.text','Tee Shirts')
+        
+        cy.get('[data-cy=edit-row-id]')
+            .should('have.text','')
     })
 
     it('Click the Add Row button and ensure that the new row was added.', () => {

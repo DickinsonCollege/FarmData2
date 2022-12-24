@@ -51,9 +51,9 @@ catch(err) {
  * </div>
  * 
  * <div>
- * @vue-event edit-clicked - Emitted when an edit button is clicked to indicate that the table is in edit mode.
+ * @vue-event edit-clicked - Emitted when an edit button is clicked to indicate that the table is in edit mode.  The payload contains the id of the row that is being edited.
  * @vue-event {Object|Number} row-edited - Emitted when the save button is clicked after editing a row.  The event has two payloads.  The first is an Object indicates the changes that were made to the row. For example, if a user changes the crop of a row to kale, the emitted object will be <code>{crop: 'KALE'}</code>, and if they also edited the area to Chuau it would be <code>{crop: 'KALE', area: 'CHUAU'}</code>.  The second is a Number that indicates 'id' of the row that was changed. 
- * @vue-event row-canceled - Emitted when a row was being edited and the cancel button is clicked.
+ * @vue-event edit-canceled - Emitted when a row was being edited and the cancel button is clicked.
  * @vue-event {Array[]} row-deleted - Emitted when the delete button is clicked if any of the checkboxes on the lefthand side of a row are selected. Emits an array of all the IDs that were deleted for the page to make the appropriate API request to have those records deleted.
  * @vue-event {Array[]} event - Emits an 'event', name of event depends on the button's event name, with a payload of row IDs for the parent page to handle. 
  * </div>
@@ -306,7 +306,7 @@ let CustomTableComponent = {
                 'id': this.rows[index].id,
                 'data': this.rows[index].data    
             }
-            this.$emit('edit-clicked')
+            this.$emit('edit-clicked', this.rows[index].id)
         },
 
         finishRowEdit: function(id){
@@ -336,7 +336,7 @@ let CustomTableComponent = {
             this.editedRowData = {}
 
             this.isMatch = true
-            this.$emit('row-canceled')
+            this.$emit('edit-canceled')
         },
 
         deleteRow: function(){
