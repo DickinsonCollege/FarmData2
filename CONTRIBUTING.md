@@ -4,17 +4,19 @@ FarmData2 welcomes participation and contributions. There are many ways to contr
 
 ## Code of Conduct ##
 
-To promote an open, welcoming, inclusive and harassment-free experience, all engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenent](CODE_OF_CONDUCT.md).
+To promote an open, welcoming, inclusive and harassment-free experience, all engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenant](CODE_OF_CONDUCT.md).
 
 ## Licensing ##
 
-Content in the FarmData2 project is released under several different licenses as described in the [LICENSE file](LICENSE.md). In addition, that file describes the rights and responsibilities of contributors with regard to the their contributed content. The licensing structure of FarmData2 is designed to ensure that FarmData2 remains free and open source while protecting both the project and it community of contributors. Please review it carefully before contributing content to FarmData2.
+Content in the FarmData2 project is released under several different licenses as described in the [LICENSE file](LICENSE.md). In addition, that file describes the rights and responsibilities of contributors with regard to the their contributed content. The licensing structure of FarmData2 is designed to ensure that FarmData2 remains free and open source while protecting both the project and its community of contributors. Please review it carefully before contributing content to FarmData2.
 
 ## Connecting ##
 
-Connect with the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
+Connect with the [FarmData2 community on Zulip].
 
 If you are unfamiliar with [Zulip](https://zulip.com/) it is a group chat application that blends the benefits of threaded discussions with live chat. Zulip is relatively easy to use once you understand the key ideas of [streams and topics](https://zulip.com/help/about-streams-and-topics).
+
+[FarmData2 community on Zulip]: https://farmdata2.zulipchat.com/
 
 ## Developer Installation ##
 
@@ -28,20 +30,21 @@ There are many ways to participate in FarmData2. Some of them are listed below.
 
 #### Bug Reports ####
 
-If you are are a user of FarmData2 and discover something that doesn't seem to be working correctly you can:
+If you are a user of FarmData2 and discover something that doesn't seem to be working correctly you can:
 
-  * Reach out to the community on the [Zulip Developer Stream](https://farmdata2.zulipchat.com/#narrow/stream/271292-developers) to discuss what you have found and how to proceed.
+  * Reach out to the community on the [Zulip Developer Stream] to discuss what you have found and how to proceed.
   * Search the [Issue Tracker] to see if the bug has been reported already.
     * If it has, add a confirmed sighting or any additional information you have by commenting on the ticket.
     * If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to observe the bug.
 
 [Issue Tracker]: https://github.com/DickinsonCollege/FarmData2/issues
+[Zulip Developer Stream]: https://farmdata2.zulipchat.com/#narrow/stream/271292-developers
 
 #### Feature Requests ####
 
 If you are are a user of FarmData2 and have a new feature you would like to see you can:
 
-  * Reach out to the community on the [Zulip Developer Stream](https://farmdata2.zulipchat.com/#narrow/stream/271292-developers) to discuss the feature you'd like to see and how to proceed.
+  * Reach out to the community on the [Zulip Developer Stream] to discuss the feature you'd like to see and how to proceed.
   * Search the [Issue Tracker] to see if the feature, or something close, has already been suggested by someone.
     * If it has, add a comment lending support and possibly refining or giving your perspective on the idea.
     * If it has not, open a new ticket and give a description of the new feature you would like to see.
@@ -58,7 +61,7 @@ To participate by Gardening visit the [Issue Tracker] and find something of inte
 
 #### Documentation ####
 
-Update to any of the FarmData2 documentation are welcome.  If you find typos, unclear or missing steps, poorly worded explanations, or have any other suggestions for how the documentation could be improved use the [workflow](#workflow) described below to create a pull request for your suggested changes.
+Updates to any of the FarmData2 documentation are welcome.  If you find typos, unclear or missing steps, poorly worded explanations, or have any other suggestions for how the documentation could be improved use the [workflow](#workflow) described below to create a pull request for your suggested changes.
 
 #### Bug Fix / Feature Implementation ####
 
