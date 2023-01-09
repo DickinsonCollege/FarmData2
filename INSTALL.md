@@ -55,7 +55,7 @@ To start FarmData2, ensure that docker is running and you are in the `docker` di
 ./fd2-up.bash
 ```
 
-This command will start up the docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pulls, downloads and extracts the docker images to your machine. You will know the command is complete when it outputs:
+This command will start up the docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pulls and extracts the necessary docker images to your machine. You will know the command is complete when it outputs:
 ```
 FarmData2 started.
 ```
@@ -64,7 +64,9 @@ FarmData2 started.
 
 FarmData2 provides a full featured Debian Linux based development environment.  This development environment is automatically running inside one of the Docker containers that was started by the `./fd2-up.bash` script.
 
-**All of the FarmData2 instructions and documentation assume that you are working within the FarmData2 development environment.** That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors (with a few exceptions where the development environment is required).
+**All of the FarmData2 instructions and documentation assume that you are working within this FarmData2 development environment.** 
+
+That said, developers experienced with tools like git, docker and docker-compose should not face any substantial barriers to development directly on Windows, MacOS or other Linux flavors.  There are however a few exceptions where the development environment is required and those are noted in the appropriate places.
 
 #### Connecting via TigerVNC Viewer ####
 
@@ -72,19 +74,21 @@ You can connect to the FarmData2 development environment using the TigerVNC View
 1. Run your TigerVNC Viewer
 2. Set the "VNC Server" field to: `localhost:5901`
 3. Click "Connect"
-4. If nothing happens and the TigerVNC Viewer quits, wait a moment and try again.  Sometimes it takes a few moments for the VNC server in the container to start.
+4. If nothing happens and the TigerVNC Viewer quits, wait a moment and try again. It typically takes a few moments for the VNC server in the container to start.
+
+When the TigerVNC Viewer connects to the FarmData2 Development environment a window will open displaying the Desktop of the Debian Linux system that is running in the docker container.
 
 #### Connecting via a Browser ####
 
-You can also connect to the FarmData2 development environment using a browser. 
-1. Open a browser on the host OS
+You can also connect to the FarmData2 development environment using a noVNC client through a web browser. 
+1. Open a web browser on the host OS
 2. Visit the URL: `localhost:6901`
 3. Click "Connect"
 4. Use the NoVNC settings (on the left) to set the "Scaling Mode" to "Remote Resizing"
 
-Note: When accessing the development environment via the browser, copying and pasting between the host OS and the development environment is tedious. However, if you work entirely inside the development environment it is quite functional.
+Note: When accessing the development environment via the browser, copying and pasting between the host OS and the development environment using the noVNC clipboard is tedious. However, if you work entirely inside the development environment it is quite functional.
 
-When the TigerVNC Viewer connects to the FarmData2 Development environment a window will open displaying the Desktop of the Debian Linux system that is running in the docker container.
+When the noVNC client connects to the FarmData2 Development environment the Desktop of the Debian Linux system that is running in the docker container will appear in your browser window.
 
 #### Development Environment Credentials ####
 
