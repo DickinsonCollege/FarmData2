@@ -50,7 +50,7 @@ To get started:
 
 ### Starting FarmData2 ###
 
-To start FarmData2, ensure that docker is running and you are in the `docker` directory of the repository. Then, use the command below:
+To start FarmData2, ensure that docker is running and you are in the `docker` directory of the repository. Then, use the command:
 ```
 ./fd2-up.bash
 ```

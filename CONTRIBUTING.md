@@ -1,6 +1,6 @@
 # Contributing to FarmData2 #
 
-This document provides a step-by-step guide to making your first contribution to FarmData2. While this guide is targeted at making a first contribution, the process it outlines is general and will apply to all contributions.  So you may find it helpful to return here if you continue to contribute.
+This document provides a step-by-step guide to fixing your first issue in FarmData2. While this guide is targeted at making a first contribution, the process it outlines is general and will apply to all code or documentation contributions.  So you may find it helpful to return here if you continue to contribute.  For ways to contribute other than fixing issues see the [HOW_TO](HOW_TO.md) document.
 
 ## 1. Review FarmData2's Code of Conduct ##
 
@@ -187,8 +187,51 @@ You can use the web interace through your browser to confirm that the branch has
 
 ## 16. Contribute More ##
 
-Now that you've made your first contribution, if you are ready for more... Head back to go back to step #5 of this document and start again!  If you get into working on more complex issues and need to learn more about the FarmData2 project or the technologies that it uses be sure to:
-  - Check out the [HOW_TO page](HOW_TO.md)
-  - Reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
+Now that you've made your first contribution, if you are ready for more you can:
+  - Head back to go back to step #5 of this document and start again!  If you get into working on more complex issues and need to learn more about the FarmData2 project or the technologies that it uses be sure to:
+    - Check out the [HOW_TO page](HOW_TO.md)
+    - Reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
+
+  - Try one of the other ways to contribute that are described below.
 
 Good luck and happy contributing!
+
+## Other ways to Contribute:
+
+There are many ways to participate in FarmData2. Some of them are listed below.  
+
+### Bug Reports ###
+
+If you are a user of FarmData2 and discover something that doesn't seem to be working correctly you can:
+
+  1. Reach out to the community on the [Zulip Developer Stream] to discuss what you have found and how to proceed.
+  2. Search the [Issue Tracker] to see if the bug has been reported already.
+     - If it has, add a confirmed sighting or any additional information you have by commenting on the ticket.
+     - If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to observe the bug.
+
+[Issue Tracker]: https://github.com/DickinsonCollege/FarmData2/issues
+[Zulip Developer Stream]: https://farmdata2.zulipchat.com/#narrow/stream/271292-developers
+
+### Feature Requests ###
+
+If you are are a user of FarmData2 and have a new feature you would like to see you can:
+
+  * Reach out to the community on the [Zulip Developer Stream] to discuss the feature you'd like to see and how to proceed.
+  * Search the [Issue Tracker] to see if the feature, or something close, has already been suggested by someone.
+    * If it has, add a comment lending support and possibly refining or giving your perspective on the idea.
+    * If it has not, open a new ticket and give a description of the new feature you would like to see.
+
+### Issue Gardening ###
+
+The project [Issue Tracker] contains tickets describing known issues with the project.  The tickets for known issues are tagged with the label "bug".  Each reported bug will have a detailed description of how the bug can be observed. Gardening includes activities such as:
+
+  * Verifying or clarifying these descriptions.
+  * Enhance the report by providing additional information about the bug (e.g. platforms on which is is or is not seen).
+  * Confirming that bug does (or does not) exist in the current version.
+
+To participate by Gardening visit the [Issue Tracker] and find something of interest to verify, enhance or clarify.  Try it out in your running version of FarmData2 and add a comment to the ticket with what you find.
+
+### Documentation ###
+
+Updates to any of the FarmData2 documentation are welcome.  If you find typos, unclear or missing steps, poorly worded explanations, or have any other suggestions for how the documentation could be improved use the described above to create a pull request for your suggested changes.
+
