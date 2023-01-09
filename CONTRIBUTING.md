@@ -16,7 +16,7 @@ We use a variety of licenses and agreements to ensure that FarmData2 remains fre
 
 ## 3. Install and Run FarmData2 ##
 
-Ensure that FarmData2 has been installed and is running. The following steps will assume that you are working within the FarmData2 development enviornment via a VNC Viewer or via noVNC in a browser.
+Ensure that FarmData2 has been installed and is running. The following steps will assume that you are working within the FarmData2 development environment via a VNC Viewer or via noVNC in a browser.
 
 - [Installing FarmData2](INSTALL.md)
 
@@ -36,15 +36,15 @@ Visit the Issue Tracker to find an issue on which to work:
 
 - [FarmData2 Issue Tracker](https://github.com/DickinsonCollege/FarmData2/issues)
 
-In paticular, you can search the Issue Tracker for ticktes with the following labels that indicate that the issue is a good place to get started:
+In particular, you can search the Issue Tracker for tickets with the following labels that indicate that the issue is a good place to get started:
 
-- [![Good First Issue](media/GoodFirstIssueLabel.jpg)](https://github.com/DickinsonCollege/FarmData2/labels/good%20first%20issue) - The issues described in these tickets are the most approachable and do not require an indepth knowlege of the project or its technologies. They typically involve changes that do not affect the application's behavior. Often a familiarity with Markdown, HTML, and/or JavaScript is sufficent for addressing these issues.  These issues provide a great way to get familar with the process of making a contribution. 
+- [![Good First Issue](media/GoodFirstIssueLabel.jpg)](https://github.com/DickinsonCollege/FarmData2/labels/good%20first%20issue) - The issues described in these tickets are the most approachable and do not require an in depth knowledge of the project or its technologies. They typically involve changes that do not affect the application's behavior. Often a familiarity with Markdown, HTML, and/or JavaScript is sufficient for addressing these issues.  These issues provide a great way to get familiar with the process of making a contribution. 
 
-- [![Good Second Issue](media/GoodSecondIssueLabel.jpg)](https://github.com/DickinsonCollege/FarmData2/labels/Good%20Second%20Issue) - The issues described in these tickets require some local understanding that is typcially limited to one or two source files.  They will usually require changes that affect behavior and thus may also require creation or modification of unit or end-to-end tests.  Thus, greater familiartiy with Javascript, Vue.js and/or Cypress tests may be required. These issues provide a great way to dig a little deeper,though still without requiring too deep a dive into the project.
+- [![Good Second Issue](media/GoodSecondIssueLabel.jpg)](https://github.com/DickinsonCollege/FarmData2/labels/Good%20Second%20Issue) - The issues described in these tickets require some local understanding that is typically limited to one or two source files.  They will usually require changes that affect behavior and thus may also require creation or modification of unit or end-to-end tests.  Thus, greater familiarity with Javascript, Vue.js and/or Cypress tests may be required. These issues provide a great way to dig a little deeper,though still without requiring too deep a dive into the project.
 
 ## 6. Comment on the Ticket to Claim it ##
 
-When you find an issue that you would like to work on, make a comment on the ticket expressing your interest. Something like the following is sufficent:
+When you find an issue that you would like to work on, make a comment on the ticket expressing your interest. Something like the following is sufficient:
 
   ```
   I would like to work on this isssue!
@@ -66,7 +66,7 @@ Use the following commands in a Terminal window to synchronize your local reposi
   git push origin main
   ```
 
-  Note: If you cloned your FarmData2 repository somewhere other than a `FarmData2` direcotry in the home directory you'll need to adjust the `cd` command above.  All future sections of this document assume that the directory containing your FarmData2 repository is the current working directory.
+  Note: If you cloned your FarmData2 repository somewhere other than a `FarmData2` directory in the home directory you'll need to adjust the `cd` command above.  All future sections of this document assume that the directory containing your FarmData2 repository is the current working directory.
 
 If you encounter any problems, review the instructions for [Installing FarmData2](INSTALL.md) and then reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
 
@@ -88,7 +88,7 @@ If you encounter any problems with this step, or any of the following ones, be s
   
 ## 9. Solve the Issue ##
 
-Open the *VSCodium IDE* (or another editor of your choice) and modify the contents of the files in your local FarmData2 repository to address the issue.  If your work requires multiple changes you should iterate between this step and and the following step until the issue is addresed.
+Open the *VSCodium IDE* (or another editor of your choice) and modify the contents of the files in your local FarmData2 repository to address the issue.  If your work requires multiple changes you should iterate between this step and and the following step until the issue is addressed.
 
 ## 10. Add and Commit Your Fix to your Local Repo ##
 
@@ -111,7 +111,7 @@ If you have worked on your changes with someone else you will need to be sure to
   ```
   You'll need to know your co-author(s) e-mail address or GitHub *no-reply email* so that you can provide it in the commit message.  Note: The `>` characters appear wen you press *Enter* or *Return* in the Terminal because the string that is opened (`"`) after the `-m` is not terminated (`"`) until after the final co-author line.
 
-Inspect the output of the `git status` command to confirm that your are in the right place and the `git log` command to confirm that you have successfully commited your changes.
+Inspect the output of the `git status` command to confirm that your are in the right place and the `git log` command to confirm that you have successfully committed your changes.
 
 ## 11. Push your Feature Branch to your Origin Repo ##
 
@@ -148,15 +148,15 @@ You'll now make a pull request to let the FarmData2 maintainers know that you ha
 
 Once you submit a pull request you should keep an eye out for a reply from the project maintainer.  This reply might:
   - Congratulate you on your pull request being merged.
-  - Provide a request for further changnes before your request can be mergd.
+  - Provide a request for further changes before your request can be merged.
   - Ask questions about your approach or implementation.
   - Etc.
 
-Promt responses to the maintainers are always appreciated and improve the chances that your pull request (possibly with revision) will be merged.
+Prompt responses to the maintainers are always appreciated and improve the chances that your pull request (possibly with revision) will be merged.
 
 ## 14. Update you Pull Request as Necessary ##
 
-If you received feeback on your pull request and changes were requested, you can update your pull request as follows:
+If you received feedback on your pull request and changes were requested, you can update your pull request as follows:
   1. Make the requested changes in your local repository.
   2. Commit the changes to your feature branch.
   3. Push your feature branch to your `origin` repository on GitHub.
@@ -177,61 +177,20 @@ The following commands will delete your feature branch from your local repositor
 
 Use the output of the `git branch` commands to confirm that your feature branch has been deleted.
 
-You can delete your feature branch from your `origin` on GitHub using the web interface through your browwser, or you can use the following command:
+You can delete your feature branch from your `origin` on GitHub using the web interface through your browser, or you can use the following command:
 
   ```
   git push origin --delete MyFeatureBranch
   ```
 
-You can use the web interace through your browser to confirm that the branch has been deleted from GitHub.
+You can use the web interface through your browser to confirm that the branch has been deleted from GitHub.
 
 ## 16. Contribute More ##
 
 Now that you've made your first contribution, if you are ready for more you can:
   - Head back to go back to step #5 of this document and start again!  If you get into working on more complex issues and need to learn more about the FarmData2 project or the technologies that it uses be sure to:
-    - Check out the [HOW_TO page](HOW_TO.md)
+    - Check out the other [ways to contribute to FarmData2](docs/WaysToContribute.md).
+    - Check out the [HOW_TO page](HOW_TO.md).
     - Reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
 
-  - Try one of the other ways to contribute that are described below.
-
 Good luck and happy contributing!
-
-## Other ways to Contribute:
-
-There are many ways to participate in FarmData2. Some of them are listed below.  
-
-### Bug Reports ###
-
-If you are a user of FarmData2 and discover something that doesn't seem to be working correctly you can:
-
-  1. Reach out to the community on the [Zulip Developer Stream] to discuss what you have found and how to proceed.
-  2. Search the [Issue Tracker] to see if the bug has been reported already.
-     - If it has, add a confirmed sighting or any additional information you have by commenting on the ticket.
-     - If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to observe the bug.
-
-[Issue Tracker]: https://github.com/DickinsonCollege/FarmData2/issues
-[Zulip Developer Stream]: https://farmdata2.zulipchat.com/#narrow/stream/271292-developers
-
-### Feature Requests ###
-
-If you are are a user of FarmData2 and have a new feature you would like to see you can:
-
-  * Reach out to the community on the [Zulip Developer Stream] to discuss the feature you'd like to see and how to proceed.
-  * Search the [Issue Tracker] to see if the feature, or something close, has already been suggested by someone.
-    * If it has, add a comment lending support and possibly refining or giving your perspective on the idea.
-    * If it has not, open a new ticket and give a description of the new feature you would like to see.
-
-### Issue Gardening ###
-
-The project [Issue Tracker] contains tickets describing known issues with the project.  The tickets for known issues are tagged with the label "bug".  Each reported bug will have a detailed description of how the bug can be observed. Gardening includes activities such as:
-
-  * Verifying or clarifying these descriptions.
-  * Enhance the report by providing additional information about the bug (e.g. platforms on which is is or is not seen).
-  * Confirming that bug does (or does not) exist in the current version.
-
-To participate by Gardening visit the [Issue Tracker] and find something of interest to verify, enhance or clarify.  Try it out in your running version of FarmData2 and add a comment to the ticket with what you find.
-
-### Documentation ###
-
-Updates to any of the FarmData2 documentation are welcome.  If you find typos, unclear or missing steps, poorly worded explanations, or have any other suggestions for how the documentation could be improved use the described above to create a pull request for your suggested changes.
-

@@ -1,4 +1,4 @@
-# Communications in FarmData2
+# Communications in FarmData2 #
 
 FarmData2 uses three primary communications channels.  Each channel serves a slightly different purpose.  When communicating with the community try to pick the most appropriate channel.  
 
