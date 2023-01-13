@@ -58,6 +58,10 @@ COPY vscodium.bash .
 RUN ./vscodium.bash \
  && rm vscodium.bash
 
+# Add environment variable to /etc/profile so that VSCodium
+# launches on Windows with WSL without a warning.
+ENV DONT_PROMPT_WSL_INSTALL=1
+
 # Install Docker because we use Docker On Docker to allow some scripts
 # (e.g. docker/setDB.bash and buildSampleDB.bash) to stop and start 
 # containers.
