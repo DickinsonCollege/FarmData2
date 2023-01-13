@@ -43,7 +43,7 @@ FarmData2 makes use of the following key technologies. HTML, CSS and Bootstrap, 
 
 FarmData2 has been used in a number of undergraduate computer science courses and activities have been developed to guide students through an introduction to FarmData2 and the technologies that it uses.  If you are new to open source and FarmData2 or to any of the technologies that FarmData2 uses, working through these activities will be an efficient way to get up to speed. If you are a more experienced developer you might just pick and choose from these activities, or skip over them completely to the more general resources in the sections below. If you are an instructor for a course, these activities can provide a way to on-board your students to the project.  Please get in touch on Zulip if you are an instructor interested in using FarmData2 in a course, we will be happy to help.
 
-The FarmData2 School Activities and associated information can be found in the [README.md](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2_modules/fd2_tabs/fd2_school/README.md) in the [FarmData2 School Module](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2_modules/fd2_tabs/fd2_school)
+The FarmData2 School Activities and associated information can be found in the [README.md](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2/farmdata2_modules/fd2_school/README.md) in the [FarmData2 School Module](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2/farmdata2_modules/fd2_school)
 
 ## Additional Resources ##
 
