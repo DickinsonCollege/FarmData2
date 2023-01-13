@@ -36,6 +36,26 @@ FarmData2 opts to pull all images from its own dockerhub repository to allow us 
 
 The images that are used are specified in the `docker/docker-compose.yml` file.
 
+## Persistence in Containers ##
+
+The [`docker/fd2-up.bash`](docker/fd2-up.bash) and [`docker/fd2-down.bash`](docker/fd2-down.bash) scripts start and stop all of the containers necessary for FarmData2. Some key points about how information is persisted between container starts and stops are described below.  The full details can be found in the [`docke/docker-compose.yml`](docker/docker-compose.yml) file.
+
+### Writeable Layers ###
+
+When `./fd2-down.bash` is run `docker-compose` removes all of the containers, including their writeable layers.  The containers are all recreated, including blank writeable layers, each time the `fd2-up.bash` is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses. You can find all of the details of the mounted volumes in the `docker-compose.yml` file.
+
+### The FarmData2 Repository ###
+
+The `FarmData2` repository on the host machine is mounted into `/home/fd2dev/FarmData2` in the FarmData2 development container.  The `FarmData2/contrib_modules` and the `FarmData2/farmdata2_modules` directories are mounted into the appropriate locations in the farmOS container. Thus, any changes made to the contents of the these directories either in the FarmData2 development environment or on the host machine will be reflected in the containers.
+
+### The Database ### 
+
+The farmOS/drupal database used by FarmData2 is stored in a Docker volume (`docker_farmos_db`)that is mounted into the FarmData2 development environment at `docker/db` and into the Maria DB container at `/var/lib/mysql`.  Using the Docker volume rather than the host filesystem to persist the database provides a significant performance boost.
+
+### The Dev Environment ###
+
+The `home/fd2dev` directory in the FarmData2 development development environment is stored in a Docker volume (`docker_farmdev_home_fd2.x`).  If it is necessary to make breaking changes to the development environment the version number of the container and the volume will be bumped in the `docker/docker-compose.yml` file which will create a new container and use a new blank volume the next time `fd2-up.bash` is run.
+
 ## Building the Images
 
 The `docker/build-images.bash` script builds the images and pushes them to dockerhub. Run this script with no parameters to see a *usage* message describing how to build and push an image.
@@ -54,3 +74,4 @@ When an image is modified the tag in its `repo.txt` file should be incremented. 
 When a new tag is created and pushed, the `docker-compose.yml` file should also be updated to use the new tag for the image.  This ensures that the latest images will be pulled for developers the next time they use `fd2-up.bash` to start FarmData2 after they synch with the upstream repository.
 
 If significant changes are made to the `dev` container then it may also be necessary to bump the version number of the Docker volume that is used to store the fd2dev user's home directory. This will cause a new volume to be created for the user's home directory.
+
