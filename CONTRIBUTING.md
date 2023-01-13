@@ -190,7 +190,7 @@ You can use the web interface through your browser to confirm that the branch ha
 Now that you've made your first contribution, if you are ready for more you can:
   - Head back to go back to step #5 of this document and start again!  If you get into working on more complex issues and need to learn more about the FarmData2 project or the technologies that it uses be sure to:
     - Check out the other [ways to contribute to FarmData2](docs/WaysToContribute.md).
-    - Check out the [HOW_TO page](HOW_TO.md).
+    - Check out the [RESOURCES page](RESOURCES.md).
     - Reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
 
 Good luck and happy contributing!

@@ -6,19 +6,24 @@ FarmData2 is an application that supports the operation and certification requir
 
 FarmData2 is a web application for recording and reporting on crop and livestock production within the context of small organic farming operations.  Crop production records include seeding, transplanting, harvest, cover crop, compost, fertilization, irrigation, pest scouting, and spray activities.  Livestock production records track animals from birth to slaughter or sale and include pasture moves, periodic and veterinary care and logging of egg production.  Records of packing, distribution and customer invoicing are also maintained.  All records and reporting features are designed to closely align with organic certification requirements and to support the certification and recertification process.
 
-## Connecting ##
+## Connecting with the Community ##
 
-Connect with the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
+Have questions? Want to find something to do? Want to learn more? 
 
-If you are unfamiliar with [Zulip](https://zulip.com/) it is a group chat application that blends the benefits of threaded discussions with live chat. Zulip is relatively easy to use once you understand the key ideas of [streams and topics](https://zulip.com/help/about-streams-and-topics).
+Connect with the FarmData community through the following channels:
+  - [FarmData2 streams on Zulip](https://farmdata2.zulipchat.com/)
+  - [FarmData2 Issue Tracker](https://github.com/DickinsonCollege/FarmData2/issues)
+  - [FarmData2 Pull Requests](https://github.com/DickinsonCollege/FarmData2/pulls)
+
+Not sure which channel to use? The [Communications Document](docs/Communications.md) describes each of these communications channels and how each is typically used.
 
 ## Installing FarmData2 ##
 
-If you are interesting in trying or using FarmData2 see the [INSTALL Document](INSTALL.md) for information about how to get started.
+If you are interesting in trying, using or contributing to FarmData2 see the [INSTALL Document](INSTALL.md) for information about how to get started.
 
 ### Contributing to FarmData2 ###
 
-If you are interesting in contributing to the development of FarmData2 see the [CONTRIBUTING Document](CONTRIBUTING.md) for information about how to get started.
+If you are interesting in contributing to the development of FarmData2 see the [CONTRIBUTING Document](CONTRIBUTING.md) for information about how to make your first contribution.  The [Other Ways to Contribute Document](docs/WaysToContribute.md) has additional ideas for how you might engage with FarmData2.  The [RESOURCES Document](RESOURCES.md) contains pointers to more detailed project documentation.
 
 ## History ##
 

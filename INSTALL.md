@@ -12,7 +12,7 @@ FarmData2 is currently in the early stages of development and thus is not ready 
 
 ## Developer Install ##
 
-Before beginning this install please review the [CONTRIBUTING.md](CONTRIBUTING.md) document and in particular be sure to follow the links to the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) that sets the expectations for the FarmData2 community.
+Before beginning this install please review the [Code of Conduct](CODE_OF_CONDUCT.md) that sets the expectations for the FarmData2 community and the [License Information](LICENSE.md) that describes FarmData2's licensing.
 
 ### Prerequisites ###
 
@@ -185,47 +185,6 @@ From the `docker` directory in the repository you can:
   ./fd2-up.bash
   ```
 
-## Technical Details ##
+### What Next? ###
 
-Below are some additional details that may be important for advanced development but, at least at first, may be safely ignored.
-
-### Availability of phpMyAdmin ###
-
-For developers working on back-end services and the FarmData2 data model there is a phpMyAdmin service that can be connected to via a browser in the FarmData2 development environment at:
-
-```
-http://fd2_phpmyadmin
-```  
-
-To see the live database being used log into phpMyAdmin using the credentials:
-  * Username: `farm`
-  * Password: `farm`
-
-You can also connect to phpMyAdmin as an administrator using the credentials:
-  * Username: `root`
-  * Password: `farm`
-
-Note: You may also connect to the phpMyAdmin service from a browser in your host OS (e.g. MacOS, Windows, Linux) using the URL:
-```
-http://localhost:8181
-```
-
-### Persistence ###
-
-The [`docker/fd2-up.bash`](docker/fd2-up.bash) and [`docker/fd2-down.bash`](docker/fd2-down.bash) scripts start and stop all of the containers necessary for FarmData2. Some key points about how information is persisted between container starts and stops are described below.  The full details can be found in the [`docke/docker-compose.yml`](docker/docker-compose.yml) file.
-
-#### Writeable Layers ####
-
-When `./fd2-down.bash` is run `docker-compose` removes all of the containers, including their writeable layers.  The containers are all recreated, including blank writeable layers, each time the `fd2-up.bash` is used. However, all of the FarmData2 data and code is mounted from the development machine and thus will persist between uses. You can find all of the details of the mounted volumes in the `docker-compose.yml` file.
-
-#### The FarmData2 Repository ####
-
-The `FarmData2` repository on the host machine is mounted into `/home/fd2dev/FarmData2` in the FarmData2 development container.  The `FarmData2/contrib_modules` and the `FarmData2/farmdata2_modules` directories are mounted into the appropriate locations in the farmOS container. Thus, any changes made to the contents of the these directories either in the FarmData2 development environment or on the host machine will be reflected in the containers.
-
-#### The Database ####
-
-The farmOS/drupal database used by FarmData2 is stored in a Docker volume (`docker_farmos_db`)that is mounted into the FarmData2 development environment at `docker/db` and into the Maria DB container at `/var/lib/mysql`.  Using the Docker volume rather than the host filesystem to persist the database provides a significant performance boost.
-
-#### The Dev Environment ####
-
-The `home/fd2dev` directory in the FarmData2 development development environment is stored in a Docker volume (`docker_farmdev_home_fd2.x`).  If it is necessary to make breaking changes to the development environment the version number of the container and the volume will be bumped in the `docker/docker-compose.yml` file which will create a new container and use a new blank volume the next time `fd2-up.bash` is run.
+You now have a fully operational developer install of FarmData2 including the development environment.  Check out the [CONTRIBUTING Document](CONTRIBUTING.md) for a step-by-step guide for how to make your first contribution to FarmData2.  For other ways to contribute you can check out the [Ways to Contribute Document](docs/WaysToContribute.md).  The [RESOURCES Document](RESOURCES.md) provides a list of more detailed reference information about FarmData2.
