@@ -4,6 +4,7 @@ TODO!
 
 - Will cover:
   - Adding a function to the FarmData2/farmOS API library
+  - Using Hoppscotch to manually test API endpoints
   - Writing unit tests for a FarmData2/farmOS API library function
   - Adding a new FarmData2 API endpoint
   - Documenting a FarmData2 API endpoint

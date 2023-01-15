@@ -28,30 +28,41 @@ This document is a single source for information about FarmData2. It is organize
 
 ## Ways to Contribute ##
 
-  - [Fixing bugs or adding features](CONTRIBUTING.md)
-  - [Other ways to contribute](docs/WaysToContribute.md)
+  - [Fixing Bugs or Adding Features](CONTRIBUTING.md)
+  - [Other Ways to Contribute](docs/WaysToContribute.md)
   
 ## Learn FarmData2 Basics ##
 
   - [FarmData2 School](farmdata2/farmdata2_modules/fd2_school/README.md)
-  - [FarmData2 example module](farmdata2/farmdata2_modules/fd2_example/README.md)
-  - [FarmData2 structure](farmdata2/README.md)
-  - [FarmData2's technologies](docs/Technologies.md)
+  - [FarmData2 Organization](docs/Organization.md)
+  - [FarmData2's Technologies](docs/Technologies.md)
   
 ## Front End Development ##
-  - [Creating FarmData2 Modules](farmdata2/farmdata2_modules/README.md) 
-  - [The FarmData2 Configuration Tab](farmdata2/farmdata2_modules/fd2_config/README.md)
+
+  - [The `fd2_example` Module](farmdata2/farmdata2_modules/fd2_example/README.md)
+  - [Creating FarmData2 Modules](farmdata2/farmdata2_modules/README.md) includes:
+    - Creating New Modules
+    - End-to-End Tests for Modules
+    - Using FarmData2 Library Functions
+    - Using FarmData2 Vue.js Components
+  - [The `fd2_config` Module](farmdata2/farmdata2_modules/fd2_config/README.md)
+  - [FarmData2 Front End Resources](farmdata2/farmdata2_modules/resources/README.md) includes:
+    - The FarmData2 JavaScript library
+    - The FarmData2 Vue.js Components
 
 ## Back End Development ##
+
   - [The FarmData2 API](farmdata2/farmdata2_api/README.md) also includes:
     - Using phpMyAdmin
 
 ## The Sample Database ##
+
   - [The FarmData2 Sample Database](docker/sampleDB/README.md) also includes:
     - Description of the data
     - Building/rebuilding the databases  
 
 ## FarmData2 Infrastructure ##
+
   - [Overview of FarmData2 Containerization](docker/README.md) also includes:
     - Descriptions of the Docker images
     - Building/updating Docker images

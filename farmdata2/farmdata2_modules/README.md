@@ -1,6 +1,12 @@
 # FarmData2 Modules #
 
 <!-->
+  - **Library Functions**-
+
+  - **Vue UI Components** -
+
+TODO: Write everything a module should have... including tests.
+
 REORGANIZE BY TASK?
   - Add a main FarmData2 tab (e.g. BarnKit)
   - Add a sub-tab to a FarmData2 tab (E.g. Seeding Report)
@@ -15,9 +21,6 @@ REORGANIZE BY TASK?
 -->
 
 FarmData2 is built using Drupal modules that run within FarmOS. The _FieldKit_ and _BarnKit_ tabs in the FarmData2 interface are created by modules. The _FD2 Example_ tab is created by a sample module and provides canonical examples of many of the operations and UI elements used in the _FieldKit_ and _BarnKit_ tabs.  The _FD2 School_ tab is created by a module used just for the FarmData2 School onboarding materials.
-
-TODO: Write everything a module should have... including tests.
-
 
 ## FarmData2 Module Structure ##
 
