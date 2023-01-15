@@ -142,25 +142,32 @@
                      */
                     let keys = Object.keys(updateObject)
                     if(keys.includes('Hours') || keys.includes('Workers') || keys.includes('Bed Feet') || keys.includes('Row Feet') ||
-                        keys.includes('Rows/Bed') ||   keys.includes('Trays')){
+                        keys.includes('Rows/Bed') || keys.includes('Trays')){
                             updateTransplantingObject['quantity'] = this.quantityTransplantSeeding
                     }
                     
                     for(i=0; i < keys.length; i++){
-                        if(keys[i] == 'date'){
-                            updateTransplantingObject['timestamp'] = dayjs(updateObject['date'], 'YYYY-MM-DD').unix()
+                        if(keys[i] == 'Date'){
+                            updateTransplantingObject['timestamp'] = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
                         }
-                        else if(keys[i] == 'crop'){
-                            updateTransplantingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['crop'])}
+                        else if(keys[i] == 'Crop'){
+                            updateTransplantingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
                             updatePlantObject['crop'] = [{
                                 "id": this.cropToIDMap.get(updateObject['crop']),
                                 "resource": "taxonomy_term"
                             }]
                         }
-                        else if (keys[i] == 'area'){
+                        else if (keys[i] == 'Area'){
                             updateTransplantingObject['movement'] = { 'area': [{
-                                "id": this.areaToIDMap.get(updateObject['area']),
-                                "resource": "taxonomy_term",}]
+                                "id": this.areaToIDMap.get(updateObject['Area']),
+                                "resource": "taxonomy_term"}],
+                            }
+
+                            this.updateLog[0].movement = { 'area': [{
+                                "uri": "http://localhost/taxonomy_term/" + this.areaToIDMap.get(updateObject['Area']), 
+                                "id": this.areaToIDMap.get(updateObject['Area']),
+                                "resource": "taxonomy_term",
+                                "name": updateObject['Area']}]
                             }
                         }
                         else if(keys[i] == 'Hours'){
@@ -187,27 +194,26 @@
                                 'resource': 'user'
                             }
                         }
-                        else if(keys[i] == 'Row/Bed'){
-                            updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
-
-                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
-                        }
                         else if(keys[i] == 'Row Feet'){
                             updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Amount planted')].value = updateObject['Row Feet']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Amount planted')].value = updateObject['Row Feet']
                         }
-                        else if(keys[i] == '# of Trays'){
+                        else if(keys[i] == 'Rows/Bed'){
+                            updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
+
+                            this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Rows/Bed')].value = updateObject['Rows/Bed']
+                        }
+                        else if(keys[i] == 'Trays'){
                             updateTransplantingObject.quantity[quantityLocation(updateTransplantingObject.quantity, 'Flats')].value = updateObject['Trays']
 
                             this.updateLog[0].quantity[quantityLocation(this.updateLog[0].quantity, 'Flats')].value = updateObject['Trays']
                         } 
                     }
                     //replace old update log with current update log
-                    if(keys.includes('Hours') || keys.includes('Num Workers') || 
-                        keys.includes('Row/Bed') || keys.includes('Row Feet') ||
-                        keys.includes('Tray Seeds') || keys.includes('# of Trays') ||
-                        keys.includes('Cells Per Tray')){
+                    if(keys.includes('Hours') || keys.includes('Workers') || 
+                        keys.includes('Rows/Bed') || keys.includes('Row Feet') ||
+                        keys.includes('Trays')){
                         for(var i=0; i < this.transplantingLogs.length; i++){
                             if(this.transplantingLogs[i].id === id){
                                 this.transplantingLogs.splice(i, this.updateLog)
@@ -217,13 +223,26 @@
                     
                     let transplantUrl = '/log/' + id
                     let plantingUrl = '/farm_asset/' + this.updateLog[0].asset[0].id
-                    //call updateRecord function to update planting log
+                              //call updateRecord function to update planting log
                     if(!(Object.entries(updatePlantObject).length === 0)){
                         updateRecord(plantingUrl, updatePlantObject, this.sessionToken)
                     }
-                    //call updateRecord function to update transplanting log
+                    //call updateRecord function to update seeding log
                     if(!(Object.entries(updateTransplantingObject).length === 0)){
-                        updateRecord(transplantUrl, updateTransplantingObject,this.sessionToken)
+                        //updates quantities and area separately because backend doesn't allow for one updateRecord call with both changes
+                        if(keys.includes("Area") && (keys.includes("Row Feet") || keys.includes("Bed Feet") 
+                            ||  keys.includes("Trays") || keys.includes("Workers") || keys.includes("Hours"))){
+                            delete updateTransplantingObject.movement
+                            let updateArea = {"movement":{"area":[{"id":this.areaToIDMap.get(updateObject['Area']),"resource":"taxonomy_term"}]}}
+
+                            updateRecord(transplantUrl, updateArea, this.sessionToken)
+                            .then(() =>{
+                                updateRecord(transplantUrl, updateTransplantingObject, this.sessionToken)
+                            })
+                        }
+                        else{
+                            updateRecord(transplantUrl, updateTransplantingObject, this.sessionToken)
+                        }
                     }
                     this.rowBeingEdited = false
                 },
@@ -269,28 +288,23 @@
                     }
                     let $vm = this
                     let rows = filterRows.map(function(h) {
-                        let rowBed = 0
-                        let rowFeet = 0
-                        let bedFeet = 0
-                        let numOfTrays = 0
-                        let hours = 0
-                        let numWorkers = 0
+                        let rowFeet = h.quantity[0].value
+                        let rowPerBed = h.quantity[1].value
+                        let bedFeet = rowFeet/rowPerBed     // calculation for bed feet
+                        let numOfTrays = h.quantity[2].value
+                        let hours = h.quantity[3].value
+                        let numWorkers = h.quantity[4].value
 
-                        rowFeet = h.quantity[0].value
-                        rowBed = h.quantity[1].value
-                        bedFeet = rowFeet/rowBed
-                        hours = h.quantity[3].value
-                        numWorkers = h.quantity[4].value
                         return{
                             id: h.id,
                             data: [
                                 dayjs.unix(h.timestamp).format('YYYY-MM-DD'),
                                 $vm.idToCropMap.get(h.data.crop_tid),
                                 h.movement.area[0].name, 
-                                bedFeet,
                                 rowFeet,
-                                rowBed,
-                                numOfTrays = h.quantity[2].value,
+                                bedFeet,
+                                rowPerBed,
+                                numOfTrays,
                                 (Math.round(numWorkers*100))/100,
                                 ((Math.round(hours*100))/100).toFixed(2),
                                 h.notes.value,
@@ -500,10 +514,10 @@
                     {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
                     {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', value: this.cropNameArray}}, 
                     {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', value: this.areaNameArray}}, 
-                    {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
-                    {"header": 'Rows/Bed', "visible": false, "inputType" : {'type': 'no input'}},
-                    {"header": 'Trays', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Row Feet', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Bed Feet', "visible": true, "inputType" : {'type': 'no input'}},
+                    {"header": 'Rows/Bed', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
+                    {"header": 'Trays', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
                     {"header": 'Workers', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
                     {"header": 'Hours', "visible": true, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$'}},
                     {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
