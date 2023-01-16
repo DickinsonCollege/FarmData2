@@ -335,7 +335,6 @@ let CustomTableComponent = {
             this.editedRowData = {}
 
             this.isMatch = true
-            console.log("Edit canceled")
             this.$emit('edit-canceled')
         },
 
