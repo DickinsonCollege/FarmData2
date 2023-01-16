@@ -25,7 +25,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="transplantingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' can-edit can-delete></custom-table>
+                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="transplantingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @edit-canceled='enableFilters' can-edit can-delete></custom-table>
 
                 <br>
             </div>
@@ -149,6 +149,8 @@
                     for(i=0; i < keys.length; i++){
                         if(keys[i] == 'Date'){
                             updateTransplantingObject['timestamp'] = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
+
+                            this.updateLog[0].timestamp = dayjs(updateObject['Date'], 'YYYY-MM-DD').unix()
                         }
                         else if(keys[i] == 'Crop'){
                             updateTransplantingObject['data'] = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
@@ -156,6 +158,8 @@
                                 "id": this.cropToIDMap.get(updateObject['crop']),
                                 "resource": "taxonomy_term"
                             }]
+
+                            this.updateLog[0].data = {"crop_tid": this.cropToIDMap.get(updateObject['Crop'])}
                         }
                         else if (keys[i] == 'Area'){
                             updateTransplantingObject['movement'] = { 'area': [{
@@ -183,6 +187,9 @@
                         else if(keys[i] == 'Comments'){
                             updateTransplantingObject['notes'] = {'value': updateObject['Comments'],
                                 'format': 'farm_format'}
+
+                            this.updateLog[0].notes = {'value': updateObject['Comments'],
+                                'format': 'farm_format'}
                         }
                         else if(keys[i] == 'User'){
                             updateTransplantingObject['uid'] = {
@@ -190,6 +197,11 @@
                                 'resource': 'user'
                             }
                             updatePlantObject['uid'] = {
+                                'id': this.userToIDMap.get(updateObject['User']),
+                                'resource': 'user'
+                            }
+
+                            this.updateLog[0].uid = {
                                 'id': this.userToIDMap.get(updateObject['User']),
                                 'resource': 'user'
                             }

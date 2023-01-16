@@ -326,7 +326,6 @@ let CustomTableComponent = {
         },
 
         cancelRowEdit: function(){
-
             this.rows[this.rowToEditIndex].data = this.originalRow.data
 
             this.rowToEditIndex = null
@@ -336,6 +335,7 @@ let CustomTableComponent = {
             this.editedRowData = {}
 
             this.isMatch = true
+            console.log("Edit canceled")
             this.$emit('edit-canceled')
         },
 
