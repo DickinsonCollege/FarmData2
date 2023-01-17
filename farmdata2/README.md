@@ -1,24 +1,52 @@
-# Resources
+# FarmData2 Structure
 
-This directory contains JavaScript library functions, CSS definitions and VueJS Components that are used throughout FarmData2.  The `doc` directory contains documentation for these functions and components that is generated from the comments that they contain.  If changes or additions are made to the set of functions or components in this directory, the documentation should be regenerated as described below under _Documentation Tools_ and _Generating Documentation_.
+Development work on FarmData2 can be divided into two main areas discussed in this document:
+- Front End (farmOS Modules/Tabs, Vue Components, Utility Libraries, etc.)
+- Back End (Custom FarmData2 API endpoints)
 
-## The Documentation
+## Front End
 
-To see the documentation open `doc/index.html` in a browser.
+The front end for FarmData2 is contained in the `farmdata2_modules` directory. More information about front end development, documentation and testing can be found in the:
+  - [`README` in the `farmdata2_modules` directory](farmdata2_modules/README.md)
 
-### Documentation Tools
+## Back End
 
-The documentation for the Javascript library functions are generated using [JSDoc](https://github.com/jsdoc/jsdoc) and the documentation for the VueJS components is also generated using JSDoc with the [JSDoc for VueJS Plugin](https://github.com/Kocal/jsdoc-vuejs/tree/3.x).
+The back end for FarmData2 is partially based on the farmOS API and partially based on the custom FarmData2 APi contained in the `farmdata2_api` directory.  More information about back end development, documentation and testing can be found in the:
+  - [FarmOS V1 API](https://v1.farmos.org/development/api/)
+  - [`README` in the `farmdata2_api` directory](farmdata2_api/README.md)
 
-The versons that are installed in the Development Environment can be found in the `docker/dev/Dockerfile`.
+## Documentation
+
+Both the front end and back end of FarmData provide documentation. 
+
+### Viewing Documentation
+
+To see the documentation open `farmdata2/doc/index.html` in a browser.
+
+Documentation is not stored in the repository and must be generated locally (above).
 
 ### Generating Documentation
 
-To generate the documentation:
+To generate the documentation within the development environment:
 
-1. Change into the `resources` directory.
-2. `./doc.bash`
+1. Ensure that you are in the `farmdata2` directory.
+2. Run the script `./generate_docs.bash`
 
-The documentation files will be generated in the `doc` directory within the `resources` directory.
+The documentation files will be generated in the `doc` directory within the `farmdata2` directory.
 
-If new components or js file are added, the `doc.bash` script may also need to be updated to incorporate them.
+### Writing Tests
+
+The details about how tests are written can be found in the `README` files for the front end and back end development provided above.
+
+### Documentation Tools
+
+The documentation for FarmData2 is generated using [JSDoc](https://github.com/jsdoc/jsdoc) and the documentation for the VueJS components uses the [JSDoc for VueJS Plugin](https://github.com/Kocal/jsdoc-vuejs/tree/3.x). All necessary tools for generating the documentation are included in the development environment but should you want to install them on you host machine, the versions that are installed in the development environment can be found in the `docker/dev/Dockerfile`.
+
+### Running Tests
+
+Details about running the front end and back end tests can be found in the `README` files for the front end and back end development provided above.
+
+### Writing Tests
+
+Details about writing front end and back end tests can be found in the `README` files for the front end and back end development provided above.
+

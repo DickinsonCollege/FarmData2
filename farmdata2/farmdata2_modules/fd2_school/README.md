@@ -2,7 +2,7 @@
 
 FarmData2 School is a collection of activities that will guide you from an introduction to FOSS and FarmData2, through installation of FarmData2 and then through the use of each of the key technologies used in FarmData2. Each activity includes practice using the technologies within the context of FarmData2. Thus, you'll learn not only the technologies, but will get comfortable working within the FarmData2 developer environment as well.
 
-If you use these activities, please keep in mind that they were created for use as assignments in courses. Thus, you shouldn't feel obligated to answer every question and you should skip over any class specific parts that don't make sense outside of a course. When you have completed all of the activities you'll be well on your way to being a FarmData2 developer.  In addition, while these activites will be updated as FarmData2 evolves, they may not be fully in synch with the latest code in the repository.  If you run in to any issues, connect with the community on Zulip and ask a question.
+If you use these activities, please keep in mind that they were created for use as assignments in courses. Thus, you shouldn't feel obligated to answer every question and you should skip over any class specific parts that don't make sense outside of a course. When you have completed all of the activities you'll be well on your way to being a FarmData2 developer.  In addition, while these activities will be updated as FarmData2 evolves, they may not be fully in synch with the latest code in the repository.  If you run in to any issues, connect with the community on Zulip and ask a question.
 
 ## The Activities
 
@@ -22,15 +22,21 @@ FarmData2 is built using Drupal modules that run within FarmOS. For example, the
 
 ### Adding a Sub-Tab to the FD2 School Tab ###
 
-Most FarmData2 front-end development will consist of adding a new sub-tab to one of the FarmData2 tabs (i.e. the _Field Kit_ or the _Barn Kit_).  This section discusses how to add such a sub-tab to the FarmData2 School tab.
+Most FarmData2 front-end development will consist of adding a new sub-tab to one of the FarmData2 tabs (i.e. the _Field Kit_ or the _Barn Kit_).  This section discusses how to add such a sub-tab to the FarmData2 School tab specifically.
 
 Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData2 School Tab. To do this you will need to edit the `fd2_school.module` file. The following steps will guide you through that process.
 
 1. Ensure that a development instance of FarmData2 is up and running. See [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) for full instructions.
-1. Change to the `fd2_school` directory in the `farmdata2/farmdata2_modules/` directory.
-1. Create a sub-directory for your new subtab. If your subtab is going to be named `xyz` then make a directory named `xyz`.
-1. Open the the `fd2_school.module` file.
-1. Modify the `fd2_school_menu` function by adding the code that creates the `$items` entry for the `XYZ` sub tab as shown below:  
+
+2. Change into the directory containing your local FarmData2 repository and ensure that you are working on the feature branch requested for the FD2 School lesson on which you are working.
+
+3. Change to the `fd2_school` directory in the `farmdata2/farmdata2_modules/` directory.
+
+4. Create a sub-directory for your new sub-tab. The instructions below will use the generic `xyz` as this name. You should replace `xyz` with the name of the sub-tab as indicated in the FD2 School activity you are working on.
+
+5. Use VSCodium in the development environment to open the the `fd2_school.module` file in the `farmdata2/farmdata2_modules/fd2_school` directory.
+
+6. Modify the `fd2_school_menu` function by adding the code that creates the `$items` entry for the `XYZ` sub tab as shown below:  
 
     ```php
     <?php
@@ -41,7 +47,7 @@ Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData
         
         // Add items blocks for new sub-tabs here.
 
-        // Add a sub-tab named XYZ with content in xyz.html.
+        // Add a sub-tab named XYZ with content in ./xyz/xyz.html.
         $items['farm/fd2-school/xyz'] = array(
             'title' => 'XYZ',
             'type' => MENU_LOCAL_TASK,
@@ -56,21 +62,27 @@ Each FarmData2 School Activity will ask you to add a new sub-tab to the FarmData
     // ... omitted code ...
     ```
 
-   - Customize the following four elements of the `array` as necessary for the new sub-tab:
+   - Customize the following four elements of the `array` as necessary for your new sub-tab:
      - `farm/fd2-school/xyz`: This is the URL to directly access the sub-tab. Replace `xyz` with the URL you want for your sub-tab (e.g. `html` for the first activity).
      - `title`: This defines the name of the sub-tab that appears in the _FD2 School_ tab.  Replace `XYZ` with the text you want to appear as the sub-tab title (e.g. `HTML` for the first activity).
-     - `page arguments`: This is the name of the directory that contains the `.html` file that provides the content for the sub-tab. Replace `xyz` with the name of the directory that contains the `xyz.html` file that contains the code for your new sub-tab. The `xyz` part of the directory name (`xyz`) and the start of the filename (`xyz.html`) must match.  The filename must end with (`.html`).
-     - `weight`: The weight controls the placement of the sub-tabs with respect to the others that appear.  Sub-tabs with lower weights appear further left and those with higher weights appear further right.
-1. Change into the directory that you created and named in the `page arguments` above to hold your subtab code.
-1. Create the `.html` file inside the directory you just created. 
-1. Insert some _dummy code_ into the `.html` file for now just to get the sub-tab up and visible. For example:
+     - `page arguments`: Replace `xyz` with the name of the directory that you created for the sub-tab you are creating.
+     - `weight`: The weight controls the placement of the sub-tabs with respect to the others that appear.  Sub-tabs with lower weights appear further left and those with higher weights appear further right. Choose weights such that sub-tabs for later FD2 School activities should appear to the right of earlier ones.
+
+7. Change into the directory for your sub-tab.
+
+8. Create an `.html` file inside the sub-tab directory.  The name of the `.html` file must match the name of the direcotry.  For example if the directory name is `xyz` then the filename must be `xyz.html`.
+
+9. Insert some _dummy code_ into the `.html` file for now just to get the sub-tab up and visible. For example:
    ```html
     <p>This is my sub-tab</p>
    ```
     - Note that it is not necessary to include all of the html elements (e.g. `<html>`, `<head>`, `<body>` etc).  The code that you provide in this file is inserted into the `<body>` of the page when it is generated by Drupal.
-1. Clear the Drupal cache with the command: `clearDrupalCache` 
-   - You will need to clear the Drupal cache any time you make a change to a `.module` file. However, you will not need to clear this cache when you change the `.html` files.
-1. Visit the FarmData2 home page when logged in as a _Farm Worker_, a _Farm Manager_ or as `admin`.  Your new sub-tab should now be visible under the _FD2 School_ tab.
-   - You can find the login credentials that are available in the development environment on the [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) page.
-   - If your tab does not appear, there are likely syntax errors in the `fd2_school.module` file or in your `.html` file.  You can check the Drupal error logs for helpful information: `http://fd2_farmdata2/admin/reports`
-1. Work through the FarmData2 School Activity and replace the _dummy code_ in your `.html` file with the code created in the activity.
+
+10. Clear the Drupal cache with the command: `clearDrupalCache` 
+    - You will need to clear the Drupal cache any time you make a change to a `.module` file. However, you will not need to clear this cache when you change the `.html` files.
+
+11. Visit the FarmData2 home page when logged in as a _Farm Worker_, a _Farm Manager_ or as `admin`.  Your new sub-tab should now be visible under the _FD2 School_ tab.
+    - You can find the login credentials that are available in the development environment on the [INSTALL.md](https://github.com/DickinsonCollege/FarmData2/blob/main/INSTALL.md) page.
+    - If your tab does not appear, there are likely syntax errors in the `fd2_school.module` file or in your `.html` file.  You can check the Drupal error logs for helpful information: `http://fd2_farmdata2/admin/reports`
+    
+12. Work through the FarmData2 School Activity and replace the _dummy code_ in your `.html` file with the code created in the activity.
