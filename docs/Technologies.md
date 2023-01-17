@@ -1,4 +1,4 @@
-# Overview of FarmData2 Technologies#
+# Overview of FarmData2 Technologies #
 
 This document provides an overview of the technologies used in FarmData2, describes the roles that they play and provides some resources for learning the essentials of each.
 
