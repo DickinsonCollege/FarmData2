@@ -40,7 +40,11 @@ Full installation details for these tools are provided by the projects themselve
         docker run hello-world
         ```
         - You should be able to run this command without `root` or `admin` privileges.
-        - If successful, this command will generate some output indicating that it worked.
+        - If successful, this command will generate some output similar to the following indicating that it worked correctly.
+          ```
+          Hello from Docker!
+          This message shows that your installation appears to be working correctly.
+          ```
   - TigerVNC Viewer - Download and install the TigerVNC viewer for your host operating system (Windows, Mac or Linux):
     - Windows: [vncviewer64-1.12.0.exe](https://sourceforge.net/projects/tigervnc/files/stable/1.12.0/vncviewer64-1.12.0.exe/download)
     - MacOS: [TigerVNC-1.12.0.dmg](https://sourceforge.net/projects/tigervnc/files/stable/1.12.0/TigerVNC-1.12.0.dmg/download)
@@ -92,7 +96,9 @@ You can connect to the FarmData2 development environment using the TigerVNC View
 3. Click "Connect"
 4. If nothing happens and the TigerVNC Viewer quits, wait a moment and try again. It typically takes a few moments for the VNC server in the container to start.
 
-When the TigerVNC Viewer connects to the FarmData2 Development environment a window will open displaying the Desktop of the Debian Linux system that is running in the docker container.
+When the TigerVNC Viewer connects to the FarmData2 Development Environment a window like the one below will open displaying the Desktop of the Debian Linux system that is running in the docker container.
+
+![The FarmData2 development environment.](media/DevEnvDesktop.jpg)
 
 #### Connecting via a Browser ####
 
