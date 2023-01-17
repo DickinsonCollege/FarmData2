@@ -21,7 +21,7 @@ Not sure which channel to use? The [Communications Document](docs/Communications
 
 If you are interesting in trying, using or contributing to FarmData2 see the [INSTALL Document](INSTALL.md) for information about how to get started.
 
-### Contributing to FarmData2 ###
+## Contributing to FarmData2 ##
 
 If you are interesting in contributing to the development of FarmData2 see the [CONTRIBUTING Document](CONTRIBUTING.md) for information about how to make your first contribution.  The [Other Ways to Contribute Document](docs/WaysToContribute.md) has additional ideas for how you might engage with FarmData2.  The [RESOURCES Document](RESOURCES.md) contains pointers to more detailed project documentation.
 
