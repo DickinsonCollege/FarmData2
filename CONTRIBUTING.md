@@ -1,98 +1,196 @@
 # Contributing to FarmData2 #
 
-FarmData2 welcomes participation and contributions. There are many ways to contribute to FarmData2 that we hope will engage and energize a broad and diverse community. This document outlines a few of the ways to contribute.
+This document provides a step-by-step guide to fixing your first issue in FarmData2. While this guide is targeted at making a first contribution, the process it outlines is general and will apply to all code or documentation contributions.  So you may find it helpful to return here if you continue to contribute.  For ways to contribute other than fixing issues see the [HOW_TO](HOW_TO.md) document.
 
-## Code of Conduct ##
+## 1. Review FarmData2's Code of Conduct ##
 
-To promote an open, welcoming, inclusive and harassment-free experience, all engagement with FarmData2 is governed by the community standards expressed in the [Contributor Covenent](CODE_OF_CONDUCT.md).
+FarmData2 is committed to creating an open, welcoming, inclusive and harassment-free experience for all community members. Please review the Code of Conduct before engaging with the FarmData2 community.
 
-## Licensing ##
+- [FarmData2 Code of Conduct](CODE_OF_CONDUCT.md)
 
-Content in the FarmData2 project is released under several different licenses as described in the [LICENSE file](LICENSE.md). In addition, that file describes the rights and responsibilities of contributors with regard to the their contributed content. The licensing structure of FarmData2 is designed to ensure that FarmData2 remains free and open source while protecting both the project and it community of contributors. Please review it carefully before contributing content to FarmData2.
+## 2. Review the FarmData2's Licensing ##
 
-## Connecting ##
+We use a variety of licenses and agreements to ensure that FarmData2 remains free and open source while protecting both the project and its community of contributors. Please review the Licensing information below before contributing to the FarmData2 project.
 
-Connect with the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
+- [FarmData2 Licensing](LICENSE.md)
 
-If you are unfamiliar with [Zulip](https://zulip.com/) it is a group chat application that blends the benefits of threaded discussions with live chat. Zulip is relatively easy to use once you understand the key ideas of [streams and topics](https://zulip.com/help/about-streams-and-topics).
+## 3. Install and Run FarmData2 ##
 
-## Developer Installation ##
+Ensure that FarmData2 has been installed and is running. The following steps will assume that you are working within the FarmData2 development environment via a VNC Viewer or via noVNC in a browser.
 
-Having a running version of FarmData2 is a prerequisite for many of the forms of participation described below.  The [Install Directions] give step by step instructions for getting a developer installation of FarmData2 up and running.
+- [Installing FarmData2](INSTALL.md)
 
-[Install Directions]: INSTALL.md
+## 4. Connect with the FarmData2 Community ##
 
-## Participation ##
+The FarmData2 community communicates via Zulip as its  primary location for reaching out with questions or for additional information.
 
-There are many ways to participate in FarmData2. Some of them are listed below.  
+  1.  Visit the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/)
+  2. Log in to Zulip using an existing Google, GitHub or GitLab account, or "Sign Up" using your e-mail.
+  3. Say "Hello!" and tell us a little about yourself in the [Introduce Yourself Stream](https://farmdata2.zulipchat.com/#narrow/stream/270883-general/topic/Introduce.20Yourself).
 
-#### Bug Reports ####
+The [Getting Started with Zulip Page] from the [Zulip Help Center](https://zulip.com/help/) provides a quick introduction to using Zulip if you want a few pointers.
 
-If you are are a user of FarmData2 and discover something that doesn't seem to be working correctly you can:
+## 5. Find an Issue to Work On ##
 
-  * Reach out to the community on the [Zulip Developer Stream](https://farmdata2.zulipchat.com/#narrow/stream/271292-developers) to discuss what you have found and how to proceed.
-  * Search the [Issue Tracker] to see if the bug has been reported already.
-    * If it has, add a confirmed sighting or any additional information you have by commenting on the ticket.
-    * If it has not, open a new ticket and give a description of the issue, identify the platform on which you are running FarmData2 and describe the steps someone can use to observe the bug.
+Visit the Issue Tracker to find an issue on which to work:
 
-[Issue Tracker]: https://github.com/DickinsonCollege/FarmData2/issues
+- [FarmData2 Issue Tracker](https://github.com/DickinsonCollege/FarmData2/issues)
 
-#### Feature Requests ####
+In particular, you can search the Issue Tracker for tickets with the following labels that indicate that the issue is a good place to get started:
 
-If you are are a user of FarmData2 and have a new feature you would like to see you can:
+- [![Good First Issue](media/GoodFirstIssueLabel.jpg)](https://github.com/DickinsonCollege/FarmData2/labels/good%20first%20issue) - The issues described in these tickets are the most approachable and do not require an in depth knowledge of the project or its technologies. They typically involve changes that do not affect the application's behavior. Often a familiarity with Markdown, HTML, and/or JavaScript is sufficient for addressing these issues.  These issues provide a great way to get familiar with the process of making a contribution. 
 
-  * Reach out to the community on the [Zulip Developer Stream](https://farmdata2.zulipchat.com/#narrow/stream/271292-developers) to discuss the feature you'd like to see and how to proceed.
-  * Search the [Issue Tracker] to see if the feature, or something close, has already been suggested by someone.
-    * If it has, add a comment lending support and possibly refining or giving your perspective on the idea.
-    * If it has not, open a new ticket and give a description of the new feature you would like to see.
+- [![Good Second Issue](media/GoodSecondIssueLabel.jpg)](https://github.com/DickinsonCollege/FarmData2/labels/Good%20Second%20Issue) - The issues described in these tickets require some local understanding that is typically limited to one or two source files.  They will usually require changes that affect behavior and thus may also require creation or modification of unit or end-to-end tests.  Thus, greater familiarity with Javascript, Vue.js and/or Cypress tests may be required. These issues provide a great way to dig a little deeper,though still without requiring too deep a dive into the project.
 
-#### Issue Gardening ####
+## 6. Comment on the Ticket to Claim it ##
 
-The project [Issue Tracker] contains tickets describing known issues with the project.  The tickets for known issues are tagged with the label "bug".  Each reported bug will have a detailed description of how the bug can be observed. Gardening includes activities such as:
+When you find an issue that you would like to work on, make a comment on the ticket expressing your interest. Something like the following is sufficient:
 
-  * Verifying or clarifying these descriptions.
-  * Enhance the report by providing additional information about the bug (e.g. platforms on which is is or is not seen).
-  * Confirming that bug does (or does not) exist in the current version.
+  ```
+  I would like to work on this isssue!
+  ```
 
-To participate by Gardening visit the [Issue Tracker] and find something of interest to verify, enhance or clarify.  Try it out in your running version of FarmData2 and add a comment to the ticket with what you find.
+One of the project maintainers will then assign the ticket to you.  
 
-#### Documentation ####
+If you decide not to continue working on that issue, make another comment on the ticket letting us know so that we can assign it to someone else.
 
-Update to any of the FarmData2 documentation are welcome.  If you find typos, unclear or missing steps, poorly worded explanations, or have any other suggestions for how the documentation could be improved use the [workflow](#workflow) described below to create a pull request for your suggested changes.
+## 7. Synchronize with the Upstream Repository ##
 
-#### Bug Fix / Feature Implementation ####
+Before beginning to address an issue you should *synchronize* your local repository and your `origin` repository (i.e. your fork on GitHub) with the `upstream` FarmData2 repository.  This ensures that you begin your changes with the most up to date code and documentation.
 
-Tickets in the [Issue Tracker] that are tagged _bug_ or _enhancement_ describe issues be fixed or new features to be added to FarmData2. The tag _good first issue_ appears on the most approachable tickets.  If you find an issue to work on use the [workflow](#workflow) described below to create a pull request for your suggested bug fix or feature implementation. Information about the languages and technologies that are used in FarmdData2 and pointers to resources for learning more about them can be found in the [Technology On-boarding](#technology-on-boarding) section below.
+Use the following commands in a Terminal window to synchronize your local repository and your `origin` repository with the `upstream`:
 
-#### Other Thoughts ####
+  ```
+  cd FarmData2
+  git pull --ff-only upstream main
+  git push origin main
+  ```
 
-The above is not an exhaustive list of ways to participate in FarmData2. For some other ideas check out [50 Ways to be a FOSSer](http://foss2serve.org/index.php/50_Ways_to_be_a_FOSSer). If anything there seems interesting or if you have other ideas of your own please get in touch and we will be happy to have a discussion about how you might get involved.
+  Note: If you cloned your FarmData2 repository somewhere other than a `FarmData2` directory in the home directory you'll need to adjust the `cd` command above.  All future sections of this document assume that the directory containing your FarmData2 repository is the current working directory.
 
-## Technology Onboarding ##
+If you encounter any problems, review the instructions for [Installing FarmData2](INSTALL.md) and then reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
 
-Interacting with FarmData2 requires a basic familiarity with git and GitHub. FarmData2 development uses a fairly standard web technology stack including HTML, CSS, Bootstrap, JavaScript, and Vue.js. The front-end accesses FarmData2 data through the [FarmOS API](https://v1.farmos.org/development/api/) using the [Axios](https://github.com/axios/axios) library. End-to-end and component testing is done using the [Cypress framework](https://www.cypress.io/).
+## 8. Create and Switch to a Feature Branch ##
 
-If you are unfamiliar with one or more of these technologies the [ONBOARDING](ONBOARDING.md) document provides additional information about each, as well as resources and activities for learning about them.
+All of the changes that you make to address an issue should be contained in a *feature branch*.
 
-## Workflow ##
+Use the following commands to create and switch to a feature branch.  Be sure to replace the text `MyFeatureBranch` with a descriptive name based on the issue you are working on.
 
-FarmData2 generally uses the [GitHub flow](https://guides.github.com/introduction/flow/) branching workflow and accepts contributions via Pull Requests. If you are new to git based branching workflows you may find this [in depth description GitHub flow](https://githubflow.github.io/) helpful.
+  ```
+  git branch MyFeatureBranch
+  git switch MyFeatureBranch
+  git status
+  ```
+ 
+The output of the `git status` command should confirm that you have created and switched to your new feature branch.
 
-As a reference, the basic steps for working with GitHub Flow are as follows:
+If you encounter any problems with this step, or any of the following ones, be sure to reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
+  
+## 9. Solve the Issue ##
 
-  * Go to the [FarmData2 Repository] (the _upstream_)
-  * Fork the _upstream_ repository to your GitHub (the _origin_).
-  * [Clone] the _origin_ repository to your local machine.
-  * Set the  _upstream_ remote for your local repository to point to the _upstream_ repository.
-  * Create a _feature branch_ from the _main_ branch your local machine.
-  * Make the edits to the documentation or the code in your _feature branch_.
-  * Commit your edits.
-    * If the contribution reflects the work of multiple people, ensure that everyone receives attribution by [Creating a commit with multiple authors].
-  * Pull the most recent _upstream_ version of the _main branch_.
-  * Merge the updated _main branch_ into your _feature branch_.
-  * Push your _feature branch_ to the _origin_.
-  * Make a Pull Request for your _feature branch_ to the _upstream_.  
+Open the *VSCodium IDE* (or another editor of your choice) and modify the contents of the files in your local FarmData2 repository to address the issue.  If your work requires multiple changes you should iterate between this step and and the following step until the issue is addressed.
 
-[Clone]: https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
-[FarmData2 Repository]: https://github.com/DickinsonCollege/FarmData2
-[Creating a commit with multiple authors]: https://docs.github.com/en/free-pro-team@latest/github/committing-changes-to-your-project/creating-a-commit-with-multiple-authors
+## 10. Add and Commit Your Fix to your Local Repo ##
+
+Each time you make changes that represent a *nameable unit of work* commit them to your local FarmData2 repository with a commit message that describes what has been done.  For example, if you made a change that added a link to the farmOS project to the `README.md` file you would use the following commands:
+
+  ```
+  git status
+  git add README.md
+  git commit -m "Linked to the farmOS project"
+  git log
+  ```
+
+If you have worked on your changes with someone else you will need to be sure to get them credit too by making a *co-authored commit* as follows:
+  ```
+  git commit -m "Refactor usability tests.
+  > 
+  >
+  Co-authored-by: NAME <NAME@EXAMPLE.COM>
+  Co-authored-by: AUTHOR-NAME <ANOTHER-NAME@EXAMPLE.COM>"
+  ```
+  You'll need to know your co-author(s) e-mail address or GitHub *no-reply email* so that you can provide it in the commit message.  Note: The `>` characters appear wen you press *Enter* or *Return* in the Terminal because the string that is opened (`"`) after the `-m` is not terminated (`"`) until after the final co-author line.
+
+Inspect the output of the `git status` command to confirm that your are in the right place and the `git log` command to confirm that you have successfully committed your changes.
+
+## 11. Push your Feature Branch to your Origin Repo ##
+
+When you have fully addressed the issue you are working on, you will `push` your feature branch to your `origin` repository on GitHub.  Pushing your changes to GitHub will allow you to make a Pull Request (below) that will invite the FarmData2 maintainers to see and review your work.  
+
+Use the following commands to push your feature branch to your `origin` on GitHub. Be sure to replace `MyFeatureBranch` with the name of the branch that you created above.
+
+   ```
+   git status
+   git push origin MyFeatureBranch
+   git status
+   ```
+   
+Inspect the output of the `git status` commands to confirm that your are in the right place and that you have successfully pushed your feature branch.
+
+## 12. Make a Pull Request ##
+
+You'll now make a pull request to let the FarmData2 maintainers know that you have some changes that address the issue on which you were working. Use the following steps to create your pull request:
+
+  1. Visit your `origin` repository on GitHub. 
+  2. Click the green "Compare and Pull Request" button at the top of the page.
+     - If you do not see this button then see if GitHub's instructions for [Creating a pull request from a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) will help.  If you follow these directions the `base branch` should be the `main` branch of the `upstream` FarmData2 repo. The `compare branch` should be your feature branch in your `origin` repository.
+  3. Write a title for your pull request that describes what it does.
+  4. Fill in a more complete description of your pull request in body.
+       - At a minimum you should include a line that indicates the issue that has been addressed by your changes.  For example, if your changes address ticket #123 in the issue tracker then add the line:
+         ```
+         Closes #123
+         ```
+         Including this line ensures that the ticket in the issue tracker will be automatically closed if your changes are accepted. 
+  5. Click the "Create Pull Request" button.  
+     - If your work is not complete, but you want to get feedback from the maintainers choose the "Create Draft Pull Request" option.
+
+## 13. Follow Up ##
+
+Once you submit a pull request you should keep an eye out for a reply from the project maintainer.  This reply might:
+  - Congratulate you on your pull request being merged.
+  - Provide a request for further changes before your request can be merged.
+  - Ask questions about your approach or implementation.
+  - Etc.
+
+Prompt responses to the maintainers are always appreciated and improve the chances that your pull request (possibly with revision) will be merged.
+
+## 14. Update you Pull Request as Necessary ##
+
+If you received feedback on your pull request and changes were requested, you can update your pull request as follows:
+  1. Make the requested changes in your local repository.
+  2. Commit the changes to your feature branch.
+  3. Push your feature branch to your `origin` repository on GitHub.
+
+When you commit and push changes to a feature branch for which a pull request has been the pushed changes are automatically a part of the pull request.  There is no need to create a new pull request.
+
+## 15. Delete Your Feature Branch ##
+
+When your pull request is merged, or is closed without being merged, you can delete your feature branch.  
+
+The following commands will delete your feature branch from your local repository:
+
+  ```
+  git branch
+  git branch -D MyFeatureBranch
+  git branch
+  ```
+
+Use the output of the `git branch` commands to confirm that your feature branch has been deleted.
+
+You can delete your feature branch from your `origin` on GitHub using the web interface through your browser, or you can use the following command:
+
+  ```
+  git push origin --delete MyFeatureBranch
+  ```
+
+You can use the web interface through your browser to confirm that the branch has been deleted from GitHub.
+
+## 16. Contribute More ##
+
+Now that you've made your first contribution, if you are ready for more you can:
+  - Head back to go back to step #5 of this document and start again!  If you get into working on more complex issues and need to learn more about the FarmData2 project or the technologies that it uses be sure to:
+    - Check out the other [ways to contribute to FarmData2](docs/WaysToContribute.md).
+    - Check out the [RESOURCES page](RESOURCES.md).
+    - Reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
+
+Good luck and happy contributing!
