@@ -40,7 +40,7 @@ Full installation details for these tools are provided by the projects themselve
         docker run hello-world
         ```
         - You should be able to run this command without `root` or `admin` privileges.
-        - If successful, this command will generate some output similar to the following indicating that it worked correctly.
+        - If successful, this command will generate some output containing the following text indicating that it worked correctly:
           ```
           Hello from Docker!
           This message shows that your installation appears to be working correctly.
