@@ -326,6 +326,7 @@ let CustomTableComponent = {
         },
 
         cancelRowEdit: function(){
+
             this.rows[this.rowToEditIndex].data = this.originalRow.data
 
             this.rowToEditIndex = null
