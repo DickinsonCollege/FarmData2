@@ -27,7 +27,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="seedingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @row-canceled='enableFilters' :can-edit='!isMobile' :can-delete='!isMobile'></custom-table>
+                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="seedingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @edit-canceled='enableFilters' :can-edit='!isMobile' :can-delete='!isMobile'></custom-table>
 
                 <br>
             </div>
