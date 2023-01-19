@@ -75,7 +75,9 @@ To start FarmData2
       ```
       ./fd2-up.bash
       ```
-      This command will start up the Docker containers that are used by FarmData2. There will be lots of output from this command and the first time you run it, it may take a while to complete as it pulls and extracts the necessary docker images to your machine. You will know the command is complete when it outputs:
+      This command will start up the Docker containers that are used by FarmData2. The first time you run this command, there will be lots of output, and it may take a while to complete as it pulls and extracts the necessary docker images to your machine. Be patient, this may take as long as 10-15 minutes depending upon your machine and your internet connection. 
+      
+      You will know the command is complete when the following output appears:
       ```
       FarmData2 started.
       ```
@@ -118,10 +120,7 @@ Your user credentials within the FarmData2 Development environment are:
 * Username: `fd2dev`
 * Password: `fd2dev`
 
-The `fd2dev` is a member of the groups:
-* `fd2grp`
-* `fd2docker`
-* `sudo`
+The only time you are likely to need these credentials is if you use the `sudo` command.
 
 ### Configure `git` in the Development Environment ###
 
@@ -174,7 +173,7 @@ If everything has worked you will see the FarmData2 login screen.
        * Username: `guest`
        * Password: `farmdata2`
 
-Note: You may also connect to the running FarmData2 instance from a browser in your host OS (e.g. MacOS, Windows, Linux) using the URL:
+Note: You can also connect to the running FarmData2 instance from a browser in your host OS (e.g. MacOS, Windows, Linux) using the URL:
 ```
 http://localhost
 ```
@@ -189,7 +188,7 @@ The FarmData2 developer environment includes the VSCodium IDE.  This IDE is pre-
 5. Confirm that you "trust the authors of the files in this folder", if asked.
 6. Choose "Explorer" from the "View" menu to see the `FarmData2` file tree.
 
-If you are using your own VSCode or VSCodium installation on your host OS your can refer to the [docker/dev/Dockerfile](docker/dev/Dockerfile) file for information about the VSCodium extensions that are being used by the FarmData2 development environment.
+Note: You can also choose to use VSCode or VSCodium on your host machine (Mac, Windows, Linux) to edit the contents of the FarmData2 repository that you cloned.  The FarmData2 repository is mounted from your host machine into the development container. Thus, editing these files on the host machine is equivalent to editing them in the development container. If you are using VSCode or VSCodium on your host OS your can refer to the [docker/dev/Dockerfile](docker/dev/Dockerfile) file for information about the VSCodium extensions that are being used by the FarmData2 development environment.
 
 ### Stopping and Starting FarmData2 ###
 

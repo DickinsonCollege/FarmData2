@@ -27,7 +27,7 @@ All code in the FarmData2 project is licensed under the GNU General Public Licen
 
 ### Content License ###
 
-All other content, including code snippets posted in public forums, is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License ([CC-BY-SA-4.0]).
+All other content, including documentation, commit messages, issue tickets, pull request text and postings in Zulip, is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License ([CC-BY-SA-4.0]).
 
 [CC-BY-SA-4.0]: https://creativecommons.org/licenses/by-sa/4.0/
 
