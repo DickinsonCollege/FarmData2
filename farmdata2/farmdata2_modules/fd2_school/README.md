@@ -6,15 +6,15 @@ If you use these activities, please keep in mind that they were created for use 
 
 ## The Activities
 
-- 01 - Introduction to FOSS & The FarmData2 Community [ [docx](activities/01-IntroToFarmData2.docx) | [pdf](activities/01-IntroToFarmData2.pdf) ]
-- 02 - FarmData2 Developer Install [ [docx](activities/02-DeveloperInstall.docx) | [pdf](activities/02-DeveloperInstall.pdf) ]
-- 03 - HTML Technology Spike [ [docx](activities/03-HTMLSpike.docx) | [pdf](activities/03-HTMLSpike.pdf) ]
-- 04 - Vue Data Binding Technology Spike [ [docx](activities/04-VueDataBindingSpike.docx) | [pdf](activities/04-VueDataBindingSpike.pdf) ]
-- 05 - Vue Events and JavaScript Functions Technology Spike [ [docx](activities/05-VueJSEventsSpike.docx) | [pdf](activities/05-VueJSEventsSpike.pdf) ]
-- 06 - Web APIs Technology Spike [ [docx](activities/06-WebAPIsSpike.docx) | [pdf](activities/06-WebAPIsSpike.pdf) ]
-- 07 - FarmOS API Technology Spike [ [docx](activities/07-FarmOSAPISpike.docx) | [pdf](activities/07-FarmOSAPISpike.pdf) ]
-- 08 - FarmData2 Pages and Patterns (in development)
-- 09 - Cypress Testing (in development)
+- 00 - Introduction to FOSS & The FarmData2 Community [ [docx](activities/01-IntroToFarmData2.docx) | [pdf](activities/01-IntroToFarmData2.pdf) ]
+- 01 - FarmData2 Developer Install [ [docx](activities/02-DeveloperInstall.docx) | [pdf](activities/02-DeveloperInstall.pdf) ]
+- 02 - HTML Technology Spike [ [docx](activities/03-HTMLSpike.docx) | [pdf](activities/03-HTMLSpike.pdf) ]
+- 03 - Vue Data Binding Technology Spike [ [docx](activities/04-VueDataBindingSpike.docx) | [pdf](activities/04-VueDataBindingSpike.pdf) ]
+- 04 - Vue Events and JavaScript Functions Technology Spike [ [docx](activities/05-VueJSEventsSpike.docx) | [pdf](activities/05-VueJSEventsSpike.pdf) ]
+- 05 - Web APIs Technology Spike [ [docx](activities/06-WebAPIsSpike.docx) | [pdf](activities/06-WebAPIsSpike.pdf) ]
+- 06 - FarmOS API Technology Spike [ [docx](activities/07-FarmOSAPISpike.docx) | [pdf](activities/07-FarmOSAPISpike.pdf) ]
+- 07 - FarmData2 Pages and Patterns (in development)
+- 08 - Cypress Testing (in development)
 
 ## The FarmData2 School Module ###
 
