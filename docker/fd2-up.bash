@@ -31,7 +31,7 @@ fi
 
 # Ensure that this script is run from within the docker directory
 DOCKER_PATH=$(pwd)
-DOCKER_BASE=$(basename $DOCKER_PATH)
+DOCKER_BASE=$(basename "$DOCKER_PATH")
 if [ "$DOCKER_BASE" != "docker" ];
 then
   echo "The fd2-up.bash script must be run from the docker directory."
