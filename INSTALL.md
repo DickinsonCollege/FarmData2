@@ -29,6 +29,11 @@ Full installation details for these tools are provided by the projects themselve
     - Installation
       - For Windows:
         - First [install *WSL* (the *Windows Subsystem for Linux*)](https://learn.microsoft.com/en-us/windows/wsl/install).
+        - Test that you can *Open an WSL Terminal* by:
+          - Open a PowerShell
+          - Use the command `wsl`
+            - The command prompt should change to a Linux prompt instead of a PowerShell prompt.
+          - You'll be using a *WSL Terminal* for many of the steps below.
         - Then follow the instructions for installing [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/). Be sure to follow the directions for the "WSL 2 backend" (not the "Hyper-V backend").
       - For MacOS:
         - Follow the instructions for installing [Docker Desktop for Mac](https://docs.docker.com/desktop/install/mac-install/). Be sure to choose chose "Mac with Intel Chip" or "Mac with Apple Silicon" as appropriate for your Mac.  If you are unsure, choose "About this Mac" from the Apple menu and check which "Chip" is in your Mac (Intel or Apple).
