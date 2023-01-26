@@ -1,6 +1,6 @@
 # Contributing to FarmData2 #
 
-This document provides a step-by-step guide to fixing your first issue in FarmData2. While this guide is targeted at making a first contribution, the process it outlines is general and will apply to all code or documentation contributions.  So you may find it helpful to return here if you continue to contribute.  For ways to contribute other than fixing issues see the [HOW_TO](HOW_TO.md) document.
+This document provides a step-by-step guide to fixing your first issue in FarmData2. While this guide is targeted at making a first contribution, the process it outlines is general and will apply to all code or documentation contributions.  So you may find it helpful to return here if you continue to contribute.  For ways to contribute other than fixing issues see the [Other Ways to Contribute Document](docs/WaysToContribute.md).
 
 ## 1. Review FarmData2's Code of Conduct ##
 
