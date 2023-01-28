@@ -34,7 +34,7 @@ This document is a single source for information about FarmData2. It is organize
 ## Learn FarmData2 Basics ##
 
   - [FarmData2 School](farmdata2/farmdata2_modules/fd2_school/README.md)
-  - [FarmData2 Organization](docs/Organization.md)
+  - [FarmData2 Repository Organization](docs/Organization.md)
   - [FarmData2's Technologies](docs/Technologies.md)
   
 ## Front End Development ##
