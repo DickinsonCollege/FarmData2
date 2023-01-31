@@ -20,9 +20,14 @@ var regexMap = {
     regPosFloatTwoDigit: "^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
 }
 
+var bannerMessageMap = {
+    errMessage: "Error Processing Request. This may be an intermittent network issue. Please try again later."
+}
+
 try {
     module.exports = {
-        regexMap
+        regexMap,
+        bannerMessageMap
     }
 }
 catch {}

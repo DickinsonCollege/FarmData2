@@ -1,7 +1,7 @@
 <!-- define a div to wrap around the app. -->
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="ui" v-cloak> 
-
+    <banner data-cy="alert-banner" :bannerType="bannerType" :visible="bannerVisibility" @banner-clicked="resetBannerVisibility"></banner>
     <p>FarmData2 provides a number of custom Vue components, bootstrap elements and CSS styles that are used throught the application to give it a consistent look and feel.  This page gives examples of how the components and styles are created, used and tested (see ui.spec.js).</p>
 
     <p><b>DropdownWithAllComponent</b></p>
@@ -59,6 +59,27 @@
             <LI>Input Value: <span data-cy="inputed-val">{{ regexInputVal }}</span></LI>
             <LI>Match Value: <span data-cy="match-val">{{ regexMatchVal }}</span></LI>
         </UL>
+    </UL>
+
+    <p><b>BannerComponent</b></p>
+    <UL>
+        <button data-cy='trigger-success'
+            :disabled='waitingOnLogs' 
+            @click='triggerSuccess'>Success Banner</button>
+
+            <button data-cy='trigger-error'
+            :disabled='waitingOnLogs' 
+            @click='triggerError'>Error Banner</button>
+
+            <button data-cy='trigger-message'
+            :disabled='waitingOnLogs' 
+            @click='triggerMessage'>Message Banner</button>
+
+            <!-- Do we need to disable the component? It's counter-intuitive. How about the buttons? -->
+            <!-- <button data-cy='btn-input-disable' v-show="!disabledMap['RegexInputComponent']"
+            @click='toggleDisabled("RegexInputComponent")'>Disable</button>
+            <button data-cy='btn-input-enable' v-show="disabledMap['RegexInputComponent']"
+            @click='toggleDisabled("RegexInputComponent")'>Enable</button> -->
     </UL>
 
     <p><b>DateSelectionComponent</b></p>
@@ -215,6 +236,7 @@ new Vue({
         'custom-table': CustomTableComponent,
         'regex-input': RegexInputComponent,
         'error-banner': ErrorBannerComponent,
+        'banner': BannerComponent
     },
     data: {
         // The predefined FarmData2 variables.
@@ -233,6 +255,8 @@ new Vue({
         pickedCrop: "All",
         
         leftButtonDisabled: false,
+
+        bannerType: '',
 
         columns: [
             {"header": 'ID', "visible": true, "inputType": {'type': 'no input'}},
@@ -258,6 +282,7 @@ new Vue({
         waitingOnLogs: false,
         waitingOnErr: false,
         errBannerVisibility: false,
+        bannerVisibility: false,
         seedingLogs: [],
 
         regularExp: regexMap["regPosInt"],
@@ -270,6 +295,7 @@ new Vue({
             "RegexInputComponent": false,
             "DateSelectionComponent": false,
             "DateRangeSelectionComponent": false,
+            "BannerComponent": false
         }
     },
     methods: {
@@ -319,6 +345,21 @@ new Vue({
         },
         button2Clicked() {
             this.leftButtonDisabled = false
+        },
+        triggerSuccess(){
+            this.bannerType = 'success'
+            this.bannerVisibility = true
+        },
+        triggerError(){
+            this.bannerType = 'error'
+            this.bannerVisibility = true
+        },
+        triggerMessage(){
+            this.bannerType = 'message'
+            this.bannerVisibility = true
+        },
+        resetBannerVisibility(){
+            this.bannerVisibility = false
         },
 
         // backend needs to be updated when deleting a row
