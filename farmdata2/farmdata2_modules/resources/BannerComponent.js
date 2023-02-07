@@ -21,6 +21,7 @@
 let BannerComponent = {
     template: 
         `<div data-cy='banner-handler' :class="currentBanner" 
+            style="display: flex; justify-content: center; position: sticky;"
             ref="banner" role="alert" v-show="isVisible" @click="hideBanner"
             >
             <p data-cy='banner-message'>{{ message }}</p>
@@ -37,6 +38,10 @@ let BannerComponent = {
         visible: {
             type: Boolean,
             default: false,
+        },
+        timeout: {
+            type: Number, 
+            default: null
         }
     },
     data() {
@@ -49,6 +54,7 @@ let BannerComponent = {
             currentBanner: this.bannerType,
             message: this.bannerMessage,
             isVisible: this.visible,
+            duration: this.timeout, 
         }
     },
     watch: {
@@ -73,8 +79,10 @@ let BannerComponent = {
     },
     methods: {
         hideBanner() {
-            this.isVisible = false
-            this.$emit('banner-clicked')
+            if(this.duration == null){
+                this.isVisible = false
+                this.$emit('visibility-update')
+            }
         },
         ScrollToBanner() {
             var errorBanner = this.$refs.banner;
@@ -85,6 +93,14 @@ let BannerComponent = {
                 top: alertBounds.top - headerBounds.bottom,
                 behavior: 'smooth'
             })
+
+            if(this.duration != null){
+                setTimeout(() => { 
+                    this.isVisible = false
+                    this.$emit('visibility-update')
+                }, this.duration) 
+                
+            }
         },
         updateBannerType(newType){
             for(let i = 0; i < this.color.length; i++){
