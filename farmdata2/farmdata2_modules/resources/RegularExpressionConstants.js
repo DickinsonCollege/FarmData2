@@ -20,11 +20,9 @@ var regexMap = {
     regPosFloatTwoDigit: "^[1-9]+[0-9]*([.][0-9]{1,2}){0,1}$|^[0]{0,1}[.][1-9][0-9]{0,1}$|^[0]{0,1}[1-9]$|^[1-9]+[0-9]*\.$"
 }
 
-
 try {
     module.exports = {
-        regexMap,
-        bannerMessageMap
+        regexMap
     }
 }
 catch {}

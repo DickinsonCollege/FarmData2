@@ -20,24 +20,23 @@
  */ 
 let BannerComponent = {
     template: 
-        `<div data-cy='banner-handler' :class="currentBanner" 
-            style="display: flex; justify-content: center; position: sticky;"
-            ref="banner" role="alert" v-show="isVisible" @click="hideBanner"
-            >
+        `<div data-cy='banner-handler' :class="bannerClass" 
+            ref="banner" role="alert" v-show="isVisible"
+            style="position: -webkit-sticky; position: sticky; top: 64px;">
+            <button type="button" class="close" 
+            aria-label="Close" @click="hideBanner" v-show="timeout==null">
+            <span aria-hidden="true">&times;</span>
+            </button>
             <p data-cy='banner-message'>{{ message }}</p>
         </div>`,
     props: {
-        bannerType: {
-            type: String,
-            default: 'alert alert-danger'
-        },
-        bannerMessage: {
-            type: String,
-            default: "Error Processing Request. This may be an intermittent network issue. Please try again later."
+        updateBanner:{
+            type: Object,
+            default: null
         },
         visible: {
             type: Boolean,
-            default: false,
+            default: null,
         },
         timeout: {
             type: Number, 
@@ -46,36 +45,38 @@ let BannerComponent = {
     },
     data() {
         return {
-            color: [
-                {'type': 'error', 'color': 'alert alert-danger'},
-                {'type': 'success', 'color': 'alert alert-success'},
-                {'type': 'message', 'color': 'alert alert-primary'}, 
-            ],
-            currentBanner: this.bannerType,
-            message: this.bannerMessage,
+            // color: [
+            //     {'type': 'error', 'color': 'alert alert-danger alert-dismissible'},
+            //     {'type': 'success', 'color': 'alert alert-success alert-dismissible'},
+            //     {'type': 'message', 'color': 'alert alert-primary alert-dismissible'}, 
+            // ],
+            bannerClass: 'alert alert-warning',
+            message: 'Hello, I am a banner alert.',
             isVisible: this.visible,
             duration: this.timeout, 
         }
     },
     watch: {
-        visible(newbool) {
+        updateBanner(newObj) {
+            this.bannerClass = newObj.class
+            this.message = newObj.msg
+            
+        },
+        visible(newbool) {         
             this.isVisible = newbool;
-            this.$nextTick(function () { // this allows the DOM to be updated so that the page only scrolls after this component is rendered
-                this.ScrollToBanner()
-            })
+            // this.$nextTick(function () { // this allows the DOM to be updated so that the page only scrolls after this component is rendered
+            //     this.ScrollToBanner()
+            // })
         },
-        bannerMessage(newString) {
-            this.message = newString;
-        },
-        bannerType(newType){
-            console.log("Hi! I can see when this changes!")
-            for(let i = 0; i < this.color.length; i++){
-                if(this.color[i].type == newType){
-                    console.log("Hi!")
-                    this.currentBanner = this.color[i].color
-                }
-            }
+
+        timeout(newDuration){
+            this.duration = newDuration
         }
+
+        // bannerMessage(newString) {
+        //     console.log("Message updated!")
+        //     this.message = newString;
+        // },
     },
     methods: {
         hideBanner() {
@@ -84,33 +85,26 @@ let BannerComponent = {
                 this.$emit('visibility-update')
             }
         },
-        ScrollToBanner() {
-            var errorBanner = this.$refs.banner;
-            var pageHeader = document.getElementById('navbar')
-            var headerBounds = pageHeader.getBoundingClientRect()
-            var alertBounds = errorBanner.getBoundingClientRect()
-            scrollBy({
-                top: alertBounds.top - headerBounds.bottom,
-                behavior: 'smooth'
-            })
+        // ScrollToBanner() {
+        //     var errorBanner = this.$refs.banner;
+        //     var pageHeader = document.getElementById('navbar')
+        //     var headerBounds = pageHeader.getBoundingClientRect()
+        //     var alertBounds = errorBanner.getBoundingClientRect()
+        //     scrollBy({
+        //         top: alertBounds.top - headerBounds.bottom,
+        //         behavior: 'smooth'
+        //     })
 
-            if(this.duration != null){
-                setTimeout(() => { 
-                    this.isVisible = false
-                    this.$emit('visibility-update')
-                }, this.duration) 
+        //     if(this.duration != null){
+        //         setTimeout(() => { 
+        //             this.isVisible = false
+        //             this.$emit('visibility-update')
+        //         }, this.duration) 
                 
-            }
-        },
-        updateBannerType(newType){
-            for(let i = 0; i < this.color.length; i++){
-                if(this.color[i].type == newType){
-                    console.log("Hi!")
-                    this.currentBanner = this.color[i].color
-                }
-            }
-        }
-    }
+        //     }
+        // },
+    },
+
 }
 /*
  * Export the ErrorBannerComponent object as a CommonJS component
