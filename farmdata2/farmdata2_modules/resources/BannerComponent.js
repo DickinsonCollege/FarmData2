@@ -6,14 +6,19 @@
  * <thead><tr><th>Value</th>        <th>Description</th></tr></thead>
  * <tbody>
  * <tr><td>banner-handler</td>   <td>div containing bootstrap alert banner</td></tr>
+ * <tr><td>banner-close</td>   <td>'X' button that closes the alert banner</td></tr>
  * <tr><td>banner-message</td>   <td>The message displayed inside the alert banner</td></tr>
  * </tbody>
  * </table>
  * 
  * <div>
- *  @vue-prop {String} [bannerType=null] - sets the type of banner to be displayed (success, error, etc.)
- * @vue-prop {String} [errMessage="Error Processing Request. This may be an intermittent network issue. Please try again later."] - The message to display in the alert banner.
- * @vue-prop {Boolean} [visible=false] - Set to true to show the alert banner. 
+ *  @vue-prop {Object} [updateBanner={"msg": "Hello, I am a banner alert.", "class": "alert alert-warning"}] - Contains the message and class for the alert banner
+ *  @vue-prop {Boolean} [visible=null] - Set to true to show the alert banner. False makes the banner invisible.
+ *  @vue-prop {Number} [timeout=null] - Set duration until banner disappears on its own. Set to null so that users have to click an 'X' to close alert banner.
+ * </div>
+ * 
+ * <div>
+ *  @vue-event visibility-update - Updates the visibility in the parent page when the child component has internal visibility updates. 
  * </div>
  * 
  * @module
@@ -23,7 +28,7 @@ let BannerComponent = {
         `<div data-cy='banner-handler' :class="bannerClass" 
             ref="banner" role="alert" v-show="isVisible"
             style="position: -webkit-sticky; position: sticky; top: 64px;">
-            <button type="button" class="close" 
+            <button data-cy='banner-close' type="button" class="close" 
             aria-label="Close" @click="hideBanner" v-show="timeout==null">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -32,7 +37,7 @@ let BannerComponent = {
     props: {
         updateBanner:{
             type: Object,
-            default: null
+            default: {"msg": "Hello, I am a banner alert.", "class": "alert alert-warning"}
         },
         visible: {
             type: Boolean,
@@ -48,10 +53,10 @@ let BannerComponent = {
             // color: [
             //     {'type': 'error', 'color': 'alert alert-danger alert-dismissible'},
             //     {'type': 'success', 'color': 'alert alert-success alert-dismissible'},
-            //     {'type': 'message', 'color': 'alert alert-primary alert-dismissible'}, 
+            //     {'type': 'message', 'color': 'alert alert-info alert-dismissible'}, 
             // ],
-            bannerClass: 'alert alert-warning',
-            message: 'Hello, I am a banner alert.',
+            bannerClass: this.updateBanner.class,
+            message: this.updateBanner.msg,
             isVisible: this.visible,
             duration: this.timeout, 
         }
@@ -63,7 +68,13 @@ let BannerComponent = {
             
         },
         visible(newbool) {         
-            this.isVisible = newbool;
+            this.isVisible = newbool
+            if(this.duration != null){
+                setTimeout(() => { 
+                    this.isVisible = false
+                    this.$emit('visibility-update')
+                }, this.duration)     
+            }
             // this.$nextTick(function () { // this allows the DOM to be updated so that the page only scrolls after this component is rendered
             //     this.ScrollToBanner()
             // })
@@ -94,14 +105,6 @@ let BannerComponent = {
         //         top: alertBounds.top - headerBounds.bottom,
         //         behavior: 'smooth'
         //     })
-
-        //     if(this.duration != null){
-        //         setTimeout(() => { 
-        //             this.isVisible = false
-        //             this.$emit('visibility-update')
-        //         }, this.duration) 
-                
-        //     }
         // },
     },
 
