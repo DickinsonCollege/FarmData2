@@ -5,7 +5,7 @@
     <banner data-cy="alert-banner" 
     :update-banner="bannerObj" 
     :visible="bannerVisibility" 
-    :timeout="bannerTimeout"
+    :timeout="timeoutSet"
     @visibility-update="resetBannerVisibility">
     </banner>
 
@@ -290,7 +290,6 @@ new Vue({
         errBannerVisibility: false,
         bannerVisibility: false,
         timeoutSet: false,
-        bannerTimeout: null,
         seedingLogs: [],
 
         regularExp: regexMap["regPosInt"],
@@ -368,13 +367,11 @@ new Vue({
             this.bannerVisibility = true
         },
         setTimeout(){
-            if(!(this.timeoutSet)){
-                this.timeoutSet = true
-                this.bannerTimeout = 5000
+            if(this.timeoutSet){
+                this.timeoutSet = false
             }
             else{
-                this.timeoutSet = false
-                this.bannerTimeout = null
+                this.timeoutSet = true
             }
         },
         resetBannerVisibility(){

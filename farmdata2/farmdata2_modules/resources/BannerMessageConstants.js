@@ -9,7 +9,9 @@
  * <table>
  * <thead><tr><th>Variable Name</th>   <th>Banner Message</th>     <th>Descripion</th></tr></thead>
  * <tbody>
- * <tr><td>standardErr</td> <td>Error Processing Request. This may be an intermittent network issue. Please try again later.</td> <td>Displayed when an error occurs.</td></tr>
+ * <tr><td>uiError</td> <td>Error! This is what an error banner looks like.</td> <td>Displayed when an error in the UI page occurs.</td></tr>
+ * <tr><td>uiSuccess</td> <td>Success! This is what a success banner looks like.</td> <td>Displayed when a success event in the UI page occurs.</td></tr>
+ * <tr><td>uiMsg</td> <td>Message! This is what a message banner looks like.</td> <td>Displayed when when a message event in the UI page occurs.</td></tr>
  * </tbody>
  * </table>
  */

@@ -14,22 +14,25 @@
  * <div>
  *  @vue-prop {Object} [updateBanner={"msg": "Hello, I am a banner alert.", "class": "alert alert-warning"}] - Contains the message and class for the alert banner
  *  @vue-prop {Boolean} [visible=null] - Set to true to show the alert banner. False makes the banner invisible.
- *  @vue-prop {Number} [timeout=null] - Set duration until banner disappears on its own. Set to null so that users have to click an 'X' to close alert banner.
+ *  @vue-prop {Boolean} [timeout=null] - Sets whether or not the banner dismisses itself which disables the 'x' to close. Set to false by default.
  * </div>
  * 
  * <div>
  *  @vue-event visibility-update - Updates the visibility in the parent page when the child component has internal visibility updates. 
  * </div>
- * 
+ * //position: -webkit-sticky; position: sticky; :top: 64px;
  * @module
  */ 
 let BannerComponent = {
     template: 
         `<div data-cy='banner-handler' :class="bannerClass" 
-            ref="banner" role="alert" v-show="isVisible"
-            style="position: -webkit-sticky; position: sticky; top: 64px;">
+            ref="banner" role="alert" 
+            v-show="isVisible"
+            :style="{ position: ['-webkit-sticky', 'sticky'], top: [topNav]}">
             <button data-cy='banner-close' type="button" class="close" 
-            aria-label="Close" @click="hideBanner" v-show="timeout==null">
+            aria-label="Close" 
+            @click="hideBanner" 
+            v-show="timeout==false">
             <span aria-hidden="true">&times;</span>
             </button>
             <p data-cy='banner-message'>{{ message }}</p>
@@ -44,21 +47,18 @@ let BannerComponent = {
             default: null,
         },
         timeout: {
-            type: Number, 
-            default: null
+            type: Boolean, 
+            default: false
         }
     },
     data() {
         return {
-            // color: [
-            //     {'type': 'error', 'color': 'alert alert-danger alert-dismissible'},
-            //     {'type': 'success', 'color': 'alert alert-success alert-dismissible'},
-            //     {'type': 'message', 'color': 'alert alert-info alert-dismissible'}, 
-            // ],
             bannerClass: this.updateBanner.class,
             message: this.updateBanner.msg,
             isVisible: this.visible,
-            duration: this.timeout, 
+            timeoutBool: this.timeout, 
+            topNav: '0px',
+            testing: false  // used to prevent the mounting function from running in component tests
         }
     },
     watch: {
@@ -69,45 +69,39 @@ let BannerComponent = {
         },
         visible(newbool) {         
             this.isVisible = newbool
-            if(this.duration != null){
+            if(this.timeoutBool == true){
                 setTimeout(() => { 
                     this.isVisible = false
                     this.$emit('visibility-update')
-                }, this.duration)     
+                }, 5000)     
             }
-            // this.$nextTick(function () { // this allows the DOM to be updated so that the page only scrolls after this component is rendered
-            //     this.ScrollToBanner()
-            // })
         },
 
-        timeout(newDuration){
-            this.duration = newDuration
+        timeout(newBool){
+            this.timeoutBool = newBool
         }
-
-        // bannerMessage(newString) {
-        //     console.log("Message updated!")
-        //     this.message = newString;
-        // },
     },
     methods: {
         hideBanner() {
-            if(this.duration == null){
-                this.isVisible = false
-                this.$emit('visibility-update')
-            }
+            this.isVisible = false
+            this.$emit('visibility-update')
+            // if(this.timeoutBool == false){
+            // }
         },
-        // ScrollToBanner() {
-        //     var errorBanner = this.$refs.banner;
-        //     var pageHeader = document.getElementById('navbar')
-        //     var headerBounds = pageHeader.getBoundingClientRect()
-        //     var alertBounds = errorBanner.getBoundingClientRect()
-        //     scrollBy({
-        //         top: alertBounds.top - headerBounds.bottom,
-        //         behavior: 'smooth'
-        //     })
-        // },
     },
-
+    mounted: 
+        function () {
+            this.$nextTick(function () {
+                if(this.testing){
+                    // do nothing
+                }
+                else{
+                    var pageHeader = document.getElementById('navbar')
+                    var headerBounds = pageHeader.getBoundingClientRect()
+                    this.topNav = String(headerBounds.height) + 'px'
+                }
+            })
+    },
 }
 /*
  * Export the ErrorBannerComponent object as a CommonJS component

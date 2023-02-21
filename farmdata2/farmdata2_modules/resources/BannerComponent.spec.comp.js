@@ -10,6 +10,11 @@ describe('BannerComponent tests', () => {
             mount(BannerComponent, {
                 propsData: {
                     visible: true,
+                },
+                data() {
+                    return{
+                        testing: true
+                    }
                 }
             })
         })
@@ -35,6 +40,11 @@ describe('BannerComponent tests', () => {
                 propsData: {
                     updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
+                },
+                data() {
+                    return{
+                        testing: true
+                    }
                 }
             })
         })
@@ -54,27 +64,53 @@ describe('BannerComponent tests', () => {
         })
     })
 
-    // fork in this one for now
-    context.skip('test banner with timeout', () => {
+    context('test banner with timeout', () => {
+        let wrapper
+        let div
         beforeEach(() => {
-            mount(BannerComponent, {
+            div = document.createElement('div')
+            document.body.appendChild(div)
+            wrapper = shallowMount(BannerComponent, {
+                attachTo: div,
                 propsData: {
                     updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
-                    visible: true,
-                    timeout: 5000,
+                    visible: false,
+                    timeout: true,
+                },
+                data() {
+                    return{
+                        isVisible: this.visible,
+                        testing: true
+                    }
                 }
             })
         })
 
+        afterEach(() => {
+            wrapper.destroy()
+        })
+
         it('test hide banner', () => {
-            
-            cy.get('[data-cy=banner-handler]')
-            .should('be.visible')
-
+            expect(wrapper.vm.visible).to.equal(false)
+            expect(wrapper.vm.isVisible).to.equal(false)
+            cy.wrap(wrapper.setProps({ visible: true }))
             cy.wait(5000)
+            .then(() => {
+                expect(wrapper.vm.isVisible).to.equal(false)
+            })
+        })
 
-            cy.get('[data-cy=banner-handler]')
-            .should('not.be.visible')
+        it('tests if banner disappears if another false is sent', () => {
+            expect(wrapper.vm.visible).to.equal(false)
+            expect(wrapper.vm.isVisible).to.equal(false)
+            cy.wrap(wrapper.setProps({ visible: true }))
+            .then(() => {
+                expect(wrapper.vm.isVisible).to.equal(false)
+            })
+            cy.wrap(wrapper.setProps({ visible: false }))
+            .then(() => {
+                expect(wrapper.vm.isVisible).to.equal(false)
+            })
         })
     })
 
@@ -84,6 +120,11 @@ describe('BannerComponent tests', () => {
                 propsData: {
                     updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
+                },
+                data() {
+                    return{
+                        testing: true
+                    }
                 }
             })
         })
@@ -108,6 +149,11 @@ describe('BannerComponent tests', () => {
                     updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
                     timeout: 5000,
+                },
+                data() {
+                    return{
+                        testing: true
+                    }
                 }
             })
         })
