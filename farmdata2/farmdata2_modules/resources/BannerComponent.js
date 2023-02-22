@@ -58,7 +58,6 @@ let BannerComponent = {
             isVisible: this.visible,
             timeoutBool: this.timeout, 
             topNav: '0px',
-            testing: false  // used to prevent the mounting function from running in component tests
         }
     },
     watch: {
@@ -85,20 +84,19 @@ let BannerComponent = {
         hideBanner() {
             this.isVisible = false
             this.$emit('visibility-update')
-            // if(this.timeoutBool == false){
-            // }
         },
     },
     mounted: 
         function () {
             this.$nextTick(function () {
-                if(this.testing){
-                    // do nothing
-                }
-                else{
+                try{
                     var pageHeader = document.getElementById('navbar')
                     var headerBounds = pageHeader.getBoundingClientRect()
                     this.topNav = String(headerBounds.height) + 'px'
+                }
+                catch(err){
+                    // console.log(err)
+                    this.topNav = '0px'
                 }
             })
     },

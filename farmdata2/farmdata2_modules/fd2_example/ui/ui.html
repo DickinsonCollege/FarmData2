@@ -211,7 +211,10 @@
     </UL>
 
     <p><b>API Error Handling</b></p>
-    <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
+    <banner data-cy="api-err-banner" 
+    :update-Banner="bannerObj"
+    :visible="apiErrBanner"
+    @visibility-update="resetBannerVisibility"></banner>
     <UL>
         <button data-cy='fetch-err-api'
             :disabled='waitingOnLogs' 
@@ -241,7 +244,6 @@ new Vue({
         'date-range-selection': DateRangeSelectionComponent,
         'custom-table': CustomTableComponent,
         'regex-input': RegexInputComponent,
-        'error-banner': ErrorBannerComponent,
         'banner': BannerComponent
     },
     data: {
@@ -287,7 +289,7 @@ new Vue({
 
         waitingOnLogs: false,
         waitingOnErr: false,
-        errBannerVisibility: false,
+        apiErrBanner: false,
         bannerVisibility: false,
         timeoutSet: false,
         seedingLogs: [],
@@ -375,7 +377,13 @@ new Vue({
             }
         },
         resetBannerVisibility(){
-            this.bannerVisibility = false
+            if(this.bannerVisibility){
+                this.bannerVisibility = false
+            }
+            else if(this.apiErrBanner){
+                this.apiErrBanner = false
+            }
+            
         },
 
         // backend needs to be updated when deleting a row
@@ -476,22 +484,25 @@ new Vue({
                 if (err.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    this.errBannerVisibility = true
+                    this.apiErrBanner = true
                     this.waitingOnErr = false
+                    this.bannerObj = this.bannerMessageMap["standardError"]
                     console.log('Error code that falls out of 2xx.')
                 } 
                 else if (err.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    this.errBannerVisibility = true
+                    this.apiErrBanner = true
                     this.waitingOnErr = false
+                    this.bannerObj = this.bannerMessageMap["standardError"]
                     console.log('No response was received');
                 } 
                 else {
                     // Something happened in setting up the request that triggered an Error
-                    this.errBannerVisibility = true
+                    this.apiErrBanner = true
                     this.waitingOnErr = false
+                    this.bannerObj = this.bannerMessageMap["standardError"]
                     console.log('Error Message: ', err.message);
                 }
             })

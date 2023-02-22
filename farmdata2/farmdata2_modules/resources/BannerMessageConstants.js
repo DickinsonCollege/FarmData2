@@ -16,6 +16,7 @@
  * </table>
  */
 var bannerMessageMap = {
+    standardError: {"msg": "Intermittent network error. Please try again later.", "class": "alert alert-danger alert-dismissible"},
     uiError: {"msg": "Error! This is what an error banner looks like.", "class": "alert alert-danger alert-dismissible"},
     uiSuccess:{"msg": "Success! This is what a success banner looks like.", "class": "alert alert-success alert-dismissible"}, 
     uiMsg: {"msg": "Message! This is what a message banner looks like.", "class": "alert alert-info alert-dismissible"},

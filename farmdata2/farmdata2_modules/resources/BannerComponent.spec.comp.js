@@ -11,11 +11,6 @@ describe('BannerComponent tests', () => {
                 propsData: {
                     visible: true,
                 },
-                data() {
-                    return{
-                        testing: true
-                    }
-                }
             })
         })
 
@@ -41,11 +36,6 @@ describe('BannerComponent tests', () => {
                     updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
                 },
-                data() {
-                    return{
-                        testing: true
-                    }
-                }
             })
         })
 
@@ -77,12 +67,6 @@ describe('BannerComponent tests', () => {
                     visible: false,
                     timeout: true,
                 },
-                data() {
-                    return{
-                        isVisible: this.visible,
-                        testing: true
-                    }
-                }
             })
         })
 
@@ -121,11 +105,6 @@ describe('BannerComponent tests', () => {
                     updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
                 },
-                data() {
-                    return{
-                        testing: true
-                    }
-                }
             })
         })
 
@@ -150,11 +129,6 @@ describe('BannerComponent tests', () => {
                     visible: true,
                     timeout: 5000,
                 },
-                data() {
-                    return{
-                        testing: true
-                    }
-                }
             })
         })
 
