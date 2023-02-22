@@ -303,7 +303,6 @@ describe('Test the display of the error banner when network errors occur.', () =
         cy.get('[data-cy=alert-banner]')
             .should('not.visible')
 
-
         cy.get('[data-cy=timeout-disable]')
             .should('not.be.visible')
         cy.get('[data-cy=timeout-enable]')
@@ -318,6 +317,5 @@ describe('Test the display of the error banner when network errors occur.', () =
         cy.get('[data-cy=timeout-enable]')
             .should('be.visible')
     })
-
 
 })
