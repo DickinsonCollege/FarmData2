@@ -12,7 +12,7 @@
  * </table>
  * 
  * <div>
- *  @vue-prop {Object} [updateBanner={"msg": "Hello, I am a banner alert.", "class": "alert alert-warning"}] - Contains the message and class for the alert banner
+ *  @vue-prop {Object} [message={"msg": "Hello, I am a banner alert.", "class": "alert alert-warning"}] - Contains the message and class for the alert banner
  *  @vue-prop {Boolean} [visible=null] - Set to true to show the alert banner. False makes the banner invisible.
  *  @vue-prop {Boolean} [timeout=null] - Sets whether or not the banner dismisses itself which disables the 'x' to close. Set to false by default.
  * </div>
@@ -35,12 +35,12 @@ let BannerComponent = {
             v-show="timeout==false">
             <span aria-hidden="true">&times;</span>
             </button>
-            <p data-cy='banner-message'>{{ message }}</p>
+            <p data-cy='banner-message'>{{ bannerMsg }}</p>
         </div>`,
     props: {
-        updateBanner:{
+        message: {
             type: Object,
-            default: {"msg": "Hello, I am a banner alert.", "class": "alert alert-warning"}
+            default: null
         },
         visible: {
             type: Boolean,
@@ -53,17 +53,17 @@ let BannerComponent = {
     },
     data() {
         return {
-            bannerClass: this.updateBanner.class,
-            message: this.updateBanner.msg,
+            bannerClass: this.message.class,
+            bannerMsg: this.message.msg,
             isVisible: this.visible,
             timeoutBool: this.timeout, 
             topNav: '0px',
         }
     },
     watch: {
-        updateBanner(newObj) {
+        message(newObj) {
             this.bannerClass = newObj.class
-            this.message = newObj.msg
+            this.bannerMsg = newObj.msg
             
         },
         visible(newbool) {         
@@ -87,6 +87,8 @@ let BannerComponent = {
         },
     },
     mounted: 
+        // try/catch block exists for Cypress component testing since those are 
+        // isolated. Naturally there will be no navbar in those isolated tests. 
         function () {
             this.$nextTick(function () {
                 try{
@@ -95,7 +97,6 @@ let BannerComponent = {
                     this.topNav = String(headerBounds.height) + 'px'
                 }
                 catch(err){
-                    // console.log(err)
                     this.topNav = '0px'
                 }
             })
