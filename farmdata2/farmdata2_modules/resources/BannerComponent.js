@@ -18,9 +18,8 @@
  * </div>
  * 
  * <div>
- *  @vue-event visibility-update - Updates the visibility in the parent page when the child component has internal visibility updates. 
+ *  @vue-event visibility-update - Updates the visibility in the parent page when the child component has internal visibility updates. This means each page needs to implement a function that catches this emit and matches their visibility with the child's internal visibility. 
  * </div>
- * //position: -webkit-sticky; position: sticky; :top: 64px;
  * @module
  */ 
 let BannerComponent = {
