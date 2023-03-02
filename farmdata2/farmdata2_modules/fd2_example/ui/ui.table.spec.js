@@ -26,7 +26,7 @@ describe('Test the behavior of the CustomTableComponent', () => {
             .should('have.text', 'Green')
         cy.get('[data-cy=r0-Count]')
             .should('have.text', '5')
-        cy.get('[data-cy=r0-boolean-input]')
+        cy.get('[data-cy=r0-Purchased-input]')
             .should('be.checked')
         cy.get('[data-cy=edit-row-id]')
             .should('have.text','')
@@ -54,7 +54,7 @@ describe('Test the behavior of the CustomTableComponent', () => {
         cy.get('[data-cy=r0-edit-button')
             .click()
 
-        cy.get('[data-cy=r0-text-input')
+        cy.get('[data-cy=r0-Item-input')
             .clear()
             .type('Tee Shirts')
         
