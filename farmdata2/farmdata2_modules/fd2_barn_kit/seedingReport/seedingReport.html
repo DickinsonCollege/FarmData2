@@ -77,6 +77,7 @@
                 </div> 
             </div>
         </div>
+        <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
     </div>
     <script>
         var seedingReport = new Vue ({
@@ -113,6 +114,8 @@
                 errBannerVisibility: false,
 
                 isMobile: false,
+
+                createdCount: 0,
             },
             methods: {
                 hide(){
@@ -816,12 +819,17 @@
                     {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
                     {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
                     ]
-                }
+                },
+                pageLoaded() {
+                    // Check here that the correct number of API calls have completed.
+                    return this.createdCount == 8
+                },
             },
             created() {
                 getSessionToken()
                     .then((response) => {
                         this.sessionToken = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -829,6 +837,7 @@
                 getIDToCropMap()
                     .then((response) => {
                         this.idToCropMap = new Map(response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -840,6 +849,7 @@
                         for(let [key, info] of this.cropToIDMap){
                             this.cropNameArray.push(key)
                         }
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -847,6 +857,7 @@
                 getIDToUserMap()
                     .then((response) => {
                         this.idToUserMap = new Map (response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -854,6 +865,7 @@
                 getUserToIDMap()
                     .then((response) => {
                         this.userToIDMap = new Map (response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -861,6 +873,7 @@
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = new Map(response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -868,6 +881,7 @@
                 getUnitToIDMap()
                     .then((response) => {
                         this.unitToIDMap = new Map(response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -879,10 +893,12 @@
                             this.tableColumns[10].visible = false
                             this.tableColumns[11].visible = false
                         }
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
                     })
+
                 if (window.screen.width < 900 || window.screen.height < 900) {
                     this.isMobile = true
                 }

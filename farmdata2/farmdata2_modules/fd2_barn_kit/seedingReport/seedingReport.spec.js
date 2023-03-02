@@ -23,47 +23,10 @@ describe('Testing for the seeding report page', () => {
 
     beforeEach(() => {
         cy.login('manager1', 'farmdata2')
-            .then(() => {
-                // Using wrap to wait for the asynchronus API request.
-                cy.wrap(getCropToIDMap()).as('cropMap')
-                cy.wrap(getAreaToIDMap()).as('areaMap')
-                cy.wrap(getIDToCropMap()).as('IDCropMap')
-                cy.wrap(getUserToIDMap()).as('userMap')
-                cy.wrap(getUnitToIDMap()).as('unitMap')
-                cy.wrap(getSessionToken()).as('token')
-            })
-        // Wait here for the maps in the tests.
-        cy.get('@token').should(function(token) {
-            sessionToken = token
-        })
-        cy.get('@cropMap').should(function(map) {
-            cropToIDMap = map
-        })
-        cy.get('@areaMap').should(function(map) {
-            areaToIDMap = map
-        })
-        cy.get('@IDCropMap').should(function(map) {
-            IDToCropMap = map
-        })
-        cy.get('@userMap').should(function(map) {
-            userToIDMap = map
-        })
-        cy.get('@unitMap').should(function(map) {
-            unitToIDMap = map
-        })
-
-        // Setting up wait for the request in the created() to complete.
-        cy.intercept('GET', 'taxonomy_term?bundle=farm_crops&page=1').as('cropmap')
-        cy.intercept('GET', 'taxonomy_term.json?bundle=farm_areas').as('areamap')
-        cy.intercept('GET', '/taxonomy_term.json?bundle=farm_crops').as('IDCropMap')
-        cy.intercept('GET', 'user').as('userMap')
-        cy.intercept('GET', 'taxonomy_term.json?bundle=farm_quantity_units').as('unitMap')
-
-        // cy.restoreLocalStorage()
         cy.visit('/farm/fd2-barn-kit/seedingReport')
 
         // Wait here for the maps to load in the page.
-        cy.wait(['@cropmap', '@areamap', '@IDCropMap', '@userMap', '@unitMap'])
+        cy.waitForPage()
     })
 
     context('can set dates and then render the report', () => {
