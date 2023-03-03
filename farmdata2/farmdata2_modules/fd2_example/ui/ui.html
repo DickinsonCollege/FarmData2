@@ -3,7 +3,7 @@
 <div id="ui" v-cloak> 
     <!-- <div style="position: -webkit-sticky; position: sticky; top: 60px; background-color: forestgreen; padding: 3px;">Hello I am a DIV</div> -->
     <banner data-cy="alert-banner" 
-    :update-banner="bannerObj" 
+    :message="bannerObj" 
     :visible="bannerVisibility" 
     :timeout="timeoutSet"
     @visibility-update="resetBannerVisibility">
@@ -212,7 +212,7 @@
 
     <p><b>API Error Handling</b></p>
     <banner data-cy="api-err-banner" 
-    :update-Banner="bannerObj"
+    :message="bannerObj"
     :visible="apiErrBanner"
     @visibility-update="resetBannerVisibility"></banner>
     <UL>
@@ -299,7 +299,7 @@ new Vue({
         regexInputVal: null,
         regexMatchVal: false,
         regexMap: regexMap,
-        bannerMessageMap: bannerMessageMap,
+        bannerMessageMap: bannerMessageMap["ui"],
         disabledMap: {
             "DropdownWithAllComponent": false,
             "RegexInputComponent": false,
@@ -357,15 +357,15 @@ new Vue({
             this.leftButtonDisabled = false
         },
         triggerSuccess(){
-            this.bannerObj = this.bannerMessageMap["uiSuccess"]
+            this.bannerObj = this.bannerMessageMap["success"]
             this.bannerVisibility = true
         },
         triggerError(){
-            this.bannerObj = this.bannerMessageMap["uiError"]
+            this.bannerObj = this.bannerMessageMap["error"]
             this.bannerVisibility = true
         },
         triggerMessage(){
-            this.bannerObj = this.bannerMessageMap["uiMsg"]
+            this.bannerObj = this.bannerMessageMap["msg"]
             this.bannerVisibility = true
         },
         setTimeout(){
@@ -486,7 +486,7 @@ new Vue({
                     // that falls out of the range of 2xx
                     this.apiErrBanner = true
                     this.waitingOnErr = false
-                    this.bannerObj = this.bannerMessageMap["standardError"]
+                    this.bannerObj = this.bannerMessageMap["error"]
                     console.log('Error code that falls out of 2xx.')
                 } 
                 else if (err.request) {
@@ -495,14 +495,14 @@ new Vue({
                     // http.ClientRequest in node.js
                     this.apiErrBanner = true
                     this.waitingOnErr = false
-                    this.bannerObj = this.bannerMessageMap["standardError"]
+                    this.bannerObj = this.bannerMessageMap["error"]
                     console.log('No response was received');
                 } 
                 else {
                     // Something happened in setting up the request that triggered an Error
                     this.apiErrBanner = true
                     this.waitingOnErr = false
-                    this.bannerObj = this.bannerMessageMap["standardError"]
+                    this.bannerObj = this.bannerMessageMap["error"]
                     console.log('Error Message: ', err.message);
                 }
             })

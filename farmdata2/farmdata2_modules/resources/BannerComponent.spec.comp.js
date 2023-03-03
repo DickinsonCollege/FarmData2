@@ -9,6 +9,7 @@ describe('BannerComponent tests', () => {
         beforeEach(() => {
             mount(BannerComponent, {
                 propsData: {
+                    message: {"msg": "Test: Hello, I render!", "class": "alert alert-info"},
                     visible: true,
                 },
             })
@@ -20,12 +21,12 @@ describe('BannerComponent tests', () => {
 
         it('has default banner message', () => {
             cy.get('[data-cy=banner-handler] > [data-cy=banner-message]')
-            .should('have.text', 'Hello, I am a banner alert.')
+            .should('have.text', 'Test: Hello, I render!')
         })
 
         it('has default banner class', () => {
             cy.get('[data-cy=banner-handler]')
-            .should('have.class', 'alert alert-warning')
+            .should('have.class', 'alert alert-info')
         })
     })
 
@@ -33,7 +34,7 @@ describe('BannerComponent tests', () => {
         beforeEach(() => {
             mount(BannerComponent, {
                 propsData: {
-                    updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
+                    message: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
                 },
             })
@@ -63,7 +64,7 @@ describe('BannerComponent tests', () => {
             wrapper = shallowMount(BannerComponent, {
                 attachTo: div,
                 propsData: {
-                    updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
+                    message: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: false,
                     timeout: true,
                 },
@@ -102,7 +103,7 @@ describe('BannerComponent tests', () => {
         beforeEach(() => {
             mount(BannerComponent, {
                 propsData: {
-                    updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
+                    message: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
                 },
             })
@@ -125,7 +126,7 @@ describe('BannerComponent tests', () => {
         beforeEach(() => {
             comp = shallowMount(BannerComponent, {
                 propsData: {
-                    updateBanner: {"msg": "Test: I am a test message", "class": "alert alert-info"},
+                    message: {"msg": "Test: I am a test message", "class": "alert alert-info"},
                     visible: true,
                     timeout: 5000,
                 },
@@ -133,12 +134,12 @@ describe('BannerComponent tests', () => {
         })
 
         it('change update banner object', () => {
-            expect(comp.vm.updateBanner.msg).to.equal('Test: I am a test message')
-            expect(comp.vm.updateBanner.class).to.equal('alert alert-info')
-            cy.wrap(comp.setProps({ updateBanner: {"msg": "Cypress Test: Hello!", "class": "alert alert-warning"}}))
+            expect(comp.vm.message.msg).to.equal('Test: I am a test message')
+            expect(comp.vm.message.class).to.equal('alert alert-info')
+            cy.wrap(comp.setProps({ message: {"msg": "Cypress Test: Hello!", "class": "alert alert-warning"}}))
             .then(() => {
-                expect(comp.vm.updateBanner.msg).to.equal('Cypress Test: Hello!') 
-                expect(comp.vm.updateBanner.class).to.equal('alert alert-warning')    
+                expect(comp.vm.message.msg).to.equal('Cypress Test: Hello!') 
+                expect(comp.vm.message.class).to.equal('alert alert-warning')    
             })
         })
 
