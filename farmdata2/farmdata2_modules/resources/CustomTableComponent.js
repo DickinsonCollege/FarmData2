@@ -96,7 +96,7 @@ let CustomTableComponent = {
                 <thead>
                     <tr class="sticky-header table-text" data-cy="table-headers">
                         <th
-                        v-if="canDelete || customButtons.length > 0 || csvName != ''"  
+                        v-if="enableSelectionColumn"  
                         :data-cy="'selectAll-checkbox'"
                         style="text-align:center">
                             <input type="checkbox"
@@ -120,7 +120,7 @@ let CustomTableComponent = {
                     v-for="(row, ri) in rows"
                     :data-cy="'r'+ri">
                         <td
-                        v-if="customButtons.length > 0 || canDelete || csvName != ''" 
+                        v-if="enableSelectionColumn" 
                         :data-cy="'r'+ri+'-cbutton'"
                         style="text-align:center">
                             <input
@@ -426,6 +426,14 @@ let CustomTableComponent = {
         dropdownOptions() {
             tempArr = []
             return tempArr
+        },
+        enableSelectionColumn(){
+            if(this.canDelete || this.csvName != '' || this.customButtons.length > 0){
+                return true
+            }
+            else{
+                return false
+            }
         }
     },
 
