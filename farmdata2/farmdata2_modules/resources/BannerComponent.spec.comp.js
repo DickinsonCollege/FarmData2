@@ -159,4 +159,55 @@ describe('BannerComponent tests', () => {
             })
         })
     })
+
+    context('test banner hidden emit', () => {
+
+
+        it('banner emit occurs when x is clicked', () => {
+            const spy = cy.spy()
+            mount(BannerComponent, {
+                propsData: {
+                    message: {"msg": "Test: I am a test message", "class": "alert alert-info"},
+                    visible: true,
+                },
+                listeners: {
+                    'banner-hidden' : spy
+                },
+            })  
+            cy.get('[data-cy=banner-handler]').should('exist')
+            cy.get('[data-cy=banner-handler] > [data-cy=banner-close]')
+                .click()
+            .then(() => {
+                expect(spy).to.be.called
+            })
+        })
+
+        it('banner emit occurs when timeout is enabled', () => {
+            let wrapper
+            let div
+            const spy = cy.spy()
+
+            div = document.createElement('div')
+            document.body.appendChild(div)
+
+            wrapper = shallowMount(BannerComponent, {
+                attachTo: div,
+                propsData: {
+                    message: {"msg": "Test: I am a test message", "class": "alert alert-info"},
+                    visible: false,
+                    timeout: true,
+                },
+                listeners: {
+                    'banner-hidden' : spy
+                },
+            })
+
+            cy.get('[data-cy=banner-handler]').should('exist')
+            cy.wrap(wrapper.setProps({visible : true}))
+            cy.wait(5000)
+            .then(() => {
+                expect(spy).to.be.called
+            })
+        })
+    })
 })

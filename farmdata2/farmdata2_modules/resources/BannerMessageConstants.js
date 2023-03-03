@@ -3,23 +3,10 @@
 
 
 /**
- * Map of common banner messages used in the BannerComponent for displaying messages
- * 
- * <p><b>Banner Message Variables</b></p>
- * <table>
- * <thead><tr><th>Variable Name</th>   <th>Banner Message</th>     <th>Descripion</th></tr></thead>
- * <tbody>
- * <tr><td>uiError</td> <td>Error! This is what an error banner looks like.</td> <td>Displayed when an error in the UI page occurs.</td></tr>
- * <tr><td>uiSuccess</td> <td>Success! This is what a success banner looks like.</td> <td>Displayed when a success event in the UI page occurs.</td></tr>
- * <tr><td>uiMsg</td> <td>Message! This is what a message banner looks like.</td> <td>Displayed when when a message event in the UI page occurs.</td></tr>
- * </tbody>
- * </table>
+ * Map of common banner messages used in the BannerComponent.
+ * // ui { contains banner messages for the ui page. }
  */
 var bannerMessageMap = {
-    standard: {
-        error: {"msg": "Intermittent network error. Please try again later.", "class": "alert alert-danger alert-dismissible"},
-    },
-    
     ui: {
         error: {"msg": "Error! This is what an error banner looks like.", "class": "alert alert-danger alert-dismissible"},
         success: {"msg": "Success! This is what a success banner looks like.", "class": "alert alert-success alert-dismissible"}, 

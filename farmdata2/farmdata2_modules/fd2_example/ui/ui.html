@@ -1,12 +1,11 @@
 <!-- define a div to wrap around the app. -->
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="ui" v-cloak> 
-    <!-- <div style="position: -webkit-sticky; position: sticky; top: 60px; background-color: forestgreen; padding: 3px;">Hello I am a DIV</div> -->
     <banner data-cy="alert-banner" 
     :message="bannerObj" 
     :visible="bannerVisibility" 
     :timeout="timeoutSet"
-    @visibility-update="resetBannerVisibility">
+    @banner-hidden="resetBannerVisibility">
     </banner>
 
     <p>FarmData2 provides a number of custom Vue components, bootstrap elements and CSS styles that are used throught the application to give it a consistent look and feel.  This page gives examples of how the components and styles are created, used and tested (see ui.spec.js).</p>

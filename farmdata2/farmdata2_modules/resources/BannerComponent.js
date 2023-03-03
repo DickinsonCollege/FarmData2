@@ -1,5 +1,5 @@
 /**
- * A Vue component for a message banner that is displayed when a specific event (success/error/etc.) occurs.
+ * A Vue component that augments the Bootstrap CSS class for the alert banner to generate dynamic success/error/message banner for pages.
  * 
  * <h3 class="subsection-title">data-cy attributes</h3>
  * <table>
@@ -14,12 +14,19 @@
  * <div>
  *  @vue-prop {Object} [message={"msg": "Hello, I am a banner alert.", "class": "alert alert-warning"}] - Contains the message and class for the alert banner
  *  @vue-prop {Boolean} [visible=null] - Set to true to show the alert banner. False makes the banner invisible.
- *  @vue-prop {Boolean} [timeout=null] - Sets whether or not the banner dismisses itself which disables the 'x' to close. Set to false by default.
+ *  @vue-prop {Boolean} [timeout=false] - Sets whether or not the banner dismisses itself which disables the 'x' to close. Set to false by default. Currently set to self-dismiss after 5 seconds.
  * </div>
  * 
  * <div>
  *  @vue-event visibility-update - Updates the visibility in the parent page when the child component has internal visibility updates. This means each page needs to implement a function that catches this emit and matches their visibility with the child's internal visibility. 
- * </div>
+ *  @returns false because the banner has been dismissed (either via clicking the x or the timeout).
+ *  @example <caption>Retrieve all planting assets into a new array.</caption>
+ * updateBannerVisibility(newBool) {
+ * this.bannerVisibility = newBool 
+ * // For a specific example make sure to check the UI page's source code. 
+ * }
+ * 
+* </div>
  * @module
  */ 
 let BannerComponent = {
@@ -70,7 +77,7 @@ let BannerComponent = {
             if(this.timeoutBool == true){
                 setTimeout(() => { 
                     this.isVisible = false
-                    this.$emit('visibility-update')
+                    this.$emit('banner-hidden')
                 }, 5000)     
             }
         },
@@ -82,7 +89,7 @@ let BannerComponent = {
     methods: {
         hideBanner() {
             this.isVisible = false
-            this.$emit('visibility-update')
+            this.$emit('banner-hidden')
         },
     },
     mounted: 
