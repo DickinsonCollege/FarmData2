@@ -622,7 +622,7 @@ describe('custom table component', () => {
     })
 
     context('export csv file', () => {
-        const downloadsFolder = '/home/fd2dev/FarmData2/farmdata2_modules/cypress/downloads/'
+        const downloadsFolder = '/home/fd2dev/fd2test/cypress/downloads/'
         let comp;
         beforeEach(() => {
             comp = mount(CustomTableComponent, {
