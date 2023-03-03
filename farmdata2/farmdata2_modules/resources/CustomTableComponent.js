@@ -26,15 +26,12 @@ catch(err) {
  * <tr><td>hi</td>                   <td>The ith th element, i=0,1,2...</td></tr>
  * <tr><td>edit-header</td>          <td>The th element for the edit button column</td></tr>
  * <tr><td>save-header</td>          <td>The th element for the save button column</td></tr>
- * <tr><td>ri</td>                   <td>The tr checkbox element for the ith table row if custom buttons or deleting is enabled, i=0,1,2,...</td></tr>
+ * <tr><td>ri-cbutton</tc>           <td>The td element containing the checkbox for the ith table row if it appears. i=0,1,2...</td></tr>
+ * <tr><td>ri-cbuttonCheckbox</td>   <td>The checkbox element for the ith table row if custom buttons or deleting is enabled, i=0,1,2,...</td></tr>
  * <tr><td>ri</td>                   <td>The tr element for the ith table row, i=0,1,2,...</td></tr>
  * <tr><td>td-ricj</td>              <td>The td element in the ith row and jth column, i,j=0,1,2...</td></tr>
- * <tr><td>ri-columnHeader</td>      <td>The div for plain text in the ith row and jth column, i,j=0,1,2....</td></tr>
- * <tr><td>ri-text-input</td>        <td>The text input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
- * <tr><td>ri-dropdown-input</td>    <td>The select input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
- * <tr><td>ri-date-input</td>        <td>The date input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
- * <tr><td>ri-regex-input</td>       <td>The regex input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
- * <tr><td>ri-boolean-input</td>     <td>The boolean input in the ith row and jth column in edit mode, i,j=0,1,2....</td></tr>
+ * <tr><td>ri-*</td>                 <td>The div for plain text in the ith row and the indicated column, * is replaced by the column header. i,j=0,1,2....</td></tr>
+ * <tr><td>ri-*-input</td>           <td>The text input element ith row and the indicated column in edit mode, * is replaced by the column header. i=0,1,2....</td></tr>
  * <tr><td>ri-edit-button</td>       <td>The edit button in the ith row, i=0,1,2....</td></tr>
  * <tr><td>ri-save-button</td>       <td>The save button in the ith row, i=0,1,2....</td></tr>
  * <tr><td>ri-cancel-button</td>     <td>The cancel button in the ith row, i=0,1,2....</td></tr>
@@ -124,7 +121,7 @@ let CustomTableComponent = {
                     :data-cy="'r'+ri">
                         <td
                         v-if="customButtons.length > 0 || canDelete || csvName != ''" 
-                        :data-cy="'r'+ri+'cbutton'+ri"
+                        :data-cy="'r'+ri+'-cbutton'"
                         style="text-align:center">
                             <input
                             :disabled="editDeleteDisabled"
@@ -147,13 +144,13 @@ let CustomTableComponent = {
                                         
                             <textarea 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'text'" 
-                            :data-cy="'r'+ri+'-'+columns[ci].inputType.type+'-input'"
+                            :data-cy="'r'+ri+'-'+columns[ci].header+'-input'"
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)"></textarea>
                                         
                             <select 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'dropdown'" 
-                            :data-cy="'r'+ri+'-'+columns[ci].inputType.type+'-input'"
+                            :data-cy="'r'+ri+'-'+columns[ci].header+'-input'"
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
                                 <option v-for="option in columns[ci].inputType.value">{{ option }}</option>
@@ -161,14 +158,14 @@ let CustomTableComponent = {
                                         
                             <input 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'date'" 
-                            :data-cy="'r'+ri+'-'+columns[ci].inputType.type+'-input'"
+                            :data-cy="'r'+ri+'-'+columns[ci].header+'-input'"
                             type="date" 
                             v-model="editedRowData.data[ci]" 
                             @focusout="changedCell(ci)">
                                         
                             <regex-input 
                             v-if="rowToEditIndex==ri && columns[ci].inputType.type == 'regex'"
-                            :data-cy="'r'+ri+'-'+columns[ci].inputType.type+'-input'" 
+                            :data-cy="'r'+ri+'-'+columns[ci].header+'-input'" 
                             :reg-exp="columns[ci].inputType.regex"
                             :default-val="editedRowData.data[ci]"
                             set-type="number" 
@@ -179,7 +176,7 @@ let CustomTableComponent = {
 
                             <input 
                             v-if="columns[ci].inputType.type == 'boolean'" 
-                            :data-cy="'r'+ri+'-'+columns[ci].inputType.type+'-input'" 
+                            :data-cy="'r'+ri+'-'+columns[ci].header+'-input'" 
                             type="checkbox" 
                             :disabled="rowToEditIndex!=ri || !editDeleteDisabled"
                             v-model="rows[ri].data[ci]">

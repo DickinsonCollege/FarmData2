@@ -61,6 +61,7 @@
                 </div> 
             </div>
         </div>
+        <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
     </div>
     <script>
         var transplantingReport = new Vue ({
@@ -94,6 +95,8 @@
 
                 rowBeingEdited: false,
                 errBannerVisibility: false,
+
+                createdCount: 0, 
             },
             methods: {
                 hide(){
@@ -535,12 +538,17 @@
                     {"header": 'Comments', "visible": true, "inputType" : {'type': 'text'}},
                     {"header": 'User', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.userNameArray}},
                 ]
-                }
+                },
+                pageLoaded() {
+                    // Check here that the correct number of API calls have completed.
+                    return this.createdCount == 8
+                },
             },
             created() {
                 getSessionToken()
                     .then((response) => {
                         this.sessionToken = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -548,6 +556,7 @@
                 getIDToCropMap()
                     .then((response) => {
                         this.idToCropMap = new Map(response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -555,6 +564,7 @@
                 getCropToIDMap()
                     .then((response) => {
                         this.cropToIDMap = new Map(response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -562,6 +572,7 @@
                 getIDToUserMap()
                     .then((response) => {
                         this.idToUserMap = new Map (response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -569,6 +580,7 @@
                 getUserToIDMap()
                     .then((response) => {
                         this.userToIDMap = new Map (response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -576,6 +588,7 @@
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = new Map(response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -583,6 +596,7 @@
                 getUnitToIDMap()
                     .then((response) => {
                         this.unitToIDMap = new Map(response)
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -594,6 +608,7 @@
                             this.visibleColumns[7] = false
                             this.visibleColumns[8] = false
                         }
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
