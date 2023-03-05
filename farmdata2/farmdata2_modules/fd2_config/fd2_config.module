@@ -97,19 +97,19 @@ function fd2_config_entity_property_info() {
 * menu at the top of the FarmData2 page with the Dashboard.
 */
 function fd2_config_menu() {
- $items = array();
+  $items = array();
 
- // Define the tab for the module.
- $items['farm/fd2-config'] = array(
-   'title' => 'FD2 Config',
-   'page callback' => 'fd2_config_view',
-   'page arguments' => array('config'),
-   'access arguments' => array('view fd2 config'),
-   'type' => MENU_LOCAL_TASK,
-   'weight' => 300,
- );
+  // Define the tab for the module.
+  $items['farm/fd2-config'] = array(
+    'title' => 'FD2 Config',
+    'page callback' => 'fd2_config_view',
+    'page arguments' => array('config'),
+    'access arguments' => array('view fd2 config'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 300,
+  );
 
- return $items;
+  return $items;
 };
 
 // This function Loads the content for the sub-tab from the html file specified in the argument.
