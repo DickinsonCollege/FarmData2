@@ -5,37 +5,37 @@
  * See the README.md file in the fd2_example directory for more information.
  */
 
- function fd2_example_permission() {
-   return array(
-     'view fd2 example' => array(
-       'title' => t('View FD2 Example'),
-     ),
-     'configure fd2 Example' => array(
-       'title' => t('Configure FD2 Example'),
-     ),
-   );
- }
+function fd2_example_permission() {
+  return array(
+    'view fd2 example' => array(
+        'title' => t('View FD2 Example'),
+    ),
+    'configure fd2 Example' => array(
+        'title' => t('Configure FD2 Example'),
+    ),
+  );
+}
 
- function fd2_example_farm_access_perms($role) {
-   $perms = array();
+function fd2_example_farm_access_perms($role) {
+  $perms = array();
 
    // Load the list of farm roles.
-   $roles = farm_access_roles();
+  $roles = farm_access_roles();
 
    // If this role has 'edit' access, allow them to see the Example tab.
-   if (!empty($roles[$role]['access']['edit'])) {
-     $perms[] = 'view fd2 example';
-   }
+  if (!empty($roles[$role]['access']['edit'])) {
+    $perms[] = 'view fd2 example';
+  }
 
    // If this role has 'config' access, it to configure the fd2_example module.
-   if (!empty($roles[$role]['access']['config'])) {
-     $perms[] = 'configure fd2 example';
-   }
+  if (!empty($roles[$role]['access']['config'])) {
+    $perms[] = 'configure fd2 example';
+  }
 
-   return $perms;
- }
+  return $perms;
+}
 
- /**
+/**
  * Implements hook_menu() which places the Exmple tab in the Farm
  * menu at the top of the FarmData2 page with the Dashboard.
  */
@@ -131,8 +131,9 @@ function fd2_example_preprocess_page() {
     drupal_add_js('https://unpkg.com/dayjs@1.8.21/dayjs.min.js', 'external');
 
     // Define some useful variables in the JavaScript for page.
+    // the @ symbol surpresses the warning when a user attempts to access a page without being logged in
     global $user;
-    $cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."';";
+    @$cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."';";
     drupal_add_js($cmd,'inline');
   }
 };
