@@ -157,7 +157,14 @@ function getUserToIDMap(){
  * // Note that the Map will not be available until the then() executes.
  */
 function getIDToCropMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_crops', 'tid', 'name')
+    return new Promise ((resolve, reject) => {
+        axios.get("http://fd2_api/crops/mapById")
+        .then((response) => {
+            resolve(new Map(Object.entries(response.data)))
+        }).catch(function (err) {
+            reject(err)
+        })
+    })
 }
 
 /**
@@ -178,7 +185,14 @@ function getIDToCropMap(){
  * // Note that the Map will not be available until the then() executes.
  */
 function getCropToIDMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_crops', 'name', 'tid')
+    return new Promise ((resolve, reject) => {
+        axios.get("http://fd2_api/crops/mapByName")
+        .then((response) => {
+            resolve(new Map(Object.entries(response.data)))
+        }).catch(function (err) {
+            reject(err)
+        })
+    })
 }
 
 /**
@@ -199,7 +213,14 @@ function getCropToIDMap(){
  * // Note that the Map will not be available until the then() executes.
  */
 function getIDToAreaMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_areas', 'tid', 'name')
+    return new Promise ((resolve, reject) => {
+        axios.get("http://fd2_api/areas/mapById")
+        .then((response) => {
+            resolve(new Map(Object.entries(response.data)))
+        }).catch(function (err) {
+            reject(err)
+        })
+    })
 }
 
 /**
@@ -220,7 +241,14 @@ function getIDToAreaMap(){
  * // Note that the Map will not be available until the then() executes.
  */
 function getAreaToIDMap(){
-    return getMap('/taxonomy_term.json?bundle=farm_areas', 'name', 'tid')
+    return new Promise ((resolve, reject) => {
+        axios.get("http://fd2_api/areas/mapByName")
+        .then((response) => {
+            resolve(new Map(Object.entries(response.data)))
+        }).catch(function (err) {
+            reject(err)
+        })
+    })
 }
 
 /**
