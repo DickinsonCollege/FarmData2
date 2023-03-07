@@ -18,13 +18,14 @@
  * </div>
  * 
  * <div>
- *  @vue-event visibility-update - Updates the visibility in the parent page when the child component has internal visibility updates. This means each page needs to implement a function that catches this emit and matches their visibility with the child's internal visibility. 
- *  @returns false because the banner has been dismissed (either via clicking the x or the timeout).
- *  @example <caption>Retrieve all planting assets into a new array.</caption>
- * updateBannerVisibility(newBool) {
- * this.bannerVisibility = newBool 
- * // For a specific example make sure to check the UI page's source code. 
- * }
+ *  @vue-event banner-hiddem - Updates the visibility in the parent page when the child component has internal visibility updates. This means each page needs to implement a function that catches this emit and matches their visibility with the child's internal visibility. 
+ *  @example <caption>Handling Banner Visibility in Parent Page</caption>
+ *  For the parent page make sure to add the @banner-hidden="hideBanner" where 'hideBanner' is the name of your method in the parent page's BannerComponent tag.
+ *  The parent page's method should look like the following: 
+ *  hideBanner(){
+ *      // 'bannerVisibility' would be the Vue data in charge of determining the banner's visibility in the parent page 
+ *      this.bannerVisibility = false 
+ *  }
  * 
 * </div>
  * @module
