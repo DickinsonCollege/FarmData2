@@ -18,7 +18,7 @@
  * </div>
  * 
  * <div>
- *  @vue-event banner-hiddem - Updates the visibility in the parent page when the child component has internal visibility updates. This means each page needs to implement a function that catches this emit and matches their visibility with the child's internal visibility. 
+ *  @vue-event banner-hidden - Updates the visibility in the parent page when the child component has internal visibility updates. This means each page needs to implement a function that catches this emit and matches their visibility with the child's internal visibility. 
  *  @example <caption>Handling Banner Visibility in Parent Page</caption>
  *  For the parent page make sure to add the @banner-hidden="hideBanner" where 'hideBanner' is the name of your method in the parent page's BannerComponent tag.
  *  The parent page's method should look like the following: 
