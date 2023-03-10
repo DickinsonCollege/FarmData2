@@ -796,15 +796,6 @@
                     return userNameArray
                 },
 
-                areaNameArray(){
-                    let areaNameArray = []
-                    const areaKeyIterator = this.areaToIDMap.keys()
-                    for(i = 0; i < this.areaToIDMap.size; i++){
-                        areaNameArray.push(areaKeyIterator.next().value)
-                    }
-                    return areaNameArray
-                },
-
                 cropNameArray(){
                     let cropNameArray = []
                     for(let [key, info] of this.cropToIDMap){
