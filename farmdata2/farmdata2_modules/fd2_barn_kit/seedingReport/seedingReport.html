@@ -858,7 +858,8 @@
                         .catch((err) => { 
                             this.errBannerVisibility = true
                         })
-                }else{
+                }
+                else{
                     this.areaResponse = JSON.parse(localStorage.getItem('areas'))
                     getAllPages('/taxonomy_term.json?bundle=farm_areas')
                         .then((resp) => {
@@ -876,13 +877,6 @@
                             this.errBannerVisibility = true
                         })
                 }
-                // getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaJSONList)
-                //         .then(() => {
-                //             // do nothing
-                //         })
-                //         .catch((err) => { 
-                //             this.errBannerVisibility = true
-                //         })
                 getSessionToken()
                     .then((response) => {
                         this.sessionToken = response
