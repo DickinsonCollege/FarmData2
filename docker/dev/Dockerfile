@@ -143,7 +143,7 @@ RUN npm install -d \
         @cypress/vue2@1.1.2 \
         path@0.12.7 \
         axios@0.24.0
-RUN touch .eslintignore
+RUN echo "**/*.js" > .eslintignore
 WORKDIR /home/$USERNAME
 
 # Configure the VNC server so that it allows fd2dev to connect without
