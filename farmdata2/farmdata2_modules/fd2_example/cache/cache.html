@@ -14,6 +14,8 @@
         <!-- Give each LI a data-cy attribute that matches the list numbering -->
         <LI v-for="(crop,i) in cropNames"><span :data-cy=(i+1)+'crop'>{{ crop }}</span></LI>
     </OL>
+
+    <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
 </div>
 
 <script>
@@ -26,7 +28,7 @@ new Vue({
         userName: fd2UserName,
 
         cropsResponse: null,
-        
+        createdCount: 0, 
     },
     methods: {
         clearCache() {
@@ -43,12 +45,18 @@ new Vue({
                 return this.cropsResponse.map((h) => h.name)
             }
         },
+        pageLoaded() {
+            // Check here that the correct number of API calls have completed.
+            return this.createdCount == 2
+        },
     },
     created() {
         // If the value we are looking for is in the cache, then use it as is to start.
         if(localStorage.getItem('crops') != null) {
             // Need to JSON.parse it because it was stringified when we put it in there.
             this.cropsResponse = JSON.parse(localStorage.getItem('crops'))
+
+            this.createdCount++
         }
         
         // Whether we found the value in the cache or not we now want to request it again.
@@ -61,6 +69,8 @@ new Vue({
         getAllPages('/taxonomy_term.json?bundle=farm_crops',response).then(() => {
             localStorage.setItem('crops', JSON.stringify(response))
             this.cropsResponse = response
+
+            this.createdCount++
         })
     }
 })

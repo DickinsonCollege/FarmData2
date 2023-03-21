@@ -88,8 +88,9 @@ function fd2_field_kit_preprocess_page() {
     drupal_add_js('https://unpkg.com/dayjs@1.8.21/dayjs.min.js', 'external');
 
     // Define some useful variables in the JavaScript for page.
+    // the @ symbol surpresses the warning when a user attempts to access a page without being logged in
     global $user;
-    $cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."';";
+    @$cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."';";
     drupal_add_js($cmd,'inline');
   }
 };
