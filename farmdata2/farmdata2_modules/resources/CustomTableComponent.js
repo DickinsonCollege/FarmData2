@@ -62,7 +62,7 @@ catch(err) {
  * <DD>The value in the column is edited using a check box.
  * </DL>
  * </UL>
- * <p>For example, the following object provides the column information for a table with three columns:
+ * <p>For example, the following array provides the column information for a table with three columns:
  * <br><pre>
  * [ {header: "Clothing", visibility: true, inputType: {type: "text"}},
  *   {header: "Size", visibility: true, inputType: {type: "dropdown", value: ["S", "M", "L"]}},
@@ -78,7 +78,7 @@ catch(err) {
  * It is returned in event payloads to indicate to which row of the table the event occurred. 
  * <LI><code>data</code>: The data for the row as an array.  Each element of the array holds the value for one column in the table. 
  * </UL>
- * <p>For example, the following object would provide data for a table with three rows and three columns:
+ * <p>For example, the following array would provide data for a table with three rows and three columns:
  * <br><pre>
  * [ {id: 1, data:["Shirt", "S", "01/10/2019"]},
  *   {id: 2, data:["Dress", "M", "05/22/2020"]},
