@@ -78,6 +78,8 @@
         <div style='text-align:center;'>
             <label style='color: #da4f3f'>* required field.</label>
         </div> 
+
+        <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
     </div>
     
     <script>
@@ -135,6 +137,8 @@
                 regNumWorker: regexMap.regPosInt,
                 errBannerVisibility: false,
                 configToIDMap: new Map(),
+
+                createdCount: 0, 
             },
             methods:{
                 updateValidMap(key, bool) {    
@@ -521,6 +525,10 @@
                     ]
                     return quantity 
                 },
+                pageLoaded() {
+                    // Check here that the correct number of API calls have completed.
+                    return this.createdCount == 9
+                },
             },
             created(){
                 let fullResponse = []
@@ -529,6 +537,7 @@
                         .then(() => {
                             this.cropArray = fullResponse.map((h) => h.name)
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                            this.createdCount++
                         })
                         .catch((err) => { 
                             this.errBannerVisibility = true
@@ -539,6 +548,7 @@
                         .then(() => {
                             this.cropArray = fullResponse.map((h) => h.name)
                             localStorage.setItem('crops', JSON.stringify(this.cropArray))
+                            this.createdCount++
                         })
                         .catch((err) => { 
                             this.errBannerVisibility = true
@@ -548,6 +558,7 @@
                     getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse)
                         .then(() => {
                             localStorage.setItem('areas', JSON.stringify(this.areaResponse))
+                            this.createdCount++
                         })
                         .catch((err) => { 
                             this.errBannerVisibility = true
@@ -558,6 +569,7 @@
                         .then((resp) => {
                             this.areaResponse = resp
                             localStorage.setItem('areas', JSON.stringify(resp))
+                            this.createdCount++
                         })
                         .catch((err) => { 
                             this.errBannerVisibility = true
@@ -566,6 +578,7 @@
                 getSessionToken()
                     .then((response) => {
                         this.sessionToken = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -573,6 +586,7 @@
                 getCropToIDMap()
                     .then((response) => {
                         this.cropToIDMap = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -580,6 +594,7 @@
                 getUserToIDMap()
                     .then((response) => {
                         this.userToIDMap = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -587,6 +602,7 @@
                 getAreaToIDMap()
                     .then((response) => {
                         this.areaToIDMap = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -594,6 +610,7 @@
                 getUnitToIDMap()
                     .then((response) => {
                         this.unitToIDMap = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -601,6 +618,7 @@
                 getLogTypeToIDMap()
                     .then((response) => {
                         this.logTypeToIDMap = response
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true
@@ -613,6 +631,7 @@
                             this.regMin = "|" + regexMap.regPosInt
                             this.regHour = "|" + regexMap.regPosFloatTwoDigit
                         }
+                        this.createdCount++
                     })
                     .catch((err) => { 
                         this.errBannerVisibility = true

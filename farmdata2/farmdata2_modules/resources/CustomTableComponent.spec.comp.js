@@ -70,21 +70,21 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-Color]').should('have.text', 'Green')
             cy.get('[data-cy=r0-Count]').should('have.text', '5')
             cy.get('[data-cy=r0-Date]').should('have.text', '2020-01-01')
-            cy.get('[data-cy=r0-boolean-input]').should('be.checked')
+            cy.get('[data-cy=r0-Purchased-input]').should('be.checked')
 
             cy.get('[data-cy=r1-ID]').should('have.text', '5')
             cy.get('[data-cy=r1-Item]').should('have.text', 'Pants')
             cy.get('[data-cy=r1-Color]').should('have.text', 'Blue')
             cy.get('[data-cy=r1-Count]').should('have.text', '12')
             cy.get('[data-cy=r1-Date]').should('have.text', '2020-05-01')
-            cy.get('[data-cy=r1-boolean-input]').should('be.checked')
+            cy.get('[data-cy=r1-Purchased-input]').should('be.checked')
 
             cy.get('[data-cy=r2-ID]').should('have.text', '9')
             cy.get('[data-cy=r2-Item]').should('have.text', 'Hat')
             cy.get('[data-cy=r2-Color]').should('have.text', 'Black')
             cy.get('[data-cy=r2-Count]').should('have.text', '8')
             cy.get('[data-cy=r2-Date]').should('have.text', '2020-03-01')
-            cy.get('[data-cy=r2-boolean-input]').should('not.be.checked')
+            cy.get('[data-cy=r2-Purchased-input]').should('not.be.checked')
         })
 
         it('prop change to the rows updates table', () => {
@@ -95,7 +95,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-Color]').should('have.text', 'Grey')
             cy.get('[data-cy=r0-Count]').should('have.text', '16')
             cy.get('[data-cy=r0-Date]').should('have.text', '2001-10-16')
-            cy.get('[data-cy=r0-boolean-input]').should('not.be.checked')
+            cy.get('[data-cy=r0-Purchased-input]').should('not.be.checked')
         })
 
         it('prop change to the column visibility updates table', () => {
@@ -107,7 +107,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-Color]').should('have.text', 'Grey')
             cy.get('[data-cy=r0-Count]').should('have.text', '16')
             cy.get('[data-cy=r0-Date]').should('have.text', '2001-10-16')
-            cy.get('[data-cy=r0-boolean-input]').should('not.be.checked')
+            cy.get('[data-cy=r0-Purchased-input]').should('not.be.checked')
         })
         
         it('renders HTML elements found in strings', () => {
@@ -151,7 +151,7 @@ describe('custom table component', () => {
                 .should('exist')
                 .click()
 
-            cy.get('[data-cy=r0-text-input]')
+            cy.get('[data-cy=r0-Item-input]')
                 .clear()
                 .type('Socks')
 
@@ -171,7 +171,7 @@ describe('custom table component', () => {
                 .should('exist')
                 .click()
 
-            cy.get('[data-cy=r0-text-input]')
+            cy.get('[data-cy=r0-Item-input]')
                 .clear()
                 .type('Shirt')
 
@@ -223,7 +223,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-edit-button]')
                 .click()
 
-            cy.get('[data-cy=r0-text-input]')
+            cy.get('[data-cy=r0-Item-input]')
                 .clear()
                 .type('Hoodie')
 
@@ -319,7 +319,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-edit-button]')
                 .click()
 
-            cy.get('[data-cy=r0-text-input]')
+            cy.get('[data-cy=r0-Item-input]')
                 .clear()
                 .type('Bomber Jacket')
                 .clear()
@@ -377,7 +377,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-edit-button')
                 .first().click()
 
-            cy.get('[data-cy=r0-text-input]')
+            cy.get('[data-cy=r0-Item-input]')
                 .clear()
                 .type('Hello there!')
             
@@ -453,15 +453,17 @@ describe('custom table component', () => {
 
             cy.get('[data-cy=r0-ID]') // This is a no-input
                 .should("exist")
-            cy.get('[data-cy=r0-text-input]')
+            cy.get('[data-cy=r0-Item-input]')
                 .should("exist")
-            cy.get('[data-cy=r0-dropdown-input]')
+            cy.get('[data-cy=r0-Size-input]')
+                .should("not.exist")  // not visible
+            cy.get('[data-cy=r0-Color-input]')
+                .should("exist")    
+            cy.get('[data-cy=r0-Count-input]')
                 .should("exist")
-            cy.get('[data-cy=r0-regex-input]')
+            cy.get('[data-cy=r0-Date-input]')
                 .should("exist")
-            cy.get('[data-cy=r0-date-input]')
-                .should("exist")
-            cy.get('[data-cy=r0-boolean-input]')
+            cy.get('[data-cy=r0-Purchased-input]')
                 .should("exist")
         })
 
@@ -469,7 +471,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-edit-button]')
                 .click()
 
-            cy.get('[data-cy=r0-text-input]')
+            cy.get('[data-cy=r0-Item-input]')
                 .clear()
                 .type('Testing')
 
@@ -484,7 +486,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-edit-button]')
                 .click()
             
-            cy.get('[data-cy=r0-dropdown-input]')
+            cy.get('[data-cy=r0-Color-input]')
                 .select('Black')
             
             cy.get('[data-cy=r0-save-button]')
@@ -499,7 +501,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-edit-button]')
                 .click()
 
-            cy.get('[data-cy=r0-regex-input] > [data-cy=text-input]')
+            cy.get('[data-cy=r0-Count-input] > [data-cy=text-input]')
                 .clear()
                 .type('12.5')
                 .blur()
@@ -507,7 +509,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-save-button]')
                 .should("be.disabled")
 
-            cy.get('[data-cy=r0-regex-input] > [data-cy=text-input]')
+            cy.get('[data-cy=r0-Count-input] > [data-cy=text-input]')
                 .clear()
                 .type('2')
                 .blur()
@@ -523,7 +525,7 @@ describe('custom table component', () => {
             cy.get('[data-cy=r0-edit-button]')
                 .click()
 
-            cy.get('[data-cy=r0-date-input]')
+            cy.get('[data-cy=r0-Date-input]')
                 .type('2020-05-14')
 
             cy.get('[data-cy=r0-save-button]')
@@ -534,20 +536,20 @@ describe('custom table component', () => {
         })
 
         it('allows you to check and uncheck only while editing', () => {
-            cy.get('[data-cy=r0-boolean-input]')
+            cy.get('[data-cy=r0-Purchased-input]')
                 .should('be.disabled')
 
             cy.get('[data-cy=r0-edit-button]')
                 .click()
 
-            cy.get('[data-cy=r0-boolean-input]')
+            cy.get('[data-cy=r0-Purchased-input]')
                 .should('be.enabled')
                 .uncheck()
 
             cy.get('[data-cy=r0-save-button]')
                 .click()
 
-            cy.get('[data-cy=r0-boolean-input')
+            cy.get('[data-cy=r0-Purchased-input')
                 .should('not.be.checked')
         })
     })
@@ -620,7 +622,7 @@ describe('custom table component', () => {
     })
 
     context('export csv file', () => {
-        const downloadsFolder = '/home/fd2dev/FarmData2/farmdata2_modules/cypress/downloads/'
+        const downloadsFolder = '/home/fd2dev/fd2test/cypress/downloads/'
         let comp;
         beforeEach(() => {
             comp = mount(CustomTableComponent, {
