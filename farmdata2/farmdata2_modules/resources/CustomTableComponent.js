@@ -31,7 +31,7 @@ catch(err) {
  * <tr><td>ri-cbuttonCheckbox</td>   <td>The checkbox element for the ith table row if custom buttons or deleting is enabled, i=0,1,2,...</td></tr>
  * <tr><td>ri</td>                   <td>The tr element for the ith table row, i=0,1,2,...</td></tr>
  * <tr><td>td-ricj</td>              <td>The td element in the ith row and jth column, i,j=0,1,2...</td></tr>
- * <tr><td>ri-*</td>                 <td>The div for plain text in the ith row and the indicated column, * is replaced by the column header. i,j=0,1,2....</td></tr>
+ * <tr><td>ri-*</td>                 <td>The div for plain text in the ith row and the indicated column, * is replaced by the column header. i=0,1,2....</td></tr>
  * <tr><td>ri-*-input</td>           <td>The input element ith row and the indicated column in edit mode, * is replaced by the column header. i=0,1,2....</td></tr>
  * <tr><td>ri-edit-button</td>       <td>The edit button in the ith row, i=0,1,2....</td></tr>
  * <tr><td>ri-save-button</td>       <td>The save button in the ith row, i=0,1,2....</td></tr>
