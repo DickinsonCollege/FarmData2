@@ -144,7 +144,7 @@ RUN npm install -d \
         path@0.12.7 \
         axios@0.24.0
 WORKDIR /home/$USERNAME
-COPY /.eslintignore /home/$USERNAME/fd2test/
+COPY ./.eslintignore .
 
 # Configure the VNC server so that it allows fd2dev to connect without
 # a login.
