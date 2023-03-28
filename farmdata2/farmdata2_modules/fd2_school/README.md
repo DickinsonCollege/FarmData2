@@ -13,8 +13,8 @@ If you use these activities, please keep in mind that they were created for use 
 - 04 - Vue Events and JavaScript Functions Technology Spike [ [docx](activities/04-VueJSEventsSpike.docx) | [pdf](activities/04-VueJSEventsSpike.pdf) ]
 - 05 - Web APIs Technology Spike [ [docx](activities/05-WebAPIsSpike.docx) | [pdf](activities/05-WebAPIsSpike.pdf) ]
 - 06 - FarmOS API Technology Spike [ [docx](activities/06-FarmOSAPISpike.docx) | [pdf](activities/06-FarmOSAPISpike.pdf) ]
-- 07 - FarmData2 Pages and Patterns (in development)
-- 08 - Cypress Testing (in development)
+- 07 - Cypress End-To-End Testing Spike [ [docx](activities/07-CypressSpike.docx) | [pdf](activities/07-CypressSpike.pdf) ]
+- 08 - FarmData2 Components Spike [ [docx](activities/08-FD2ComponentsSpike.docx) | [pdf](activities/08-FD2ComponentsSpike.pdf) ]
 
 ## The FarmData2 School Module ###
 
