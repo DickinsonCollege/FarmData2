@@ -123,7 +123,7 @@ let BannerComponent = {
 }
 /*
  * Export the ErrorBannerComponent object as a CommonJS component
- * so that it can be required bythe component test.
+ * so that it can be required by the component test.
  */
 try {
     module.exports = {
