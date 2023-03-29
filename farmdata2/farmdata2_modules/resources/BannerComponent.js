@@ -31,7 +31,7 @@
  *    :message="bannerObj" 
  *    :visible="bannerVisibility" 
  *    :timeout="timeoutSet" 
- *    @ banner-hidden="resetBannerVisibility"></banner> 
+    \@banner-hidden="resetBannerVisibility"></banner> 
  *  
  *  // where 'hideBanner' is the name of your method in the parent page.
  *  // the method in the parent page should look like the following:

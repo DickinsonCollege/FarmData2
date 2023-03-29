@@ -49,6 +49,7 @@ RUN apt install -y --no-install-recommends \
  && npm install -g \
         @vue/cli@5.0.8 \
         jsdoc@3.6.7 \
+        jsdoc-escape-at \
         jsdoc-vuejs@3.0.9 \
         vue-template-compiler@2.6.14
 
