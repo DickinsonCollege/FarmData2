@@ -1,7 +1,3 @@
-// Declaring regular expression variables so that is
-// defined in all the pages served from out modules.
-
-
 /**
  * Map of common banner messages used in the BannerComponent.
  * // ui { contains banner messages for the ui page. }

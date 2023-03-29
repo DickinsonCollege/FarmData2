@@ -15,8 +15,12 @@ describe('BannerComponent tests', () => {
             })
         })
 
-        it('renders the component', () => {
+        it('renders the component in DOM', () => {
             cy.get('[data-cy=banner-handler]').should('exist')
+        })
+
+        it('component should be visible', () => {
+            cy.get('[data-cy=banner-handler]').should('be.visible')
         })
 
         it('has default banner message', () => {
@@ -58,9 +62,11 @@ describe('BannerComponent tests', () => {
     context('test banner with timeout', () => {
         let wrapper
         let div
+        let spy
         beforeEach(() => {
             div = document.createElement('div')
             document.body.appendChild(div)
+            spy = cy.spy()
             wrapper = shallowMount(BannerComponent, {
                 attachTo: div,
                 propsData: {
@@ -85,7 +91,7 @@ describe('BannerComponent tests', () => {
             })
         })
 
-        it('tests if banner disappears if another false is sent', () => {
+        it('test no emit if parent page set prop to false', () => {
             expect(wrapper.vm.visible).to.equal(false)
             expect(wrapper.vm.isVisible).to.equal(false)
             cy.wrap(wrapper.setProps({ visible: true }))
@@ -94,7 +100,8 @@ describe('BannerComponent tests', () => {
             })
             cy.wrap(wrapper.setProps({ visible: false }))
             .then(() => {
-                expect(wrapper.vm.isVisible).to.equal(false)
+                expect(wrapper.vm.isVisible).to.equal(false)   
+                expect(spy).to.not.be.called
             })
         })
     })
@@ -161,7 +168,6 @@ describe('BannerComponent tests', () => {
     })
 
     context('test banner hidden emit', () => {
-
 
         it('banner emit occurs when x is clicked', () => {
             const spy = cy.spy()
