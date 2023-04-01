@@ -10,7 +10,7 @@ This document is intended to be used in two ways. When you are new to FarmData2,
 
 ## Preliminaries ##
 
-Before continuing, If you haven't already, please review the [README](../README.md), the [CODE_OF_CONDUCT](../CODE_OF_CONDUCT.md), the [LICENSE](LICENSE.md) and the [CONTRIBUTING](../CONTRIBUTING.md) documents as they provide information that is important to getting started and to maintaining the FarmData2 community.
+Before continuing, if you haven't already, please review the [README](../README.md), the [CODE_OF_CONDUCT](../CODE_OF_CONDUCT.md), the [LICENSE](LICENSE.md) and the [CONTRIBUTING](../CONTRIBUTING.md) documents as they provide information that is important to getting started and to maintaining the FarmData2 community.
 
 ### Installation ###
 
@@ -18,7 +18,7 @@ The [INSTALL.md](INSTALL.md) file contains the instructions for doing a [Develop
 
 ## Communications ##  
 
-The FarmData2 community uses [Zulip](https://zulip.com/) as it communication platform. Zulip is a group chat application that blends the benefits of asynchronous threaded discussions (e.g. a forum) with live chat.
+The FarmData2 community uses [Zulip](https://zulip.com/) as its communication platform. Zulip is a group chat application that blends the benefits of asynchronous threaded discussions (e.g. a forum) with live chat.
 
 Connecting with the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/) provides a place to ask questions of the project managers and the broader developer community.
 
@@ -39,11 +39,11 @@ The following resources can be useful for learning what you'll need to know abou
       - [Step-by-step guide to contributing on GitHub](https://www.dataschool.io/how-to-contribute-on-github/)
       - [7 Steps to Get Started with Git](https://www.fosslife.org/7-steps-get-started-git).
     - [Git Immersion](https://gitimmersion.com/): A tutorial walks through a series of short hands-on exercises that provide practice with the key features of git.
-    - [Pro Git Book](http://git-scm.com/book/en/v2) | [Learn Git Tutorial](https://www.tutorialspoint.com/git/index.htm): More detailed and comprehensive coverage of Git's features and use.
+    - [Pro Git Book](http://git-scm.com/book/en/v2) | [Learn Git Tutorial](https://www.tutorialspoint.com/git/index.htm): More detailed and comprehensive coverage of git's features and use.
 
 ## FarmData2 School ##
 
-FarmData2 has been used in a number of undergraduate computer science courses, and activities have been developed to guide students through an introduction to front-end development in FarmData2.  If you are new to open source and FarmData2 or to any of the technologies that FarmData2 uses, working through these activities will be an efficient way to get up to speed. If you are a more experienced developer you might just pick and choose from these activities, or skip over them completely to the more general resources in the sections below. If you are an instructor for a course, these activities can provide a way to on-board your students to the project.  Please get in touch on Zulip if you are an instructor interested in using FarmData2 in a course, we will be happy to help.
+FarmData2 has been used in a number of undergraduate computer science courses, and activities have been developed to guide students through an introduction to front-end development in FarmData2.  If you are new to open source and FarmData2 or to any of the technologies that FarmData2 uses, working through these activities will be an efficient way to get up to speed. If you are a more experienced developer you might just pick and choose from these activities, or skip over them completely to the more general resources in the sections below. If you are an instructor for a course, these activities can provide a way to on-board your students to the project.  Please get in touch on Zulip if you are an instructor interested in using FarmData2 in a course, and we will be happy to help.
 
 The FarmData2 School Activities and associated information can be found in the [README.md](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2/farmdata2_modules/fd2_school/README.md) in the [FarmData2 School Module](https://github.com/DickinsonCollege/FarmData2/tree/main/farmdata2/farmdata2_modules/fd2_school).
 
@@ -131,7 +131,7 @@ The FarmData2 front-end exchanges data with the server using the [FarmOS V1 API]
   - Resources:
     - [What is an API and how does it work?](https://www.youtube.com/watch?v=Yzx7ihtCGBs): A video introduction to APIs with a few examples. This is a good place to start if you are new to APIs.
     - [Using Axios to Consume APIs](https://vuejs.org/v2/cookbook/using-axios-to-consume-apis.html): A short example of a `GET` request using Axios and Vue.js.
-    - [Axios](https://github.com/axios/axios): Full documentation for the Axios library. This show how to do both `GET` and `POST` requests.
+    - [Axios](https://github.com/axios/axios): Full documentation for the Axios library. This shows how to do both `GET` and `POST` requests.
     - [FarmOS V1 API](https://v1.farmos.org/development/api/): Documentation for Version 1 of the FarmOS API.
     - [Hoppscotch](https://hoppscotch.io/): A tool for experimenting with API calls. This can be useful in figuring out how to request what you want from the FarmData2 API and how its responses are formatted.
 
@@ -152,7 +152,7 @@ The functionality of FarmData2 is tested using the [Cypress framework](https://w
 
 #### End-to-End Tests ####
 
-The Cypress end-to-end test framework works by controlling the web browser. A test typically consists of a series of steps that are automated by the Cypress tests, called _spec_s. A typical spec consist of the steps:
+The Cypress end-to-end test framework works by controlling the web browser. A test typically consists of a series of steps that are automated by the Cypress tests, called _specs_. A typical spec consists of these steps:
   1. Setup the test (e.g. login, prime the database)
   1. Visit a specific page
   1. Query the page for an _HTML element_ of interest (e.g. button, ext field)
@@ -161,8 +161,8 @@ The Cypress end-to-end test framework works by controlling the web browser. A te
 
   - Resources
     - [Introduction to Cypress](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html): As the docs say..."the single most important guide for understanding how to test with Cypress. Read it. Understand it."
-    - [Writing Your First Test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Add-a-test-file): A good overview of how a typical Cypress test work, what the code looks like, and how to use the Cypress test runner.
-    - [Selecting Elements](https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements): Best practices for selecting elements that are manipulated and checked by your tests. Following these will make you tests less brittle.
+    - [Writing Your First Test](https://docs.cypress.io/guides/getting-started/writing-your-first-test.html#Add-a-test-file): A good overview of how a typical Cypress test works, what the code looks like, and how to use the Cypress test runner.
+    - [Selecting Elements](https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements): Best practices for selecting elements that are manipulated and checked by your tests. Following these will make your tests less brittle.
     - [Selector Playground](https://docs.cypress.io/guides/core-concepts/test-runner.html#Selector-Playground): A tool within the Cypress test runner that will help you find good selectors to use for the elements used in your tests.
     - [Interacting with Elements](https://docs.cypress.io/guides/core-concepts/interacting-with-elements): The main commands in Cypress for interacting with elements in the page (e.g. click, select, etc.).
     - [should](https://docs.cypress.io/api/commands/should.html#Syntax): Documentation for the `should` statement that is used to make assertions in Cypress tests.
@@ -172,7 +172,7 @@ The Cypress end-to-end test framework works by controlling the web browser. A te
 #### Component Tests ####
 
 Cypress component tests work by mounting a Vue Component into a browser and allowing tests to interact with it in isolation from the application.  A typical component test will
-  1. Configuring and mounting the component into the test framework.
+  1. Configure and mount the component into the test framework.
   1. Query the component for an _HTML element_ of interest (e.g. button, ext field).
   1. Interact with that element (e.g. click the button, enter some text).
   1. Make an assertion about the result (e.g. the component emits an event or changes state).
