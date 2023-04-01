@@ -55,7 +55,7 @@ The FarmData2 code and documentation can be edited with any editor.  However, fo
 
 TODO: Write this for VSCodium.
 
-<!-->
+<!--
 a browser-based integrated development environment (IDE) based on [Eclipse Theia](https://theia-ide.org/).
 
 To access the Theia IDE once the [FarmData2 development environment is running](INSTALL#developer-install), just open a browser tab and go to:
