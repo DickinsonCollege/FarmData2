@@ -76,7 +76,7 @@ To add a new sub-tab to the `fd2_xyz` module:
    ```
    - Four elements of the `array` must be customized for your new sub-tab:
      - `farm/fd2-example/ui`: This is the URL to directly access the _UI_ sub-tab. Replace `ui` with the URL you want for your sub-tab.
-       - Note: This string also controls the placement of the _FD2 Example_ and _UI_ tabs. The _FD2 Example_ tab will appear on the _Farm_ menu, which is where the _Dashboard_ tab also appears. The _UI_ tab will appear as a sub-tab on the _FD2 Example_ tab. The value `farm` cannot be changed. But, `fd2-example` and `ui` can. In particular, they are not required to match the filenames. For example, `fd2-example` does not have to match the filename `fd2_example.module` and `ui` does not have to correspond to `ui.html`. However, it is a good convention to follow.
+       - Note: This string also controls the placement of the _FD2 Example_ and _UI_ tabs. The _FD2 Example_ tab will appear on the _Farm_ menu, which is where the _Dashboard_ tab also appears. The _UI_ tab will appear as a sub-tab on the _FD2 Example_ tab. The value `farm` cannot be changed. But, `fd2-example` and `ui` can. In particular, they are not required to match the file names. For example, `fd2-example` does not have to match the file name `fd2_example.module` and `ui` does not have to correspond to `ui.html`. However, it is a good convention to follow.
      - `title`: This defines the name of the sub-tab that appears in the _Example_ module's tab. Replace `UI` with the text you want to appear as the sub-tab title.
      - `page arguments`: This is the name of the directory that contains the content for the sub-tab. Replace `ui` with the name of the folder file that contains the code for your new sub-tab.
      - `weight`: The weight controls the placement of the sub-tabs with respect to the others that appear. Sub-tabs with lower weights appear further left and those with higher weights appear further right.
@@ -111,7 +111,7 @@ The lines for external libraries must be included in each module's `.module` fil
 ### Pre-defined Module Variables ###
 
 Drupal Modules can pass variables from the farmOS/Drupal system through to the sub-tab. All of the current modules define two such variables:
-  - `fd2UserID`: The numeric id of the user that is currently logged in to FarmData2.
+  - `fd2UserID`: The numeric ID of the user that is currently logged in to FarmData2.
   - `fd2UserName`: The text user name of the user that is currently logged in to FarmData2.
 
 These variables are global and can be used in scripts and in the Vue instance within the page. Additional variables can be added to a module by adding their definitions to the `<module>_preprocess_page()` method in the appropriate `.module` file. See the `fd2_example_preprocess_page()` function in the  `fd2_example.module` file for an example.
@@ -135,7 +135,7 @@ try {
 catch {}
 ```
 
-- More Details: Drupal 7 adds JavaScript files to a page using a `<script>` tag. Thus, there is no need for this statement to use the component in a FarmData2 page. However, the Cypress Component testing tools require that a component under test be imported from a module. Thus the `modulde.export` statement is necessary to make it possible to test the component. So, this little hack basically just makes it possible for us to use the same `.js` file both in FarmData2 through Drupal and in the Cypress Component testing tools.
+- More Details: Drupal 7 adds JavaScript files to a page using a `<script>` tag. Thus, there is no need for this statement to use the component in a FarmData2 page. However, the Cypress Component testing tools require that a component under test be imported from a module. Thus the `module.export` statement is necessary to make it possible to test the component. So, this little hack basically just makes it possible for us to use the same `.js` file both in FarmData2 through Drupal and in the Cypress Component testing tools.
 
 #### Creating Nested Vue Components ####
 
@@ -170,7 +170,7 @@ scripts[] = '../resources/DateRangeSelectionComponent.js'
 
 ## JavaScript Libraries ##
 
-FarmData2 also uses a number of custom JavaScript libraries that are contained in the `farmdata2_modules/fd2_tabs/resources` folder. Similar to what was done with Vue comonents and nested Vue components, there are blocks of code that will appear at the top and bottom of each JavaScript file so that they can be served by Drupal and be tested within the Cypress End-to-End test runner.
+FarmData2 also uses a number of custom JavaScript libraries that are contained in the `farmdata2_modules/fd2_tabs/resources` folder. Similar to what was done with Vue components and nested Vue components, there are blocks of code that will appear at the top and bottom of each JavaScript file so that they can be served by Drupal and be tested within the Cypress end-to-end test runner.
 
 Any modules that are needed by the library will be `required` by a block of code at the top of the file. For example, the code in the `FarmOSAPI.js` file uses the `axios` module. These lines appear at the top of that file:
 
@@ -202,7 +202,7 @@ FarmData2 modules, sub-tabs, and components are all tested using the Cypress tes
 
 Cypress end-to-end tests are used to confirm that modules and sub-tabs operate correctly. They do this by interacting with the live development instance of FarmData2. Cypress end-to-end tests will typically log into FarmData2 as a specific user, visit a specific page, interact with the elements of that page (e.g. click buttons, enter text, etc.), and then make assertions about the resulting changes to the page.
 
-Each sub-tab will have have an associated set of end-to-end tests. For example, `fd2vars.spec.js` file contains the end-to-end tests for the sub-tab defined by the `fd2vars.html` file (i.e. the _Vars_ sub-tab on the _FD2 Example_ tab). Note that, by convention, the name of the `spec` file has the same prefix as the sub-tab's `.html` file. If there are multiple test files for the same `html` file, use additional prefixes to identify their purpose (i.e. `fd2vars.pqr.spec.js`, where `pqr` would provide additional clarifying information about the tests in that file).
+Each sub-tab will have an associated set of end-to-end tests. For example, `fd2vars.spec.js` file contains the end-to-end tests for the sub-tab defined by the `fd2vars.html` file (i.e. the _Vars_ sub-tab on the _FD2 Example_ tab). Note that, by convention, the name of the `spec` file has the same prefix as the sub-tab's `.html` file. If there are multiple test files for the same `html` file, use additional prefixes to identify their purpose (i.e. `fd2vars.pqr.spec.js`, where `pqr` would provide additional clarifying information about the tests in that file).
 
 The `cypress` directory within a module directory (e.g.`fd2_example/cypress`) will contain _module-level_ tests. These are tests that apply to the main tab rather than to individual sub-tabs. For example, in the `fd2_example` module:
    - `visibility.spec.js` tests that the _FD2 Example_ tab is visible for the _admin_, _manager_, and _worker_ users but not for a _guest_.
