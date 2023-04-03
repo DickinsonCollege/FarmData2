@@ -109,7 +109,7 @@ If you have worked on your changes with someone else you will need to be sure to
   Co-authored-by: NAME <NAME@EXAMPLE.COM>
   Co-authored-by: AUTHOR-NAME <ANOTHER-NAME@EXAMPLE.COM>"
   ```
-  You'll need to know your co-author(s) e-mail address or GitHub *no-reply email* so that you can provide it in the commit message. Note: The `>` characters appear wen you press *Enter* or *Return* in the Terminal because the string that is opened (`"`) after the `-m` is not terminated (`"`) until after the final co-author line.
+  You'll need to know your co-author(s) e-mail address or GitHub *no-reply email* so that you can provide it in the commit message. Note: The `>` characters appear when you press *Enter* or *Return* in the Terminal because the string that is opened (`"`) after the `-m` is not terminated (`"`) until after the final co-author line.
 
 Inspect the output of the `git status` command to confirm that your are in the right place and the `git log` command to confirm that you have successfully committed your changes.
 
@@ -154,14 +154,14 @@ Once you submit a pull request you should keep an eye out for a reply from the p
 
 Prompt responses to the maintainers are always appreciated and improve the chances that your pull request (possibly with revision) will be merged.
 
-## 14. Update you Pull Request as Necessary ##
+## 14. Update your Pull Request as Necessary ##
 
 If you received feedback on your pull request and changes were requested, you can update your pull request as follows:
   1. Make the requested changes in your local repository.
   2. Commit the changes to your feature branch.
   3. Push your feature branch to your `origin` repository on GitHub.
 
-When you commit and push changes to a feature branch for which a pull request has been the pushed changes are automatically a part of the pull request. There is no need to create a new pull request.
+When you commit and push changes to a feature branch for which a pull request has been created, the pushed changes are automatically a part of the pull request. There is no need to create a new pull request.
 
 ## 15. Delete Your Feature Branch ##
 
@@ -188,7 +188,7 @@ You can use the web interface through your browser to confirm that the branch ha
 ## 16. Contribute More ##
 
 Now that you've made your first contribution, if you are ready for more you can:
-  - Head back to go back to step #5 of this document and start again! If you get into working on more complex issues and need to learn more about the FarmData2 project or the technologies that it uses, be sure to:
+  - Head back to step #5 of this document and start again! If you get into working on more complex issues and need to learn more about the FarmData2 project or the technologies that it uses, be sure to:
     - Check out the other [ways to contribute to FarmData2](docs/WaysToContribute.md).
     - Check out the [RESOURCES page](RESOURCES.md).
     - Reach out to the [FarmData2 community on Zulip](https://farmdata2.zulipchat.com/).
