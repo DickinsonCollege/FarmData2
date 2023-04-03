@@ -63,7 +63,7 @@ FarmData2 is hosted in a GitHub repository that can be found here:
 
 To get started:
 
-  1. [Create a GitHub Account](https://github.com/join) (if you do not already have one).
+  1. [Create a GitHub account](https://github.com/join) (if you do not already have one).
   1. [Fork the FarmData2 repository](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) into your own GitHub account.
   1. Open a Terminal (**in Windows be sure to use a WSL Terminal**), then:
      1. [Clone your fork](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) of FarmData2.
@@ -103,7 +103,7 @@ You can connect to the FarmData2 development environment using the TigerVNC View
 3. Click "Connect".
 4. If nothing happens and the TigerVNC Viewer quits, wait a moment and try again. It typically takes a few moments for the VNC server in the container to start.
 
-When the TigerVNC Viewer connects to the FarmData2 Development Environment, a window like the one below will open displaying the Desktop of the Debian Linux system that is running in the docker container.
+When the TigerVNC Viewer connects to the FarmData2 development environment, a window like the one below will open displaying the desktop of the Debian Linux system that is running in the docker container.
 
 ![The FarmData2 development environment.](media/DevEnvDesktop.jpg)
 
@@ -117,7 +117,7 @@ You can also connect to the FarmData2 development environment using a noVNC clie
 
 Note: When accessing the development environment via the browser, copying and pasting between the host OS and the development environment using the noVNC clipboard is tedious. However, if you work entirely inside the development environment, it is quite functional.
 
-When the noVNC client connects to the FarmData2 Development environment the Desktop of the Debian Linux system that is running in the docker container will appear in your browser window.
+When the noVNC client connects to the FarmData2 development environment the desktop of the Debian Linux system that is running in the docker container will appear in your browser window.
 
 #### Development Environment Credentials ####
 
@@ -142,7 +142,7 @@ Configure the git CLI within the FarmData2 development environment by:
    * Enter your GitHub username.
    * Paste in your personal access token.
 
-Note: The git client in the FarmData2 development environment is set "store" your git credentials. This makes it so you do not have to re-enter your username and personal access token every time you `push`. The "store" option saves your GitHub password in plain text in your account. This is generally safe if you are using your own computer within a password protected account. The [Store your GitHub Credentials with the Git Credential Helper](https://techexpertise.medium.com/storing-git-credentials-with-git-credential-helper-33d22a6b5ce7) page gives more information about the "store" option and other more secure options for how to manage your git credentials.
+Note: The git client in the FarmData2 development environment is set to "store" your git credentials. This makes it so you do not have to re-enter your username and personal access token every time you `push`. The "store" option saves your GitHub password in plain text in your account. This is generally safe if you are using your own computer within a password protected account. The [Store your GitHub Credentials with the Git Credential Helper](https://techexpertise.medium.com/storing-git-credentials-with-git-credential-helper-33d22a6b5ce7) page gives more information about the "store" option and other more secure options for how to manage your git credentials.
 
 ### Install the Sample Database Image ###
 
@@ -183,7 +183,7 @@ Note: You can also connect to the running FarmData2 instance from a browser in y
 http://localhost
 ```
 
-### Editing Code & Documentation ###
+### Editing Code and Documentation ###
 
 The FarmData2 developer environment includes the VSCodium IDE.  This IDE is pre-configured with all of the extensions necessary for FarmData2 development. You can open this IDE and the FarmData2 project by:
 1. Clicking the VSCodium icon dock at the bottom of the desktop.
@@ -193,7 +193,7 @@ The FarmData2 developer environment includes the VSCodium IDE.  This IDE is pre-
 5. Confirm that you "trust the authors of the files in this folder," if asked.
 6. Choose "Explorer" from the "View" menu to see the `FarmData2` file tree.
 
-Note: You can also choose to use VSCode or VSCodium on your host machine (Mac, Windows, Linux) to edit the contents of the FarmData2 repository that you cloned.  The FarmData2 repository is mounted from your host machine into the development container. Thus, editing these files on the host machine is equivalent to editing them in the development container. If you are using VSCode or VSCodium on your host OS, your can refer to the [docker/dev/Dockerfile](docker/dev/Dockerfile) file for information about the VSCodium extensions that are being used by the FarmData2 development environment.
+Note: You can also choose to use VSCode or VSCodium on your host machine (Mac, Windows, Linux) to edit the contents of the FarmData2 repository that you cloned.  The FarmData2 repository is mounted from your host machine into the development container. Thus, editing these files on the host machine is equivalent to editing them in the development container. If you are using VSCode or VSCodium on your host OS, you can refer to the [docker/dev/Dockerfile](docker/dev/Dockerfile) file for information about the VSCodium extensions that are being used by the FarmData2 development environment.
 
 ### Stopping and Starting FarmData2 ###
 
