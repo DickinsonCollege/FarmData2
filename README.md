@@ -4,7 +4,7 @@ FarmData2 is an application that supports the operation and certification requir
 
 ## Description ##
 
-FarmData2 is a web application for recording and reporting on crop and livestock production within the context of small organic farming operations.  Crop production records include seeding, transplanting, harvest, cover crop, compost, fertilization, irrigation, pest scouting, and spray activities.  Livestock production records track animals from birth to slaughter or sale and include pasture moves, periodic and veterinary care and logging of egg production.  Records of packing, distribution and customer invoicing are also maintained.  All records and reporting features are designed to closely align with organic certification requirements and to support the certification and recertification process.
+FarmData2 is a web application for recording and reporting on crop and livestock production within the context of small organic farming operations. Crop production records include seeding, transplanting, harvest, cover crop, compost, fertilization, irrigation, pest scouting, and spray activities. Livestock production records track animals from birth to slaughter or sale and include pasture moves, periodic and veterinary care, and logging of egg production. Records of packing, distribution, and customer invoicing are also maintained. All records and reporting features are designed to closely align with organic certification requirements and to support the certification and recertification process.
 
 ## Connecting with the Community ##
 
@@ -19,15 +19,15 @@ Not sure which channel to use? The [Communications Document](docs/Communications
 
 ## Installing FarmData2 ##
 
-If you are interesting in trying, using or contributing to FarmData2 see the [INSTALL Document](INSTALL.md) for information about how to get started.
+If you are interested in trying, using, or contributing to FarmData2 see the [INSTALL Document](INSTALL.md) for information about how to get started.
 
 ## Contributing to FarmData2 ##
 
-If you are interesting in contributing to the development of FarmData2 see the [CONTRIBUTING Document](CONTRIBUTING.md) for information about how to make your first contribution.  The [Other Ways to Contribute Document](docs/WaysToContribute.md) has additional ideas for how you might engage with FarmData2.  The [RESOURCES Document](RESOURCES.md) contains pointers to more detailed project documentation.
+If you are interesting in contributing to the development of FarmData2 see the [CONTRIBUTING Document](CONTRIBUTING.md) for information about how to make your first contribution. The [Other Ways to Contribute Document](docs/WaysToContribute.md) has additional ideas for how you might engage with FarmData2. The [RESOURCES Document](RESOURCES.md) contains pointers to more detailed project documentation.
 
 ## History ##
 
-FarmData2 is both a _second_ edition of it predecessor, FarmData, and the integration of _two_ related projects FarmData and AnimalData. These projects were conceived and built by Tim Wahls, Matt Steiman and many students to support operation of the Dickinson College Farm.  The FarmData2 project was initiated as a part of curricular redesign in the Computer Science Department at Dickinson College.  It is now an active part of several courses in the curriculum.  It provides students in these courses with early and sustained opportunities to learn and practice modern software development within the context of an open source software community.
+FarmData2 is both a _second_ edition of its predecessor, FarmData, and the integration of _two_ related projects FarmData and AnimalData. These projects were conceived and built by Tim Wahls, Matt Steiman, and many students to support operation of the Dickinson College Farm. The FarmData2 project was initiated as a part of curricular redesign in the Computer Science Department at Dickinson College. It is now an active part of several courses in the curriculum. It provides students in these courses with early and sustained opportunities to learn and practice modern software development within the context of an open source software community.
 
 ## Acknowledgements ##
 
