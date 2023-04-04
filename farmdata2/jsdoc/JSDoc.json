@@ -1,6 +1,7 @@
 {
   "plugins": [
-    "jsdoc-vuejs"
+    "jsdoc-vuejs",
+    "jsdoc-escape-at"
   ],
   "source": {
     "includePattern": "\\.(vue|js)$"

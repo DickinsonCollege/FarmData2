@@ -8,7 +8,7 @@ setDB ()
 }
 
 # Clear the drupal cache in the fd2_farmdata2 container.
-alias clearDupalCache="docker exec -it fd2_farmdata2 drush cc all"
+alias clearDrupalCache="docker exec -it fd2_farmdata2 drush cc all"
 
 # Alias codium for running VSCodium with no-sandbox.
 codium ()
