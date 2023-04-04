@@ -325,21 +325,12 @@ new Vue({
         deleteTableRow(rowIDs) {
             for(let i = 0; i < rowIDs.length; i++){
                 // delete record
-                let url = ""
-                deleteRecord(url, this.sessionToken)
-                .then(() => {
-                    for(var j = 0; j < this.tableData.length; j++){
+                 for(var j = 0; j < this.tableData.length; j++){
                     if(this.tableData[j].id == rowIDs[i]){
                         this.tableData.splice(j, 1)
                     }
                 }
-                })
-                .catch((err => {
-                    this.errBannerVisibility = true
-                }))
-
             }
-
             // Would also need to delete data from the db via API here.
         },
 
