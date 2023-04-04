@@ -65,7 +65,7 @@ services:
   #       Necessary to mount /var/run/docker.sock due to 
   #       absolute path syntax on windows.
   fd2dev-unix:
-    image: farmdata2/dev:fd2.2
+    image: farmdata2/dev:fd2.3
     container_name: fd2_dev
     init: true
     networks:
@@ -88,7 +88,7 @@ services:
       - linux
 
   fd2dev-win:
-    image: farmdata2/dev:fd2.2
+    image: farmdata2/dev:fd2.3
     container_name: fd2_dev
     init: true
     networks:
