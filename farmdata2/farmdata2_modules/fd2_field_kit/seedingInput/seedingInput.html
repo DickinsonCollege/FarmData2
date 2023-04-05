@@ -25,7 +25,7 @@
                 <input data-cy='direct-seedings' type='radio' name='typeOfSeeding' value='Direct Seedings'v-model='selectedSeedingType' :checked='selectedSeedingType == "Direct Seedings"' v-bind:disabled='submitInProgress'><label>Direct</label> 
             </legend>
             <div v-show='(selectedSeedingType=="")' style='text-align:center;font-size: medium;'>
-                <p>Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
+                <p data-cy="seeding-type-prompt">Please Select Tray Seeding or Direct Seeding<label style='color: #da4f3f'>*</label></p>
             </div>
             <div v-show='(selectedSeedingType=="Tray Seedings")' style='padding: 12px; text-align:center; font-size: medium; margin-top: 45px;'> 
                 <dropdown-with-all data-cy="tray-area-selection" :selected-val='selectedArea' :dropdown-list='areaFilter' @selection-changed='setNewArea' style='width: 125px;' :disabled='submitInProgress'>Area:<label style='color: #da4f3f'>*</label></dropdown-with-all>
