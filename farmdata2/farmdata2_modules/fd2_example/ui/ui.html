@@ -1,6 +1,12 @@
 <!-- define a div to wrap around the app. -->
 <!-- apply v-cloak so that app is not visible until after being rendered -->
 <div id="ui" v-cloak> 
+    <banner data-cy="alert-banner" 
+    :message="bannerObj" 
+    :visible="bannerVisibility" 
+    :timeout="timeoutSet"
+    @banner-hidden="resetBannerVisibility">
+    </banner>
 
     <p>FarmData2 provides a number of custom Vue components, bootstrap elements and CSS styles that are used throught the application to give it a consistent look and feel.  This page gives examples of how the components and styles are created, used and tested (see ui.spec.js).</p>
 
@@ -59,6 +65,26 @@
             <LI>Input Value: <span data-cy="inputed-val">{{ regexInputVal }}</span></LI>
             <LI>Match Value: <span data-cy="match-val">{{ regexMatchVal }}</span></LI>
         </UL>
+    </UL>
+
+    <p><b>BannerComponent</b></p>
+    <UL>
+        <button data-cy='trigger-success' 
+            @click='triggerSuccess'
+            :disabled='bannerVisibility'>Success Banner</button>
+
+            <button data-cy='trigger-error' 
+            @click='triggerError'
+            :disabled='bannerVisibility'>Error Banner</button>
+
+            <button data-cy='trigger-message'
+            @click='triggerMessage'
+            :disabled='bannerVisibility'>Message Banner</button>      
+            
+            <button data-cy='timeout-enable'
+            @click="setTimeout" v-show="!timeoutSet" :disabled='bannerVisibility'>Enable Timeout</button>
+            <button data-cy='timeout-disable' v-show="timeoutSet"
+            @click="setTimeout" :disabled='bannerVisibility'>Disable Timeout</button>
     </UL>
 
     <p><b>DateSelectionComponent</b></p>
@@ -184,7 +210,10 @@
     </UL>
 
     <p><b>API Error Handling</b></p>
-    <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
+    <banner data-cy="api-err-banner" 
+    :message="bannerObj"
+    :visible="apiErrBanner"
+    @visibility-update="resetBannerVisibility"></banner>
     <UL>
         <button data-cy='fetch-err-api'
             :disabled='waitingOnLogs' 
@@ -214,7 +243,7 @@ new Vue({
         'date-range-selection': DateRangeSelectionComponent,
         'custom-table': CustomTableComponent,
         'regex-input': RegexInputComponent,
-        'error-banner': ErrorBannerComponent,
+        'banner': BannerComponent
     },
     data: {
         // The predefined FarmData2 variables.
@@ -233,6 +262,8 @@ new Vue({
         pickedCrop: "All",
         
         leftButtonDisabled: false,
+
+        bannerObj: {"msg": "Hello! I am a banner alert.", "class": "alert alert-warning"},
 
         columns: [
             {"header": 'ID', "visible": true, "inputType": {'type': 'no input'}},
@@ -257,7 +288,9 @@ new Vue({
 
         waitingOnLogs: false,
         waitingOnErr: false,
-        errBannerVisibility: false,
+        apiErrBanner: false,
+        bannerVisibility: false,
+        timeoutSet: false,
         seedingLogs: [],
 
         regularExp: regexMap["regPosInt"],
@@ -265,11 +298,13 @@ new Vue({
         regexInputVal: null,
         regexMatchVal: false,
         regexMap: regexMap,
+        bannerMessageMap: bannerMessageMap["ui"],
         disabledMap: {
             "DropdownWithAllComponent": false,
             "RegexInputComponent": false,
             "DateSelectionComponent": false,
             "DateRangeSelectionComponent": false,
+            "BannerComponent": false
         }
     },
     methods: {
@@ -319,6 +354,35 @@ new Vue({
         },
         button2Clicked() {
             this.leftButtonDisabled = false
+        },
+        triggerSuccess(){
+            this.bannerObj = this.bannerMessageMap["success"]
+            this.bannerVisibility = true
+        },
+        triggerError(){
+            this.bannerObj = this.bannerMessageMap["error"]
+            this.bannerVisibility = true
+        },
+        triggerMessage(){
+            this.bannerObj = this.bannerMessageMap["msg"]
+            this.bannerVisibility = true
+        },
+        setTimeout(){
+            if(this.timeoutSet){
+                this.timeoutSet = false
+            }
+            else{
+                this.timeoutSet = true
+            }
+        },
+        resetBannerVisibility(){
+            if(this.bannerVisibility){
+                this.bannerVisibility = false
+            }
+            else if(this.apiErrBanner){
+                this.apiErrBanner = false
+            }
+            
         },
 
         // backend needs to be updated when deleting a row
@@ -410,22 +474,25 @@ new Vue({
                 if (err.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    this.errBannerVisibility = true
+                    this.apiErrBanner = true
                     this.waitingOnErr = false
+                    this.bannerObj = this.bannerMessageMap["error"]
                     console.log('Error code that falls out of 2xx.')
                 } 
                 else if (err.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    this.errBannerVisibility = true
+                    this.apiErrBanner = true
                     this.waitingOnErr = false
+                    this.bannerObj = this.bannerMessageMap["error"]
                     console.log('No response was received');
                 } 
                 else {
                     // Something happened in setting up the request that triggered an Error
-                    this.errBannerVisibility = true
+                    this.apiErrBanner = true
                     this.waitingOnErr = false
+                    this.bannerObj = this.bannerMessageMap["error"]
                     console.log('Error Message: ', err.message);
                 }
             })
@@ -447,7 +514,7 @@ new Vue({
             else {
                 return this.seedingLogs[this.seedingLogs.length-1].name
             }
-        }
+        },
     }
 })
 
