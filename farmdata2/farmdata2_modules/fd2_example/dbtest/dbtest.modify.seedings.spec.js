@@ -30,6 +30,7 @@ describe('Example of creating and deleting seeding logs in a test', () => {
         })
 
         cy.visit("/farm/fd2-example/dbTest")
+        cy.waitForPage()
     })
 
     /**
@@ -64,7 +65,12 @@ describe('Example of creating and deleting seeding logs in a test', () => {
          * Do your testing in this it.
          */
         it("Do your test using the new log(s) here.", () => {
-            expect(true).to.equal(false)
+            /*
+             * This test can be changed to expect(true).to.equal(true)
+             * in order to check that the record is still deleted by the
+             * afterEach() even if the test fails.
+             */
+            expect(true).to.equal(true)
         })
 
         /**

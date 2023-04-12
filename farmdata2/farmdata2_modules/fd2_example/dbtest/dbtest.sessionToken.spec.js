@@ -48,6 +48,7 @@ describe("Illustration of how to get a session token.", () => {
 
         // Visit the page that will be tested. 
         cy.visit("/farm/fd2-example/dbTest")
+        cy.waitForPage()
     })
 
     /**

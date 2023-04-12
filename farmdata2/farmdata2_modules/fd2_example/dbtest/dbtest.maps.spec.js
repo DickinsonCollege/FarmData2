@@ -72,6 +72,14 @@ describe('Example of getting a map to via the FarmOSAPI functions in a test', ()
         // Visit the page that will be tested. 
         cy.visit("/farm/fd2-example/dbTest")
 
+                /*
+         * Almost always the page being visited will load maps and other
+         * content in its created() hook.  If the page follows the pattern
+         * used in FarmData2 pages (see Maps.html for an example with explanation)
+         * then this causes the tests to wait here until the entire page and
+         * all of its data is loaded before continuing.
+         */
+        cy.waitForPage()
     })
 
     /**

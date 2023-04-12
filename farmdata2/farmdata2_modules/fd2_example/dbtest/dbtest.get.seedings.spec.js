@@ -26,6 +26,7 @@ describe("Examples of getting seeding logs via the FarmOSAPI functions in a test
          */
     
         cy.visit("/farm/fd2-example/dbTest")
+        cy.waitForPage()
     })
 
     /**
