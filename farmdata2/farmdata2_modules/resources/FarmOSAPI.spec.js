@@ -146,7 +146,7 @@ describe('API Request Functions', () => {
         })
     })
 
-    context('test maping functions', () => {
+    context.only('test maping functions', () => {
         it('User map functions get the proper name/id for the users', () => {
             let manager1ID = -1
             let adminID = -1

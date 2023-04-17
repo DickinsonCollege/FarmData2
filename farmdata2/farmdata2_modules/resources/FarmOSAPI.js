@@ -97,14 +97,12 @@ function getAllPages(endpoint, arr=[]) {
  * // Note that the Map will not be available until the then() executes.
  */
 function getIDToUserMap(){
-    return new Promise((resolve, reject) => {
-        getMap('/user', 'uid', 'name')
-        .then((map) => {
-            map.delete(null);
-            resolve(map)
-        },
-        (error) => {
-            reject(error);
+    return new Promise ((resolve, reject) => {
+        axios.get("http://fd2_api/users/mapById")
+        .then((response) => {
+            resolve(new Map(Object.entries(response.data)))
+        }).catch(function (err) {
+            reject(err)
         })
     })
 }
@@ -127,14 +125,12 @@ function getIDToUserMap(){
  * // Note that the Map will not be available until the then() executes.
  */
 function getUserToIDMap(){
-    return new Promise((resolve, reject) => {
-        getMap('/user', 'name', 'uid')
-        .then((map) => {
-            map.delete('Anonymous');
-            resolve(map)
-        },
-        (error) => {
-            reject(error);
+    return new Promise ((resolve, reject) => {
+        axios.get("http://fd2_api/users/mapByName")
+        .then((response) => {
+            resolve(new Map(Object.entries(response.data)))
+        }).catch(function (err) {
+            reject(err)
         })
     })
 }

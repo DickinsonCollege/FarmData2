@@ -1,5 +1,4 @@
 {
-  "openapi": "3.0.0",
   "info": {
     "title": "FarmData2 API",
     "version": "2.1",
@@ -15,8 +14,11 @@
   },
   "servers": [
     {
-      "url": "http://http://fd2_api/",
+      "url": "http://fd2_api/",
       "description": "Farmdata2 Express server"
     }
-  ]
+  ],
+  "baseDir": null,
+  "filesPattern": "./**/*.js",
+  "swaggerUIPath": "/docs"
 }

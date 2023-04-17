@@ -1,23 +1,18 @@
 import express, { request } from 'express'
-import swaggerJSDoc from 'swagger-jsdoc'
-import swaggerUi from 'swagger-ui-express'
-import swaggerDefinition from './swagger.json' assert { type: 'json' }
+import swaggerDefinition from './test.json' assert { type: 'json' }
+import expressJSDocSwagger from 'express-jsdoc-swagger'
 import pool from './db.js'
 import cors from 'cors'
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+// Specification configuration. This is needed for ES6 compatibility
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+swaggerDefinition.baseDir = __dirname
+
 const app = express()
-
-// Specify the swagger specification using ./swagger.json imported
-const swaggerSpecification = {
-  swaggerDefinition,
-  apis: ['/app/src/*.js'],
-}
-
-// Write the Swagger JSON file to disk
-const swaggerSpec = swaggerJSDoc(swaggerSpecification);
-
-// Documentation using swagger and OpenAPI Specification
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {explorer: true}))
-
+expressJSDocSwagger(app)(swaggerDefinition)
 
 // Default API server
 app.get("/", async (req, res) => {
@@ -38,34 +33,21 @@ app.listen(port, () => {
 });
 
 /**
- * @swagger
- * "/crops/mapByName":
- *   get:
- *     summary: Returns a mapping of crop names to their corresponding tid.
- *     description: Returns an object of crops and their tid. 
- *     responses:
- *       "200":
- *         description: A JSON object of crops and their tid.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 name:
- *                   type: string
- *                   description: name of the crop found in taxonomy_term_data
- *                   example: BROCCOLI
- *                 tid:
- *                   type: string
- *                   description: The tid of the crop found in taxonomy_term_data
- *                   example: 13
+ * GET /crops/mapByName
+ * @summary Returns a mapping of crop names to their corresponding tid.
+ * @tags Maps
+ * @return {object} 200 - Returns a mapping of crop names to their corresponding tid.
+ * @example response - 200 - success response
+ * {
+ *  "BROCCOLI": "12"
+ * }
  */
 app.get("/crops/mapByName", async (req, res) => {
   let conn;
   try {
     conn = await pool.getConnection();   
     var sql = `
-    SELECT JSON_OBJECTAGG(name, tid) AS data
+    SELECT JSON_OBJECTAGG(name, CAST(tid AS CHAR)) AS data
     FROM (
       SELECT tid, t1.name
       FROM taxonomy_term_data AS t1
@@ -86,27 +68,14 @@ app.get("/crops/mapByName", async (req, res) => {
 });
 
 /**
- * @swagger
- * "/crops/mapById":
- *   get:
- *     summary: Returns a mapping of crop tid to crop name.
- *     description: Returns an object of crop tid to crop name. 
- *     responses:
- *       "200":
- *         description: A JSON object of crops and their tid.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 tid:
- *                   type: string
- *                   description: The tid of the crop found in taxonomy_term_data
- *                   example: 13
- *                 name:
- *                   type: string
- *                   description: name of the crop found in taxonomy_term_data
- *                   example: BROCCOLI
+ * GET /crops/mapById
+ * @summary Returns a mapping of crop tid to their corresponding crop names.
+ * @tags Maps
+ * @return {object} 200 - Returns a mapping of crop tid to their corresponding crop names.
+ * @example response - 200 - success response
+ * {
+ *  "12": "BROCCOLI"
+ * }
  */
 app.get("/crops/mapById", async (req, res) => {
   let conn;
@@ -133,34 +102,21 @@ app.get("/crops/mapById", async (req, res) => {
 });
 
 /**
- * @swagger
- * "/areas/mapByName":
- *   get:
- *     summary: Returns a mapping of area names to their corresponding tid.
- *     description: Returns an object of areas and their tid. 
- *     responses:
- *       "200":
- *         description: A JSON object of areas and their tid.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 name:
- *                   type: string
- *                   description: name of the crop found in taxonomy_term_data
- *                   example: A
- *                 tid:
- *                   type: string
- *                   description: The tid of the crop found in taxonomy_term_data
- *                   example: 13
+ * GET /areas/mapByName
+ * @summary Returns a mapping of area names to their corresponding tid.
+ * @tags Maps
+ * @return {object} 200 - Returns a mapping of area names to their corresponding tid.
+ * @example response - 200 - success response
+ * {
+ *  "A": "14"
+ * }
  */
 app.get("/areas/mapByName", async (req, res) => {
   let conn;
   try {
     conn = await pool.getConnection();
     var sql = `
-    SELECT JSON_OBJECTAGG(name, tid) AS data
+    SELECT JSON_OBJECTAGG(name, CAST(tid AS CHAR)) AS data
     FROM (
       SELECT tid, t1.name
       FROM taxonomy_term_data AS t1
@@ -180,27 +136,14 @@ app.get("/areas/mapByName", async (req, res) => {
 });
 
 /**
- * @swagger
- * "/areas/mapById":
- *   get:
- *     summary: Returns a mapping of area tid to area name.
- *     description: Returns an object of area tid to area name. 
- *     responses:
- *       "200":
- *         description: A JSON object of areas and their tid.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 tid:
- *                   type: string
- *                   description: The tid of the area found in taxonomy_term_data
- *                   example: 13
- *                 name:
- *                   type: string
- *                   description: name of the area found in taxonomy_term_data
- *                   example: A
+ * GET /areas/mapById
+ * @summary Returns a mapping of area tid to their corresponding area names.
+ * @tags Maps
+ * @return {object} 200 - Returns a mapping of area tid to their corresponding area names.
+ * @example response - 200 - success response
+ * {
+ *  "12": "BROCCOLI"
+ * }
  */
 app.get("/areas/mapById", async (req, res) => {
   let conn;
@@ -218,6 +161,72 @@ app.get("/areas/mapById", async (req, res) => {
     const results = await conn.execute(sql);
     res.json(results[0].data);
   } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      conn.release();
+    }
+  }
+});
+
+/**
+ * GET /users/mapByName
+ * @summary Returns a mapping of usernames to their corresponding uid.
+ * @tags Maps
+ * @return {object} 200 - Returns a mapping of usernames to their corresponding uid.
+ * @example response - 200 - success response
+ * {
+ *  "admin": "1"
+ * }
+ */
+app.get("/users/mapByName", async (req, res) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    var sql = `
+    SELECT JSON_OBJECTAGG(name, CAST(uid AS CHAR)) AS data
+    FROM (
+      SELECT uid, name
+      FROM users
+      WHERE name != ""
+    ) t
+    `
+    const results = await conn.execute(sql);
+    res.json(results[0].data);
+  } catch (error) {
+    throw error;
+  } finally {
+    if (conn) {
+      conn.release();
+    }
+  }
+});
+
+/**
+ * GET /users/mapById
+ * @summary Returns a mapping of uid to their corresponding usernames.
+ * @tags Maps
+ * @return {object} 200 - Returns a mapping of uid to their corresponding usernames.
+ * @example response - 200 - success response
+ * {
+ *  "1": "admin"
+ * }
+ */
+app.get("/users/mapById", async (req, res) => {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    var sql = `
+    SELECT JSON_OBJECTAGG(uid, name) AS data
+    FROM (
+      SELECT uid, name
+      FROM users
+      WHERE name != ""
+    ) t
+    `
+    const results = await conn.execute(sql);
+    res.json(results[0].data);
+  } catch (error) { 
     throw error;
   } finally {
     if (conn) {
@@ -262,26 +271,26 @@ app.get("/areas/mapById", async (req, res) => {
  *                           description: The email address of the user
  *                           example: admin@example.com
  */
-app.get("/users/:userid?", async (req, res) => {
-  let conn;
-  try {
-    conn = await pool.getConnection();
-    if (req.params.userid == null) {
-      var sql = `SELECT name, mail FROM users`;
-    } else {
-      var sql = `SELECT name, mail FROM users WHERE uid = ${req.params.userid}`;
-    }
-    let data = await conn.query(sql);
-    // result = express.json(result);
-    res.json({data});
-  } catch (error) {
-    throw error;
-  } finally {
-    if (conn) {
-      conn.release();
-    }
-  }
-});
+// app.get("/users/:userid?", async (req, res) => {
+//   let conn;
+//   try {
+//     conn = await pool.getConnection();
+//     if (req.params.userid == null) {
+//       var sql = `SELECT name, mail FROM users`;
+//     } else {
+//       var sql = `SELECT name, mail FROM users WHERE uid = ${req.params.userid}`;
+//     }
+//     let data = await conn.query(sql);
+//     // result = express.json(result);
+//     res.json({data});
+//   } catch (error) {
+//     throw error;
+//   } finally {
+//     if (conn) {
+//       conn.release();
+//     }
+//   }
+// });
 
 // test paging http://localhost:8000/paging/?page=1&limit=5
 app.get("/paging", async (req, res) => {
