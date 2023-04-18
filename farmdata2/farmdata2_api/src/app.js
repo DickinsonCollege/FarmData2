@@ -1,5 +1,5 @@
 import express, { request } from 'express'
-import swaggerDefinition from './test.json' assert { type: 'json' }
+import swaggerDefinition from './swaggerspec.json' assert { type: 'json' }
 import expressJSDocSwagger from 'express-jsdoc-swagger'
 import pool from './db.js'
 import cors from 'cors'
