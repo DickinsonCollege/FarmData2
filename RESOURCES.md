@@ -37,20 +37,20 @@ This document is a single source for information about FarmData2. It is organize
   - [FarmData2 Organization](docs/Organization.md)
   - [FarmData2's Technologies](docs/Technologies.md)
   
-## Front End Development ##
+## Front-End Development ##
 
   - [The `fd2_example` Module](farmdata2/farmdata2_modules/fd2_example/README.md)
   - [Creating FarmData2 Modules](farmdata2/farmdata2_modules/README.md) includes:
-    - Creating New Modules
-    - End-to-End Tests for Modules
-    - Using FarmData2 Library Functions
-    - Using FarmData2 Vue.js Components
+    - Creating new modules
+    - End-to-end tests for modules
+    - Using FarmData2 library functions
+    - Using FarmData2 Vue.js components
   - [The `fd2_config` Module](farmdata2/farmdata2_modules/fd2_config/README.md)
-  - [FarmData2 Front End Resources](farmdata2/farmdata2_modules/resources/README.md) includes:
+  - [FarmData2 Front-End Resources](farmdata2/farmdata2_modules/resources/README.md) includes:
     - The FarmData2 JavaScript library
-    - The FarmData2 Vue.js Components
+    - The FarmData2 Vue.js components
 
-## Back End Development ##
+## Back-End Development ##
 
   - [The FarmData2 API](farmdata2/farmdata2_api/README.md) also includes:
     - Using phpMyAdmin

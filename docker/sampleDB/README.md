@@ -14,7 +14,7 @@ Some useful properties of the sample data:
 - It is real data from the Dickinson College farm.
 - The data runs from Jan 1, 2019 - July 15, 2020. So it includes:
   - One completed growing season (Jan 1 - Dec 31, 2019).
-  - One in progress growing season (Jan 1 - July 15, 2020).
+  - One in-progress growing season (Jan 1 - July 15, 2020).
 
 More details are included in the table below:
 
@@ -71,7 +71,7 @@ The terms for the Farm Crop Families vocabulary can be accessed with the request
 GET http://localhost/taxonomy_term.json?bundle=farm_crop_families
 ```
 
-The Farm Crops/Varieties Vocabulary define all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulary.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE.  In addition, each crop has a default unit from the Farm Quantity Units vocabulary (see below) and also a list of conversion factors for converting from the default units to any other unit that may be used for the crop.
+The Farm Crops/Varieties Vocabulary defines all of the crops that appear in the FarmData2 database.  Each crop is assigned to one of the crop categories defined in the Farm Crop Families vocabulary.  Crops can also be parent or child-crops. For example LETTUCE is a parent crop to LETTUCE-ROMAINE and LETTUCE-GREEN, and conversely they are child crops to LETTUCE.  In addition, each crop has a default unit from the Farm Quantity Units vocabulary (see below) and also a list of conversion factors for converting from the default units to any other unit that may be used for the crop.
 
 The terms for the Farm Crops vocabulary can be accessed with the request:
 ```
@@ -168,7 +168,7 @@ The following sections detail how to build the empty and sample databases that a
 
 ## Building the Empty Database ##
 
-When the Drupal or farmOS images are updated it is sometimes necessary to rebuild the empty database to allow the full sample database to be built on top of it.  The following steps outline how to build the empty database.
+When the Drupal or farmOS images are updated, it is sometimes necessary to rebuild the empty database to allow the full sample database to be built on top of it.  The following steps outline how to build the empty database.
 
 1. Change to the `docker` directory in `FarmData2`.
 1. `rm -rf db`
@@ -218,7 +218,7 @@ When the Drupal or farmOS images are updated it is sometimes necessary to rebuil
 
 ## Building the Sample Database ##
 
-The sample database is built on top of the empty database.  The csv files in the `docker/sampleData` directory provide the data for the sample database. Each file contains a detailed description of its purpose, contents and format in the comments at the top of the file. The `buildSampleDB.bash` script and its sub-scripts, use the contents of the csv files in the `sampleData` directory to create the sample database on top of the provided empty database. The following steps will rebuild the sample database.  Note: building the sample database typically takes 10-20 minutes.
+The sample database is built on top of the empty database.  The csv files in the `docker/sampleData` directory provide the data for the sample database. Each file contains a detailed description of its purpose, contents, and format in the comments at the top of the file. The `buildSampleDB.bash` script and its sub-scripts use the contents of the csv files in the `sampleData` directory to create the sample database on top of the provided empty database. The following steps will rebuild the sample database.  Note: Building the sample database typically takes 10-20 minutes.
 
 1. Ensure that `python3` is installed in `/usr/bin`
 1. `python3 -m pip install requests`
