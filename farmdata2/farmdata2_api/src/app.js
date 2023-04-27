@@ -39,7 +39,11 @@ app.listen(port, () => {
  * @return {object} 200 - Returns a mapping of crop names to their corresponding tid.
  * @example response - 200 - success response
  * {
- *  "BROCCOLI": "12"
+ *    "DANDILION": "41",
+ *    "GRASS": "42",
+ *    "WHEATGRASS": "43",
+ *    "BROCCOLI": "45",
+ *    "BROCCOLI RABE": "46"
  * }
  */
 app.get("/crops/mapByName", async (req, res) => {
@@ -74,7 +78,11 @@ app.get("/crops/mapByName", async (req, res) => {
  * @return {object} 200 - Returns a mapping of crop tid to their corresponding crop names.
  * @example response - 200 - success response
  * {
- *  "12": "BROCCOLI"
+ *    "41": "DANDILION",
+ *    "42": "GRASS",
+ *    "43": "WHEATGRASS",
+ *    "45": "BROCCOLI",
+ *    "46": "BROCCOLI RABE"
  * }
  */
 app.get("/crops/mapById", async (req, res) => {
@@ -108,7 +116,11 @@ app.get("/crops/mapById", async (req, res) => {
  * @return {object} 200 - Returns a mapping of area names to their corresponding tid.
  * @example response - 200 - success response
  * {
- *  "A": "14"
+ *    "A": "170",
+ *    "ALF": "171",
+ *    "ALF-1": "172",
+ *    "ALF-2": "173",
+ *    "ALF-3": "174"
  * }
  */
 app.get("/areas/mapByName", async (req, res) => {
@@ -142,7 +154,11 @@ app.get("/areas/mapByName", async (req, res) => {
  * @return {object} 200 - Returns a mapping of area tid to their corresponding area names.
  * @example response - 200 - success response
  * {
- *  "12": "BROCCOLI"
+ *    "170": "A",
+ *    "171": "ALF",
+ *    "172": "ALF-1",
+ *    "173": "ALF-2",
+ *    "174": "ALF-3"
  * }
  */
 app.get("/areas/mapById", async (req, res) => {
@@ -176,7 +192,11 @@ app.get("/areas/mapById", async (req, res) => {
  * @return {object} 200 - Returns a mapping of usernames to their corresponding uid.
  * @example response - 200 - success response
  * {
- *  "admin": "1"
+ *    "admin": "1",
+ *    "guest": "10",
+ *    "manager1": "3",
+ *    "manager2": "4",
+ *    "restws1": "11"
  * }
  */
 app.get("/users/mapByName", async (req, res) => {
@@ -209,13 +229,18 @@ app.get("/users/mapByName", async (req, res) => {
  * @return {object} 200 - Returns a mapping of uid to their corresponding usernames.
  * @example response - 200 - success response
  * {
- *  "1": "admin"
+ *    "1": "admin",
+ *    "10": "guest",
+ *    "3": "manager1",
+ *    "4": "manager2",
+ *    "11": "restws1"
  * }
  */
 app.get("/users/mapById", async (req, res) => {
   let conn;
   try {
     conn = await pool.getConnection();
+    
     var sql = `
     SELECT JSON_OBJECTAGG(uid, name) AS data
     FROM (

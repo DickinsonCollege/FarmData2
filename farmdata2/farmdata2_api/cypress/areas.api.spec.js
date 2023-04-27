@@ -1,5 +1,5 @@
-describe("API Request Functions", () => {
-  beforeEach(() => {
+describe("Test http://fd2_api/areas", () => {
+  before(() => {
     // change base url from http://fd2_farmdata2 to http://fd2_api
     Cypress.config("baseUrl", "http://fd2_api");
   });
@@ -11,10 +11,9 @@ describe("API Request Functions", () => {
       assert.isObject(mapByName.body, "mapByName Response is an object");
       expect(Object.keys(mapByName.body)[0]).to.eq("A");
       expect(
-        Object.keys(mapByName.body)[Object.keys(mapByName.body).length - 1]
+          Object.keys(mapByName.body)[Object.keys(mapByName.body).length - 1]
       ).to.eq("Z");
       expect(Object.keys(mapByName.body).length).to.eq(70);
-      cy.log(JSON.stringify(mapByName.body));
     });
   });
 
@@ -25,10 +24,9 @@ describe("API Request Functions", () => {
       assert.isObject(mapById.body, "mapById Response is an object");
       expect(Object.keys(mapById.body)[0]).to.eq("170");
       expect(
-        Object.keys(mapById.body)[Object.keys(mapById.body).length - 1]
+          Object.keys(mapById.body)[Object.keys(mapById.body).length - 1]
       ).to.eq("239");
       expect(Object.keys(mapById.body).length).to.eq(70);
-      cy.log(JSON.stringify(mapById.body));
     });
   });
 });
