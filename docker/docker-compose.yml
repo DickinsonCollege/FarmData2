@@ -65,7 +65,7 @@ services:
   #       Necessary to mount /var/run/docker.sock due to 
   #       absolute path syntax on windows.
   fd2dev-unix:
-    image: farmdata2/dev:fd2.3
+    image: farmdata2/dev:fd2.4
     container_name: fd2_dev
     init: true
     networks:
@@ -77,7 +77,7 @@ services:
       - ../farmdata2/cypress:/home/fd2dev/fd2test/cypress
       - ../farmdata2/cypress/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
       - /var/run/docker.sock:/var/run/docker.sock
-      - farmdev_home_fd2.2:/home/fd2dev  # preserve home dir on volume.
+      - farmdev_home_fd2.4:/home/fd2dev  # preserve home dir on volume.
       - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for performance.
       - ~/.fd2gids:/home/fd2dev/.fd2/gids  # mount GID information.
     ports:
@@ -88,7 +88,7 @@ services:
       - linux
 
   fd2dev-win:
-    image: farmdata2/dev:fd2.3
+    image: farmdata2/dev:fd2.4
     container_name: fd2_dev
     init: true
     networks:
@@ -100,7 +100,7 @@ services:
       - ../farmdata2/cypress:/home/fd2dev/fd2test/cypress
       - ../farmdata2/cypress/cypress.config.js:/home/fd2dev/fd2test/cypress.config.js
       - //var/run/docker.sock:/var/run/docker.sock
-      - farmdev_home_fd2.2:/home/fd2dev  # preserve home dir on volume.
+      - farmdev_home_fd2.4:/home/fd2dev  # preserve home dir on volume.
       - farmos_db:/home/fd2dev/FarmData2/docker/db  # use volume for performance.
       - ~/.fd2gids:/home/fd2dev/.fd2/gids  # mount GID information.
     ports:

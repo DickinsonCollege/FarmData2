@@ -16,6 +16,12 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+// Import specific FD2 style sheet
+import '/home/fd2dev/fd2test/farmdata2/farmdata2_modules/resources/fd2.css'
+
+// Import Bootstrap style sheet
+import 'bootstrap/dist/css/bootstrap.css'
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
