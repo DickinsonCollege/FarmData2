@@ -145,6 +145,7 @@ RUN npm install -d \
         path@0.12.7 \
         axios@0.24.0 \
         bootstrap@3.3.7
+        
 WORKDIR /home/$USERNAME
 
 # Configure the VNC server so that it allows fd2dev to connect without
