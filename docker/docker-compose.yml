@@ -1,7 +1,7 @@
 version: '2.2'
 services:
   express:
-    image: farmdata2/api:fd2.1
+    image: farmdata2/api:fd2.2
     container_name: fd2_api
     ports:
       - 8080:80
