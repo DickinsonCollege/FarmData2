@@ -110,7 +110,7 @@ services:
       - windows
 
 volumes:
-  farmdev_home_fd2.2:
+  farmdev_home_fd2.4:
   farmos_db:
 
 networks:
