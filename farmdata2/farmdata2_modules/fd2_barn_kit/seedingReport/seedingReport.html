@@ -1,14 +1,13 @@
 <body>
     <div id="seedingReport" v-cloak>
-        <h1 class="text-center">Seeding Report</h1>
+        <h1 class="text-center" data-cy="report-header">Seeding Report</h1>
         <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
         <fieldset :disabled="rowBeingEdited" class="panel panel-default center-block" style="width: 50%;">
-            <legend class="panel-heading" style="background-color: #d62a17; color: white;">Set Dates</legend>
+            <legend class="panel-heading" style="background-color: #d62a17; color: white;" data-cy="date-selection-header">Set Dates</legend>
             <div style="display: flex;width: 100%; padding: 7px">
                 <date-range-selection data-cy="date-range-selection" class="center-block" @start-date-changed='startDateChange' @end-date-changed='endDateChange' 
                 @click='hide'
                 :set-start-date='startDate' :set-end-date='endDate'></date-range-selection>
-
                 <button data-cy="generate-rpt-btn" class="btn center-block btn-primary" v-if='!reportVisible' @click='seedingLogRequestWithDates'>Generate Report</button>
             </div>
         </fieldset>
