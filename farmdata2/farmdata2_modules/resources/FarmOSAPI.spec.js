@@ -185,7 +185,7 @@ describe('API Request Functions', () => {
         it('map failure', () => {
             // All of the get functions for maps use the same
             // helper function so only need to test the failure once.
-            cy.intercept('GET', '/user',
+            cy.intercept('GET', 'http://fd2_api/users/mapByName',
                 {
                     statusCode: 500,
                     body: '500 Interal Server Error!',

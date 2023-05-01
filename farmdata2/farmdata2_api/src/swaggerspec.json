@@ -1,0 +1,24 @@
+{
+  "info": {
+    "title": "FarmData2 API",
+    "version": "2.1",
+    "description": "FarmData2 is a web application for recording and reporting on crop and livestock production within the context of small organic farming operations. Crop production records include seeding, transplanting, harvest, cover crop, compost, fertilization, irrigation, pest scouting, and spray activities. Livestock production records track animals from birth to slaughter or sale and include pasture moves, periodic and veterinary care and logging of egg production. Records of packing, distribution and customer invoicing are also maintained. All records and reporting features are designed to closely align with organic certification requirements and to support the certification and recertification process.",
+    "license": {
+      "name": "Licensed Under Creative Commons",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    "contact": {
+      "name": "FarmData2 GitHub Repository",
+      "url": "https://github.com/DickinsonCollege/FarmData2"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://fd2_api/",
+      "description": "Farmdata2 Express server"
+    }
+  ],
+  "baseDir": null,
+  "filesPattern": "./**/*.js",
+  "swaggerUIPath": "/docs"
+}
