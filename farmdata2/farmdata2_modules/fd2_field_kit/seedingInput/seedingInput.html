@@ -1,6 +1,6 @@
 <body>
     <div id='seedingInput'>
-        <h1 style='text-align:center;'>Seeding Input Log</h1> 
+        <h1 data-cy="header" style='text-align:center;'>Seeding Input Log</h1> 
         <div data-cy="alert-container" id="scrollBanners" class="alert-boxs" style='max-width: 500px; text-align: center; margin:auto; font-size: large'>
             <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
             <div data-cy='alert-cancel' class="alert alert-danger" style="display: none;" role="alert" v-show="isConfirmed == false">
@@ -65,7 +65,7 @@
             </div>
         </fieldset>
         <fieldset class="panel panel-default center-block" style='max-width: 500px; '>
-        <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Comments</legend>
+        <legend data-cy="comments-label" class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Comments</legend>
         <div class="center-block" style='padding: 12px; text-align: center; font-size: medium; margin-top: 45px;'>
             <textarea data-cy="comments" v-model='comments' style='height: 25px; width: 400px;' :disabled='submitInProgress'></textarea>
         </div>
