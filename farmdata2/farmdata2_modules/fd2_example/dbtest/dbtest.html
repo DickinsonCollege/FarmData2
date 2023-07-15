@@ -1,0 +1,48 @@
+<div id="dbtest" v-cloak> 
+
+    <p>Unlike other sample modules, this sample module does not have content here.
+    Instead, the dbTest sample module consists of a number of <code>.spec.js</code> 
+    files that illustrate common patterns used in tests that 
+    interact with the database. The contents of those files should be reviewed
+    their comments read and studied.  In addition, the tests can be run in 
+    the Cypress Test environment.</p>
+
+    <p>Each of the files has comments describing what they are doing.  It is recommended
+    to study the files in the order below as later examples may not include comments
+    describing things that are documented in an earlier example.</p>
+    <ol>
+        <li>dbtest.maps.spec.js</li>: Shows how to get maps (e.g. userToIDMap) from the database and use them in tests.
+        <li>dbtest.get.seedings.js</li>: Shows how to get seeding logs from the database and use them in tests.
+        <li>dbtest.sessionToken.spec.js</li>: Shows how to get a session token needed for operations that modify the database.
+        <li>dbtest.modify.seedings.spec.js</li>: Shows how to create, delete and update seeding logs in the database.
+    </ol>
+
+    <!-- See maps.html for description of this line.  
+         While not technically needed in this page it is included
+         here so that the example tests are more similar to those
+         that will be created in practice.
+    -->
+    <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
+</div>
+
+<script>
+new Vue({
+    el: '#dbtest',  // el: must match the id of the <div> for the app above.
+    data: {
+        // Provide easy access to the FarmDat2 variables in vue.
+        userID: fd2UserID,
+        userName: fd2UserName,
+
+        createdCount: 0,  // used in created and pageLoaded
+    },
+    computed: {
+        pageLoaded() {
+            // Check here that the correct number of API calls have completed.
+            return this.createdCount == 1
+        },
+    },
+    created() {
+        this.createdCount++
+    }
+})
+</script>
