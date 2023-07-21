@@ -568,7 +568,7 @@
                     tableData.map(h => {
                         sumBedFeet = sumBedFeet + parseFloat(h.data[5])
                     })
-                    return sumBedFeet
+                    return Math.round(sumBedFeet)
                 },
                 /**
                  * returns the total bed feet for Direct Seeding excluding the logs without labor data
@@ -581,7 +581,7 @@
                             sumBedFeet = sumBedFeet + parseFloat(h.data[5])
                         }
                     })
-                    return sumBedFeet
+                    return Math.round(sumBedFeet)
                 },
                 /**
                  * returns the total hours worked for direct seedings. Calculated by mulpitplying hours by workers for each log
