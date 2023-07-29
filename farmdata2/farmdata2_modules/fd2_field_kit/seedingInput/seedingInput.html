@@ -53,7 +53,7 @@
             </div>
         </fieldset>   
         <fieldset class="panel panel-default center-block" style="max-width: 500px;" v-show="configToIDMap.labor != 'Hidden'">
-            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;'>Labor</legend>
+            <legend class="panel-heading" style='background-color: #da4f3f; color: white;font-size: x-large;' data-cy="labor-header">Labor</legend>
             <div class="center-block" style='padding: 12px;text-align:center;font-size: medium; margin-top: 45px;'>
                 <label style='color: #da4f3f' v-show="configToIDMap.labor == 'Required'">*&nbsp;</label>
                 <regex-input data-cy='num-worker-input' :reg-exp="regNumWorker" :default-val="numWorkers" set-type="number" set-min="0" :disabled="submitInProgress" @input-changed="setNewNumWorkers" @match-changed="(newBool) => updateValidMap('validNumWorkers', newBool)"></regex-input>                                                
