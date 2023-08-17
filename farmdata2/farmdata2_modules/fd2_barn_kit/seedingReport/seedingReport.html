@@ -899,9 +899,11 @@
                         this.errBannerVisibility = true
                     })
 
-                if (window.screen.width < 900 || window.screen.height < 900) {
-                    this.isMobile = true
-                }
+                // Need better way to detect if running on mobile to adjust visible table columns.
+                // Removing this makes isMobile always false, so all columns appear all the time for now.
+                //if (window.screen.width < 900 || window.screen.height < 900) {
+                //    this.isMobile = true
+                //}
             }
         })
         Vue.config.devtools = true;
