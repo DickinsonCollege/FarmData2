@@ -18,7 +18,7 @@
                 <fieldset :disabled="rowBeingEdited" data-cy="filters-panel" class="center-block panel panel-default" style="width: 75%;">
                     <legend class="panel-heading" style="background-color: #d62a17; color: white;">Filters</legend>
                     <div :style=" !isMobile ? 'display: flex;width: 100%; padding: 7px' : 'display: grid; width: 100%'">
-                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list='seedingTypeList' includes-all selected-val='All' @selection-changed='seedingChange'>Seeding Type:</dropdown-with-all>
+                        <dropdown-with-all data-cy="seeding-type-dropdown" class="center-block" :dropdown-list='seedingTypeList' includes-all selected-val='All' @selection-changed='seedingChange' id="seedingType">Seeding Type:</dropdown-with-all>
                     
                         <dropdown-with-all data-cy="crop-dropdown" class="center-block" :dropdown-list='cropList' includes-all selected-val='All' @selection-changed='cropChange'>Crop:</dropdown-with-all>
 
@@ -38,9 +38,7 @@
                 <div style="display: flex; width: 100%;">
                     <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Tray'">
-                            <p style="margin-left: 5%;" data-cy='direct-no-logs'>There are no Direct Seeding logs with these parameters</p>
-                        </div>
+                        <div v-if="checkDirectSeedingSummaryTable()"></div>
                         <div v-else>
                             <p style="margin-left: 5%;">Total Row Feet Planted: <b><span data-cy='direct-total-rowft'>{{ totalRowFeet }}</span></b></p>
                             <p style="margin-left: 5%;">Total Bed Feet Planted: <b><span data-cy='direct-total-bedft'>{{ totalBedFeet }}</span></b></p>
@@ -51,9 +49,7 @@
                     </fieldset>
                     <fieldset data-cy="tray-summary" class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
-                        <div v-if="getTableOneType == 'Direct'">
-                            <p style="margin-left: 5%;" data-cy='tray-no-logs'>There are no Tray Seeding logs with these parameters</p>
-                        </div>
+                        <div v-if="checkTraySeedingSummaryTable()"></div>   
                         <div v-else>
                             <p style="margin-left: 5%;">Total Number of Seeds Planted: <b><span data-cy='tray-total-seeds'>{{ traySeedsPlanted }}</span></b></p>
                             <p style="margin-left: 5%;">Total Number of Trays: <b><span data-cy='tray-total-trays'>{{ totalNumTrays }}</span></b></p>
@@ -373,6 +369,22 @@
                 },
                 enableFilters(){
                     this.rowBeingEdited = false
+                },
+                checkDirectSeedingSummaryTable(){
+                    if(this.getTableOneType == "Tray"){
+                        this.seedingChange("Tray Seedings")
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },
+                checkTraySeedingSummaryTable(){
+                    if(this.getTableOneType == "Direct"){
+                        this.seedingChange("Direct Seedings")
+                        return true;
+                    }else{
+                        return false;
+                    }
                 },
             },
             computed: {
