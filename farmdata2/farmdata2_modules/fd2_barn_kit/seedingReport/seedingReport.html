@@ -38,7 +38,7 @@
                 <div style="display: flex; width: 100%;">
                     <fieldset data-cy="direct-summary" class="center-block panel panel-default" style="width: 50%;" v-if="!(selectedSeeding=='Tray Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Direct Seeding Summary</legend>
-                        <div v-if="missingDirectSeedingLogs()"></div>
+                        <div v-if="getDefaultSeedingSelection === 'Direct Seedings'"></div>
                         <div v-else>
                             <p style="margin-left: 5%;">Total Row Feet Planted: <b><span data-cy='direct-total-rowft'>{{ totalRowFeet }}</span></b></p>
                             <p style="margin-left: 5%;">Total Bed Feet Planted: <b><span data-cy='direct-total-bedft'>{{ totalBedFeet }}</span></b></p>
@@ -49,7 +49,7 @@
                     </fieldset>
                     <fieldset data-cy="tray-summary" class="center-block panel panel-default" style="width: 47%;" v-if="!(selectedSeeding=='Direct Seedings')">
                         <legend class="panel-heading" style="background-color: #d62a17; color: white;">Tray Seeding Summary</legend>
-                        <div v-if="missingTraySeedingLogs()"></div>   
+                        <div v-if="getDefaultSeedingSelection === 'Tray Seedings'"></div>   
                         <div v-else>
                             <p style="margin-left: 5%;">Total Number of Seeds Planted: <b><span data-cy='tray-total-seeds'>{{ traySeedsPlanted }}</span></b></p>
                             <p style="margin-left: 5%;">Total Number of Trays: <b><span data-cy='tray-total-trays'>{{ totalNumTrays }}</span></b></p>
@@ -370,6 +370,7 @@
                 enableFilters(){
                     this.rowBeingEdited = false
                 },
+                /*
                 missingDirectSeedingLogs(){
                     if(!this.seedingTypeList.includes("Direct Seedings")){
                        this.selectedSeeding = "Tray Seedings"
@@ -386,11 +387,14 @@
                         return false;
                     }
                 },
+                */
                 getDefaultSeedingSelection(){
-                    if(this.missingTraySeedingLogs()){
+                    if(!this.seedingTypeList.includes("Tray Seedings")){
+                       this.selectedSeeding = "Direct Seedings"
                         return 'Direct Seedings'
-                    }else if(this.missingDirectSeedingLogs()){
-                        return 'Tray Seedings'
+                    }else if(!this.seedingTypeList.includes("Direct Seedings")){
+                       this.selectedSeeding = "Tray Seedings"
+                       return 'Tray Seedings'
                     }
                     return 'All'
                 },
