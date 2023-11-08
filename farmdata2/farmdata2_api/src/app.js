@@ -320,38 +320,35 @@ app.get("/users/mapById", async (req, res) => {
 // test paging http://localhost:8000/paging/?page=1&limit=5
 app.get("/paging", async (req, res) => {
   let conn;
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
+  const page = parseInt(req.query.page, 10) || 1; // Default to page 1 if undefined
+  const limit = parseInt(req.query.limit, 10) || 10; // Default to limit 10 if undefined
   const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const result = {};
   try {
     conn = await pool.getConnection();
-    var sql = 'SELECT * FROM field_data_field_farm_asset'
-    let obj = await conn.query(sql);
-    // result = express.json(result);
-    
-    // result = JSON.parse(result)
-    if (endIndex < obj.length ) {
+    const sql = 'SELECT * FROM field_data_field_farm_asset LIMIT ? OFFSET ?';
+    const rows = await conn.query(sql, [limit, startIndex]);
+    const result = {};
+    // Assuming totalRows can be retrieved from the database to calculate if there's a next page
+    const [totalRows] = await conn.query('SELECT COUNT(*) AS total FROM field_data_field_farm_asset');
+    if (startIndex + limit < totalRows.total) {
       result.next = {
         page: page + 1,
-        limit: limit,
+        limit: limit
       };
     }
     if (startIndex > 0) {
       result.previous = {
         page: page - 1,
-        limit: limit,
+        limit: limit
       };
     }
-    result.results = obj.slice(startIndex, endIndex);
+    // Attach the rows to the result
+    result.results = rows;
     res.json(result);
   } catch (error) {
-    throw error;
+    res.status(500).send(error.message);
   } finally {
-    if (conn) {
-      conn.release();
-    }
+    if (conn) conn.release();
   }
 });
 
@@ -385,13 +382,11 @@ app.get("/log/:type/:start_time-:end_time", async (req, res) => {
       result.last = `/log/${logType}/${startTime}-${endTime}/?page=${totalPages}&limit=${limit}`;
     }
     // Include paginated results
-    result.results = obj; // No need to slice since SQL query handles pagination
+    result.results = obj; 
     res.json(result);
   } catch (error) {
-    res.status(500).send(error.message); // Send error message as response
+    res.status(500).send(error.message); 
   } finally {
-    if (conn) {
-      conn.release(); // Release the connection back to the pool
-    }
+    if (conn) conn.release();
   }
 });
