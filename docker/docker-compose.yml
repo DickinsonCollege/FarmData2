@@ -60,10 +60,9 @@ services:
       - /sessions
     links:
       - 'db'
+    profiles:
+      - phpmyadmin
 
-  # Note: Separate profiles for unix vs windows systems
-  #       Necessary to mount /var/run/docker.sock due to 
-  #       absolute path syntax on windows.
   fd2dev-unix:
     image: farmdata2/dev:fd2.4
     container_name: fd2_dev
