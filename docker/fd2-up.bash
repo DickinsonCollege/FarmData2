@@ -261,6 +261,26 @@ mkdir ~/.fd2gids
 echo "$FD2GRP_GID" > ~/.fd2gids/fd2grp.gid
 echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid 
 
+profiles="macos linux windows phpmyadmin"
+
+# Parse command-line arguments
+for arg in "$@"; do
+    case $arg in
+        --no-dev)
+        # Exclude macos, linux, and windows profiles for the dev containers
+        profiles="${profiles//macos/}"
+        profiles="${profiles//linux/}"
+        profiles="${profiles//windows/}"
+        shift
+        ;;
+        --no-phpmyadmin)
+        # Exclude phpmyadmin profile
+        profiles="${profiles//phpmyadmin/}"
+        shift
+        ;;
+    esac
+done
+
 # Now finally... actually start the containers...
 
 # Delete any of the existing containers (except dev so that its writeable
@@ -270,9 +290,9 @@ docker rm fd2_mariadb &> /dev/null
 docker rm fd2_phpmyadmin &> /dev/null
 docker rm fd2_farmdata2 &> /dev/null
 
-echo "Starting containers..."
+echo "Starting containers with profiles: $profiles"
 # Note: Any command line args are passed to the docker-compose up command
-docker compose --profile $PROFILE up -d "$@"
+docker compose --profile $profiles up -d "$@"
 
 echo "Clearing drupal cache..."
 sleep 3  # give site time to come up before clearing the cache.
