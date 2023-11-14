@@ -279,19 +279,19 @@ for arg in "$@"; do
             profiles="${profiles//macos/} ${profiles//linux/} ${profiles//windows/} ${profiles//phpmyadmin/}"
             ;;
     esac
-    # Did some quick magic to take out any duplicates and return a profiles variable without spaces
-    read -ra profile_array <<< "$profiles" 
-    unique_profiles=($(printf "%s\n" "${profile_array[@]}" | sort -u))
-    profiles=$(echo "${unique_profiles[@]}" | tr ' ' '\n' | xargs)
     shift
 done
+
+# Remove duplicates from profiles
+read -ra profile_array <<< "$profiles" 
+unique_profiles=($(printf "%s\n" "${profile_array[@]}" | sort -u))
+profiles=$(echo "${unique_profiles[@]}" | tr ' ' '\n' | xargs)
 
 # Create a comma-separated list of profiles for the COMPOSE_PROFILES environment variable
 COMPOSE_PROFILES=$(echo $profiles | tr ' ' ',')
 
 # Export the COMPOSE_PROFILES environment variable
 export COMPOSE_PROFILES
-
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
 echo "Removing any stale containers..."
