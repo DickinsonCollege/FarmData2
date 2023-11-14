@@ -261,7 +261,7 @@ mkdir ~/.fd2gids
 echo "$FD2GRP_GID" > ~/.fd2gids/fd2grp.gid
 echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid 
 
-profiles= "$PROFILE phpmyadmin" #This should be the default profiles it starts with + phpmyadmin as a default.
+profiles="${PROFILE} phpmyadmin" #Default Profile List
 
 # Parse Profile CLI Arguments
 for arg in "$@"; do
