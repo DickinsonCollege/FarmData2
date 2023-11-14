@@ -268,7 +268,9 @@ for arg in "$@"; do
     case $arg in
         --no-dev)
             # Exclude dev profiles
-            profiles="${profiles//macos/} ${profiles//linux/} ${profiles//windows/}"
+            profiles="${profiles//macos/}"
+            profiles="${profiles//linux/}"
+            profiles="${profiles//windows/}"
             ;;
         --no-phpmyadmin)
             # Exclude phpmyadmin profile
@@ -276,7 +278,10 @@ for arg in "$@"; do
             ;;
         --no-phpmyadmin-dev)
             # Exclude both phpmyadmin and dev profiles
-            profiles="${profiles//macos/} ${profiles//linux/} ${profiles//windows/} ${profiles//phpmyadmin/}"
+            profiles="${profiles//macos/}"
+            profiles="${profiles//linux/}"
+            profiles="${profiles//windows/}"
+            profiles="${profiles//phpmyadmin/}"
             ;;
     esac
     shift
