@@ -289,6 +289,12 @@ COMPOSE_PROFILES=$(echo $profiles | sed 's/ /,/g')
 # Export the COMPOSE_PROFILES environment variable
 export COMPOSE_PROFILES
 
+# Check if COMPOSE_PROFILES is empty
+if [ -z "$COMPOSE_PROFILES" ]; then
+    echo "No profiles to start. Exiting."
+    exit 1
+fi
+
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
 echo "Removing any stale containers..."
