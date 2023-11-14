@@ -284,12 +284,6 @@ for arg in "$@"; do
     shift
 done
 
-# Check if profiles is empty
-if [ -z "$profiles" ]; then
-    echo "No profiles to start. Exiting."
-    exit 1
-fi
-
 # Create a comma-separated list of profiles for the COMPOSE_PROFILES environment variable
 COMPOSE_PROFILES=$(echo $profiles | tr ' ' ',')
 
@@ -305,7 +299,7 @@ docker rm fd2_farmdata2 &> /dev/null
 
 echo "Starting containers with profiles: $profiles"
 # Note: Any command line args are passed to the docker-compose up command
-docker-compose --profile $profiles up -d "$@"
+docker-compose up -d ,"$@"
 
 echo "Clearing drupal cache..."
 sleep 3  # give site time to come up before clearing the cache.
