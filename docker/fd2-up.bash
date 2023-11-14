@@ -292,7 +292,7 @@ docker rm fd2_farmdata2 &> /dev/null
 
 echo "Starting containers with profiles: $profiles"
 # Note: Any command line args are passed to the docker-compose up command
-docker compose --profile $profiles up -d "$@"
+docker-compose --profile $profiles up -d "$@"
 
 echo "Clearing drupal cache..."
 sleep 3  # give site time to come up before clearing the cache.
