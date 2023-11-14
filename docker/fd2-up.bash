@@ -261,6 +261,7 @@ mkdir ~/.fd2gids
 echo "$FD2GRP_GID" > ~/.fd2gids/fd2grp.gid
 echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid 
 
+# Initial profiles
 profiles="macos linux windows phpmyadmin"
 
 # Parse Profile CLI Arguments
@@ -283,17 +284,17 @@ for arg in "$@"; do
     shift
 done
 
-# Create a comma-separated list of profiles for the COMPOSE_PROFILES environment variable
-COMPOSE_PROFILES=$(echo $profiles | sed 's/ /,/g')
-
-# Export the COMPOSE_PROFILES environment variable
-export COMPOSE_PROFILES
-
-# Check if COMPOSE_PROFILES is empty
-if [ -z "$COMPOSE_PROFILES" ]; then
+# Check if profiles is empty
+if [ -z "$profiles" ]; then
     echo "No profiles to start. Exiting."
     exit 1
 fi
+
+# Create a comma-separated list of profiles for the COMPOSE_PROFILES environment variable
+COMPOSE_PROFILES=$(echo $profiles | tr ' ' ',')
+
+# Export the COMPOSE_PROFILES environment variable
+export COMPOSE_PROFILES
 
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
