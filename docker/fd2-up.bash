@@ -267,27 +267,22 @@ profiles="macos linux windows phpmyadmin"
 for arg in "$@"; do
     case $arg in
         --no-dev)
-        # Exclude dev profiles
-        profiles="${profiles//macos/}"
-        profiles="${profiles//linux/}"
-        profiles="${profiles//windows/}"
-        shift
-        ;;
+            # Exclude dev profiles
+            profiles="${profiles//macos/} ${profiles//linux/} ${profiles//windows/}"
+            ;;
         --no-phpmyadmin)
-        # Exclude phpmyadmin profile
-        profiles="${profiles//phpmyadmin/}"
-        shift
-        ;;
+            # Exclude phpmyadmin profile
+            profiles="${profiles//phpmyadmin/}"
+            ;;
         --no-phpmyadmin-dev)
-        # Exclude both phpmyadmin and dev profiles
-        profiles="${profiles//macos/}"
-        profiles="${profiles//linux/}"
-        profiles="${profiles//windows/}"
-        profiles="${profiles//phpmyadmin/}"
-        shift
-        ;;
+            # Exclude both phpmyadmin and dev profiles
+            profiles="${profiles//macos/} ${profiles//linux/} ${profiles//windows/} ${profiles//phpmyadmin/}"
+            ;;
     esac
+    profiles=$(echo $profiles | xargs) # Trim and remove any duplicate spaces
+    shift
 done
+
 
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
