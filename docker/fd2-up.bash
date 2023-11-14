@@ -280,7 +280,10 @@ for arg in "$@"; do
             profiles="${profiles//macos/} ${profiles//linux/} ${profiles//windows/} ${profiles//phpmyadmin/}"
             ;;
     esac
-    profiles=$(echo $profiles | xargs) # Trim and remove any duplicate spaces
+    # Did some quick magic to take out any duplicates and return a profiles variable without spaces
+    read -ra profile_array <<< "$profiles" 
+    unique_profiles=($(printf "%s\n" "${profile_array[@]}" | sort -u))
+    profiles=$(echo "${unique_profiles[@]}" | tr ' ' '\n' | xargs)
     shift
 done
 
