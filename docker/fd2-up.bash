@@ -267,7 +267,7 @@ profiles="macos linux windows phpmyadmin"
 for arg in "$@"; do
     case $arg in
         --no-dev)
-        # Exclude macos, linux, and windows profiles for the dev containers
+        # Exclude dev profiles
         profiles="${profiles//macos/}"
         profiles="${profiles//linux/}"
         profiles="${profiles//windows/}"
@@ -278,10 +278,14 @@ for arg in "$@"; do
         profiles="${profiles//phpmyadmin/}"
         shift
         ;;
+        --only-phpmyadmin)
+        # Start only phpmyadmin profile if needed. Good for testing.
+        profiles="phpmyadmin"
+        shift
+        ;;
     esac
 done
 
-# Now finally... actually start the containers...
 
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
