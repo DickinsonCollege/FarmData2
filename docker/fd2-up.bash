@@ -263,7 +263,7 @@ echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid
 
 profiles="macos linux windows phpmyadmin"
 
-# Parse command-line arguments
+# Parse Profile CLI Arguments
 for arg in "$@"; do
     case $arg in
         --no-dev)
@@ -278,14 +278,16 @@ for arg in "$@"; do
         profiles="${profiles//phpmyadmin/}"
         shift
         ;;
-        --only-phpmyadmin)
-        # Start only phpmyadmin profile if needed. Good for testing.
-        profiles="phpmyadmin"
+        --no-phpmyadmin-dev)
+        # Exclude both phpmyadmin and dev profiles
+        profiles="${profiles//macos/}"
+        profiles="${profiles//linux/}"
+        profiles="${profiles//windows/}"
+        profiles="${profiles//phpmyadmin/}"
         shift
         ;;
     esac
 done
-
 
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
