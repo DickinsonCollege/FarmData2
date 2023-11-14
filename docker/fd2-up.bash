@@ -261,8 +261,7 @@ mkdir ~/.fd2gids
 echo "$FD2GRP_GID" > ~/.fd2gids/fd2grp.gid
 echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid 
 
-# Initial profiles
-profiles="macos linux windows phpmyadmin"
+profiles=$PROFILE
 
 # Parse Profile CLI Arguments
 for arg in "$@"; do
