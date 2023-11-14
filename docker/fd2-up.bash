@@ -283,6 +283,11 @@ for arg in "$@"; do
     shift
 done
 
+# Create a comma-separated list of profiles for the COMPOSE_PROFILES environment variable
+COMPOSE_PROFILES=$(echo $profiles | sed 's/ /,/g')
+
+# Export the COMPOSE_PROFILES environment variable
+export COMPOSE_PROFILES
 
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
