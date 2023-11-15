@@ -10,18 +10,5 @@ then
   exit -1
 fi
 
-echo "Stopping Containers..."
-docker stop fd2_phpmyadmin
-docker stop fd2_farmdata2
-docker stop fd2_mariadb
-docker stop fd2_dev
-docker stop fd2_api
-
-echo "Deleting containers..."
-docker rm fd2_mariadb
-docker rm fd2_phpmyadmin --volumes  # remove /sessions volume created.
-docker rm fd2_farmdata2
-docker rm fd2_dev
-docker rm fd2_api
-
-echo "Done."
+# I'm pretty since the COMPOSE_PROFILES utilize the environment variables, you can just run docker-compose down and that's it.... I'm going to test it and adjust it accordingly.
+docker-compose down
