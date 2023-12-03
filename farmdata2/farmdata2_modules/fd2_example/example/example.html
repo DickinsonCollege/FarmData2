@@ -1,0 +1,68 @@
+<!-- define a div to wrap around the app. -->
+<!-- apply v-cloak so that app is not visible until after being rendered -->
+<div id="example" v-cloak>
+<!-- 
+    To include a new subtab, open the module file of current tab (for example here is fd2.example.module, and add subtab property)  )
+ -->
+    <div id="content">
+        <error-banner data-cy="alert-err-handler" :visible="errBannerVisibility"></error-banner>
+    </div>
+    <p>This page is minimal example subtab.</p>
+    <!-- This div is used by the Cypress tests to wait until all of the
+         API calls initiated in the created() method have completed.  The
+         pageLoaded value is set by a computed function that checks if the 
+         required number of API calls have completed.  Each API call initiated
+         in created() then increments the this.createdCount variable in data
+         when the call completes (i.e. in its then()).  When all API calls have
+         completed, the pageLoaded value becomes true.  This is then detected
+         by the cy.waitForPage() function that is used in the test.  The 
+         cy.waitForPage() function is defined in the cypress/support/commands.js
+         file.
+    -->
+    div.
+    <div data-cy="page-loaded" v-show=false>{{ pageLoaded }}</div>
+</div>
+
+<script>
+    // Define the Vue instance for the app.
+    new Vue({
+        el: '#example',  // el: must match the id of the <div> for the app above.
+
+        components: {
+            // components list can be found in farmdata2/farmdata2_modules/resources
+            'error-banner': ErrorBannerComponent
+        },
+        data: {
+            // Usually needed varible contain current login user information
+            userID: fd2UserID,
+            userName: fd2UserName,
+            // error banner property
+            errBannerVisibility: false,
+             // used in created and pageLoaded
+            createdCount: 0, 
+        },
+        methods: {
+
+        },
+        computed: {
+
+            pageLoaded() {
+                // This method is required for api testing
+                // Check here that the correct number of API calls have completed.
+                // update this method when making API (in created phase, for example)
+                return this.createdCount == 0
+            },
+        },
+        created() {
+            // Example of API request
+            // getUserToIDMap().then((response) => {
+            //     this.userToIDMap = response
+            //     // Increment this in the then() of each API call.
+            //     this.createdCount++
+            // })
+        }
+    })
+
+    //Allows Vue to be accessed in Dev Tools
+    Vue.config.devtools = true;
+</script>
