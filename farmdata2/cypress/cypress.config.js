@@ -17,6 +17,13 @@ module.exports = {
 
   e2e: {
     setupNodeEvents(on, config) {
+      on('task', {
+        log(message) {
+          console.log(message)
+
+          return null
+        },
+      })
       // implement node event listeners here
     },
     baseUrl: 'http://fd2_farmdata2',
