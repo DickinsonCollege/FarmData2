@@ -19,7 +19,10 @@ describe('Check the JS vars defined by the FD2 Examples module', () => {
 
     cy.visit('/farm/fd2-barn-kit')
     cy.window().its('fd2UserID').should('equal',1);
-    cy.window().its('fd2UserName').should('equal','admin');
+    cy.window().its('fd2UserName').should('equal', 'admin');
+    cy.window().its('fd2Role').then((variable) => {
+      expect(variable).to.deep.equal(["authenticated user", "Farm Manager", "Farm Worker", "Farm Viewer"])
+    });
   })
 
   it('Log in as manager1 and check tha vars exist.', () => {
@@ -27,7 +30,10 @@ describe('Check the JS vars defined by the FD2 Examples module', () => {
 
     cy.visit('/farm/fd2-barn-kit')
     cy.window().its('fd2UserID').should('equal',3);
-    cy.window().its('fd2UserName').should('equal','manager1');
+    cy.window().its('fd2UserName').should('equal', 'manager1');
+    cy.window().its('fd2Role').then((variable) => {
+      expect(variable).to.deep.equal(["authenticated user", "Farm Manager", "Farm Worker", "Farm Viewer"])
+    });
   })
 
   it('Log in as worker1 and check tha vars exist.', () => {
@@ -35,7 +41,10 @@ describe('Check the JS vars defined by the FD2 Examples module', () => {
 
     cy.visit('/farm/fd2-barn-kit')
     cy.window().its('fd2UserID').should('equal',5);
-    cy.window().its('fd2UserName').should('equal','worker1');
+    cy.window().its('fd2UserName').should('equal', 'worker1');
+    cy.window().its('fd2Role').then((variable) => {
+      expect(variable).to.deep.equal(["authenticated user",  "Farm Worker", "Farm Viewer"])
+    });
   })
 
   // Currently guest users cannot see any FD2 tabs so no check for them.

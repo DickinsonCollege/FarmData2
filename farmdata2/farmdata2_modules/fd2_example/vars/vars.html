@@ -1,8 +1,9 @@
 <!-- define a div to wrap around the app. -->
 <!-- apply v-cloak so that app is not visible until after being rendered -->
-<div id="vars" v-cloak> 
+<div id="vars" v-cloak>
 
-    <p>FarmData2 defines a few useful variables in every page.  This page demonstrates how those variables can be brought into the Vue instance and used in scripts.</p>
+    <p>FarmData2 defines a few useful variables in every page. This page demonstrates how those variables can be brought
+        into the Vue instance and used in scripts.</p>
 
     <p>Examples of how to use Cypress to test the elements on this page can be found in the vars.spec.js file.</p>
 
@@ -10,6 +11,7 @@
     <UL>
         <LI>UserID: Contains the id number of the logged in user.</LI>
         <LI>UserName: Contains the text username of the logged in user.</LI>
+        <LI>UserRole: Contains roles of logged in user.</LI>
     </UL>
 
     <p>The current values of these variables are:</p>
@@ -19,10 +21,11 @@
         <!-- See fd2vars.spec.js for examples of testing these values. -->
         <LI>UserID: <span data-cy="user-id">{{ userID }}</span></LI>
         <LI>UserName: <span data-cy="user-name">{{ userName }}</span></LI>
+        <LI> UserRole: <span data-cy="user-role">{{userRole}}</span></LI>
     </UL>
     <p>The current values of the configuration variables are:</p>
     <UL>
-        <table class ="table table-bordered" style="width: 20em">
+        <table class="table table-bordered" style="width: 20em">
             <thead>
                 <tr>
                     <th>Configuration Variables</th>
@@ -53,41 +56,41 @@
 </div>
 
 <script>
-// Define the Vue instance for the app.
-new Vue({
-    el: '#vars',  // el: must match the id of the <div> for the app above.
-    data: {
-        // Provide easy access to the FarmDat2 variables in vue.
-        // Note: 
-        //   The JS variables fd2UserID and fd2UserName are defined in the 
-        //   fd2_example.module file.
-        //   They are also defined in the module files for the fd2_barn_kit and 
-        //   fd2_field_kit tabs so are available there as well. 
-        userID: fd2UserID,
-        userName: fd2UserName,
-        configObj: {},
-        createdCount: 0,  // used in created and pageLoaded
-    },
-    computed: {
-        keyArray() {
-            keys = Array.from(Object.keys(this.configObj));
-            return keys
+    // Define the Vue instance for the app.
+    new Vue({
+        el: '#vars',  // el: must match the id of the <div> for the app above.
+        data: {
+            // Provide easy access to the FarmDat2 variables in vue.
+            // Note: 
+            //   The JS variables fd2UserID and fd2UserName are defined in the 
+            //   fd2_example.module file.
+            //   They are also defined in the module files for the fd2_barn_kit and 
+            //   fd2_field_kit tabs so are available there as well. 
+            userID: fd2UserID,
+            userName: fd2UserName,
+            userRole: fd2Role,
+            configObj: {},
+            createdCount: 0,  // used in created and pageLoaded
         },
-        pageLoaded() {
-            // Check here that the correct number of API calls have completed.
-            return this.createdCount == 1
+        computed: {
+            keyArray() {
+                keys = Array.from(Object.keys(this.configObj));
+                return keys
+            },
+            pageLoaded() {
+                // Check here that the correct number of API calls have completed.
+                return this.createdCount == 1
+            },
         },
-    },
-    created() {
-        getConfiguration().then((response) => {
-            this.configObj = response.data
-            // Increment this in the then() of each API call.
-            this.createdCount++
-        })
-    }
-})
+        created() {
+            getConfiguration().then((response) => {
+                this.configObj = response.data
+                // Increment this in the then() of each API call.
+                this.createdCount++
+            })
+        }
+    })
 
-//Allows Vue to be accessed in Dev Tools
-Vue.config.devtools = true;
+    //Allows Vue to be accessed in Dev Tools
+    Vue.config.devtools = true;
 </script>
-    

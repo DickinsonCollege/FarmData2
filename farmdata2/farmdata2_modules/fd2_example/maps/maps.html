@@ -19,7 +19,6 @@
         <LI>The logged in user is {{ userName }}.</LI>
         <LI>That user's ID in the map is:
             <span data-cy="mapped-id">{{ userToIDMap.get(userName) }}</span>
-        <LI> <span>The user's roles could be get using fd2Role property defined in tab module : {{userRole}}</span></LI>
     </UL>
 
     <p>The IDToUserMap map can be used to go from a user id to a username:</p>
@@ -69,8 +68,6 @@
             // Provide easy access to the FarmDat2 variables in vue.
             userID: fd2UserID,
             userName: fd2UserName,
-            userRole: fd2Role,
-
             // Vue variables to hold the maps that are loaded from farmOS
             // Note: Making a new map here prevents null reference exceptions if the
             //       map has not been retrieved yet when the page is rendered.
