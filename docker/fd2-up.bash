@@ -297,6 +297,7 @@ COMPOSE_PROFILES=$(echo $profiles | tr ' ' ',')
 
 # Export the COMPOSE_PROFILES environment variable
 export COMPOSE_PROFILES
+
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
 echo "Removing any stale containers..."
