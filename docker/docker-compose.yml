@@ -60,7 +60,8 @@ services:
       - /sessions
     links:
       - 'db'
-
+    profiles:
+      - phpmyadmin
   # Note: Separate profiles for unix vs windows systems
   #       Necessary to mount /var/run/docker.sock due to 
   #       absolute path syntax on windows.

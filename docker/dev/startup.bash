@@ -1,36 +1,36 @@
 #!/bin/bash
 
-# Cleanup from past vnc session that may hav been running in the container.
+# Cleanup from past VNC session that may have been running in the container.
 # This clean-up is not done when the container is stopped (not deleted).
-rm /tmp/.X11-unix/X1
-rm /tmp/.X1-lock
+# Using `rm -f` to ignore nonexistent files and suppress error messages.
+rm -f /tmp/.X11-unix/X1
+rm -f /tmp/.X1-lock
 
-# Ensure that the fd2dev user is in a group that has RW permission to
-# the docker.sock file.  This will allow fd2dev to use the docker on docker
-# to interact with containers within the development environment.
-# Note: This must be here instead of in Dockerfile so the GID for the
-# docker.sock in the container can match the one on the host.
-# Note: The docker.gid file is mounted into the container by docker-compose.
-HOST_DOCKER_GID=$(cat ~/.fd2/gids/docker.gid)
-HOST_DOCKER_GID_IN_CONTAINER=$(echo /etc/group | grep ":$HOST_DOCKER_GID:")
-if [ -z "$HOST_DOCKER_GID_IN_CONTAINER" ];
-then
-  echo "fd2dev" | sudo -S groupadd --gid $HOST_DOCKER_GID fd2docker
+# The sudo password is assumed to be 'fd2dev' for all operations.
+# Using a single invocation of sudo and a here-document to execute multiple commands.
+# This reduces the number of times the password needs to be echoed and sudo is called.
+# This also reduces the script complexity and potential points of failure.
+sudo -S sh <<SCRIPT
+# Ensure that the fd2dev user is in a group that has RW permission to the docker.sock file.
+HOST_DOCKER_GID=\$(cat ~/.fd2/gids/docker.gid)
+if ! grep -q ":$HOST_DOCKER_GID:" /etc/group; then
+  groupadd --gid $HOST_DOCKER_GID fd2docker
 fi
-echo "fd2dev" | sudo -S usermod -a -G $HOST_DOCKER_GID fd2dev
-echo "fd2dev" | sudo -S chgrp +$HOST_DOCKER_GID /var/run/docker.sock
-echo "fd2dev" | sudo -S chmod 775 /var/run/docker.sock
+usermod -a -G $HOST_DOCKER_GID fd2dev
+chgrp $HOST_DOCKER_GID /var/run/docker.sock
+chmod 775 /var/run/docker.sock
 
 # Ensure that the fd2grp has RW access to mounted FarmData2 directory.
-# This probably is not necessary as in linux the group will reflect
-# the host group.  But it does make things consistent across macOS and linux.
-echo "fd2dev" | sudo -S chgrp -R fd2grp /home/fd2dev/FarmData2
-echo "fd2dev" | sudo -S chmod -R g+rw /home/fd2dev/FarmData2
+# This may not be necessary on Linux as the group will reflect the host group.
+# But it does make things consistent across macOS and Linux.
+chgrp -R fd2grp /home/fd2dev/FarmData2
+chmod -R g+rw /home/fd2dev/FarmData2
 
 # Ensure that the dbus service is running.
-echo "fd2dev" | sudo /etc/init.d/dbus restart
+/etc/init.d/dbus restart
+SCRIPT
 
-# Launch the VNC server
+# Launch the VNC server with the desired settings.
 vncserver \
   -localhost no \
   -geometry 1024x768 -depth 16 \

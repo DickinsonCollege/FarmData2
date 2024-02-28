@@ -261,7 +261,42 @@ mkdir ~/.fd2gids
 echo "$FD2GRP_GID" > ~/.fd2gids/fd2grp.gid
 echo "$DOCKER_GRP_GID" > ~/.fd2gids/docker.gid 
 
-# Now finally... actually start the containers...
+profiles="${PROFILE} phpmyadmin" #Default Profile List
+
+# Parse Profile CLI Arguments
+for arg in "$@"; do
+    case $arg in
+        --no-dev)
+            # Exclude dev profiles
+            profiles="${profiles//macos/}"
+            profiles="${profiles//linux/}"
+            profiles="${profiles//windows/}"
+            ;;
+        --no-phpmyadmin)
+            # Exclude phpmyadmin profile
+            profiles="${profiles//phpmyadmin/}"
+            ;;
+        --no-phpmyadmin-dev)
+            # Exclude both phpmyadmin and dev profiles
+            profiles="${profiles//macos/}"
+            profiles="${profiles//linux/}"
+            profiles="${profiles//windows/}"
+            profiles="${profiles//phpmyadmin/}"
+            ;;
+    esac
+    shift
+done
+
+# Remove duplicates from profiles
+read -ra profile_array <<< "$profiles" 
+unique_profiles=($(printf "%s\n" "${profile_array[@]}" | sort -u))
+profiles=$(echo "${unique_profiles[@]}" | tr ' ' '\n' | xargs)
+
+# Create a comma-separated list of profiles for the COMPOSE_PROFILES environment variable
+COMPOSE_PROFILES=$(echo $profiles | tr ' ' ',')
+
+# Export the COMPOSE_PROFILES environment variable
+export COMPOSE_PROFILES
 
 # Delete any of the existing containers (except dev so that its writeable
 # layer - and thus any installed software or configuration - is preserved.)
@@ -270,9 +305,9 @@ docker rm fd2_mariadb &> /dev/null
 docker rm fd2_phpmyadmin &> /dev/null
 docker rm fd2_farmdata2 &> /dev/null
 
-echo "Starting containers..."
+echo "Starting containers with profiles: $profiles"
 # Note: Any command line args are passed to the docker-compose up command
-docker compose --profile $PROFILE up -d "$@"
+docker-compose up -d "$@"
 
 echo "Clearing drupal cache..."
 sleep 3  # give site time to come up before clearing the cache.
