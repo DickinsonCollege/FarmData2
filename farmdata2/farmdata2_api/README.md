@@ -29,7 +29,7 @@ To test your SQL queries, you can use the phpMyAdmin service available in the Fa
 - **Development Environment**: `http://fd2_phpmyadmin`
 - **Local Browser**: `http://localhost:8181`
 
-Login credentials are provided for both `farm` and `root` users in the development documentation.
+Login credentials are provided for both `farm` and `root` users in the developer documentation.
 
 ## Testing Endpoints
 
