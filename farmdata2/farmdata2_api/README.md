@@ -4,9 +4,7 @@ The FarmData2 API provides a suite of comprehensive endpoints to allow developer
 
 ## Swagger Documentation
 
-The Swagger documentation for the FarmData2 API is available at `/fd2_api/docs`. This documentation provides a detailed look at available endpoints, their parameters, and expected responses, adhering to the OpenAPI Specifications. 
-
-For more information on the OpenAPI Specifications, visit [OpenAPI Specifications](https://www.openapis.org/).
+The Swagger documentation for the FarmData2 API is available at `farmdata2/farmdata2_api/src/swaggerspec.json`. This documentation provides a detailed look at available endpoints, their parameters, and expected responses, adhering to the [OpenAPI Specifications](https://www.openapis.org/).
 
 ## Creating API Endpoints
 
