@@ -1,6 +1,6 @@
 # FarmData2 API
 
-The FarmData2 API provides a comprehensive endpoints to interact with the FarmData2 system. 
+The FarmData2 API provides a suite of comprehensive endpoints to allow developers to interact and query data within the FarmData2 system. 
 
 ## Swagger Documentation
 
