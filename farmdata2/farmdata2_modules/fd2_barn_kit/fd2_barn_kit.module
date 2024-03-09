@@ -98,8 +98,21 @@ function fd2_barn_kit_preprocess_page() {
 
     // Define some useful variables in the JavaScript for page.
     // the @ symbol surpresses the warning when a user attempts to access a page without being logged in
+   
     global $user;
-    @$cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."';";
+    
+    $account = user_load($user->uid);
+    // Map from roleID to role name
+    $roleMap = user_roles();
+    // Get the roles assigned to the user.
+    $roles = array();
+    foreach ($account->roles as $role => $roleName) {
+      $roles[] = $roleMap[$role];
+    }
+
+    @$cmd="var fd2UserID=".$user->uid."; var fd2UserName='".$user->name."'; ;";
     drupal_add_js($cmd,'inline');
+    $roleCMD = "var fd2Role = " . json_encode($roles) . ";"; // JSON encode roles array
+    drupal_add_js($roleCMD, 'inline');
   }
 };
