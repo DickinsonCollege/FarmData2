@@ -188,6 +188,8 @@ COPY --chown=$USERNAME:$USERNAME ./terminalrc ./.config/xfce4/terminal/terminalr
 RUN chmod +x .fd2/startup.bash \
  && chmod +x .fd2/panel.bash \
  && chmod +x .config/autostart/panel.desktop
+# .eslintignore is used to ignore the fd2test directory when linting.
+COPY ./eslintignore /home/$USERNAME/fd2test/.eslintignore
 
 # Set permissions on the test directory in the container so that the fd2grp 
 # is able to read and write them.
