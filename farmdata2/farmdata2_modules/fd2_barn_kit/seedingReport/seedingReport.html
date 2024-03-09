@@ -26,7 +26,7 @@
                     </div>
                 </fieldset>
 
-                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="seedingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='disableFilters' @edit-canceled='enableFilters' :can-edit='!isMobile' :can-delete='!isMobile'></custom-table>
+                <custom-table data-cy="report-table" :columns="tableColumns" :rows='tableRows' csv-name="seedingReport_" @row-deleted="deleteRowLog" @row-edited='updateRow' @edit-clicked='(editID) => { updateEditableArea(editID); disableFilters() }' @edit-canceled='enableFilters' :can-edit='!isMobile' :can-delete='!isMobile'></custom-table>
 
                 <br>
             </div>
@@ -91,6 +91,9 @@
                 reportVisible: false,
                 seedingLogs: [],
                 updateLog: [],
+                greenHouseAreas: [],
+                fieldAreas: [],
+                editableAreas: [],
 
                 sessionToken: null,
                 selectedCrop: 'All',
@@ -144,6 +147,18 @@
                 },
                 areaChange(selectedArea){
                     this.selectedArea = selectedArea
+                },
+                updateEditableArea(rowID) {
+                    for(var i=0; i < this.seedingLogs.length; i++){
+                        if(this.seedingLogs[i].id === rowID){
+                            if(this.seedingLogs[i].log_category[0].name == "Direct Seedings"){
+                                this.editableAreas = this.fieldAreas
+                            }
+                            else{
+                                this.editableAreas = this.greenHouseAreas
+                            }
+                        }
+                    } 
                 },
                 seedingChange(selectedSeeding){
                     this.selectedSeeding = selectedSeeding
@@ -353,10 +368,10 @@
                         deleteRecord(url, this.sessionToken)
                         .then(() => {
                             for(let j = 0; j < this.seedingLogs.length; j++){
-                            if(this.seedingLogs[j].id == logID[i]){
-                                this.seedingLogs.splice(j, 1)
-                            }
-                        } 
+                                if(this.seedingLogs[j].id == logID[i]){
+                                    this.seedingLogs.splice(j, 1)
+                                }
+                            } 
                         })
                         .catch((err => {
                             this.errBannerVisibility = true
@@ -786,15 +801,6 @@
                     return userNameArray
                 },
 
-                areaNameArray(){
-                    let areaNameArray = []
-                    const areaKeyIterator = this.areaToIDMap.keys()
-                    for(i = 0; i < this.areaToIDMap.size; i++){
-                        areaNameArray.push(areaKeyIterator.next().value)
-                    }
-                    return areaNameArray
-                },
-
                 cropNameArray(){
                     let cropNameArray = []
                     for(let [key, info] of this.cropToIDMap){
@@ -810,7 +816,7 @@
                     return [
                     {"header": 'Date', "visible": true, "inputType" : {'type': 'date'}}, 
                     {"header": 'Crop', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.cropNameArray}}, 
-                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.areaNameArray}}, 
+                    {"header": 'Area', "visible": true, "inputType" : {'type': 'dropdown', 'value': this.editableAreas}}, 
                     {"header": 'Seeding', "visible": true, "inputType" : {'type': 'no input'}},
                     {"header": 'Row Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
                     {"header": 'Bed Feet', "visible": false, "inputType" : {'type': 'regex', 'regex': '^[1-9]+[0-9]*$'}},
@@ -827,10 +833,46 @@
                 },
                 pageLoaded() {
                     // Check here that the correct number of API calls have completed.
-                    return this.createdCount == 8
+                    return this.createdCount == 9
                 },
             },
             created() {
+                let areaResponse = []
+                if(localStorage.getItem('areas') == null){
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas', this.areaResponse)
+                        .then(() => {
+                            localStorage.setItem('areas', JSON.stringify(this.areaResponse))
+
+                            this.fieldAreas = this.areaResponse.filter((x) => x.area_type === 'field' || x.area_type === 'bed')
+                            this.fieldAreas = (this.fieldAreas).map((h) => h.name)
+
+                            this.greenHouseAreas = this.areaResponse.filter((x) => x.area_type === 'greenhouse')
+                            this.greenHouseAreas = (this.greenHouseAreas).map((h) => h.name)
+
+                            this.createdCount++
+                        })
+                        .catch((err) => { 
+                            this.errBannerVisibility = true
+                        })
+                }
+                else{
+                    this.areaResponse = JSON.parse(localStorage.getItem('areas'))
+                    getAllPages('/taxonomy_term.json?bundle=farm_areas')
+                        .then((resp) => {
+                            this.areaResponse = resp
+                            localStorage.setItem('areas', JSON.stringify(resp))
+
+                            this.fieldAreas = this.areaResponse.filter((x) => x.area_type === 'field' || x.area_type === 'bed')
+                            this.fieldAreas = (this.fieldAreas).map((h) => h.name)
+
+                            this.greenHouseAreas = this.areaResponse.filter((x) => x.area_type === 'greenhouse')
+                            this.greenHouseAreas = (this.greenHouseAreas).map((h) => h.name)
+                            this.createdCount++
+                        })
+                        .catch((err) => { 
+                            this.errBannerVisibility = true
+                        })
+                }
                 getSessionToken()
                     .then((response) => {
                         this.sessionToken = response
