@@ -30,6 +30,15 @@ The FarmData2 community communicates via Zulip as its primary location for reach
 
 The [Getting Started with Zulip Page] from the [Zulip Help Center](https://zulip.com/help/) provides a quick introduction to using Zulip if you want a few pointers.
 
+
+## Bug Reporting ##
+
+If you discover a bug, please see the [Bug Reporting section of Ways to Contribute](docs/WaysToContribute.md#bug-reporting) for tips on writing a clear and helpful bug report.
+
+## Feature Requests ##
+
+If you have an idea for a new feature, please see the [Feature Requests section of Ways to Contribute](docs/WaysToContribute.md#feature-requests) for guidance on submitting a useful feature request.
+
 ## 5. Find an Issue to Work On ##
 
 Visit the Issue Tracker to find an issue on which to work:
