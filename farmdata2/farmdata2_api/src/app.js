@@ -320,38 +320,35 @@ app.get("/users/mapById", async (req, res) => {
 // test paging http://localhost:8000/paging/?page=1&limit=5
 app.get("/paging", async (req, res) => {
   let conn;
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
+  const page = parseInt(req.query.page, 10) || 1; // Default to page 1 if undefined
+  const limit = parseInt(req.query.limit, 10) || 10; // Default to limit 10 if undefined
   const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const result = {};
   try {
     conn = await pool.getConnection();
-    var sql = 'SELECT * FROM field_data_field_farm_asset'
-    let obj = await conn.query(sql);
-    // result = express.json(result);
-    
-    // result = JSON.parse(result)
-    if (endIndex < obj.length ) {
+    const sql = 'SELECT * FROM field_data_field_farm_asset LIMIT ? OFFSET ?';
+    const rows = await conn.query(sql, [limit, startIndex]);
+    const result = {};
+    // Assuming totalRows can be retrieved from the database to calculate if there's a next page
+    const [totalRows] = await conn.query('SELECT COUNT(*) AS total FROM field_data_field_farm_asset');
+    if (startIndex + limit < totalRows.total) {
       result.next = {
         page: page + 1,
-        limit: limit,
+        limit: limit
       };
     }
     if (startIndex > 0) {
       result.previous = {
         page: page - 1,
-        limit: limit,
+        limit: limit
       };
     }
-    result.results = obj.slice(startIndex, endIndex);
+    // Attach the rows to the result
+    result.results = rows;
     res.json(result);
   } catch (error) {
-    throw error;
+    res.status(500).send(error.message);
   } finally {
-    if (conn) {
-      conn.release();
-    }
+    if (conn) conn.release();
   }
 });
 
@@ -359,35 +356,37 @@ app.get("/paging", async (req, res) => {
 // use : to specify route parameters
 app.get("/log/:type/:start_time-:end_time", async (req, res) => {
   let conn;
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
+  const page = parseInt(req.query.page, 10) || 1; // Default to page 1 if undefined
+  const limit = parseInt(req.query.limit, 10) || 10; // Default to limit 10 if undefined
+  const startIndex = (page - 1) * limit; 
   const result = {};
   const logType = req.params.type;
   const startTime = req.params.start_time;
   const endTime = req.params.end_time;
   try {
     conn = await pool.getConnection();
-    var sql = 'SELECT * FROM log WHERE (type = \'' + logType + '\') AND (timestamp BETWEEN ' + startTime + ' AND '+ endTime+')';
-    let obj = await conn.query(sql);
-    result.self = "/log/"+logType+"/"+startTime+"-"+endTime+"/?page="+page+"&limit="+limit;
-    const totalPages = Math.ceil(obj.length / limit)
+    // Use parameterized query to prevent SQL Injection
+    const sql = 'SELECT * FROM log WHERE type = ? AND timestamp BETWEEN ? AND ? LIMIT ?, ?';
+    const params = [logType, startTime, endTime, startIndex, limit];
+    let obj = await conn.query(sql, params); 
+    result.self = `/log/${logType}/${startTime}-${endTime}/?page=${page}&limit=${limit}`;
+    const totalLogs = obj.length;
+    const totalPages = Math.ceil(totalLogs / limit);
     if (startIndex > 0) {
-      result.first = "/log/"+logType+"/"+startTime+"-"+endTime+"/?page="+(page+1)+"&limit="+limit;
+      result.previous = `/log/${logType}/${startTime}-${endTime}/?page=${page-1}&limit=${limit}`;
     }
-    if (endIndex < obj.length ) {
-      var nextpage = page + 1;
-      result.last = "/log/"+logType+"/"+startTime+"-"+endTime+"/?page="+totalPages+"&limit="+limit;
-      result.next = "/log/"+logType+"/"+startTime+"-"+endTime+"/?page="+nextpage+"&limit="+limit;
+    if (page < totalPages) {
+      result.next = `/log/${logType}/${startTime}-${endTime}/?page=${page+1}&limit=${limit}`;
     }
-    result.results = obj.slice(startIndex, endIndex);
+    if (totalPages > 0) {
+      result.last = `/log/${logType}/${startTime}-${endTime}/?page=${totalPages}&limit=${limit}`;
+    }
+    // Include paginated results
+    result.results = obj; 
     res.json(result);
   } catch (error) {
-    throw error;
+    res.status(500).send(error.message); 
   } finally {
-    if (conn) {
-      conn.release();
-    }
+    if (conn) conn.release();
   }
 });
