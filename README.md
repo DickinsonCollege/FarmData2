@@ -1,5 +1,15 @@
 # FarmData2 #
 
+**==================================================**
+
+**NOTICE: This repository has ben archived.** 
+
+Active development of FarmData2 has moved to the [FarmData2 organization](https://github.com/FarmData2). 
+
+Please join us there if you would like to contribute to FarmData2.
+
+**==================================================**
+
 FarmData2 is an application that supports the operation and certification requirements for small organic farming operations.
 
 ## Description ##
