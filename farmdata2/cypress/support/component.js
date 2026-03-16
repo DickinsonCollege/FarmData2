@@ -22,6 +22,9 @@ import '/home/fd2dev/fd2test/farmdata2/farmdata2_modules/resources/fd2.css'
 // Import Bootstrap style sheet
 import 'bootstrap/dist/css/bootstrap.css'
 
+// Import Bootstrap-Vue style sheet
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
